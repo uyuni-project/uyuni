@@ -1,11 +1,14 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { LinkButton } from "components/buttons";
-import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import { ProjectFilterServerType } from "../../../type";
-import { Loading } from "components/utils/Loading";
+
 import _xor from "lodash/xor";
+
+import { LinkButton } from "components/buttons";
+import { Loading } from "components/utils/Loading";
+
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { getClmFilterDescription } from "../../../business/filters.enum";
+import { ProjectFilterServerType } from "../../../type";
 
 type FiltersProps = {
   projectId: string;

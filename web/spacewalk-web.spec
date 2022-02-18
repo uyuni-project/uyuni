@@ -37,7 +37,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.4
+Version:        4.3.9
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -51,7 +51,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
-BuildRequires:  nodejs10
+BuildRequires:  nodejs-default
 %else
 BuildRequires:  nodejs
 %endif
@@ -61,42 +61,18 @@ This package contains the code for the Spacewalk Web Site.
 Normally this source RPM does not generate a %{name} binary package,
 but it does generate a number of sub-packages.
 
-%package -n susemanager-web-libs
-Summary:        Vendor bundles for spacewalk-web
-License:        0BSD AND BSD-3-Clause AND LGPL-3.0-or-later AND MIT AND MPL-2.0
-Group:          Applications/Internet
-
-BuildArch:      noarch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  nodejs-packaging
-BuildRequires:  susemanager-nodejs-sdk-devel
-
-%description -n susemanager-web-libs
-This package contains Vendor bundles needed for spacewalk-web
-
-%package -n susemanager-web-libs-debug
-Summary:        Vendor bundles for spacewalk-web debug files
-License:        0BSD AND BSD-3-Clause AND LGPL-3.0-or-later AND MIT AND MPL-2.0
-Group:          Applications/Internet
-
-BuildArch:      noarch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       susemanager-web-libs
-
-%description -n susemanager-web-libs-debug
-This package contains debug files for spacewalk-web-libs
-
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        GPL-2.0-only AND MIT
+License:        0BSD AND BSD-3-Clause AND GPL-2.0-only AND LGPL-3.0-or-later AND MIT AND MPL-2.0
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding
-Requires:       susemanager-web-libs
 Obsoletes:      rhn-help < 5.3.0
 Provides:       rhn-help = 5.3.0
 Obsoletes:      rhn-html < 5.3.0
 Provides:       rhn-html = 5.3.0
+Obsoletes:      susemanager-web-libs < %{version}
+Provides:       susemanager-web-libs = %{version}
 # files html/javascript/{builder.js,controls.js,dragdrop.js,effects.js,
 # prototype-1.6.0.js,scriptaculous.js,slider.js,sound.js,unittest.js}
 # are licensed under MIT license
@@ -220,23 +196,7 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 %{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
 cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
-%{__mkdir_p} %{buildroot}/%{www_path}/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vendors/vendors.bundle.js.LICENSE
-
 %find_lang spacewalk-web
-
-%files -n susemanager-web-libs
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.js
-%{www_path}/vendors/*.js.LICENSE
-
-%files -n susemanager-web-libs-debug
-%defattr(644,root,root,755)
-%dir %{www_path}/vendors
-%{www_path}/vendors/*.map
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -276,6 +236,7 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vend
 %{www_path}/robots.txt
 %{www_path}/pub
 %{www_path}/javascript/manager/*.js
+%{www_path}/javascript/manager/*.js.LICENSE.txt
 %{www_path}/javascript/*.js
 %license LICENSE
 

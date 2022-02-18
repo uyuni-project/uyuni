@@ -1,7 +1,8 @@
 import * as React from "react";
-import { ActionApi } from "../ActionApi";
 
 import { MessageType } from "components/messages";
+
+import { ActionApi } from "../ActionApi";
 
 type Props = {
   hostid: string;

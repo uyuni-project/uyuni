@@ -2,16 +2,6 @@ IMAGE_COLLAPSED_PATH = '/img/list-expand.gif';
 IMAGE_EXPANDED_PATH  = '/img/list-collapse.gif';
 IMAGE_CHILDLESS_PATH  = '/img/rhn-bullet-parentchannel.gif';
 
-
-var browserType;
-
-// tip of the Red Hat to Mar Orlygsson for this little IE detection script
-var is_ie/*@cc_on = {
-   quirksmode : (document.compatMode=="BackCompat"),
-   version : parseFloat(navigator.appVersion.match(/MSIE (.+?);/)[1])
-}@*/;
-browserType = is_ie;
-
 function onLoadStuff(columns, tableId, rowHash)  {
   var channelTable = document.getElementById(tableId);
   createParentRows(channelTable, rowHash, columns);

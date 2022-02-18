@@ -1,4 +1,4 @@
-# begin SUSE Manager registration
+<!-- begin Uyuni/SUSE Manager registration -->
 <script>
     <filename>spacewalk-sles_register.sh</filename>
     <source>
@@ -102,5 +102,5 @@ zypper mr -e --medium-type plugin
         ]]>
     </source>
 </script>
-# end SUSE Manager registration
+<!-- end Uyuni/SUSE Manager registration -->
 

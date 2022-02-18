@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Table } from "components/table/Table";
+
+import { FromNow } from "components/datetime";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
-import { FromNow } from "components/datetime";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -42,7 +44,6 @@ class ImageViewPackages extends React.Component<Props> {
         data={data.packagelist ? data.packagelist : []}
         identifier={(p) => p.name + p.arch}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} />}
       >
         <Column columnKey="name" comparator={Utils.sortByText} header={t("Package Name")} cell={(row) => row.name} />

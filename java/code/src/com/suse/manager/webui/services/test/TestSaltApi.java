@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -266,7 +266,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+    public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
         throw new UnsupportedOperationException();
     }
 
@@ -277,6 +277,5 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public void refreshPillar(MinionList minionList) {
-        throw new UnsupportedOperationException();
     }
 }

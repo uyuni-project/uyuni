@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,5 +22,6 @@ public enum NotificationType {
     ChannelSyncFailed,
     ChannelSyncFinished,
     CreateBootstrapRepoFailed,
-    StateApplyFailed
+    StateApplyFailed,
+    PaygAuthenticationUpdateFailed
 }

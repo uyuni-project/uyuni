@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -2048,7 +2048,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      *
      */
-    public int regenerateYumCache(User loggedInUser, String channelLabel, boolean force) {
+    public int regenerateYumCache(User loggedInUser, String channelLabel, Boolean force) {
         channelAdminPermCheck(loggedInUser);
         lookupChannelByLabel(loggedInUser, channelLabel);
 

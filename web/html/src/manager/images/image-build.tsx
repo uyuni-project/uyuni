@@ -1,18 +1,21 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
-import Network from "utils/network";
-import { SubmitButton, LinkButton } from "components/buttons";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { LinkButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Select } from "components/input/Select";
 import { Text } from "components/input/Text";
-import { ActionLink, ActionChainLink } from "components/links";
-import { ActionChain, ActionSchedule } from "components/action-schedule";
-import SpaRenderer from "core/spa/spa-renderer";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { ActionChainLink, ActionLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
@@ -70,15 +73,6 @@ class BuildImage extends React.Component<Props, State> {
       hosts: [],
       messages: [],
     };
-
-    [
-      "handleProfileChange",
-      "onFormChange",
-      "onValidate",
-      "onBuild",
-      "onDateTimeChanged",
-      "onActionChainChanged",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
 
     this.getProfiles();
   }
@@ -138,9 +132,9 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  handleProfileChange(name, value) {
+  handleProfileChange = (name, value) => {
     this.changeProfile(value);
-  }
+  };
 
   changeProfile(id) {
     const model = Object.assign({}, this.state.model);
@@ -169,19 +163,19 @@ class BuildImage extends React.Component<Props, State> {
     return encodeURIComponent("/rhn/manager/cm/build" + (qstr ? "?" + qstr : ""));
   }
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  onDateTimeChanged(value: moment.Moment) {
+  onDateTimeChanged = (value: moment.Moment) => {
     const model: State["model"] = Object.assign({}, this.state.model, {
       earliest: value,
       actionChain: null,
@@ -190,9 +184,9 @@ class BuildImage extends React.Component<Props, State> {
       actionChain: null,
       model,
     });
-  }
+  };
 
-  onActionChainChanged(actionChain: ActionChain | null) {
+  onActionChainChanged = (actionChain: ActionChain | null) => {
     const model: State["model"] = Object.assign({}, this.state.model, {
       actionChain: actionChain?.text,
     });
@@ -200,9 +194,9 @@ class BuildImage extends React.Component<Props, State> {
       actionChain,
       model,
     });
-  }
+  };
 
-  onBuild(model) {
+  onBuild = (model) => {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
         const msg = MessagesUtils.info(
@@ -235,7 +229,7 @@ class BuildImage extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   renderProfileSummary() {
     var p = this.state.profile;

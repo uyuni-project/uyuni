@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,7 @@ public class MinionSummary {
     private String minionId;
     private String digitalServerId;
     private String machineId;
+    private String os;
     private Optional<String> contactMethodLabel;
 
     /**
@@ -39,8 +40,8 @@ public class MinionSummary {
      * @param minion the minion
      */
     public MinionSummary(MinionServer minion) {
-        this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(), minion.getMachineId(),
-                minion.getContactMethodLabel());
+        this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
+                minion.getMachineId(), minion.getContactMethodLabel(), minion.getOs());
     }
 
     /**
@@ -51,14 +52,23 @@ public class MinionSummary {
      * @param digitalServerIdIn the digital server id
      * @param machineIdIn the machine id
      * @param contactMethodLabelIn the contact method label
+     * @param osIn the minion os
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            Optional<String> contactMethodLabelIn) {
+            Optional<String> contactMethodLabelIn, String osIn) {
         this.serverId = serverIdIn;
         this.minionId = minionIdIn;
         this.digitalServerId = digitalServerIdIn;
         this.machineId = machineIdIn;
         this.contactMethodLabel = contactMethodLabelIn;
+        this.os = osIn;
+    }
+
+    /**
+     * @return the minion os
+     */
+    public String getOs() {
+        return os;
     }
 
     /**

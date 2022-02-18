@@ -1,12 +1,15 @@
 import * as React from "react";
+
 import _isNil from "lodash/isNil";
-import Validation from "components/validation";
-import { Panel } from "components/panels/Panel";
+
 import { FormContext } from "components/input/Form";
 import { FormMultiInput } from "components/input/FormMultiInput";
-import { NetworkAddress } from "./NetworkAddress";
 import { Range } from "components/input/Range";
 import { Text } from "components/input/Text";
+import { Panel } from "components/panels/Panel";
+import Validation from "components/validation";
+
+import { NetworkAddress } from "./NetworkAddress";
 import * as utils from "./utils";
 
 type Props = {

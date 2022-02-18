@@ -116,13 +116,14 @@ Feature: Salt package states
 
   Scenario: Use Salt presence mechanism on an unreachable minion
     Then I follow "States" in the content area
-    And I run "pkill salt-minion" on "sle_minion"
+    And I run "pkill salt-minion" on "sle_minion" without error control
+    And I run "pkill python.original" on "sle_minion" without error control
     And I follow "Highstate" in the content area
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
   Scenario: Cleanup: restart the salt service on SLES minion
-    When I run "rcsalt-minion restart" on "sle_minion"
+    When I restart salt-minion on "sle_minion"
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"

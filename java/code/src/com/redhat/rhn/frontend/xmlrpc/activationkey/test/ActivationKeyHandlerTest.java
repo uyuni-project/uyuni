@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -52,6 +52,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.utils.MachinePasswordUtils;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -70,7 +71,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
-    private ActivationKeyHandler keyHandler = new ActivationKeyHandler(new ServerGroupManager());
+    private ActivationKeyHandler keyHandler = new ActivationKeyHandler(new ServerGroupManager(new TestSaltApi()));
     private static final String KEY = "myexplicitkey";
     private static final String KEY_DESCRIPTION = "Test Key";
     private static final Integer KEY_USAGE_LIMIT = 0;

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2020 SUSE LLC
+/*
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,12 +18,17 @@ import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -47,7 +52,8 @@ import java.util.Map;
 public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
     static final String TEMP_PATH = "formulas/";
-    private FormulaMonitoringManager manager = new FormulaMonitoringManager();
+    private SaltApi saltApi = new TestSaltApi();
+    private FormulaMonitoringManager manager = new FormulaMonitoringManager(saltApi);
     private Path metadataDir;
 
     public FormulaMonitoringManagerTest() { }
@@ -81,8 +87,9 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
         // Create a group level assignment of the Formula
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(minion, group);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        systemManager.addServerToServerGroup(minion, group);
+        FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
 
         // Save data that enables monitoring
         Map<String, Object> formulaData = new HashMap<>();
@@ -91,19 +98,19 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("exporters", exportersData);
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
 
         // Save data that disables monitoring
         exportersData.put("node_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
         // Create a system level assignment of the Formula
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Arrays.asList(PROMETHEUS_EXPORTERS));
-        FormulaFactory.saveServerFormulaData(formulaData, minion.getMinionId(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveServerFormulas(minion, Arrays.asList(PROMETHEUS_EXPORTERS));
+        FormulaFactory.saveServerFormulaData(formulaData, minion, PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
     }
 

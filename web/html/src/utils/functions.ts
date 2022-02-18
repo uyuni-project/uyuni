@@ -53,6 +53,7 @@ function sortByNumber(aRaw: any, bRaw: any, columnKey: string, sortDirection: nu
   return result * sortDirection;
 }
 
+// TODO: This function needs to be reworked, see https://github.com/SUSE/spacewalk/issues/15389 and the commentary below
 function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
   /**
    *  HACK
@@ -88,13 +89,15 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
       ? null
       : aRaw[columnKey] instanceof Date
       ? aRaw[columnKey]
-      : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+      : // eslint-disable-next-line local-rules/no-raw-date
+        new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
   const bDate =
     bRaw[columnKey] === null
       ? null
       : bRaw[columnKey] instanceof Date
       ? bRaw[columnKey]
-      : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+      : // eslint-disable-next-line local-rules/no-raw-date
+        new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
   return result * sortDirection;

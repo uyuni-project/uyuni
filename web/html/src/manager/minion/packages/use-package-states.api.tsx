@@ -1,7 +1,10 @@
-import Network from "utils/network";
 import * as React from "react";
 import { useState } from "react";
+
 import { MessageType, Utils as MessagesUtils } from "components/messages";
+
+import Network from "utils/network";
+
 import { ChangesMapObject, Package } from "./package.type";
 import * as packageHelpers from "./package-utils";
 
@@ -24,8 +27,6 @@ const usePackageStatesApi = () => {
         for (const state in changed) {
           if (changed.hasOwnProperty(state) && typeof changed[state].value === "object") {
             toSave.push(changed[state].value);
-          } else {
-            console.log("Cannot save empty object.");
           }
         }
         return Network.post("/rhn/manager/api/states/packages/save", {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -67,7 +67,7 @@ import javax.persistence.criteria.Root;
  */
 public abstract class HibernateFactory {
 
-    private static ConnectionManager connectionManager = new ConnectionManager();
+    private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
     private static final Logger LOG = Logger.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 
@@ -859,6 +859,17 @@ public abstract class HibernateFactory {
                     return queryFunction.get();
                 })
                 .reduce(identity, accumulator::apply);
+    }
+
+    /**
+     * Loads the full hibernate object in case the object is currently just a proxy
+     * @param proxy object to unproxy
+     * @param <T> type of the object to unproxy
+     * @return the unproxied hibernate object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T unproxy(T proxy) {
+        return (T) Hibernate.unproxy(proxy);
     }
 
 }

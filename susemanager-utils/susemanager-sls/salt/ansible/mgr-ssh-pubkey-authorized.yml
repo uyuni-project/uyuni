@@ -1,0 +1,8 @@
+- name: SSH public key presence on given system
+  hosts: all
+  tasks:
+    - name: Ensure the given ssh_pubkey to be in the authorized keys for given user
+      authorized_key:
+        state: present
+        user: '{{user}}'
+        key: '{{ssh_pubkey}}'

@@ -36,6 +36,7 @@ CREATE TABLE rhnErrata
     synopsis          VARCHAR(4000) NOT NULL,
     topic             VARCHAR(4000),
     solution          VARCHAR(4000) NOT NULL,
+    rights            VARCHAR(100),
     issue_date        TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
     update_date       TIMESTAMPTZ

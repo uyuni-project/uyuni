@@ -1,8 +1,11 @@
 import * as React from "react";
-import Network from "utils/network";
-import { FormulaSelection } from "components/formula-selection";
-import { Utils } from "utils/functions";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { FormulaSelection } from "components/formula-selection";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 const capitalize = Utils.capitalize;
 

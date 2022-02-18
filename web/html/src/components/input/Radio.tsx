@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { InputBase, InputBaseProps } from "./InputBase";
-import { FormContext } from "./Form";
 
+import { FormContext } from "./Form";
+import { InputBase, InputBaseProps } from "./InputBase";
 import styles from "./Radio.css";
 
 type Props = InputBaseProps & {

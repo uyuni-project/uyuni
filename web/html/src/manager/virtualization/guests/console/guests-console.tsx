@@ -1,14 +1,18 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import Network from "utils/network";
+
 import { Button } from "components/buttons";
 import { showDialog } from "components/dialog/util";
 import { hideDialog } from "components/dialog/util";
-import { VncClient } from "./vnc-client";
-import { ConsoleClientType } from "./guests-console-types";
-import { SpiceClient } from "./spice-client";
-import { MessagePopUp, PopupState } from "./MessagePopUp";
+
+import Network from "utils/network";
+
 import styles from "./guests-console.css";
+import { ConsoleClientType } from "./guests-console-types";
+import { MessagePopUp, PopupState } from "./MessagePopUp";
+import { SpiceClient } from "./spice-client";
+import { VncClient } from "./vnc-client";
 
 type Props = {
   hostId?: string;
@@ -36,6 +40,8 @@ type State = {
 function getTokenLifetime(token: String): number {
   const jwsParts = token.split(".");
   const claims = JSON.parse(atob(jwsParts[1]));
+  // TODO: If you touch this code, please use `localizedMoment()` here instead
+  // eslint-disable-next-line local-rules/no-raw-date
   return new Date(claims["exp"] * 1000).valueOf() - new Date(claims["iat"] * 1000).valueOf();
 }
 

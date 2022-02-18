@@ -1,4 +1,51 @@
-- Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
+-------------------------------------------------------------------
+Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Improve `pkgset` beacon with using `salt.cache`
+    to notify about the changes made while the minion was stopped
+  * Add dnfnotify plugin support for pkgset beacon
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * fix deprecation warnings
+  * Implement uyuni roster module for Salt
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
+  * Fix issues running mgr_events on Salt 3004
+
+-------------------------------------------------------------------
+Tue Jan 18 14:08:20 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Remove cluster management feature
+  * Fix dnf plugin path calculation when using Salt Bundle
+  * Use global import for which_bin in sumautil module
+  * Get the formula pillar data from the database
+  * Use flat repositories format for Debian based systems
+  * Add checking for libvirtd binary to grains.virt module
+  * Fix errors on calling sed -E ... by force_restart_minion
+    with action chains
+  * Fix problem installing/removing packages using action chains
+    in transactional systems
+  * Add state for changing proxy
+  * Enable basic support for Debian 11
+
+-------------------------------------------------------------------
+Fri Dec 03 12:33:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * fix openscap scan with tailoring options (bsc#1192321)
+  * Align allow_vendor_change pillar name across SLS files
+  * Use venv-salt-minion instead of salt for docker states
+  * Fix libvirt engine config destination for Salt Bundle
+  * Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
+    in order to force venv-salt-minion installation
+
+-------------------------------------------------------------------
+Tue Nov 16 10:09:40 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Implement using re-activation keys when bootstrapping
+  * Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
 
 -------------------------------------------------------------------
 Fri Nov 05 14:07:05 CET 2021 - jgonzalez@suse.com

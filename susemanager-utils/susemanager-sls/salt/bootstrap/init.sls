@@ -6,6 +6,12 @@ mgr_server_localhost_alias_absent:
     - names:
       - {{ salt['pillar.get']('mgr_server') }}
 
+no_ssh_push_key_authorized:
+  ssh_auth.absent:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - source: salt://salt_ssh/mgr_ssh_id.pub
+    - comment: susemanager-default-contact-method
+
 # disable all susemanager:* repos
 {% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
@@ -119,7 +125,7 @@ bootstrap_repo:
 {%- set salt_config_dir = '/etc/salt' %}
 {% set venv_available_request = salt['http.query'](bootstrap_repo_url + 'venv-enabled-' + grains['osarch'] + '.txt', status=True, verify_ssl=False) %}
 {# Prefer venv-salt-minion if available and not disabled #}
-{%- set use_venv_salt = (0 < venv_available_request.get('status', 404) < 300) and not salt['pillar.get']('mgr_avoid_venv_salt_minion') %}
+{%- set use_venv_salt = salt['pillar.get']('mgr_force_venv_salt_minion') or (0 < venv_available_request.get('status', 404) < 300) and not salt['pillar.get']('mgr_avoid_venv_salt_minion') %}
 {%- if use_venv_salt %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
 {%- set salt_config_dir = '/etc/venv-salt-minion' %}

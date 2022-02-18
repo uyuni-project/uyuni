@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,14 +16,12 @@ package com.suse.manager.webui.services.iface;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
-import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.exception.SaltException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,15 +37,6 @@ public interface SystemQuery {
      * @return the machine id as a string
      */
     Optional<String> getMachineId(String minionId);
-
-    /**
-     * Get information about all the nodes available via a cluster.
-     * @param managementNode the management node of the cluster
-     * @param clusterProviderParameters the parameters for calling the cluster provider manager on the management node
-     * @return a list of nodes returned by the cluster provider manager
-     */
-    Optional<Map<String, Map<String, Object>>> listClusterNodes(MinionServer managementNode,
-                                                                ClusterProviderParameters clusterProviderParameters);
 
     /**
      * Send notification about a system id to be generated.

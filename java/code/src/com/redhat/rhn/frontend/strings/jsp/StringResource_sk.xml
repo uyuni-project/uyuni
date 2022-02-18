@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="sk">
     <body>
@@ -312,7 +312,7 @@
       </trans-unit>
       <trans-unit id="errors.maxlength" xml:space="preserve">
         <source>{0} cannot be greater than {1} characters (Note: double byte chars are not supported).</source>
-        <target/>
+        <target>{0} nemôže byť viac ako {1} znakov (Poznámka: dvojbajtové znaky nie sú podporované).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be greater than 4 characters</context>
@@ -320,7 +320,7 @@
       </trans-unit>
       <trans-unit id="errors.invalid" xml:space="preserve">
         <source>{0} is invalid.</source>
-        <target/>
+        <target>{0} je neplatné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Email is invalid</context>
@@ -328,7 +328,7 @@
       </trans-unit>
       <trans-unit id="errors.integer" xml:space="preserve">
         <source>{0} must be a whole number.</source>
-        <target/>
+        <target>{0} musí byť celé číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -336,7 +336,7 @@
       </trans-unit>
       <trans-unit id="errors.integer.minmax" xml:space="preserve">
         <source>{0} must be a whole number between {1} and {2}.</source>
-        <target/>
+        <target>{0} musí byť celé číslo medzi {1} a {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="errors.float" xml:space="preserve">
         <source>{0} must be a decimal number.</source>
-        <target/>
+        <target>{0} musí byť desatinné číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -352,7 +352,7 @@
       </trans-unit>
       <trans-unit id="errors.float.minmax" xml:space="preserve">
         <source>{0} must be a decimal number between {1} and {2}.</source>
-        <target/>
+        <target>{0} musí byť desatinné číslo medzi {1} a {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -360,301 +360,301 @@
       </trans-unit>
       <trans-unit id="errors.unexpected" xml:space="preserve">
         <source>An unexpected error has occurred during the request.</source>
-        <target/>
+        <target>Počas požiadavky sa vyskytla neočakávaná chyba.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page where an unexpected error occurred.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.jsp.helpicon.alt" xml:space="preserve">
         <source>Help Icon</source>
-        <target/>
+        <target>Ikona Pomocníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that contains a help bubble icon</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.actionchain" xml:space="preserve">
           <source>We're sorry, but the Action Chain could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale reťazec akcií sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.user" xml:space="preserve">
           <source>We're sorry, but the user could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale používateľa sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.profile" xml:space="preserve">
           <source>We're sorry, but the system profile could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systémový profil sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.channel" xml:space="preserve">
           <source>We're sorry, but the channel could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale kanál sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.action" xml:space="preserve">
           <source>We're sorry, but the action could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale akciu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.errata" xml:space="preserve">
           <source>We're sorry, but the patch could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale opravu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.system" xml:space="preserve">
           <source>We're sorry, but the system could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systém sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný dátový objekt sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.title" xml:space="preserve">
           <source>We're sorry, but the configuration channel could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale konfiguračný kanál sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.title" xml:space="preserve">
           <source>We're sorry, but the configuration file could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale konfiguračný súbor sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.title" xml:space="preserve">
           <source>We're sorry, but the configuration revision could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale revíziu konfigurácie sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.title" xml:space="preserve">
           <source>We're sorry, but the activation key could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale aktivačný kľúč sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.title" xml:space="preserve">
           <source>We're sorry, but the system group could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale systémovú skupinu sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.xccdfscan.title" xml:space="preserve">
           <source>We're sorry, but the XCCDF scan could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale skenovanie XCCDF sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.scapfile.title" xml:space="preserve">
           <source>We're sorry, but the requested SCAP results file could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný súbor výsledkov SCAP sa nepodarilo nájsť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.header" xml:space="preserve">
           <source>Missing Capabilities</source>
-        <target/>
+        <target>Chýbajúce schopnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.title" xml:space="preserve">
           <source>An operation could not be completed on a system due to a missing capability.</source>
-        <target/>
+        <target>Operáciu na systéme nebolo možné dokončiť z dôvodu chýbajúcej schopnosti.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.summary" xml:space="preserve">
           <source>The server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; client capability. Please enable the capability before proceeding with the operation.</source>
-        <target/>
+        <target>Server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; nedisponuje &lt;strong&gt;{2}&lt;/strong&gt; schopnosťou klienta. Prosím, povoľte túto schopnosť pred pokračovaním v operácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.summary" xml:space="preserve">
           <source>This error may have occurred in one of three ways:</source>
-        <target/>
+        <target>K tejto chybe mohlo dôjsť jedným z troch spôsobov:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.actionchain.reason1" xml:space="preserve">
           <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source>
-        <target/>
+        <target>Požadovaný reťazec akcií neexistuje. Je to veľmi prevdepodobné, ak bol reťazec akcií už naplánovaný a odstránený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.user" xml:space="preserve">
           <source>The user requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný používateľ neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason1" xml:space="preserve">
           <source>The activation key requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný aktivačný kľúč neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason1" xml:space="preserve">
           <source>The system group requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná systémová skupina neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.profile" xml:space="preserve">
           <source>The system profile requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný systémový profil neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.channel" xml:space="preserve">
           <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný kanál neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
           <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná oprava neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.action" xml:space="preserve">
           <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná akcia neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.system" xml:space="preserve">
           <source>The system requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný systém neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.reason1" xml:space="preserve">
           <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný dátový objekt neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.reason1" xml:space="preserve">
           <source>The configuration channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný konfiguračný kanál neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.reason1" xml:space="preserve">
           <source>The configuration file requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaný konfiguračný súbor neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.reason1" xml:space="preserve">
           <source>The configuration revision requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target/>
+        <target>Požadovaná revízia konfigurácie neexistuje.  Je to veľmi pravdepodobné, ak ste sa na túto stránku dostali prostredníctvom záložiek alebo nejakého iného neprepojeného odkazu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.user" xml:space="preserve">
           <source>You do not have permission to view this user.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tohto používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason2" xml:space="preserve">
           <source>You do not have permission to view this activation key.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tohto aktivačného kľúča.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason2" xml:space="preserve">
           <source>You do not have permission to view this system group.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tejto systémovej skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.profile" xml:space="preserve">
           <source>You do not have permission to view this system profile.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tohto systémového profilu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.channel" xml:space="preserve">
           <source>You do not have permission to view this channel.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tohto kanála.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.errata" xml:space="preserve">
           <source>You do not have permission to view this patch.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tejto opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.action" xml:space="preserve">
           <source>You do not have permission to view this action.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tejto akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.system" xml:space="preserve">
           <source>You do not have permission to view this system.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.reason2" xml:space="preserve">
           <source>You do not have permission to the required data object.</source>
-        <target/>
+        <target>Nemáte oprávnenie na požadovaný dátový objekt.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -745,7 +745,7 @@
       </trans-unit>
       <trans-unit id="emptyspace.jsp" xml:space="preserve">
         <source> </source>
-        <target/>
+        <target> </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -753,28 +753,28 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.deleteuser" xml:space="preserve">
           <source>Cannot delete user.</source>
-        <target/>
+        <target>Nie je možné vymazať používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.channel" xml:space="preserve">
           <source>Cannot edit channel.</source>
-        <target/>
+        <target>Nie je možné upraviť kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.package" xml:space="preserve">
           <source>Cannot view package.</source>
-        <target/>
+        <target>Nie je možné zobraziť balík.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.subscribechannel" xml:space="preserve">
           <source>Cannot subscribe to channel.</source>
-        <target/>
+        <target>Nie je možné sa prihlásiť ku kanálu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -22874,84 +22874,6 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
-        <source>Virtual Systems</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
-        <source>No Virtual Systems.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
-        <source>System</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
-        <source>Host</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
-        <source>{0} Active Virtual Systems, {1} Total.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-          <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
-        <source>View All</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
-        <source>Updates</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
-        <source>Status</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
-        <source>Base Software Channel</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
-        <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="virtualguestslist.jsp.header" xml:space="preserve">
         <source>Hosted Virtual Systems</source>
         <target/>
@@ -24635,8 +24557,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.header" xml:space="preserve">
-        <source>System Activation Key</source>
-        <target/>
+        <source>System Reactivation Key</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -28817,10 +28739,6 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
         <target/>
       </trans-unit>
-      <trans-unit id="sdc.channels.info.change" xml:space="preserve">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <target/>
@@ -29538,6 +29456,56 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve">
+          <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
+          <source>Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.connection.change" xml:space="preserve">
+        <source>Change</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Connection.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
+        <source>Vendor Advisory</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <source>Update Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <source>Update Reporting Database</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

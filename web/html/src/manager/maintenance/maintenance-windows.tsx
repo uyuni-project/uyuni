@@ -1,15 +1,17 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Messages } from "components/messages";
+import { useEffect, useState } from "react";
 
-import { MaintenanceWindowsDetails } from "./details/maintenance-windows-details";
-import { MaintenanceWindowsList } from "./list/maintenance-windows-list";
-import { MaintenanceWindowsEdit } from "./edit/maintenance-windows-edit";
-
-import { Utils as MessagesUtils } from "components/messages";
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+
 import Network from "utils/network";
+
 import MaintenanceWindowsApi from "./api/maintenance-windows-api";
+import { MaintenanceWindowsDetails } from "./details/maintenance-windows-details";
+import { MaintenanceWindowsEdit } from "./edit/maintenance-windows-edit";
+import { MaintenanceWindowsList } from "./list/maintenance-windows-list";
 
 // See java/code/src/com/suse/manager/webui/templates/schedule/maintenance-windows.jade
 declare global {

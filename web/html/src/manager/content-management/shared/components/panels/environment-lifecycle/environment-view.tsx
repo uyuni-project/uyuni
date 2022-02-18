@@ -1,9 +1,10 @@
 import * as React from "react";
+
 import _isEmpty from "lodash/isEmpty";
 
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type";
-import { getVersionMessageByNumber } from "../properties/properties.utils";
 import BuildVersion from "../build/build-version";
+import { getVersionMessageByNumber } from "../properties/properties.utils";
 
 type Props = {
   environment: ProjectEnvironmentType;

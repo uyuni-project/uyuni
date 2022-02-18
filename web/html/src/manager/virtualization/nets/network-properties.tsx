@@ -1,31 +1,33 @@
-import { ActionChain } from "components/action-schedule";
-
 import * as React from "react";
+
 import _isNil from "lodash/isNil";
-import Validation from "components/validation";
-import { Loading } from "components/utils/Loading";
+
+import { ActionChain } from "components/action-schedule";
+import { ActionSchedule } from "components/action-schedule";
+import { Button, SubmitButton } from "components/buttons";
+import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
+import { convertNumbers, flattenModel, stripBlankValues, unflattenModel } from "components/input/form-utils";
 import { Radio } from "components/input/Radio";
-import { Panel } from "components/panels/Panel";
-import { Text } from "components/input/Text";
 import { Range } from "components/input/Range";
 import { Select } from "components/input/Select";
-import { Check } from "components/input/Check";
-import { unflattenModel, flattenModel, stripBlankValues, convertNumbers } from "components/input/form-utils";
-import { SubmitButton, Button } from "components/buttons";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
-import { ActionSchedule } from "components/action-schedule";
-import { VirtualizationNetworkDevsApi } from "./virtualization-network-devs-api";
-import { VirtualPortFields } from "./properties/VirtualPortFields";
-import { Interface } from "./properties/Interface";
-import { Vlans } from "./properties/Vlans";
-import { IpConfig } from "./properties/IpConfig";
+import { MessageType } from "components/messages";
+import { Panel } from "components/panels/Panel";
+import { Loading } from "components/utils/Loading";
+import Validation from "components/validation";
+
+import { localizedMoment } from "utils";
+
 import { DnsConfig } from "./properties/DnsConfig";
 import * as FieldsData from "./properties/fields-data";
+import { Interface } from "./properties/Interface";
+import { IpConfig } from "./properties/IpConfig";
 import * as utils from "./properties/utils";
-
-import { MessageType } from "components/messages";
-import { localizedMoment } from "utils";
+import { VirtualPortFields } from "./properties/VirtualPortFields";
+import { Vlans } from "./properties/Vlans";
+import { VirtualizationNetworkDevsApi } from "./virtualization-network-devs-api";
 
 type Props = {
   serverId: string;

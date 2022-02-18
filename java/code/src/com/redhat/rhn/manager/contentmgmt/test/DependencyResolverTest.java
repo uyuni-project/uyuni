@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -41,7 +41,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class DependencyResolverTest extends BaseTestCaseWithUser {
@@ -141,7 +140,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Expected result from the sample data in MockModulemdApi:
      * 5 ALLOW nevra filters for modular packages of the selected modules (postgresql:10, perl:5.24)
      * 3 DENY name filters for postgresql:10 provided apis (postgresql, postgresql-server, perl)
-     * 1 DENY RPM header filter for all modular packages
+     * 7 DENY nevra filters for all modular packages
      *
      * @see DependencyResolver#resolveModularDependencies
      */
@@ -159,7 +158,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         // The original module filters must be absent
         List<ContentFilter> filters = result.getFilters();
-        assertEquals(9, filters.size());
+        assertEquals(15, filters.size());
         assertTrue(filters.stream().noneMatch(filter1::equals));
         assertTrue(filters.stream().noneMatch(filter2::equals));
 
@@ -178,9 +177,10 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         // For the enabled module, all other packages with the same name should be filtered out from different sources
         moduleData.getRpmApis().forEach(a -> assertTrue(filters.stream().anyMatch(f -> isDenyNameMatches(f, a))));
 
-        // DENY filter for all modular packages
+        // DENY filters for all modular packages
         // Deny-all rule for all modular packages (are overridden by ALLOW filters for the selected modules)
-        assertTrue(filters.stream().anyMatch(this::isDenyModuleStreamExists));
+        api.getAllPackages(singletonList(modularChannel))
+                .forEach(p -> assertTrue(filters.stream().anyMatch(f -> isDenyNevraEquals(f, p))));
     }
 
     /**
@@ -194,7 +194,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
 
-        assertEquals(4, result.size());
+        assertEquals(10, result.size());
         // There should be one and only one "perl" api filter
         assertEquals(1, result.stream().filter(f -> isDenyNameMatches(f, "perl")).count());
         // There should be allow filters for both versions
@@ -266,8 +266,8 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         return isFilterOfType(f, ALLOW, FilterCriteria.Matcher.EQUALS, "nevra", value);
     }
 
-    private boolean isDenyModuleStreamExists(ContentFilter f) {
-        return isFilterOfType(f, DENY, FilterCriteria.Matcher.EXISTS, "module_stream", null);
+    private boolean isDenyNevraEquals(ContentFilter f, String value) {
+        return isFilterOfType(f, DENY, FilterCriteria.Matcher.EQUALS, "nevra", value);
     }
 
     private boolean isDenyNameMatches(ContentFilter f, String value) {
@@ -277,6 +277,6 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     private boolean isFilterOfType(ContentFilter f, ContentFilter.Rule rule, FilterCriteria.Matcher matcher,
             String field, String value) {
         return rule.equals(f.getRule()) && matcher.equals(f.getCriteria().getMatcher()) && field
-                .equals(f.getCriteria().getField()) && Objects.equals(value, f.getCriteria().getValue());
+                .equals(f.getCriteria().getField()) && value.equals(f.getCriteria().getValue());
     }
 }

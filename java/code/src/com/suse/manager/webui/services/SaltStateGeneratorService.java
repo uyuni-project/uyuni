@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FI
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
@@ -35,6 +36,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
@@ -548,26 +550,17 @@ public enum SaltStateGeneratorService {
 
     /**
      * Expose some global configuration options as pillar data.
-     * @param saltRootPath the directory where to generate the pillar data file
      */
-    public void generateMgrConfPillar(Path saltRootPath) {
-        boolean metataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
-        SaltPillar pillar = new SaltPillar();
-        pillar.add("mgr_metadata_signing_enabled", metataSigningEnabled);
-        Path filePath = saltRootPath.resolve("mgr_conf." + PILLAR_DATA_FILE_EXT);
+    public static void generateMgrConfPillar() {
+        // Remove legacy file if present
+        Path filePath = Paths.get(SUMA_PILLAR_DATA_PATH).resolve("mgr_conf." + PILLAR_DATA_FILE_EXT);
         FileUtils.deleteFile(filePath);
-        try {
-            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
-                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pillar);
-            if (!skipSetOwner) {
-                FileUtils.setAttributes(filePath, "tomcat", "susemanager",
-                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
-            }
-        }
-        catch (IOException e) {
-            LOG.error("Failed to generate pillar data into " + filePath, e);
-            throw new RuntimeException(e);
-        }
+
+        boolean metataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
+        Map<String, Object> data = Map.of("mgr_metadata_signing_enabled", metataSigningEnabled);
+        Pillar.getGlobalPillars().stream()
+                .filter(pillar -> pillar.getCategory().equals("mgr_conf"))
+                .findFirst()
+                .ifPresentOrElse(pillar -> pillar.setPillar(data), () -> Pillar.createGlobalPillar("mgr_conf", data));
     }
 }

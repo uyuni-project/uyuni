@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,12 +17,18 @@ package com.redhat.rhn.manager.system.entitling;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+
+import org.apache.log4j.Logger;
 
 
 /**
  * Manager class for adding/removing entitlements to/from servers
  */
 public class SystemEntitlementManager {
+
+    private static final Logger LOG = Logger.getLogger(SystemEntitlementManager.class);
 
     private SystemUnentitler systemUnentitler;
     private SystemEntitler systemEntitler;
@@ -95,5 +101,20 @@ public class SystemEntitlementManager {
             this.systemUnentitler.removeServerEntitlement(server, baseEntitlement);
         }
         this.systemEntitler.addEntitlementToServer(server, baseIn);
+    }
+
+    /**
+     * Entitle server if it doesn't already have the monitoring entitlement and if it's allowed.
+     * @param server the server to entitle
+     */
+    public void grantMonitoringEntitlement(Server server) {
+        boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
+        if (!hasEntitlement && canEntitleServer(server, EntitlementManager.MONITORING)) {
+            addEntitlementToServer(server, EntitlementManager.MONITORING);
+            return;
+        }
+        if (LOG.isDebugEnabled() && hasEntitlement) {
+            LOG.debug("Server " + server.getName() + " already has monitoring entitlement.");
+        }
     }
 }

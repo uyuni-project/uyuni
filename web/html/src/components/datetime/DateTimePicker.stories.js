@@ -1,11 +1,12 @@
 import * as React from "react";
-import { storiesOf } from "@storybook/react";
-
 import { useState } from "react";
-import { DateTimePicker } from "./DateTimePicker";
 
+import { storiesOf } from "@storybook/react";
 import moment from "moment";
+
 import { localizedMoment } from "utils";
+
+import { DateTimePicker } from "./DateTimePicker";
 
 storiesOf("DateTimePicker", module).add("basic timezone support", () => {
   const [value, setValue] = useState(localizedMoment());

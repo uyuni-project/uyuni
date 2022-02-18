@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -111,7 +111,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
         if (!isSkipChannelChangedEvent()) {
             MessageQueue.publish(new ChannelsChangedEventMessage(
-                    server.getId(), user.getId(), null,
+                    server.getId(), user.getId(),
                     isScheduleApplyChannelsState()));
         }
         super.store();

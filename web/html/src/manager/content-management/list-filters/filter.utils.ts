@@ -1,7 +1,9 @@
 import _isEmpty from "lodash/isEmpty";
+
+import { localizedMoment } from "utils";
+
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
-import { localizedMoment } from "utils";
 
 export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, projectLabel?: string): FilterServerType {
   const requestForm: any = {};

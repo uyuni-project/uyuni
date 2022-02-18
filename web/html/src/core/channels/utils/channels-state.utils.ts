@@ -1,8 +1,8 @@
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { ChannelType } from "core/channels/type/channels.type";
-
 import _intersection from "lodash/intersection";
 import _isNil from "lodash/isNil";
+
+import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
+import { ChannelType } from "core/channels/type/channels.type";
 
 export function getSelectedChannelsIdsInGroup(
   selectedChannelsIds: Array<number>,

@@ -189,6 +189,7 @@
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_reboot)">
                             <li><bean:message key="ssm.overview.misc.reboot"/></li>
                         </rhn:require>
+                        <li><bean:message key="ssm.overview.misc.proxy"/></li>
                         <li><bean:message key="ssm.overview.misc.migrate"/></li>
                         <li><bean:message key="ssm.overview.misc.delete"/></li>
                     </ul>

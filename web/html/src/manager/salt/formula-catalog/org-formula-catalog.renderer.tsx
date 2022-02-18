@@ -1,7 +1,10 @@
 import * as React from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
-import FormulaCatalog from "./org-formula-catalog";
+
 import { ServerMessageType } from "components/messages";
+
+import FormulaCatalog from "./org-formula-catalog";
 
 type RendererProps = {
   flashMessage?: ServerMessageType;

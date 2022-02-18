@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -127,7 +127,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper, new ServerGroupManager());
+        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper, new ServerGroupManager(saltApi));
         sghandler.create(admin, systemGroupName, desc);
 
         //admin should be able to call list users, regular should not

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
@@ -53,11 +54,6 @@ type DatePickerProps = {
 class DatePicker extends React.PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
-  constructor(props: DatePickerProps) {
-    super(props);
-    this.setVisible.bind(this);
-  }
-
   componentDidMount() {
     this._input?.datepicker({});
     this.setVisible(this.props.open);
@@ -99,8 +95,8 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: DatePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
     // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setFullYear(props.year);
@@ -109,13 +105,13 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     return date;
   }
 
-  setVisible(visible?: boolean) {
+  setVisible = (visible?: boolean) => {
     if (visible) {
       this._input?.datepicker("show");
     } else {
       this._input?.datepicker("hide");
     }
-  }
+  };
 
   render() {
     return (
@@ -155,14 +151,11 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this._input?.timepicker({
       roundingFunction: (seconds, options) => seconds,
     });
-    this._input?.on("change", () => {
-      // Do nothing
-    });
     this._input?.on("timeFormatError", () => {
       // Do nothing
     });
     this._input?.timepicker("setTime", this.toFauxBrowserDate(this.props));
-    this._input?.on("changeTime", () => {
+    this._input?.on("change", () => {
       const unsafeDate: Date | undefined = this._input?.timepicker("getTime");
 
       // Only if value has actually changed
@@ -201,8 +194,9 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: TimePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
+    // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setHours(props.hours);
     date.setMinutes(props.minutes);

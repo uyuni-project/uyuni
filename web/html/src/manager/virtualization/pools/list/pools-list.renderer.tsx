@@ -1,6 +1,8 @@
 import * as React from "react";
-import { PoolsList } from "./pools-list";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { PoolsList } from "./pools-list";
 
 type RendererProps = {
   serverId: string;

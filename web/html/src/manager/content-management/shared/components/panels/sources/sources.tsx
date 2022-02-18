@@ -1,17 +1,19 @@
 import * as React from "react";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import { Select } from "components/input";
-import { Panel } from "components/panels/Panel";
 import CreatorPanel from "components/panels/CreatorPanel";
+import { Panel } from "components/panels/Panel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 
-import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
-import ChannelsSelection from "./channels/channels-selection";
-import styles from "./sources.css";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import statesEnum from "../../../business/states.enum";
+import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
+import ChannelsSelection from "./channels/channels-selection";
+import styles from "./sources.css";
 
 type SourcesProps = {
   projectId: string;

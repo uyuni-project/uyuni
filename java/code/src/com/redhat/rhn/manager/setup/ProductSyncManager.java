@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,11 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
@@ -37,12 +40,16 @@ import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.utils.Exceptions;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,7 +70,6 @@ public class ProductSyncManager {
     /**
      * Returns a list of base products.
      * @return the products list
-     * @throws ProductSyncException if an error occurred
      */
     public List<SetupWizardProductDto> getBaseProducts() {
         ContentSyncManager csm = new ContentSyncManager();
@@ -98,70 +104,131 @@ public class ProductSyncManager {
      * Adds multiple products.
      * @param productIdents the product ident list
      * @param user the current user
-     * @throws ProductSyncException if an error occurred
      * @return a map of added products and an error message if any
      */
-    public Map<String, Optional<? extends Throwable>> addProducts(List<String> productIdents, User user) {
+    public Map<String, Optional<? extends Exception>> addProducts(List<String> productIdents, User user) {
+        // Extract the ids from the identifiers
+        final List<Long> productsId = productIdents.stream().map(
+            // Ident are in the form 'product_id-label'. If the product id is negative, the ident starts with a minus,
+            // so we need to skip the first character when performing the indexOf
+            id -> Long.valueOf(id.substring(0, id.indexOf('-', 1)))
+        ).collect(Collectors.toList());
+
+        // Retrieve the tree structure
+        final Map<Long, Long> productTreeMap =
+            HibernateFactory.doWithoutAutoFlushing(() -> getProductTreeMap(productsId));
+
+        // Evaluate possible conflicts with existing custom channels
+        final Map<Long, List<String>> conflictsMap =
+            HibernateFactory.doWithoutAutoFlushing(() -> verifyChannelConflicts(productsId));
+
         return productIdents.stream().collect(Collectors.toMap(
-                ident -> ident,
-                ident -> {
-                   try {
-                       addProduct(ident, user);
-                       return Optional.<Throwable>empty();
-                   }
-                   catch (ProductSyncException e) {
-                       return Optional.of(e);
-                   }
-               }
+            ident -> ident,
+            ident -> Exceptions.handleByReturning(() -> addProduct(ident, user, productTreeMap, conflictsMap)))
+        );
+    }
+
+    /**
+     * Evaluates if the given product are in conflict with existing custom channels.
+     * @param productsId the scc product ids of the product  to check
+     * @return a map containing the internal product id and the list of channel that are in conflicting
+     */
+    @SuppressWarnings("unchecked")
+    public Map<Long, List<String>> verifyChannelConflicts(List<Long> productsId) {
+        final SelectMode query = ModeFactory.getMode("Product_queries", "verify_channel_conflicts");
+        final DataResult<Map<String, Object>> dataResult = query.execute(productsId);
+        if (CollectionUtils.isEmpty(dataResult)) {
+            return Collections.emptyMap();
+        }
+
+        return dataResult.stream().collect(Collectors.groupingBy(
+                row -> (Long) row.get("id"),
+                Collectors.mapping(row -> (String) row.get("label"), Collectors.toList())
         ));
+    }
+
+    /**
+     * Retrieves the tree structure of the products
+     * @param productsId the scc product ids of the product to extract.
+     *                   Only the base product and its children will be computed.
+     * @return a map specifying for each internal product id which is the internal parent id.
+     */
+    @SuppressWarnings("unchecked")
+    public Map<Long, Long> getProductTreeMap(List<Long> productsId) {
+        final SelectMode query = ModeFactory.getMode("Product_queries", "extract_product_tree");
+        final DataResult<Map<String, Long>> dataResult = query.execute(productsId);
+        if (CollectionUtils.isEmpty(dataResult)) {
+            return Collections.emptyMap();
+        }
+
+        // It's not possible to use dataResult.stream().collect() since Collectors.toMap() does not support null values
+        // See: https://bugs.openjdk.java.net/browse/JDK-8148463
+        final Map<Long, Long> resultMap = new HashMap<>();
+        dataResult.forEach(row -> resultMap.put(row.get("product_id"), row.get("parent_id")));
+        return resultMap;
     }
 
     /**
      * Adds the product.
      * @param productIdent the product ident
      * @param user the current user
+     * @param productTreeMap the map representing the tree structure of the products
+     * @param conflictsMap the map of conflicts
      * @throws ProductSyncException if an error occurred
      */
-    public void addProduct(String productIdent, User user) throws ProductSyncException {
+    private void addProduct(String productIdent, User user, Map<Long, Long> productTreeMap,
+                            Map<Long, List<String>> conflictsMap) throws ProductSyncException {
+
         SetupWizardProductDto product = findProductByIdent(productIdent);
-        if (product != null) {
-            try {
-                List<String> channelsToSync = new LinkedList<>();
-                // Add the channels first
-                ContentSyncManager csm = new ContentSyncManager();
-                for (Channel channel : product.getMandatoryChannels()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Add channel: " + channel.getLabel());
-                    }
-                    csm.addChannel(channel.getLabel(), null);
-                    channelsToSync.add(channel.getLabel());
-                }
+        LocalizationService l10nService = LocalizationService.getInstance();
+        if (product == null) {
+            throw new ProductSyncException(l10nService.getMessage("setup.product.error.notfound", productIdent));
+        }
 
-                for (Channel iuc : product.getInstallerUpdateChannels()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Add installer update channel: " + iuc.getLabel());
-                    }
-                    csm.addChannel(iuc.getLabel(), null);
-                    channelsToSync.add(iuc.getLabel());
-                }
-
-                ScheduleRepoSyncEvent event =
-                        new ScheduleRepoSyncEvent(channelsToSync, user.getId());
-                MessageQueue.publish(event);
-            }
-            catch (ContentSyncException ex) {
-                throw new ProductSyncException(ex.getMessage());
-            }
+        List<String> conflicts = conflictsMap.get(product.getId());
+        if (conflicts != null) {
+            throw new ProductSyncException(l10nService.getMessage("setup.product.error.labelconflict", conflicts));
         }
         else {
-            String msg = String.format("Product %s cannot be found.", productIdent);
-            throw new ProductSyncException(msg);
+            // Evaluate parent conflicts
+            Long parentId = productTreeMap.get(product.getId());
+            while (parentId != null) {
+                if (conflictsMap.containsKey(parentId)) {
+                    throw new ProductSyncException(l10nService.getMessage("setup.product.error.parentconflict"));
+                }
+
+                parentId = productTreeMap.get(parentId);
+            }
+        }
+
+        try {
+            List<String> channelsToSync = new LinkedList<>();
+            // Add the channels first
+            ContentSyncManager csm = new ContentSyncManager();
+            for (Channel channel : product.getMandatoryChannels()) {
+                LogMF.debug(logger, "Add channel: {}", channel.getLabel());
+                csm.addChannel(channel.getLabel(), null);
+                channelsToSync.add(channel.getLabel());
+            }
+
+            for (Channel iuc : product.getInstallerUpdateChannels()) {
+                LogMF.debug(logger, "Add installer update channel: {}", iuc.getLabel());
+                csm.addChannel(iuc.getLabel(), null);
+                channelsToSync.add(iuc.getLabel());
+            }
+
+            ScheduleRepoSyncEvent event = new ScheduleRepoSyncEvent(channelsToSync, user.getId());
+            MessageQueue.publish(event);
+        }
+        catch (ContentSyncException ex) {
+            throw new ProductSyncException(l10nService.getMessage("setup.product.error.unknown"), ex);
         }
     }
 
     /**
      * Get the synchronization status for a given product.
      * @param product product
+     * @param channelByLabel map of all channels, indexed by their label
      * @return sync status as string
      */
     private SyncStatus getProductSyncStatus(SetupWizardProductDto product,
@@ -410,9 +477,10 @@ public class ProductSyncManager {
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(
-                productIn.getArch().orElse(null), productIn.getIdent(), productIn.getFriendlyName(), "",
-                new MandatoryChannels(mandatoryChannelsOut),
-                new OptionalChannels(optionalChannelsOut));
+            productIn.getProductId(), productIn.getId(), productIn.getArch().orElse(null), productIn.getIdent(),
+            productIn.getFriendlyName(), "", new MandatoryChannels(mandatoryChannelsOut),
+            new OptionalChannels(optionalChannelsOut)
+        );
 
         // Set extensions as addon products
         for (MgrSyncProductDto extension : productIn.getExtensions()) {
@@ -430,10 +498,8 @@ public class ProductSyncManager {
      *
      * @param ident ident of a product
      * @return the {@link SetupWizardProductDto}
-     * @throws ProductSyncException in case of an error
      */
-    private SetupWizardProductDto findProductByIdent(String ident)
-            throws ProductSyncException {
+    private SetupWizardProductDto findProductByIdent(String ident) {
         for (SetupWizardProductDto p : getBaseProducts()) {
             if (p.getIdent().equals(ident)) {
                 return p;

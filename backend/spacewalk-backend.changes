@@ -1,4 +1,45 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:01:39 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * define rhn.conf template for reporting database configuration
+  * SLES PAYG client support on cloud
+  * Ignore local modules when querying repositories.
+  * Fixed mirror link usage for dnf.
+
+-------------------------------------------------------------------
+Tue Jan 18 13:49:59 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Print more clear errors for spacewalk-remove-channel (bsc#1190564)
+  * Fix issues to work with latest urlgrabber version 4.1
+  * Retrieve and store copyright information about patches
+  * Unify decompression of metadata with uyuni.common.fileutils
+  * Fix yum reposync plugin for Fedora 33-35 repos
+  * require python macros for building
+  * Add headers to update proxy auth token in listChannels (bsc#1193585)
+
+-------------------------------------------------------------------
+Tue Dec 07 09:54:28 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
+
+-------------------------------------------------------------------
+Fri Dec 03 12:21:02 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Reposync: replace architecture variables in mirror lists
+  * exchange zypp-plugin dependency to use the python3 version
+
+-------------------------------------------------------------------
+Tue Nov 16 10:03:10 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Fix a possible traceback when sync non-flat deb repositories
+    with no architecture specified
+
+-------------------------------------------------------------------
 Fri Nov 05 13:36:01 CET 2021 - jgonzalez@suse.com
 
 - version 4.3.3-1

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.channel;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -117,6 +118,9 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c = ChannelFactory.reload(c);
 
         if (stripModularMetadata) {
+            if (c.getModules() != null) {
+                HibernateFactory.getSession().delete(c.getModules());
+            }
             c.setModules(null);
         }
         else {

@@ -36,7 +36,7 @@
                                 <bean:message key="${item.name}"/>:
                         </td>
                         <td>
-                                <c:out value="${item.start_time}"/>
+                                <rhn:formatDate value="${item.start_time}" />
                         </td>
                         <td>
                                 <c:out value="${item.status}"/>

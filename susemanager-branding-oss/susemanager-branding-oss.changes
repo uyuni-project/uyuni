@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 18 14:06:55 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Build the package with a dynamic html docroot, to allow
+    compatibility with other operating systems
+
+-------------------------------------------------------------------
 Fri Nov 05 14:04:56 CET 2021 - jgonzalez@suse.com
 
 - version 4.3.2-1

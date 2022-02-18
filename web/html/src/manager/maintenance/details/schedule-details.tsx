@@ -1,25 +1,25 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import Network from "utils/network";
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 import { AsyncButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { SystemLink } from "components/links";
 import { Utils as MessagesUtils } from "components/messages";
+import { MessageType } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { TabLabel } from "components/tab-container";
-import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
-import CancelActionsDialog from "../shared/cancel-actions-dialog";
+import Network from "utils/network";
 
-import { MessageType } from "components/messages";
-import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 type MaintenanceScheduleDetailsProps = {
   id: number;

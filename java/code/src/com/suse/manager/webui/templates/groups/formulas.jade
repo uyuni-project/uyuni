@@ -1,9 +1,8 @@
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
-    if not h.isClusterGroup(groupId)
-        a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
-            i.fa.fa-trash-o(title='Delete Group')
-            | #{l.t("Delete Group")}
+    a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+        i.fa.fa-trash-o(title='Delete Group')
+        | #{l.t("Delete Group")}
     a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
         i.fa.spacewalk-icon-system-groups(title='Work With Group')
         | #{l.t("Work With Group")}
@@ -11,11 +10,6 @@
   h1
     i.fa.spacewalk-icon-system-groups
     | #{" " + groupName + " "}
-
-if h.isClusterGroup(groupId)
-  .alert.alert-info
-    p.
-      System group is owned by a cluster. Deleting the system group is disabled. To delete the group you must delete the corresponding cluster.
 
 !{tabs}
 

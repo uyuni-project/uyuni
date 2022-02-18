@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,6 +45,11 @@ public class CompareConfigFilesTask extends RhnJavaJob {
      * Default constructor
      */
     public CompareConfigFilesTask() {
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "compare_config_files";
     }
 
     /**

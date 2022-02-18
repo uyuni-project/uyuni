@@ -1,10 +1,12 @@
 import * as React from "react";
+
 import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { TopPanel } from "components/panels/TopPanel";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Messages } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { DisplayHighstate } from "./display-highstate";
 import { targetTypeToString } from "./recurring-states-utils";
 

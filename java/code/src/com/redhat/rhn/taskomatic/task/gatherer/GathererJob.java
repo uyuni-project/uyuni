@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +38,11 @@ import java.util.Map;
 public class GathererJob extends RhnJavaJob {
 
     public static final String VHM_LABEL = "vhmLabel";
+
+    @Override
+    public String getConfigNamespace() {
+        return "gatherer";
+    }
 
     /**
      * {@inheritDoc}

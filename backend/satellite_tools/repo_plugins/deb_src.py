@@ -24,12 +24,12 @@ import requests
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
+from uyuni.common.context_managers import cfg_component
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import repo
 
 try:
@@ -310,7 +310,8 @@ class ContentSource:
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
                  org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
-                 client_cert_file=None, client_key_file=None):
+                 client_cert_file=None, client_key_file=None, channel_arch="",
+                 http_headers=None):
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -319,12 +320,8 @@ class ContentSource:
         else:
             self.org = "NULL"
 
-        comp = CFG.getComponent()
         # read the proxy configuration in /etc/rhn/rhn.conf
-        initCFG('server.satellite')
-
-        # ensure the config namespace will be switched back in any case
-        try:
+        with cfg_component('server.satellite') as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
@@ -360,9 +357,6 @@ class ContentSource:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
-        finally:
-            # set config component back to original
-            initCFG(comp)
 
     def get_md_checksum_type(self):
         pass

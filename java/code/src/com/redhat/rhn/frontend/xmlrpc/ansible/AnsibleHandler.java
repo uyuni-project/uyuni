@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -47,6 +47,17 @@ public class AnsibleHandler extends BaseHandler {
 
     // Keys to pass to schedulePlaybook endpoint as additional args for Ansible
     public static final String ANSIBLE_FLUSH_CACHE = "flushCache";
+
+    private final AnsibleManager ansibleManager;
+
+    /**
+     * Constructor
+     *
+     * @param managerIn the ansible manager
+     */
+    public AnsibleHandler(AnsibleManager managerIn) {
+        ansibleManager = managerIn;
+    }
 
     /**
      * Schedule a playbook execution
@@ -342,7 +353,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
         try {
-            return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
+            return ansibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {
@@ -375,7 +386,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
         try {
-            return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
+            return ansibleManager.discoverPlaybooks(pathId, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {
@@ -406,7 +417,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
         try {
-            return AnsibleManager.introspectInventory(pathId, loggedInUser)
+            return ansibleManager.introspectInventory(pathId, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {

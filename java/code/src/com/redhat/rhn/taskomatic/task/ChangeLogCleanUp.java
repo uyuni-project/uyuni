@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -27,6 +27,11 @@ import java.util.HashMap;
  * ChangeLogCleanUp
  */
 public class ChangeLogCleanUp extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "changelog_cleanup";
+    }
 
     /**
      * {@inheritDoc}

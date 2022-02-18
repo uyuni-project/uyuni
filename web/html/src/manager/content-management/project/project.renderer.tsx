@@ -1,8 +1,11 @@
 import * as React from "react";
-import Project from "./project";
+
 import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { MessagesContainer } from "components/toastr";
+
+import Project from "./project";
 
 type RendererProps = {
   project?: string;
@@ -14,7 +17,7 @@ export const renderer = (id: string, { project, wasFreshlyCreatedMessage }: Rend
   try {
     projectJson = JSON.parse(project || "");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

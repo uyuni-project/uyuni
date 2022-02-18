@@ -25,7 +25,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400)
 %global build_py2   1
 %endif
 
@@ -35,7 +35,7 @@ Summary:        Support package for spacewalk koan interaction
 License:        GPL-2.0-only
 Group:          System Environment/Kernel
 Name:           spacewalk-koan
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc

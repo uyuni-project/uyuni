@@ -1,4 +1,109 @@
-- Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
+-------------------------------------------------------------------
+Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Revert: Improvements on list packages query processing
+    by using query elaborator (bsc#1187333)
+
+-------------------------------------------------------------------
+Tue Feb 15 10:03:14 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Write data into reporting database using a taskomatic job
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
+  * Fix virtualization list rendering for foreign systems (bsc#1195712)
+  * Change order of 'Relevant' and 'All' in patches menu
+  * When adding a product, check if the new vendor channels conflicts
+    with any of the existing custom channel (bsc#1193448)
+  * Use uyuni roster salt module instead of flat roster files
+  * Improvements on list packages query processing by using query
+    elaborator (bsc#1187333)
+  * add ubuntu errata data and install handling
+  * fix possible race condition in job handling (bsc#1192510)
+  * Remove verbose token log (bsc#1195666)
+  * FIX errors when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
+  * SLES PAYG client support on cloud
+  * fix ClassCastException during action processing (bsc#1195043)
+  * Install product by default after a channel is subscribed
+  * Improve token validation logs
+  * Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
+-------------------------------------------------------------------
+Tue Feb 08 13:15:56 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Fix stack overflow when building a CLM project from modular sources (bsc#1194990)
+
+-------------------------------------------------------------------
+Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Tue Jan 18 13:52:58 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Remove cluster management feature
+  * Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
+  * Store formula pillar data in database
+  * Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
+  * Generate flat repositories metadata for Debian based systems
+  * Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
+  * Added rights field to generated updateinfo.xml to handle copyright
+  * fix XML syntax in cobbler snippets (bsc#1193694)
+  * Migrate the displaying of the date/time to rhn:formatDate
+  * Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+  * Add route for virtual systems ReactJS page
+  * fix actionchain stuck in pending/picked up (bsc#1189561)
+  * provide static configuration key name for SSHMinionActionExecutor
+    parallel threads
+  * Add link to the original vendor advisory in the patch details page
+  * fix issue with empty action chains getting deleted too early (bsc#1191377)
+  * Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
+  * Add additional matchers to package (nevra) filter
+  * Add greater equals matcher to package (nevra) filter
+  * Add support for custom SSH port for SSH minions
+  * UI and API call for changing proxy
+  * Use an 'allow' filter for the kernel packages with live patching
+    filter templates (bsc#1191460)
+  * require postgresql14 on SLE15 SP4
+
+-------------------------------------------------------------------
+Fri Dec 03 12:21:41 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * fix parsing error by making SCAP Profile description attribute optional
+    (bsc#1192321)
+  * fix openscap scan with tailoring-file option (bsc#1192321)
+  * Pass the "allow_vendor_change" flag using the right name when installing patches
+  * Fix legacy timepicker passing wrong time to the backend if server and
+    user time differ (bsc#1192699)
+  * Fix legacy timepicker passing wrong time to the backend if selected
+    date is in summer time (bsc#1192776)
+
+-------------------------------------------------------------------
+Tue Nov 16 12:58:01 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
+
+-------------------------------------------------------------------
+Tue Nov 16 10:06:56 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * update last boot time of SSH Minions after bootstrapping (bsc#1191899)
+  * Fix package update action with shared channels (bsc#1191313)
+  * Implement using re-activation keys when bootstrapping with the Web UI
+    or XMLRPC API
+  * Show salt ssh error message in failed action details
+  * switch to best repo auth item for contentsources (bsc#1191442)
+  * Add compressed flag to image pillars when kiwi image is
+    compressed (bsc#1191702)
 
 -------------------------------------------------------------------
 Fri Nov 05 13:49:19 CET 2021 - jgonzalez@suse.com

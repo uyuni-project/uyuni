@@ -251,7 +251,9 @@ header, nav.navbar-pf {
   }
 
   a.toggle-box:hover,
-  a.toggle-box.open {
+  a.toggle-box.open,
+  .manual-toggle-box:hover,
+  .manual-toggle-box.open {
     color: @green;
   }
   .box-wrapper {
@@ -524,6 +526,16 @@ header, nav.navbar-pf {
                 > div {
                   > a {
                     padding-left: 4.4em;
+                  }
+                }
+                /* Fourth Level */
+                > ul {
+                  > li {
+                    > div {
+                      > a {
+                        padding-left: 5.8em;
+                      }
+                    }
                   }
                 }
               }
@@ -1058,6 +1070,10 @@ time:hover {
   text-decoration: underline;
   text-decoration-style: dashed;
   cursor: default;
+}
+
+a time:hover {
+  cursor: pointer !important;
 }
 
 .spacewalk-section-toolbar-button {

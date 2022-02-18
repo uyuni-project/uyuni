@@ -160,21 +160,6 @@ begin
 
         select nextval('rhn_user_group_id_seq') into group_val from dual;
 
-        select  id
-        into    ug_type
-        from    rhnUserGroupType
-        where   label = 'cluster_admin';
-
-        insert into rhnUserGroup (
-                id, name,
-                description,
-                max_members, group_type, org_id
-        ) values (
-                group_val, 'Cluster Administrators',
-                'Cluster Administrators for Org ' || name_in,
-                NULL, ug_type, new_org_id
-        );
-
         -- there aren't any users yet, so we don't need to update
         -- rhnUserServerPerms
 

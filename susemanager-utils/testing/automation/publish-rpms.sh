@@ -53,6 +53,7 @@ cd $repo_dir
 echo ${obs_repo} | grep "Ubuntu" -i
 if [  ${?} -eq 0 ];then
     dpkg-scanpackages -m . /dev/null > Packages
+    rm -f Packages.gz
     gzip Packages
 else
      createrepo .

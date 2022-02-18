@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -49,7 +49,8 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     public <T> T fold(
             Function<SCCRepositoryBasicAuth, ? extends T> basicAuth,
             Function<SCCRepositoryNoAuth, ? extends T> noAuth,
-            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth) {
+            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
+            Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return noAuth.apply(this);
     }
 }

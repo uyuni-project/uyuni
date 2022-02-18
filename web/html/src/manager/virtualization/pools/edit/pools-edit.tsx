@@ -1,11 +1,12 @@
-import { ActionChain } from "components/action-schedule";
-
 import * as React from "react";
+
+import { ActionChain } from "components/action-schedule";
 import { TopPanel } from "components/panels/TopPanel";
 import { Loading } from "components/utils/Loading";
-import { VirtualizationPoolsActionApi } from "../virtualization-pools-action-api";
-import { VirtualizationPoolDefinitionApi } from "../virtualization-pool-definition-api";
+
 import { PoolProperties } from "../pool-properties";
+import { VirtualizationPoolDefinitionApi } from "../virtualization-pool-definition-api";
+import { VirtualizationPoolsActionApi } from "../virtualization-pools-action-api";
 
 type Props = {
   serverId: string;

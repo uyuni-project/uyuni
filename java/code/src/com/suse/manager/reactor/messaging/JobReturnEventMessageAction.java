@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -233,11 +233,18 @@ public class JobReturnEventMessageAction implements MessageAction {
              * The following will check if, for all the existing ActionChain, there are any completely done.
              * If so, just remove it. (bsc#1188163)
              */
-            ActionChainFactory.getAllActionChains().forEach(ac -> {
-                if (ac.isDone()) {
-                    ActionChainFactory.delete(ac);
-                }
+
+            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minion -> {
+                ActionChainFactory.getAllActionChains().stream()
+                        .filter(ac -> ac.isDone())
+                        .filter(ac ->
+                                ac.getEntries().stream()
+                                        .flatMap(ace -> ace.getAction().getServerActions().stream())
+                                        .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
+                        )
+                        .forEach(ActionChainFactory::delete);
             });
+
         }
       // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(

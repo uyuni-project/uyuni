@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  * Copyright (c) 2020--2021 SUSE LLC
  *
@@ -158,6 +158,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(AnsiblePlaybookSerializer.class);
         SERIALIZER_CLASSES.add(SystemEventDtoSerializer.class);
         SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
+        SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
     }
 
     /**

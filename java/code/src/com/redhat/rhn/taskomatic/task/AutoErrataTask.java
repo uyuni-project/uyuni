@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,6 +56,11 @@ import java.util.stream.Collectors;
 public class AutoErrataTask extends RhnJavaJob {
 
     private Queue<Action> actionsToSchedule = new LinkedList<>();
+
+    @Override
+    public String getConfigNamespace() {
+        return "auto_errata";
+    }
 
     /**
      * {@inheritDoc}

@@ -127,7 +127,13 @@ def start(actionchain_id):
         __salt__['saltutil.sync_modules']()
     except Exception as exc:
         log.error("There was an error while syncing custom states and execution modules")
-    ret = __salt__['state.sls'](target_sls, queue=True)
+
+    inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
+    if __grains__.get("transactional") and not inside_transaction:
+        ret = __salt__['transactional_update.sls'](target_sls, queue=True)
+    else:
+        ret = __salt__['state.sls'](target_sls, queue=True)
+
     if isinstance(ret, list):
         raise CommandExecutionError(ret)
     return ret
@@ -183,7 +189,12 @@ def resume():
     next_chunk = next_chunk.get('next_chunk')
     log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
               "{0}".format(next_chunk))
-    return __salt__['state.sls'](next_chunk, queue=True)
+
+    inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
+    if __grains__.get("transactional") and not inside_transaction:
+        return __salt__['transactional_update.sls'](next_chunk, queue=True)
+    else:
+        return __salt__['state.sls'](next_chunk, queue=True)
 
 def clean():
     '''

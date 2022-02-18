@@ -26,6 +26,7 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
+     And I wait until I see "Formula saved." text
      Then the "locale" formula should be checked
 
   Scenario: Parametrize the formula on the minion
@@ -98,6 +99,7 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I uncheck the "locale" formula
      And I click on "Save"
+     And I wait until I see "Formula saved." text
      Then the "locale" formula should be unchecked
 
   Scenario: Check the pillar data after disabling the formula
@@ -119,6 +121,7 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
+     And I wait until I see "Formula saved." text
      And I follow "Target"
      And I check the "sle_minion" client
      And I click on "Add Systems"

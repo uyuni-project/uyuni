@@ -1,10 +1,12 @@
 import * as React from "react";
+
 // TODO: This should eventually be localizedMoment instead
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment";
 
-import { click, render, screen, server, waitFor } from "utils/test-utils";
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+
+import { click, render, screen, server, waitFor } from "utils/test-utils";
 
 const initialDate = moment.utc("2021-07-09", "YYYY-MM-DD");
 

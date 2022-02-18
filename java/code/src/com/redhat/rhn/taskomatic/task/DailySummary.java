@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -55,6 +55,11 @@ public class DailySummary extends RhnJavaJob {
     private static final int ERRATA_SPACER = 4;
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
+
+    @Override
+    public String getConfigNamespace() {
+        return "daily_summary";
+    }
 
     /**
      * {@inheritDoc}

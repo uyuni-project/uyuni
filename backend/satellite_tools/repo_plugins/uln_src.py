@@ -31,7 +31,8 @@ class ContentSource(yum_ContentSource):
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=ULNAuth.ULN_CONF_PATH,
                  org=1, channel_label="", no_mirrors=False,
-                 ca_cert_file=None, client_cert_file=None, client_key_file=None):
+                 ca_cert_file=None, client_cert_file=None, client_key_file=None, channel_arch="",
+                 http_headers=None):
         if url[:6] != "uln://":
             raise RhnSyncException("url format error, url must start with uln://")
         # Make sure baseurl ends with / and urljoin will work correctly

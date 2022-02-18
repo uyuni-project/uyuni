@@ -28,4 +28,10 @@ mgr_scap:
         {%- if "fetch_remote_resources" in pillar.get('mgr_scap_params') %}
         fetch_remote_resources: {{ pillar['mgr_scap_params']['fetch_remote_resources'] }}
         {%- endif %}
+        {%- if "tailoring_file" in pillar.get('mgr_scap_params') %}
+        tailoring_file: {{ pillar['mgr_scap_params']['tailoring_file'] }}
+        {%- endif %}
+        {%- if "tailoring_id" in pillar.get('mgr_scap_params') %}
+        tailoring_id: {{ pillar['mgr_scap_params']['tailoring_id'] }}
+        {%- endif %}
 {% endif %}

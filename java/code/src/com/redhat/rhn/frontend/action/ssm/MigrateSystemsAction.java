@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -46,6 +46,18 @@ import javax.servlet.http.HttpServletResponse;
  * MigrateSystemsAction
  */
 public class MigrateSystemsAction extends RhnAction implements Listable {
+
+    private final MigrationManager migrationManager;
+
+    /**
+     * Constructor
+     *
+     * @param migrationManagerIn the migration manager
+     */
+    public MigrateSystemsAction(MigrationManager migrationManagerIn) {
+        migrationManager = migrationManagerIn;
+    }
+
     /**
      *
      * {@inheritDoc}
@@ -78,7 +90,7 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
             }
             else {
                 Org toOrg = OrgFactory.lookupByName(daForm.getString("org"));
-                MigrationManager.migrateServers(user, toOrg, serverList);
+                migrationManager.migrateServers(user, toOrg, serverList);
 
                 // Empty the set as we no longer have access to these systems
                 RhnSetDecl.SYSTEMS.clear(user);

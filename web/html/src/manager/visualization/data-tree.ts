@@ -1,11 +1,13 @@
 import * as d3 from "d3";
-import * as HierarchyView from "./ui/hierarchy-view";
+
+import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import * as Filters from "./data-processing/filters";
 import * as Partitioning from "./data-processing/partitioning";
 import * as Preprocessing from "./data-processing/preprocessing";
+import * as HierarchyView from "./ui/hierarchy-view";
 import * as Utils from "./utils";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/visualization/hierarchy.jade
 declare global {

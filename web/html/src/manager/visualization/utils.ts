@@ -1,5 +1,7 @@
 import * as d3 from "d3";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import * as UI from "./ui/components";
 
 function computeSvgDimensions() {

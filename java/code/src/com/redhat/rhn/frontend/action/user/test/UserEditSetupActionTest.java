@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -72,7 +72,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             assertNotNull(sah.getRequest().getAttribute("regularRoles"));
             List<UserRoleStatusBean> regularRoles = (List<UserRoleStatusBean>)
                 sah.getRequest().getAttribute("regularRoles");
-            assertEquals(6, regularRoles.size());
+            assertEquals(5, regularRoles.size());
             UserRoleStatusBean lv = regularRoles.get(0);
             assertTrue(TestUtils.isLocalized(lv.getName()));
             assertEquals(true, lv.isDisabled());

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,10 @@ package com.redhat.rhn.manager.rhnset;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
+import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.manager.BaseManager;
+
+import com.suse.manager.webui.websocket.Notification;
 
 /**
  * RhnSetManager
@@ -85,5 +88,8 @@ public class RhnSetManager extends BaseManager {
             return;
         }
         RhnSetFactory.save(set);
+        if (set.getLabel().equals(SetLabels.SYSTEM_LIST)) {
+            Notification.spreadUpdate(Notification.SSM_COUNT);
+        }
     }
 }

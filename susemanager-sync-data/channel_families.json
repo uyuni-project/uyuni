@@ -292,6 +292,22 @@
     "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 Z-Series"
   },
   {
+    "label" : "SLES15-SP2-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 ARM64"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 PPC"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 x86_64"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 Z-Series"
+  },
+  {
     "label" : "SLESMT",
     "name" : "SUSE Linux Enterprise Subscription Management Tool"
   },

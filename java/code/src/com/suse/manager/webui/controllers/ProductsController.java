@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -49,6 +50,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -57,6 +59,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -237,25 +240,25 @@ public class ProductsController {
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
             log.fatal("addProduct failed: Product Data refresh needed");
-            json(response, identifiers.stream().collect(Collectors.toMap(ident -> ident, ident -> Boolean.FALSE)));
+            return json(response, identifiers.stream().collect(Collectors.toMap(
+                Function.identity(),
+                ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
+            )));
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Add/Sync products: " + identifiers);
-        }
-        Map<String, Optional<? extends Throwable>> stringOptionalMap =
-                new ProductSyncManager().addProducts(identifiers, user);
 
-        stringOptionalMap.forEach((k, v) -> {
-            v.ifPresent(error -> {
-                log.fatal("addProduct failed for " + k, error);
-            });
+        LogMF.debug(log, "Add/Sync products: {}", identifiers);
+
+        ProductSyncManager psm = new ProductSyncManager();
+        Map<String, Optional<? extends Exception>> productStatusMap = psm.addProducts(identifiers, user);
+
+        // Convert to a map specifying operation result for each product while logging the errors that have happened
+        Map<String, String> resultMap = new HashMap<>();
+        productStatusMap.forEach((product, error) -> {
+            error.ifPresent(ex -> log.fatal("addProduct() failed for " + product, ex));
+            resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
-        Map<String, Boolean> collect = stringOptionalMap.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                kv -> kv.getValue().isPresent()
-        ));
-        return json(response, collect);
+        return json(response, resultMap);
     }
 
     /**
@@ -302,13 +305,13 @@ public class ProductsController {
             List<Product> jsonProducts = TimeUtils.logTime(log, "build ui tree",
                     () -> products.stream().map(syncProduct -> {
                 SUSEProduct rootProduct = doWithoutAutoFlushing(
-                        () -> SUSEProductFactory.lookupByProductId(syncProduct.getId()));
+                        () -> SUSEProductFactory.lookupByProductId(syncProduct.getProductId()));
                 HashSet<Extension> rootExtensions = new HashSet<>();
 
                 Map<Long, Extension> extensionByProductId =
                             syncProduct.getExtensions().stream()
-                                    .collect(Collectors.toMap(MgrSyncProductDto::getId, s -> new Extension(
-                                            s.getId(),
+                                    .collect(Collectors.toMap(MgrSyncProductDto::getProductId, s -> new Extension(
+                                            s.getProductId(),
                                             s.getIdent(),
                                             s.getFriendlyName(),
                                             s.getArch().orElse(null),
@@ -331,7 +334,7 @@ public class ProductsController {
 
                     // recreate the extension tree from our flat representation
                     for (MgrSyncProductDto ext : syncProduct.getExtensions()) {
-                        long extProductId = ext.getId();
+                        long extProductId = ext.getProductId();
                         SUSEProduct extProduct =
                                         doWithoutAutoFlushing(() -> SUSEProductFactory
                                                 .lookupByProductId(extProductId));
@@ -355,7 +358,7 @@ public class ProductsController {
                     }
 
                 return new Product(
-                        syncProduct.getId(),
+                        syncProduct.getProductId(),
                         syncProduct.getIdent(),
                         syncProduct.getFriendlyName(),
                         syncProduct.getArch().orElse(null),

@@ -4,11 +4,12 @@
  */
 
 import * as React from "react";
-import { render, waitForElementToBeRemoved, screen, server, type, RenderOptions } from "utils/test-utils";
 
-import { Table } from "./Table";
+import { render, RenderOptions, screen, server, type, waitForElementToBeRemoved } from "utils/test-utils";
+
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
+import { Table } from "./Table";
 
 describe("Table component", () => {
   // IMPROVE: Would be nice to infer types here to ensure this stays in sync with the component

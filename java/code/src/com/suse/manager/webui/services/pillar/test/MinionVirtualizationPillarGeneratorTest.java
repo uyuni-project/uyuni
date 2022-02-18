@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -28,6 +28,8 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
@@ -57,12 +59,12 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
         };
 
-        ServerGroupManager serverGroupManager =  new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager =  new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)
         );
     }
 

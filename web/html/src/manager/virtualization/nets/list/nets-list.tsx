@@ -1,12 +1,14 @@
 import * as React from "react";
 
-import { Column } from "components/table/Column";
-import { Utils } from "utils/functions";
-import { LinkButton, AsyncButton } from "components/buttons";
+import { AsyncButton, LinkButton } from "components/buttons";
 import { Utils as MessagesUtils } from "components/messages";
+import { Column } from "components/table/Column";
+
+import { Utils } from "utils/functions";
+
+import { HypervisorCheck } from "../../HypervisorCheck";
 import { Utils as ListUtils } from "../../list.utils";
 import { ListTab } from "../../ListTab";
-import { HypervisorCheck } from "../../HypervisorCheck";
 
 type Props = {
   serverId: string;

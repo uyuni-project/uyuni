@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.dto;
 
 
+import java.util.Date;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  */
@@ -26,7 +28,7 @@ public class PackageFileDto {
     private String checksumtype;
     private Long fileMode;
     private String linkto;
-    private String mtime;
+    private Date mtime;
 
     /**
      * @return filename
@@ -115,14 +117,14 @@ public class PackageFileDto {
     /**
      * @return mtime
      */
-    public String getMtime() {
+    public Date getMtime() {
         return mtime;
     }
 
     /**
      * @param mtimeIn mtime to set
      */
-    public void setMtime(String mtimeIn) {
+    public void setMtime(Date mtimeIn) {
         this.mtime = mtimeIn;
     }
 

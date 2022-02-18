@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,12 +22,15 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.task.Task;
@@ -74,6 +77,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "refresh_custom_sls_files";
     public static final String REFRESH_VIRTHOST_PILLARS =
             UPGRADE_TASK_NAME + "virthost_pillar_refresh";
+    public static final String PILLARS_FROM_FILES =
+            UPGRADE_TASK_NAME + "pillars_from_files";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -142,6 +147,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case REFRESH_VIRTHOST_PILLARS:
                         refreshVirtHostPillar();
+                        break;
+                    case PILLARS_FROM_FILES:
+                        migratePillarsFromFiles();
                         break;
                     default:
                 }
@@ -348,5 +356,27 @@ public class UpgradeCommand extends BaseTransactionCommand {
         catch (Exception e) {
             log.error("Error refreshing virtualization host pillar. Ignoring.", e);
         }
+    }
+
+    private void migratePillarsFromFiles() {
+        log.warn("Migrating pillars and formula pillars to database");
+        // Convert the formula order
+        FormulaFactory.saveFormulaOrder();
+
+        // Convert the global pillars
+        SaltStateGeneratorService.generateMgrConfPillar();
+
+        // Convert minion pillars and formulas
+        List<MinionServer> minions = MinionServerFactory.listMinions();
+        minions.forEach(minion -> {
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+            FormulaFactory.convertServerFormulasFromFiles(minion);
+        });
+
+        // Convert group formulas
+        OrgFactory.lookupAllOrgs().forEach(org -> {
+            ServerGroupFactory.listManagedGroups(org).forEach(FormulaFactory::convertGroupFormulasFromFiles);
+        });
+        log.warn("Migrated pillars and formula pillars to database");
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +38,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -208,7 +210,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testListGroupRecurringActions() {
-        ServerGroupManager manager = new ServerGroupManager();
+        ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
 
         var action = new GroupRecurringAction();

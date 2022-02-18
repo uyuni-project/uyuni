@@ -110,6 +110,14 @@ insert into rhnPackageArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_package_arch_id_seq'), 'amd64-deb', 'AMD64-deb', lookup_arch_type('deb'));
 insert into rhnPackageArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_package_arch_id_seq'), 'arm64-deb', 'ARM64-deb', lookup_arch_type('deb'));
+insert into rhnPackageArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_package_arch_id_seq'), 'armel-deb', 'armel-deb', lookup_arch_type('deb'));
+insert into rhnPackageArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_package_arch_id_seq'), 'riscv64-deb', 'riscv64-deb', lookup_arch_type('deb'));
+insert into rhnPackageArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_package_arch_id_seq'), 'ppc64el-deb', 'ppc64el-deb', lookup_arch_type('deb'));
+insert into rhnPackageArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_package_arch_id_seq'), 's390x-deb', 's390x-deb', lookup_arch_type('deb'));
 
 commit;
 

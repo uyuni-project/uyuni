@@ -1,6 +1,7 @@
 import * as React from "react";
-import { InputBase, InputBaseProps } from "./InputBase";
+
 import { FormContext } from "./Form";
+import { InputBase, InputBaseProps } from "./InputBase";
 
 type Props = InputBaseProps & {
   /** Value placeholder to display when no value is entered */

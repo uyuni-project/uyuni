@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp3_terminal
@@ -12,5 +12,5 @@ Feature: Prepare prerequisities for SLE15 SP3 terminal deployment
   Scenario: Configure semi-xmlrpc-tester for SLE15 SP3 terminal deployment
     When I prepare configuration for "SLE15 SP3" terminal deployment
 
-  Scenario: Configure saltboot formula for SLE15 SP3 terminal deplyoment
+  Scenario: Configure saltboot formula for SLE15 SP3 terminal deployment
     When I execute "saltboot" for "SLE15 SP3" via semi-xmlrpc-tester

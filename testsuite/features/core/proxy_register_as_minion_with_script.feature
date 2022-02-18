@@ -15,13 +15,24 @@ Feature: Setup Uyuni proxy
 
   Scenario: Install proxy software
     When I refresh the metadata for "proxy"
+    # workaround for bug 1192195, remove when fixed
+    And I adapt zyppconfig
     # uncomment when product is out:
     # When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
+  @susemanager
   Scenario: Create the bootstrap script for the proxy and use it
     When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date"
+    Then I should get "* bootstrap script (written):"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
+    And I run "sh ./bootstrap-proxy.sh" on "proxy"
+
+  @uyuni
+  Scenario: Create the bootstrap script for the proxy and use it
+    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
@@ -47,11 +58,20 @@ Feature: Setup Uyuni proxy
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
+@susemanager
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
     # TODO: uncomment when SCC product becomes available
-    # When I wait until I see "$PRODUCT Proxy" text, refreshing the page
+    # When I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    Then I should see a "Proxy" link in the content area
+
+@uyuni
+  Scenario: Check proxy system details
+    When I am on the Systems overview page of this "proxy"
+    Then I should see "proxy" hostname
+    # TODO: uncomment when SCC product becomes available
+    # When I wait until I see "Uyuni Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
   Scenario: Install expect package on proxy for bootstrapping minion via script

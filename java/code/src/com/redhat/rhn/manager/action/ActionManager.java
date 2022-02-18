@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -74,7 +74,9 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -94,6 +96,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.codec.binary.Base64;
@@ -384,6 +389,7 @@ public class ActionManager extends BaseManager {
                         a.getServerActions().stream()
                             .filter(sa -> isMinionServer(sa.getServer()))
                             .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                            .filter(sa -> servers.contains(sa.getServer()))
                             .map(sa -> sa.getServer())
                             .collect(toSet())
                         )
@@ -1425,15 +1431,15 @@ public class ActionManager extends BaseManager {
     /**
      * Schedules one or more package lock actions for the given server.
      * @param scheduler the scheduler
-     * @param server the server
+     * @param servers the servers
      * @param packages set of packages
      * @param earliest earliest occurrence of this action
      * @return Currently scheduled PackageAction
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageLock(User scheduler, Server server,
-            Set<Package> packages, Date earliest)
+    public static Action schedulePackageLock(User scheduler,
+            Set<Package> packages, Date earliest, Server...servers)
         throws TaskomaticApiException {
         List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
         for (Package pkg : packages) {
@@ -1449,7 +1455,7 @@ public class ActionManager extends BaseManager {
             packagesList,
             ActionFactory.TYPE_PACKAGES_LOCK,
             earliest,
-            server
+            servers
         );
     }
 
@@ -2265,6 +2271,23 @@ public class ActionManager extends BaseManager {
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Date earliest, Optional<Boolean> test) {
+        return scheduleApplyStates(scheduler, sids, mods, Optional.empty(), earliest, test);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param pillar optional pillar map
+     * @param earliest action will not be executed before this date
+     * @param test run states in test-only mode
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+            Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         String states = mods.isEmpty() ? "highstate" : "states " + mods.toString();
@@ -2275,6 +2298,7 @@ public class ActionManager extends BaseManager {
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
+        actionDetails.setPillarsMap(pillar);
         test.ifPresent(t -> actionDetails.setTest(t));
         action.setDetails(actionDetails);
         ActionFactory.save(action);
@@ -2343,5 +2367,87 @@ public class ActionManager extends BaseManager {
 
         scheduleForExecution(action, new HashSet<>(sids));
         return action;
+    }
+
+    /**
+     * Connect given systems to another proxy.
+     *
+     * @param loggedInUser The current user
+     * @param sysids A list of systems ids
+     * @param proxyId Id of the proxy or 0 for direct connection to SUMA server
+     * @return Returns a list of scheduled action ids
+     *
+     */
+
+    public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
+        throws TaskomaticApiException {
+        List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
+                    .map(m -> m.getId()).collect(toList());
+        if (!visible.containsAll(sysids)) {
+            sysids.removeAll(visible);
+            throw new UnsupportedOperationException("Some System not available or not managed with Salt: " + sysids);
+        }
+
+        List<MinionServer> minions = sysids.stream().map(
+            id -> SystemManager.lookupByIdAndUser(id, loggedInUser).asMinionServer().get()).collect(toList());
+
+        List<Long> proxies = minions.stream().filter(m -> m.isProxy()).map(m -> m.getId()).collect(toList());
+        if (!proxies.isEmpty()) {
+            throw new UnsupportedOperationException("Some of the minions are proxies: " + proxies);
+        }
+
+        Optional<Server> proxy = Optional.empty();
+
+        if (proxyId != 0) {
+            proxy = Optional.of(SystemManager.lookupByIdAndUser(proxyId, loggedInUser));
+            proxy.ifPresent(p -> {
+                if (!p.isProxy()) {
+                    throw new UnsupportedOperationException("The system is not a proxy: " + p.getId());
+                }
+            });
+        }
+        Optional<Long> proxyIdOpt = proxy.map(p -> p.getId());
+
+        List<Long> sshIds = minions.stream()
+                            .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
+                            .map(minion -> {
+            // handle SSH minions
+            minion.updateServerPaths(proxyIdOpt);
+            ServerFactory.save(minion);
+
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+            return minion.getId();
+        }).collect(toList());
+
+
+        List<Long> normalIds = minions.stream()
+                               .filter(minion -> !ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
+                               .map(minion -> minion.getId())
+                               .collect(toList());
+
+        List<Long> ret = new ArrayList<Long>();
+        if (!sshIds.isEmpty()) {
+            // action for SSH minions - update channel configuration
+            Action a = scheduleApplyStates(loggedInUser, sshIds,
+                       Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                       new Date());
+            a = ActionFactory.save(a);
+            taskomaticApi.scheduleActionExecution(a);
+            ret.add(a.getId());
+        }
+
+        if (!normalIds.isEmpty()) {
+            // action for normal minions - update salt master, the channels will be updated after minion restart
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("mgr_server", proxy.map(p -> p.getHostname()).orElse(ConfigDefaults.get().getCobblerHost()));
+
+            Action a = scheduleApplyStates(loggedInUser, normalIds,
+                       Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),
+                       Optional.of(pillar), new Date(), Optional.empty());
+            a = ActionFactory.save(a);
+            taskomaticApi.scheduleActionExecution(a);
+            ret.add(a.getId());
+        }
+        return ret;
     }
 }

@@ -1,5 +1,7 @@
 import "manager/polyfills";
+
 import jQuery from "jquery";
+
 import t from "./t";
 
 // Allows us to mock and test the existing network layer easily

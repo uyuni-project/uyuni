@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,6 +34,11 @@ import java.util.stream.Collectors;
 public class MinionCheckin extends RhnJavaJob {
 
     private SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_checkin";
+    }
 
     /**
      * @param context the job execution context

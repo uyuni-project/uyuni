@@ -1,10 +1,12 @@
 import * as React from "react";
+
 import { AsyncButton, Button } from "components/buttons";
-import Network from "utils/network";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+
+import Network from "utils/network";
 
 const msgMap = {
   minion_unreachable: t("Cleanup timed out. Please check if the machine is reachable."),

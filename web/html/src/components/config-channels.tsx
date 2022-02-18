@@ -1,13 +1,16 @@
 import * as React from "react";
-import { AsyncButton } from "../components/buttons";
+
 import { InnerPanel } from "components/panels/InnerPanel";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+import { AsyncButton } from "../components/buttons";
 import { TextField } from "../components/fields";
 import { Messages, MessageType } from "../components/messages";
 import { Utils as MessagesUtils } from "../components/messages";
-import Network from "../utils/network";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { RankingTable } from "../components/ranking-table";
 import { SaltStatePopup } from "../components/salt-state-popup";
+import Network from "../utils/network";
 
 function channelKey(channel) {
   return channel.label;
@@ -51,27 +54,10 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
   constructor(props: ConfigChannelsProps) {
     super(props);
-
-    [
-      "init",
-      "tableBody",
-      "handleSelectionChange",
-      "onSearchChange",
-      "search",
-      "save",
-      "applySaltState",
-      "addChanged",
-      "showPopUp",
-      "onClosePopUp",
-      "showRanking",
-      "hideRanking",
-      "onUpdateRanking",
-      "getCurrentAssignment",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.init();
   }
 
-  init() {
+  init = () => {
     Network.get(this.props.matchUrl()).then((data) => {
       this.setState({
         channels: data,
@@ -81,9 +67,9 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         },
       });
     });
-  }
+  };
 
-  applySaltState() {
+  applySaltState = () => {
     if (this.state.changed.size > 0) {
       const response = window.confirm(t("There are unsaved changes. Do you want to proceed?"));
       if (DEPRECATED_unsafeEquals(response, false)) {
@@ -94,13 +80,13 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     const request = this.props.applyRequest(this);
 
     return request;
-  }
+  };
 
-  onUpdateRanking(channels) {
+  onUpdateRanking = (channels) => {
     this.setState({ assigned: channels });
-  }
+  };
 
-  save() {
+  save = () => {
     const channels = this.state.assigned;
     const request = this.props.saveRequest(channels).then(
       (data, textStatus, jqXHR) => {
@@ -132,15 +118,15 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
       }
     );
     return request;
-  }
+  };
 
-  onSearchChange(event) {
+  onSearchChange = (event) => {
     this.setState({
       filter: event.target.value,
     });
-  }
+  };
 
-  search() {
+  search = () => {
     return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
         Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
@@ -154,9 +140,9 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         });
       }
     });
-  }
+  };
 
-  addChanged(original, key, selected) {
+  addChanged = (original, key, selected) => {
     const currentChannel = this.state.changed.get(key);
     if (
       !DEPRECATED_unsafeEquals(currentChannel, undefined) &&
@@ -172,15 +158,15 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     this.setState({
       changed: this.state.changed,
     });
-  }
+  };
 
-  handleSelectionChange(original) {
+  handleSelectionChange = (original) => {
     return (event) => {
       this.addChanged(original, event.target.value, event.target.checked);
     };
-  }
+  };
 
-  tableBody() {
+  tableBody = () => {
     const elements: React.ReactNode[] = [];
     let rows: any[] = [];
     rows = this.state.search.results.map((channel) => {
@@ -247,30 +233,30 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         )}
       </tbody>
     );
-  }
+  };
 
-  showPopUp(channel) {
+  showPopUp = (channel) => {
     Network.get("/rhn/manager/api/states/" + channel.id + "/content").then((data) => {
       this.setState({
         showSaltState: Object.assign({}, channel, { content: data }),
       });
     });
-  }
+  };
 
-  showRanking() {
+  showRanking = () => {
     this.clearMessages();
     this.setState({ rank: true });
-  }
+  };
 
-  hideRanking() {
+  hideRanking = () => {
     this.setState({ rank: false });
-  }
+  };
 
-  onClosePopUp() {
+  onClosePopUp = () => {
     this.setState({
       showSaltState: null,
     });
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -278,12 +264,12 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     });
   }
 
-  getCurrentAssignment() {
+  getCurrentAssignment = () => {
     const unchanged = this.state.channels.filter((c) => !this.state.changed.has(channelKey(c)));
     const changed = Array.from(this.state.changed.values()).map((c) => c.value);
 
     return unchanged.concat(changed).filter((c) => c.assigned);
-  }
+  };
 
   render() {
     const currentAssignment = this.getCurrentAssignment();

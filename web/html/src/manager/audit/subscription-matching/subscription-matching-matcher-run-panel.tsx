@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import { fromNow } from "components/datetime/FromNow";
+
 import { localizedMoment } from "utils";
 import Network from "utils/network";
-import { fromNow } from "components/datetime/FromNow";
 
 type MatcherRunPanelProps = {
   initialLatestStart?: moment.Moment | null;

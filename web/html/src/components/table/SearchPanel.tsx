@@ -1,5 +1,6 @@
-import { cloneReactElement } from "components/utils";
 import * as React from "react";
+
+import { cloneReactElement } from "components/utils";
 
 type SearchPanelProps = {
   /** number representing the number of the first displayed item */

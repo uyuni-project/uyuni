@@ -10,6 +10,6 @@
         </composite-id>
         <many-to-one name="parentScriptActionDetails" column="action_image_build_id"
                 class="com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails"
-                outer-join="true" not-null="true" insert="false" update="false" />
+                outer-join="true" not-null="false" insert="false" update="false" />
     </class>
 </hibernate-mapping>

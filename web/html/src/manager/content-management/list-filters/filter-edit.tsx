@@ -1,15 +1,17 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { ModalLink } from "components/dialog/ModalLink";
-import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
+import { useEffect, useState } from "react";
+
 import { Button } from "components/buttons";
-import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
-import { Loading } from "components/utils/Loading";
-import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import FilterForm from "./filter-form";
+import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
+import { ModalLink } from "components/dialog/ModalLink";
 import { showDialog } from "components/dialog/util";
-import { mapFilterFormToRequest } from "./filter.utils";
+import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+import { Loading } from "components/utils/Loading";
+
+import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { FilterFormType } from "../shared/type/filter.type";
+import { mapFilterFormToRequest } from "./filter.utils";
+import FilterForm from "./filter-form";
 
 type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
   open: boolean;

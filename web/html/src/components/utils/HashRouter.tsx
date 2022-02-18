@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 declare var history: any;
 
@@ -56,7 +56,6 @@ const HashRouter = ({ initialPath, children }: HashRouterProps) => {
   };
 
   const replaceWith = (hash: string): void => {
-    console.log("replace " + hash);
     history.replaceState(null, "", "#/" + hash);
     setHash(hash);
   };

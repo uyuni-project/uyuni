@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import ReactDOM from "react-dom";
+
 import { getTranslationData } from "utils/translate";
 
 window.pageRenderers = window.pageRenderers || {};

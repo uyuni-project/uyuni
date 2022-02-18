@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,6 @@
  */
 package com.suse.manager.xmlrpc.serializer.test;
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.frontend.dto.SystemEventDto;
 
@@ -23,8 +22,9 @@ import com.suse.manager.xmlrpc.serializer.SystemEventDtoSerializer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 
 import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcSerializer;
@@ -42,8 +42,9 @@ public class SystemEventDtoSerializerTest extends TestCase {
         dto.setHistoryTypeName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
         dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
         dto.setSummary("Hardware List Refresh scheduled by (none)");
-        dto.setCompleted(LocalDateTime.of(2021, 10, 5, 17, 0)
-                                      .format(DateTimeFormatter.ofPattern(LocalizationService.RHN_DB_DATEFORMAT)));
+        dto.setCompleted(Date.from(LocalDateTime.of(2021, 10, 5, 17, 0)
+                .atZone(ZoneOffset.systemDefault())
+                .toInstant()));
 
         final Writer output = new StringWriter();
 

@@ -1,10 +1,13 @@
 import * as React from "react";
-import { Toggler } from "components/toggler";
-import { Highlight } from "components/table/Highlight";
-import ChildChannels from "./child-channels";
+
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 import { getAllRecommentedIdsByBaseId } from "core/channels/utils/channels-state.utils";
+
+import { Highlight } from "components/table/Highlight";
+import { Toggler } from "components/toggler";
+
+import ChildChannels from "./child-channels";
 
 type PropsType = {
   base: any;

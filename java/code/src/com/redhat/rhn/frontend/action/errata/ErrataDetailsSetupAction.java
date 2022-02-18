@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,18 +21,25 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
+import com.suse.manager.errata.ErrataParserFactory;
+import com.suse.manager.errata.ErrataParsingException;
+import com.suse.manager.errata.VendorSpecificErrataParser;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +49,9 @@ import javax.servlet.http.HttpServletResponse;
  * DetailsSetupAction
  */
 public class ErrataDetailsSetupAction extends RhnAction {
+
+    private static final Logger LOGGER = Logger.getLogger(ErrataManager.class);
+
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
@@ -59,6 +69,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         DataResult fixed = ErrataManager.bugsFixed(eid);
         DataResult cve = ErrataManager.errataCVEs(eid);
         DataResult keywords = ErrataManager.keywords(eid);
+        final String vendorAdvisoryLink = buildVendorAdvisoryLink(errata);
 
         //create the display for keywords
         //example: "/var/tmp, current, directory, expect"
@@ -93,6 +104,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         request.setAttribute("errataFrom", errata.getErrataFrom());
         request.setAttribute("advisoryStatus", LocalizationService.getInstance()
                 .getMessage("details.jsp.advisorystatus." + errata.getAdvisoryStatus().getMetadataValue()));
+        request.setAttribute("vendorAdvisory", vendorAdvisoryLink);
 
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),
@@ -115,5 +127,29 @@ public class ErrataDetailsSetupAction extends RhnAction {
         buf.append("</a>");
         retval = buf.toString();
         return retval;
+    }
+
+    private String buildVendorAdvisoryLink(Errata errata) {
+
+        final URI advisoryUri;
+        final String id;
+
+        try {
+            final VendorSpecificErrataParser parser = ErrataParserFactory.getParser(errata);
+
+            advisoryUri = parser.getAdvisoryUri(errata);
+            id = parser.getAnnouncementId(errata);
+        }
+        catch (ErrataParsingException ex) {
+            LOGGER.info("Unable to parse errata metadata", ex);
+            return null;
+        }
+
+        final HtmlTag link = new HtmlTag("a");
+        link.setAttribute("target", "_blank");
+        link.setAttribute("href", advisoryUri.toString());
+        link.setBody(id);
+
+        return link.render();
     }
 }

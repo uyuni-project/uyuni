@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,6 @@ package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
-import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -25,19 +24,12 @@ import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.exception.SaltException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class TestSystemQuery implements SystemQuery {
 
     @Override
     public Optional<String> getMachineId(String minionId) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Optional<Map<String, Map<String, Object>>> listClusterNodes(
-            MinionServer managementNode, ClusterProviderParameters clusterProviderParameters) {
         throw new UnsupportedOperationException();
     }
 

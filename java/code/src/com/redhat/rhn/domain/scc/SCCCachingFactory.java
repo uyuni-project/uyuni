@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -459,6 +459,21 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
         return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
                 .setParameter("channelFamily", channelFamily).getResultList();
+    }
+
+    /**
+     * Returns a list of repositories for a product, independent of the version, and arch.
+     *
+     * @param productName name of the product we want to filter
+     * @param archName arch name we want to filter
+     * @return List of repositories for all version of one product and arch
+     */
+    public static List<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(String productName,
+                                                                                    String archName) {
+        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg")
+                .setParameter("product_name", productName)
+                .setParameter("arch_name", archName)
+                .getResultList();
     }
 
     /**

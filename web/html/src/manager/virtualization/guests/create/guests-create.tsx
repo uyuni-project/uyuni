@@ -1,13 +1,16 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
+
 import { ActionChain } from "components/action-schedule";
-import { Utils as MessagesUtils } from "components/messages";
 import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { GuestProperties } from "../GuestProperties";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { SimpleActionApi } from "../../SimpleActionApi";
-import * as GuestNicsPanel from "../properties/guest-nics-panel";
+import { GuestProperties } from "../GuestProperties";
 import * as DiskUtils from "../properties/disk-utils";
+import * as GuestNicsPanel from "../properties/guest-nics-panel";
 
 type Props = {
   host: any;

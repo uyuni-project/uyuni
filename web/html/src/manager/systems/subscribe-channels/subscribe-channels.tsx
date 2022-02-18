@@ -1,19 +1,22 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { AsyncButton, Button } from "components/buttons";
-import { ActionSchedule } from "components/action-schedule";
-import Network from "utils/network";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
-import { Toggler } from "components/toggler";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { ChannelAnchorLink, ActionLink, ActionChainLink } from "components/links";
+
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 
-import { JsonResult } from "utils/network";
+import { ActionSchedule } from "components/action-schedule";
 import { ActionChain } from "components/action-schedule";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { AsyncButton, Button } from "components/buttons";
+import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Toggler } from "components/toggler";
+
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+import { JsonResult } from "utils/network";
 
 declare var actionChains: Array<ActionChain>;
 

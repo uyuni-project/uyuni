@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,24 +33,34 @@ public class MinionPendingRegistrationService {
 
     /**
      * Information about the minion to bootstrap
-     * (contact method, creator user and proxy path)
+     * (contact method, creator user, proxy path and ssh port)
      */
     public static class PendingMinion {
 
-        private String contactMethod;
-        private User creator;
-        private Optional<List<String>> proxyPath;
+        private final String contactMethod;
+        private final User creator;
+        private final List<String> proxyPath;
+        private final Integer sshPushPort;
+
+        /**
+         * @param creatorIn user who accepted the key or bootstrapped the system
+         * @param contactMethodIn the contact method
+         */
+        public PendingMinion(User creatorIn, String contactMethodIn) {
+            this(creatorIn, contactMethodIn, Collections.emptyList(), null);
+        }
 
         /**
          * @param creatorIn user who accepted the key or bootstrapped the system
          * @param contactMethodIn the contact method
          * @param proxyPathIn the proxy path
+         * @param portIn the ssh port
          */
-        public PendingMinion(User creatorIn, String contactMethodIn,
-                Optional<List<String>> proxyPathIn) {
+        public PendingMinion(User creatorIn, String contactMethodIn, List<String> proxyPathIn, Integer portIn) {
             this.contactMethod = contactMethodIn;
             this.creator = creatorIn;
             this.proxyPath = proxyPathIn;
+            this.sshPushPort = portIn;
         }
 
         /**
@@ -70,8 +80,15 @@ public class MinionPendingRegistrationService {
         /**
          * @return the proxy path
          */
-        public Optional<List<String>> getProxyPath() {
+        public List<String> getProxyPath() {
             return proxyPath;
+        }
+
+        /**
+         * @return an optional wrapping the ssh port or empty if not supported.
+         */
+        public Optional<Integer> getSSHPushPort() {
+            return Optional.ofNullable(sshPushPort);
         }
     }
 
@@ -89,11 +106,22 @@ public class MinionPendingRegistrationService {
      * @param creator user who accepted the key or bootstrapped the system
      * @param minionId minion id to be added
      * @param contactMethod the contact method of the minion
-     * @param proxyPath list of proxies hostnames in the order they connect through
      */
-    public static void addMinion(User creator, String minionId, String contactMethod,
-                                 Optional<List<String>> proxyPath) {
-        minionIds.put(minionId, new PendingMinion(creator, contactMethod, proxyPath));
+    public static void addMinion(User creator, String minionId, String contactMethod) {
+        minionIds.put(minionId, new PendingMinion(creator, contactMethod));
+    }
+
+    /**
+     * Adds minion id to the database.
+     * @param creator user who accepted the key or bootstrapped the system
+     * @param minionId minion id to be added
+     * @param contactMethod the contact method of the minion
+     * @param proxyPath list of proxies hostnames in the order they connect through
+     * @param sshPort the ssh port for ssh only minions
+     */
+    public static void addMinion(User creator, String minionId, String contactMethod, List<String> proxyPath,
+                                 Integer sshPort) {
+        minionIds.put(minionId, new PendingMinion(creator, contactMethod, proxyPath, sshPort));
     }
 
     /**

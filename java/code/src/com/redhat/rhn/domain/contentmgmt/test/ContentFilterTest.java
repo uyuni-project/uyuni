@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,7 +29,10 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.ErrataTestUtils;
@@ -97,21 +100,187 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(pack));
     }
 
-    public void testPackageNevraFilter() throws Exception {
+    public void testPackageNevraFilterRPM() throws Exception {
         Package pack = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr(
+                "1", "1.0.0", "3", PackageType.RPM);
+        pack.setPackageEvr(evr);
         String packageName = pack.getPackageName().getName();
 
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
-        ContentFilter filter = contentManager.createFilter(packageName + "-nevra-filter",
+        String evrLower = "-1:0.9.9-5";
+        String evrEquals = "-1:1.0.0-3";
+        String evrGreater = "-1:1.1.0-1";
+
+        // LOWER
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", "should-fail" + evrGreater);
+        ContentFilter filter = contentManager.createFilter(packageName + "nevra-lower-filter1",
                 DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + ".x86_64");
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + "." + pack.getPackageArch().getLabel());
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter4", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter5", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter6", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // LOWEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter1", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // EQUALS
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
+        filter = contentManager.createFilter(packageName + "-nevra-equals-filter1", DENY, PACKAGE, criteria, user);
         assertTrue(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
-        filter = contentManager.createFilter(packageName + "nevra2-filter", DENY, PACKAGE, criteria, user);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter2", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
-        filter = contentManager.createFilter(packageName + "nevra3-filter", DENY, PACKAGE, criteria, user);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATER
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+    }
+
+    public void testPackageNevraFilterDeb() throws Exception {
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr(
+                "1", "2.3~.4a+b", "5+abc.6~", PackageType.DEB);
+        pack.setPackageEvr(evr);
+        String packageName = pack.getPackageName().getName();
+
+        String evrLower = "-1:2.2~.4a+b-4+abc.6~";
+        String evrEquals = "-1:2.3~.4a+b-5+abc.6~";
+        String evrGreater = "-1:2.4~.4a+b-6+abc.6~";
+
+        // LOWER
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", "should-fail" + evrGreater);
+        ContentFilter filter = contentManager.createFilter(packageName + "nevra-lower-filter1",
+                DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + ".x86_64");
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
+                packageName + evrGreater + "." + pack.getPackageArch().getLabel());
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter4", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter5", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lower-filter6", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // LOWEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter1", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-lowereq-filter3", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        // EQUALS
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvra());
+        filter = contentManager.createFilter(packageName + "-nevra-equals-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pack.getNameEvr());
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", packageName);
+        filter = contentManager.createFilter(packageName + "nevra-equals-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATEREQ
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter2", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greatereq-filter3", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        // GREATER
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrLower);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter1", DENY, PACKAGE, criteria, user);
+        assertTrue(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrEquals);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter2", DENY, PACKAGE, criteria, user);
+        assertFalse(filter.test(pack));
+
+        criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "nevr", packageName + evrGreater);
+        filter = contentManager.createFilter(packageName + "nevra-greater-filter3", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
     }
 

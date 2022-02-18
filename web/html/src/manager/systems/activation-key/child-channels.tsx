@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Loading } from "components/utils/Loading";
-import { Toggler } from "components/toggler";
+
+import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
+
 import { ChannelAnchorLink } from "components/links";
+import { Toggler } from "components/toggler";
+import { Loading } from "components/utils/Loading";
 
 import { ChannelDto } from "./activation-key-channels-api";
-import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 
 type ChildChannelsProps = {
   channels: Array<ChannelDto>;

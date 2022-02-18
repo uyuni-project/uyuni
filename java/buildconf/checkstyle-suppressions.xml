@@ -5,8 +5,4 @@
 
 <suppressions>
     <suppress checks="MissingJavadocMethod" files="[/\\]test[/\\]"/>
-  <suppress checks="MagicNumberCheck"
-    files="JavadocStyleCheck.java"
-    lines="221"/>
-  <suppress message="Missing a Javadoc comment"/>
 </suppressions>

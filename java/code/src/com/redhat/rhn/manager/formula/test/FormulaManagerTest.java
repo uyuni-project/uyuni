@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2018 SUSE LLC
+/*
+ * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
@@ -149,7 +150,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }});
         manager.saveGroupFormulaData(user, managed.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(FORMULA_NAME, managed.getId())
+                FormulaFactory.getGroupFormulaValuesByNameAndGroup(FORMULA_NAME, managed)
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents, savedFormulaData);
@@ -168,8 +169,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.enableFormula(minion.getMinionId(), FORMULA_NAME);
-        List<String> enabledFormulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        manager.enableFormula(minion, FORMULA_NAME);
+        List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
         assertNotNull(enabledFormulas);
         assertEquals(true, enabledFormulas.contains(FORMULA_NAME));
     }
@@ -189,7 +190,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }});
         manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(FORMULA_NAME, minion.getMinionId())
+                FormulaFactory.getFormulaValuesByNameAndMinion(FORMULA_NAME, minion)
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents, savedFormulaData);
@@ -224,7 +225,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+        FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));
 
         Map<String, Object> formulaData = new HashMap<>();
         Map<String, Object> exportersData = new HashMap<>();
@@ -233,10 +234,15 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("exporters", exportersData);
 
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+        FormulaFactory.saveGroupFormulaData(formulaData, group, PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
-        SystemManager.addServerToServerGroup(minion, group);
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                saltServiceMock);
+        systemManager.addServerToServerGroup(minion, group);
         assertTrue(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         List<FormulaData> combinedPrometheusExportersFormulas = this.manager
@@ -262,9 +268,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-        }});
         manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
 
         combinedPrometheusExportersFormulas = this.manager
@@ -288,7 +291,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Collections.singletonList(PROMETHEUS_EXPORTERS));
+        FormulaFactory.saveServerFormulas(minion, Collections.singletonList(PROMETHEUS_EXPORTERS));
         manager.saveServerFormulaData(user, minion.getId(), PROMETHEUS_EXPORTERS, formulaValuesMap);
 
         List<EndpointInfo> endpoints = manager.listEndpoints(Collections.singletonList(minion.getId()));

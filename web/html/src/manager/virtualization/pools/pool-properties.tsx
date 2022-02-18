@@ -1,25 +1,26 @@
-import { ActionChain } from "components/action-schedule";
-
 import * as React from "react";
-import { Loading } from "components/utils/Loading";
+
+import { ActionChain } from "components/action-schedule";
+import { ActionSchedule } from "components/action-schedule";
+import { Button, SubmitButton } from "components/buttons";
+import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
+import { flattenModel, unflattenModel } from "components/input/form-utils";
 import { FormMultiInput } from "components/input/FormMultiInput";
-import { Panel } from "components/panels/Panel";
-import { PanelRow } from "components/panels/PanelRow";
-import { Text } from "components/input/Text";
 import { Password } from "components/input/Password";
 import { Select } from "components/input/Select";
-import { Check } from "components/input/Check";
-import { unflattenModel, flattenModel } from "components/input/form-utils";
-import Validation from "components/validation";
-import { SubmitButton, Button } from "components/buttons";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
-import { ActionSchedule } from "components/action-schedule";
-import { VirtualizationPoolCapsApi } from "./virtualization-pools-capabilities-api";
-import * as FieldsData from "./properties/fields-data";
-
 import { MessageType } from "components/messages";
+import { Panel } from "components/panels/Panel";
+import { PanelRow } from "components/panels/PanelRow";
+import { Loading } from "components/utils/Loading";
+import Validation from "components/validation";
+
 import { localizedMoment } from "utils";
+
+import * as FieldsData from "./properties/fields-data";
+import { VirtualizationPoolCapsApi } from "./virtualization-pools-capabilities-api";
 
 type Props = {
   serverId: string;

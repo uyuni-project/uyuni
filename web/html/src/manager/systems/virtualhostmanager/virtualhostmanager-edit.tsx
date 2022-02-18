@@ -1,14 +1,16 @@
 import * as React from "react";
-import { SubmitButton, Button } from "components/buttons";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Password } from "components/input/Password";
-import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
-import Network from "utils/network";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
+
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 type Props = {
   item?: any;
@@ -37,21 +39,6 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       messages: [],
     };
 
-    [
-      "onFormChange",
-      "onValidate",
-      "clearFields",
-      "renderForm",
-      "onCreate",
-      "onUpdate",
-      "renderKubernetesForm",
-      "renderModuleParamsForm",
-      "handleKubeconfigUpload",
-      "bindForm",
-      "setKubeconfigContexts",
-      "handleResponseError",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
-
     if (this.isEdit()) {
       this.setValues(this.props.item);
     }
@@ -65,11 +52,11 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       .catch(this.handleResponseError);
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
   setValues(item) {
     var m: any = {};
@@ -89,7 +76,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     Object.assign(this.state, { model: m });
   }
 
-  setKubeconfigContexts(id) {
+  setKubeconfigContexts = (id) => {
     Network.get("/rhn/manager/api/vhms/kubeconfig/" + id + "/contexts")
       .then((data) => {
         this.setState({
@@ -97,13 +84,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   isEdit() {
     return this.props.item ? true : false;
   }
 
-  onUpdate(model) {
+  onUpdate = (model) => {
     if (!this.isEdit()) {
       return false;
     }
@@ -133,9 +120,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  onCreate(model) {
+  onCreate = (model) => {
     if (this.isEdit()) {
       return false;
     }
@@ -165,15 +152,15 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     if (this.props.type.toLowerCase() === "kubernetes" && !this.isEdit()) {
       this.setState({
         isInvalid: !isValid || !this.state.validKubeconfig,
@@ -183,13 +170,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         isInvalid: !isValid,
       });
     }
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: {},
     });
-  }
+  };
 
   renderButtons() {
     var buttons = [
@@ -273,7 +260,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     }
   }
 
-  renderModuleParamsForm() {
+  renderModuleParamsForm = () => {
     if (!this.state.vhmParams) {
       return null;
     }
@@ -285,9 +272,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       <Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6" />
     );
     return <div>{fields}</div>;
-  }
+  };
 
-  handleKubeconfigUpload(event) {
+  handleKubeconfigUpload = (event) => {
     let kubeconfig = event.target.files[0];
     let formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
@@ -315,9 +302,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         });
         this.handleResponseError(jqXHR);
       });
-  }
+  };
 
-  renderKubernetesForm() {
+  renderKubernetesForm = () => {
     var contextSelect;
     if (this.state.model.contexts) {
       contextSelect = (
@@ -345,19 +332,19 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         {contextSelect}
       </div>
     );
-  }
+  };
 
-  renderForm() {
+  renderForm = () => {
     if (this.props.type.toLowerCase() === "kubernetes") {
       return this.renderKubernetesForm();
     } else if (this.props.type) {
       return this.renderModuleParamsForm();
     }
-  }
+  };
 
-  bindForm(form: HTMLFormElement) {
+  bindForm = (form: HTMLFormElement) => {
     this.form = form;
-  }
+  };
 
   render() {
     return (

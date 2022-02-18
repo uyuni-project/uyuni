@@ -1,16 +1,19 @@
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Needs to be imported before plugins and rest
+import FullCalendar from "@fullcalendar/react";
+
+import allLocales from "@fullcalendar/core/locales-all";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
 // TODO: This should eventually be localizedMoment instead
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment";
-import { useState, useEffect, useRef } from "react";
-
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import allLocales from "@fullcalendar/core/locales-all";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages";
+
 import Network from "utils/network";
 
 type WebCalendarProps = {

@@ -22,6 +22,7 @@ CREATE TABLE rhnActionApplyStates
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
     states           VARCHAR(1024),
+    pillars          TEXT,
     test             CHAR(1)
                          DEFAULT ('N') NOT NULL
                          CONSTRAINT rhn_act_apply_states_test_ck

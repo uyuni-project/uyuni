@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,6 +33,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.salt.netapi.datatypes.Event;
@@ -88,11 +90,12 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             allowing(virtManager).updateLibvirtEngine(with(any(MinionServer.class)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);

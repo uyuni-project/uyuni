@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -94,9 +94,9 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
@@ -107,7 +107,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
     @Override
     public void setUp() throws Exception {
@@ -142,7 +143,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -192,7 +193,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
@@ -243,7 +244,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -293,7 +294,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
         context().checking(new Expectations() {{
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -343,7 +344,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)

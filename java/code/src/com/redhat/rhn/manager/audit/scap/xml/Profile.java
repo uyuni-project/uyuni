@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,8 @@ package com.redhat.rhn.manager.audit.scap.xml;
 
 import org.simpleframework.xml.Attribute;
 
+import java.util.Optional;
+
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
@@ -27,7 +29,7 @@ public class Profile {
     @Attribute
     private String id;
 
-    @Attribute
+    @Attribute(required = false)
     private String description;
 
     /**
@@ -78,8 +80,8 @@ public class Profile {
     /**
      * @return description to get
      */
-    public String getDescription() {
-        return description;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 
     /**

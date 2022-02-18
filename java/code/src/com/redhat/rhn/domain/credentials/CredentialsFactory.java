@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -65,23 +64,6 @@ public class CredentialsFactory extends HibernateFactory {
      */
     public static void removeCredentials(Credentials creds) {
         singleton.removeObject(creds);
-    }
-
-    /**
-     * Load {@link Credentials} for a given {@link User} and type label.
-     * @param user user
-     * @param typeLabel type label
-     * @return credentials or null
-     */
-    public static Credentials lookupByUserAndType(User user, String typeLabel) {
-        if (user == null || typeLabel == null) {
-            return null;
-        }
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user", user);
-        params.put("label", typeLabel);
-        return (Credentials) singleton.lookupObjectByNamedQuery(
-                "Credentials.findByUserAndTypeLabel", params);
     }
 
     /**
@@ -143,7 +125,7 @@ public class CredentialsFactory extends HibernateFactory {
      */
     public static Credentials lookupCredentialsById(long id) {
         Session session = getSession();
-        Credentials creds = (Credentials) session.get(Credentials.class, id);
+        Credentials creds = session.get(Credentials.class, id);
         return creds;
     }
 
@@ -155,6 +137,17 @@ public class CredentialsFactory extends HibernateFactory {
         Credentials creds = createCredentials();
         creds.setType(CredentialsFactory
                 .findCredentialsTypeByLabel(Credentials.TYPE_REGISTRY));
+        return creds;
+    }
+
+    /**
+     * Helper method for creating new Cloud Rmt {@link Credentials}
+     * @return new credential with type Cloud Rmt
+     */
+    public static Credentials createCloudRmtCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_CLOUD_RMT));
         return creds;
     }
 
@@ -181,6 +174,9 @@ public class CredentialsFactory extends HibernateFactory {
         }
         else if (credentialsType.equals(Credentials.TYPE_SCC)) {
             credentials = CredentialsFactory.createSCCCredentials();
+        }
+        else if (credentialsType.equals(Credentials.TYPE_CLOUD_RMT)) {
+            credentials = CredentialsFactory.createCloudRmtCredentials();
         }
         else {
             return credentials;

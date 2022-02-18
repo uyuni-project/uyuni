@@ -1,23 +1,25 @@
 import * as React from "react";
-import { AsyncButton, Button } from "components/buttons";
-import { ActionSchedule } from "components/action-schedule";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Messages } from "components/messages";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Utils as MessagesUtils } from "components/messages";
-import { ChannelLink, ActionLink, ActionChainLink, SystemLink } from "components/links";
-import { PopUp } from "components/popup";
-import { Toggler } from "components/toggler";
+
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { JsonResult } from "utils/network";
+import { ActionSchedule } from "components/action-schedule";
 import { ActionChain } from "components/action-schedule";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { AsyncButton, Button } from "components/buttons";
+import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { PopUp } from "components/popup";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
+import { Toggler } from "components/toggler";
+
 import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+import { JsonResult } from "utils/network";
 
 // See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
@@ -72,7 +74,6 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
             identifier={(srv) => srv.id}
             initialSortColumnKey="modified"
             initialSortDirection={-1}
-            initialItemsPerPage={window.userPrefPageSize}
           >
             <Column
               columnKey="name"
@@ -165,7 +166,6 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
           identifier={(channel) => channel.base.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
-          initialItemsPerPage={window.userPrefPageSize}
         >
           <Column
             columnKey="name"
@@ -313,7 +313,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           requiredByChannels: channelDeps.requiredByChannels,
         });
       })
-      .catch((err) => console.log(err.statusText));
+      .catch((err) => console.error(err.statusText));
   }
 
   getChangeId = (change: ChannelChangeDto, childId: string | number) => {
@@ -763,7 +763,6 @@ class ResultPage extends React.Component<ResultPageProps> {
           identifier={(dto) => dto.server.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
-          initialItemsPerPage={window.userPrefPageSize}
         >
           <Column
             columnKey="server"

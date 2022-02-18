@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -569,9 +569,15 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     public static Credentials createSCCCredentials(String name, User user) {
+        Credentials credentials = createSecondarySCCCredentials(name, user);
+        credentials.setUrl("dummy");
+        CredentialsFactory.storeCredentials(credentials);
+        return credentials;
+    }
+
+    public static Credentials createSecondarySCCCredentials(String name, User user) {
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setPassword(TestUtils.randomString());
-        credentials.setUrl("dummy");
         credentials.setUsername(name);
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);

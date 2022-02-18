@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,12 +20,15 @@ import static java.util.Optional.of;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.SaltUtils;
@@ -35,7 +38,9 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -51,6 +56,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 /**
  * Base for bootstrapping systems using salt-ssh.
@@ -182,6 +189,8 @@ public abstract class AbstractMinionBootstrapper {
         }
 
         try {
+            handleAnsiblePreAuthentication(params, user);
+
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
@@ -214,6 +223,49 @@ public abstract class AbstractMinionBootstrapper {
         catch (Exception e) {
             return new BootstrapResult(false, Optional.empty(), e.getMessage());
         }
+    }
+
+    /**
+     * Authenticate the Uyuni ssh public key on the bootstrapped host.
+     *
+     * @param params bootstrap params
+     * @param user the user
+     * @throws RuntimeException in case the action was not successful
+     */
+    private void handleAnsiblePreAuthentication(BootstrapParameters params, User user) {
+        LOG.info("Pre-authenticating system using Ansible inventory ID: " + params.getAnsibleInventoryId());
+        params.getAnsibleInventoryId()
+                .flatMap(pathId -> AnsibleManager.lookupAnsiblePathById(pathId, user))
+                .filter(path -> path instanceof InventoryPath)
+                .ifPresent(inventoryPath -> {
+                    Map<String, Object> pillar = Map.of(
+                            "user", params.getUser(),
+                            "inventory", inventoryPath.getPath().toString(),
+                            "target_host", params.getHost(),
+                            "ssh_pubkey", FileUtils.readStringFromFile(SaltSSHService.SSH_PUBKEY_PATH));
+
+                    LocalCall<Map<String, ApplyResult>> call =
+                            State.apply(List.of("ansible.mgr-ssh-pubkey-authorized"), of(pillar));
+                    String minionId = inventoryPath.getMinionServer().getMinionId();
+                    saltApi.callSync(call, minionId).ifPresentOrElse(
+                            res -> {
+                                // all results must be successful, otherwise we throw an exception
+                                List<Object> failedStates = res.entrySet().stream()
+                                        .filter(r -> !r.getValue().isResult())
+                                        .map(r -> r.getValue().getChanges())
+                                        .collect(Collectors.toList());
+
+                                if (!failedStates.isEmpty()) {
+                                    LOG.error("Ansible pre-authentication failed: " + failedStates);
+                                    throw new RuntimeException("Ansible pre-authentication state failed");
+                                }
+                                LOG.debug("Ansible pre-authentication successful");
+                            },
+                            () -> {
+                                LOG.error("Minion '" + minionId + "' did not respond");
+                                throw new RuntimeException("Minion '" + minionId + "' did not respond");
+                            });
+                });
     }
 
     /**
@@ -252,6 +304,7 @@ public abstract class AbstractMinionBootstrapper {
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());
+        input.getReactivationKey().ifPresent(r -> pillarData.put("management_key", r));
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
                 .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
@@ -266,7 +319,7 @@ public abstract class AbstractMinionBootstrapper {
      * error.
      */
     private static Optional<String> getApplyStateErrorMessage(String host,
-            SSHResult<Map<String, State.ApplyResult>> res) {
+            SSHResult<Map<String, ApplyResult>> res) {
         return Opt.fold(
                 res.getReturn(),
                 () ->  of(extractErrorMessage(host, res)),
@@ -280,7 +333,7 @@ public abstract class AbstractMinionBootstrapper {
     }
 
     private static String extractErrorMessage(String host,
-            SSHResult<Map<String, State.ApplyResult>> r) {
+            SSHResult<Map<String, ApplyResult>> r) {
         return r.getStdout()
                 .filter(s -> !s.isEmpty())
                 .orElseGet(() -> r.getStderr()
@@ -304,10 +357,19 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
+        Optional<String> reactivationKeyError = validateReactivationKey(params.getReactivationKey());
+        if (reactivationKeyError.isPresent()) {
+            return Collections.singletonList(reactivationKeyError.get());
+        }
+
         if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
                     ") seems to already exist, please check!");
+        }
+
+        if (params.getReactivationKey().isPresent()) {
+            return Collections.emptyList();
         }
 
         return MinionServerFactory.findByMinionId(params.getHost())
@@ -333,6 +395,29 @@ public abstract class AbstractMinionBootstrapper {
         }
 
         return validateContactMethod(activationKey.getContactMethod());
+    }
+
+    /**
+     * Checks whether the reactivation key exists
+     *
+     * @param reactivationKeyLabel desired reactivation key label
+     * @return Optional with error message or empty if validation succeeds
+     */
+    private Optional<String> validateReactivationKey(Optional<String> reactivationKeyLabel) {
+        if (reactivationKeyLabel.isEmpty()) {
+            return Optional.empty();
+        }
+        String rLabel = reactivationKeyLabel.get();
+        ActivationKey reactivationKey = ActivationKeyFactory.lookupByKey(rLabel);
+
+        if (reactivationKey == null) {
+            return Optional.of(String.format("Selected reactivation '%s' key not found.", rLabel));
+        }
+        if (reactivationKey.getServer() == null) {
+            return Optional.of(String.format("Selected reactivation key '%s' has no server set for reactivation.",
+                    rLabel));
+        }
+        return Optional.empty();
     }
 
     protected abstract Optional<String> validateContactMethod(ContactMethod desiredContactMethod);

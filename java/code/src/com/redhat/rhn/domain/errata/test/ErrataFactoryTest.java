@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,13 +32,19 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.ErrataCacheDto;
@@ -255,6 +261,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setSynopsis("Test synopsis");
         e.setSolution("Test solution");
         e.setNotes("Test notes for test errata");
+        e.setRights("Copyright for test errata");
         e.setTopic("test topic");
         e.setRefersTo("rhn unit tests");
         e.setUpdateDate(new Date());
@@ -469,6 +476,59 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertFalse(ErrataFactory.listErrata(
                 Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());
         assertTrue(ErrataFactory.listErrata(Set.of(clone.getId()), user.getOrg().getId()).iterator().next().isCloned());
+    }
+
+    /**
+     * Tests that retrieving reatracted packages for systems by nevra works correctly
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRetractedPackagesByNevra() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        SystemManager.subscribeServerToChannel(user, testMinionServer, channel);
+
+        Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata notRetracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        retracted.addChannel(channel);
+        notRetracted.addChannel(channel);
+
+        List<Package> packages = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Package retractedPack = ErrataTestUtils.createTestPackage(user, retracted, channel, "x86_64");
+            Package notRetractedPack = ErrataTestUtils.createTestPackage(user, notRetracted, channel, "x86_64");
+            if (i % 2 == 0) {
+                // Set EVR without epoch
+                PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr(
+                        null,
+                        i + "." + (i + 1) + "." + (i + 2),
+                        String.valueOf(i * 10),
+                        PackageType.RPM
+                );
+                retractedPack.setPackageEvr(evr);
+                notRetractedPack.setPackageEvr(evr);
+            }
+            packages.add(retractedPack);
+            packages.add(notRetractedPack);
+        }
+
+        List<Tuple2<Long, Long>> retractedPackages = ErrataFactory.retractedPackagesByNevra(
+                packages.stream().map(p ->
+                        p.getPackageName().getName() + "-" +
+                                p.getPackageEvr().toUniversalEvrString() + "." +
+                                p.getPackageArch().getLabel()
+                ).collect(Collectors.toList()),
+                List.of(testMinionServer.getId())
+        );
+
+        assertNotNull(retractedPackages);
+        assertEquals(10, retractedPackages.size());
+        assertEquals(
+                retractedPackages.stream().map(t -> PackageFactory.lookupByIdAndUser(t.getA(), user))
+                        .collect(Collectors.toSet()),
+                packages.stream().filter(Package::isPartOfRetractedPatch).collect(Collectors.toSet())
+        );
     }
 }
 

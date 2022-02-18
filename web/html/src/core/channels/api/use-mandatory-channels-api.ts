@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { JsonResult } from "utils/network";
-import Network from "utils/network";
+
 import { ChannelType } from "core/channels/type/channels.type";
 import { ChannelsDependencies } from "core/channels/utils/channels-dependencies.utils";
 import {
-  processChannelDependencies,
   dependenciesTooltip as dependenciesTooltipInternal,
+  processChannelDependencies,
 } from "core/channels/utils/channels-dependencies.utils";
+
 import { MessageType } from "components/messages";
+
+import { JsonResult } from "utils/network";
+import Network from "utils/network";
 
 const msgMap = {
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),

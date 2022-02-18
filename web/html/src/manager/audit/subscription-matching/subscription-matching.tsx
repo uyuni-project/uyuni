@@ -1,18 +1,22 @@
 import * as React from "react";
-import { TabContainer } from "components/tab-container";
-import { Subscriptions } from "./subscription-matching-subscriptions";
-import { Pins } from "./subscription-matching-pins";
-import { Messages } from "./subscription-matching-messages";
-import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
-import { MatcherRunPanel } from "./subscription-matching-matcher-run-panel";
-import { WarningIcon } from "./subscription-matching-util";
-import { Messages as MessageContainer } from "components/messages";
-import { TopPanel } from "components/panels/TopPanel";
-import { Utils as MessagesUtils } from "components/messages";
-import Network from "utils/network";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Messages as MessageContainer } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { TabContainer } from "components/tab-container";
+
 import { Cancelable } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
+import { MatcherRunPanel } from "./subscription-matching-matcher-run-panel";
+import { Messages } from "./subscription-matching-messages";
+import { Pins } from "./subscription-matching-pins";
+import { Subscriptions } from "./subscription-matching-subscriptions";
+import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
+import { WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionMatchingProps = {
   refreshInterval: number;

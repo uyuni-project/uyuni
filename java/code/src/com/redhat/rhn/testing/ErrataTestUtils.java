@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -352,7 +352,8 @@ public class ErrataTestUtils {
 
         if (errata != null) {
             errata.addPackage(result);
-            TestUtils.saveAndFlush(errata);
+            result.setErrata(Set.of(errata));
+            HibernateFactory.getSession().refresh(errata);
         }
 
         return result;

@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { GuestsList } from "./guests-list";
 import { HostInfo } from "./guests-list";
 

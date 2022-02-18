@@ -1,7 +1,10 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { TopPanel } from "components/panels/TopPanel";
+
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/formula_catalog/formula.jade
 declare global {

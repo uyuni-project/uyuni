@@ -325,7 +325,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-systemctl status salt-minion > /dev/null 2>&1
+systemctl status salt-minion > /dev/null 2>&1 || systemctl status venv-salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
     PROPOSED_PARENT=$(grep ^[[:blank:]]*master /etc/salt/minion.d/susemanager.conf | sed -e "s/.*:[[:blank:]]*//")
@@ -372,89 +372,17 @@ ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "VERSION" "$VERSION")
 
 default_or_input "Traceback email" TRACEBACK_EMAIL ''
 
+# lets do SSL stuff
 cat <<SSLCERT
 You will now need to either generate or import an SSL certificate.
-This SSL certificate will allow client systems to connect to this Spacewalk Proxy
-securely. Refer to the Spacewalk Proxy Installation Guide for more information.
+This SSL certificate will allow client systems to connect to this Uyuni Proxy
+securely. Refer to the Uyuni Proxy Installation Guide for more information.
 SSLCERT
 
 default_or_input "Do you want to import existing certificates?" \
     USE_EXISTING_CERTS "y/N"
 USE_EXISTING_CERTS=$(yes_no $USE_EXISTING_CERTS)
 
-/usr/sbin/rhn-proxy-activate --server="$RHN_PARENT" \
-                            --http-proxy="$HTTP_PROXY" \
-                            --http-proxy-username="$HTTP_USERNAME" \
-                            --http-proxy-password="$HTTP_PASSWORD" \
-                            --ca-cert="$CA_CHAIN" \
-                            --version="$VERSION" \
-                            --non-interactive
-config_error $? "Proxy activation failed!"
-
-rpm -q rhn-apache >/dev/null
-if [ $? -eq 0 ]; then
-    echo "Package rhn-apache present - assuming upgrade:"
-    echo "Force removal of /etc/httpd/conf/httpd.conf - backed up to /etc/httpd/conf/httpd.conf.rpmsave"
-    mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.rpmsave
-fi
-
-if [ -x /usr/sbin/rhn-proxy ]; then
-    /usr/sbin/rhn-proxy stop
-        # the jabberd db might be an old version. Cleanup
-        rm -f /var/lib/jabberd/db/*
-fi
-
-$YUM spacewalk-proxy-management
-# check if package install successfully
-rpm -q spacewalk-proxy-management >/dev/null
-if [ $? -ne 0 ]; then
-    config_error 2 "Installation of package spacewalk-proxy-management failed."
-fi
-$UPGRADE
-
-ln -sf /etc/pki/spacewalk/jabberd/server.pem /etc/jabberd/server.pem
-if [ "$VERSION" = '5.3' -o "$VERSION" = '5.2' -o "$VERSION" = '5.1' -o "$VERSION" = '5.0' ]; then
-    sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/c2s.xml >/etc/jabberd/c2s.xml
-    sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/sm.xml >/etc/jabberd/sm.xml
-else
-    /usr/bin/spacewalk-setup-jabberd --macros "hostname:$HOSTNAME"
-fi
-
-# size of squid disk cache will be 60% of free space on /var/cache/squid
-# df -P give free space in kB
-# * 60 / 100 is 60% of that space
-# / 1024 is to get value in MB
-SQUID_SIZE=$(df -P /var/cache/squid | awk '{a=$4} END {printf("%d", a * 60 / 100 / 1024)}')
-SQUID_REWRITE="s|cache_dir ufs /var/cache/squid 15000 16 256|cache_dir ufs /var/cache/squid $SQUID_SIZE 16 256|g;"
-SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
-if [ $SQUID_VER_MAJOR -ge 3 ] ; then
-    # squid 3.X has acl 'all' built-in
-    SQUID_REWRITE="$SQUID_REWRITE s/^acl all.*//;"
-    # squid 3.2 and later need none instead of -1 for range_offset_limit
-    SQUID_VER_MINOR=$(squid -v | awk -F'[ .]' '/Version/ {print $5}')
-    if [[ $SQUID_VER_MAJOR -ge 4 || ( $SQUID_VER_MAJOR -eq 3 && $SQUID_VER_MINOR -ge 2 ) ]] ; then
-        SQUID_REWRITE="$SQUID_REWRITE s/^range_offset_limit.*/range_offset_limit none/;"
-    fi
-fi
-sed "$SQUID_REWRITE" < $DIR/squid.conf  > $SQUID_DIR/squid.conf
-sed -e "s|\${session.ca_chain:/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT}|$CA_CHAIN|g" \
-    -e "s/\${session.http_proxy}/$HTTP_PROXY/g" \
-    -e "s/\${session.http_proxy_username}/$HTTP_USERNAME/g" \
-    -e "s/\${session.http_proxy_password}/$HTTP_PASSWORD/g" \
-    -e "s/\${session.rhn_parent}/$RHN_PARENT/g" \
-    -e "s/\${session.traceback_mail}/$TRACEBACK_EMAIL/g" \
-    < $DIR/rhn.conf  > $RHNCONF_DIR/rhn.conf
-
-# systemid need to be readable by apache/proxy
-for file in $SYSTEMID_PATH $UP2DATE_FILE; do
-    chown root:www $file
-    chmod 0640 $file
-done
-
-#Setup the cobbler stuff, needed to use koan through a proxy
-sed -e "s/\$RHN_PARENT/$RHN_PARENT/g" < $DIR/cobbler-proxy.conf > $HTTPDCONFD_DIR/cobbler-proxy.conf
-
-# lets do SSL stuff
 FORCE_OWN_CA=$(yes_no $FORCE_OWN_CA)
 
 SSL_BUILD_DIR=${SSL_BUILD_DIR:-/root/ssl-build}
@@ -482,7 +410,6 @@ fi
 
 check_ca_conf
 
-SSL_BUILD_DIR=${SSL_BUILD_DIR:-"/root/ssl-build"}
 
 if [ -n "$SSL_PASSWORD" ] ; then
     # use SSL_PASSWORD if already set
@@ -520,45 +447,7 @@ if [ "$USE_EXISTING_CERTS" -eq "1" ]; then
     if [ ! -e $CA_CERT ]; then
         config_error 1 "Given file doesn't exist!"
     fi
-    echo "Generating SSL CA rpm from custom CA: $CA_CERT."
-    /usr/bin/rhn-ssl-tool --gen-ca -q \
-        --dir="$SSL_BUILD_DIR" \
-        --rpm-only \
-        --from-ca-cert $CA_CERT
-    config_error $? "CA certificate generation failed!"
-elif [ ! -f $SSL_BUILD_DIR/RHN-ORG-PRIVATE-SSL-KEY ]; then
-    echo "Generating CA key and public certificate:"
-    /usr/bin/rhn-ssl-tool --gen-ca -q \
-        --dir="$SSL_BUILD_DIR" \
-        --set-common-name="$SSL_COMMON" \
-        --set-country="$SSL_COUNTRY" \
-        --set-city="$SSL_CITY" \
-        --set-state="$SSL_STATE" \
-        --set-org="$SSL_ORG" \
-        --set-org-unit="$SSL_ORGUNIT" \
-        --set-email="$SSL_EMAIL" \
-        $RHN_SSL_TOOL_PASSWORD_OPTION $RHN_SSL_TOOL_PASSWORD
-    config_error $? "CA certificate generation failed!"
-else
-    echo "Using CA key at $SSL_BUILD_DIR/RHN-ORG-PRIVATE-SSL-KEY."
-fi
 
-RPM_CA=$(grep noarch $SSL_BUILD_DIR/latest.txt 2>/dev/null)
-
-if [ ! -f $SSL_BUILD_DIR/$RPM_CA ]; then
-    echo "Generating distributable RPM for CA public certificate:"
-    /usr/bin/rhn-ssl-tool --gen-ca -q --rpm-only --dir="$SSL_BUILD_DIR"
-    RPM_CA=$(grep noarch $SSL_BUILD_DIR/latest.txt)
-fi
-
-if [ ! -f $HTMLPUB_DIR/$RPM_CA ] || [ ! -f $HTMLPUB_DIR/RHN-ORG-TRUSTED-SSL-CERT ] || \
-    ! diff $HTMLPUB_DIR/RHN-ORG-TRUSTED-SSL-CERT $SSL_BUILD_DIR/RHN-ORG-TRUSTED-SSL-CERT &>/dev/null; then
-        echo "Copying CA public certificate to $HTMLPUB_DIR for distribution to clients:"
-        cp $SSL_BUILD_DIR/RHN-ORG-TRUSTED-SSL-CERT $SSL_BUILD_DIR/$RPM_CA $HTMLPUB_DIR/
-fi
-
-if [ "$USE_EXISTING_CERTS" -eq "1" ]; then
-    echo "Using custom SSL key and public certificate for the proxy."
     default_or_input "Path to the Proxy Server's SSL key:" SERVER_KEY ""
     if [ ! -e $SERVER_KEY ]; then
         config_error 1 "Given file doesn't exist!"
@@ -568,12 +457,32 @@ if [ "$USE_EXISTING_CERTS" -eq "1" ]; then
     if [ ! -e $SERVER_CERT ]; then
         config_error 1 "Given file doesn't exist!"
     fi
-
-    RPM_GEN_RPM_CMD="/usr/bin/rhn-ssl-tool --gen-server --rpm-only \
-        --dir="$SSL_BUILD_DIR" \
-        --from-server-key $SERVER_KEY \
-        --from-server-cert $SERVER_CERT"
 else
+    if [ ! -f $SSL_BUILD_DIR/RHN-ORG-PRIVATE-SSL-KEY ]; then
+        echo "Generating CA key and public certificate:"
+        /usr/bin/rhn-ssl-tool --gen-ca --no-rpm -q \
+            --dir="$SSL_BUILD_DIR" \
+            --set-common-name="$SSL_COMMON" \
+            --set-country="$SSL_COUNTRY" \
+            --set-city="$SSL_CITY" \
+            --set-state="$SSL_STATE" \
+            --set-org="$SSL_ORG" \
+            --set-org-unit="$SSL_ORGUNIT" \
+            --set-email="$SSL_EMAIL" \
+            $RHN_SSL_TOOL_PASSWORD_OPTION $RHN_SSL_TOOL_PASSWORD
+        config_error $? "CA certificate generation failed!"
+    fi
+    CA_CERT=$SSL_BUILD_DIR/RHN-ORG-TRUSTED-SSL-CERT
+fi
+
+if [ "$USE_EXISTING_CERTS" -eq "0" ]; then
+    echo "Using CA key at $SSL_BUILD_DIR/RHN-ORG-PRIVATE-SSL-KEY."
+
+    IFS="."; arrIN=($HOSTNAME); unset IFS
+    unset 'arrIN[${#arrIN[@]}-1]'
+    unset 'arrIN[${#arrIN[@]}-1]'
+    SYS_NAME=$(IFS=. eval 'echo "${arrIN[*]}"')
+
     echo "Generating SSL key and public certificate."
     /usr/bin/rhn-ssl-tool --gen-server -q --no-rpm \
         --set-hostname "$HOSTNAME" \
@@ -587,24 +496,78 @@ else
         ${SSL_CNAME_PARSED[@]} \
         $RHN_SSL_TOOL_PASSWORD_OPTION $RHN_SSL_TOOL_PASSWORD
     config_error $? "SSL key generation failed!"
-    RPM_GEN_RPM_CMD="/usr/bin/rhn-ssl-tool --gen-server --rpm-only \
-        --dir=\"$SSL_BUILD_DIR\" --set-hostname \"$HOSTNAME\""
+    SERVER_KEY=$SSL_BUILD_DIR/$SYS_NAME/server.key
+    SERVER_CERT=$SSL_BUILD_DIR/$SYS_NAME/server.crt
 fi
 
-echo "Installing SSL certificate for Apache and Jabberd:"
-rpm -Uv $(eval $RPM_GEN_RPM_CMD 2>/dev/null |grep noarch.rpm)
+echo "Installing SSL certificates:"
+/usr/bin/mgr-ssl-cert-setup --root-ca-file=$CA_CERT --server-cert-file=$SERVER_CERT --server-key-file=$SERVER_KEY
 
-if [ -e $HTTPDCONF_DIR/vhosts.d/ssl.conf ]; then
-    mv $HTTPDCONF_DIR/vhosts.d/ssl.conf $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
-else
-    cp $HTTPDCONF_DIR/vhosts.d/vhost-ssl.template $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
+/usr/sbin/rhn-proxy-activate --server="$RHN_PARENT" \
+                            --http-proxy="$HTTP_PROXY" \
+                            --http-proxy-username="$HTTP_USERNAME" \
+                            --http-proxy-password="$HTTP_PASSWORD" \
+                            --ca-cert="$CA_CHAIN" \
+                            --version="$VERSION" \
+                            --non-interactive
+config_error $? "Proxy activation failed!"
+
+rpm -q rhn-apache >/dev/null
+if [ $? -eq 0 ]; then
+    echo "Package rhn-apache present - assuming upgrade:"
+    echo "Force removal of /etc/httpd/conf/httpd.conf - backed up to /etc/httpd/conf/httpd.conf.rpmsave"
+    mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.rpmsave
 fi
-sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/server.crt|g" \
-    -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/server.key|g" \
-    -e "s|^[\t ]*SSLCipherSuite.*$|SSLCipherSuite ALL:!aNULL:!eNULL:!SSLv2:!LOW:!EXP:!MD5:@STRENGTH|g" \
-    -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
-    < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
+if [ -x /usr/sbin/rhn-proxy ]; then
+    /usr/sbin/rhn-proxy stop
+        # the jabberd db might be an old version. Cleanup
+        rm -f /var/lib/jabberd/db/*
+fi
+
+$YUM spacewalk-proxy-management
+# check if package install successfully
+rpm -q spacewalk-proxy-management >/dev/null
+if [ $? -ne 0 ]; then
+    config_error 2 "Installation of package spacewalk-proxy-management failed."
+fi
+$UPGRADE
+
+/usr/bin/spacewalk-setup-jabberd --macros "hostname:$HOSTNAME"
+
+# size of squid disk cache will be 60% of free space on /var/cache/squid
+# df -P give free space in kB
+# * 60 / 100 is 60% of that space
+# / 1024 is to get value in MB
+SQUID_SIZE=$(df -P /var/cache/squid | awk '{a=$4} END {printf("%d", a * 60 / 100 / 1024)}')
+SQUID_REWRITE="s|cache_dir ufs /var/cache/squid 15000 16 256|cache_dir ufs /var/cache/squid $SQUID_SIZE 16 256|g;"
+SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
+if [ $SQUID_VER_MAJOR -ge 3 ] ; then
+    # squid 3.X has acl 'all' built-in
+    SQUID_REWRITE="$SQUID_REWRITE s/^acl all.*//;"
+    # squid 3.2 and later need none instead of -1 for range_offset_limit
+    SQUID_VER_MINOR=$(squid -v | awk -F'[ .]' '/Version/ {print $5}')
+    if [[ $SQUID_VER_MAJOR -ge 4 || ( $SQUID_VER_MAJOR -eq 3 && $SQUID_VER_MINOR -ge 2 ) ]] ; then
+        SQUID_REWRITE="$SQUID_REWRITE s/^range_offset_limit.*/range_offset_limit none/;"
+    fi
+fi
+sed "$SQUID_REWRITE" < $DIR/squid.conf  > $SQUID_DIR/squid.conf
+sed -e "s|\${session.ca_chain:/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT}|$CA_CHAIN|g" \
+    -e "s/\${session.http_proxy}/$HTTP_PROXY/g" \
+    -e "s/\${session.http_proxy_username}/$HTTP_USERNAME/g" \
+    -e "s/\${session.http_proxy_password}/$HTTP_PASSWORD/g" \
+    -e "s/\${session.rhn_parent}/$RHN_PARENT/g" \
+    -e "s/\${session.traceback_mail}/$TRACEBACK_EMAIL/g" \
+    < $DIR/rhn.conf  > $RHNCONF_DIR/rhn.conf
+
+# systemid need to be readable by apache/proxy
+for file in $SYSTEMID_PATH $UP2DATE_FILE; do
+    chown root:www $file
+    chmod 0640 $file
+done
+
+#Setup the cobbler stuff, needed to use koan through a proxy
+sed -e "s/\$RHN_PARENT/$RHN_PARENT/g" < $DIR/cobbler-proxy.conf > $HTTPDCONFD_DIR/cobbler-proxy.conf
 
 default_or_input "Do you want to use an existing ssh key for proxying ssh-push Salt minions ?" USE_EXISTING_SSH_PUSH_KEY 'y/N'
 USE_EXISTING_SSH_PUSH_KEY=$(yes_no $USE_EXISTING_SSH_PUSH_KEY)

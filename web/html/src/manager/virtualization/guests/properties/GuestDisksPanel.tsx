@@ -1,9 +1,11 @@
 import * as React from "react";
+
+import { FormContext } from "components/input/Form";
 import { FormMultiInput } from "components/input/FormMultiInput";
 import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { FormContext } from "components/input/Form";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+
 import { GuestDiskFields } from "./GuestDiskFields";
 
 type Props = {

@@ -1,0 +1,17 @@
+#systems-virtual-list
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/list/virtual')
+        .then(function(module) {
+            module.renderer(
+                'systems-virtual-list', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin}
+                }
+            )
+        });

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PRE
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -196,17 +197,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    new ServerGroupManager());
+                    serverGroupManager);
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -1370,12 +1372,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(server);
-        ServerGroupManager manager = new ServerGroupManager();
-        manager.addServers(group, servers, admin);
+        serverGroupManager.addServers(group, servers, admin);
 
         Set admins = new HashSet();
         admins.add(regular);
-        manager.associateAdmins(group, admins, admin);
+        serverGroupManager.associateAdmins(group, admins, admin);
 
 
         User nonGroupAdminUser = UserTestUtils.createUser(
@@ -3134,10 +3135,125 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(Integer.valueOf(server3.getId().intValue()), skipped.get(0));
     }
 
+    /**
+     * Test the SystemHandler.changeProxy method
+     * @throws Exception if anything failed
+     */
+    public void testChangeProxy() throws Exception {
+        SystemHandler systemHandler = getMockedHandler();
+        ActionManager.setTaskomaticApi(systemHandler.getTaskomaticApi());
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer minionSsh1 = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer minionSsh2 = MinionServerFactoryTest.createTestMinionServer(admin);
+        minionSsh1.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        minionSsh2.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
+
+        Server proxy = ServerFactoryTest.createTestProxyServer(admin, true);
+        proxy.setHostname("testproxy");
+
+        List<Long> actions = systemHandler.changeProxy(admin,
+                                List.of(minion.getId().intValue()), proxy.getId().intValue());
+
+        assertEquals(1, actions.size());
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("bootstrap.set_proxy", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for normal minions the new proxy appears in the pillar of the scheduled state action
+        assertEquals(proxy.getHostname(), details.getPillarsMap().get().get("mgr_server"));
+
+        actions = systemHandler.changeProxy(admin,
+                        List.of(minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                        proxy.getId().intValue());
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("channels", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for ssh minions the proxy is updated directly
+        assertEquals(proxy.getHostname(), minionSsh1.getFirstServerPath().get().getHostname());
+        assertEquals(proxy.getHostname(), minionSsh2.getFirstServerPath().get().getHostname());
+
+        // mix of normal and ssh minions creates 2 actions
+        actions = systemHandler.changeProxy(admin,
+                    List.of(minion.getId().intValue(), minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                    proxy.getId().intValue());
+
+        assertEquals(2, actions.size());
+
+        // back to direct connection to SUMA
+        actions = systemHandler.changeProxy(admin, List.of(minion.getId().intValue()), 0);
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("bootstrap.set_proxy", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // direct connection to SUMA
+        assertEquals(ConfigDefaults.get().getCobblerHost(), details.getPillarsMap().get().get("mgr_server"));
+
+        actions = systemHandler.changeProxy(admin,
+                             List.of(minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                             0);
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("channels", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for ssh minions directly connected to SUMA the path should be empty
+        assertEquals(0, minionSsh1.getServerPaths().size());
+        assertEquals(0, minionSsh2.getServerPaths().size());
+
+        // only normal minions are supported, not proxies
+        try {
+            actions = systemHandler.changeProxy(admin, List.of(proxy.getId().intValue()), proxy.getId().intValue());
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            // success
+        }
+
+        // proxy is not a proxy
+        try {
+            actions = systemHandler.changeProxy(admin,
+                        List.of(minionSsh1.getId().intValue()),
+                        minion.getId().intValue());
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            // success
+        }
+    }
+
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

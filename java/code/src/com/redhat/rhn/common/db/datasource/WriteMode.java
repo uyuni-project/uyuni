@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import org.hibernate.Session;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +25,13 @@ import java.util.Map;
  */
 public class WriteMode extends BaseMode {
 
-    /*package*/ WriteMode(ParsedMode parsedMode) {
-        super(parsedMode);
+    /**
+     * Creates an instance
+     * @param session hibernate database session to be used
+     * @param parsedMode the mode
+     */
+    public WriteMode(Session session, ParsedMode parsedMode) {
+        super(session, parsedMode);
     }
 
     /**

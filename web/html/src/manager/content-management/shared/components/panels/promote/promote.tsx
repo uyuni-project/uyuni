@@ -1,17 +1,20 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { ModalButton } from "components/dialog/ModalButton";
-import DownArrow from "../../down-arrow/down-arrow";
-import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import { Button } from "components/buttons";
-import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type/project.type";
-import { getVersionMessageByNumber } from "../properties/properties.utils";
+import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import { Loading } from "components/utils/Loading";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
+
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type/project.type";
+import DownArrow from "../../down-arrow/down-arrow";
 import BuildVersion from "../build/build-version";
+import { getVersionMessageByNumber } from "../properties/properties.utils";
 
 type Props = {
   projectId: string;

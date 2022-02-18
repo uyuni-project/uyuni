@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,11 +26,11 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
+import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
@@ -46,6 +46,7 @@ import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
@@ -56,7 +57,6 @@ import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
-import com.suse.manager.webui.controllers.clusters.ClustersController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -105,7 +105,6 @@ public class Router implements SparkApplication {
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
-        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -116,8 +115,7 @@ public class Router implements SparkApplication {
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
-        FormulaController formulaController = new FormulaController(systemQuery, saltApi);
-        ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
+        FormulaController formulaController = new FormulaController(saltApi);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -144,7 +142,7 @@ public class Router implements SparkApplication {
 
         // Admin Router
         AdminViewsController.initRoutes(jade);
-        AdminApiController.initRoutes();
+        AdminApiController.initRoutes(taskomaticApi);
 
         // Minions
         MinionController.initRoutes(jade);
@@ -153,7 +151,10 @@ public class Router implements SparkApplication {
         minionsAPI.initRoutes();
 
         // Systems API
-        SystemsController.initRoutes(systemsController);
+        SystemsController.initRoutes(systemsController, jade);
+
+        //CSV API
+        CSVDownloadController.initRoutes();
 
         // Activation Keys API
         ActivationKeysController.initRoutes();
@@ -196,9 +197,6 @@ public class Router implements SparkApplication {
         // Single Sign-On (SSO) via SAML
         SSOController.initRoutes();
 
-        // Clusters
-        clustersController.initRoutes(jade);
-
         // Maintenance windows
         MaintenanceController.initRoutes();
         MaintenanceScheduleController.initRoutes(jade);
@@ -206,6 +204,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        // Rhn Set API
+        SetController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

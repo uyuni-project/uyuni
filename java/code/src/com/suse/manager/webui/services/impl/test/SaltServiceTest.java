@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -58,8 +58,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH, Optional.empty());
-        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH);
+        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT);
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");

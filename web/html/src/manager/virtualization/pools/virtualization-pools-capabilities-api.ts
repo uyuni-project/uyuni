@@ -1,6 +1,8 @@
 import * as React from "react";
-import Network from "utils/network";
+
 import * as Messages from "components/messages";
+
+import Network from "utils/network";
 
 type Props = {
   hostId: string;

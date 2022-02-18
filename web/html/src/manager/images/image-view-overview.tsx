@@ -1,13 +1,15 @@
 import * as React from "react";
-import { LinkButton, Button } from "components/buttons";
+
+import { Button, LinkButton } from "components/buttons";
 import { FromNow } from "components/datetime";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { PopUp } from "components/popup";
-import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
+import { Form } from "components/input/Form";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { PopUp } from "components/popup";
+
 import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade

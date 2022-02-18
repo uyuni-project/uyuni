@@ -1,13 +1,15 @@
 import * as React from "react";
 
-import { Column } from "components/table/Column";
-import { Utils } from "utils/functions";
-import { LinkButton, AsyncButton } from "components/buttons";
+import { AsyncButton, LinkButton } from "components/buttons";
 import * as Systems from "components/systems";
+import { Column } from "components/table/Column";
+
+import { Utils } from "utils/functions";
+
+import { ActionApi } from "../../ActionApi";
+import { HypervisorCheck } from "../../HypervisorCheck";
 import { Utils as ListUtils } from "../../list.utils";
 import { ListTab } from "../../ListTab";
-import { HypervisorCheck } from "../../HypervisorCheck";
-import { ActionApi } from "../../ActionApi";
 import { MigrateDialog } from "./MigrateDialog";
 
 export type HostInfo = {

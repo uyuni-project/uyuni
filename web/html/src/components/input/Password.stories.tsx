@@ -1,7 +1,9 @@
 import * as React from "react";
+
+import { SubmitButton } from "components/buttons";
+
 import { Form } from "./Form";
 import { Password } from "./Password";
-import { SubmitButton } from "components/buttons";
 
 export default {
   component: Password,

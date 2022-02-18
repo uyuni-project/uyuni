@@ -54,14 +54,6 @@ SUPERVISOR_TIMEOUT = 5
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-loghandler = logging.handlers.RotatingFileHandler(
-    SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
-
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-loghandler.setFormatter(formatter)
-log.addHandler(loghandler)
-
-
 class AbstractChannelProxy(multiprocessing.Process):
     '''
     Abstract class for ChannelProxy objects
@@ -310,7 +302,6 @@ class SaltBroker(object):
                 self.ret_proxy_proc = self._start_ret_proxy()
             time.sleep(SUPERVISOR_TIMEOUT)
 
-
 if __name__ == "__main__":
     # Try to get config from /etc/rhn/rhn.conf
     rhn_parent = None
@@ -333,6 +324,7 @@ if __name__ == "__main__":
         "tcp_keepalive_idle": 300,
         "tcp_keepalive_cnt": -1,
         "tcp_keepalive_intvl": -1,
+        "log_to_file": 1,
     }
 
     try:
@@ -348,6 +340,29 @@ if __name__ == "__main__":
             saltbroker_opts.update({"master": rhn_parent})
 
         saltbroker_opts.update(config)
+
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        # log to file or to standard output and error depending on the configuration
+        if saltbroker_opts.get('log_to_file'):
+            fileloghandler = logging.handlers.RotatingFileHandler(
+                SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
+            fileloghandler.setFormatter(formatter)
+            log.addHandler(fileloghandler)
+        else:
+            # prepare two log handlers, 1 for stdout and 1 for stderr
+            stdout_handler = logging.StreamHandler(sys.stdout)
+            stderr_handler = logging.StreamHandler(sys.stderr)
+            # stdout handler filters out everything above the ERROR level included
+            stdout_handler.addFilter(lambda record: record.levelno < logging.ERROR)
+            # stderror handler looks only for everything above the ERROR level included
+            stderr_handler.setLevel(logging.ERROR)
+            # same format for both handlers
+            stdout_handler.setFormatter(formatter)
+            stderr_handler.setFormatter(formatter)
+            # add handlers to log Object
+            log.addHandler(stdout_handler)
+            log.addHandler(stderr_handler)
+
         proxy = SaltBroker(opts=saltbroker_opts)
         proxy.start()
 

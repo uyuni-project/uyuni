@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,6 +32,16 @@ import java.util.Optional;
  * Execute actions via salt-ssh.
  */
 public class SSHMinionActionExecutor extends RhnJavaJob {
+
+    @Override
+    public int getDefaultParallelThreads() {
+        return 20;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "sshminion_action_executor";
+    }
 
     /**
      * @param context the job execution context

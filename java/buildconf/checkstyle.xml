@@ -242,7 +242,7 @@ MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, S
         <!-- the ${basedir} property to allow Checkstyle to be run  -->
         <!-- from any directory within a project.                   -->
         <property name="headerFile" value="${checkstyle.header.file}"/>
-        <property name="multiLines" value="2"/>
+        <property name="multiLines" value="2, 10, 11, 12, 13"/>
     </module>
 
     <module name="FileTabCharacter"/>

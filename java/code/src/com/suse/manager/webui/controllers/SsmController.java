@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -210,5 +210,4 @@ public class SsmController {
         );
         return json(GSON, response, ResultJson.success(result));
     }
-
 }

@@ -34,8 +34,8 @@ Feature: Export and import channels with new ISS implementation
     And I should see a "CL-andromeda-dummy-6789" link
 
   Scenario: Export data with ISS v2
-    When I ensure folder "/tmp/export_iss_v2" doesn't exists
-    Then Export folder "/tmp/export_iss_v2" doesn't exists on server
+    When I ensure folder "/tmp/export_iss_v2" doesn't exist
+    Then export folder "/tmp/export_iss_v2" shouldn't exist on server
     When I export "clone-test-channel-x86_64" with ISS v2 to "/tmp/export_iss_v2"
     Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
 
@@ -69,5 +69,5 @@ Feature: Export and import channels with new ISS implementation
     Then I should see a "Clone of Test-Channel-x86_64" text
 
   Scenario: Cleanup: remove ISS v2 export folder
-    When I ensure folder "/tmp/export_iss_v2" doesn't exists
-    Then Export folder "/tmp/export_iss_v2" doesn't exists on server
+    When I ensure folder "/tmp/export_iss_v2" doesn't exist
+    Then export folder "/tmp/export_iss_v2" shouldn't exist on server

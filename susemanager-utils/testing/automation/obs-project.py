@@ -66,7 +66,11 @@ def add(args):
     root.find("title").text = new_title 
 
     if (maintainer!=""):
-        print("DEBUG: Adding user {} as maintainer".format(auth_user))
+        print("DEBUG: Adding user {} as the only maintainer".format(auth_user))
+        for user in root.findall("person"):
+            root.remove(user)
+        for group in root.findall("group"):
+            root.remove(group)
         new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
         root.append(new_person)
 
@@ -180,7 +184,7 @@ parser_add = subparser.add_parser("add", help="add project")
 parser_add.add_argument('--project', help="Project from which to \"branch\" from, defaults to systemsmanagement:Uyuni:Master", default="systemsmanagement:Uyuni:Master")
 parser_add.add_argument('--repo', help="Repo to build for, defaults to openSUSE.*|SLE.*", default="openSUSE.*|SLE.*")
 parser_add.add_argument('pullnumber', help="Pull Request number, for example 1")
-parser_add.add_argument('--setmaintainer', help="Set maintainer", default="")
+parser_add.add_argument('--setmaintainer', help="Set this user as the only maintainer", default="")
 parser_add.add_argument('--disablepublish', help="Disable the publish", action="store_true", default=False)
 parser_add.set_defaults(func=add)
 

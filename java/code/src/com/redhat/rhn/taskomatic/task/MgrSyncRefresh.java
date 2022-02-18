@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -40,6 +40,11 @@ import java.util.List;
 public class MgrSyncRefresh extends RhnJavaJob {
 
     private static final String NO_REPO_SYNC_KEY = "noRepoSync";
+
+    @Override
+    public String getConfigNamespace() {
+        return "mgrsyncrefresh";
+    }
 
     /**
      * {@inheritDoc}

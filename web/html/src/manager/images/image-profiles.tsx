@@ -1,16 +1,19 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton, LinkButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Messages } from "components/messages";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import SpaRenderer from "core/spa/spa-renderer";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/list-profiles.jade
 declare global {
@@ -42,9 +45,6 @@ type State = {
 class ImageProfiles extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["reloadData", "handleSelectItems", "selectProfile", "deleteProfiles"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       messages: [],
       imageprofiles: [],
@@ -63,26 +63,26 @@ class ImageProfiles extends React.Component<Props, State> {
     return true;
   }
 
-  reloadData() {
+  reloadData = () => {
     Network.get("/rhn/manager/api/cm/imageprofiles").then((data) => {
       this.setState({
         imageprofiles: data,
       });
     });
     this.clearMessages();
-  }
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
-  }
+  };
 
-  selectProfile(row) {
+  selectProfile = (row) => {
     this.setState({
       selected: row,
     });
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -90,7 +90,7 @@ class ImageProfiles extends React.Component<Props, State> {
     });
   }
 
-  deleteProfiles(idList) {
+  deleteProfiles = (idList) => {
     return Network.post("/rhn/manager/api/cm/imageprofiles/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
@@ -119,7 +119,7 @@ class ImageProfiles extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
@@ -165,7 +165,6 @@ class ImageProfiles extends React.Component<Props, State> {
             data={this.state.imageprofiles}
             identifier={(profile) => profile.profileId}
             initialSortColumnKey="profileId"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} />}
             selectable
             selectedItems={this.state.selectedItems}

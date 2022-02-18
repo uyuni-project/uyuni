@@ -1,8 +1,9 @@
 import * as React from "react";
-import Network from "utils/network";
-import * as Messages from "components/messages";
 
+import * as Messages from "components/messages";
 import { MessageType } from "components/messages";
+
+import Network from "utils/network";
 
 type Props = {
   /** Virtual host server ID */

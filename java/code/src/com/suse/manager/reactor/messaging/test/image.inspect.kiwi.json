@@ -2360,14 +2360,14 @@
                                 "size": 101571905
                             }
                         },
-                        "bundle": {
+                        "bundles": [{
                             "hash": "sha256:a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
                             "suffix": "tgz",
                             "filepath": "/var/lib/Kiwi/build24/images/POS_Image_JeOS6.x86_64-6.0.0-build24.tgz",
                             "basename": "POS_Image_JeOS6.x86_64-6.0.0",
                             "filename": "POS_Image_JeOS6.x86_64-6.0.0-build24.tgz",
                             "id": "build24"
-                        }
+                        }]
                     }
                 },
                 "__id__": "mgr_inspect_kiwi_image"

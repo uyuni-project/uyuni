@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,10 +29,14 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Tests for the {@link com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter} generator.
@@ -71,6 +75,42 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         metadataWriter = new UpdateInfoWriter(buffer);
         metadataWriter.getUpdateInfo(clonedChannel);
         assertContains(buffer.toString(), "<id>CL-SUSE-SLE-SERVER-2016-1234</id>");
+    }
+
+    public void testErrataFieldsGeneratedCorrectly() throws Exception {
+
+        final ChannelFamily channelFamily = createTestChannelFamily();
+        final SUSEProduct product = createTestSUSEProduct(channelFamily);
+
+        // Create channels
+        final Channel baseChannel = createTestVendorBaseChannel(channelFamily, createTestChannelProduct());
+        baseChannel.setUpdateTag("SLE-SERVER");
+        createTestSUSEProductChannel(baseChannel, product, true);
+
+        Errata errata = createTestErrata(user.getId());
+        errata = TestUtils.reload(errata);
+
+        errata.setAdvisoryName("SUSE-2016-1234");
+        baseChannel.addErrata(errata);
+
+        StringWriter buffer = new StringWriter();
+        UpdateInfoWriter metadataWriter = new UpdateInfoWriter(buffer);
+        metadataWriter.getUpdateInfo(baseChannel);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        final String xml = buffer.toString();
+
+        assertContains(xml, "<id>SUSE-SLE-SERVER-2016-1234</id>");
+        assertContains(xml, "<title>" + errata.getSynopsis() + "</title>");
+        assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel().toLowerCase() + "</severity>");
+        assertContains(xml, "<issued date=\"" + df.format(errata.getIssueDate()) + "\"/>");
+        assertContains(xml, "<updated date=\"" + df.format(errata.getUpdateDate()) + "\"/>");
+        assertContains(xml, "<rights>" + errata.getRights() + "</rights>");
+        assertContains(xml, "<description>" + errata.getDescription() + "</description>");
+
+        ErrataOverview o = new ErrataOverview();
+        o.setIssueDate("2021-11-22");
     }
 }
 

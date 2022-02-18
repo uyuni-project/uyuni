@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,6 +25,7 @@ import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -273,7 +274,7 @@ public class AnsibleController {
     public static String fetchPlaybookContents(Request req, Response res, User user) {
         try {
             AnsiblePlaybookIdJson params = GSON.fromJson(req.body(), AnsiblePlaybookIdJson.class);
-            return AnsibleManager.fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
+            return getAnsibleManager().fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
                     .map(contents -> json(res, success(contents)))
                     .orElseGet(() -> json(res,
                             error(LOCAL.getMessage("ansible.control_node_not_responding"))));
@@ -336,7 +337,7 @@ public class AnsibleController {
         long pathId = Long.parseLong(req.params("pathId"));
 
         try {
-            return AnsibleManager.introspectInventory(pathId, user)
+            return getAnsibleManager().introspectInventory(pathId, user)
                     .map(inventory -> {
                         Map<String, Object> data = new HashMap<>();
 
@@ -399,7 +400,7 @@ public class AnsibleController {
         long pathId = Long.parseLong(req.params("pathId"));
 
         try {
-            return AnsibleManager.discoverPlaybooks(pathId, user)
+            return getAnsibleManager().discoverPlaybooks(pathId, user)
                     .map(playbook -> json(res, success(playbook)))
                     .orElseGet(() -> json(res,
                             error(LOCAL.getMessage("ansible.control_node_not_responding"))));
@@ -411,5 +412,9 @@ public class AnsibleController {
         catch (LookupException e) {
             return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
+    }
+
+    private static AnsibleManager getAnsibleManager() {
+        return new AnsibleManager(GlobalInstanceHolder.SALT_API);
     }
 }

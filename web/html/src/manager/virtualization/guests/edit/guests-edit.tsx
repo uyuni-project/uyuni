@@ -1,14 +1,18 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
+
 import _isEqual from "lodash/isEqual";
+
+import { ActionChain } from "components/action-schedule";
+import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
 import { TopPanel } from "components/panels/TopPanel";
 import { Loading } from "components/utils/Loading";
-import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { ActionChain } from "components/action-schedule";
-import { GuestProperties } from "../GuestProperties";
-import * as GuestNicsPanel from "../properties/guest-nics-panel";
-import * as DiskUtils from "../properties/disk-utils";
+
 import { SimpleActionApi } from "../../SimpleActionApi";
+import { GuestProperties } from "../GuestProperties";
+import * as DiskUtils from "../properties/disk-utils";
+import * as GuestNicsPanel from "../properties/guest-nics-panel";
 import { VirtualizationGuestDefinitionApi } from "../virtualization-guest-definition-api";
 
 type Props = {

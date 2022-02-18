@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -55,6 +55,10 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
+
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,12 +67,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** JUnit test case for the User
  *  class.
  */
 public class UserManagerTest extends RhnBaseTestCase {
 
+    private SystemManager systemManager;
     private Set<User> users;
     private boolean committed = false;
 
@@ -79,6 +85,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
         this.users = new HashSet<User>();
+        SaltApi saltApi = new TestSaltApi();
+        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     }
 
     /**
@@ -113,7 +121,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
@@ -176,7 +184,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group2 = ServerGroupTest
                 .createTestServerGroup(foundUser2.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server2, group2);
+        systemManager.addServerToServerGroup(server2, group2);
         ServerFactory.save(server2);
 
         ManagedServerGroup foundGroup2 = ServerGroupFactory.lookupByIdAndOrg(group2.getId(),
@@ -217,7 +225,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         ServerGroup group = ServerGroupTest
                 .createTestServerGroup(user.getOrg(), null);
 
-        SystemManager.addServerToServerGroup(server, group);
+        systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
 
         ServerGroup foundGroup = ServerGroupFactory.lookupByIdAndOrg(group.getId(),
@@ -596,13 +604,21 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(lst.get(5) instanceof RhnTimeZone);
         assertTrue(lst.get(29) instanceof RhnTimeZone);
 
+        // Check if all configured timezones are valid
+        Set<String> validTimezones = ZoneId.getAvailableZoneIds();
+        assertTrue(lst.stream().filter(timezone ->
+                !validTimezones.contains(timezone.getOlsonName()))
+                .collect(Collectors.toList())
+                .isEmpty());
+
         assertEquals(UserManager.getTimeZone("GMT"), lst.get(0));
         assertEquals("GMT", lst.get(0).getOlsonName());
-        assertEquals("Atlantic/South_Georgia", lst.get(5).getOlsonName());
-        assertEquals(UserManager.getTimeZone("Atlantic/South_Georgia"), lst.get(5));
+        assertEquals("America/Sao_Paulo", lst.get(5).getOlsonName());
+        assertEquals(UserManager.getTimeZone("America/Sao_Paulo"), lst.get(5));
 
         assertEquals("Europe/Paris", lst.get(lst.size() - 1).getOlsonName());
         assertEquals(UserManager.getTimeZone("Europe/Paris"), lst.get(lst.size() - 1));
+
     }
 
    public void testUsersInSet() throws Exception {

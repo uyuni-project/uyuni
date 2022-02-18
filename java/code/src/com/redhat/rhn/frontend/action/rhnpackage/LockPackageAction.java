@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,12 +43,12 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -104,17 +104,18 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         DataResult<PackageListItem> lockedPackagesResult =
                 PackageManager.systemLockedPackages(sid, null);
-        for (PackageListItem pkg : lockedPackagesResult) {
-            if (!context.isSubmitted()) {
+
+        if (!context.isSubmitted()) {
+            for (PackageListItem pkg : lockedPackagesResult) {
                 // pre-select locked
                 pkgsToSelect.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
             }
-
-            Package lockedPkg = PackageManager.lookupByIdAndUser(pkg.getPackageId(), user);
-            if (lockedPkg != null) {
-                pkgsAlreadyLocked.add(lockedPkg);
-            }
         }
+
+        List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
+                lockedPackagesResult.stream().map(PackageListItem::getPackageId)
+                        .collect(Collectors.toList()), user);
+        pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
 
         SessionSetHelper helper = new SessionSetHelper(request);
         if (isSubmitted(form)) {
@@ -198,7 +199,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
-        List<Package> pkgsToUnlock = new ArrayList<Package>();
+        Set<Package> pkgsToUnlock = new HashSet<Package>();
         String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
         if (selectedPkgs != null) {
@@ -212,7 +213,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         PackageManager.setPendingStatusOnLockedPackages(pkgsToUnlock,
                                                         PackageManager.PKG_PENDING_UNLOCK);
-        ActionManager.schedulePackageLock(user, server, pkgsAlreadyLocked, scheduleDate);
+        ActionManager.schedulePackageLock(user, pkgsAlreadyLocked, scheduleDate, server);
     }
 
     /**
@@ -255,7 +256,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
             // Ensure pending locks and already locked items are sent to the client
             pkgsToLock.addAll(pkgsAlreadyLocked);
-            ActionManager.schedulePackageLock(user, server, pkgsToLock, scheduleDate);
+            ActionManager.schedulePackageLock(user, pkgsToLock, scheduleDate, server);
         }
         else {
             LockPackageAction.LOG.info("No packages to lock");

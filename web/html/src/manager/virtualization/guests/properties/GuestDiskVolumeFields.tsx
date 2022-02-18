@@ -1,7 +1,8 @@
 import * as React from "react";
+
+import { FormContext } from "components/input/Form";
 import { Select } from "components/input/Select";
 import { Text } from "components/input/Text";
-import { FormContext } from "components/input/Form";
 
 type Props = {
   index: number;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,6 @@
  */
 package com.suse.manager.xmlrpc.serializer.test;
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
@@ -26,7 +25,6 @@ import java.io.Writer;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcSerializer;
@@ -47,16 +45,19 @@ public class SystemEventDetailsDtoSerializerTest extends TestCase {
         dto.setHistoryTypeName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
         dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
         dto.setSummary("Hardware List Refresh scheduled by (none)");
-        dto.setCreated(LocalDateTime.of(2021, 10, 5, 16, 55)
-                                      .format(DateTimeFormatter.ofPattern(LocalizationService.RHN_DB_DATEFORMAT)));
-        dto.setPickedUp(LocalDateTime.of(2021, 10, 5, 16, 58)
-                                    .format(DateTimeFormatter.ofPattern(LocalizationService.RHN_DB_DATEFORMAT)));
-        dto.setCompleted(LocalDateTime.of(2021, 10, 5, 17, 0)
-                                      .format(DateTimeFormatter.ofPattern(LocalizationService.RHN_DB_DATEFORMAT)));
-
+        dto.setCreated(Date.from(LocalDateTime.of(2021, 10, 5, 16, 55)
+                .atZone(ZoneOffset.systemDefault())
+                .toInstant()));
+        dto.setPickedUp(Date.from(LocalDateTime.of(2021, 10, 5, 16, 58)
+                .atZone(ZoneOffset.systemDefault())
+                .toInstant()));
+        dto.setCompleted(Date.from(LocalDateTime.of(2021, 10, 5, 17, 0)
+                .atZone(ZoneOffset.systemDefault())
+                .toInstant()));
         dto.setEarliestAction(Date.from(LocalDateTime.of(2021, 10, 5, 16, 56)
-                                                     .atZone(ZoneOffset.systemDefault())
-                                                     .toInstant()));
+                .atZone(ZoneOffset.systemDefault())
+                .toInstant()));
+
         dto.setResultMsg("done");
         dto.setResultCode(0L);
 
@@ -83,15 +84,6 @@ public class SystemEventDetailsDtoSerializerTest extends TestCase {
 
         assertTrue(xml.contains("<name>picked_up</name>"));
         assertTrue(xml.contains("<dateTime.iso8601>20211005T16:58:00</dateTime.iso8601>"));
-
-        assertTrue(xml.contains("<name>completed</name>"));
-        assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));
-
-        assertTrue(xml.contains("<name>completed</name>"));
-        assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));
-
-        assertTrue(xml.contains("<name>completed</name>"));
-        assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));
 
         assertTrue(xml.contains("<name>completed</name>"));
         assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));

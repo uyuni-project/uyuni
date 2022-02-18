@@ -1,19 +1,21 @@
 import * as React from "react";
 
-import { Header } from "./Header";
-import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
-import { SearchPanel } from "./SearchPanel";
-import { SearchField } from "./SearchField";
-import { PageControl, SimpleDataProvider, AsyncDataProvider } from "utils/data-providers";
+import { pageSize } from "core/user-preferences";
+
+import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
+import { Comparator, PagedData } from "utils/data-providers";
 import { Utils } from "utils/functions";
 
-import { PagedData, Comparator } from "utils/data-providers";
+import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
+import { Header } from "./Header";
+import { SearchField } from "./SearchField";
+import { SearchPanel } from "./SearchPanel";
 
 type ChildrenArgsProps = {
   currItems: Array<any>;
   headers: React.ReactNode;
   handleSelect: Function;
-  selectable: boolean;
+  selectable: boolean | ((row: any) => boolean);
   selectedItems: Array<any>;
   deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
@@ -53,8 +55,11 @@ type Props = {
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number;
 
-  /** enables item selection */
-  selectable: boolean;
+  /** enables item selection.
+   * tells if a row is selectable.
+   * If using an asynchronous provider, the selectAll filtering has to be implemented on the server side too.
+   */
+  selectable: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
@@ -109,7 +114,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       data: [],
       provider: this.getProvider(),
       currentPage: 1,
-      itemsPerPage: this.props.initialItemsPerPage || window.userPrefPageSize || 15,
+      itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
       criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,
@@ -136,7 +141,8 @@ export class TableDataHandler extends React.Component<Props, State> {
         this.props.identifier,
         this.props.searchField?.props.filter,
         comparators,
-        this.props.loading
+        this.props.loading,
+        this.props.selectable
       );
     } else if (typeof data === "string") {
       return new AsyncDataProvider(data);
@@ -275,7 +281,10 @@ export class TableDataHandler extends React.Component<Props, State> {
     const isEmpty = itemCount === 0;
 
     if (this.props.selectable) {
-      const currIds = currItems.map((item) => this.props.identifier(item));
+      const isSelectable =
+        typeof this.props.selectable === "boolean" ? () => this.props.selectable : this.props.selectable;
+      const selectableItems = currItems.filter((item) => isSelectable(item));
+      const currIds = selectableItems.map((item) => this.props.identifier(item));
 
       const handleSelectAll = (sel) => {
         let arr = selectedItems;
@@ -351,7 +360,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   onClear={handleSearchPanelClear}
                   onSelectAll={handleSearchPanelSelectAll}
                   selectedCount={selectedItems.length}
-                  selectable={this.props.selectable}
+                  selectable={this.props.selectable != null}
                 >
                   {this.props.searchField}
                   {this.props.additionalFilters?.map((filter, i) => (

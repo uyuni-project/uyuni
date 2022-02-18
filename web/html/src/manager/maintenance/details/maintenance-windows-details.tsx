@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
+
 import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
-import { TopPanel } from "components/panels/TopPanel";
 import { MessageType } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
 
-import MaintenanceScheduleDetails from "./schedule-details";
 import MaintenanceCalendarDetails from "./calendar-details";
+import MaintenanceScheduleDetails from "./schedule-details";
 
 type MaintenanceDetailsProps = {
   type: "schedule" | "calendar";

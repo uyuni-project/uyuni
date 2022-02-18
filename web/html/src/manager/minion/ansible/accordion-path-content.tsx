@@ -1,10 +1,13 @@
 import * as React from "react";
-import { AnsiblePath } from "./ansible-path-type";
-import Network from "utils/network";
-import { Messages, Utils } from "components/messages";
-import { Loading } from "components/utils/Loading";
+
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
+import { Messages, Utils } from "components/messages";
+import { Loading } from "components/utils/Loading";
+
+import Network from "utils/network";
+
+import { AnsiblePath } from "./ansible-path-type";
 
 type PropsType = {
   path: AnsiblePath;
@@ -176,7 +179,18 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           <dd className="col-xs-8">
             <ul>
               {content?.unknownSystems.map((s) => (
-                <li key={s + "_hostname"}>{s}</li>
+                <li key={s + "_hostname"}>
+                  {s}
+                  &nbsp;(
+                  <a
+                    href={
+                      "/rhn/manager/systems/bootstrap?ansibleInventoryId=" + this.props.path.id + "&targetHost=" + s
+                    }
+                  >
+                    {t("bootstrap")}
+                  </a>
+                  )
+                </li>
               ))}
             </ul>
           </dd>

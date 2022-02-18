@@ -199,7 +199,7 @@ def image_details(dest, bundle_dest = None):
     res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5'), compression is not None))
 
     if bundle_dest is not None:
-      res['bundle'] = inspect_bundle(bundle_dest, basename)
+      res['bundles'] = inspect_bundles(bundle_dest, basename)
 
     return res
 
@@ -295,36 +295,34 @@ def inspect_boot_image(dest):
 
     return res
 
-def inspect_bundle(dest, basename):
-    res = None
+def inspect_bundles(dest, basename):
+    res = []
     files = __salt__['file.readdir'](dest)
 
     pattern = re.compile(r"^(?P<basename>" + re.escape(basename) + r")-(?P<id>[^.]*)\.(?P<suffix>.*)\.sha256$")
     for f in files:
         match = pattern.match(f)
         if match:
-            res = match.groupdict()
+            res1 = match.groupdict()
             sha256_file = f
-            break
-    if res is None:
-        return None
 
-    sha256_str = __salt__['cp.get_file_str'](os.path.join(dest, sha256_file))
-    pattern = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
-    match = pattern.match(sha256_str)
-    if match:
-        d = match.groupdict()
-        d['hash'] = 'sha256:{0}'.format(d['hash'])
-        res.update(d)
-        res['filepath'] = os.path.join(dest, res['filename'])
+            sha256_str = __salt__['cp.get_file_str'](os.path.join(dest, sha256_file))
+            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
+            match = pattern2.match(sha256_str)
+            if match:
+                d = match.groupdict()
+                d['hash'] = 'sha256:{0}'.format(d['hash'])
+                res1.update(d)
+                res1['filepath'] = os.path.join(dest, res1['filename'])
 
-    else:
-        # only hash without file name
-        pattern = re.compile(r"^(?P<hash>[0-9a-f]+)$")
-        match = pattern.match(sha256_str)
-        if match:
-            res['hash'] = 'sha256:{0}'.format(match.groupdict()['hash'])
-            res['filename'] = sha256_file[0:-len('.sha256')]
-            res['filepath'] = os.path.join(dest, res['filename'])
+            else:
+                # only hash without file name
+                pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
+                match = pattern2.match(sha256_str)
+                if match:
+                    res1['hash'] = 'sha256:{0}'.format(match.groupdict()['hash'])
+                    res1['filename'] = sha256_file[0:-len('.sha256')]
+                    res1['filepath'] = os.path.join(dest, res1['filename'])
+            res.append(res1)
 
     return res

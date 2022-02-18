@@ -1,4 +1,5 @@
-import { render, server, waitFor, screen } from "utils/test-utils";
+import { render, screen, server, waitFor } from "utils/test-utils";
+
 import { AnsibleControlNode } from "./ansible-control-node";
 
 const API_PATH_LIST = "/rhn/manager/api/systems/details/ansible/paths/1000";

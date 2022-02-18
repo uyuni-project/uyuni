@@ -1,24 +1,28 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton, Button } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { FromNow } from "components/datetime";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
 import { TabContainer } from "components/tab-container";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
+
 import { ImageViewOverview } from "./image-view-overview";
-import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewPackages } from "./image-view-packages";
+import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
-import { FromNow } from "components/datetime";
-import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -74,15 +78,6 @@ type ImageViewState = {
 class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   constructor(props) {
     super(props);
-    [
-      "reloadData",
-      "handleBackAction",
-      "handleDetailsAction",
-      "deleteImages",
-      "inspectImage",
-      "buildImage",
-      "handleImportImage",
-    ].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
       images: [],
@@ -123,9 +118,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     this.clearMessages();
   }
 
-  reloadData() {
+  reloadData = () => {
     this.updateView(this.state.selected ? this.state.selected.id : undefined, getHashTab());
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -133,15 +128,15 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     });
   }
 
-  handleBackAction() {
+  handleBackAction = () => {
     return this.getImageInfoList().then(() => {
       const loc = window.location;
       window.history.pushState(null, "", loc.pathname + loc.search);
       this.clearMessages();
     });
-  }
+  };
 
-  handleDetailsAction(row) {
+  handleDetailsAction = (row) => {
     const tab = getHashTab() || "overview";
     this.getImageInfoDetails(row.id, tab).then(() => {
       window.history.pushState(null, "", "#/" + tab + "/" + row.id);
@@ -149,11 +144,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     });
 
     this.setState({ selectedRuntime: undefined });
-  }
+  };
 
-  handleImportImage() {
+  handleImportImage = () => {
     Utils.urlBounce("/rhn/manager/cm/import");
-  }
+  };
 
   handleResponseError(jqXHR, arg = "") {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
@@ -298,7 +293,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     return detailsPromise;
   }
 
-  deleteImages(idList) {
+  deleteImages = (idList) => {
     return Network.post("/rhn/manager/api/cm/images/delete", idList)
       .then(() => {
         // Waits for the 'Back' action if not in the list page
@@ -312,9 +307,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         );
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  inspectImage(id: unknown, earliest: moment.Moment) {
+  inspectImage = (id: unknown, earliest: moment.Moment) => {
     return Network.post("/rhn/manager/api/cm/images/inspect/" + id, { imageId: id, earliest })
       .then(() => {
         this.reloadData();
@@ -323,9 +318,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
-  buildImage(profile, version, host, earliest) {
+  buildImage = (profile, version, host, earliest) => {
     return Network.post("/rhn/manager/api/cm/build/" + profile, {
       version: version,
       buildHostId: host,
@@ -339,7 +334,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         });
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   render() {
     const panelButtons = (
@@ -434,10 +429,6 @@ type ImageViewListState = {
 class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
   constructor(props) {
     super(props);
-
-    ["selectImage", "handleSelectItems", "renderRuntimeIcon", "renderInstances"].forEach(
-      (method) => (this[method] = this[method].bind(this))
-    );
     this.state = {
       selectedItems: [],
       instancePopupContent: {},
@@ -459,18 +450,18 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     return criteria && criteria.length > 0;
   }
 
-  selectImage(row) {
+  selectImage = (row) => {
     this.setState({
       selected: row,
     });
-  }
+  };
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
     this.props.onSelectCount(items.length);
-  }
+  };
 
   renderUpdatesIcon(row) {
     let icon;
@@ -511,7 +502,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     return icon;
   }
 
-  renderRuntimeIcon(row) {
+  renderRuntimeIcon = (row) => {
     if (!this.props.gotRuntimeInfo) {
       return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
     }
@@ -531,7 +522,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     }
 
     return icon;
-  }
+  };
 
   renderInstanceDetails(row) {
     if (!this.props.gotRuntimeInfo) {
@@ -560,7 +551,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     );
   }
 
-  renderInstances(row) {
+  renderInstances = (row) => {
     if (!this.props.gotRuntimeInfo) {
       return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
     }
@@ -593,7 +584,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
         />
       </span>
     );
-  }
+  };
 
   render() {
     let runtimeColumns: React.ReactNode[] = [];
@@ -618,7 +609,6 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
           identifier={(img) => img.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
-          initialItemsPerPage={window.userPrefPageSize}
           searchField={<SearchField filter={this.searchData} />}
           selectable
           selectedItems={this.state.selectedItems}
@@ -753,22 +743,17 @@ type ImageViewDetailsProps = {
 };
 
 class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
-  constructor(props) {
-    super(props);
-    ["onTabChange"].forEach((method) => (this[method] = this[method].bind(this)));
-  }
-
   getHashUrls(tabs) {
     const id = this.props.data.id;
     return tabs.map((t) => "#/" + t + "/" + id);
   }
 
-  onTabChange(hash) {
+  onTabChange = (hash) => {
     window.history.pushState(null, "", hash);
     if (this.props.onTabChange) {
       this.props.onTabChange(hash);
     }
-  }
+  };
 
   render() {
     const data = this.props.data;

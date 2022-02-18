@@ -14,14 +14,18 @@ Retrieve SUSE Manager pillar data for a minion_id.
 # Import python libs
 from __future__ import absolute_import
 from enum import Enum
+from contextlib import contextmanager
 import os
 import logging
 import yaml
-import json
-import sys
-import re
 import salt.utils.dictupdate
 import salt.utils.stringutils
+
+try:
+    import psycopg2
+    HAS_POSTGRES = True
+except ImportError:
+    HAS_POSTGRES = False
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
@@ -32,7 +36,7 @@ MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metada
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
 FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
-FORMULA_ORDER_FILE = FORMULAS_DATA_PATH + '/formula_order.json'
+FORMULA_PREFIX = 'formula-'
 
 # OS images path:
 IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
@@ -41,15 +45,6 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 MANAGER_STATIC_PILLAR = [
     'gpgkeys'
 ]
-
-MANAGER_GLOBAL_PILLAR = [
-    'mgr_conf'
-]
-
-MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
-MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml", "_custom_info.yml"]
-
-CONFIG_FILE = '/etc/rhn/rhn.conf'
 
 formulas_metadata_cache = dict()
 
@@ -68,7 +63,37 @@ def __virtual__():
     '''
     Ensure the pillar module name.
     '''
-    return True
+    return HAS_POSTGRES
+
+@contextmanager
+def _get_cursor():
+    defaults = {
+        'host': 'localhost',
+        'user': 'spacewalk',
+        'pass': 'spacewalk',
+        'db': 'susemanager',
+        'port': 5432,
+    }
+    opts = __opts__.get("postgres", {})
+    options = {}
+    for attr, default in defaults.items():
+        options[attr] = opts.get(attr, default)
+
+    cnx = psycopg2.connect(
+            host=options['host'],
+            user=options['user'],
+            password=options['pass'],
+            dbname=options['db'],
+            port=options['port'])
+    cursor = cnx.cursor()
+    try:
+        log.debug("Connected to DB")
+        yield cursor
+    except psycopg2.DatabaseError as err:
+        log.error("Error in database pillar: %s", err.args)
+    finally:
+        cnx.close()
+
 
 def ext_pillar(minion_id, pillar, *args):
     '''
@@ -78,63 +103,133 @@ def ext_pillar(minion_id, pillar, *args):
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
     ret = {}
 
-    # Including SUSE Manager static pillar data
-    for static_pillar in MANAGER_STATIC_PILLAR:
-        static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
-        try:
-            ret.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read(), Loader=yaml.FullLoader))
-        except Exception as exc:
-            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
+    # Load the pillar from the legacy files
+    ret = load_static_pillars(ret)
 
-    # Including SUSE Manager global pillar data
-    for global_pillar in MANAGER_GLOBAL_PILLAR:
-        global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
-        try:
-            ret.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read(), Loader=yaml.FullLoader))
-        except Exception as exc:
-            log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
-
-    # Including generated pillar data for this minion
-    minion_pillar_filename_prefix = MINION_PILLAR_FILES_PREFIX.format(minion_id=minion_id)
-    for suffix in MINION_PILLAR_FILES_SUFFIXES:
-        data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
-        if os.path.exists(data_filename):
-            try:
-                ret = salt.utils.dictupdate.merge(
-                        ret,
-                        yaml.load(open(data_filename).read(), Loader=yaml.FullLoader),
-                        strategy='recurse')
-            except Exception as error:
-                log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
+    # Load the global pillar from DB
+    with _get_cursor() as cursor:
+        ret = load_global_pillars(cursor, ret)
+        ret = load_org_pillars(minion_id, cursor, ret)
+        group_formulas, ret = load_group_pillars(minion_id, cursor, ret)
+        system_formulas, ret= load_system_pillars(minion_id, cursor, ret)
 
     # Including formulas into pillar data
     try:
-        ret.update(formula_pillars(minion_id, pillar.get("group_ids", [])))
+        ret.update(formula_pillars(system_formulas, group_formulas, ret))
     except Exception as error:
-        log.error('Error accessing formula pillar data: {message}'.format(message=str(error)))
+        log.error('Error accessing formula pillar data: %s', error)
 
     # Including images pillar
     try:
-        ret.update(image_pillars(minion_id, pillar.get("group_ids", []), pillar.get("org_id", 1)))
+        ret.update(image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)))
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
 
     return ret
 
 
-def load_formulas_from_file(formula_filename):
-    formulas = {}
-    formula_file = os.path.join(FORMULAS_DATA_PATH, formula_filename)
-    if os.path.exists(formula_file):
+def get_formula_order(pillar):
+    '''
+    Get the formula order either from the legacy file or from the pillar
+    '''
+    if 'formula_order' in pillar:
+        return pillar.pop('formula_order')
+    return []
+
+
+def load_global_pillars(cursor, pillar):
+    '''
+    Load the global pillar from the database
+    '''
+    log.debug('Loading global pillars from db')
+    # Query for global pillar and extract the formula order
+    cursor.execute('''
+            SELECT p.pillar
+            FROM susesaltpillar AS p
+            WHERE p.server_id is NULL AND p.group_id is NULL AND p.org_id is NULL;''')
+    for row in cursor.fetchall():
+        pillar = salt.utils.dictupdate.merge(pillar, row[0], strategy='recurse')
+    return pillar
+
+
+def load_org_pillars(minion_id, cursor, pillar):
+    '''
+    Load the org pillar from the database
+    '''
+    cursor.execute('''
+            SELECT p.pillar
+            FROM susesaltpillar AS p,
+                 suseminioninfo AS m
+            WHERE m.minion_id = %s
+              AND p.org_id = (SELECT s.org_id FROM rhnServer AS s WHERE s.id = m.server_id);''', (minion_id,))
+    for row in cursor.fetchall():
+        pillar = salt.utils.dictupdate.merge(pillar, row[0], strategy='recurse')
+    return pillar
+
+
+def load_group_pillars(minion_id, cursor, pillar):
+    '''
+    Load the group pillars from the DB and extract the formulas from it
+    '''
+    groups_query = '''
+        SELECT p.category, p.pillar
+        FROM susesaltpillar AS p,
+             suseminioninfo AS m
+        WHERE m.minion_id = %s
+          AND p.group_id IN (
+            SELECT g.server_group_id
+            FROM rhnServerGroupMembers AS g
+            WHERE g.server_id = m.server_id
+          );
+    '''
+    cursor.execute(groups_query, (minion_id,));
+    group_formulas = {}
+    for row in cursor.fetchall():
+        if row[0].startswith(FORMULA_PREFIX):
+            # Handle formulas separately
+            group_formulas[row[0][len(FORMULA_PREFIX):]] = row[1]
+        else:
+            pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy='recurse')
+
+    return (group_formulas, pillar)
+
+
+def load_system_pillars(minion_id, cursor, pillar):
+    '''
+    Load the system pillars from the DB and extract the formulas from it
+    '''
+    minion_query = '''
+        SELECT p.category, p.pillar
+        FROM susesaltpillar AS p,
+             suseminioninfo AS m
+        WHERE m.minion_id = %s
+          AND m.server_id = p.server_id;'''
+    cursor.execute(minion_query, (minion_id,))
+    server_formulas = {}
+    for row in cursor.fetchall():
+        if row[0].startswith(FORMULA_PREFIX):
+            # Handle formulas separately
+            server_formulas[row[0][len(FORMULA_PREFIX):]] = row[1]
+        else:
+            pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy='recurse')
+
+    return (server_formulas, pillar)
+
+
+def load_static_pillars(pillar):
+    """
+    Including SUSE Manager static pillar data
+    """
+    for static_pillar in MANAGER_STATIC_PILLAR:
+        static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
         try:
-            with open(formula_file) as f:
-                formulas = json.load(f)
-        except Exception as error:
-            log.error('Error loading formulas from file: {message}'.format(message=str(error)))
-    return formulas
+            pillar.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read(), Loader=yaml.FullLoader))
+        except Exception as exc:
+            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
+    return pillar
 
 
-def formula_pillars(minion_id, group_ids):
+def formula_pillars(system_formulas, group_formulas, all_pillar):
     '''
     Find formula pillars for the minion, merge them and return the data.
     '''
@@ -142,49 +237,41 @@ def formula_pillars(minion_id, group_ids):
     out_formulas = []
 
     # Loading group formulas
-    data = load_formulas_from_file("group_formulas.json")
-    for group in group_ids:
-        for formula in data.get(str(group), []):
-            formula_utf8 = salt.utils.stringutils.to_str(formula)
-            formula_metadata = load_formula_metadata(formula)
-            if formula_metadata.get("type", "") != "cluster-formula":
-                # a minion can be in multiple cluster groups, each group with its own cluster-formulas
-                # in such a case we want to merge all values from cluster-formulas
-                # the values of the formula will be under different keys, mgr_clusters:cluster1:.., mgr_clusters:cluster2:...
-                if formula_utf8 in out_formulas:
-                    continue # already processed
-            out_formulas.append(formula_utf8)
-            pillar = salt.utils.dictupdate.merge(pillar,
-                     load_formula_pillar(minion_id, group, formula, formula_metadata),
-                     strategy='recurse')
+    for formula_name in group_formulas:
+        formula_metadata = load_formula_metadata(formula_name)
+        if formula_name in out_formulas:
+            continue # already processed
+        out_formulas.append(formula_name)
+        pillar = salt.utils.dictupdate.merge(pillar,
+                       load_formula_pillar(system_formulas.get(formula_name, {}),
+                           group_formulas[formula_name],
+                           formula_name,
+                           formula_metadata),
+                        strategy='recurse')
 
     # Loading minion formulas
-    data = load_formulas_from_file("minion_formulas.json")
-    for formula in data.get(str(minion_id), []):
-        formula_utf8 = salt.utils.stringutils.to_str(formula)
-        if formula_utf8 in out_formulas:
+    for formula_name in system_formulas:
+        if formula_name in out_formulas:
             continue # already processed
-        out_formulas.append(formula_utf8)
+        out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
-                 load_formula_pillar(minion_id, None, formula),
-                 strategy='recurse')
+                load_formula_pillar(system_formulas[formula_name], {}, formula_name), strategy='recurse')
 
     # Loading the formula order
-    if os.path.exists(FORMULA_ORDER_FILE):
-        with open(FORMULA_ORDER_FILE) as ofile:
-            order = json.load(ofile)
-            pillar["formulas"] = list(filter(lambda i: i in out_formulas, order))
+    order = get_formula_order(all_pillar)
+    if order:
+        pillar["formulas"] = [formula for formula in order if formula in out_formulas]
     else:
         pillar["formulas"] = out_formulas
 
     return pillar
 
 
-def load_formula_pillar(minion_id, group_id, formula_name, formula_metadata = None):
+def load_formula_pillar(system_data, group_data, formula_name, formula_metadata = None):
     '''
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
-    layout_filename = os.path.join( MANAGER_FORMULAS_METADATA_STANDALONE_PATH, formula_name, "form.yml")
+    layout_filename = os.path.join(MANAGER_FORMULAS_METADATA_STANDALONE_PATH, formula_name, "form.yml")
     if not os.path.isfile(layout_filename):
         layout_filename = os.path.join(MANAGER_FORMULAS_METADATA_MANAGER_PATH, formula_name, "form.yml")
         if not os.path.isfile(layout_filename):
@@ -193,33 +280,14 @@ def load_formula_pillar(minion_id, group_id, formula_name, formula_metadata = No
                 log.error('Error loading data for formula "{formula}": No form.yml found'.format(formula=formula_name))
                 return {}
 
-    group_filename = os.path.join(FORMULAS_DATA_PATH, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
-    system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
-
     try:
         layout = yaml.load(open(layout_filename).read(), Loader=yaml.FullLoader)
-        group_data = json.load(open(group_filename)) if group_filename is not None and os.path.isfile(group_filename) else {}
-        system_data = json.load(open(system_filename)) if os.path.isfile(system_filename) else {}
     except Exception as error:
-        log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
+        log.error('Error loading form.yml of formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
-
-    # if group_data starts with mgr_clusters then merge and adjust without the mgr_clusters:<cluster>:settings prefix
-    cluster_name = None
-    cluster_pillar_key = None
-    if formula_metadata and formula_metadata.get("type", "") == "cluster-formula":
-        if "cluster_pillar_key" not in formula_metadata:
-            log.error("No 'cluster_pillar_key' in metadata of formula {}".format(formula_name))
-        else:    
-            cluster_pillar_key = formula_metadata["cluster_pillar_key"]
-            group_data, cluster_name = _pillar_value_by_path(group_data, "mgr_clusters:*:{}".format(cluster_pillar_key))
 
     merged_data = merge_formula_data(layout, group_data, system_data)
     merged_data = adjust_empty_values(layout, merged_data)
-
-    # put back data under cluster pillar namespace
-    if cluster_name:
-        merged_data = {"mgr_clusters": {cluster_name: {cluster_pillar_key: merged_data}}}
 
     return merged_data
 
@@ -253,7 +321,6 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
 
         ret[element_name] = value
     return ret
-
 
 def adjust_empty_values(layout, data):
     '''
@@ -359,24 +426,24 @@ def load_formula_metadata(formula_name):
         os.path.join(MANAGER_FORMULAS_METADATA_MANAGER_PATH, formula_name, "metadata.yml"),
         os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "metadata.yml")
     ]
-    
+
     # Take the first metadata file that exist
     for mpath in metadata_paths_ordered:
         if os.path.isfile(mpath):
             metadata_filename = mpath
             break
-            
-    if not metadata_filename:             
+
+    if not metadata_filename:
         log.error('Error loading metadata for formula "{formula}": No metadata.yml found'.format(formula=formula_name))
         return {}
     try:
-        metadata = yaml.load(open(metadata_filename).read())
+        metadata = yaml.load(open(metadata_filename).read(), Loader=yaml.FullLoader)
     except Exception as error:
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
 
-    formulas_metadata_cache[formula_name] = metadata                 
-    return metadata            
+    formulas_metadata_cache[formula_name] = metadata
+    return metadata
 
 def _pillar_value_by_path(data, path):
     result = data

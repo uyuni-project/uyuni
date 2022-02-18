@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -207,9 +207,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -1536,12 +1538,15 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      #array_begin()
      *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is installed but not available in
+     *                 subscribed channels")
      *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
-     *                 #prop("string", "epoch")
      *                 #prop_desc("string", "arch", "architecture label")
      *                 #prop_desc("date", "installtime", "returned only if known")
+     *                 #prop("boolean", "retracted")
      *          #struct_end()
      *      #array_end()
      */
@@ -1552,7 +1557,8 @@ public class SystemHandler extends BaseHandler {
         DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
         List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
-            Map<String, Object> item = new HashMap<>();
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", Objects.isNull(pi.getPackageId()) ? -1 : pi.getPackageId().intValue());
             item.put("name", pi.getName());
             item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
             item.put("version", pi.getVersion());
@@ -1566,6 +1572,51 @@ public class SystemHandler extends BaseHandler {
             return item;
         }).collect(toList());
         return maps;
+    }
+
+    /**
+     * List current package locks status.
+     * @param loggedInUser The current user
+     * @param sid System ID
+     * @return Returns an array of maps representing the packages locked on a system
+
+
+     * @xmlrpc.doc List current package locks status.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "system_id")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("package")
+     *                 #prop_desc("int", "package_id", "PackageID, -1 if package is locked but not available in
+     *                 subscribed channels")
+     *                 #prop("string", "name")
+     *                 #prop("string", "epoch")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop_desc("string", "arch", "architecture label")
+     *                 #prop_desc("string", "pending status", "return only if there is a pending locking")
+     *          #struct_end()
+     *      #array_end()
+     */
+    public List<Map<String, Object>> listPackagesLockStatus(User loggedInUser, Integer sid) {
+        Server server = lookupServer(loggedInUser, sid);
+
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId().longValue(), null);
+
+        return lockedPackagesResult.stream().map(pi -> {
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("package_id", pi.getPackageId().intValue());
+            item.put("name", pi.getName());
+            item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
+            item.put("version", pi.getVersion());
+            item.put("release", pi.getRelease());
+            item.put("arch", Optional.ofNullable(pi.getArch()).orElse(" "));
+            if (pi.getPending() != null) {
+                item.put("pending status", pi.getPending().equals("L") ? "Locking" : "Unlocking");
+            }
+            return item;
+        }).collect(toList());
     }
 
     /**
@@ -1712,7 +1763,7 @@ public class SystemHandler extends BaseHandler {
 
     public int deleteSystem(String clientCert) throws FaultException {
         Server server = validateClientCertificate(clientCert);
-        SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
+        systemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
                 server.getId(),
                 SystemManager.ServerCleanupType.NO_CLEANUP
                 );
@@ -1757,7 +1808,7 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
-        SystemManager.deleteServerAndCleanup(loggedInUser,
+        systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
                                     new IllegalArgumentException(
@@ -1887,7 +1938,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setGroupMembership(User loggedInUser, Integer sid, Integer sgid,
-            boolean member) throws FaultException {
+            Boolean member) throws FaultException {
         // Get the logged in user and server
         ensureSystemGroupAdmin(loggedInUser);
         Server server = lookupServer(loggedInUser, sid);
@@ -3584,7 +3635,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
                                           Date earliestOccurrence, Boolean allowModules,
-                                          Boolean onlyRelevant, boolean allowVendorChange) {
+                                          Boolean onlyRelevant, Boolean allowVendorChange) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = serverIdsIn.stream()
@@ -3737,7 +3788,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
-                                         Date earliestOccurrence, Boolean allowModules, boolean onlyRelevant) {
+                                         Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
         return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
                 onlyRelevant, false);
 
@@ -3891,7 +3942,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      */
     private Long[] schedulePackagesAction(User loggedInUser, List<Integer> sids,
-            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, boolean allowModules) {
+            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, Boolean allowModules) {
 
         List<Long> actionIds = new ArrayList<Long>();
 
@@ -4570,6 +4621,70 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule package lock for a system.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param pkgIdsToLock List of package IDs to lock (as Integers)
+     * @param pkgIdsToUnlock List of package IDs to lock (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package removal
+     * @return package action id
+     *
+     * @xmlrpc.doc Schedule package lock for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("int", "pkgIdsToLock")
+     * @xmlrpc.param #array_single("int", "pkgIdsToUnlock")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.returntype #param_desc("return_int_success")
+     */
+    public Long schedulePackageLockChange(User loggedInUser, Integer sid,
+                                          List<Integer> pkgIdsToLock,
+                                          List<Integer> pkgIdsToUnlock, Date earliestOccurrence) {
+
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(server.getId(), null);
+
+        Set<Package> pkgsAlreadyLocked = new HashSet<>();
+        List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
+                lockedPackagesResult.stream().map(PackageListItem::getPackageId)
+                        .collect(Collectors.toList()), loggedInUser);
+        pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
+
+        Set<Package> pkgsToLock = new HashSet<>();
+        List<Package> pkgsFindToLock = PackageManager.lookupByIdAndUser(pkgIdsToLock
+
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToLock.stream().filter(Objects::nonNull).forEach(pkgsToLock::add);
+
+        pkgsToLock.removeAll(pkgsAlreadyLocked);
+        pkgsToLock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.lockPackages(server.getId(), pkgsToLock);
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToLock, PackageManager.PKG_PENDING_LOCK);
+
+        Set<Package> pkgsToUnlock = new HashSet<>();
+        List<Package> pkgsFindToUnlock = PackageManager.lookupByIdAndUser(pkgIdsToUnlock
+                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+        pkgsFindToUnlock.stream().filter(Objects::nonNull).forEach(pkgsToUnlock::add);
+
+        pkgsToUnlock.forEach(x -> x.setLockPending(Boolean.TRUE));
+        PackageManager.setPendingStatusOnLockedPackages(pkgsToUnlock, PackageManager.PKG_PENDING_UNLOCK);
+
+        Set<Package> allPkgsWithAction = new HashSet<>();
+        allPkgsWithAction.addAll(pkgsToLock);
+        allPkgsWithAction.addAll(pkgsAlreadyLocked);
+
+        try {
+            // we should schedule an action for all the packages
+            Action a = ActionManager.schedulePackageLock(loggedInUser, allPkgsWithAction, earliestOccurrence, server);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+    /**
      * Lists all of the notes that are associated with a system.
      *   If no notes are found it should return an empty set.
      * @param loggedInUser The current user
@@ -5218,7 +5333,7 @@ public class SystemHandler extends BaseHandler {
      *
      *  @xmlrpc.returntype #return_int_success()
      */
-    public Integer setLockStatus(User loggedInUser, Integer serverId, boolean lockStatus) {
+    public Integer setLockStatus(User loggedInUser, Integer serverId, Boolean lockStatus) {
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(serverId.longValue(),
@@ -6470,7 +6585,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
-            return SystemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
+            return systemManager.createSystemProfile(loggedInUser, systemName, data).getId().intValue();
         }
         catch (SystemsExistException e) {
             throw new SystemsExistFaultException(e.getSystemIds());
@@ -7153,7 +7268,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                    List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+                                    List<String> optionalChildChannels, Boolean dryRun, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliest);
     }
@@ -7199,7 +7314,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
+            List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliest);
     }
@@ -7243,7 +7358,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                     Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
@@ -7290,8 +7405,8 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            boolean allowVendorChange, Date earliest) {
+            String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+            Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, allowVendorChange, earliest);
     }
@@ -7328,7 +7443,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+                                         List<String> optionalChildChannels, Boolean dryRun, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliest);
     }
@@ -7367,7 +7482,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange,
+                                         List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange,
                                          Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliest);
@@ -7405,7 +7520,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
-                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                          Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
@@ -7445,8 +7560,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
-                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-                                         boolean allowVendorChange, Date earliest) {
+                                         String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+                                         Boolean allowVendorChange, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -7742,11 +7857,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
-            String sshPassword, String activationKey, boolean saltSSH) {
+            String sshPassword, String activationKey, Boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, empty());
+                empty(), true, empty());
+        log.debug("bootstrap called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7780,10 +7896,11 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
-            String sshPrivKey, String sshPrivKeyPass, String activationKey, boolean saltSSH) {
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, Boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, empty());
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7814,11 +7931,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
-            String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
+            String sshPassword, String activationKey, Integer proxyId, Boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
-                true, of(proxyId.longValue()));
+                empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7854,10 +7972,171 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
-            String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, boolean saltSSH) {
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, Boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
-                maybeString(sshPrivKeyPass), activationKeys, true, of(proxyId.longValue()));
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, empty());
+        log.debug("bootstrap called with re-activation key: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, Integer proxyId,
+            Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, of(proxyId.longValue()));
+        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * Use SSH private key for authentication.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @xmlrpc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            Integer proxyId, Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
+                of(proxyId.longValue()));
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7877,7 +8156,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test) {
         return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid), earliestOccurrence, test);
     }
 
@@ -7897,7 +8176,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -7940,7 +8219,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         return scheduleApplyStates(loggedInUser, Arrays.asList(sid), stateNames,
                 earliestOccurrence, test);
     }
@@ -7964,7 +8243,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -8149,6 +8428,37 @@ public class SystemHandler extends BaseHandler {
             }
         }
         return skipped;
+    }
+
+    /**
+     * Connect given systems to another proxy.
+     *
+     * @param loggedInUser The current user
+     * @param sids A list of systems ids
+     * @param proxyId Id of the proxy or 0 for direct connection to SUMA server
+     * @return Returns a list of scheduled action ids
+     *
+     * @xmlrpc.doc Connect given systems to another proxy.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "systemIds")
+     * @xmlrpc.param #param("int", "proxyId")
+     * @xmlrpc.returntype #array_single("int", "actionIds", "list of scheduled action ids")
+     */
+
+    public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        try {
+            return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (java.lang.UnsupportedOperationException e) {
+            throw new UnsupportedOperationException(e.getMessage());
+        }
     }
 
     /**

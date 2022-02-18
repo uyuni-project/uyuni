@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-setup-postgresql
-Version:        4.3.1
+Version:        4.3.3
 Release:        1
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
@@ -27,12 +27,17 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:       postgresql-server > 8.4
-%if 0%{?rhel} == 5
-Requires:       postgresql84-contrib
-Requires:       postgresql84-pltcl
+%if 0%{?suse_version}
+%if 0%{?sle_version} >= 150400
+Requires:       postgresql14-server
+Requires:       postgresql14-contrib
 %else
-Requires:       postgresql-contrib >= 8.4
+Requires:       postgresql13-server
+Requires:       postgresql13-contrib
+%endif
+%else
+Requires:       postgresql-server > 12
+Requires:       postgresql-contrib >= 12
 %endif
 Requires:       lsof
 Requires:       spacewalk-dobby
@@ -53,11 +58,6 @@ install -m 0755 bin/* %{buildroot}/%{_bindir}
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d
 install -m 0644 setup/defaults.d/* %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 setup/*.conf %{buildroot}/%{_datadir}/spacewalk/setup/
-
-# Comment this parameter on PSQL 9.5
-%if 0%{?fedora} >= 24
-sed -i '/^checkpoint_segments/d' %{buildroot}/%{_datadir}/spacewalk/setup/postgresql.conf
-%endif
 
 %files
 %defattr(-,root,root,-)

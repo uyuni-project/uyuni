@@ -1,4 +1,4 @@
-default: -f pretty -r features
+default: -f pretty -r features --publish-quiet
 smdba: --tags @scope_smdba
 spacecmd: --tags @scope_spacecmd
 spacewalk_utils: --tags @scope_spacewalk_utils
@@ -14,7 +14,6 @@ content_lifecycle_management: --tags @scope_content_lifecycle_management
 res: --tags @scope_res
 recurring_actions: --tags @scope_recurring_actions
 maintenance_windows: --tags @scope_maintenance_windows
-cluster_management: --tags @scope_cluster_management
 building_container_images: --tags @scope_building_container_images
 kubernetes_integration: --tags @scope_kubernetes_integration
 openscap: --tags @scope_openscap

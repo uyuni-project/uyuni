@@ -25,7 +25,7 @@ Name:           mgr-custom-info
 Summary:        Set and list custom values for Spacewalk-enabled machines
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.2
+Version:        4.3.3
 Release:        1
 # 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
 Provides:       rhn-custom-info = 5.4.44
@@ -38,6 +38,7 @@ BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Requires:       python3-rhnlib
 %else
 BuildRequires:  python-devel

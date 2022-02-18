@@ -25,7 +25,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
     And I should see a "Monitoring" text
     And I check the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Configure Prometheus exporter formula on the CentOS minion
     When I follow "Formulas" in the content area
@@ -52,7 +52,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
     When I follow "Formulas" in the content area
     And I uncheck the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Cleanup: apply highstate after test monitoring on the CentOS minion
     When I follow "States" in the content area

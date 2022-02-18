@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,11 @@ import java.util.Date;
  *
  */
 public class CVEServerChannels extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "cve_server_channels";
+    }
 
     /**
      * @param context the job execution context

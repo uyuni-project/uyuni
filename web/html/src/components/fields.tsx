@@ -5,16 +5,11 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 class TextField extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    ["onKeyPress"].forEach((method) => (this[method] = this[method].bind(this)));
-  }
-
-  onKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && this.props.onPressEnter) {
       this.props.onPressEnter(event);
     }
-  }
+  };
 
   render() {
     const defaultClassName = this.props.className ? this.props.className : "form-control";

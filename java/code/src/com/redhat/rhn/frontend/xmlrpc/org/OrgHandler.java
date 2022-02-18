@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -69,6 +69,17 @@ public class OrgHandler extends BaseHandler {
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
     private static final String USED_KEY = "used";
     private static Logger log = Logger.getLogger(OrgHandler.class);
+
+    private final MigrationManager migrationManager;
+
+    /**
+     * Constructor
+     *
+     * @param migrationManagerIn the migration manager
+     */
+    public OrgHandler(MigrationManager migrationManagerIn) {
+        migrationManager = migrationManagerIn;
+    }
 
     /**
      * Create a new organization.
@@ -447,7 +458,7 @@ public class OrgHandler extends BaseHandler {
             }
         }
 
-        List<Long> serversMigrated = MigrationManager.migrateServers(loggedInUser,
+        List<Long> serversMigrated = migrationManager.migrateServers(loggedInUser,
                 toOrg, servers);
         return serversMigrated.toArray();
     }

@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Highlight } from "components/table/Highlight";
-import { ChannelAnchorLink } from "components/links";
+
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { ChannelType } from "core/channels/type/channels.type";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
+import { ChannelType } from "core/channels/type/channels.type";
+
+import { ChannelAnchorLink } from "components/links";
+import { Highlight } from "components/table/Highlight";
 
 type PropsType = {
   base: ChannelType;

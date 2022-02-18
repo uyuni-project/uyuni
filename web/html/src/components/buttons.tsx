@@ -75,13 +75,12 @@ type AsyncState = {
 export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
   constructor(props: AsyncProps) {
     super(props);
-    ["trigger"].forEach((method) => (this[method] = this[method].bind(this)));
     this.state = {
       value: props.initialValue ? props.initialValue : "initial",
     };
   }
 
-  trigger() {
+  trigger = () => {
     this.setState({
       value: "waiting",
     });
@@ -104,7 +103,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
         });
       }
     );
-  }
+  };
 
   render() {
     let style = "btn ";

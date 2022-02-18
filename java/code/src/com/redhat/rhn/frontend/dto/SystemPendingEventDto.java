@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,7 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -42,21 +38,8 @@ public class SystemPendingEventDto extends SystemEventDto implements Serializabl
     /**
      * @param scheduledForIn Date of creation to set
      */
-    public void setScheduledFor(String scheduledForIn) {
-        if (scheduledForIn == null) {
-            this.scheduledFor = null;
-        }
-        else {
-            try {
-                this.scheduledFor = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(scheduledForIn);
-            }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
-                        scheduledForIn);
-            }
-        }
+    public void setScheduledFor(Date scheduledForIn) {
+        this.scheduledFor = scheduledForIn;
     }
 
     /**

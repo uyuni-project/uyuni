@@ -1,12 +1,15 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
-import { Table } from "components/table/Table";
+
+import withPageWrapper from "components/general/with-page-wrapper";
+import { Messages, MessageType, ServerMessageType } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages, MessageType, ServerMessageType } from "components/messages";
+import { Table } from "components/table/Table";
+
 import Network from "utils/network";
-import withPageWrapper from "components/general/with-page-wrapper";
 
 type Props = {
   flashMessage?: ServerMessageType;
@@ -95,7 +98,6 @@ class FormulaCatalog extends React.Component<Props, State> {
             data={this.state.serverData}
             identifier={this.rowKey}
             initialSortColumnKey="name"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by formula name")} />}
           >
             <Column

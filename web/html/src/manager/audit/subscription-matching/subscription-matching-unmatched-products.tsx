@@ -1,11 +1,14 @@
 import * as React from "react";
-import { CsvLink, SystemLabel } from "./subscription-matching-util";
-import { PopUp } from "components/popup";
+
 import { ModalButton } from "components/dialog/ModalButton";
-import { Table } from "components/table/Table";
+import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
+
+import { CsvLink, SystemLabel } from "./subscription-matching-util";
 
 type UnmatchedProductsProps = {
   unmatchedProductIds: any[];
@@ -49,12 +52,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
-          <Table
-            data={this.buildData(this.props)}
-            identifier={(row) => row.id}
-            initialSortColumnKey="productName"
-            initialItemsPerPage={window.userPrefPageSize}
-          >
+          <Table data={this.buildData(this.props)} identifier={(row) => row.id} initialSortColumnKey="productName">
             <Column
               columnKey="productName"
               comparator={Utils.sortByText}
@@ -139,7 +137,6 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
         data={this.buildTableData(this.props)}
         identifier={(row) => row.id}
         initialSortColumnKey="systemName"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
       >
         <Column

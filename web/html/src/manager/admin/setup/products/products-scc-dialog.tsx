@@ -1,7 +1,9 @@
 import * as React from "react";
-import Network from "utils/network";
-import { Messages, MessageType } from "components/messages";
+
 import { Button } from "components/buttons";
+import { Messages, MessageType } from "components/messages";
+
+import Network from "utils/network";
 
 const msgMap = {
   // Nothing for now

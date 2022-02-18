@@ -1,15 +1,19 @@
 import * as React from "react";
-import { Table } from "components/table/Table";
+
+import isNil from "lodash/isNil";
+
+import { ModalButton } from "components/dialog/ModalButton";
+import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { PopUp } from "components/popup";
-import { ModalButton } from "components/dialog/ModalButton";
-import { SystemLabel, ToolTip, humanReadablePolicy } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import isNil from "lodash/isNil";
+import { Table } from "components/table/Table";
+
 import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
+import Network from "utils/network";
+
+import { humanReadablePolicy, SystemLabel, ToolTip } from "./subscription-matching-util";
+import { WarningIcon } from "./subscription-matching-util";
 
 type PinsProps = {
   pinnedMatches: any[];
@@ -105,7 +109,6 @@ class Pins extends React.Component<PinsProps> {
             key="table"
             data={this.buildRows(this.props)}
             identifier={(row) => row.id}
-            initialItemsPerPage={window.userPrefPageSize}
             initialSortColumnKey="systemName"
           >
             <Column
@@ -274,7 +277,6 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
             data={this.buildRows()}
             identifier={(row) => row.id}
             initialSortColumnKey="name"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
           >
             <Column
@@ -363,12 +365,7 @@ class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorPro
   render() {
     if (this.props.subscriptions.length > 0) {
       return (
-        <Table
-          key="table"
-          data={this.props.subscriptions}
-          identifier={(row) => row.id}
-          initialItemsPerPage={window.userPrefPageSize}
-        >
+        <Table key="table" data={this.props.subscriptions} identifier={(row) => row.id}>
           <Column columnKey="partNumber" header={t("Part number")} cell={(s) => s.partNumber} />
           <Column columnKey="description" header={t("Description")} cell={(s) => s.description} />
           <Column columnKey="policy" header={t("Policy")} cell={(s) => humanReadablePolicy(s.policy)} />

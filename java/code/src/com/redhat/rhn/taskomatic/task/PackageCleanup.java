@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -36,6 +36,11 @@ import java.util.Map;
  */
 
 public class PackageCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "package_cleanup";
+    }
 
     /**
      * {@inheritDoc}

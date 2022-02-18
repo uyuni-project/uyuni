@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -806,6 +806,23 @@ public class ErrataFactory extends HibernateFactory {
         params.put("sids", sids);
         List<Object[]> results = singleton.listObjectsByNamedQuery(
                 "Errata.retractedPackages", params);
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
+    }
+
+    /**
+     * Takes a set of packages that should be installed on a set of systems and checks whether there are
+     * and packages that are retracted. A packages counts as retracted for a server if it is contained
+     * in any retracted errata of a channel assigned to the system.
+     *
+     * @param nevras package nevras as formatted string
+     * @param sids server ids
+     * @return pairs of package and server ids of packages that are retracted for a given server.
+     */
+    public static List<Tuple2<Long, Long>> retractedPackagesByNevra(List<String> nevras, List<Long> sids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("nevras", nevras);
+        params.put("sids", sids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra", params);
         return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 18 13:59:26 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Explicitly require and buildrequire log4j12
+
+-------------------------------------------------------------------
 Mon Aug 09 11:05:06 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

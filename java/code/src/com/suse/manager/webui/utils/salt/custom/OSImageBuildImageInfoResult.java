@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,17 +14,23 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * The resulting image info from kiwi-image-build
  */
 public class OSImageBuildImageInfoResult {
 
     private OSImageInspectSlsResult.Bundle bundle;
+    private List<OSImageInspectSlsResult.Bundle> bundles;
+    private OSImageInspectSlsResult.Image image;
 
     /**
      * @return the bundle info
      */
-    public OSImageInspectSlsResult.Bundle getBundle() {
-        return bundle;
+    public List<OSImageInspectSlsResult.Bundle> getBundles() {
+        return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
     }
 }

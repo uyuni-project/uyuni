@@ -1,14 +1,14 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-ADDRESSES = { 'network'     => '0',
-              'client'      => '2',
-              'minion'      => '3',
-              'pxeboot'     => '4',
-              'range begin' => '128',
-              'range end'   => '253',
-              'proxy'       => '254',
-              'broadcast'   => '255' }.freeze
+ADDRESSES = { 'network'        => '0',
+              'sle_client'     => '2',
+              'sle_minion'     => '3',
+              'pxeboot_minion' => '4',
+              'range begin'    => '128',
+              'range end'      => '253',
+              'proxy'          => '254',
+              'broadcast'      => '255' }.freeze
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
@@ -35,43 +35,6 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'listen interfaces'               => 'dhcpd#listen_interfaces#0',
               'first option'                    => 'bind#config#options#0#0',
               'first value'                     => 'bind#config#options#0#1',
-              'first configured zone name'      => 'bind#configured_zones#0#$key',
-              'first available zone name'       => 'bind#available_zones#0#$key',
-              'first file name'                 => 'bind#available_zones#0#file',
-              'first name server'               => 'bind#available_zones#0#soa#ns',
-              'first contact'                   => 'bind#available_zones#0#soa#contact',
-              'first A name'                    => 'bind#available_zones#0#records#A#0#0',
-              'second A name'                   => 'bind#available_zones#0#records#A#1#0',
-              'third A name'                    => 'bind#available_zones#0#records#A#2#0',
-              'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
-              'fifth A name'                    => 'bind#available_zones#2#records#A#0#0',
-              'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
-              'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
-              'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
-              'second CNAME alias'              => 'bind#available_zones#0#records#CNAME#1#0',
-              'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
-              'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
-              'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
-              'second configured zone name'     => 'bind#configured_zones#1#$key',
-              'second name server'              => 'bind#available_zones#1#soa#ns',
-              'second contact'                  => 'bind#available_zones#1#soa#contact',
-              'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
-              'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
-              'second generate reverse network' => 'bind#available_zones#1#generate_reverse#net',
-              'second file name'                => 'bind#available_zones#1#file',
-              'second available zone name'      => 'bind#available_zones#1#$key',
-              'third configured zone name'      => 'bind#configured_zones#2#$key',
-              'third available zone name'       => 'bind#available_zones#2#$key',
-              'third file name'                 => 'bind#available_zones#2#file',
-              'third name server'               => 'bind#available_zones#2#soa#ns',
-              'third contact'                   => 'bind#available_zones#2#soa#contact',
-              'third NS'                        => 'bind#available_zones#2#records#NS#@#0',
-              'first A address'                 => 'bind#available_zones#0#records#A#0#1',
-              'second A address'                => 'bind#available_zones#0#records#A#1#1',
-              'third A address'                 => 'bind#available_zones#0#records#A#2#1',
-              'fourth A address'                => 'bind#available_zones#0#records#A#3#1',
-              'fifth A address'                 => 'bind#available_zones#2#records#A#0#1',
-              'sixth A address'                 => 'bind#available_zones#2#records#A#1#1',
               'TFTP base directory'             => 'tftpd#root_dir',
               'internal network address'        => 'tftpd#listen_ip',
               'branch id'                       => 'pxe#branch_id',
@@ -95,6 +58,11 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'timezone name'                   => 'timezone#name',
               'language'                        => 'keyboard_and_language#language',
               'keyboard layout'                 => 'keyboard_and_language#keyboard_layout' }.freeze
+
+BOX_IDS = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
+            'include forwarders'        => 'bind#config#include_forwarders',
+            'enable route'              => 'branch_network#firewall#enable_route',
+            'enable NAT'                => 'branch_network#firewall#enable_NAT' }.freeze
 
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',
@@ -142,6 +110,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
                       'debian10_ssh_minion' => 'bison',
+                      'debian11_minion' => 'bison',
+                      'debian11_ssh_minion' => 'bison',
                       'opensuse153arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
@@ -190,6 +160,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
+                           'debian11_minion' => 'debian-11-pool',
+                           'debian11_ssh_minion' => 'debian-11-pool',
                            'opensuse153arm_minion' => 'openSUSE Leap 15.3 (aarch64)' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
@@ -207,6 +179,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-prod
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
+                          'debian-11-pool' => 'debian-11-pool-amd64',
                           'openSUSE Leap 15.3 (aarch64)' => 'opensuse_leap15_3-aarch64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'SUMA-42-PROXY-x86_64',
@@ -224,6 +197,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
+                                    'debian-11-pool' => 'debian11-amd64',
                                     'openSUSE Leap 15.3 (aarch64)' => 'openSUSE-Leap-15.3-aarch64-uyuni' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
@@ -241,6 +215,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-P
                                            'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
+                                           'debian-11-pool' => 'debian-11-pool-amd64',
                                            'openSUSE Leap 15.3 (aarch64)' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
@@ -283,6 +258,8 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
                       'debian10_ssh_minion' => 'amd64',
+                      'debian11_minion' => 'amd64',
+                      'debian11_ssh_minion' => 'amd64',
                       'opensuse153arm_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {

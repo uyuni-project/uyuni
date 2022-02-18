@@ -1,7 +1,9 @@
 import * as React from "react";
-import { TableDataHandler } from "./TableDataHandler";
-import { SearchField } from "./SearchField";
+
 import { cloneReactElement } from "components/utils";
+
+import { SearchField } from "./SearchField";
+import { TableDataHandler } from "./TableDataHandler";
 
 type Props = {
   /** any type of data in an array, where each element is a row data */
@@ -45,9 +47,9 @@ type Props = {
 };
 
 export function CustomDataHandler(props: Props) {
-  const { ...allProps } = props;
+  const { selectable, ...allProps } = props;
   return (
-    <TableDataHandler {...allProps}>
+    <TableDataHandler {...allProps} selectable={() => selectable}>
       {({ currItems, headers, handleSelect, selectable, selectedItems, criteria }) =>
         React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }

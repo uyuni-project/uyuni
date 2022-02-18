@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @ceos8_minion
-Feature: Adding the CentOS 8 distribution custom repositories
+Feature: Add the CentOS 8 distribution custom repositories
   In order to use CentOS 8 channels with Red Hat "modules"
   As a SUSE Manager administrator
   I want to filter them out to remove the modules information
@@ -64,7 +64,8 @@ Feature: Adding the CentOS 8 distribution custom repositories
   Scenario: Create CLM filters to remove AppStream metadata
     Given I am authorized for the "Admin" section
     When I follow the left menu "Content Lifecycle > Filters"
-    Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
     And I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"

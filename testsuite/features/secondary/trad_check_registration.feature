@@ -151,7 +151,7 @@ Feature: Client display after registration
   Scenario: Show Details => Reactivation page
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Reactivation" in the content area
-    Then I should see a "System Activation Key" text
+    Then I should see a "System Reactivation Key" text
      And I should see a "Generate New Key" button
 
   Scenario: Show Details => Hardware page

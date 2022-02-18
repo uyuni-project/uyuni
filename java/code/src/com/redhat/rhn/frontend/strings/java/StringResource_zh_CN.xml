@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="zh_CN">
     <body>
@@ -10665,10 +10665,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
         <target>在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
       </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
-        <source>Package {0} not found in subscribed channels</source>
-        <target>在订阅的频道中找不到软件包 {0}</target>
-      </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
         <context-group name="ctx">
@@ -10745,25 +10741,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
         <target state="translated">虚拟网络删除</target>
-      </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
-        <source>Cluster Administrator</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-        <target state="translated">群集管理员</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
-        <source>Clusters</source>
-        <target state="translated">群集</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
-        <source>Overview</source>
-        <target state="translated">概览</target>
-      </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
-        <source>Add</source>
-        <target state="translated">添加</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
@@ -10991,14 +10968,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
@@ -11068,6 +11045,137 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">无法获取频道模块。有关详细信息，请查看服务器日志。</target>
       </trans-unit>
+      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
+        <source>Optional OVAL Files (comma separated)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
+        </context-group>
+        <target state="final">可选 OVAL 文件（逗号分隔）</target>
+      </trans-unit>
+    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+        <source>Credentials successfully updated</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
+        <source>Waiting to be processed.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
+        <source>Error getting instance data: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
+        <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.description_required" xml:space="preserve">
+        <source>Description is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.description_to_long" xml:space="preserve">
+        <source>Description must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_required" xml:space="preserve">
+        <source>Host is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_to_long" xml:space="preserve">
+        <source>Host must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.port_invalid" xml:space="preserve">
+        <source>Invalid value for the port</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.username_required" xml:space="preserve">
+        <source>Username is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.username_to_long" xml:space="preserve">
+        <source>Username must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.password_to_long" xml:space="preserve">
+        <source>Password must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.key_password_to_long" xml:space="preserve">
+        <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
+        <source>Bastion host must not exceed 255 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_host_required" xml:space="preserve">
+        <source>Bastion host is required if any other bastion property is set.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
+        <source>Invalid value for the bastion port</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_username_required" xml:space="preserve">
+        <source>Username is required.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
+        <source>Username must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
+        <source>Password must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
+        <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.ssh_data_created" xml:space="preserve">
+        <source>Pay-as-you-go {0} created successfully</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.host_exists" xml:space="preserve">
+        <source>Pay-as-you-go host already exists</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
+        <source>Pay-as-you-go {0} deleted successfully</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
+        <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <source>Pay-as-you-go authentication update</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <source>Pay-as-you-go update RMT hosts</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <source>Product data needs refresh.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <source>Product cannot be found: missing identifier {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <source>There are conflicting channel labels {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <source>A parent product conflicts with existing channels.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <source>Unexpected error while adding the product.</source>
+      <target state="new"/>
+  </trans-unit>
     </body>
   </file>
 </xliff>

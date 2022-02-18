@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,6 @@ package com.redhat.rhn.common.db.datasource;
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.db.NamedPreparedStatement;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
@@ -95,6 +94,7 @@ public class CachedStatement implements Serializable {
     // existing one with the %s expanded out.
     private CachedStatement parentStatement;
     private RestartData restartData = null;
+    private Session session = null;
 
     // We could (and probably should) cache the ResultSet metadata here as
     // well. There is no reason that the first call to each statement
@@ -102,26 +102,29 @@ public class CachedStatement implements Serializable {
 
     /**
      * Create a CachedStatement for a query
+     * @param sessionIn hibernate database session.
      * @param parsedQuery This immutable query definition.
      */
-    /* package */ CachedStatement(ParsedQuery parsedQuery) {
+    /* package */ CachedStatement(Session sessionIn, ParsedQuery parsedQuery) {
         this.protoQuery = parsedQuery;
         this.name = parsedQuery.getName();
         this.qMap = new HashMap<String, List<Integer>>();
         this.params = new ArrayList<String>(parsedQuery.getParameterList());
         this.sqlStatement = parsedQuery.getSqlStatement();
+        this.session = sessionIn;
     }
 
     /**
      * Create a CachedStatement for a query, this one being an elaborator query.
      * This is only used in executeElaboratorBatch() call below
+     * @param sessionIn hibernate database session.
      * @param newName The name for this query.
      * @param parsedQuery This immutable query definition.
      * @param orig The parent query.
      */
-    private CachedStatement(String newName, ParsedQuery parsedQuery, List<String> paramsIn,
+    private CachedStatement(Session sessionIn, String newName, ParsedQuery parsedQuery, List<String> paramsIn,
             CachedStatement orig) {
-        this(parsedQuery);
+        this(sessionIn, parsedQuery);
         parentStatement = orig;
         this.name = newName;
         this.params = paramsIn;
@@ -411,7 +414,7 @@ public class CachedStatement implements Serializable {
         if (!getName().equals("")) {
             newName = getName() + len;
         }
-        CachedStatement cs = new CachedStatement(newName, protoQuery, newParams, this);
+        CachedStatement cs = new CachedStatement(session, newName, protoQuery, newParams, this);
         cs.modifyQuery("%s", bindParams.toString());
         return cs.executeElaboratorBatch(resultList, mode, parameters);
     }
@@ -906,10 +909,9 @@ public class CachedStatement implements Serializable {
     /**
      * Get the DB connection from Hibernate and run some work on it. Since we
      * will use it to run queries/stored procs, this will also flush the session
-     * to ensure that stored procs will see changes made in the Hibernate cache
+     * to ensure that stored procs will see changes made in Hibernate cache
      */
     private <T> T doWithStolenConnection(ReturningWork<T> work) throws HibernateException {
-        Session session = HibernateFactory.getSession();
         if (session.getFlushMode().equals(FlushModeType.AUTO)) {
             session.flush();
         }

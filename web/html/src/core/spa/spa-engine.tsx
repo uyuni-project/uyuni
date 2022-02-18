@@ -1,9 +1,13 @@
-import * as React from "react";
-import App, { HtmlScreen } from "senna";
 import "senna/build/senna.css";
 import "./spa-engine.css";
-import { showErrorToastr } from "components/toastr/toastr";
+
+import * as React from "react";
+
+import App, { HtmlScreen } from "senna";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { showErrorToastr } from "components/toastr/toastr";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
@@ -103,6 +107,8 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
         }
       }
 
+      // This doesn't affect user-facing date time values, however if you touch this code, please use `localizedMoment()` here instead
+      // eslint-disable-next-line local-rules/no-raw-date
       Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();

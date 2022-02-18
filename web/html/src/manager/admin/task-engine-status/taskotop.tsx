@@ -1,14 +1,17 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
-import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
 import { HelpLink } from "components/utils/HelpLink";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 type Props = {
   refreshInterval: number;
@@ -191,7 +194,6 @@ class TaskoTop extends React.Component<Props> {
               identifier={(row) => row["id"]}
               cssClassFunction={(row) => (row["status"] === "skipped" ? "text-muted" : null)}
               initialSortColumnKey="status"
-              initialItemsPerPage={window.userPrefPageSize}
               searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
             >
               <Column columnKey="id" comparator={Utils.sortById} header={t("Task Id")} cell={(row) => row["id"]} />
