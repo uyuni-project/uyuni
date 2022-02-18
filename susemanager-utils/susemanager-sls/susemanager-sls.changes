@@ -1,3 +1,5 @@
+- Avoid using lscpu -J option in grains (bsc#1195920)
+
 -------------------------------------------------------------------
 Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
 
