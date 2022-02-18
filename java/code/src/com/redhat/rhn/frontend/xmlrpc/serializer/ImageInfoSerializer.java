@@ -57,6 +57,7 @@ public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("external", image.isExternalImage());
         helper.add("storeLabel", store != null ? store.getLabel() : "");
         helper.add("checksum", chk != null ? chk.getChecksum() : "");
+        helper.add("obsolete", image.isObsolete());
         helper.writeTo(writer);
     }
 

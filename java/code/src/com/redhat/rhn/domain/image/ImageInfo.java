@@ -80,6 +80,8 @@ public class ImageInfo extends BaseDomainHelper {
     private boolean built;
     private Set<ImageFile> imageFiles = new HashSet<>();
     private Pillar pillar;
+    private Set<DeltaImageInfo> deltaSourceFor = new HashSet<>();
+    private Set<DeltaImageInfo> deltaTargetFor = new HashSet<>();
 
     /**
      * @return the id
@@ -300,6 +302,18 @@ public class ImageInfo extends BaseDomainHelper {
         return pillar;
     }
 
+    @OneToMany
+    @JoinColumn(name = "source_image_id")
+    public Set<DeltaImageInfo> getDeltaSourceFor() {
+        return deltaSourceFor;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "target_image_id")
+    public Set<DeltaImageInfo> getDeltaTargetFor() {
+        return deltaTargetFor;
+    }
+
     /**
      * @param idIn id to set
      */
@@ -453,6 +467,13 @@ public class ImageInfo extends BaseDomainHelper {
         this.pillar = pillarIn;
     }
 
+    public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {
+        deltaSourceFor = deltaSourceForIn;
+    }
+
+    public void setDeltaTargetFor(Set<DeltaImageInfo> deltaTargetForIn) {
+        deltaTargetFor = deltaTargetForIn;
+    }
 
     /**
      * {@inheritDoc}

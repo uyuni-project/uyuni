@@ -17,7 +17,9 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.ImageFile;
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -62,6 +64,8 @@ public class ImageInfoJson {
     private Integer packages;
     private Integer installedPackages;
     private List<JsonObject> imageFiles;
+    private List<JsonObject> deltaSourceFor;
+    private List<JsonObject> deltaTargetFor;
 
     /**
      * @return the id
@@ -390,6 +394,50 @@ public class ImageInfoJson {
     }
 
     /**
+     * @return the delta images that have this image as a source
+     */
+    public List<JsonObject> getDeltaSourceFor() {
+        return deltaSourceFor;
+    }
+
+    /**
+     * @param deltaSourceForIn set of delta images that have this image as a source
+     */
+    public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {
+        this.deltaSourceFor = deltaSourceForIn.stream().map(delta -> {
+            JsonObject json = new JsonObject();
+            ImageInfo target = delta.getTargetImageInfo();
+            json.addProperty("id", target.getId());
+            json.addProperty("name", target.getName() + "-" +
+                                     target.getVersion() + "-" +
+                                     target.getRevisionNumber());
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * @return the delta images that have this image as a target
+     */
+    public List<JsonObject> getDeltaTargetFor() {
+        return deltaTargetFor;
+    }
+
+    /**
+     * @param deltaTargetForIn  set of delta images that have this image as a target
+     */
+    public void setDeltaTargetFor(Set<DeltaImageInfo> deltaTargetForIn) {
+        this.deltaTargetFor = deltaTargetForIn.stream().map(delta -> {
+            JsonObject json = new JsonObject();
+            ImageInfo source = delta.getSourceImageInfo();
+            json.addProperty("id", source.getId());
+            json.addProperty("name", source.getName() + "-" +
+                                     source.getVersion() + "-" +
+                                     source.getRevisionNumber());
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    /**
      * Creates a JSON object from an image overview object
      *
      * @param imageOverview the image overview
@@ -425,6 +473,8 @@ public class ImageInfoJson {
         json.setInstalledProducts(installedProductsJson.orElse(null));
         json.setCustomData(imageOverview.getCustomDataValues());
         json.setImageFiles(imageOverview.getImageFiles());
+        json.setDeltaSourceFor(imageOverview.getDeltaSourceFor());
+        json.setDeltaTargetFor(imageOverview.getDeltaTargetFor());
 
         return json;
     }

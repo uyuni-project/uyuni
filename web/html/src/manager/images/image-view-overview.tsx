@@ -430,6 +430,34 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>-</td>
               )}
             </tr>
+            {data.deltaSourceFor.length ? (
+              <tr>
+                <td>This image is used as delta source for:</td>
+                <td>
+                  <ul>
+                    {data.deltaSourceFor.map((d) => (
+                      <li>{d.name}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
+            {data.deltaTargetFor.length ? (
+              <tr>
+                <td>This image is used as delta target for:</td>
+                <td>
+                  <ul>
+                    {data.deltaTargetFor.map((d) => (
+                      <li>{d.name}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
           </tbody>
         </table>
         <PopUp

@@ -95,6 +95,27 @@ public class ImageInfoHandler extends BaseHandler {
     }
 
     /**
+     * Get Image Pillar
+     * @param loggedInUser The Current User
+     * @param imageId the Image id
+     * @return the pillar
+     *
+     * @xmlrpc.doc Get pillar of an Image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype struct
+     */
+    public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        return opt.get().getPillar().getPillar();
+    }
+
+    /**
      * Schedule an image import
      * @param loggedInUser The current user
      * @param name The name

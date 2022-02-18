@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -42,6 +43,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -138,7 +140,6 @@ public class ImageInfoFactory extends HibernateFactory {
             profile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
                     .add(new ImageInfoCustomDataValue(cdv, info)));
         }
-
         save(info);
         return info;
     }
@@ -278,11 +279,24 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Delete a {@link DeltaImageInfo}.
+     *
+     * @param delta the delta image info to delete
+     */
+    public static void deleteDeltaImage(DeltaImageInfo delta) {
+        removeImageFile(OSImageStoreUtils.getDeltaImageFilePath(delta));
+        instance.removeObject(delta);
+    }
+
+    /**
      * Delete a {@link ImageInfo}.
      *
      * @param imageInfo the image info to delete
      */
     public static void delete(ImageInfo imageInfo) {
+        imageInfo.getDeltaSourceFor().stream().forEach(ImageInfoFactory::deleteDeltaImage);
+        imageInfo.getDeltaTargetFor().stream().forEach(ImageInfoFactory::deleteDeltaImage);
+
         imageInfo.getImageFiles().stream().forEach(f -> {
             if (!f.isExternal()) {
                 removeImageFile(OSImageStoreUtils.getOSImageFilePath(f));
@@ -574,5 +588,61 @@ public class ImageInfoFactory extends HibernateFactory {
         });
     }
 
+    /**
+     * List all delta image infos from a given organization
+     * @param org the organization
+     * @return Returns a list of ImageInfos
+     */
+    public static List<DeltaImageInfo> listDeltaImageInfos(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<DeltaImageInfo> criteria = builder.createQuery(DeltaImageInfo.class);
+        Root<DeltaImageInfo> root = criteria.from(DeltaImageInfo.class);
+        return getSession().createQuery(criteria).getResultList();
+    }
 
+    /**
+     * Lookup an DeltaImageInfo by source and target ids
+     * @param sourceId source image Id
+     * @param targetId target image Id
+     * @return the image info
+     */
+    public static Optional<DeltaImageInfo> lookupDeltaImageInfo(long sourceId, long targetId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<DeltaImageInfo> query = builder.createQuery(DeltaImageInfo.class);
+
+        Root<DeltaImageInfo> root = query.from(DeltaImageInfo.class);
+        query.where(builder.and(
+            builder.equal(root.get("sourceImageInfo").get("id"), sourceId),
+            builder.equal(root.get("targetImageInfo").get("id"), targetId)
+            ));
+
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Create Delta Image Info
+     * @param source source image info
+     * @param target target image info
+     * @param file delta image file
+     * @param pillar delta image pillar
+     * @return the image info
+     */
+    public static DeltaImageInfo createDeltaImageInfo(ImageInfo source, ImageInfo target,
+                                                      String file, Map<String, Object> pillar) {
+
+        DeltaImageInfo info = new DeltaImageInfo();
+        info.setSourceImageInfo(source);
+        info.setTargetImageInfo(target);
+
+
+        Pillar pillarEntry = new Pillar("DeltaImage" + source.getId() + " " + target.getId(),
+                                        pillar, source.getOrg());
+        instance.saveObject(pillarEntry);
+        info.setPillar(pillarEntry);
+
+        info.setFile(file);
+
+        instance.saveObject(info);
+        return info;
+    }
 }

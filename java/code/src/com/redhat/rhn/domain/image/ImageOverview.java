@@ -81,6 +81,8 @@ public class ImageOverview {
     private Integer outdatedPackages;
     private Integer installedPackages;
     private Date modified;
+    private Set<DeltaImageInfo> deltaSourceFor;
+    private Set<DeltaImageInfo> deltaTargetFor;
 
     /**
      * @return the id
@@ -365,6 +367,18 @@ public class ImageOverview {
                 .filter(sa -> sa.getServer().equals(getBuildServer())).findAny();
     }
 
+    @OneToMany
+    @JoinColumn(name = "source_image_id")
+    public Set<DeltaImageInfo> getDeltaSourceFor() {
+        return deltaSourceFor;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "target_image_id")
+    public Set<DeltaImageInfo> getDeltaTargetFor() {
+        return deltaTargetFor;
+    }
+
     /**
      * @param idIn the id
      */
@@ -554,6 +568,14 @@ public class ImageOverview {
      */
     public void setModified(Date modifiedIn) {
         this.modified = modifiedIn;
+    }
+
+    public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {
+        deltaSourceFor = deltaSourceForIn;
+    }
+
+    public void setDeltaTargetFor(Set<DeltaImageInfo> deltaTargetForIn) {
+        deltaTargetFor = deltaTargetForIn;
     }
 
     /**

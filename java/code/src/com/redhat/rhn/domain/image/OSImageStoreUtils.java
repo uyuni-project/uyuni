@@ -115,4 +115,15 @@ public class OSImageStoreUtils {
         }
         return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
+
+    /**
+     * Returns a Delta Image local path
+     *
+     * @param delta the delta image info
+     * @return the local path
+     */
+    public static String getDeltaImageFilePath(DeltaImageInfo delta) {
+        return getOSImageStorePathForImage(delta.getSourceImageInfo()) + delta.getFile();
+    }
+
 }
