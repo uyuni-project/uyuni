@@ -823,7 +823,7 @@ When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
   # Distribution
-  repos = "os_pool_repo os_update_repo"
+  repos = ENV["PROVIDER"] != "aws" ? "os_pool_repo os_update_repo" : "SLE-Module-Basesystem#{os_version}-Pool SLE-Module-Basesystem#{os_version}-Updates"
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
@@ -834,13 +834,13 @@ When(/^I disable repositories after installing Docker$/) do
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
+    repos = ENV["PROVIDER"] != "aws" ? "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo" : "SLE-Module-DevTools#{os_version}-Pool SLE-Module-DevTools#{os_version}-Updates SLE-Module-Desktop-Applications#{os_version}-Pool SLE-Module-Desktop-Applications#{os_version}-Updates"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
-    repos = "containers_pool_repo containers_updates_repo"
+    repos = ENV["PROVIDER"] != "aws" ? "containers_pool_repo containers_updates_repo" : "SLE-Module-Containers#{os_version}-Pool SLE-Module-Containers#{os_version}-Updates"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 end
