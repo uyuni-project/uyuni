@@ -1,3 +1,4 @@
+- Reuse certificate code.
 - Allow alternative certificate filenames for update-ca-cert-trust.sh.
 
 -------------------------------------------------------------------
