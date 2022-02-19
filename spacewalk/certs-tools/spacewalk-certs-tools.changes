@@ -1,4 +1,4 @@
-- support checking proxy containers TLS certificates
+- Allow alternative certificate filenames for update-ca-cert-trust.sh.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:02:00 CET 2022 - jgonzalez@suse.com
