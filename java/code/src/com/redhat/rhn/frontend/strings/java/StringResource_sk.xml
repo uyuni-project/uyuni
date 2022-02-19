@@ -7883,61 +7883,61 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="file_lists.failure" xml:space="preserve">
         <source>{0} File List(s) could not be deleted.</source>
-        <target/>
+        <target>{0} zoznam(y) súborov sa nepodarilo vymazať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.poweron" xml:space="preserve">
         <source>Power On</source>
-        <target/>
+        <target>Zapnúť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.poweroff" xml:space="preserve">
         <source>Power Off</source>
-        <target/>
+        <target>Vypnúť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.reboot" xml:space="preserve">
         <source>Reboot</source>
-        <target/>
+        <target>Reštartovať</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.command_failed" xml:space="preserve">
         <source>Cobbler reported a power management error, please check Cobbler logs.</source>
-        <target/>
+        <target>Cobbler nahlásil chybu správy napájania, skontrolujte, prosím, záznamy pre Cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.not_configured" xml:space="preserve">
         <source>Cannot do power management on a system that has no saved configuration.</source>
-        <target/>
+        <target>Nie je možné vykonávať správu napájania na systéme, ktorý nemá uloženú konfiguráciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
         <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
-        <target/>
+        <target>Táto funkcia je dostupná len na serveroch @@PRODUCT_NAME@@, ktoré majú nainštalovaných "agentov zábran", ktorí sú prípadne k dispozícii ako balíky "fence-agents", "fence-agents-all" alebo "fence-agents-ipmilan" v závislosti od operačného systému a požadovanej infraštruktúry správy napájania. Prosím, nainštalujte agentov zábran. Ak pre váš operačný systém nie sú k dispozícii agenti zábran, funkcia správy napájania nie je podporovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
-        <target/>
+        <target>Pokročilý správca večierky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc" xml:space="preserve">
         <source>APC</source>
-        <target/>
+        <target>APC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc_snmp" xml:space="preserve">
         <source>APC via SNMP</source>
-        <target/>
+        <target>APC cez SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
