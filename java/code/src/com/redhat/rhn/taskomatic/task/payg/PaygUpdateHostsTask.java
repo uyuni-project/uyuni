@@ -64,7 +64,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
             log.error("error when writing the hosts file", e);
         }
         finally {
-            String[] cmd = {"/usr/sbin/update-ca-certificates"};
+            String[] cmd = {"/usr/share/rhn/certs/update-ca-cert-trust.sh"};
             executeExtCmd(cmd);
         }
     }
