@@ -1,3 +1,5 @@
+- preserve TLS Certificates during migration
+
 -------------------------------------------------------------------
 Tue Feb 15 10:02:51 CET 2022 - jgonzalez@suse.com
 
