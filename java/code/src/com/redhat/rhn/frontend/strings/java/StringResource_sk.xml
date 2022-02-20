@@ -7923,7 +7923,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
-        <target>Pokročilý správca večierky</target>
+        <target>Advanced Lights Out Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -7944,70 +7944,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve">
         <source>BayTech</source>
-        <target/>
+        <target state="needs-translation">BayTech</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve">
         <source>BladeCenter</source>
-        <target/>
+        <target>BladeCenter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.brocade" xml:space="preserve">
         <source>BROCADE</source>
-        <target/>
+        <target>BROCADE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.bullpap" xml:space="preserve">
         <source>Bull FAME via PAP</source>
-        <target/>
+        <target>Bull FAME cez PAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
         <source>Cisco MDS</source>
-        <target/>
+        <target>Cisco MDS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
         <source>Cisco UCS</source>
-        <target/>
+        <target>Cisco UCS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cpint" xml:space="preserve">
         <source>GFS on s390 and zSeries</source>
-        <target/>
+        <target>GFS na s390 a zSeries</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve">
         <source>Dell DRAC</source>
-        <target/>
+        <target>Dell DRAC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve">
         <source>Dell DRAC 5</source>
-        <target/>
+        <target>Dell DRAC 5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
-        <target/>
+        <target>Eaton SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
