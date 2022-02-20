@@ -146,10 +146,10 @@ chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-sate
 
 # we want to remove the cert from the package.
 # copy the cert to a backup place to restore them later
-if [ -e /etc/pki/tls/certs/spacewalk.crt ]; then
+if [ -L /etc/pki/tls/certs/spacewalk.crt ]; then
   cp /etc/pki/tls/certs/spacewalk.crt /etc/pki/tls/certs/uyuni.crt
 fi
-if [ -e /etc/pki/tls/private/spacewalk.key ]; then
+if [ -L /etc/pki/tls/private/spacewalk.key ]; then
   cp /etc/pki/tls/private/spacewalk.key /etc/pki/tls/private/uyuni.key
 fi
 
@@ -170,23 +170,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 %endif
 
-# restore the cert if we lost it
-if [ -e /etc/pki/tls/certs/uyuni.crt ]; then
-  if [ -e /etc/pki/tls/certs/spacewalk.crt ]; then
-    rm -f /etc/pki/tls/certs/uyuni.crt
-  else
-    mv /etc/pki/tls/certs/uyuni.crt /etc/pki/tls/certs/spacewalk.crt
-  fi
-fi
-if [ -e /etc/pki/tls/private/uyuni.key ]; then
-  if [ -e /etc/pki/tls/private/spacewalk.key ]; then
-    rm -f /etc/pki/tls/private/uyuni.key
-  else
-    mv /etc/pki/tls/private/uyuni.key /etc/pki/tls/private/spacewalk.key
-  fi
-fi
-
-
 # sudo is reading every file here! So ensure we do not have duplicate definitions!
 if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
   mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
@@ -204,5 +187,24 @@ if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/de
     echo "WARNING: Found deprecated configuration items in /etc/rhn/rhn.conf"
 fi
 ### END
+
+
+%posttrans
+# restore the cert if we lost it
+if [ -e /etc/pki/tls/certs/uyuni.crt ]; then
+  if [ -f /etc/pki/tls/certs/spacewalk.crt ]; then
+    rm -f /etc/pki/tls/certs/uyuni.crt
+  else
+    mv /etc/pki/tls/certs/uyuni.crt /etc/pki/tls/certs/spacewalk.crt
+  fi
+fi
+if [ -e /etc/pki/tls/private/uyuni.key ]; then
+  if [ -f /etc/pki/tls/private/spacewalk.key ]; then
+    rm -f /etc/pki/tls/private/uyuni.key
+  else
+    mv /etc/pki/tls/private/uyuni.key /etc/pki/tls/private/spacewalk.key
+  fi
+fi
+
 
 %changelog
