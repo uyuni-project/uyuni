@@ -6,4 +6,5 @@ After=postgresql.service
 [Service]
 ExecStart=/usr/sbin/spacewalk-startup-helper check-database 
 Type=oneshot
+IgnoreSIGPIPE=false
 RemainAfterExit=yes
