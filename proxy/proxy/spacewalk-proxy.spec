@@ -16,11 +16,6 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
-%endif
-
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
@@ -34,9 +29,6 @@ BuildRequires:  python3
 BuildArch:      noarch
 Requires:       httpd
 Requires:       python3-uyuni-common-libs
-%if 0%{?pylint_check}
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -243,12 +235,6 @@ install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ss
 install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 
 %check
-%if 0%{?pylint_check}
-# check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}:/usr/share/rhn
-# Run pylint check but never fail
-spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn ||:
-%endif
 
 %post broker
 if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
