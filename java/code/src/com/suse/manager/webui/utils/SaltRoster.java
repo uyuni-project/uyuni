@@ -70,7 +70,7 @@ public class SaltRoster {
         remotePortForwarding.ifPresent(forwarding -> hostData.put("remote_port_forwards",
                 forwarding));
         sshOption.ifPresent(option -> hostData.put("ssh_options",
-                Arrays.asList(option)));
+                option));
         timeout.ifPresent(value -> hostData.put("timeout", value));
         minionOpts.ifPresent(options -> hostData.put("minion_opts", options));
         sshPreflightScriptPath.ifPresent(value -> hostData.put("ssh_pre_flight", value));
