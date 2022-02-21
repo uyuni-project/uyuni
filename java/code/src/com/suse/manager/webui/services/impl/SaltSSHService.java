@@ -66,7 +66,6 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -441,6 +440,7 @@ public class SaltSSHService {
         }
         /*
         Termporary disable this block to test if it's really required
+        //import org.apache.commons.lang3.text.StrSubstitutor;
         if (tunnel) {
             Map<String, String> values = new HashMap<>();
             values.put("pushKey", PROXY_SSH_PUSH_KEY);
