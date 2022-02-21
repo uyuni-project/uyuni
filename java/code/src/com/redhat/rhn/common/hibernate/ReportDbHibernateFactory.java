@@ -516,7 +516,7 @@ public class ReportDbHibernateFactory {
                 baos.close();
             }
             catch (IOException ex) {
-                throw new DatabaseException(ex.toString());
+                LOG.error(ex);
             }
         }
     }
@@ -547,7 +547,7 @@ public class ReportDbHibernateFactory {
                     is.close();
                 }
                 catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    LOG.error(ex);
                 }
             }
         }
