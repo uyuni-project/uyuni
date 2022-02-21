@@ -331,8 +331,9 @@ public class SaltServerActionService {
             if (details == null) {
                 return Collections.emptyMap();
             }
-            ImageStore store = ImageStoreFactory.lookupById(details.getImageStoreId()).get();
-            return imageInspectAction(minions, details, store);
+            return ImageStoreFactory.lookupById(details.getImageStoreId())
+                    .map(store -> imageInspectAction(minions, details, store))
+                    .orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
