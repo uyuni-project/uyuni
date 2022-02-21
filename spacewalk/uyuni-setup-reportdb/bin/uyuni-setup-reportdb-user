@@ -203,7 +203,6 @@ else ### INTERACTIVE=0
 
 fi
 
-
 DBUSER=$(echo $DBUSER | tr '[:upper:]' '[:lower:]')
 if [ "$DBUSER" == "$SUMA_DBUSER" ]; then
     echo "No action allowed for user $SUMA_DBUSER, because it's the SUMA User Admin."
