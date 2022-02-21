@@ -1416,6 +1416,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   $server.run(command)
 end
 
+When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  next unless host.include? 'ceos'
+
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
+end
+
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   round_minute = 60 # spacecmd uses timestamps with precision to minutes only
   long_wait_delay = 600
