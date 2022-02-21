@@ -23,7 +23,6 @@
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
-%global pylint_check 1
 %if 0%{?suse_version}
 %define apache_user wwwrun
 %define apache_group www
@@ -91,10 +90,6 @@ Requires:       python-certifi
 BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
-%endif
-%if 0%{?pylint_check}
-BuildRequires:  %{pythonX}-setuptools
-BuildRequires:  spacewalk-%{pythonX}-pylint
 %endif
 Requires:       cobbler >= 3.0.0
 Requires:       perl-Satcon
@@ -261,10 +256,6 @@ exit 0
 
 %check
 make test
-%if 0%{?pylint_check}
-# check coding style
-spacewalk-python3-pylint $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py ||:
-%endif
 
 %files
 %defattr(-,root,root,-)
