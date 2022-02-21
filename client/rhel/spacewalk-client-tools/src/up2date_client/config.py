@@ -14,7 +14,7 @@ import os
 import sys
 import locale
 from rhn.connections import idn_ascii_to_puny, idn_puny_to_unicode
-from rhn.i18n import ustr, sstr
+from rhn.stringutils import ustr, sstr
 
 try: # python2
     from urlparse import urlsplit, urlunsplit

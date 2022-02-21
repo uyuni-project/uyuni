@@ -12,7 +12,7 @@ from up2date_client import up2dateErrors
 from up2date_client import up2dateLog
 from up2date_client import config
 from up2date_client.pkgplatform import getPlatform
-from rhn.i18n import sstr, bstr
+from rhn.stringutils import sstr, bstr
 
 t = gettext.translation('rhn-client-tools', fallback=True)
 # Python 3 translations don't have a ugettext method

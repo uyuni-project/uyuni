@@ -2,7 +2,7 @@
 
 import time
 import traceback
-from rhn.i18n import ustr, sstr
+from rhn.stringutils import ustr, sstr
 from up2date_client import config
 
 class Log:

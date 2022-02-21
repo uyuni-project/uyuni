@@ -22,7 +22,7 @@ import re
 import sys
 
 from rhn import transports
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 from rhn.UserDictCase import UserDictCase
 
 try: # python2

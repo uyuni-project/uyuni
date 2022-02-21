@@ -14,7 +14,7 @@
 #
 
 import os
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 from uyuni.common import checksum
 
 def get_package_header(filename=None, file_obj=None, fd=None):

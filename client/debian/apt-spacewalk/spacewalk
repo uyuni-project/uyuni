@@ -33,7 +33,7 @@ from up2date_client import config
 from up2date_client import rhnChannel
 from up2date_client import up2dateAuth
 from up2date_client import up2dateErrors
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 
 

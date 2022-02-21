@@ -24,7 +24,7 @@ from up2date_client import config
 from up2date_client import rhnserver
 from up2date_client.up2dateUtils import getMachineId
 
-from rhn.i18n import ustr
+from rhn.stringutils import ustr
 
 try:
     long
