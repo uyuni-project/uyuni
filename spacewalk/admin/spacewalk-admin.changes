@@ -1,5 +1,9 @@
-- migrate postgresql auth to scram-sha-256
-- fix autogeneration of the reportdb password
+-------------------------------------------------------------------
+Mon Feb 21 12:07:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * migrate postgresql auth to scram-sha-256
+  * fix autogeneration of the reportdb password
 
 -------------------------------------------------------------------
 Tue Feb 15 10:01:05 CET 2022 - jgonzalez@suse.com
