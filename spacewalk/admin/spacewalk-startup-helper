@@ -77,7 +77,9 @@ db_migrate_md5_to_scram() {
     if ! grep "md5" /var/lib/pgsql/data/pg_hba.conf >/dev/null; then
         return
     fi
+    logger -p user.notice "Migrate database password encryption from md5 to scram-sha256"
     if ! grep -E "^password_encryption[[:space:]]*=[[:space:]]*scram-sha-256" /var/lib/pgsql/data/postgresql.conf >/dev/null; then
+        logger -p user.notice "Set database password encryption default to scram-sha256"
         echo "password_encryption = scram-sha-256" >> /var/lib/pgsql/data/postgresql.conf
         systemctl reload postgresql
     fi
@@ -85,8 +87,10 @@ db_migrate_md5_to_scram() {
     parse_rhn_property "db_user" DBUSER
     parse_rhn_property "db_password" DBPASSWD
 
+    logger -p user.notice "Reset database password for user: $DBUSER"
     runuser - postgres -c "echo \"ALTER USER $DBUSER WITH PASSWORD '$DBPASSWD';\" | psql"
 
+    logger -p user.notice "Change encryption in pg_hba.conf to scram-sha-256"
     sed -i 's|md5|scram-sha-256|g' /var/lib/pgsql/data/pg_hba.conf
 }
 
