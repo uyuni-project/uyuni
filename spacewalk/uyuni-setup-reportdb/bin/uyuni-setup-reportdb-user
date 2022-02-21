@@ -169,18 +169,6 @@ if [ "$INTERACTIVE" = "1" ] ; then
   fi
 
   default_or_input "User:" DBUSER ''
-  DBUSER=$(echo $DBUSER | tr '[:upper:]' '[:lower:]')
-  
-  if [ "$DBUSER" == "$SUMA_DBUSER" ]; then
-      echo "No action allowed for user $SUMA_DBUSER, because it's the SUMA User Admin."
-      exit 1
-  fi
-  
-  
-  if [ "$DBUSER" == "$DBUSER_FROM_RHN_CONF" ]; then
-      echo "This script is not allowed to change $DBUSER_FROM_RHN_CONF, because it's the $DBNAME Admin (only read-only user allowed)"
-      exit 1
-  fi
   
   if [ "$ACTION" != "d" ]; then
     parse_password
@@ -213,6 +201,19 @@ else ### INTERACTIVE=0
     exit 1
   fi
 
+fi
+
+
+DBUSER=$(echo $DBUSER | tr '[:upper:]' '[:lower:]')
+if [ "$DBUSER" == "$SUMA_DBUSER" ]; then
+    echo "No action allowed for user $SUMA_DBUSER, because it's the SUMA User Admin."
+    exit 1
+fi
+
+
+if [ "$DBUSER" == "$DBUSER_FROM_RHN_CONF" ]; then
+    echo "This script is not allowed to change $DBUSER_FROM_RHN_CONF, because it's the $DBNAME Admin (only read-only user allowed)"
+    exit 1
 fi
 
 QUERY=""
