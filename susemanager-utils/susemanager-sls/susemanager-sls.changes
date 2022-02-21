@@ -1,4 +1,8 @@
-- Postgres exporter package was renamed
+-------------------------------------------------------------------
+Mon Feb 21 22:48:33 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Postgres exporter package was renamed
 
 -------------------------------------------------------------------
 Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
