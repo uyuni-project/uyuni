@@ -560,6 +560,12 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
+When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
+  if $product == product_version
+    step %(I open the sub-list of the product "#{product}")
+  end
+end
+
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
