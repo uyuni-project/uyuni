@@ -1,3 +1,4 @@
+- Improved task to update the reporting database
 - Fix disappearing metadata key files after channel change (bsc#1192822)
 - New endpoint 'createFirst' added to 'org' xmlrpc api to allow initial organization and user creation
 - Corrected source URLs in spec file.

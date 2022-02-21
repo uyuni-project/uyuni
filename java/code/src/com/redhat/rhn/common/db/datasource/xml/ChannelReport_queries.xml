@@ -93,18 +93,4 @@
   </query>
 </mode>
 
-<mode name="SystemErrata" class="">
-    <query params="offset, limit">
-          SELECT rhnserverneedederratacache.server_id AS system_id
-                      , rhnserverneedederratacache.errata_id
-                      , rhnserver.hostname
-                      , rhnerrata.advisory_name
-                      , rhnerrata.advisory_type
-            FROM rhnserverneedederratacache
-                      INNER JOIN rhnserver ON rhnserverneedederratacache.server_id = rhnserver.id
-                      INNER JOIN rhnerrata ON rhnserverneedederratacache.errata_id = rhnerrata.id
-        ORDER BY system_id, errata_id OFFSET :offset LIMIT :limit
-  </query>
-</mode>
-
 </datasource_modes>
