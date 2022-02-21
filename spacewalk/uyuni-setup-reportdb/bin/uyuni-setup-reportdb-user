@@ -2,6 +2,8 @@
 
 DBNAME_ATTRIBUTE="report_db_name"
 RHN_CONF="/etc/rhn/rhn.conf"
+SUMA_DBUSER_ATTRIBUTE="db_user" #the script should not allow changes to this user
+DBUSER_ATTRIBUTE="report_db_user" #the script should not allow changes to this user
 INTERACTIVE=1
 INTERACTIVE_RETRIES=3
 
@@ -24,11 +26,11 @@ options:
   --dbpassword=DBPASSWORD
             Report DB Password
   --add
-            Add the new user
+            Add the new user (case insensitive)
   --delete
-            Delete the user
+            Delete the user (case insensitive)
   --modify
-            Set a new password
+            Set a new password (case insensitive)
 
 HELP
     exit 1
@@ -105,6 +107,11 @@ parse_properties() {
 }
 
 parse_properties $DBNAME_ATTRIBUTE DBNAME
+parse_properties $SUMA_DBUSER_ATTRIBUTE SUMA_DBUSER
+SUMA_DBUSER=$(echo $SUMA_DBUSER | tr '[:upper:]' '[:lower:]')
+
+parse_properties $DBUSER_ATTRIBUTE DBUSER_FROM_RHN_CONF
+DBUSER_FROM_RHN_CONF=$(echo $DBUSER_FROM_RHN_CONF | tr '[:upper:]' '[:lower:]')
 
 if [ -z $DBNAME ]; then
   echo "$DBNAME_ATTRIBUTE is missing. Exit"
@@ -145,7 +152,7 @@ done
 if [ "$INTERACTIVE" = "1" ] ; then
   echo "Report DB Name is: $DBNAME"
   for i in $(seq $INTERACTIVE_RETRIES) ; do
-    default_or_input "[a]dd/[m]odify/[d]elete user. Default is " ACTION 'm'
+    default_or_input "[a]dd/[m]odify/[d]elete user (case insensitive). Default is " ACTION 'm'
       case "$ACTION" in
         a|m|d)
         break
@@ -163,7 +170,21 @@ if [ "$INTERACTIVE" = "1" ] ; then
   fi
 
   default_or_input "User:" DBUSER ''
+  DBUSER=$(echo $DBUSER | tr '[:upper:]' '[:lower:]')
+  
+  if [ "$DBUSER" == "$SUMA_DBUSER" ]; then
+      echo "No action allowed for user $SUMA_DBUSER, because it's the SUMA User Admin."
+      exit 1
+  fi
+  
+  
+  if [ "$DBUSER" == "$DBUSER_FROM_RHN_CONF" ]; then
+      echo "This script is not allowed to change $DBUSER_FROM_RHN_CONF, because it's the $DBNAME Admin (only read-only user allowed)"
+      exit 1
+  fi
+  
 
+  
   if [ "$ACTION" != "d" ]; then
     parse_password
     if [ -z $DBPASSWORD ]; then
@@ -185,7 +206,7 @@ else ### INTERACTIVE=0
     exit 1
   fi
   
-  if [ -z $USER ]; then
+  if [ -z $DBUSER ]; then
     echo "User is missing. Exit"
     exit 1
   fi
