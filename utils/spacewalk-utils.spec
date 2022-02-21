@@ -16,11 +16,6 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
-%endif
-
 Name:           spacewalk-utils
 Version:        4.3.5
 Release:        1
@@ -35,12 +30,6 @@ BuildRequires:  docbook-utils
 BuildRequires:  fdupes
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
-%if 0%{?pylint_check}
-BuildRequires:  python3-solv
-BuildRequires:  python3-uyuni-common-libs
-BuildRequires:  spacewalk-python3-pylint
-BuildRequires:  (python3-PyYAML or python3-pyyaml)
-%endif
 BuildRequires:  uyuni-base-common
 
 # Required by spacewalk-hostname-rename
@@ -139,10 +128,6 @@ pushd %{buildroot}
 popd
 
 %check
-%if 0%{?pylint_check}
-# check coding style
-spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
-%endif
 
 %files
 %defattr(-,root,root)
