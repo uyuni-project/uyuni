@@ -91,23 +91,8 @@ db_migrate_md5_to_scram() {
 }
 
 check_database() {
-    if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
-        REPORTDB_EXISTS='y'
-    else
-        # check if we should setup a reporting DB
-	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
-            db_migrate_md5_to_scram
 
-            # if the main database is local, we setup the report DB automatically
-            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
-                                          --address '*' --remote '0.0.0.0/0,::/0' && {
-                REPORTDB_EXISTS='y'
-            }
-        else
-            logger -p user.notice "Database not local - skipping setup of report database"
-        fi
-    fi
-
+    # Check, if we use the correct database version
     source /etc/os-release
     DB_VERSION=$(check_db_version)
     if [ $? -ne 0 ]; then
@@ -119,6 +104,25 @@ check_database() {
     elif [ $VERSION_ID == "15.4" -a "$DB_VERSION" != "14" ]; then
         echo "Database version '$DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
         exit 1
+    fi
+
+    # Check, if the report DB was already setup
+    if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
+        REPORTDB_EXISTS='y'
+    else
+        # Check, if the DB is local and we should setup the reporting DB automated
+	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
+            # Do not use 'md5' auth anymore, migrate to 'scram-sha-256' if needed
+            db_migrate_md5_to_scram
+
+            # if the main database is local, we setup the report DB automatically
+            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
+                                          --address '*' --remote '0.0.0.0/0,::/0' && {
+                REPORTDB_EXISTS='y'
+            }
+        else
+            logger -p user.notice "Database not local - skipping setup of report database"
+        fi
     fi
 
     if [ $REPORTDB_EXISTS == 'y' ]; then
