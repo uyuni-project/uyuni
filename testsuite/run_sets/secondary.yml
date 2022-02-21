@@ -48,6 +48,7 @@
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
+- features/secondary/trad_deleted_migrate_to_minion.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
