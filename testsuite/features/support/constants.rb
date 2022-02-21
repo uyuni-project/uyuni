@@ -198,7 +198,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' =>
                                     'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
-                                    'openSUSE Leap 15.3 (aarch64)' => 'openSUSE-Leap-15.3-aarch64-uyuni' }.freeze
+                                    'openSUSE Leap 15.3 (aarch64)' => 'openSUSE-Leap-15.3-aarch64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
