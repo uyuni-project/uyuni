@@ -1,3 +1,4 @@
+- Add proxy config generation subcommand
 - implement system.bootstrap (bsc#1194909)
 - Option 'org_createfirst' added to perform initial organization and user creation
 - Added gettext build requirement for RHEL.
