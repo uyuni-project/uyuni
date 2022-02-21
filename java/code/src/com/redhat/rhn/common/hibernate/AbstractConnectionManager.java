@@ -58,7 +58,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      * @param packageNamesSet set of packages that will be scanned for hbm.xml files on initialization.
      */
     protected AbstractConnectionManager(Set<String> packageNamesSet) {
-        this.LOG =  Logger.getLogger(getClass());
+        this.LOG = Logger.getLogger(getClass());
         this.configurators = new ArrayList<>();
         this.sessionInfoThreadLocal = new ThreadLocal<>();
         this.packageNames = new HashSet<>(packageNamesSet);
@@ -290,36 +290,36 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         Session session = info.getSession();
-        try {
-            Transaction txn = info.getTransaction();
-            if (txn != null && txn.getStatus().isNotOneOf(COMMITTED, ROLLED_BACK)) {
+        Transaction txn = info.getTransaction();
+        if (txn != null && txn.getStatus().isNotOneOf(COMMITTED, ROLLED_BACK)) {
+            try {
+                txn.commit();
+            }
+            catch (RuntimeException commitException) {
+                LOG.warn("Unable to commit transaction", commitException);
+
                 try {
-                    txn.commit();
-                }
-                catch (HibernateException e) {
-                    LOG.warn("Unable to commit transaction", e);
                     txn.rollback();
                 }
-            }
-        }
-        catch (HibernateException e) {
-            LOG.error(e);
-        }
-        finally {
-            try {
-                if (session != null && session.isOpen()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("YYY Closing Hibernate Session");
-                    }
-                    session.close();
+                catch (RuntimeException rollbackException) {
+                    LOG.warn("Unable to rollback transaction", rollbackException);
                 }
             }
-            catch (HibernateException e) {
-                LOG.error("Couldn't close session");
+        }
+
+        try {
+            if (session != null && session.isOpen()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("YYY Closing Hibernate Session");
+                }
+                session.close();
             }
-            finally {
-                sessionInfoThreadLocal.remove();
-            }
+        }
+        catch (RuntimeException e) {
+            throw new HibernateRuntimeException("couldn't close session", e);
+        }
+        finally {
+            sessionInfoThreadLocal.remove();
         }
     }
 }
