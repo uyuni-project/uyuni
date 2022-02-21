@@ -315,10 +315,10 @@ abstract class AbstractConnectionManager implements ConnectionManager {
                 }
             }
             catch (HibernateException e) {
-                throw new HibernateRuntimeException("couldn't close session");
+                LOG.error("Couldn't close session");
             }
             finally {
-                sessionInfoThreadLocal.set(null);
+                sessionInfoThreadLocal.remove();
             }
         }
     }
