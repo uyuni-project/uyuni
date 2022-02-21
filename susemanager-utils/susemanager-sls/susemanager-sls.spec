@@ -39,7 +39,6 @@ Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
-BuildRequires:  python3-mock
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
 # Different package names for SUSE and RHEL:
