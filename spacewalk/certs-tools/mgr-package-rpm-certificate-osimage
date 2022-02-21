@@ -22,7 +22,7 @@ from certs.rhn_ssl_tool import legacyTreeFixup, _disableRpmMacros, _reenableRpmM
     GenCaCertRpmException
 from certs.sslToolConfig import BUILD_DIR, CERT_PATH, CA_CERT_RPM_SUMMARY, \
     CA_CRT_NAME, CA_CRT_RPM_NAME
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 CA_CERT_FULL_PATH_DEFAULT = BUILD_DIR + os.path.sep + CA_CRT_NAME
 

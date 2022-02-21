@@ -31,7 +31,7 @@ except:
 
 from config_common import utils
 from config_common.local_config import get as get_config
-from rhn.i18n import bstr, sstr
+from rhn.stringutils import bstr, sstr
 
 decodestring = base64.decodestring
 if hasattr(base64, 'decodebytes'):

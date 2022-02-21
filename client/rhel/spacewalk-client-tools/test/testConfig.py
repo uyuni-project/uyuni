@@ -6,7 +6,7 @@ import settestpath
 # test enviroments...
 import testutils
 
-from rhn.i18n import ustr
+from rhn.stringutils import ustr
 from up2date_client import config
 
 import unittest

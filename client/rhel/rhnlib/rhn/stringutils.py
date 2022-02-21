@@ -2,6 +2,7 @@
 # This module contains all the RPC-related functions the RHN code uses
 #
 # Copyright (c) 2016 Red Hat, Inc.
+# Copyright (c) 2022 SUSE, LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or

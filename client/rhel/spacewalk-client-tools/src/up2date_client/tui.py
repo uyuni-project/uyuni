@@ -38,7 +38,7 @@ from up2date_client import up2dateAuth
 from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn import rpclib
 from rhn.connections import idn_puny_to_unicode
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 from up2date_client.pmPlugin import PM_PLUGIN_NAME, PM_PLUGIN_CONF
 from up2date_client.rhnreg_constants import *
 

@@ -17,7 +17,7 @@ import os
 import sys
 import fcntl
 from errno import EWOULDBLOCK, EEXIST
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 import fcntl
 
 class LockfileLockedException(Exception):
