@@ -74,7 +74,6 @@ default_or_input() {
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
 }
 
-
 parse_password() {
   for i in $(seq $INTERACTIVE_RETRIES) ; do
     echo -n "Password: "
@@ -182,8 +181,6 @@ if [ "$INTERACTIVE" = "1" ] ; then
       echo "This script is not allowed to change $DBUSER_FROM_RHN_CONF, because it's the $DBNAME Admin (only read-only user allowed)"
       exit 1
   fi
-  
-
   
   if [ "$ACTION" != "d" ]; then
     parse_password
