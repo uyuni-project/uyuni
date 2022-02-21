@@ -84,10 +84,6 @@ insert into rhnActionType values (511, 'virt.pool_stop', 'Stops a virtual storag
 insert into rhnActionType values (512, 'virt.pool_delete', 'Deletes a virtual storage pool', 'N', 'N', 'N');
 insert into rhnActionType values (513, 'virt.pool_create', 'Creates a virtual storage pool', 'N', 'N', 'N');
 insert into rhnActionType values (514, 'virt.volume_delete', 'Deletes a virtual storage volume', 'N', 'N', 'N');
-insert into rhnActionType values (515, 'cluster.group_refresh_nodes', 'Refresh cluster group nodes', 'N', 'N', 'Y');
-insert into rhnActionType values (516, 'cluster.join_node', 'Join node to cluster', 'N', 'N', 'Y');
-insert into rhnActionType values (517, 'cluster.remove_node', 'Remove node from cluster', 'N', 'N', 'Y');
-insert into rhnActionType values (518, 'cluster.upgrade_cluster', 'Upgrade cluster', 'N', 'N', 'Y');
 insert into rhnActionType values (519, 'virt.network_state', 'Change a virtual network state', 'N', 'N', 'N');
 insert into rhnActionType values (520, 'virt.network_create', 'Creates a virtual network', 'N', 'N', 'N');
 insert into rhnActionType values (521, 'ansible.playbook', 'Execute an Ansible playbook', 'N', 'N', 'N');

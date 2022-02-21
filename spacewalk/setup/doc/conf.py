@@ -1,7 +1,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'spacewalk-cobbler-setup'
-copyright = '2021, SUSE Linux LLC'
+copyright = '2021, The Uyuni Project'
 author = 'Uyuni Project'
 
 # -- General configuration ---------------------------------------------------

@@ -5,10 +5,10 @@ TEMPLATE_DOCKER_DIR = Docker
 TEMPLATE_KIWI_DIR   = Kiwi
 
 REGISTRY_PLACEHOLDER_NOAUTH = registry.mgr.suse.de
-REGISTRY_PLACEHOLDER_AUTH   = portus.mgr.suse.de:5000
+REGISTRY_PLACEHOLDER_AUTH   = registry.mgr.suse.de:5000
 ENVIRONMENTS                = internal_nue internal_prv
 REG_REPLACEMENT_NUE_NOAUTH  = registry.mgr.suse.de
-REG_REPLACEMENT_NUE_AUTH    = portus.mgr.suse.de:5000
+REG_REPLACEMENT_NUE_AUTH    = registry.mgr.suse.de:5000
 REG_REPLACEMENT_PRV_NOAUTH  = registry.mgr.prv.suse.net
 REG_REPLACEMENT_PRV_AUTH    = registry.mgr.prv.suse.net:5000
 

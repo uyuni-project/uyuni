@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,15 +15,16 @@
 
 package com.suse.manager.webui.utils;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DynamicComparator;
 import com.redhat.rhn.frontend.listview.PageControl;
-import spark.Request;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import spark.Request;
 
 /**
  * A helper class to parse pagination related query parameters from a Spark request for further use

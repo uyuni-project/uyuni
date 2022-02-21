@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,16 +15,16 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
-import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
-import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
-import com.redhat.rhn.manager.contentmgmt.ContentManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.UserTestUtils;
-
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
+import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.UserTestUtils;
 
 public class ModuleFilterTest extends BaseTestCaseWithUser {
 

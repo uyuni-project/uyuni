@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,10 +15,12 @@
 package com.redhat.rhn.common.db.datasource;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryBuilder;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -91,6 +93,12 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static Mode getModeInternal(String name, String mode) {
+        Session session = HibernateFactory.getSession();
+        return getModeInternal(session, name, mode);
+
+    }
+
+    private static Mode getModeInternal(Session session, String name, String mode) {
         Map modes = (Map)factory.getObject(name);
         ParsedMode pm = (ParsedMode)modes.get(mode);
         if (pm == null) {
@@ -99,11 +107,11 @@ public class ModeFactory implements ManifestFactoryBuilder {
         }
         switch (pm.getType()) {
         case SELECT:
-            return new SelectMode(pm);
+            return new SelectMode(session, pm);
         case CALLABLE:
-            return new CallableMode(pm);
+            return new CallableMode(session, pm);
         case WRITE:
-            return new WriteMode(pm);
+            return new WriteMode(session, pm);
         default:
             // should never reach here
             return null;
@@ -111,13 +119,18 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static SelectMode getSelectMode(String name, String mode) {
+        Session session = HibernateFactory.getSession();
+        return getSelectMode(session, name, mode);
+    }
+
+    private static SelectMode getSelectMode(Session session, String name, String mode) {
         Map modes = (Map) factory.getObject(name);
         ParsedMode pm = (ParsedMode) modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
                               "Could not find mode " + mode + " in " + name);
         }
-        return new SelectMode(pm);
+        return new SelectMode(session, pm);
     }
 
     /**
@@ -129,6 +142,18 @@ public class ModeFactory implements ManifestFactoryBuilder {
      */
     public static SelectMode getMode(String name, String mode) {
         return getSelectMode(name, mode);
+    }
+
+    /**
+     * Retrieve a specific mode from the map of modes already parsed
+     * @param session hibernate session
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @return The requested mode
+     */
+    public static SelectMode getMode(Session session, String name, String mode) {
+        return getSelectMode(session, name, mode);
     }
 
     /**
@@ -147,6 +172,22 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     /**
+     * Retrieve a specific mode from the map of modes already parsed
+     * @param session hibernate session
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
+     * @return The requested mode
+     */
+    public static SelectMode getSelectMode(Session session, String name, String mode, boolean rdbmsSpecific) {
+        if (rdbmsSpecific) {
+            return getSelectMode(session, name, adaptModeNameToDBSystem(mode));
+        }
+        return getSelectMode(session, name, mode);
+    }
+
+    /**
      * Retrieve a specific mode from the map of modes already parsed.
      * @param name The name of the file to search, this is the name as it is passed
      *             to parseURL.
@@ -161,6 +202,21 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     /**
+     * Retrieve a specific mode from the map of modes already parsed.
+     * @param session hibernate session
+     * @param name The name of the file to search, this is the name as it is passed
+     *             to parseURL.
+     * @param mode The mode to retrieve
+     * @param clazz The class you would like the returned objects to be.
+     * @return The requested mode
+     */
+    public static SelectMode getMode(Session session, String name, String mode, Class clazz) {
+        SelectMode ret = getSelectMode(session, name, mode);
+        ret.setClassString(clazz.getName());
+        return ret;
+    }
+
+    /**
      * Retrieve a specific mode from the map of modes already parsed
      * @param name The name of the file to search, this is the name as it is
      *             passed to parseURL.
@@ -169,6 +225,18 @@ public class ModeFactory implements ManifestFactoryBuilder {
      */
     public static WriteMode getWriteMode(String name, String mode) {
         return (WriteMode)getModeInternal(name, mode);
+    }
+
+    /**
+     * Retrieve a specific mode from the map of modes already parsed
+     * @param session hibernate session
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @return The requested mode
+     */
+    public static WriteMode getWriteMode(Session session, String name, String mode) {
+        return (WriteMode)getModeInternal(session, name, mode);
     }
 
     /**
@@ -188,6 +256,22 @@ public class ModeFactory implements ManifestFactoryBuilder {
 
     /**
      * Retrieve a specific mode from the map of modes already parsed
+     * @param session hibernate database session to be used
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
+     * @return The requested mode
+     */
+    public static WriteMode getWriteMode(Session session, String name, String mode, boolean rdbmsSpecific) {
+        if (rdbmsSpecific) {
+            return (WriteMode)getModeInternal(session, name, adaptModeNameToDBSystem(mode));
+        }
+        return (WriteMode)getModeInternal(session, name, mode);
+    }
+
+    /**
+     * Retrieve a specific mode from the map of modes already parsed
      * @param name The name of the file to search, this is the name as it is
      *             passed to parseURL.
      * @param mode the mode to retrieve
@@ -195,6 +279,18 @@ public class ModeFactory implements ManifestFactoryBuilder {
      */
     public static CallableMode getCallableMode(String name, String mode) {
         return (CallableMode)getModeInternal(name, mode);
+    }
+
+    /**
+     * Retrieve a specific mode from the map of modes already parsed
+     * @param session hibernate session
+     * @param name The name of the file to search, this is the name as it is
+     *             passed to parseURL.
+     * @param mode the mode to retrieve
+     * @return The requested mode
+     */
+    public static CallableMode getCallableMode(Session session, String name, String mode) {
+        return (CallableMode)getModeInternal(session, name, mode);
     }
 
     /**

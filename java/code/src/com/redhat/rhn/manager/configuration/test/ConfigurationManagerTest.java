@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -164,7 +164,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // make sure we don't get any minion back in the list because this is not supported
         assertFalse(dr.stream().flatMapToLong(id -> LongStream.of(((ConfigSystemDto) id).getId()))
-                .anyMatch(id->id==minion.getId()));
+                .anyMatch(id->id == minion.getId()));
 
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("cfnid", cfnids[0]);
@@ -440,7 +440,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         Server srv = ServerFactoryTest.createTestServer(user, true);
         ServerFactory.save(srv);
-        DataResult <ConfigChannelDto> dr = cm.
+        DataResult<ConfigChannelDto> dr = cm.
                         listGlobalChannelsForSystemSubscriptions(srv, user, pc);
 
         assertTrue(contains(cc, dr));
@@ -460,11 +460,11 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ActivationKeyManager akManager = ActivationKeyManager.getInstance();
         ActivationKey key = akManager.createNewActivationKey(user, "Test");
 
-        DataResult <ConfigChannelDto> subscriptions = cm.
+        DataResult<ConfigChannelDto> subscriptions = cm.
                         listGlobalChannelsForActivationKeySubscriptions(key, user);
         assertTrue(contains(cc, subscriptions));
         assertFalse(subscriptions.get(0).getCanAccess());
-        DataResult <ConfigChannelDto> current = cm.
+        DataResult<ConfigChannelDto> current = cm.
                                         listGlobalChannelsForActivationKey(key, user);
         assertFalse(contains(cc, current));
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
@@ -726,7 +726,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         actual = cm.countCentrallyManagedPaths(s, user);
 
         ConfigFileCount expected = ConfigFileCount.create(
-                                                EXPECTED_COUNT.getFiles() + 1,0,
+                                                EXPECTED_COUNT.getFiles() + 1, 0,
                                                 EXPECTED_COUNT.getDirectories(), 0);
         assertEquals(expected, actual);
     }
@@ -778,7 +778,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ServerFactory.save(s);
         actual = cm.countCentrallyDeployablePaths(s, user);
         ConfigFileCount expected = ConfigFileCount.create(
-                                            EXPECTED_COUNT.getFiles() - 1,0,
+                                            EXPECTED_COUNT.getFiles() - 1, 0,
                                             EXPECTED_COUNT.getDirectories(), 0);
 
         assertEquals(expected, actual);
@@ -1059,7 +1059,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(srv1);
 
-        Set <ConfigRevision> revisions = new HashSet<ConfigRevision>();
+        Set<ConfigRevision> revisions = new HashSet<ConfigRevision>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");

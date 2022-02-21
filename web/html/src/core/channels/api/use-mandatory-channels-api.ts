@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { JsonResult } from "utils/network";
-import Network from "utils/network";
+
 import { ChannelType } from "core/channels/type/channels.type";
 import { ChannelsDependencies } from "core/channels/utils/channels-dependencies.utils";
 import {
-  processChannelDependencies,
   dependenciesTooltip as dependenciesTooltipInternal,
+  processChannelDependencies,
 } from "core/channels/utils/channels-dependencies.utils";
+
 import { MessageType } from "components/messages";
+
+import { JsonResult } from "utils/network";
+import Network from "utils/network";
 
 const msgMap = {
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
@@ -43,10 +46,10 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
     // fetch dependencies data for all child channels and base channel as well
     const needDepsInfoChannels =
       props.base && props.base.id !== -1
-        ? [props.base.id, ...props.channels.map(c => c.id)]
-        : props.channels.map(c => c.id);
+        ? [props.base.id, ...props.channels.map((c) => c.id)]
+        : props.channels.map((c) => c.id);
 
-    const mandatoryChannelsNotCached = needDepsInfoChannels.filter(channelId => !mandatoryChannelsRaw[channelId]);
+    const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !mandatoryChannelsRaw[channelId]);
     if (mandatoryChannelsNotCached.length > 0) {
       Network.post("/rhn/manager/api/admin/mandatoryChannels", mandatoryChannelsNotCached)
         .then((data: JsonResult<Map<number, Array<number>>>) => {
@@ -70,7 +73,7 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
   const dependenciesTooltip = (channelId: number, channels: Array<ChannelType>) => {
     const resolveChannelNames: Function = (channelIds: Array<number>): Array<string | null | undefined> => {
       return Array.from(channelIds || new Set())
-        .map((channelId: number): ChannelType | null | undefined => channels.find(c => c.id === channelId))
+        .map((channelId: number): ChannelType | null | undefined => channels.find((c) => c.id === channelId))
         .filter((channel: ChannelType | null | undefined): boolean => channel != null)
         .map((channel: ChannelType | null | undefined): string | null | undefined => channel && channel.name);
     };

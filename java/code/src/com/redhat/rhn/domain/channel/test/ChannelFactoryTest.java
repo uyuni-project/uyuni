@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -159,8 +159,15 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     public static Channel createTestChannel(Org org, ChannelArch arch, ChannelFamily cfam) throws Exception {
         String label = "channellabel" + TestUtils.randomString().toLowerCase();
-        String basedir = "TestChannel basedir";
         String name = "ChannelName" + TestUtils.randomString();
+
+        return createTestChannel(name, label, org, arch, cfam);
+    }
+
+    public static Channel createTestChannel(String name, String label, Org org, ChannelArch arch, ChannelFamily cfam)
+        throws Exception {
+
+        String basedir = "TestChannel basedir";
         String summary = "TestChannel summary";
         String description = "TestChannel description";
         Date lastmodified = new Date();

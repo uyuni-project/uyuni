@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -637,7 +637,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         otherServerList.add(pli2);
 
 
-        List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(otherServerList),
+        List<PackageMetadata> diff = ProfileManager.comparePackageLists(
+                new DataResult<PackageListItem>(otherServerList),
                 new DataResult<PackageListItem>(serverList), "foo");
         assertEquals(1, diff.size());
 

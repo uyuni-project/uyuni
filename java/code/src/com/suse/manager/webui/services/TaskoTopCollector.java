@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
@@ -22,8 +24,6 @@ import com.suse.manager.webui.utils.TaskoTopJob;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Collect data for the TaskoTop web UI page

@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 
-import sys
-import os
 import glob
+import hashlib
+import os
 import shutil
 import subprocess
+import sys
 import time
 import traceback
+
 from optparse import OptionParser
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
@@ -585,9 +587,16 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             rel_path = os.path.relpath(file_path, start=destdirtmp)
             (l_path, ext) = rel_path.rsplit('.', 1)
             if ext:
+                dg = hashlib.sha256()
+                with open(file_path, "rb") as pkg_fh:
+                    while True:
+                        buff = pkg_fh.read(0x1000)
+                        if not buff:
+                            break
+                        dg.update(buff)
                 (l_path, arch) = l_path.rsplit('.' if ext == 'rpm' else '_', 1)
                 with open(os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)), "w") as venv_enabled_file:
-                    venv_enabled_file.write("{}\n".format(rel_path))
+                    venv_enabled_file.write("{}  {}\n".format(dg.hexdigest(), rel_path))
                     venv_enabled_file.close()
         # move tmp dir to final location
         if os.path.exists(destdir):

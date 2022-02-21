@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.audit.ssm;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.DynaActionForm;
-
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -27,6 +21,12 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.audit.ScapManager;
+
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * SSM OpenSCAP XCCDF scanning.

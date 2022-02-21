@@ -31,7 +31,6 @@
 # pylint: disable=C0103
 
 import gettext
-from operator import itemgetter
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -56,9 +55,10 @@ def do_errata_list(self, args, doreturn=False):
 
     if doreturn:
         return self.all_errata.keys()
-    else:
-        if self.all_errata.keys():
-            print('\n'.join(sorted(self.all_errata.keys())))
+    if self.all_errata.keys():
+        print('\n'.join(sorted(self.all_errata.keys())))
+
+    return None
 
 ####################
 
@@ -71,7 +71,7 @@ def help_errata_summary(self):
 def do_errata_summary(self, args):
     self.generate_errata_cache()
     for erratum in sorted(self.all_errata.values(), key=lambda x: (x['advisory_name']), reverse=True):
-         print_errata_summary(erratum=erratum)
+        print_errata_summary(erratum=erratum)
 
     return 0
 
@@ -92,31 +92,37 @@ def complete_errata_apply(self, text, line, beg, end):
     return self.tab_complete_errata(text)
 
 
-def do_errata_apply(self, args, only_systems=None):
+def do_errata_apply(self, args, errata_list=None, only_systems=None):
     arg_parser = get_argument_parser()
+    arg_parser.add_argument('errata', nargs="*")
     arg_parser.add_argument('-s', '--start-time')
 
     args, options = parse_command_arguments(args, arg_parser)
     only_systems = only_systems or []
 
-    if not args:
+    if not options.errata and not errata_list:
         self.help_errata_apply()
         return 1
+
+    if not errata_list:
+        # allow globbing and searching via arguments
+        errata_list = self.expand_errata(options.errata)
+        # Do not assume non-interactive mode
+        del options.errata
 
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and not self.options.yes:
-        options.start_time = prompt_user(_('Start Time [now]:'))
-        options.start_time = parse_time_input(options.start_time)
+        start_time = prompt_user(_('Start Time [now]:'))
+        start_time = parse_time_input(start_time)
     else:
         if not options.start_time:
-            options.start_time = parse_time_input('now')
+            start_time = parse_time_input('now')
         else:
-            options.start_time = parse_time_input(options.start_time)
-
-    # allow globbing and searching via arguments
-    errata_list = self.expand_errata(args)
+            start_time = parse_time_input(options.start_time)
+            # Do not assume non-interactive mode
+            del options.start_time
 
     systems = []
     summary = []
@@ -163,9 +169,12 @@ def do_errata_apply(self, args, only_systems=None):
     print('--------------     -------')
     print('\n'.join(sorted(summary)))
     print('')
-    print(_('Start Time: %s') % options.start_time)
+    print(_('Start Time: %s') % start_time)
 
-    if (is_interactive(options) and not self.user_confirm(_('Apply these patches [y/N]:'))) or not self.options.yes:
+    if not is_interactive(options) and not self.options.yes:
+        return 1
+
+    if is_interactive(options) and not self.user_confirm(_('Apply these patches [y/N]:')):
         return 1
 
     # if the API supports it, try to schedule multiple systems for one erratum
@@ -192,7 +201,7 @@ def do_errata_apply(self, args, only_systems=None):
             self.client.system.scheduleApplyErrata(self.session,
                                                    to_apply[erratum],
                                                    [erratum],
-                                                   options.start_time)
+                                                   start_time)
 
             logging.info(_N('Scheduled %i system(s) for %s') %
                          (len(to_apply[erratum]),
@@ -222,7 +231,7 @@ def do_errata_apply(self, args, only_systems=None):
             self.client.system.scheduleApplyErrata(self.session,
                                                    system_id,
                                                    errata_to_apply,
-                                                   options.start_time)
+                                                   start_time)
 
             logging.info(_N('Scheduled %i patches for %s') %
                          (len(errata_to_apply), system))
@@ -505,6 +514,8 @@ def complete_errata_publish(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_softwarechannel_list('', True), text)
 
+    return None
+
 
 def do_errata_publish(self, args):
     arg_parser = get_argument_parser()
@@ -557,7 +568,7 @@ def do_errata_search(self, args, doreturn=False):
 
     if not args:
         self.help_errata_search()
-        return
+        return None
 
     out = []
     add_separator = False

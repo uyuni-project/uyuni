@@ -7,4 +7,4 @@ Before running the backend unit tests you'll need to do the following:
 
 To run the pure unit tests (no disk/network/db access):
 
-    nosetests -s test/unit/
+    pytest -s test/unit/

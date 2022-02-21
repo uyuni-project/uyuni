@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Text } from "components/input/Text";
-import { Select } from "components/input/Select";
+
 import { FormContext } from "components/input/Form";
+import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
 
 type Props = {
   index: number;
@@ -14,9 +15,9 @@ type Props = {
 export function GuestDiskFileFields(props: Props) {
   const formContext = React.useContext(FormContext);
 
-  const pool_options = ((props.poolCaps.pool_types.find(item => item.name === "dir") || {}).options || {}).volume;
+  const pool_options = ((props.poolCaps.pool_types.find((item) => item.name === "dir") || {}).options || {}).volume;
   const isCdrom = formContext.model[`disk${props.index}_device`] === "cdrom";
-  const format_values = pool_options.targetFormatType.filter(format => format === "raw" || !isCdrom) || [];
+  const format_values = pool_options.targetFormatType.filter((format) => format === "raw" || !isCdrom) || [];
   const default_format = isCdrom ? "raw" : "qcow2";
   return (
     <>

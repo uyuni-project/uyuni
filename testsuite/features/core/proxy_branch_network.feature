@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -46,13 +46,13 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Log in as admin user
+  Scenario: Show the overview page of the proxy
     Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "proxy"
 
 @proxy
 @private_net
   Scenario: Enable the branch network formulas on the branch server
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Suse Manager For Retail" text
@@ -61,6 +61,7 @@ Feature: Setup Uyuni for Retail branch network
     And I check the "dhcpd" formula
     And I check the "bind" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "branch-network" formula should be checked
     And the "dhcpd" formula should be checked
     And the "bind" formula should be checked
@@ -74,6 +75,8 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
     And I check enable SLAAC with routing box
+    And I uncheck enable route box
+    And I uncheck enable NAT box
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -91,14 +94,14 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "range begin" in dynamic IP range begin field
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
-    And I enter the local IP address of "proxy" in routers field
+    And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
     And I enter "client" in first reserved hostname field
-    And I enter the local IP address of "client" in first reserved IP field
+    And I enter the local IP address of "sle_client" in first reserved IP field
     And I enter the MAC address of "sle_client" in first reserved MAC field
     And I press "Add Item" in host reservations section
     And I enter "minion" in second reserved hostname field
-    And I enter the local IP address of "minion" in second reserved IP field
+    And I enter the local IP address of "sle_minion" in second reserved IP field
     And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -118,31 +121,31 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local zone name in second configured zone name field
     # direct zone example.org:
     And I enter "example.org" in first available zone name field
-    And I enter "master/db.example.org" in first file name field
-    And I enter "proxy" in first name server field
-    And I enter "admin@example.org." in first contact field
-    And I press "Add Item" in first A section
-    And I enter "client" in first A name field
-    And I enter the local IP address of "client" in first A address field
-    And I press "Add Item" in first A section
-    And I enter "minion" in second A name field
-    And I enter the local IP address of "minion" in second A address field
-    And I press "Add Item" in first A section
-    And I enter "proxy" in third A name field
-    And I enter the local IP address of "proxy" in third A address field
-    And I press "Add Item" in first NS section
-    And I enter "proxy.example.org." in first NS field
+    And I enter "master/db.example.org" in file name field of example.org zone
+    And I enter "proxy" in SOA name server field of example.org zone
+    And I enter "admin@example.org." in SOA contact field of example.org zone
+    And I press "Add Item" in A section of example.org zone
+    And I enter "client" in first A name field of example.org zone
+    And I enter the local IP address of "sle_client" in first A address field of example.org zone
+    And I press "Add Item" in A section of example.org zone
+    And I enter "minion" in second A name field of example.org zone
+    And I enter the local IP address of "sle_minion" in second A address field of example.org zone
+    And I press "Add Item" in A section of example.org zone
+    And I enter "proxy" in third A name field of example.org zone
+    And I enter the local IP address of "proxy" in third A address field of example.org zone
+    And I press "Add Item" in NS section of example.org zone
+    And I enter "proxy.example.org." in first NS field of example.org zone
     # reverse zone xx.168.192.in-addr.arpa:
     And I press "Add Item" in available zones section
     And I enter the local zone name in second available zone name field
-    And I enter the local file name in second file name field
-    And I enter "proxy.example.org." in second name server field
-    And I enter "admin@example.org." in second contact field
-    And I press "Add Item" in second NS section
-    And I enter "proxy.example.org." in second NS field
-    And I enter the local network in second generate reverse network field
-    And I press "Add Item" in second for zones section
-    And I enter "example.org" in second for zones field
+    And I enter the local file name in file name field of zone with local name
+    And I enter "proxy.example.org." in SOA name server field of zone with local name
+    And I enter "admin@example.org." in SOA contact field of zone with local name
+    And I press "Add Item" in NS section of zone with local name
+    And I enter "proxy.example.org." in first NS field of zone with local name
+    And I enter the local network in generate reverse network field of zone with local name
+    And I press "Add Item" in for zones section of zone with local name
+    And I enter "example.org" in first for zones field of zone with local name
     # end
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -161,15 +164,15 @@ Feature: Setup Uyuni for Retail branch network
     And I follow first "Dhcpd" in the content area
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot" in third reserved IP field
+    And I enter the local IP address of "pxeboot_minion" in third reserved IP field
     And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
-    And I press "Add Item" in first A section
-    And I enter "pxeboot" in fourth A name field
-    And I enter the local IP address of "pxeboot" in fourth A address field
+    And I press "Add Item" in A section of example.org zone
+    And I enter "pxeboot" in fourth A name field of example.org zone
+    And I enter the local IP address of "pxeboot_minion" in fourth A address field of example.org zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -184,7 +187,6 @@ Feature: Setup Uyuni for Retail branch network
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories after installing branch server
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
@@ -194,9 +196,37 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Disable repositories after installing branch services
+    When I disable repositories after installing branch server
+    # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
+    # And I wait until event "Package List Refresh scheduled by (none)" is completed
+    And I wait for "700" seconds
+
+@proxy
+@private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
     Then terminal "sle_client" should have got a retail network IP address
     And name resolution should work on terminal "sle_client"
     And terminal "sle_minion" should have got a retail network IP address
     And name resolution should work on terminal "sle_minion"
+
+@proxy
+@private_net
+  Scenario: The terminals should not reach the server
+    Then "sle_client" should not communicate with the server using private interface
+    And "sle_minion" should not communicate with the server using private interface
+
+@proxy
+@private_net
+  Scenario: Let the server know about the new IP and FQDN of the proxy
+    # WORKAROUND: bsc#1196050 - Hardware list refresh is not sufficient to detect a change in interface's IP address
+    When I restart salt-minion on "proxy"
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text

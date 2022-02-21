@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+
 import javax.persistence.PersistenceException;
 
 /**

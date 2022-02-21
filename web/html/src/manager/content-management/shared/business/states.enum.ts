@@ -20,7 +20,7 @@ const statesEnum: statesEnumType = {
 };
 
 function findByKey(key: string): stateType | Partial<stateType> {
-  return _find(statesEnum, entry => entry.key === key) || {};
+  return _find(statesEnum, (entry) => entry.key === key) || {};
 }
 
 function isDeletion(key: string) {

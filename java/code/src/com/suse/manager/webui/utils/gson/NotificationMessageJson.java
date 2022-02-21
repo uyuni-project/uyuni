@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,6 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
-
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 

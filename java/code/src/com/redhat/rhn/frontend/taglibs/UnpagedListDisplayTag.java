@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,16 @@
 
 package com.redhat.rhn.frontend.taglibs;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.DynamicComparator;
+import com.redhat.rhn.common.util.ExportWriter;
+import com.redhat.rhn.common.util.ServletExportHandler;
+import com.redhat.rhn.frontend.dto.BaseListDto;
+import com.redhat.rhn.frontend.dto.UserOverview;
+import com.redhat.rhn.frontend.struts.RequestContext;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -26,16 +36,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyContent;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.util.DynamicComparator;
-import com.redhat.rhn.common.util.ExportWriter;
-import com.redhat.rhn.common.util.ServletExportHandler;
-import com.redhat.rhn.frontend.dto.BaseListDto;
-import com.redhat.rhn.frontend.dto.UserOverview;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
  * The UnpagedListDisplayTag defines the structure of the ListView.  This tag iterates

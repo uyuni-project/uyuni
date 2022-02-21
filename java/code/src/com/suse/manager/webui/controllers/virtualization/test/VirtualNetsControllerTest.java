@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -39,6 +39,8 @@ import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -101,10 +103,12 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             }
         };
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(), serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
@@ -118,7 +122,8 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user, host);
 
-        List<VirtualNetworkInfoJson> nets = GSON.fromJson(json, new TypeToken<List<VirtualNetworkInfoJson>>() {}.getType());
+        List<VirtualNetworkInfoJson> nets = GSON.fromJson(
+                json, new TypeToken<List<VirtualNetworkInfoJson>>() { }.getType());
         assertTrue(nets.stream().filter(net -> net.getName().equals("net0")).findFirst().isPresent());
         VirtualNetworkInfoJson net1 = nets.stream().filter(net -> net.getName().equals("net1")).findFirst().get();
         assertEquals("virbr0", net1.getBridge());
@@ -136,7 +141,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         String json = virtualNetsController.devices(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user, host);
 
-        List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() {}.getType());
+        List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() { }.getType());
 
         // Physical function device
         JsonObject eth0 = devs.stream().filter(dev -> dev.get("name").getAsString().equals("eth0")).findFirst().get();
@@ -176,7 +181,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("start", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -199,7 +204,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("stop", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -222,7 +227,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("delete", virtAction.getState());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -253,7 +258,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals(41, def.getVlans().get(0).getTag());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
@@ -288,7 +293,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals(Integer.valueOf(24), def.getIpv4().orElseThrow().getPrefix());
 
         // Check the returned message
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 }

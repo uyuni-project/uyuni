@@ -1,15 +1,18 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import Network from "utils/network";
-import { SubmitButton, Button } from "components/buttons";
-import { Form } from "components/input/Form";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { Button, SubmitButton } from "components/buttons";
 import { Check } from "components/input/Check";
+import { Form } from "components/input/Form";
 import { Password } from "components/input/Password";
 import { Select } from "components/input/Select";
 import { Text } from "components/input/Text";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
-import SpaRenderer from "core/spa/spa-renderer";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/edit-store.jade
 declare global {
@@ -53,10 +56,6 @@ class CreateImageStore extends React.Component<Props, State> {
       messages: [],
     };
 
-    ["setValues", "isLabelUnique", "onUpdate", "onCreate", "onFormChange", "onValidate", "clearFields"].forEach(
-      method => (this[method] = this[method].bind(this))
-    );
-
     if (this.isEdit()) {
       this.setValues(window.storeId);
     }
@@ -66,8 +65,8 @@ class CreateImageStore extends React.Component<Props, State> {
     return window.storeId ? true : false;
   }
 
-  setValues(id) {
-    Network.get("/rhn/manager/api/cm/imagestores/" + id).then(res => {
+  setValues = (id) => {
+    Network.get("/rhn/manager/api/cm/imagestores/" + id).then((res) => {
       if (res.success) {
         var data = res.data;
         this.setState({
@@ -78,36 +77,33 @@ class CreateImageStore extends React.Component<Props, State> {
         window.location.href = "/rhn/manager/cm/imagestores/create";
       }
     });
-  }
+  };
 
-  isLabelUnique(label) {
+  isLabelUnique = (label) => {
     if (this.state.initLabel && this.state.initLabel === label) {
       return true;
     }
 
     return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
-      .then(res => !res.success)
+      .then((res) => !res.success)
       .catch(() => false);
-  }
+  };
 
-  onUpdate(model) {
+  onUpdate = (model) => {
     if (!this.isEdit()) {
       return false;
     }
 
     model.label = model.label.trim();
     model.uri = model.uri.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/update/" + window.storeId,
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imagestores/update/" + window.storeId, model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -115,26 +111,23 @@ class CreateImageStore extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onCreate(model) {
+  onCreate = (model) => {
     if (this.isEdit()) {
       return false;
     }
 
     model.label = model.label.trim();
     model.uri = model.uri.trim();
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/create",
-      model
-    ).then(data => {
+    return Network.post("/rhn/manager/api/cm/imagestores/create", model).then((data) => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -142,25 +135,25 @@ class CreateImageStore extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       model: Object.assign({}, this.defaultModel),
     });
-  }
+  };
 
   renderTypeInputs(type) {
     switch (type) {
@@ -249,7 +242,7 @@ class CreateImageStore extends React.Component<Props, State> {
           model={this.state.model}
           className="image-store-form"
           onChange={this.onFormChange}
-          onSubmit={e => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+          onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
           onValidate={this.onValidate}
         >
           <Select
@@ -259,7 +252,7 @@ class CreateImageStore extends React.Component<Props, State> {
             name="storeType"
             required
             disabled={this.isEdit()}
-            options={this.state.storeTypes.map(k => ({ value: k, label: typeMap[k] }))}
+            options={this.state.storeTypes.map((k) => ({ value: k, label: typeMap[k] }))}
           />
           <Text
             name="label"

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,11 +15,12 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 
+import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.salt.netapi.results.StateApplyResult;
+
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.salt.netapi.results.StateApplyResult;
 
 import java.util.Map;
 import java.util.Optional;

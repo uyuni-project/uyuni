@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -53,7 +53,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     private static Logger logger = Logger
             .getLogger(ContentSyncManagerNonRegressionTest.class);
 
-    private static List<String> archs = Arrays.asList("i586", "ia64", "ppc64le", "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64");
+    private static List<String> archs = Arrays.asList(
+            "i586", "ia64", "ppc64le", "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64");
 
     /** The failure strings. */
     private List<String> failures = new LinkedList<>();

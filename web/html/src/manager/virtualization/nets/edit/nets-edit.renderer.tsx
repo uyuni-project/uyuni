@@ -1,7 +1,10 @@
 import * as React from "react";
-import { NetsEdit } from "./nets-edit";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { ActionChain } from "components/action-schedule";
+
+import { NetsEdit } from "./nets-edit";
 
 type RendererProps = {
   serverId: string;

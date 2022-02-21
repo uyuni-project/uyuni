@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.taskomatic.task.checkin;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * Simple DTO class used to encapsulate rows queried from the database.

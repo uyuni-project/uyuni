@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,14 +26,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Server - Class representation of the table rhnServer.
  *
  * @version $Rev: 2143 $
  */
-public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
+public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
@@ -42,6 +45,7 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
     private String description;
     private ServerGroupType groupType;
     private Org org;
+    private Set<Pillar> pillars = new HashSet<>();
 
     /**
      * Getter for id
@@ -178,6 +182,31 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
      */
     public Long getOrgId() {
         return org.getId();
+    }
+
+    /**
+     * @return value of pillars
+     */
+    public Set<Pillar> getPillars() {
+        return pillars;
+    }
+
+    /**
+     * @param pillarsIn value of pillars
+     */
+    public void setPillars(Set<Pillar> pillarsIn) {
+        pillars.clear();
+        pillars.addAll(pillarsIn);
+    }
+
+    /**
+     * Get the pillar corresponding to a category.
+     *
+     * @param category the category of the pillar to look for
+     * @return the pillar if found
+     */
+    public Optional<Pillar> getPillarByCategory(String category) {
+        return pillars.stream().filter(pillar -> pillar.getCategory().equals(category)).findFirst();
     }
 
     /**

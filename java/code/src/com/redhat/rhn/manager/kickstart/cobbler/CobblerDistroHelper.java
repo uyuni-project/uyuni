@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 

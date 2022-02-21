@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -226,7 +226,8 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock2).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
             will(throwException(new TaskomaticApiException(new RuntimeException())));
-            allowing(taskomaticMock2).unscheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+            allowing(taskomaticMock2).unscheduleRecurringAction(
+                    with(any(RecurringAction.class)), with(any(User.class)));
             will(throwException(new TaskomaticApiException(new RuntimeException())));
         } });
         RecurringActionManager.setTaskomaticApi(taskomaticMock2);

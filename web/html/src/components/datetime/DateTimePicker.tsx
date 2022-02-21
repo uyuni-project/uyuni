@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
@@ -53,11 +54,6 @@ type DatePickerProps = {
 class DatePicker extends React.PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
-  constructor(props: DatePickerProps) {
-    super(props);
-    this.setVisible.bind(this);
-  }
-
   componentDidMount() {
     this._input?.datepicker({});
     this.setVisible(this.props.open);
@@ -99,8 +95,9 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: DatePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
+    // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setFullYear(props.year);
     date.setMonth(props.month);
@@ -108,13 +105,13 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     return date;
   }
 
-  setVisible(visible?: boolean) {
+  setVisible = (visible?: boolean) => {
     if (visible) {
       this._input?.datepicker("show");
     } else {
       this._input?.datepicker("hide");
     }
-  }
+  };
 
   render() {
     return (
@@ -127,9 +124,11 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
         data-date-language="en_US"
         data-date-format="yyyy-mm-dd"
         data-date-week-start="0"
+        // This is used by Cucumber to interact with the component
+        data-testid="date-picker"
         className="form-control"
         size={15}
-        ref={c => (this._input = jQuery(c!))}
+        ref={(c) => (this._input = jQuery(c!))}
       />
     );
   }
@@ -152,14 +151,11 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this._input?.timepicker({
       roundingFunction: (seconds, options) => seconds,
     });
-    this._input?.on("change", () => {
-      // Do nothing
-    });
     this._input?.on("timeFormatError", () => {
       // Do nothing
     });
     this._input?.timepicker("setTime", this.toFauxBrowserDate(this.props));
-    this._input?.on("changeTime", () => {
+    this._input?.on("change", () => {
       const unsafeDate: Date | undefined = this._input?.timepicker("getTime");
 
       // Only if value has actually changed
@@ -198,8 +194,9 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
     this.setVisible(props.open);
   }
 
-  // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
   toFauxBrowserDate(props: TimePickerProps) {
+    // The jQuery date picker always uses browser time (not user or server time), so we can only use it to get specific numeric values, not a coherent object
+    // eslint-disable-next-line local-rules/no-raw-date
     const date = new Date();
     date.setHours(props.hours);
     date.setMinutes(props.minutes);
@@ -222,9 +219,11 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
         type="text"
         id={this.props.id}
         data-time-format="H:i"
+        // This is used by Cucumber to interact with the component
+        data-testid="time-picker"
         className="form-control"
         size={10}
-        ref={c => (this._input = jQuery(c!))}
+        ref={(c) => (this._input = jQuery(c!))}
       />
     );
   }
@@ -237,6 +236,8 @@ type DateTimePickerProps = {
   onChange: (value: moment.Moment) => void;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
+  // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
+  serverTimeZone?: boolean;
 };
 
 type DateTimePickerState = {
@@ -255,18 +256,17 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       timeOpen: false,
       hideDate: props.hideDatePicker || false,
       hideTime: props.hideTimePicker || false,
-      // Use the user's configured time zone by default
-      timeZone: localizedMoment.userTimeZone,
+      timeZone: props.serverTimeZone ? localizedMoment.serverTimeZone : localizedMoment.userTimeZone,
     };
   }
 
-  onToggleDate = open => {
+  onToggleDate = (open) => {
     this.setState({
       dateOpen: open,
     });
   };
 
-  onToggleTime = open => {
+  onToggleTime = (open) => {
     this.setState({
       timeOpen: open,
     });

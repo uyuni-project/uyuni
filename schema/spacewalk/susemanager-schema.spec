@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.3.1
+Version:        4.3.8
 Release:        1
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -38,6 +38,7 @@ BuildRequires:  fdupes
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 Requires:       %{sbinpath}/restorecon
+Requires:       %{name}-utility
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
@@ -48,18 +49,27 @@ BuildRequires:  fdupes
 
 %define rhnroot /etc/sysconfig/rhn/
 %define postgres %{rhnroot}/postgres
+%define spacewalk_folder Spacewalk
+%define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 %description
 susemanager-schema is the SQL schema for the SUSE Manager server.
 
 %package sanity
-Summary:        Schema source sanity check for Spacewalk database scripts.
+Summary:        Schema source sanity check for Spacewalk database scripts
 Group:          Applications/Internet
 
 Requires:       perl(Digest::SHA)
 
+%package utility
+Summary:        Utility used by any DB schema in Spacewalk
+Group:          Applications/Internet
+
 %description sanity
 Provides schema-source-sanity-check.pl script for external usage.
+
+%description utility
+Provides spacewalk-schema-upgrade and spacewalk-sql.
 
 %prep
 
@@ -78,6 +88,10 @@ install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
 install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 -d $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/MainDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/ReportDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+
 install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
@@ -92,6 +106,7 @@ install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
 %endif
 
 install -m 755 schema-source-sanity-check.pl $RPM_BUILD_ROOT%{_bindir}/schema-source-sanity-check.pl
+install -m 755 blend $RPM_BUILD_ROOT%{_bindir}/blend
 
 %if 0%{?suse_version}
 %post
@@ -115,18 +130,26 @@ systemctl try-restart uyuni-check-database.service ||:
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/schema-upgrade
-%{_bindir}/spacewalk-schema-upgrade
-%{_bindir}/spacewalk-sql
-%{_mandir}/man1/spacewalk-schema-upgrade*
-%{_mandir}/man1/spacewalk-sql*
 %if 0%{?suse_version}
 %dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %endif
 
+%files utility
+%defattr(-,root,root)
+%dir %{perl_vendorlib}/%{spacewalk_folder}
+%dir %{perl_vendorlib}/%{schema_upgrade_folder}
+%{perl_vendorlib}/%{schema_upgrade_folder}/MainDb.pm
+%{perl_vendorlib}/%{schema_upgrade_folder}/ReportDb.pm
+%{_bindir}/spacewalk-schema-upgrade
+%{_bindir}/spacewalk-sql
+%{_mandir}/man1/spacewalk-schema-upgrade*
+%{_mandir}/man1/spacewalk-sql*
+
 %files sanity
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/schema-source-sanity-check.pl
+%attr(755,root,root) %{_bindir}/blend
 
 %changelog

@@ -1,6 +1,57 @@
-- Abort migration if data_directory is defined at the PostgreSQL
-  configuration file
-- Package 'snapper' is now optional.
+-------------------------------------------------------------------
+Tue Feb 15 10:05:55 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Accept Oracle Linux
+  * setup reporting database with default values
+  * Add mgr-salt-ssh wrapper to use with uyuni roster Salt module
+  * mgr-setup: do not concatenate www and apache groups (bsc#1195171)
+
+-------------------------------------------------------------------
+Tue Jan 18 15:06:14 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Bootstrap repo configureable
+  * Added installation on Rocky Linux 8
+  * fix pg-migrate to check version of postgresql??-server (bsc#1192368)
+  * Add sha256 hash to venv-enabled-ARCH.txt file generated
+    with mgr-create-bootstrap-repo
+  * Enable bootstrapping for Debian 11
+
+-------------------------------------------------------------------
+Fri Dec 03 12:30:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Add Salt Bundle (venv-salt-minion) to bootstrap repositories
+    definitions for all relevant system types
+
+-------------------------------------------------------------------
+Tue Nov 16 10:09:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Add missing aarch64 bootstrap definition for AlmaLinux 8
+
+-------------------------------------------------------------------
+Fri Nov 05 14:04:35 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Add python-mako, python-gnupg and gnupg1 to the Debian 9 bootstrap repository
+    so bootstrapping without any enabled repositories is possible (bsc#1191898)
+  * Strictly require tftp for the Proxy
+  * Fix syntax error on migration script (bsc#1191551)
+  * Add aarch64 bootstrap repositories for CentOS 7/8, Oracle Linux 7/8,
+    Rocky Linux8, AlmaLinux8, Amazon Linux 2 and openSUSE Leap 15.3
+  * Add the gnupg package for ubuntu which is then needed by apt-key (bsc#1187998)
+
+-------------------------------------------------------------------
+Fri Sep 17 12:13:57 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add SLE 15 SAP Product ID to SLE15 bootstrap repositories, as
+    it is required to get python3-M2Crypto (bsc#1189422)
+  * Abort migration if data_directory is defined at the PostgreSQL
+    configuration file
+  * Package 'snapper' is now optional.
 
 -------------------------------------------------------------------
 Fri Aug 13 12:23:43 CEST 2021 - jgonzalez@suse.com

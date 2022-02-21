@@ -72,7 +72,7 @@ except AttributeError:
 
 class CustomJsonEncoder(json.JSONEncoder):
 
-    def default(self, obj):
+    def default(self, obj): # pylint: disable=arguments-differ,method-hidden
         if isinstance(obj,xmlrpclib.DateTime):
             return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime("%F %T")
         return json.JSONEncoder.default(self, obj)
@@ -133,7 +133,7 @@ def load_cache(cachefile):
             # exception until the partial file is manually removed
             logging.warning(_N("Loading cache file %s failed"), cachefile)
             logging.warning(_N("Cache generation was probably interrupted," +
-                            "removing corrupt %s"), cachefile)
+                               "removing corrupt %s"), cachefile)
             logging.debug(str(exc))
             os.remove(cachefile)
         except IOError:
@@ -205,7 +205,7 @@ def editor(template='', delete=False):
         except IOError as exc:
             logging.warning(_N('Could not open the temporary file'))
             logging.error(str(exc))
-            return
+            return None
 
     # use the user's specified editor
     if 'EDITOR' in os.environ:
@@ -222,8 +222,7 @@ def editor(template='', delete=False):
             if exit_code == 0:
                 success = True
                 break
-            else:
-                logging.error(_N('Editor "%s" exited with code %i'), editor_cmd, exit_code)
+            logging.error(_N('Editor "%s" exited with code %i'), editor_cmd, exit_code)
         except OSError as exc:
             logging.error(_N("General failure running editor: %s"), str(exc))
 
@@ -249,6 +248,8 @@ def editor(template='', delete=False):
         except IOError:
             logging.error(_N('Could not read %s'), file_name)
             return [], ''
+
+    return None
 
 
 def prompt_user(prompt, noblank=False, multiline=False):
@@ -366,7 +367,7 @@ def parse_time_input(userinput=''):
         return xmlrpclib.DateTime(timestamp.timetuple())
 
     logging.error(_N('Invalid time provided'))
-    return
+    return None
 
 
 # Compares 2 package objects (dicts) and returns the newest one.
@@ -633,7 +634,7 @@ def parse_list_str(list_s, sep=","):
     >>> assert parse_list_str("a,,b,c") == ["a", "", "b", "c"]
     >>> assert parse_list_str("a:b:", ":") == ["a", "b", ""]
     """
-    return [p for p in list_s.split(sep)]
+    return list_s.split(sep)
 
 
 def parse_api_args(args, sep=','):
@@ -711,7 +712,7 @@ def json_read_from_file(filename):
         logging.error(_N("Could not open file %s for reading: %s"), filename, str(exc))
     except ValueError as exc:
         logging.error(_N("Could not parse JSON data from %s: %s"), filename, str(exc))
-    except Exception as exc:
+    except Exception as exc: # pylint: disable=broad-except
         logging.error(_N("Error processing file %s: %s"), filename, str(exc))
 
     return data
@@ -806,7 +807,7 @@ def get_normalized_text(text, replacedict=None, excludes=None):
                 elif not [e for e in excludes if line.startswith(e)]:
                     normalized_text.append(replace(line, replacedict))
                 else:
-                    logging.debug("excluding line: " + line)
+                    logging.debug("excluding line: %s", line)
     return normalized_text
 
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEUpgradePath;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getAllRelevantChannels;
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.getRelevantChannels;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
@@ -30,14 +34,8 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEUpgradePath;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.installSUSEProductOnServer;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
-
-import java.util.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -55,10 +53,30 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.manager.audit.*;
+import com.redhat.rhn.manager.audit.CVEAuditImage;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
+import com.redhat.rhn.manager.audit.CVEAuditSystem;
+import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
+import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
+import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.RankedChannel;
+import com.redhat.rhn.manager.audit.ServerChannelIdPair;
+import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Unit tests for {@link CVEAuditManager}.
@@ -307,11 +325,15 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Test if the patch status is set correctly for given parameters:
      */
     public void testSetPatchStatus() {
-        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, true, true));
-        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, false, true));
-        assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true));
-        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, CVEAuditManager.getPatchStatus(false, false, true));
-        assertEquals(PatchStatus.NOT_AFFECTED, CVEAuditManager.getPatchStatus(false, false, false));
+        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, true, true, false));
+        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, false, true, false));
+        assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true, false));
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE,
+                CVEAuditManager.getPatchStatus(false, false, true, false));
+        assertEquals(PatchStatus.NOT_AFFECTED, CVEAuditManager.getPatchStatus(false, false, false, false));
+        assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true, true));
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+                CVEAuditManager.getPatchStatus(false, false, true, true));
     }
 
     /**
@@ -374,8 +396,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Check unassigned product channels
         assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannel2.getId(), 1));
         // Check channels relevant for the next SP
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannelNextSP.getId(), 2));
-        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannelNextSP.getId(), 2));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannelNextSP.getId(), 50000));
+        assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannelNextSP.getId(), 50000));
         // Check channels relevant for the previous SP
         assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), baseChannelPrevSP.getId(), 100000));
         assertContains(relevantChannels, new ServerChannelIdPair(server.getId(), childChannelPrevSP.getId(), 100000));
@@ -1157,7 +1179,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
         assertEquals(1, channels.size());
-        assertEquals(updateChannelSP2.getId().longValue() ,channels.get(0).getId());
+        assertEquals(updateChannelSP2.getId().longValue(), channels.get(0).getId());
     }
 
     /**

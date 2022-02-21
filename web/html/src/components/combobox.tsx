@@ -63,13 +63,13 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       }),
       menuPortal: (styles: {}) => ({
         ...styles,
-        zIndex: 9999
+        zIndex: 9999,
       }),
     };
 
     // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
     // correctly the selected option up.
-    const options: Array<ReactSelectItem> = (this.props.data || []).map(item => ({
+    const options: Array<ReactSelectItem> = (this.props.data || []).map((item) => ({
       value: item.id.toString(),
       id: item.id,
       label: item.text,
@@ -81,7 +81,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
         name={this.props.name}
         onFocus={this.props.onFocus}
         onChange={this.onChange}
-        value={options.find(option => option.id === this.props.selectedId)}
+        value={options.find((option) => option.id === this.props.selectedId)}
         options={options}
         styles={colourStyles}
         menuPortalTarget={document.body}

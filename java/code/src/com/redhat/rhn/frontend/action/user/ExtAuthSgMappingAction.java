@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;

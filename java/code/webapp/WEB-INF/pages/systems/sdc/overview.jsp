@@ -146,7 +146,11 @@
                 </c:when>
                 <c:otherwise>
                   <c:out value="${system.runningKernel}" />
-                  <a href="/rhn/manager/contentmanagement/filters?openFilterId=-1&openTemplate=LivePatchingSystem&systemId=${system.id}&systemName=${system.name}&kernelName=${system.runningKernel}">(<bean:message key="sdc.details.overview.create_clm_filter"/>)</a>
+                  <c:if test="${isLivePatchingAvailable}">
+                    <a href="/rhn/manager/contentmanagement/filters?openFilterId=-1&openTemplate=LivePatchingSystem&systemId=${system.id}&systemName=${system.name}&kernelName=${system.runningKernel}">
+                      (<bean:message key="sdc.details.overview.create_clm_filter"/>)
+                    </a>
+                  </c:if>
                 </c:otherwise>
               </c:choose>
               <c:if test="${not empty kernelLiveVersion}">

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  * Copyright (c) 2020--2021 SUSE LLC
  *
@@ -18,6 +18,8 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
+import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
+import com.suse.manager.xmlrpc.serializer.SystemEventDtoSerializer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -154,6 +156,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(RescheduleResultSerializer.class);
         SERIALIZER_CLASSES.add(AnsiblePathSerializer.class);
         SERIALIZER_CLASSES.add(AnsiblePlaybookSerializer.class);
+        SERIALIZER_CLASSES.add(SystemEventDtoSerializer.class);
+        SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
+        SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
     }
 
     /**

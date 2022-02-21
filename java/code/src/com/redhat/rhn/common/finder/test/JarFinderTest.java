@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,11 @@
  */
 
 package com.redhat.rhn.common.finder.test;
-import java.util.List;
 
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
+
+import java.util.List;
 
 import junit.framework.TestCase;
 

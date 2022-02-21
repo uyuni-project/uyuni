@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.services.test;
 
-import com.mchange.v2.lang.StringUtils;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
@@ -26,6 +25,8 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ConfigTestUtils;
+
+import com.mchange.v2.lang.StringUtils;
 
 /**
  * Static class with helper utils for

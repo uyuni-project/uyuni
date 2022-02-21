@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,11 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SUSEInstalledProductSerializer;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
-import junit.framework.TestCase;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.StringWriter;
 import java.io.Writer;
+
+import junit.framework.TestCase;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 public class SUSEInstalledProductSerializerTest extends TestCase {
 
@@ -40,11 +41,11 @@ public class SUSEInstalledProductSerializerTest extends TestCase {
         assertTrue(finalOutput
                 .contains("<name>arch</name><value><string>x86_64</string></value>"));
         assertTrue(finalOutput
-                .contains("<name>friendlyName</name><value><string>SUSE Linux Enterprise "
-                        + "Server 12</string></value>"));
+                .contains("<name>friendlyName</name><value><string>SUSE Linux Enterprise " +
+                        "Server 12</string></value>"));
         assertTrue(finalOutput
-                .contains("<name>isBaseProduct</name><value><boolean>1</boolean>"
-                        + "</value>"));
+                .contains("<name>isBaseProduct</name><value><boolean>1</boolean>" +
+                        "</value>"));
         assertFalse(finalOutput.contains("release"));
     }
 

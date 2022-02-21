@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -48,24 +48,24 @@ import java.util.function.Consumer;
  */
 public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
-    private static String PLAIN_REDHAT_RELEASE =
+    private static final String PLAIN_REDHAT_RELEASE =
             "Red Hat Enterprise Linux Server release 6.8 (Santiago)";
-    private static String RES_REDHAT_RELEASE =
+    private static final String RES_REDHAT_RELEASE =
             "Red Hat Enterprise Linux Server release 6.8 (Santiago)\n" +
             "# This is a \"SLES Expanded Support platform release 6.8\"\n" +
             "# The above \"Red Hat Enterprise Linux Server\" string is only used to \n" +
             "# keep software compatibility.";
-    private static String CENTOS_REDHAT_RELEASE =
+    private static final String CENTOS_REDHAT_RELEASE =
             "CentOS Linux release 7.2.1511 (Core)";
-    private static String ORACLE_RELEASE =
+    private static final String ORACLE_RELEASE =
             "Oracle Linux Server release 8.2";
-    private static String ALIBABA_RELEASE =
+    private static final String ALIBABA_RELEASE =
             "Alibaba Cloud Linux (Aliyun Linux) release 2.1903 LTS (Hunting Beagle)";
-    private static String ALMALINUX_RELEASE =
+    private static final String ALMALINUX_RELEASE =
             "AlmaLinux release 8.3 (Purple Manul)";
-    private static String AMAZON_RELEASE =
+    private static final String AMAZON_RELEASE =
             "Amazon Linux release 2 (Karoo)";
-    private static String ROCKY_RELEASE =
+    private static final String ROCKY_RELEASE =
             "Rocky Linux release 8.4 (Green Obsidian)";
 
     @FunctionalInterface
@@ -157,11 +157,14 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertFalse(os.isPresent());
     }
 
-    private void doTestDetectRhelProduct(String json, SetupMinionConsumer setupMinion, Consumer<Optional<RhelUtils.RhelProduct>> response)
+    private void doTestDetectRhelProduct(String json, SetupMinionConsumer setupMinion,
+                                         Consumer<Optional<RhelUtils.RhelProduct>> response)
             throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/suse/manager/reactor/utils/test/productdata", false, false);
-        Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                TestUtils.readAll(TestUtils.findTestData(json)));
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/suse/manager/reactor/utils/test/productdata", false, false);
+        Map<String, State.ApplyResult> map = new JsonParser<>(
+                State.apply(Collections.emptyList()).getReturnType()).parse(
+                        TestUtils.readAll(TestUtils.findTestData(json)));
         String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
@@ -241,7 +244,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found",prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
@@ -318,7 +321,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         return createResChannel(user, version, "x86_64", "channel-x86_64");
     }
 
-    public static Channel createResChannel(User user, String version, String archLabel, String channelLabel) throws Exception {
+    public static Channel createResChannel(User user, String version, String archLabel, String channelLabel)
+            throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user, "channel-" + archLabel);
         c.setLabel(channelLabel);
         c.setOrg(null); // vendor channels don't have org

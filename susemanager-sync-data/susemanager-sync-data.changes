@@ -1,5 +1,26 @@
-- support Rocky Linux 8 x86_64
-- support MicroOS for Z-series
+-------------------------------------------------------------------
+Fri Dec 03 12:33:33 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * use mirrorlist URLs for AlmaLinux 8
+  * add SLES15 SP2 LTSS
+
+-------------------------------------------------------------------
+Fri Nov 05 14:07:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * add CentOS 7/8 aarch64
+  * add Oracle Linux 7/8 aarch64
+  * add Rocky Linux 8 aarch64
+  * add AlmaLinux 8 aarch64
+  * add Amazon Linux 2 aarch64
+
+-------------------------------------------------------------------
+Fri Sep 17 12:18:10 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * support Rocky Linux 8 x86_64
+  * support MicroOS for Z-series
 
 -------------------------------------------------------------------
 Mon Aug 09 10:44:52 CEST 2021 - jgonzalez@suse.com

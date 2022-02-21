@@ -59,7 +59,7 @@ def do_package_details(self, args):
 
     if not args:
         self.help_package_details()
-        return
+        return None
 
     packages = self.do_package_search(' '.join(args), True)
 
@@ -99,9 +99,9 @@ def do_package_details(self, args):
             print(_('Path:      %s' % details.get('path')))
             print(_('Size:      %s' % details.get('size')))
             print(_('Retracted: %s' % (_('Yes') if details.get('part_of_retracted_patch')
-                else _('No'))))
+                                       else _('No'))))
             print('%s%s' % ((details.get('checksum_type').upper() + ":").ljust(11),
-                             details.get('checksum')))
+                            details.get('checksum')))
             print('')
             print(_('Installed Systems: %i') % len(installed_systems))
             print('')
@@ -135,7 +135,7 @@ def help_package_search(self,
 def do_package_search(self, args, doreturn=False):
     if not args:
         self.help_package_search()
-        return
+        return None
 
     _args, _options = parse_command_arguments(args, get_argument_parser())
 
@@ -147,7 +147,7 @@ def do_package_search(self, args, doreturn=False):
             field = arg.split(":")[0] + ":"
             if field not in fields:
                 self.help_package_search()
-                return
+                return None
 
     packages = []
     advanced = False
@@ -170,9 +170,10 @@ def do_package_search(self, args, doreturn=False):
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(sorted(packages)))
+    if packages:
+        print('\n'.join(sorted(packages)))
+
+    return None
 
 ####################
 
@@ -238,9 +239,10 @@ def do_package_listorphans(self, args, doreturn=False):
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(sorted(packages)))
+    if packages:
+        print('\n'.join(sorted(packages)))
+
+    return None
 
 ####################
 

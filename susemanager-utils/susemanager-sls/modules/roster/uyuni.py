@@ -1,0 +1,332 @@
+"""
+Read in the roster from Uyuni DB
+"""
+import hashlib
+import io
+import logging
+
+# Import Salt libs
+import salt.cache
+import salt.config
+import salt.loader
+
+try:
+    import psycopg2
+    from psycopg2.extras import NamedTupleCursor
+
+    HAS_PSYCOPG2 = True
+except ImportError:
+    HAS_PSYCOPG2 = False
+
+from yaml import dump
+
+
+__virtualname__ = "uyuni"
+
+log = logging.getLogger(__name__)
+
+
+COBBLER_HOST = "localhost"
+PROXY_SSH_PUSH_USER = "mgrsshtunnel"
+PROXY_SSH_PUSH_KEY = (
+    "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push"
+)
+SALT_SSH_CONNECT_TIMEOUT = 180
+SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh"
+SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id"
+SSH_PRE_FLIGHT_SCRIPT = None
+SSH_PUSH_PORT = 22
+SSH_PUSH_PORT_HTTPS = 1233
+SSH_PUSH_SUDO_USER = None
+SSH_USE_SALT_THIN = False
+SSL_PORT = 443
+
+
+def __virtual__():
+    if not HAS_PSYCOPG2:
+        return (False, "psycopg2 is not available")
+
+    if __opts__.get("postgres") is None or __opts__.get("uyuni_roster") is None:
+        return (False, "Uyuni is not installed or configured")
+
+    return __virtualname__
+
+
+class UyuniRoster:
+    """
+    The class to instantiate Uyuni connection and data gathering.
+    It's used to keep the DB connection, cache object and others in one instance
+    to prevent race conditions on loading the module with LazyLoader.
+    """
+
+    def __init__(self, db_config, uyuni_roster_config):
+        self.ssh_pre_flight_script = uyuni_roster_config.get("ssh_pre_flight_script")
+        self.ssh_push_port_https = uyuni_roster_config.get(
+            "ssh_push_port_https", SSH_PUSH_PORT_HTTPS
+        )
+        self.ssh_push_sudo_user = uyuni_roster_config.get("ssh_push_sudo_user", "root")
+        self.ssh_use_salt_thin = uyuni_roster_config.get(
+            "ssh_use_salt_thin", SSH_USE_SALT_THIN
+        )
+        self.ssh_connect_timeout = uyuni_roster_config.get(
+            "ssh_connect_timeout", SALT_SSH_CONNECT_TIMEOUT
+        )
+        self.cobbler_host = uyuni_roster_config.get("host", COBBLER_HOST)
+
+        if "port" in db_config:
+            self.db_connect_str = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}'".format(
+                **db_config
+            )
+        else:
+            self.db_connect_str = (
+                "dbname='{db}' user='{user}' host='{host}' password='{pass}'".format(
+                    **db_config
+                )
+            )
+
+        log.trace("db_connect string: %s", self.db_connect_str)
+        log.debug("ssh_pre_fligt_script: %s", self.ssh_pre_flight_script)
+        log.debug("ssh_push_port_https: %d", self.ssh_push_port_https)
+        log.debug("ssh_push_sudo_user: %s", self.ssh_push_sudo_user)
+        log.debug("ssh_use_salt_thin: %s", self.ssh_use_salt_thin)
+        log.debug("salt_ssh_connect_timeout: %d", self.ssh_connect_timeout)
+        log.debug("cobbler.host: %s", self.cobbler_host)
+
+        self.cache = salt.cache.Cache(__opts__)
+
+        self._init_db()
+
+    def _init_db(self):
+        log.trace("_init_db")
+
+        try:
+            self.db_connection = psycopg2.connect(
+                self.db_connect_str, cursor_factory=NamedTupleCursor
+            )
+            log.trace("_init_db: done")
+        except psycopg2.OperationalError as err:
+            log.warning(
+                "Unable to connect to the Uyuni DB: \n%sWill try to reconnect later."
+                % (err)
+            )
+
+    def _execute_query(self, *args, **kwargs):
+        log.trace("_execute_query")
+
+        try:
+            cur = self.db_connection.cursor()
+            cur.execute(*args, **kwargs)
+            log.trace("_execute_query: ret %s", cur)
+            return cur
+        except psycopg2.OperationalError as err:
+            log.warning("Error during SQL prepare: %s" % (err))
+            log.warning("Trying to reinit DB connection...")
+            self._init_db()
+            try:
+                cur = self.db_connection.cursor()
+                cur.execute(*args, **kwargs)
+                return cur
+            except psycopg2.OperationalError:
+                log.warning("Unable to re-establish connection to the Uyuni DB")
+                log.trace("_execute_query: ret None")
+                return None
+
+    def _get_ssh_options(
+        self,
+        minion_id=None,
+        proxies=None,
+        tunnel=False,
+        user=None,
+        ssh_push_port=SSH_PUSH_PORT,
+    ):
+        proxy_command = []
+        i = 0
+        for proxy in proxies:
+            proxy_command.append(
+                "/usr/bin/ssh -i {ssh_key_path} -o StrictHostKeyChecking=no "
+                "-o User={ssh_push_user} {in_out_forward} {proxy_host}".format(
+                    ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
+                    ssh_push_user=PROXY_SSH_PUSH_USER,
+                    in_out_forward="-W {host}:{port}".format(
+                        host=minion_id, port=ssh_push_port
+                    )
+                    if not tunnel and i == len(proxies) - 1
+                    else "",
+                    proxy_host=proxy,
+                )
+            )
+            i += 1
+        if tunnel:
+            proxy_command.append(
+                "/usr/bin/ssh -i {pushKey} -o StrictHostKeyChecking=no "
+                "-o User={user} -R {pushPort}:{proxy}:{sslPort} {minion} "
+                "ssh -i {ownKey} -W {minion}:{sshPort} "
+                "-o StrictHostKeyChecking=no -o User={user} {minion}".format(
+                    pushKey=PROXY_SSH_PUSH_KEY,
+                    user=user,
+                    pushPort=self.ssh_push_port_https,
+                    proxy=proxies[len(proxies) - 1],
+                    sslPort=SSL_PORT,
+                    minion=minion_id,
+                    ownKey="{}{}".format(
+                        "/root" if user == "root" else "/home/{}".format(user),
+                        "/.ssh/mgr_own_id",
+                    ),
+                    sshPort=ssh_push_port,
+                )
+            )
+
+        return ["ProxyCommand='{}'".format(" ".join(proxy_command))]
+
+    def _get_ssh_minion(
+        self, minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT
+    ):
+        minion = {
+            "host": minion_id,
+            "user": self.ssh_push_sudo_user,
+            "port": ssh_push_port,
+            "timeout": self.ssh_connect_timeout,
+        }
+        if tunnel:
+            minion.update({"minion_opts": {"master": minion_id}})
+        if self.ssh_pre_flight_script:
+            minion.update(
+                {
+                    "ssh_pre_flight": self.ssh_pre_flight_script,
+                    "ssh_pre_flight_args": [
+                        proxies[-1] if proxies else self.cobbler_host,
+                        self.ssh_push_port_https if tunnel else SSL_PORT,
+                        1 if self.ssh_use_salt_thin else 0,
+                    ],
+                }
+            )
+        if proxies:
+            minion.update(
+                {
+                    "ssh_options": self._get_ssh_options(
+                        minion_id=minion_id,
+                        proxies=proxies,
+                        tunnel=tunnel,
+                        user=self.ssh_push_sudo_user,
+                        ssh_push_port=ssh_push_port,
+                    )
+                }
+            )
+        elif tunnel:
+            minion.update(
+                {
+                    "remote_port_forwards": "%d:%s:%d"
+                    % (self.ssh_push_port_https, self.cobbler_host, SSL_PORT)
+                }
+            )
+
+        return minion
+
+    def targets(self):
+        cache_data = self.cache.fetch("roster/uyuni", "minions")
+        cache_fp = cache_data.get("fp", None)
+        query = """
+            SELECT ENCODE(SHA256(FORMAT('%s|%s|%s|%s|%s|%s',
+                          EXTRACT(EPOCH FROM MAX(S.modified)),
+                          COUNT(S.id),
+                          EXTRACT(EPOCH FROM MAX(SP.modified)),
+                          COUNT(SP.proxy_server_id),
+                          EXTRACT(EPOCH FROM MAX(SMI.modified)),
+                          COUNT(SMI.server_id)
+                   )::bytea), 'hex') AS fp
+                   FROM rhnServer AS S
+                   INNER JOIN suseMinionInfo AS SMI ON
+                         (SMI.server_id=S.id)
+                   LEFT JOIN rhnServerPath AS SP ON
+                        (SP.server_id=S.id)
+                   WHERE S.contact_method_id IN (
+                             SELECT SSCM.id
+                             FROM suseServerContactMethod AS SSCM
+                             WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
+                         )
+        """
+        h = self._execute_query(query)
+        if h is not None:
+            row = h.fetchone()
+            log.trace("db cache fingerprint: %s", row)
+            if row and row.fp:
+                new_fp = row.fp
+                log.trace("cache check: old:%s new:%s", cache_fp, new_fp)
+                if (
+                    new_fp == cache_fp
+                    and "minions" in cache_data
+                    and cache_data["minions"]
+                ):
+                    log.debug("Returning the cached data")
+                    return cache_data["minions"]
+                else:
+                    log.debug("Invalidate cache")
+                    cache_fp = new_fp
+        else:
+            log.warning(
+                "Unable to reconnect to the Uyuni DB. Returning the cached data instead."
+            )
+            return cache_data["minions"]
+
+        ret = {}
+
+        query = """
+            SELECT S.id AS server_id,
+                   SMI.minion_id AS minion_id,
+                   SMI.ssh_push_port AS ssh_push_port,
+                   SSCM.label='ssh-push-tunnel' AS tunnel,
+                   SP.hostname AS proxy_hostname
+            FROM rhnServer AS S
+            INNER JOIN suseServerContactMethod AS SSCM ON
+                  (SSCM.id=S.contact_method_id)
+            INNER JOIN suseMinionInfo AS SMI ON
+                  (SMI.server_id=S.id)
+            LEFT JOIN rhnServerPath AS SP ON
+                 (SP.server_id=S.id)
+            WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
+            ORDER BY S.id, SP.position DESC
+        """
+
+        h = self._execute_query(query)
+
+        prow = None
+        proxies = []
+
+        row = h.fetchone()
+        while True:
+            if prow is not None and (row is None or row.server_id != prow.server_id):
+                ret[prow.minion_id] = self._get_ssh_minion(
+                    minion_id=prow.minion_id,
+                    proxies=proxies,
+                    tunnel=prow.tunnel,
+                    ssh_push_port=int(prow.ssh_push_port),
+                )
+            proxies = []
+            if row is None:
+                break
+            if row.proxy_hostname:
+                proxies.append(row.proxy_hostname)
+            prow = row
+            row = h.fetchone()
+
+        self.cache.store("roster/uyuni", "minions", {"fp": cache_fp, "minions": ret})
+
+        if log.isEnabledFor(logging.TRACE):
+            log.trace("Uyuni DB roster:\n%s", dump(ret))
+
+        return ret
+
+
+def targets(tgt, tgt_type="glob", **kwargs):
+    """
+    Return the targets from the Uyuni DB
+    """
+
+    uyuni_roster = __context__.get("roster.uyuni")
+    if uyuni_roster is None:
+        uyuni_roster = UyuniRoster(
+            __opts__.get("postgres"), __opts__.get("uyuni_roster")
+        )
+        __context__["roster.uyuni"] = uyuni_roster
+
+    return __utils__["roster_matcher.targets"](uyuni_roster.targets(), tgt, tgt_type)

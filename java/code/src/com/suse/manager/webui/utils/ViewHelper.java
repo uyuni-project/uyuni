@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015 SUSE LLC
+/*
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,16 +17,16 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Collections;
@@ -51,7 +51,6 @@ public enum ViewHelper {
     INSTANCE;
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
-    private static final ClusterManager CLUSTER_MANAGER = GlobalInstanceHolder.CLUSTER_MANAGER;
 
     ViewHelper() { }
 
@@ -107,17 +106,15 @@ public enum ViewHelper {
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not return the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render the current user's configured timezone for being displayed (falling back to
      * the system default in case there is currently no user context).
      *
      * @return timezone to be displayed
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderTimezone() {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
@@ -128,32 +125,29 @@ public enum ViewHelper {
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render the time in the current user's configured timezone (falling back to
      * the system default in case there is currently no user context).
      *
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderLocalTime() {
         return renderDate(new Date());
     }
 
     /**
-     * TODO -> DROP
-     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
-     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
-     * parameter to define it. See layout_head.jsp
-     *
-     *
      * Render a given time in the current user's configured timezone
+     *
      * @param date the date
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderDate(Date date) {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
@@ -167,7 +161,11 @@ public enum ViewHelper {
      * Render a given time in the current user's configured timezone
      * @param instant the instant
      * @return user's local time
+     * @deprecated this is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from
+     * where the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See layout_head.jsp
      */
+    @Deprecated
     public String renderDate(Instant instant) {
         return renderDate(new Date(instant.toEpochMilli()));
     }
@@ -180,7 +178,7 @@ public enum ViewHelper {
     public String getServerTime() {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(new Date());
     }
@@ -197,6 +195,31 @@ public enum ViewHelper {
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
+    }
+
+    /**
+     * Format a given date time to the ISO FORMAT using the server timezone
+     *
+     * @param dateIn the datetime to render
+     * @return server default time as a string
+     */
+    public static String formatDateTimeToISO(Date dateIn) {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(dateIn);
+    }
+
+    /**
+     * Parse an ISO FORMAT String to a Date
+     *
+     * @param dateIn the given date time as a string
+     * @return the parsed Date
+     * @throws ParseException
+     */
+    public static Date getDateFromISOString(String dateIn) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(dateIn);
     }
 
     /**
@@ -223,25 +246,22 @@ public enum ViewHelper {
         if (server == null) {
             return false;
         }
-        if (!server.asMinionServer().isPresent()) {
-            return false;
-        }
-        List<String> enabledFormulas = FormulaFactory
-                .getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
-        if (!enabledFormulas.contains(formulaName)) {
-            return false;
-        }
+        return server.asMinionServer().map(minion -> {
+            List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
+            if (!enabledFormulas.contains(formulaName)) {
+                return false;
+            }
 
-        Map<String, Object> systemData = FormulaFactory.
-                getFormulaValuesByNameAndMinionId(formulaName, server.asMinionServer().get().getMinionId())
-                .orElseGet(Collections::emptyMap);
-        Map<String, Object> groupData = FormulaFactory
-                .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
-                .orElseGet(Collections::emptyMap);
-        return Objects.toString(systemData.get(valueName), "")
-                .equals(valueToCheck) ||
-                Objects.toString(groupData.get(valueName), "")
-                        .equals(valueToCheck);
+            Map<String, Object> systemData = FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion)
+                    .orElseGet(Collections::emptyMap);
+            Map<String, Object> groupData = FormulaFactory
+                    .getGroupFormulaValuesByNameAndServer(formulaName, server)
+                    .orElseGet(Collections::emptyMap);
+            return Objects.toString(systemData.get(valueName), "")
+                    .equals(valueToCheck) ||
+                    Objects.toString(groupData.get(valueName), "")
+                            .equals(valueToCheck);
+        }).orElse(false);
     }
 
     /**
@@ -250,13 +270,5 @@ public enum ViewHelper {
      */
     public boolean hasSshPushContactMethod(Server server) {
         return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
-    }
-
-    /**
-     * @param groupId server group id
-     * @return true if the group is owned by a cluster
-     */
-    public boolean isClusterGroup(String groupId) {
-        return CLUSTER_MANAGER.isClusterGroup(Long.parseLong(groupId));
     }
 }

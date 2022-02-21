@@ -7,10 +7,10 @@ declare var global_userRoles: rolesType | undefined;
 
 const RolesContext = React.createContext<rolesType>([]);
 
-const RolesProvider = ({children}: {children: React.ReactNode}) => (
-    <RolesContext.Provider value={typeof global_userRoles !== "undefined" ? global_userRoles : []}>
-        {children}
-    </RolesContext.Provider>
+const RolesProvider = ({ children }: { children: React.ReactNode }) => (
+  <RolesContext.Provider value={typeof global_userRoles !== "undefined" ? global_userRoles : []}>
+    {children}
+  </RolesContext.Provider>
 );
 
-export {RolesProvider, RolesContext};
+export { RolesProvider, RolesContext };

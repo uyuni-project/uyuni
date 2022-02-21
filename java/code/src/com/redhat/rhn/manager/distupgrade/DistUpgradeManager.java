@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,33 +15,14 @@
 
 package com.redhat.rhn.manager.distupgrade;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
+import static com.suse.utils.Lists.listOfListComparator;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.util.RpmVersionComparator;
-import com.suse.utils.Lists;
-import com.suse.utils.Opt;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -68,7 +49,26 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import static com.suse.utils.Lists.listOfListComparator;
+import com.suse.utils.Lists;
+import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Business logic for performing distribution upgrades.

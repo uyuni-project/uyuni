@@ -1,7 +1,52 @@
-- cobbler20-setup was removed
-- spacewalk-setup-cobbler was reimplemented in Python
-- Config files for Cobbler don't get edited in place anymore, thus the original
-  ones are saved with a ".backup" suffix
+-------------------------------------------------------------------
+Tue Feb 15 10:04:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * setup reporting database
+  * integrate new TLS Certificate setup and deployment tool
+
+-------------------------------------------------------------------
+Tue Jan 18 13:59:44 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Remove cluster providers support
+  * Merge all external pillars into one
+  * During upgrade, set tomcat connector connectionTimeout
+    to 900000 if the previous values is the old default (20000)
+  * Increase "max_event_size" value for the Salt master (bsc#1191340)
+
+-------------------------------------------------------------------
+Fri Dec 03 13:10:28 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Allow configuration of Cobbler > 3.2.0
+
+-------------------------------------------------------------------
+Fri Nov 05 13:53:01 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add postgresql external pillar configuration
+  * Simplified perl module dependency.
+  * Fixed com.sun.bind issue on package update.
+  * Enabled pylint for all builds but don't stop on error.
+  * Leave Cobbler bootloader directory at the default (bsc#1187708)
+  * Don't delete cobbler.conf contents.
+  * Fixed FileNotFoundError on cobbler setup.
+  * cobbler20-setup was removed
+  * spacewalk-setup-cobbler was reimplemented in Python
+  * Config files for Cobbler don't get edited in place anymore,
+    thus the original ones are saved with a ".backup" suffix
+
+-------------------------------------------------------------------
+Fri Sep 17 12:11:36 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Don't delete cobbler.conf contents.
+  * Fixed FileNotFoundError on cobbler setup.
+  * cobbler20-setup was removed
+  * spacewalk-setup-cobbler was reimplemented in Python
+  * Config files for Cobbler don't get edited in place anymore, thus the original
+    ones are saved with a ".backup" suffix
 
 -------------------------------------------------------------------
 Mon Aug 09 11:05:32 CEST 2021 - jgonzalez@suse.com

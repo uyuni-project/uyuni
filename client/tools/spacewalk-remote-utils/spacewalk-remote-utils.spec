@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-remote-utils
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Summary:        Utilities to interact with a Spacewalk server remotely.
 License:        GPL-2.0-only
@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Requires:       python3-rhnlib
 %else
 BuildRequires:  python-devel

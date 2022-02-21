@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.errata;
+
+import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
@@ -47,8 +49,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.util.Collections.singletonList;
 
 /**
  * ErrataConfirmAction

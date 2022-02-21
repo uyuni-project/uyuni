@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 type Props = {};
@@ -19,7 +20,7 @@ class Notifications extends React.Component<Props, State> {
     classStyle: "",
   };
 
-  onBeforeUnload = e => {
+  onBeforeUnload = (e) => {
     if (this.state.websocket != null) {
       this.state.websocket.close();
     }
@@ -32,8 +33,10 @@ class Notifications extends React.Component<Props, State> {
     var port = window.location.port;
     var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
     var ws = new WebSocket(url);
-    ws.onopen = () => {};
-    ws.onclose = e => {
+    ws.onopen = () => {
+      ws.send('["user-notifications"]');
+    };
+    ws.onclose = (e) => {
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
@@ -43,8 +46,8 @@ class Notifications extends React.Component<Props, State> {
         websocket: null,
       });
     };
-    ws.onerror = e => {
-      console.log("Websocket error: " + JSON.stringify(e));
+    ws.onerror = (e) => {
+      console.error("Websocket error: " + JSON.stringify(e));
       if (this.state.websocket != null) {
         this.state.websocket.close();
       }
@@ -54,8 +57,9 @@ class Notifications extends React.Component<Props, State> {
         websocket: null,
       });
     };
-    ws.onmessage = e => {
-      this.setState({ unreadMessagesLength: e.data });
+    ws.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      this.setState({ unreadMessagesLength: data["user-notifications"] });
     };
     window.addEventListener("beforeunload", this.onBeforeUnload);
 
@@ -71,7 +75,7 @@ class Notifications extends React.Component<Props, State> {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.unreadMessagesLength && this.state.unreadMessagesLength > prevState.unreadMessagesLength) {
       jQuery("#notification-counter").addClass("highlight-updated-value");
-      setTimeout(function() {
+      setTimeout(function () {
         jQuery("#notification-counter").removeClass("highlight-updated-value");
       }, 1000);
     }

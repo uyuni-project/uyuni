@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,16 +25,15 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import com.redhat.rhn.frontend.xmlrpc.UserNeverLoggedInException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.util.Date;
+import com.suse.manager.webui.services.test.TestSaltApi;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +42,7 @@ import java.util.Set;
 
 public class UserHandlerTest extends BaseHandlerTestCase {
 
-    private UserHandler handler = new UserHandler(new ServerGroupManager());
+    private UserHandler handler = new UserHandler(new ServerGroupManager(new TestSaltApi()));
 
     public void testListUsers() throws Exception {
         //admin should be able to call list users, regular should not

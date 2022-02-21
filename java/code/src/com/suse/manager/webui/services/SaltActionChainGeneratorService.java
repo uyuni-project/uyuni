@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,10 +16,10 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
 import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PATCHINSTALL;
-import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDATE_STACK_PATCHES;
+import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
 import static com.suse.manager.webui.services.SaltServerActionService.PARAM_REGULAR_PATCHES;
+import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDATE_STACK_PATCHES;
 import static com.suse.manager.webui.services.impl.SaltSSHService.ACTION_STATES_LIST;
 import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 
@@ -32,13 +32,13 @@ import com.suse.manager.webui.utils.ActionSaltState;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
 import com.suse.manager.webui.utils.SaltCmdScript;
 import com.suse.manager.webui.utils.SaltModuleRun;
-import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPatchInstalled;
-
+import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.SaltTop;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -49,13 +49,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.DirectoryStream;
-import java.nio.file.attribute.UserPrincipal;
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;

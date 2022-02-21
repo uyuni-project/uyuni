@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,14 +17,13 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
-
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
-import java.util.List;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -141,6 +140,16 @@ public class ErrataFilter extends ContentFilter<Errata> {
                         return erratum.hasKeyword(value);
                     default:
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                }
+            case "package_provides_name":
+                switch (matcher) {
+                case CONTAINS_PROVIDES_NAME:
+                    return erratum.getPackages().stream()
+                            .flatMap(pkg -> pkg.getProvides().stream())
+                            .map(p -> p.getCapability().getName())
+                            .anyMatch(n -> n.equals(value));
+                default:
+                    throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
@@ -23,13 +25,11 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 
 public class BaseHandlerTestCase extends RhnBaseTestCase {
     /*

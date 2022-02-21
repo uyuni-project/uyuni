@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.frontend.action.BaseSearchAction;
+import com.redhat.rhn.frontend.dto.PackageOverview;
+import com.redhat.rhn.frontend.xmlrpc.SearchServerIndexException;
+import com.redhat.rhn.manager.channel.ChannelManager;
+
+import org.apache.log4j.Logger;
+
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,18 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.frontend.action.BaseSearchAction;
-import com.redhat.rhn.frontend.dto.PackageOverview;
-import com.redhat.rhn.frontend.xmlrpc.SearchServerIndexException;
-import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * PackageSearchHelper

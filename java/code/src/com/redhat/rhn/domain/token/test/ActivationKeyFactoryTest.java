@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -42,7 +42,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-    public void testLookupByServer() throws Exception{
+    public void testLookupByServer() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
 
         List<ActivationKey> activationKeys =
@@ -50,7 +50,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, activationKeys.size());
     }
 
-    public void testLookupByServerBootstrap() throws Exception{
+    public void testLookupByServerBootstrap() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         activationKey.setBootstrap("Y");
 

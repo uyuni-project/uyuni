@@ -1,10 +1,12 @@
 import * as React from "react";
-import { RecurringEventPicker } from "components/picker/recurring-event-picker";
-import { DisplayHighstate } from "./display-highstate";
+
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
-import { Toggler } from "components/toggler";
 import { InnerPanel } from "components/panels/InnerPanel";
+import { RecurringEventPicker } from "components/picker/recurring-event-picker";
+import { Toggler } from "components/toggler";
+
+import { DisplayHighstate } from "./display-highstate";
 
 type Props = {
   schedule?: any;
@@ -41,7 +43,7 @@ class RecurringStatesEdit extends React.Component<Props, State> {
     }
   }
 
-  setSchedule = schedule => {
+  setSchedule = (schedule) => {
     Object.assign(this.state, schedule);
   };
 
@@ -82,23 +84,23 @@ class RecurringStatesEdit extends React.Component<Props, State> {
     });
   };
 
-  onScheduleNameChanged = scheduleName => {
+  onScheduleNameChanged = (scheduleName) => {
     this.setState({ scheduleName: scheduleName });
   };
 
-  onToggleActive = active => {
+  onToggleActive = (active) => {
     this.setState({ active: active });
   };
 
-  onTypeChanged = type => {
+  onTypeChanged = (type) => {
     this.setState({ type: type });
   };
 
-  onCronTimesChanged = cronTimes => {
+  onCronTimesChanged = (cronTimes) => {
     this.setState({ cronTimes: cronTimes });
   };
 
-  onCustomCronChanged = cron => {
+  onCustomCronChanged = (cron) => {
     this.setState({ cron: cron });
   };
 
@@ -135,27 +137,25 @@ class RecurringStatesEdit extends React.Component<Props, State> {
     ];
 
     return (
-      <div>
-        <InnerPanel
-          title={t("Schedule Recurring Highstate")}
-          icon="spacewalk-icon-salt"
-          buttonsLeft={buttonsLeft}
-          buttons={buttons}
-        >
-          <RecurringEventPicker
-            timezone={window.timezone}
-            scheduleName={this.state.scheduleName}
-            type={this.state.type}
-            cron={this.state.cron}
-            cronTimes={this.state.cronTimes}
-            onScheduleNameChanged={this.onScheduleNameChanged}
-            onTypeChanged={this.onTypeChanged}
-            onCronTimesChanged={this.onCronTimesChanged}
-            onCronChanged={this.onCustomCronChanged}
-          />
-          {window.entityType === "NONE" ? null : <DisplayHighstate minions={this.state.minions} />}
-        </InnerPanel>
-      </div>
+      <InnerPanel
+        title={t("Schedule Recurring Highstate")}
+        icon="spacewalk-icon-salt"
+        buttonsLeft={buttonsLeft}
+        buttons={buttons}
+      >
+        <RecurringEventPicker
+          timezone={window.timezone}
+          scheduleName={this.state.scheduleName}
+          type={this.state.type}
+          cron={this.state.cron}
+          cronTimes={this.state.cronTimes}
+          onScheduleNameChanged={this.onScheduleNameChanged}
+          onTypeChanged={this.onTypeChanged}
+          onCronTimesChanged={this.onCronTimesChanged}
+          onCronChanged={this.onCustomCronChanged}
+        />
+        {window.entityType === "NONE" ? null : <DisplayHighstate minions={this.state.minions} />}
+      </InnerPanel>
     );
   }
 }

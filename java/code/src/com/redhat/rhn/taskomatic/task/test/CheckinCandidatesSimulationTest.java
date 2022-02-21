@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,8 +23,6 @@ import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
-
-import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 
 /**
  * This test implements a simulation considering n idle systems (specified below as

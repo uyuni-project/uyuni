@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -53,6 +53,11 @@ public class CobblerSyncTask extends RhnJavaJob {
     public CobblerSyncTask() {
         errorCount = 0;
         distroWarnCount = 0;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "cobbler_sync";
     }
 
     /**

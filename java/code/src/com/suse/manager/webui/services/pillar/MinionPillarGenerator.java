@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,8 +16,7 @@
 package com.suse.manager.webui.services.pillar;
 
 import com.redhat.rhn.domain.server.MinionServer;
-
-import com.suse.manager.webui.utils.SaltPillar;
+import com.redhat.rhn.domain.server.Pillar;
 
 import java.util.Optional;
 
@@ -29,9 +28,9 @@ public interface MinionPillarGenerator {
     /**
      * Generates specific pillar data for a the passed minion
      * @param minion the minion server
-     * @return the SaltPillar containing the pillar data
+     * @return the Pillar containing the pillar data
      */
-    Optional<SaltPillar> generatePillarData(MinionServer minion);
+    Optional<Pillar> generatePillarData(MinionServer minion);
 
     /**
      * Generates the filename of the file disk where the pillar data should be save
@@ -40,4 +39,8 @@ public interface MinionPillarGenerator {
      */
     String getFilename(String minionId);
 
+    /**
+     * @return the pillar category for the generator
+     */
+    String getCategory();
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
 /**
  * General-use base class for writing decorators

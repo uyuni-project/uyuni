@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -27,14 +27,15 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.product.Tuple3;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -44,10 +45,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SparkTestUtils;
+
+import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -103,6 +105,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public static Test suite() {
         TestSuite suite = new TestSuite(DownloadControllerTest.class);
         TestSetup wrapper = new TestSetup(suite) {
+            @Override
             protected void setUp() throws Exception {
                 // Config class keeps the config files sorted by a TreeSet with a File
                 // comparator, which makes it sometimes override the test rhn.conf with
@@ -120,6 +123,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
@@ -161,6 +165,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void tearDown() throws Exception {
         super.tearDown();
         if (originalMountPoint != null) {
@@ -191,7 +196,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         return getMockRequestWithParamsAndHeaders(params, headers, uriFile);
     }
 
-    private Request getMockRequestWithParamsAndHeaders(Map<String, String> params, Map<String, String> headers, String file) {
+    private Request getMockRequestWithParamsAndHeaders(Map<String, String> params,
+                                                       Map<String, String> headers, String file) {
         return SparkTestUtils.createMockRequestWithParams(
                 "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
                 params,
@@ -199,7 +205,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 channel.getLabel(), file);
     }
 
-    private Tuple3<Package, File, String> createDebPkg(Channel debChannel, String epoch, String version, String release, String arch)
+    private Tuple3<Package, File, String> createDebPkg(Channel debChannel, String epoch,
+                                                       String version, String release, String arch)
             throws Exception {
         Package dpkg = new Package();
         PackageName pname = PackageNameTest.createTestPackageName();
@@ -241,7 +248,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         try {
             DownloadController.downloadPackage(request, response);
             fail("Controller should fail if no token was given");
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -258,7 +266,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         try {
             DownloadController.downloadPackage(request, response);
             fail("Controller should fail if wrong token was given");
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -301,8 +310,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         DownloadController.setCheckTokens(false);
 
         String compsRelativeDirPath = "rhn/comps/" + channel.getName();
-        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/"
-                + compsRelativeDirPath;
+        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
+                compsRelativeDirPath;
         String compsName = compsRelativeDirPath + "123hash123-comps-Server.x86_64";
         File compsDir = new File(compsDirPath);
         try {
@@ -353,7 +362,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 400 if 2 tokens given",
                     DownloadController.class.getSimpleName()));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(400, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -382,7 +392,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different channel token is given",
                     DownloadController.class.getSimpleName()));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -409,7 +420,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different org token is given",
                     DownloadController.class.getSimpleName()));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -437,7 +449,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if the token is not assigned to a minion",
                     DownloadController.class.getSimpleName()));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
@@ -512,7 +525,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
             assertEquals("attachment; filename=" + pkgFile.get().getName(),
                     response.raw().getHeader("Content-Disposition"));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
     }
@@ -538,7 +552,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
             assertEquals("attachment; filename=" + packageFile.getName(),
                     response.raw().getHeader("Content-Disposition"));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
     }
@@ -563,7 +578,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if an expired token is given",
                     DownloadController.class.getSimpleName()));
-        } catch (spark.HaltException e) {
+        }
+        catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertTrue(e.getBody().contains("The JWT is no longer valid"));
             assertNull(response.raw().getHeader("X-Sendfile"));
@@ -589,8 +605,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 channel.getLabel(), "comps.xml");
 
         String compsRelativeDirPath = "rhn/comps/" + channel.getName();
-        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/"
-                + compsRelativeDirPath;
+        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
+                compsRelativeDirPath;
         String compsName = compsRelativeDirPath + "123hash123-comps-Server.x86_64";
         File compsDir = new File(compsDirPath);
         try {
@@ -612,10 +628,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
                 assertEquals("attachment; filename=" + compsFile.getName(),
                         response.raw().getHeader("Content-Disposition"));
-            } catch (spark.HaltException e) {
+            }
+            catch (spark.HaltException e) {
                 fail("No HaltException should be thrown with a valid token!");
             }
-        } finally {
+        }
+        finally {
             FileUtils.deleteDirectory(compsDir);
         }
     }
@@ -671,36 +689,87 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test if media.1/products file is served correctly.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadMediaProducts() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/media.1/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "products");
+
+        String productsRelativeDirPath = "suse/media.1/" + channel.getName() + "/";
+        String productsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + productsRelativeDirPath;
+        String productsName = productsRelativeDirPath + "products";
+        File productsDir = new File(productsDirPath);
+        try {
+            assertTrue(productsDir.mkdirs());
+            File productsFile = File.createTempFile(productsDirPath + "/" + productsName, "", productsDir);
+            Files.write(productsFile.getAbsoluteFile().toPath(),
+                    "/ Basesystem-Module 15.3-0".getBytes());
+
+            // create modules object
+            MediaProducts prd = new MediaProducts();
+            prd.setChannel(channel);
+            prd.setRelativeFilename(productsRelativeDirPath + "/" + productsFile.getName());
+            channel.setMediaProducts(prd);
+
+            try {
+                assertNotNull(DownloadController.downloadMediaFiles(request, response));
+
+                assertEquals(productsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+                assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+                assertEquals("attachment; filename=" + productsFile.getName(),
+                        response.raw().getHeader("Content-Disposition"));
+            }
+            catch (spark.HaltException e) {
+                fail("No HaltException should be thrown with a valid token!");
+            }
+        }
+        finally {
+            FileUtils.deleteDirectory(productsDir);
+        }
+    }
+
     public void testParseDebPkgFilename1() {
-        DownloadController.PkgInfo pkg =
+        DownloadController.PkgInfo pack =
                 DownloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/gcc-8-base_8-20180414-1ubuntu2.amd64-deb.deb");
-        assertEquals("gcc-8-base", pkg.getName());
-        assertNull(pkg.getEpoch());
-        assertEquals("8-20180414", pkg.getVersion());
-        assertEquals("1ubuntu2", pkg.getRelease());
-        assertEquals("amd64-deb", pkg.getArch());
+        assertEquals("gcc-8-base", pack.getName());
+        assertNull(pack.getEpoch());
+        assertEquals("8-20180414", pack.getVersion());
+        assertEquals("1ubuntu2", pack.getRelease());
+        assertEquals("amd64-deb", pack.getArch());
     }
 
     public void testParseDebPkgFilename2() {
-        DownloadController.PkgInfo pkg =
+        DownloadController.PkgInfo pack =
                 DownloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/python-tornado_4.2.1-1ubuntu3.amd64-deb.deb");
-        assertEquals("python-tornado", pkg.getName());
-        assertNull(pkg.getEpoch());
-        assertEquals("4.2.1", pkg.getVersion());
-        assertEquals("1ubuntu3", pkg.getRelease());
-        assertEquals("amd64-deb", pkg.getArch());
+        assertEquals("python-tornado", pack.getName());
+        assertNull(pack.getEpoch());
+        assertEquals("4.2.1", pack.getVersion());
+        assertEquals("1ubuntu3", pack.getRelease());
+        assertEquals("amd64-deb", pack.getArch());
     }
 
     public void testParseDebPkgFilename3() {
-        DownloadController.PkgInfo pkg =
+        DownloadController.PkgInfo pack =
                 DownloadController.parsePackageFileName(
                         "/rhn/manager/download/ubuntu-18.04-amd64-main/getPackage/ruby_1:2.5.1-X.amd64-deb.deb");
-        assertEquals("ruby", pkg.getName());
-        assertEquals("1", pkg.getEpoch());
-        assertEquals("2.5.1", pkg.getVersion());
-        assertEquals("X", pkg.getRelease());
-        assertEquals("amd64-deb", pkg.getArch());
+        assertEquals("ruby", pack.getName());
+        assertEquals("1", pack.getEpoch());
+        assertEquals("2.5.1", pack.getVersion());
+        assertEquals("X", pack.getRelease());
+        assertEquals("amd64-deb", pack.getArch());
     }
 }

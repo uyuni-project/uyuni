@@ -294,7 +294,7 @@ def do_login(self, args):
     try:
         self.api_version = self.client.api.getVersion()
         logging.debug('Server API Version = %s', self.api_version)
-    except Exception as exc:
+    except Exception as exc: # pylint: disable=broad-except
         if self.options.debug > 0:
             e = sys.exc_info()[0]
             logging.exception(e)
@@ -509,11 +509,15 @@ def get_erratum_id(self, name):
     if name in self.all_errata:
         return self.all_errata[name]['id']
 
+    return None
+
 
 def get_erratum_name(self, erratum_id):
     for erratum in self.all_errata:
         if self.all_errata[erratum]['id'] == erratum_id:
             return erratum
+
+    return None
 
 
 def generate_errata_cache(self, force=False):
@@ -603,7 +607,7 @@ def generate_package_cache(self, force=False):
         for i in sorted(v):
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
-                logging.debug(
+                logging.debug(                                                 # pylint: disable=logging-not-lazy
                     'Non-unique package id "%s" is detected. Taking "%s" '
                     'instead of "%s"' % (i, k, self.all_packages_by_id[i]))
 
@@ -652,7 +656,9 @@ def get_package_id(self, name):
         # then we insert the integer id into a set.
         return set([self.all_packages[name]])
     except KeyError:
-        return
+        return None
+
+    return None
 
 
 def get_package_name(self, package_id):
@@ -812,7 +818,9 @@ def get_system_name(self, system_id):
     try:
         return self.all_systems[system_id]
     except KeyError:
-        return
+        return None
+
+    return None
 
 
 def get_org_id(self, name):
@@ -905,7 +913,7 @@ def list_child_channels(self, system=None, parent=None, subscribed=False):
     if system:
         system_id = self.get_system_id(system)
         if not system_id:
-            return
+            return None
 
         if subscribed:
             channels = \

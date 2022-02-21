@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import java.io.InputStream;
@@ -41,19 +42,20 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("node"));
         assertTrue(res.get().getExporters().get("postgres"));
         assertTrue(res.get().getExporters().get("tomcat"));
-        assertTrue(res.get().getExporters().get("taskomatic"));
+        assertFalse(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
 
         assertEquals(null, res.get().getMessages().get("tomcat"));
-        assertEquals("enable", res.get().getMessages().get("taskomatic"));
+        assertEquals("restart", res.get().getMessages().get("taskomatic"));
         assertEquals(null, res.get().getMessages().get("self_monitoring"));
     }
 
     public void testGetStatusWithSelfMonitoringRestartNeeded() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
@@ -66,18 +68,19 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("node"));
         assertTrue(res.get().getExporters().get("postgres"));
         assertTrue(res.get().getExporters().get("tomcat"));
-        assertTrue(res.get().getExporters().get("taskomatic"));
+        assertFalse(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
         assertEquals(null, res.get().getMessages().get("tomcat"));
-        assertEquals("enable", res.get().getMessages().get("taskomatic"));
+        assertEquals("restart", res.get().getMessages().get("taskomatic"));
         assertEquals("restart", res.get().getMessages().get("self_monitoring"));
     }
 
     public void testGetStatusWithTaskomaticRestartNeeded() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);
@@ -97,10 +100,11 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     }
 
     public void testGetStatusNoMessage() {
+        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
                     return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json"));
+                            .getResourceAsStream(jsonFile));
                 };
 
         MonitoringService.setExecCtlFunction(execCtl);

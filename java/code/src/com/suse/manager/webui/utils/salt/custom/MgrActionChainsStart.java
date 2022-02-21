@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,9 +15,10 @@
 
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.google.gson.JsonObject;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import com.google.gson.JsonObject;
 
 /**
  * Event fired when an Action Chain starts executing.

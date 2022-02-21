@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,9 +18,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.satellite.SatelliteConfigurator;
 
-import net.sf.cglib.core.ReflectUtils;
-
 import org.apache.log4j.Logger;
+
+import net.sf.cglib.core.ReflectUtils;
 
 /**
  * BaseConfigAction - contains common methods for Struts Actions needing to

@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2018--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.messaging.test;
 
 import static java.util.Arrays.asList;
@@ -27,13 +41,14 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.test.TestSystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -58,7 +73,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
 
     // Mocks
     private SaltService saltMock;
-    SystemQuery systemQuery;
+    private SystemQuery systemQuery;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -160,16 +175,16 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         throws Exception {
         ChannelProduct channelProduct = ErrataTestUtils.createTestChannelProduct();
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
-        Channel baseChannelX8664 = DistUpgradeManagerTest
+        Channel testBaseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
-        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
+        SUSEProductTestUtils.createTestSUSEProductChannel(testBaseChannelX8664, product, true);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
-        channel2.setParentChannel(baseChannelX8664);
-        channel3.setParentChannel(baseChannelX8664);
+        channel2.setParentChannel(testBaseChannelX8664);
+        channel3.setParentChannel(testBaseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel3, product, true);
-        return baseChannelX8664;
+        return testBaseChannelX8664;
     }
 
     private Map<String, Object> getGrains() throws ClassNotFoundException, IOException {

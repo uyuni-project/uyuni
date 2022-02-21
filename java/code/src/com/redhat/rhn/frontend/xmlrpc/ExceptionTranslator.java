@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,9 +16,9 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.FaultException;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.manager.errata.RetractedErrataException;
+
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
 import java.nio.channels.OverlappingFileLockException;

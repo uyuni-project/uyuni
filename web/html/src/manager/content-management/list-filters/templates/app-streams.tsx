@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { usePrevious } from "utils/hooks";
-import { Select, FormContext } from "components/input";
-import { Props as FilterFormProps } from "../filter-form";
 
-import { Template } from "./index";
+import { FormContext, Select } from "components/input";
+
+import { usePrevious } from "utils/hooks";
 import Network, { JsonResult } from "utils/network";
+
+import { Props as FilterFormProps } from "../filter-form";
+import { Template } from "./index";
 
 type Channel = {
   id: number;
@@ -26,9 +28,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   const [channels, setChannels] = useState<Channel[]>([]);
 
   useEffect(() => {
-    getChannels()
-      .then(setChannels)
-      .catch(Network.showResponseErrorToastr);
+    getChannels().then(setChannels).catch(Network.showResponseErrorToastr);
   }, []);
 
   useEffect(() => {
@@ -39,14 +39,14 @@ export default (props: FilterFormProps & { template: Template }) => {
 
   return (
     <Select
-        name="channelId"
-        label={t("Channel")}
-        labelClass="col-md-3"
-        divClass="col-md-6"
-        required
-        options={channels}
-        getOptionValue={channel => channel.id}
-        getOptionLabel={channel => channel.name}
-      />
+      name="channelId"
+      label={t("Channel")}
+      labelClass="col-md-3"
+      divClass="col-md-6"
+      required
+      options={channels}
+      getOptionValue={(channel) => channel.id}
+      getOptionLabel={(channel) => channel.name}
+    />
   );
 };

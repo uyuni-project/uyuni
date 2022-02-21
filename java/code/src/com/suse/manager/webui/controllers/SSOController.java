@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,6 +32,7 @@ import com.onelogin.saml2.exception.SettingsException;
 import com.onelogin.saml2.exception.XMLEntityException;
 import com.onelogin.saml2.servlet.ServletUtils;
 import com.onelogin.saml2.settings.Saml2Settings;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.servlet.ServletException;
+
 import spark.Request;
 import spark.Response;
 

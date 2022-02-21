@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -79,6 +79,27 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertEquals(clone, cloneModules.getChannel());
         assertFalse(originalModules.getId().equals(cloneModules.getId()));
     }
+
+    /**
+     * Test cloning a modular channel as a regular channel, stripping modular metadata
+     */
+    public void testStripModularMetadata() throws Exception {
+        Channel original = createBaseChannel();
+        Modules modules = new Modules();
+        modules.setChannel(original);
+        modules.setRelativeFilename("blablafilename");
+        original.setModules(modules);
+        assertTrue(original.isModular());
+
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
+        ccc.setUser(user);
+        ccc.setStripModularMetadata(true);
+        Channel c = ccc.create();
+        c = ChannelFactory.reload(c);
+
+        assertFalse(c.isModular());
+    }
+
 
     private Channel createBaseChannel() throws Exception {
         Channel channel = ChannelTestUtils.createBaseChannel(user);

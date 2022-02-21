@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,6 +31,11 @@ import org.quartz.JobExecutionException;
 public class MatcherJob extends RhnJavaJob {
 
     public static final String CSV_SEPARATOR = "server.susemanager.matchercsvseparator";
+
+    @Override
+    public String getConfigNamespace() {
+        return "matcher";
+    }
 
     /**
      * {@inheritDoc}

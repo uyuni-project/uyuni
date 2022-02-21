@@ -1248,5 +1248,1252 @@
     ],
     "shortname": null,
     "version": "7"
+  },
+  {
+    "arch": "x86_64",
+    "cpe": "cpe:/o:suse:sles:15",
+    "description": "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+    "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product.license/",
+    "extensions": [
+      {
+        "arch": "x86_64",
+        "cpe": "cpe:/o:suse:sle-module-basesystem:15",
+        "description": "<p> The SUSE Linux Enterprise Basesystem Module delivers the base system of the product. </p>",
+        "eula_url": "",
+        "extensions": [
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:sle-module-desktop-applications:15",
+            "description": "<p> The SUSE Linux Enterprise Desktop Applications Module delivers a basic set of Desktop functionality. </p> <p> Access to the Desktop Applications Module is included in your SUSE Linux Enterprise product subscription. </p>",
+            "eula_url": "",
+            "extensions": [
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-module-development-tools:15",
+                "description": "<p> The Development Tools Module helps you developing applications for SUSE Linux Enterprise 15. </p> <p> Access to the Development Tools Module is included in your SUSE Linux Enterprise product subscription. The module has a different lifecycle than SUSE Linux Enterprise itself. </p>",
+                "eula_url": "",
+                "extensions": [],
+                "former_identifier": "sle-sdk",
+                "free": true,
+                "friendly_name": "Development Tools Module 15 x86_64",
+                "friendly_version": "15",
+                "id": 1579,
+                "identifier": "sle-module-development-tools",
+                "migration_extra": true,
+                "name": "Development Tools Module",
+                "offline_predecessor_ids": [
+                  1223,
+                  1323,
+                  1341,
+                  1366,
+                  1427,
+                  1630,
+                  1892
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "MODULE",
+                "product_type": "module",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-DevTools15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2539,
+                    "installer_updates": false,
+                    "name": "SLE-Module-DevTools15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-DevTools15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2540,
+                    "installer_updates": false,
+                    "name": "SLE-Module-DevTools15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-DevTools15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2541,
+                    "installer_updates": false,
+                    "name": "SLE-Module-DevTools15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-DevTools15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2542,
+                    "installer_updates": false,
+                    "name": "SLE-Module-DevTools15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-DevTools15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2543,
+                    "installer_updates": false,
+                    "name": "SLE-Module-DevTools15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product_source/"
+                  }
+                ],
+                "shortname": "Development-Tools-Module",
+                "version": "15"
+              },
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-we:15",
+                "description": "SUSE Linux Enterprise Workstation Extension adds additional functionality to a base SUSE Linux Enterprise installation. The Workstation Extension offers additional desktop applications (office suite, email client, graphical editor, multimedia tools) and libraries. Workstation Extension is enabled and installed by default on SUSE Linux Enterprise Desktop installation. Adding the Workstation Extension to a SUSE Linux Enterprise Server installation allows to seamlessly combine both products to create a full featured server workstation.",
+                "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Product-WE/15/x86_64/product.license/",
+                "extensions": [],
+                "former_identifier": "sle-we",
+                "free": false,
+                "friendly_name": "SUSE Linux Enterprise Workstation Extension 15 x86_64",
+                "friendly_version": "15",
+                "id": 1583,
+                "identifier": "sle-we",
+                "migration_extra": false,
+                "name": "SUSE Linux Enterprise Workstation Extension",
+                "offline_predecessor_ids": [
+                  1222,
+                  1338,
+                  1359,
+                  1431,
+                  1639,
+                  1893
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "SLE-WE",
+                "product_type": "extension",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Product-WE15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2742,
+                    "installer_updates": false,
+                    "name": "SLE-Product-WE15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-WE/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Product-WE15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2743,
+                    "installer_updates": false,
+                    "name": "SLE-Product-WE15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-WE/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-WE15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2744,
+                    "installer_updates": false,
+                    "name": "SLE-Product-WE15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-WE/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-WE15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2745,
+                    "installer_updates": false,
+                    "name": "SLE-Product-WE15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-WE/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-WE15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2746,
+                    "installer_updates": false,
+                    "name": "SLE-Product-WE15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-WE/15/x86_64/product_source/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-15-GA-Desktop-NVIDIA-Driver for ",
+                    "distro_target": null,
+                    "enabled": true,
+                    "id": 2747,
+                    "installer_updates": false,
+                    "name": "SLE-15-GA-Desktop-NVIDIA-Driver",
+                    "url": "https://download.nvidia.com/suse/sle15/"
+                  }
+                ],
+                "shortname": "SLEWE15",
+                "version": "15"
+              }
+            ],
+            "former_identifier": "sle-module-desktop-applications",
+            "free": true,
+            "friendly_name": "Desktop Applications Module 15 x86_64",
+            "friendly_version": "15",
+            "id": 1578,
+            "identifier": "sle-module-desktop-applications",
+            "migration_extra": true,
+            "name": "Desktop Applications Module",
+            "offline_predecessor_ids": [],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "MODULE",
+            "product_type": "module",
+            "recommended": false,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Desktop-Applications15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2534,
+                "installer_updates": false,
+                "name": "SLE-Module-Desktop-Applications15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Desktop-Applications15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2535,
+                "installer_updates": false,
+                "name": "SLE-Module-Desktop-Applications15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Desktop-Applications15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2536,
+                "installer_updates": false,
+                "name": "SLE-Module-Desktop-Applications15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Desktop-Applications15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2537,
+                "installer_updates": false,
+                "name": "SLE-Module-Desktop-Applications15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Desktop-Applications15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2538,
+                "installer_updates": false,
+                "name": "SLE-Module-Desktop-Applications15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "Desktop-Applications-Module",
+            "version": "15"
+          },
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:sle-module-server-applications:15",
+            "description": "<p> The SUSE Linux Enterprise Server Applications Module delivers a basic set of Server functionality. </p> <p> Access to the Server Applications Module is included in your SUSE Linux Enterprise Server subscription. </p>",
+            "eula_url": "",
+            "extensions": [
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-module-legacy:15",
+                "description": "<p> The Legacy Module helps you migrating applications from SUSE Linux Enterprise 12 and other systems to SUSE Linux Enterprise 15, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: ntp, IBM Java 8, and a number of libraries. </p> <p> Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. </p>",
+                "eula_url": "",
+                "extensions": [],
+                "former_identifier": "sle-module-legacy",
+                "free": true,
+                "friendly_name": "Legacy Module 15 x86_64",
+                "friendly_version": "15",
+                "id": 1581,
+                "identifier": "sle-module-legacy",
+                "migration_extra": true,
+                "name": "Legacy Module",
+                "offline_predecessor_ids": [
+                  1150
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "MODULE",
+                "product_type": "module",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Legacy15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2549,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Legacy15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Legacy15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2550,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Legacy15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Legacy15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2551,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Legacy15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Legacy15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2552,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Legacy15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Legacy15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2553,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Legacy15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product_source/"
+                  }
+                ],
+                "shortname": "Legacy-Module",
+                "version": "15"
+              },
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-ha:15",
+                "description": "SUSE Linux High Availability Extension provides mature, industry-leading open-source high-availability clustering technologies that are easy to set up and use. It can be deployed in physical and/or virtual environments, and can cluster physical servers, virtual servers, or any combination of the two to suit your business\u2019 needs.",
+                "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product.license/",
+                "extensions": [],
+                "former_identifier": "sle-ha",
+                "free": false,
+                "friendly_name": "SUSE Linux Enterprise High Availability Extension 15 x86_64",
+                "friendly_version": "15",
+                "id": 1582,
+                "identifier": "sle-ha",
+                "migration_extra": false,
+                "name": "SUSE Linux Enterprise High Availability Extension",
+                "offline_predecessor_ids": [
+                  958,
+                  961,
+                  967,
+                  971,
+                  1101,
+                  1107,
+                  1157,
+                  1245,
+                  1256,
+                  1286,
+                  1324,
+                  1337,
+                  1361,
+                  1363,
+                  1432,
+                  1435,
+                  1634,
+                  1637,
+                  1884,
+                  1886
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "SLE-HAE-X86",
+                "product_type": "extension",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Product-HA15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2754,
+                    "installer_updates": false,
+                    "name": "SLE-Product-HA15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HA/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Product-HA15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2755,
+                    "installer_updates": false,
+                    "name": "SLE-Product-HA15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HA/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-HA15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2756,
+                    "installer_updates": false,
+                    "name": "SLE-Product-HA15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-HA15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2757,
+                    "installer_updates": false,
+                    "name": "SLE-Product-HA15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Product-HA15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2758,
+                    "installer_updates": false,
+                    "name": "SLE-Product-HA15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product_source/"
+                  }
+                ],
+                "shortname": "SLEHA15",
+                "version": "15"
+              },
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-module-public-cloud:15",
+                "description": "<p> The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. </p> <p> Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+                "eula_url": "",
+                "extensions": [],
+                "former_identifier": "sle-module-public-cloud",
+                "free": true,
+                "friendly_name": "Public Cloud Module 15 x86_64",
+                "friendly_version": "15",
+                "id": 1611,
+                "identifier": "sle-module-public-cloud",
+                "migration_extra": true,
+                "name": "Public Cloud Module",
+                "offline_predecessor_ids": [
+                  1220
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "MODULE",
+                "product_type": "module",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Public-Cloud15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2673,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Public-Cloud15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Public-Cloud15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2674,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Public-Cloud15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Public-Cloud15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2675,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Public-Cloud15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Public-Cloud15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2676,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Public-Cloud15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Public-Cloud15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 3129,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Public-Cloud15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/x86_64/product_source/"
+                  }
+                ],
+                "shortname": "Public-Cloud-Module",
+                "version": "15"
+              },
+              {
+                "arch": "x86_64",
+                "cpe": "cpe:/o:suse:sle-module-web-scripting:15",
+                "description": "<p> The SUSE Linux Enterprise Web and Scripting Module should contains additional packages that are helpful when running a webserver. </p> <p> Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. </p>",
+                "eula_url": "",
+                "extensions": [],
+                "former_identifier": "sle-module-web-scripting",
+                "free": true,
+                "friendly_name": "Web and Scripting Module 15 x86_64",
+                "friendly_version": "15",
+                "id": 1721,
+                "identifier": "sle-module-web-scripting",
+                "migration_extra": true,
+                "name": "Web and Scripting Module",
+                "offline_predecessor_ids": [
+                  1153
+                ],
+                "online_predecessor_ids": [],
+                "predecessor_ids": [],
+                "product_class": "MODULE",
+                "product_type": "module",
+                "recommended": false,
+                "release_stage": "released",
+                "release_type": null,
+                "repositories": [
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Web-Scripting15-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2972,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Web-Scripting15-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/15/x86_64/update/"
+                  },
+                  {
+                    "autorefresh": true,
+                    "description": "SLE-Module-Web-Scripting15-Debuginfo-Updates for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2973,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Web-Scripting15-Debuginfo-Updates",
+                    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/15/x86_64/update_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Web-Scripting15-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": true,
+                    "id": 2974,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Web-Scripting15-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/15/x86_64/product/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Web-Scripting15-Debuginfo-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2975,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Web-Scripting15-Debuginfo-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/15/x86_64/product_debug/"
+                  },
+                  {
+                    "autorefresh": false,
+                    "description": "SLE-Module-Web-Scripting15-Source-Pool for sle-15-x86_64",
+                    "distro_target": "sle-15-x86_64",
+                    "enabled": false,
+                    "id": 2976,
+                    "installer_updates": false,
+                    "name": "SLE-Module-Web-Scripting15-Source-Pool",
+                    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/15/x86_64/product_source/"
+                  }
+                ],
+                "shortname": "Web-Scripting-Module",
+                "version": "15"
+              }
+            ],
+            "former_identifier": "sle-module-server-applications",
+            "free": true,
+            "friendly_name": "Server Applications Module 15 x86_64",
+            "friendly_version": "15",
+            "id": 1580,
+            "identifier": "sle-module-server-applications",
+            "migration_extra": false,
+            "name": "Server Applications Module",
+            "offline_predecessor_ids": [],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "MODULE",
+            "product_type": "module",
+            "recommended": true,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Server-Applications15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2544,
+                "installer_updates": false,
+                "name": "SLE-Module-Server-Applications15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Server-Applications15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2545,
+                "installer_updates": false,
+                "name": "SLE-Module-Server-Applications15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Server-Applications15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2546,
+                "installer_updates": false,
+                "name": "SLE-Module-Server-Applications15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Server-Applications15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2547,
+                "installer_updates": false,
+                "name": "SLE-Module-Server-Applications15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Server-Applications15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2548,
+                "installer_updates": false,
+                "name": "SLE-Module-Server-Applications15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "Server-Applications-Module",
+            "version": "15"
+          },
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:sle-module-containers:15",
+            "description": "<p>This Module contains several packages revolving around containers and related tools. </p>",
+            "eula_url": "",
+            "extensions": [],
+            "former_identifier": "sle-module-containers",
+            "free": true,
+            "friendly_name": "Containers Module 15 x86_64",
+            "friendly_version": "15",
+            "id": 1642,
+            "identifier": "sle-module-containers",
+            "migration_extra": true,
+            "name": "Containers Module",
+            "offline_predecessor_ids": [
+              1332
+            ],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "MODULE",
+            "product_type": "module",
+            "recommended": false,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Containers15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2864,
+                "installer_updates": false,
+                "name": "SLE-Module-Containers15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Containers15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2865,
+                "installer_updates": false,
+                "name": "SLE-Module-Containers15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Containers15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 2866,
+                "installer_updates": false,
+                "name": "SLE-Module-Containers15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Containers15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2867,
+                "installer_updates": false,
+                "name": "SLE-Module-Containers15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Containers15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 2868,
+                "installer_updates": false,
+                "name": "SLE-Module-Containers15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "Containers-Module",
+            "version": "15"
+          },
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:sle-module-cap-tools:15",
+            "description": "<p> The SUSE Cloud Application Platform Tools Module is a collection of tools that enables you to interact with the SUSE Cloud Application Platform product itself, providing the commandline client for instance. </p> <p> Access to the SUSE Cloud Application Platform Tools Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. </p>",
+            "eula_url": "",
+            "extensions": [],
+            "former_identifier": "sle-module-cap-tools",
+            "free": true,
+            "friendly_name": "SUSE Cloud Application Platform Tools Module 15 x86_64",
+            "friendly_version": "15",
+            "id": 1728,
+            "identifier": "sle-module-cap-tools",
+            "migration_extra": true,
+            "name": "SUSE Cloud Application Platform Tools Module",
+            "offline_predecessor_ids": [
+              1678
+            ],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "MODULE",
+            "product_type": "module",
+            "recommended": false,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-CAP-Tools15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3000,
+                "installer_updates": false,
+                "name": "SLE-Module-CAP-Tools15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-CAP-Tools/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-CAP-Tools15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3001,
+                "installer_updates": false,
+                "name": "SLE-Module-CAP-Tools15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-CAP-Tools/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-CAP-Tools15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3002,
+                "installer_updates": false,
+                "name": "SLE-Module-CAP-Tools15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-CAP-Tools/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-CAP-Tools15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3003,
+                "installer_updates": false,
+                "name": "SLE-Module-CAP-Tools15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-CAP-Tools/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-CAP-Tools15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3123,
+                "installer_updates": false,
+                "name": "SLE-Module-CAP-Tools15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-CAP-Tools/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "SUSE-CAP-Tools-Module",
+            "version": "15"
+          },
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:sle-module-live-patching:15",
+            "description": "<p> SUSE Linux Enterprise Live Patching provides packages to update critical components in SUSE Linux Enterprise. With SUSE Linux Enterprise Live Patching, you can perform critical patching without shutting down your system, reducing the need for planned downtime and increasing service availability. <p>",
+            "eula_url": "",
+            "extensions": [],
+            "former_identifier": "sle-module-live-patching",
+            "free": false,
+            "friendly_name": "SUSE Linux Enterprise Live Patching 15 x86_64",
+            "friendly_version": "15",
+            "id": 1736,
+            "identifier": "sle-module-live-patching",
+            "migration_extra": false,
+            "name": "SUSE Linux Enterprise Live Patching",
+            "offline_predecessor_ids": [
+              1536,
+              1757,
+              1888
+            ],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "SLE-LP",
+            "product_type": "module",
+            "recommended": false,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Live-Patching15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3033,
+                "installer_updates": false,
+                "name": "SLE-Module-Live-Patching15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Live-Patching15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3034,
+                "installer_updates": false,
+                "name": "SLE-Module-Live-Patching15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Live-Patching15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3035,
+                "installer_updates": false,
+                "name": "SLE-Module-Live-Patching15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Live-Patching15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3036,
+                "installer_updates": false,
+                "name": "SLE-Module-Live-Patching15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Live-Patching15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3125,
+                "installer_updates": false,
+                "name": "SLE-Module-Live-Patching15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "Live-Patching",
+            "version": "15"
+          },
+          {
+            "arch": "x86_64",
+            "cpe": "cpe:/o:suse:packagehub:15",
+            "description": "SUSE Package Hub is a free of charge extension providing access to community maintained packages built to run on SUSE Linux Enterprise Server. Built from the same sources used in the openSUSE distributions, these quality packages provide additional software to what is found in the SUSE Linux Enterprise Server product. Packages from the Package Hub are delivered without L3 support from SUSE. General updates and fixes to the packages in SUSE Package Hub are provided by the openSUSE community based on their discretion though SUSE will monitor and ensure that any known critical security issues will be addressed. Packages in the Package Hub are approved by SUSE for use with SUSE Linux Enterprise Server 15 and to not interfere with the supportability of SUSE Linux Enterprise Server it's modules and extensions. For more information about SUSE Package Hub please visit https://packagehub.suse.com.",
+            "eula_url": "",
+            "extensions": [],
+            "former_identifier": "PackageHub",
+            "free": true,
+            "friendly_name": "SUSE Package Hub 15 x86_64",
+            "friendly_version": "15",
+            "id": 1743,
+            "identifier": "PackageHub",
+            "migration_extra": false,
+            "name": "SUSE Package Hub",
+            "offline_predecessor_ids": [
+              1529,
+              1813,
+              1915
+            ],
+            "online_predecessor_ids": [],
+            "predecessor_ids": [],
+            "product_class": "MODULE",
+            "product_type": "extension",
+            "recommended": false,
+            "release_stage": "released",
+            "release_type": null,
+            "repositories": [
+              {
+                "autorefresh": false,
+                "description": "SUSE-PackageHub-15-Standard-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3059,
+                "installer_updates": false,
+                "name": "SUSE-PackageHub-15-Standard-Pool",
+                "url": "https://updates.suse.com/SUSE/Backports/SLE-15_x86_64/standard/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SUSE-PackageHub-15-Debuginfo for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3060,
+                "installer_updates": false,
+                "name": "SUSE-PackageHub-15-Debuginfo",
+                "url": "https://updates.suse.com/SUSE/Backports/SLE-15_x86_64/standard_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SUSE-PackageHub-15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3061,
+                "installer_updates": false,
+                "name": "SUSE-PackageHub-15-Pool",
+                "url": "https://updates.suse.com/SUSE/Backports/SLE-15_x86_64/product/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Packagehub-Subpackages15-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3182,
+                "installer_updates": false,
+                "name": "SLE-Module-Packagehub-Subpackages15-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Packagehub-Subpackages/15/x86_64/update/"
+              },
+              {
+                "autorefresh": true,
+                "description": "SLE-Module-Packagehub-Subpackages15-Debuginfo-Updates for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3183,
+                "installer_updates": false,
+                "name": "SLE-Module-Packagehub-Subpackages15-Debuginfo-Updates",
+                "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Packagehub-Subpackages/15/x86_64/update_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Packagehub-Subpackages15-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": true,
+                "id": 3184,
+                "installer_updates": false,
+                "name": "SLE-Module-Packagehub-Subpackages15-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Packagehub-Subpackages/15/x86_64/product/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Packagehub-Subpackages15-Debuginfo-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3185,
+                "installer_updates": false,
+                "name": "SLE-Module-Packagehub-Subpackages15-Debuginfo-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Packagehub-Subpackages/15/x86_64/product_debug/"
+              },
+              {
+                "autorefresh": false,
+                "description": "SLE-Module-Packagehub-Subpackages15-Source-Pool for sle-15-x86_64",
+                "distro_target": "sle-15-x86_64",
+                "enabled": false,
+                "id": 3186,
+                "installer_updates": false,
+                "name": "SLE-Module-Packagehub-Subpackages15-Source-Pool",
+                "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Packagehub-Subpackages/15/x86_64/product_source/"
+              }
+            ],
+            "shortname": "SUSE-PackageHub-15",
+            "version": "15"
+          }
+        ],
+        "former_identifier": "sle-module-basesystem",
+        "free": true,
+        "friendly_name": "Basesystem Module 15 x86_64",
+        "friendly_version": "15",
+        "id": 1576,
+        "identifier": "sle-module-basesystem",
+        "migration_extra": false,
+        "name": "Basesystem Module",
+        "offline_predecessor_ids": [
+          1212,
+          1368,
+          1440,
+          1618
+        ],
+        "online_predecessor_ids": [],
+        "predecessor_ids": [],
+        "product_class": "MODULE",
+        "product_type": "module",
+        "recommended": true,
+        "release_stage": "released",
+        "release_type": null,
+        "repositories": [
+          {
+            "autorefresh": true,
+            "description": "SLE-Module-Basesystem15-Updates for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": true,
+            "id": 2524,
+            "installer_updates": false,
+            "name": "SLE-Module-Basesystem15-Updates",
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/x86_64/update/"
+          },
+          {
+            "autorefresh": true,
+            "description": "SLE-Module-Basesystem15-Debuginfo-Updates for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": false,
+            "id": 2525,
+            "installer_updates": false,
+            "name": "SLE-Module-Basesystem15-Debuginfo-Updates",
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/x86_64/update_debug/"
+          },
+          {
+            "autorefresh": false,
+            "description": "SLE-Module-Basesystem15-Pool for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": true,
+            "id": 2526,
+            "installer_updates": false,
+            "name": "SLE-Module-Basesystem15-Pool",
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15/x86_64/product/"
+          },
+          {
+            "autorefresh": false,
+            "description": "SLE-Module-Basesystem15-Debuginfo-Pool for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": false,
+            "id": 2527,
+            "installer_updates": false,
+            "name": "SLE-Module-Basesystem15-Debuginfo-Pool",
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15/x86_64/product_debug/"
+          },
+          {
+            "autorefresh": false,
+            "description": "SLE-Module-Basesystem15-Source-Pool for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": false,
+            "id": 2528,
+            "installer_updates": false,
+            "name": "SLE-Module-Basesystem15-Source-Pool",
+            "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15/x86_64/product_source/"
+          }
+        ],
+        "shortname": "Basesystem-Module",
+        "version": "15"
+      },
+      {
+        "arch": "x86_64",
+        "cpe": "cpe:/o:suse:sles-ltss:15",
+        "description": "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+        "eula_url": "",
+        "extensions": [],
+        "former_identifier": "SLES-LTSS",
+        "free": false,
+        "friendly_name": "SUSE Linux Enterprise Server LTSS 15 x86_64",
+        "friendly_version": "15",
+        "id": 2056,
+        "identifier": "SLES-LTSS",
+        "migration_extra": false,
+        "name": "SUSE Linux Enterprise Server LTSS",
+        "offline_predecessor_ids": [],
+        "online_predecessor_ids": [],
+        "predecessor_ids": [],
+        "product_class": "SLES15-GA-LTSS-X86",
+        "product_type": "extension",
+        "recommended": false,
+        "release_stage": "released",
+        "release_type": null,
+        "repositories": [
+          {
+            "autorefresh": true,
+            "description": "SLE-Product-SLES15-LTSS-Updates for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": true,
+            "id": 4390,
+            "installer_updates": false,
+            "name": "SLE-Product-SLES15-LTSS-Updates",
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-LTSS/x86_64/update/"
+          },
+          {
+            "autorefresh": true,
+            "description": "SLE-Product-SLES15-Debuginfo-LTSS-Updates for sle-15-x86_64",
+            "distro_target": "sle-15-x86_64",
+            "enabled": false,
+            "id": 4391,
+            "installer_updates": false,
+            "name": "SLE-Product-SLES15-Debuginfo-LTSS-Updates",
+            "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-LTSS/x86_64/update_debug/"
+          }
+        ],
+        "shortname": "SLES15-LTSS",
+        "version": "15"
+      }
+    ],
+    "former_identifier": "SLES",
+    "free": false,
+    "friendly_name": "SUSE Linux Enterprise Server 15 x86_64",
+    "friendly_version": "15",
+    "id": 1575,
+    "identifier": "SLES",
+    "migration_extra": false,
+    "name": "SUSE Linux Enterprise Server",
+    "offline_predecessor_ids": [
+      690,
+      769,
+      814,
+      824,
+      1300,
+      1421,
+      1625,
+      1878
+    ],
+    "online_predecessor_ids": [],
+    "predecessor_ids": [],
+    "product_class": "7261",
+    "product_type": "base",
+    "recommended": false,
+    "release_stage": "released",
+    "release_type": null,
+    "repositories": [
+      {
+        "autorefresh": true,
+        "description": "SLE-Product-SLES15-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 2705,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update/"
+      },
+      {
+        "autorefresh": true,
+        "description": "SLE15-Installer-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": false,
+        "id": 2706,
+        "installer_updates": true,
+        "name": "SLE15-Installer-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-INSTALLER/15/x86_64/update/"
+      },
+      {
+        "autorefresh": false,
+        "description": "SLE-Product-SLES15-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 2707,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product/"
+      },
+      {
+        "autorefresh": true,
+        "description": "SLE-Product-SLES15-Debuginfo-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": false,
+        "id": 3114,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-Debuginfo-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update_debug/"
+      },
+      {
+        "autorefresh": false,
+        "description": "SLE-Product-SLES15-Debuginfo-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": false,
+        "id": 3115,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-Debuginfo-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product_debug/"
+      },
+      {
+        "autorefresh": false,
+        "description": "SLE-Product-SLES15-Source-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": false,
+        "id": 3116,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-Source-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product_source/"
+      }
+    ],
+    "shortname": "SLES15",
+    "version": "15"
   }
 ]

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -22,30 +28,28 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.clusters.ClusterManager;
+
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
-import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
+
 import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -60,13 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-
 /**
  * SSHPushWorkerSaltTest
  */
@@ -78,7 +75,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SystemSummary sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
     private SystemInfo sampleSystemInfo;
-    
+
 
     @Override
     public void setUp() throws Exception {
@@ -120,7 +117,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
-           
+
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
@@ -132,8 +129,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
-            
         }});
 
         worker.setParentQueue(mockQueue());
@@ -236,7 +231,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
 
             @Override
-            public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+            public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) {
                 Map<String, Result<Map<String, String>>> result = new HashMap<>();
                 Map<String, String> values = new HashMap<>();
                 values.put("ssh_extra_filerefs", "salt://foobar");
@@ -263,7 +258,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
         }});
 
         worker.setParentQueue(mockQueue());
@@ -310,17 +304,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private SSHPushWorkerSalt successWorker(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
         return new SSHPushWorkerSalt(
                 logger,
                 sshPushSystemMock,
                 saltApi,
                 saltSSHServiceMock,
-                new SaltServerActionService(saltApi, saltUtils, clusterManager, formulaManager, saltKeyUtils),
+                new SaltServerActionService(saltApi, saltUtils, saltKeyUtils),
                 saltUtils
         );
     }

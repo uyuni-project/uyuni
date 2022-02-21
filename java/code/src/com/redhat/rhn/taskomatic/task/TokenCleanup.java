@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,8 +20,10 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -37,6 +39,11 @@ import java.util.stream.Stream;
 public class TokenCleanup extends RhnJavaJob {
 
     private final SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+
+    @Override
+    public String getConfigNamespace() {
+        return "token_cleanup";
+    }
 
     /**
      * {@inheritDoc}

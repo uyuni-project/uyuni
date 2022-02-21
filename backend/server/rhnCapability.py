@@ -176,7 +176,6 @@ def _set_server_capabilities():
         'xmlrpc.errata.patch_names': {'version': 1, 'value': 1},
         'staging_content': {'version': 1, 'value': 1},
         'ipv6': {'version': 1, 'value': 1},
-        'abrt': {'version': 1, 'value': 1},
         'cpu_sockets': {'version': 1, 'value': 1},
         'queue.update_status': {'version': 1, 'value': 1},
         'mainframe_sysinfo': {'version': 1, 'value': 1},

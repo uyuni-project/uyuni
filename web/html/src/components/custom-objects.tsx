@@ -11,7 +11,7 @@ type Props = {
   title?: string;
 
   children?: React.ReactNode;
-}
+};
 
 export const CustomDiv = (props: Props) => {
   const width = props.width + props.um;

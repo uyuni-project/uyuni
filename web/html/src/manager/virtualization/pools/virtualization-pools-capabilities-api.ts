@@ -1,6 +1,8 @@
 import * as React from "react";
-import Network from "utils/network";
+
 import * as Messages from "components/messages";
+
+import Network from "utils/network";
 
 type Props = {
   hostId: string;
@@ -13,15 +15,13 @@ export function VirtualizationPoolCapsApi(props: Props) {
 
   React.useEffect(() => {
     let subscribded = true;
-    Network.get(
-      `/rhn/manager/api/systems/details/virtualization/pools/${props.hostId}/capabilities`
-    ).then(
-      response => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/pools/${props.hostId}/capabilities`).then(
+      (response) => {
         if (subscribded) {
           setCapabilities(response);
         }
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? [Messages.Utils.error(t("Could not get storage pool capabilities from the server. Please try again."))]

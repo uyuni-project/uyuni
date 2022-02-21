@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2018 SUSE LLC
+/*
+ * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,13 +19,12 @@ import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.MinionIds;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -73,7 +72,7 @@ public class FormulaManager {
         MinionServer minion = MinionServerFactory.lookupById(systemId)
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
         FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
-        FormulaFactory.saveServerFormulaData(content, minion.getMinionId(), formulaName);
+        FormulaFactory.saveServerFormulaData(content, minion, formulaName);
         saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
@@ -90,7 +89,7 @@ public class FormulaManager {
 
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
-        FormulaFactory.saveGroupFormulaData(content, groupId, user.getOrg(), formulaName);
+        FormulaFactory.saveGroupFormulaData(content, group, formulaName);
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
             .map(MinionServer::getMinionId).collect(Collectors.toList());
@@ -109,7 +108,7 @@ public class FormulaManager {
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + serverId + " not found."));
         FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
         Optional<Map<String, Object>> data = FormulaFactory
-                .getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId());
+                .getFormulaValuesByNameAndMinion(formulaName, minion);
         return data.orElse(Collections.emptyMap());
     }
 
@@ -124,7 +123,7 @@ public class FormulaManager {
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
         Optional<Map<String, Object>> data =
-                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId);
+                FormulaFactory.getGroupFormulaValuesByNameAndGroup(formulaName, group);
         return data.orElse(Collections.emptyMap());
     }
 
@@ -282,21 +281,21 @@ public class FormulaManager {
     /**
      * Check if the given formula is assigned to the specified server considering group assignments as well.
      * @param formulaName formulaName
-     * @param systemId systemId
+     * @param server the server
      * @return True/False based upon if all of the systems has formulas assigned to them
      */
-    public boolean hasSystemFormulaAssignedCombined(String formulaName, Integer systemId) {
-        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue()).contains(formulaName);
+    public boolean hasSystemFormulaAssignedCombined(String formulaName, MinionServer server) {
+        return FormulaFactory.getCombinedFormulasByServer(server).contains(formulaName);
     }
 
     /**
      * Check if given formula is assigned to the specificied group
      * @param formulaName formulaName
-     * @param groupId groupId
+     * @param group group
      * @return True/False based upon group has formulas assigned to it
      */
-    public boolean hasGroupFormulaAssigned(String formulaName, Long groupId) {
-        return FormulaFactory.getFormulasByGroupId(groupId).contains(formulaName);
+    public boolean hasGroupFormulaAssigned(String formulaName, ServerGroup group) {
+        return FormulaFactory.getFormulasByGroup(group).contains(formulaName);
     }
 
     /**
@@ -310,15 +309,16 @@ public class FormulaManager {
 
     /**
      * Enable formula on the given minion
-     * @param minionId minion id
+     * @param minion minion
      * @param formulaName formula name
      * @throws IOException if saving the formula encountered an error
      */
-    public void enableFormula(String minionId, String formulaName) throws IOException {
-        List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinionId(minionId));
+    public void enableFormula(MinionServer minion, String formulaName) throws IOException {
+        List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinion(minion));
         if (!enabledFormulas.contains(formulaName)) {
             enabledFormulas.add(formulaName);
-            FormulaFactory.saveServerFormulas(minionId, enabledFormulas);
+            FormulaFactory.saveServerFormulas(minion, enabledFormulas);
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
         }
     }
 
@@ -332,7 +332,7 @@ public class FormulaManager {
      */
     public List<FormulaData> getCombinedFormulaDataForSystems(User user, List<Long> systemIDs,
             String formulaName) {
-        List<MinionIds> minionIDs = MinionServerFactory.findMinionIdsByServerIds(systemIDs);
+        List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(systemIDs);
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
@@ -342,12 +342,12 @@ public class FormulaManager {
 
         Map<Long, Map<String, Object>> groupsFormulaData = getGroupsFormulaData(groupIDs, formulaName);
 
-        return minionIDs.stream().map(mID -> getCombinedFormulaDataForSystem(mID,
-                Optional.ofNullable(managedGroupsPerServer.get(mID.getServerId())), groupsFormulaData, formulaName))
+        return minions.stream().map(minion -> getCombinedFormulaDataForSystem(minion,
+                Optional.ofNullable(managedGroupsPerServer.get(minion.getId())), groupsFormulaData, formulaName))
                 .collect(Collectors.toList());
     }
 
-    private FormulaData getCombinedFormulaDataForSystem(MinionIds minionID,
+    private FormulaData getCombinedFormulaDataForSystem(MinionServer minion,
             Optional<List<SystemGroupID>> managedSystemGroups, Map<Long, Map<String, Object>> groupsFormulaData,
             String formulaName) {
         Map<String, Object> combinedFormulaData = new HashMap<>();
@@ -355,13 +355,13 @@ public class FormulaManager {
         managedSystemGroups.ifPresent(groups -> groups.forEach(group -> combinedFormulaData
                 .putAll(groupsFormulaData.getOrDefault(group.getGroupID(), Collections.emptyMap()))));
 
-        combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionID.getMinionId())
+        combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion)
                 .orElse(Collections.emptyMap()));
 
-        return new FormulaData(minionID.getServerId(), minionID.getMinionId(), combinedFormulaData);
+        return new FormulaData(minion.getId(), minion.getMinionId(), combinedFormulaData);
     }
 
-    private FormulaData getCombinedFormulaDataForSystemAndFormula(MinionIds minionID,
+    private FormulaData getCombinedFormulaDataForSystemAndFormula(MinionServer minion,
             Optional<List<SystemGroupID>> managedSystemGroups,
             Map<Long, Map<String, Map<String, Object>>> groupsFormulaData, String formulaName) {
         Map<String, Object> combinedFormulaData = new HashMap<>();
@@ -370,17 +370,18 @@ public class FormulaManager {
                 .putAll(groupsFormulaData.getOrDefault(group.getGroupID(), Collections.emptyMap())
                         .getOrDefault(formulaName, Collections.emptyMap()))));
 
-        combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionID.getMinionId())
+        combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion)
                 .orElse(Collections.emptyMap()));
 
-        return new FormulaData(minionID.getServerId(), minionID.getMinionId(), combinedFormulaData);
+        return new FormulaData(minion.getId(), minion.getMinionId(), combinedFormulaData);
     }
 
     private Map<Long, Map<String, Object>> getGroupsFormulaData(Set<Long> groupIDs, String formulaName) {
         Map<Long, Map<String, Object>> response = new HashMap<>();
 
         for (Long groupID : groupIDs) {
-            response.put(groupID, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupID)
+            ManagedServerGroup group = ServerGroupFactory.lookupById(groupID);
+            response.put(groupID, FormulaFactory.getGroupFormulaValuesByNameAndGroup(formulaName, group)
                     .orElse(Collections.emptyMap()));
         }
         return response;
@@ -389,9 +390,10 @@ public class FormulaManager {
     private Map<Long, Map<String, Map<String, Object>>> getGroupsFormulaData(Set<Long> groupIDs) {
         Map<Long, Map<String, Map<String, Object>>> response = new HashMap<>();
         for (Long groupID : groupIDs) {
+            ServerGroup group = ServerGroupFactory.lookupById(groupID);
             Map<String, Map<String, Object>> responseEntry = new HashMap<>();
-            for (String formula : FormulaFactory.getFormulasByGroupId(groupID)) {
-                responseEntry.put(formula, FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula, groupID)
+            for (String formula : FormulaFactory.getFormulasByGroup(group)) {
+                responseEntry.put(formula, FormulaFactory.getGroupFormulaValuesByNameAndGroup(formula, group)
                         .orElse(Collections.emptyMap()));
             }
             response.put(groupID, responseEntry);
@@ -400,25 +402,12 @@ public class FormulaManager {
     }
 
     /**
-     * Gets the data for a cluster formula.
-     * @param cluster the cluster
-     * @param formulaKey the formula key
-     * @return the formula data
-     */
-    public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
-        Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
-        return formulaName
-                .flatMap(name -> FormulaFactory.getGroupFormulaValuesByNameAndGroupId(name,
-                        cluster.getGroup().getId()));
-    }
-
-    /**
      * Gets all endpoints details for given systems
      * @param systemIDs list of system IDs
      * @return list of endpoint information objects
      */
     public List<EndpointInfo> listEndpoints(List<Long> systemIDs) {
-        List<MinionIds> minionIDs = MinionServerFactory.findMinionIdsByServerIds(systemIDs);
+        List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(systemIDs);
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
@@ -428,11 +417,11 @@ public class FormulaManager {
 
         Map<Long, Map<String, Map<String, Object>>> groupsFormulaData = getGroupsFormulaData(groupIDs);
 
-        return minionIDs.stream().flatMap(mID -> FormulaFactory.getCombinedFormulasByServerId(mID.getServerId())
+        return minions.stream().flatMap(minion -> FormulaFactory.getCombinedFormulasByServer(minion)
                 .stream()
                 .flatMap(formulaName -> FormulaFactory.getEndpointsFromFormulaData(formulaName,
-                        getCombinedFormulaDataForSystemAndFormula(mID,
-                                Optional.ofNullable(managedGroupsPerServer.get(mID.getServerId())),
+                        getCombinedFormulaDataForSystemAndFormula(minion,
+                                Optional.ofNullable(managedGroupsPerServer.get(minion.getId())),
                                 groupsFormulaData, formulaName)).stream())
         ).collect(Collectors.toList());
     }

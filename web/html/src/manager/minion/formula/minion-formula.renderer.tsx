@@ -1,8 +1,10 @@
 import * as React from "react";
 
-import FormulaForm from "components/FormulaForm";
-import { Utils } from "utils/functions";
 import SpaRenderer from "core/spa/spa-renderer";
+
+import FormulaForm from "components/FormulaForm";
+
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
@@ -51,7 +53,7 @@ export const renderer = (renderId, { serverId, formulaId }) => {
       addFormulaNavBar={addFormulaNavBar}
       formulaId={formulaId}
       systemId={serverId}
-      getFormulaUrl={function(id) {
+      getFormulaUrl={function (id) {
         return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;
       }}
       scope="system"

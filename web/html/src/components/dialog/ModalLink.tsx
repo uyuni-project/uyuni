@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { showDialog } from "./util";
 
 type Props = {
@@ -25,7 +26,7 @@ export function ModalLink(props: Props) {
     <button
       id={props.id}
       title={props.title}
-      className={'btn-link ' + (props.className || '')}
+      className={"btn-link " + (props.className || "")}
       onClick={() => {
         if (props.onClick) props.onClick(props.item);
         showDialog(props.target);

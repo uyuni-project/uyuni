@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -495,7 +495,7 @@ public class ContentSyncManager {
                         .orElse(false);
 
                 MgrSyncProductDto productDto = new MgrSyncProductDto(
-                        ext.getFriendlyName(), ext.getProductId(), ext.getVersion(), isRecommended,
+                        ext.getFriendlyName(), ext.getProductId(), ext.getId(), ext.getVersion(), isRecommended,
                         baseChannel, extChildChannels, Collections.emptySet()
                 );
 
@@ -504,7 +504,7 @@ public class ContentSyncManager {
 
 
             MgrSyncProductDto rootProductDto = new MgrSyncProductDto(
-                    root.getFriendlyName(), root.getProductId(), root.getVersion(), false,
+                    root.getFriendlyName(), root.getProductId(), root.getId(), root.getVersion(), false,
                     baseChannel, allChannels, extensions
             );
 
@@ -607,6 +607,7 @@ public class ContentSyncManager {
                         }, auth -> {
                             log.debug("Has new auth: " + cs.getLabel());
                             auth.setContentSource(cs);
+                            SCCCachingFactory.saveRepositoryAuth(auth);
                         })
                     )
                 )
@@ -620,22 +621,55 @@ public class ContentSyncManager {
             orphanChannels.forEach(c -> {
                 Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
                     () -> log.error("No repository found for channel: '" + c.getLabel() + "'"),
-                    repo -> repo.getBestAuth().ifPresent(a -> createOrUpdateContentSource(a, c, mirrorUrl))
+                    repo -> {
+                        log.debug("configure orphan repo " + repo.toString());
+                        repo.getBestAuth().ifPresentOrElse(
+                                a -> createOrUpdateContentSource(a, c, mirrorUrl),
+                                () -> log.info("No Auth available for " + repo.toString())
+                                );
+                    }
                 );
             });
         }
         // update URL if needed
-        SCCCachingFactory.lookupRepositoryAuthWithContentSource().stream()
-            .forEach(a -> {
-                ContentSource cs = a.getContentSource();
-                String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
-                if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                    cs.setSourceUrl(overwriteUrl);
-                }
-                if (cs.getMetadataSigned() != a.getRepo().isSigned()) {
-                    cs.setMetadataSigned(a.getRepo().isSigned());
-                }
-            });
+        for (SCCRepositoryAuth auth : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
+            boolean save = false;
+            ContentSource cs = auth.getContentSource();
+
+            // check if this auth item is the "best" available auth for this repo
+            // if not, switch it over to the best
+            if (auth.getRepo().getBestAuth().isEmpty()) {
+                log.warn("no best auth available for repo " + auth.getRepo());
+                continue;
+            }
+            SCCRepositoryAuth bestAuth = auth.getRepo().getBestAuth().get();
+            if (!bestAuth.equals(auth)) {
+                // we are not the "best" available repository auth item.
+                // remove the content source link and set it to the "best"
+                log.info("Auth '" + bestAuth.getId() + "' became the best auth. Remove CS link from " + auth.getId());
+                auth.setContentSource(null);
+                bestAuth.setContentSource(cs);
+                SCCCachingFactory.saveRepositoryAuth(auth);
+                SCCCachingFactory.saveRepositoryAuth(bestAuth);
+                // and continue with the best
+                auth = bestAuth;
+            }
+            String overwriteUrl = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
+            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: '%s'",
+                    cs.getSourceUrl(), overwriteUrl, auth.getUrl(), mirrorUrl));
+            if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                log.debug("Change URL to : " + overwriteUrl);
+                cs.setSourceUrl(overwriteUrl);
+                save = true;
+            }
+            if (cs.getMetadataSigned() != auth.getRepo().isSigned()) {
+                cs.setMetadataSigned(auth.getRepo().isSigned());
+                save = true;
+            }
+            if (save) {
+                ChannelFactory.save(cs);
+            }
+        }
     }
 
     /**
@@ -648,6 +682,8 @@ public class ContentSyncManager {
         for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
             ContentSource cs = a.getContentSource();
             String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
+            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
+                    cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
                 log.debug("Source and overwrite urls differ: " + cs.getSourceUrl() + " != " + overwriteUrl);
                 return true;
@@ -1953,7 +1989,8 @@ public class ContentSyncManager {
 
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
                 () -> {
-                    throw new ContentSyncException("No product tree entry found for label: '" + label + "'");
+                    log.warn("Expired Vendor Channel with label '" + label + "' found. To remove it please run: ");
+                    log.warn("spacewalk-remove-channel -c " + label);
                 },
                 productrepo -> {
                     SUSEProduct product = productrepo.getProduct();

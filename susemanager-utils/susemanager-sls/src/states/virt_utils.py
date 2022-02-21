@@ -9,7 +9,7 @@ import re
 from salt.exceptions import CommandExecutionError
 try:
     import libvirt
-except ModuleNotFoundError:
+except ImportError:
     pass
 
 log = logging.getLogger(__name__)

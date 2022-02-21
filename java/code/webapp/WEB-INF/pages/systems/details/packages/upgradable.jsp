@@ -40,7 +40,7 @@
          alphabarcolumn="nvrea">
                         <rl:decorator name="PageSizeDecorator"/>
                         <rl:decorator name="ElaborationDecorator"/>
-                <rl:decorator name="SelectableDecorator"/>
+                        <rl:decorator name="SelectableDecorator"/>
                         <rl:selectablecolumn value="${current.selectionKey}"
                                 selected="${current.selected}"
                                 disabled="${not current.selectable}"/>
@@ -51,6 +51,9 @@
 
                       <a href="/rhn/software/packages/Details.do?sid=${param.sid}&amp;id_combo=${current.idCombo}">
                         ${current.nvrea}</a>
+                      <c:if test="${current.pkgReboot}">
+                          <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+                      </c:if>
                   </rl:column>
 
                   <rl:column headerkey="upgradable.jsp.installed" bound="false">

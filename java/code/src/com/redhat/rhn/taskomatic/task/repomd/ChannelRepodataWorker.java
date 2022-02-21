@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.BUILT;
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.FAILED;
+import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.GENERATING_REPODATA;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -28,6 +32,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
+
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -35,10 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.BUILT;
-import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.FAILED;
-import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.GENERATING_REPODATA;
 
 
 /**

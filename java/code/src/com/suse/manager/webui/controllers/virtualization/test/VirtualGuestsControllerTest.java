@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,11 +38,14 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.virtualization.VmInfoJson;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -63,6 +66,7 @@ import java.util.Optional;
 import java.util.TimeZone;
 
 import spark.HaltException;
+import spark.ModelAndView;
 
 /**
  * Tests for VirtualGuestsController
@@ -134,14 +138,21 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                         Collections.emptyMap(),
                         new TypeToken<Map<String, Map<String, JsonElement>>>() { });
             }
+
+            @Override
+            public Optional<HostInfo> getHostInfo(String minionId) {
+                HostInfo info = new HostInfo();
+                info.setHypervisor("kvm");
+                return Optional.of(info);
+            }
         };
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
@@ -214,7 +225,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals(guest.getUuid(), virtAction.getUuid());
 
         // Check the response
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertEquals(action.getId(), model.get(guest.getUuid()));
     }
 
@@ -245,7 +256,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals(vcpus, virtAction.getVcpu());
 
         // Check the response
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertEquals(action.getId(), model.get(guest.getUuid()));
     }
 
@@ -312,7 +323,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
 
         // Check the response
-        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() { }.getType());
         assertEquals(virtActions.get(0).getId(), model.get(guests[0].getUuid()));
         assertEquals(virtActions.get(1).getId(), model.get(guests[1].getUuid()));
     }
@@ -327,10 +338,10 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
                 response, user, host);
-        GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() {}.getType());
+        GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() { }.getType());
         assertEquals(uuid, def.getUuid());
         assertEquals("sles12sp2", def.getName());
-        assertEquals(1024*1024, def.getMaxMemory());
+        assertEquals(1024 * 1024, def.getMaxMemory());
         assertEquals("spice", def.getGraphics().getType());
         assertEquals(5903, def.getGraphics().getPort());
 
@@ -391,13 +402,30 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
                         host.getId()), response, user, host);
 
-        DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() {}.getType());
-        assertTrue(caps.osTypes.contains("hvm"));
-        assertEquals("i686", caps.domainsCaps.get(0).getArch());
+        DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() { }.getType());
+        assertTrue(caps.getOsTypes().contains("hvm"));
+        assertEquals("i686", caps.getDomainsCaps().get(0).getArch());
 
-        assertEquals("kvm", caps.domainsCaps.get(0).getDomain());
-        assertTrue(caps.domainsCaps.get(0).getDevices().get("disk").get("bus").contains("virtio"));
-        assertFalse(caps.domainsCaps.get(1).getDevices().get("disk").get("bus").contains("virtio"));
+        assertEquals("kvm", caps.getDomainsCaps().get(0).getDomain());
+        assertTrue(caps.getDomainsCaps().get(0).getDevices().get("disk").get("bus").contains("virtio"));
+        assertFalse(caps.getDomainsCaps().get(1).getDevices().get("disk").get("bus").contains("virtio"));
+    }
+
+    public void testShow() {
+        ModelAndView page = virtualGuestsController.show(
+                getRequestWithCsrf("/manager/systems/details/virtualization/guests/:sid",
+                        host.getId()), response, user, host);
+        Map<String, Object> model = (Map<String, Object>) page.getModel();
+        assertEquals("{\"hypervisor\":\"kvm\",\"cluster_other_nodes\":[]}", model.get("hostInfo"));
+    }
+
+    public void testShowVHM() throws Exception {
+        Server vhmHost = ServerTestUtils.createForeignSystem(user, "server_digital_id");
+        ModelAndView page = virtualGuestsController.show(
+                getRequestWithCsrf("/manager/systems/details/virtualization/guests/:sid",
+                        vhmHost.getId()), response, user, vhmHost);
+        Map<String, Object> model = (Map<String, Object>) page.getModel();
+        assertEquals("{}", model.get("hostInfo"));
     }
 
     /**
@@ -405,7 +433,23 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      * There is no need to share this structure since these data will only be used from Javascript.
      */
     private class DomainsCapsJson {
-        public List<String> osTypes;
-        public List<DomainCapabilitiesJson> domainsCaps;
+        private List<String> osTypes;
+        private List<DomainCapabilitiesJson> domainsCaps;
+
+        public List<String> getOsTypes() {
+            return osTypes;
+        }
+
+        public void setOsTypes(List<String> osTypesIn) {
+            osTypes = osTypesIn;
+        }
+
+        public List<DomainCapabilitiesJson> getDomainsCaps() {
+            return domainsCaps;
+        }
+
+        public void setDomainsCaps(List<DomainCapabilitiesJson> domainsCapsIn) {
+            domainsCaps = domainsCapsIn;
+        }
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.frontend.struts.RequestContext;
-
 import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.List;

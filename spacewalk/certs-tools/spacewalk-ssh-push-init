@@ -197,7 +197,7 @@ exec > >(sudo tee -a $LOGFILE) 2>&1
 # Run key generation if key doesn't exist
 if [ ! -f "${SSH_IDENTITY}" ]; then
   echo "* SUSE Manager key not found, generating it (${SSH_IDENTITY})"
-  ssh-keygen -q -N '' -C ${SSH_KEY_COMMENT} -f ${SSH_IDENTITY}
+  ssh-keygen -q -m PEM -N '' -C ${SSH_KEY_COMMENT} -f ${SSH_IDENTITY}
 else
   echo "* SUSE Manager key found: ${SSH_IDENTITY}"
 fi

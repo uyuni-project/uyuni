@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.FileInputStream;
@@ -71,10 +72,12 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         assertTrue(fileNames.contains("Packages"));
         assertTrue(fileNames.contains("Packages.gz"));
 
-        String packagesContent = FileUtils.readFileToString(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages").toFile());
+        String packagesContent = FileUtils.readFileToString(
+                tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages").toFile());
         packagesContent = DebPackageWriterTest.cleanupContent(packagesContent);
 
-        try (FileInputStream fin = new FileInputStream(tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages.gz").toFile());
+        try (FileInputStream fin = new FileInputStream(
+                tmpDir.resolve("rhn/repodata/" + channel.getLabel() + "/Packages.gz").toFile());
              InputStream gzipStream = new GZIPInputStream(fin)) {
 
             String packagesGzContent = TestUtils.readAll(gzipStream);

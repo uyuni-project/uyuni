@@ -23,8 +23,8 @@
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
+%global pylint_check 1
 %if 0%{?suse_version}
-%{!?pylint_check: %global pylint_check 0}
 %define apache_user wwwrun
 %define apache_group www
 %define misc_path /srv/
@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.1
+Version:        4.3.6
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -73,7 +73,6 @@ Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-DateTime
 Requires:       perl-Frontier-RPC
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
@@ -107,18 +106,25 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
 %endif
-Requires:       /usr/bin/gpg
 Requires:       curl
-Requires:       perl-DateTime
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-setup-jabberd
+Requires:       uyuni-setup-reportdb
+%if 0%{?rhel}
+Requires(post): libxslt-devel
+%else
+Requires(post): libxslt-tools
+%endif
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
+
+# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1"
+Requires(post): cobbler
 
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
@@ -176,6 +182,7 @@ install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -206,56 +213,18 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
-    # in case of upgrade
-    # fix the old LD_LIBRARY_PATH in tomcat6.conf
-    # it has to point to the new Oracle Home
-    # this step is only relevant when Oracle version changes and the
-    # path written by spacewalk-setup is not valid anymore
-    cp /etc/tomcat6/tomcat6.conf /etc/tomcat6/tomcat6.conf.post-script-backup
-    . /etc/tomcat6/tomcat6.conf
-    NEW_LD_PATH=""
-
-    # in case oracle is not updated yet, we hardcode the oracle version of 1.7 here
-    # not really nice
-    export ORACLE_HOME="/usr/lib/oracle/11.2/client64"
-
-    if ! grep "$ORACLE_HOME" /etc/tomcat6/tomcat6.conf >/dev/null; then
-        # our current ORACLE_HOME is not in LD_LIBRARY_PATH
-        if [ "x$LD_LIBRARY_PATH" != "x" ]; then
-            # the LD_LIBRARY_PATH is not empty, so we have to fix it
-            for p in `echo $LD_LIBRARY_PATH|awk --field-separator=: '{ for(i = 1; i <= NF; i++){print $i; } }'`; do
-                if [ -d $p ]; then
-                    if [ "x$NEW_LD_PATH" == "x" ]; then
-                        NEW_LD_PATH="$p"
-                    else
-                        NEW_LD_PATH="$NEW_LD_PATH:$p";
-                    fi;
-                fi;
-            done
-            NEW_LD_PATH="$NEW_LD_PATH:$ORACLE_HOME/lib"
-            sed -i "s@^LD_LIBRARY_PATH.*@LD_LIBRARY_PATH=$NEW_LD_PATH@" /etc/tomcat6/tomcat6.conf
-        fi
-    fi
-    if ! grep -F '\-Dorg.apache.tomcat.util.http.Parameters.MAX_COUNT' /etc/tomcat6/tomcat6.conf > /dev/null; then
-        sed -i 's/-XX:MaxNewSize=256/-Dorg.apache.tomcat.util.http.Parameters.MAX_COUNT=1024 -XX:MaxNewSize=256/' /etc/tomcat6/tomcat6.conf
-    fi
-    if ! grep '\[tftpd\]' /etc/cobbler/modules.conf > /dev/null 2>&1; then
-        echo                                                >> /etc/cobbler/modules.conf
-        echo '# added by susemanager-setup RPM post-script' >> /etc/cobbler/modules.conf
-        echo '[tftpd]'                                      >> /etc/cobbler/modules.conf
-        echo 'module = manage_in_tftpd'                     >> /etc/cobbler/modules.conf
-    fi
+if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then 
+#during upgrade, setup new connectionTimeout if the user didn't change it
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
+    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
 fi
 
+%if 0%{?suse_version}
 if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
      sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
 fi
+%endif
 
-if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
-    chgrp www /etc/zypp/credentials.d/NCCcredentials
-    chmod g+r /etc/zypp/credentials.d/NCCcredentials
-fi
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chmod g+r /etc/zypp/credentials.d/SCCcredentials
@@ -280,14 +249,21 @@ fi
 if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
+
+# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1" and update
+# https://github.com/uyuni-project/uyuni/blob/ea02d4cdf5a91daefa468884548a8b1e60370d3c/spacewalk/setup/bin/spacewalk-setup-cobbler#L29
+COBBLER_VERSION=$(grep "version " /etc/cobbler/version)
+if [[ $(echo -e "version = 3.2.0\n${COBBLER_VERSION}" | sort -rV | head -n 1) != "version = 3.2.0" ]]; then
+  sed -i 's/COBBLER_CONFIG_FILES = \["modules.conf", "settings"\]/COBBLER_CONFIG_FILES = \["modules.conf", "settings.yaml"\]/' /usr/bin/spacewalk-setup-cobbler
+fi
+
 exit 0
 
 %check
 make test
 %if 0%{?pylint_check}
 # check coding style
-pylint --rcfile /etc/spacewalk-python3-pylint.rc \
-    $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
+spacewalk-python3-pylint $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py ||:
 %endif
 
 %files

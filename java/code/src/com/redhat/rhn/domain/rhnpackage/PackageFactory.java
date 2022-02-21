@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -101,6 +102,17 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup Packages by IDs
+     * @param ids list of id to search for
+     * @return list of Packages found
+     */
+    private static List<Package> lookupById(List<Long> ids) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        return (List<Package>)
+                singleton.listObjectsByNamedQuery("Package.findByIds", params, ids, "pids");
+    }
+
+    /**
      * Returns true if the Package with the given name and evr ids exists in the
      * Channel whose id is cid.
      * @param cid Channel id to look in
@@ -136,6 +148,18 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup Packages by the id, in the context of a given user. Does security
+     * check to verify that the user has access to the packages.
+     * @param ids List of the Package to search for
+     * @param user the user doing the search
+     * @return List of packages found
+     */
+    public static List<Package> lookupByIdAndUser(List<Long> ids, User user) {
+        return lookupByIdAndOrg(ids, user.getOrg());
+    }
+
+
+    /**
      * Lookup a Package by the id, in the context of a given org. Does security
      * check to verify that the org has access to the package.
      * @param id of the Package to search for
@@ -149,6 +173,22 @@ public class PackageFactory extends HibernateFactory {
             return null;
         }
         return lookupById(id);
+    }
+
+    /**
+     * Lookup Packages by the id, in the context of a given org. Does security
+     * check to verify that the org has access to the package.
+     * @param ids List of the Packages to search for
+     * @param org the org which much have access to the package
+     * @return List of Packages found
+     */
+    public static List<Package> lookupByIdAndOrg(List<Long> ids, Org org) {
+        if (!UserManager.verifyPackagesAccess(org, ids)) {
+            // User doesn't have access to the package... return null as if it
+            // doesn't exist.
+            return Collections.emptyList();
+        }
+        return lookupById(ids);
     }
 
     /**

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import DefaultJsError from "manager/errors/default-js-error";
 
 class State {
@@ -7,7 +8,7 @@ class State {
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 class ErrorBoundary extends React.Component<Props, State> {
   state = new State();
@@ -32,7 +33,9 @@ class ErrorBoundary extends React.Component<Props, State> {
 const PageWrapper = ErrorBoundary;
 
 // The types could be improved here, possibly similar to how React.ElementRef handles it
-function withPageWrapper<WrapperProps>(Component: React.ComponentClass<WrapperProps> | ((props: WrapperProps) => JSX.Element)) {
+function withPageWrapper<WrapperProps>(
+  Component: React.ComponentClass<WrapperProps> | ((props: WrapperProps) => JSX.Element)
+) {
   return function WrapperComponent(props: WrapperProps) {
     return (
       <PageWrapper>

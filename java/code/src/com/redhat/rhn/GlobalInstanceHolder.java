@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,14 +16,18 @@ package com.redhat.rhn;
 
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.suse.manager.clusters.ClusterManager;
+
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -55,17 +59,13 @@ public class GlobalInstanceHolder {
     private static final SaltService SALT_SERVICE = new SaltService();
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
-    public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager();
+    public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
-    public static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
-            SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER
-    );
-    public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API,
-            CLUSTER_MANAGER, FORMULA_MANAGER, SERVER_GROUP_MANAGER);
+    public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
     public static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SALT_API, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER, SALT_KEY_UTILS);
-    public static final Access ACCESS = new Access(CLUSTER_MANAGER);
+            SALT_API, SALT_UTILS, SALT_KEY_UTILS);
+    public static final Access ACCESS = new Access();
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     // Referenced from JSP
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
@@ -79,12 +79,15 @@ public class GlobalInstanceHolder {
             new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
             new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API);
-    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
+    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
             new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER,
                     SERVER_GROUP_MANAGER)
     );
+    public static final SystemManager SYSTEM_MANAGER = new SystemManager(ServerFactory.SINGLETON,
+            ServerGroupFactory.SINGLETON, SALT_API);
+    public static final MigrationManager MIGRATION_MANAGER = new MigrationManager(SERVER_GROUP_MANAGER);
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
 }

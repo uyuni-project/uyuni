@@ -32,6 +32,7 @@
 
 import gettext
 import shlex
+from datetime import datetime
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -157,6 +158,8 @@ def manipulate_child_channels(self, args, remove=False):
                                             system_id,
                                             child_channels)
 
+    return
+
 ####################
 
 
@@ -217,7 +220,7 @@ def do_system_reboot(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user('Start Time [now]:')
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -370,7 +373,7 @@ def complete_system_runscript(self, text, line, beg, end):
     return self.tab_complete_systems(text)
 
 
-def do_system_runscript(self, args):
+def do_system_runscript(self, args): # pylint: disable=too-many-return-statements
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-u', '--user')
     arg_parser.add_argument('-g', '--group')
@@ -708,6 +711,7 @@ def complete_system_installpackage(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.get_package_names(), text)
 
+    return None
 
 def do_system_installpackage(self, args):
     arg_parser = get_argument_parser()
@@ -722,7 +726,7 @@ def do_system_installpackage(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -863,6 +867,7 @@ def complete_system_removepackage(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.get_package_names(), text)
 
+    return None
 
 def do_system_removepackage(self, args):
     arg_parser = get_argument_parser()
@@ -877,7 +882,7 @@ def do_system_removepackage(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -990,6 +995,8 @@ def complete_system_upgradepackage(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.get_package_names(), text)
 
+    return None
+
 
 def do_system_upgradepackage(self, args):
     arg_parser = get_argument_parser()
@@ -1012,7 +1019,7 @@ def do_system_upgradepackage(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -1483,11 +1490,10 @@ def do_system_addconfigfile(self, args, update_path=''):
                 # ensure the user enters a valid system
                 if options.system in self.do_system_list('', True):
                     break
-                else:
-                    print('')
-                    logging.warning(_N('%s is not a valid system') %
-                                    options.system)
-                    print('')
+                print('')
+                logging.warning(_N('%s is not a valid system') %
+                                options.system)
+                print('')
 
         if update_path:
             options.path = update_path
@@ -1559,7 +1565,6 @@ options:
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def complete_system_addconfigchannels(self, text, line, beg, end):
     parts = line.split(' ')
 
@@ -1569,6 +1574,7 @@ def complete_system_addconfigchannels(self, text, line, beg, end):
         return tab_completer(self.do_configchannel_list('', True),
                              text)
 
+    return None
 
 def do_system_addconfigchannels(self, args):
     arg_parser = get_argument_parser()
@@ -1634,6 +1640,7 @@ def complete_system_removeconfigchannels(self, text, line, beg, end):
         return tab_completer(self.do_configchannel_list('', True),
                              text)
 
+    return None
 
 def do_system_removeconfigchannels(self, args):
     arg_parser = get_argument_parser()
@@ -1759,7 +1766,7 @@ def do_system_deployconfigfiles(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -1823,7 +1830,7 @@ def complete_system_delete(self, text, line, beg, end):
 def do_system_delete(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-c', '--cleanuptype', default='NO_CLEANUP',
-            choices=['FAIL_ON_CLEANUP_ERR', 'NO_CLEANUP', 'FORCE_DELETE'])
+                            choices=['FAIL_ON_CLEANUP_ERR', 'NO_CLEANUP', 'FORCE_DELETE'])
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -1978,10 +1985,11 @@ def help_system_rename(self):
     print(_('system_rename: Rename a system profile'))
     print(_('usage: system_rename OLDNAME NEWNAME'))
 
-
 def complete_system_rename(self, text, line, beg, end):
     if len(line.split(' ')) == 2:
         return tab_completer(self.get_system_names(), text)
+
+    return None
 
 
 def do_system_rename(self, args):
@@ -2093,6 +2101,7 @@ def complete_system_addcustomvalue(self, text, line, beg, end):
     elif len(parts) >= 4:
         return self.tab_complete_systems(text)
 
+    return None
 
 def do_system_addcustomvalue(self, args):
     if not isinstance(args, list):
@@ -2137,7 +2146,6 @@ def help_system_updatecustomvalue(self):
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def complete_system_updatecustomvalue(self, text, line, beg, end):
     parts = shlex.split(line)
     if line[-1] == ' ':
@@ -2147,6 +2155,8 @@ def complete_system_updatecustomvalue(self, text, line, beg, end):
         return tab_completer(self.do_custominfo_listkeys('', True), text)
     elif len(parts) >= 4:
         return self.tab_complete_systems(text)
+
+    return None
 
 
 def do_system_updatecustomvalue(self, args):
@@ -2169,7 +2179,6 @@ def help_system_removecustomvalues(self):
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def complete_system_removecustomvalues(self, text, line, beg, end):
     parts = line.split(' ')
 
@@ -2179,6 +2188,7 @@ def complete_system_removecustomvalues(self, text, line, beg, end):
         return tab_completer(self.do_custominfo_listkeys('', True),
                              text)
 
+    return None
 
 def do_system_removecustomvalues(self, args):
     arg_parser = get_argument_parser()
@@ -2318,7 +2328,7 @@ def do_system_deletenotes(self, args):
 
     if not args:
         logging.warning(_N('No notes to delete'))
-        return
+        return None
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -2417,7 +2427,7 @@ def do_system_listfqdns(self, args):
 
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args):
+    if not args:
         self.help_system_listfqdns()
         return 1
 
@@ -2467,6 +2477,8 @@ def complete_system_setbasechannel(self, text, line, beg, end):
         return self.tab_complete_systems(text)
     elif len(line.split(' ')) == 3:
         return tab_completer(self.list_base_channels(), text)
+
+    return None
 
 
 def do_system_setbasechannel(self, args):
@@ -2540,6 +2552,8 @@ def complete_system_schedulechangechannels(self, text, line, beg, end):
     if len(line.split(' ')) == 2:
         return self.tab_complete_systems(text)
 
+    return None
+
 def do_system_schedulechangechannels(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-b', '--base')
@@ -2583,10 +2597,10 @@ def do_system_schedulechangechannels(self, args):
             continue
 
         oldBase = self.client.system.getSubscribedBaseChannel(self.session,
-                                                          system_id)
+                                                              system_id)
 
         oldKids = self.client.system.listSubscribedChildChannels(self.session,
-                                                       system_id)
+                                                                 system_id)
         if add_separator:
             print(self.SEPARATOR)
         add_separator = True
@@ -2606,10 +2620,10 @@ def do_system_schedulechangechannels(self, args):
             continue
 
         actionId = self.client.system.scheduleChangeChannels(self.session,
-                                          system_id,
-                                          baseChannel,
-                                          childChannels,
-                                          options.start_time)
+                                                             system_id,
+                                                             baseChannel,
+                                                             childChannels,
+                                                             options.start_time)
         print(_('Scheduled action id: %s') % actionId)
 
     return 0
@@ -2741,6 +2755,7 @@ def complete_system_addchildchannels(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.list_child_channels(), text)
 
+    return None
 
 def do_system_addchildchannels(self, args):
     self.manipulate_child_channels(args)
@@ -2755,7 +2770,8 @@ def _crashes_api_removed(check_api_version):
         logging.error(_("This method was removed since API version %s") % crashes_api_removed_version)
         return True
     else:
-        logging.warning(_("This method is deprecated and will be removed in API version %s") % crashes_api_removed_version)
+        logging.warning(_("This method is deprecated and will be removed in API version %s"),
+                        crashes_api_removed_version)
     return False
 
 def help_system_listcrashedsystems(self):
@@ -2807,7 +2823,7 @@ def do_system_deletecrashes(self, args):
     if options.crashid:
         print_msg(_("Deleting crash with id %s.") % options.crashid, options.verbose)
         self.client.system.crash.deleteCrash(self.session, int(options.crashid))
-        return
+        return None
 
     sys_id = []
     if options.sysid:
@@ -2933,6 +2949,7 @@ def complete_system_removechildchannels(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.list_child_channels(), text)
 
+    return None
 
 def do_system_removechildchannels(self, args):
     self.manipulate_child_channels(args, True)
@@ -3161,7 +3178,6 @@ options:
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def complete_system_applyerrata(self, text, line, beg, end):
     parts = line.split(' ')
 
@@ -3170,6 +3186,7 @@ def complete_system_applyerrata(self, text, line, beg, end):
     elif len(parts) > 2:
         return self.tab_complete_errata(text)
 
+    return None
 
 def do_system_applyerrata(self, args):
     # this is really just an entry point to do_errata_apply
@@ -3206,12 +3223,16 @@ def do_system_applyerrata(self, args):
     if options.start_time:
         opts.append('-s ' + options.start_time)
 
-    return self.do_errata_apply(' '.join(opts + errata_list), systems)
+    return self.do_errata_apply(' '.join(opts), errata_list, systems)
 
 ####################
 
 
 def help_system_listevents(self):
+    if self.check_api_version('25.0'):
+        logging.warning(_('This method is deprecated and will be removed in a future API version. '
+        'Please use system_listeventhistory instead.\n'))
+
     print(_('system_listevents: List the event history for a system'))
     print(_('usage: system_listevents <SYSTEMS>'))
     print('')
@@ -3230,6 +3251,10 @@ def do_system_listevents(self, args):
     if not args:
         self.help_system_listevents()
         return 1
+
+    if self.check_api_version('25.0'):
+        logging.warning(_('This method is deprecated and will be removed in a future API version. '
+        'Please use system_listeventhistory instead.\n'))
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -3262,6 +3287,212 @@ def do_system_listevents(self, args):
             print(_('Summary:   %s') % e.get('summary'))
             print(_('Completed: %s') % e.get('completed'))
             print(_('Details:   %s') % e.get('details'))
+
+    return 0
+
+####################
+
+
+def help_system_listeventhistory(self):
+    print(_('system_listeventhistory: List the event history for a system'))
+    print(_('''usage: system_listeventhistory <SYSTEMS> [options]
+
+options:
+  -s START_TIME list only the events happened after the specified time. [Default: returns all events]
+  -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]
+  -l LIMIT limit the results to the specified number of events. [Default: no limit]'''))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_system_listeventhistory(self, text, line, beg, end):
+    return self.tab_complete_systems(text)
+
+
+def do_system_listeventhistory(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-s', '--start-time')
+    arg_parser.add_argument('-o', '--offset')
+    arg_parser.add_argument('-l', '--limit')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_listeventhistory()
+        return 1
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning(_N('No systems selected'))
+        return 1
+
+    if not options.start_time:
+        options.start_time = datetime(1970, 1, 1)
+    else:
+        options.start_time = parse_time_input(options.start_time)
+        if not options.start_time:
+            return 1
+
+    if not options.offset:
+        options.offset = 0
+    else:
+        try:
+            options.offset = int(options.offset)
+        except ValueError:
+            logging.error(_('Invalid offset'))
+            return 1
+
+    if options.limit:
+        try:
+            options.limit = int(options.limit)
+        except ValueError:
+            logging.error(_('Invalid limit'))
+            return 1
+
+    add_separator = False
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        if add_separator:
+            print(self.SEPARATOR)
+        add_separator = True
+
+        if len(systems) > 1:
+            print(_('System: %s') % system)
+
+        if options.limit:
+            events = self.client.system.getEventHistory(self.session, system_id,
+                                                        options.start_time, options.offset, options.limit)
+        else:
+            events = self.client.system.getEventHistory(self.session, system_id, options.start_time)
+
+        for e in events:
+            print('')
+            print(_('Id:           %s') % e.get('id'))
+            print(_('History type: %s') % e.get('history_type'))
+            print(_('Status:       %s') % e.get('status'))
+            print(_('Summary:      %s') % e.get('summary'))
+            print(_('Completed:    %s') % e.get('completed'))
+
+    return 0
+
+####################
+
+
+def help_system_eventdetails(self):
+    print(_('system_eventdetails: Retrieve the details of an event for a system'))
+    print(_('usage: system_eventdetails <SYSTEM> <EVENT>'))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_system_eventdetails(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return self.tab_complete_systems(text)
+
+    return None
+
+
+def do_system_eventdetails(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_eventdetails()
+        return 1
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+        args.pop(0)
+    else:
+        systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning(_N('No systems selected'))
+        return 1
+
+    if not args:
+        logging.warning(_N('No event specified'))
+        return 1
+
+    try:
+        event_id = int(args.pop(0))
+    except ValueError:
+        logging.error(_('Invalid event id'))
+        return 1
+
+    add_separator = False
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        if add_separator:
+            print(self.SEPARATOR)
+        add_separator = True
+
+        if len(systems) > 1:
+            print(_('System: %s') % system)
+
+        print('')
+
+        try:
+            detail = self.client.system.getEventDetails(self.session, system_id, event_id)
+        except xmlrpclib.Fault:
+            print(_('No event %s found in the history of system %s' % (event_id, system_id)))
+            continue
+
+        print(_('Id:              %s') % detail.get('id'))
+        print('')
+        print(_('History type:    %s') % detail.get('history_type'))
+        print(_('Status:          %s') % detail.get('status'))
+        print(_('Summary:         %s') % detail.get('summary'))
+        print('')
+        print(_('Created:         %s') % detail.get('created'))
+        print(_('Picked up:       %s') % detail.get('picked_up'))
+        print(_('Completed:       %s') % detail.get('completed'))
+
+        if detail.get('history_type') != 'History Event':
+            print('')
+            print(_('Earliest action: %s') % detail.get('earliest_action'))
+            print(_('Result message:  %s') % detail.get('result_msg'))
+            print(_('Result code:     %s') % detail.get('result_code'))
+
+            additional_info = detail.get('additional_info')
+            if additional_info and additional_info:
+                print('')
+                print(_('Additional info:'))
+
+                info_separator = False
+
+                for info in additional_info:
+                    if info_separator:
+                        print('')
+                    info_separator = True
+
+                    print(_('    Result:          %s') % info.get('result'))
+                    print(_('    Detail:          %s') % info.get('detail'))
 
     return 0
 
@@ -3458,7 +3689,6 @@ def help_system_deletepackageprofile(self):
     print(_('system_deletepackageprofile: Delete a package profile'))
     print(_('usage: system_deletepackageprofile PROFILE'))
 
-
 def complete_system_deletepackageprofile(self, text, line, beg, end):
     parts = shlex.split(line)
     if line[-1] == ' ':
@@ -3468,6 +3698,7 @@ def complete_system_deletepackageprofile(self, text, line, beg, end):
         return self.tab_complete_systems(
             self.do_system_listpackageprofiles('', True), text)
 
+    return None
 
 def do_system_deletepackageprofile(self, args):
     arg_parser = get_argument_parser()
@@ -3516,6 +3747,7 @@ def complete_system_createpackageprofile(self, text, line, beg, end):
     if len(parts) == 2:
         return self.tab_complete_systems(text)
 
+    return None
 
 def do_system_createpackageprofile(self, args):
     arg_parser = get_argument_parser()
@@ -3562,7 +3794,6 @@ def help_system_comparepackageprofile(self):
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def complete_system_comparepackageprofile(self, text, line, beg, end):
     parts = shlex.split(line)
     if line[-1] == ' ':
@@ -3574,6 +3805,7 @@ def complete_system_comparepackageprofile(self, text, line, beg, end):
         return self.tab_complete_systems(
             self.do_system_listpackageprofiles('', True), parts[-1])
 
+    return None
 
 def do_system_comparepackageprofile(self, args):
     arg_parser = get_argument_parser()
@@ -3687,7 +3919,7 @@ def do_system_syncpackages(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -3897,7 +4129,7 @@ def do_system_comparewithchannel(self, args):
             if not options.channel in allch_labels:
                 logging.error(_N("Specified channel does not exist"))
                 self.help_system_comparewithchannel()
-                return
+                return None
             channels = [options.channel]
             logging.debug("User specified channel %s" % options.channel)
         else:
@@ -3909,7 +4141,7 @@ def do_system_comparewithchannel(self, args):
                 logging.error(_N("system %s is not subscribed to any channel!")
                               % system)
                 logging.error(_N("Please subscribe to a channel, or specify a" +
-                              "channel to compare with"))
+                                 "channel to compare with"))
                 return 1
             logging.debug("base channel %s for %s" % (basech['name'], system))
             childch = self.client.system.listSubscribedChildChannels(
@@ -3997,7 +4229,7 @@ def do_system_schedulehardwarerefresh(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -4059,7 +4291,7 @@ def do_system_schedulepackagerefresh(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -4197,7 +4429,8 @@ def do_system_setcontactmethod(self, args):
 
 
 def help_system_scheduleapplyconfigchannels(self):
-    print(_("system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)"))
+    print(_("system_scheduleapplyconfigchannels: "
+            "Schedule applying the assigned config channels to the System (Minion only)"))
     print(_('''usage: scheduleapplyconfigchannels <SYSTEMS> [options]
 
     options:
@@ -4223,7 +4456,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
     # get the start time option
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
-    if is_interactive(options) and self.options.yes != True:
+    if is_interactive(options) and self.options.yes is not True:
         options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
@@ -4271,11 +4504,10 @@ def help_system_listmigrationtargets(self):
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
-
 def do_system_listmigrationtargets(self, args):
     arg_parser = get_argument_parser()
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    (args, ) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_system_listmigrationtargets()
@@ -4308,11 +4540,14 @@ def do_system_listmigrationtargets(self, args):
             print(_('    IDs: ') + tgt['ident'])
             print(_('    Friendly names: ') + tgt['friendly'])
 
+    return
+
 ####################
 
 
 def help_system_schedulespmigration(self):
-    print(_('This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead.'))
+    print(_('This method is deprecated and will be removed in a future API version. '
+            'Please use system_scheduleproductmigration instead.'))
     logging.warning(_("This method is deprecated and will be removed in a future API version"))
     print(_('system_schedulespmigration: Schedule a Service Pack migration for systems.'))
     print(_('usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
@@ -4327,7 +4562,8 @@ def help_system_schedulespmigration(self):
 
 
 def do_system_schedulespmigration(self, args):
-    print(_('This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead.'))
+    print(_('This method is deprecated and will be removed in a future API version. '
+            'Please use system_scheduleproductmigration instead.'))
     logging.warning(_("This method is deprecated and will be removed in a future API version"))
     self.do_system_scheduleproductmigration(self, args)
 
@@ -4392,10 +4628,12 @@ def do_system_scheduleproductmigration(self, args):
         print(_('Scheduling Product migration for system ') + str(system))
         try:
             result = self.client.system.scheduleSPMigration(self.session,
-                    system_id, migration_target, base_channel_label,
-                    child_channels, options.dry_run, options.start_time)
+                                                            system_id, migration_target, base_channel_label,
+                                                            child_channels, options.dry_run, options.start_time)
             print(_('Scheduled action ID: ') + str(result))
         except xmlrpclib.Fault as detail:
             logging.error(_N('Failed to schedule %s') % detail)
+
+    return
 
 ####################

@@ -44,11 +44,10 @@
 %endif
 
 Name:           spacecmd
-Version:        4.3.1
+Version:        4.3.7
 Release:        1
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
-Group:          Applications/System
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <uyuni-devel@lists.opensuse.org>
 Group:          admin
@@ -80,6 +79,7 @@ BuildRequires:  python3
 BuildRequires:  python3-dev
 %else
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 Requires:       python3
 Requires:       python3-rpm

@@ -14,7 +14,7 @@ export function mapAddEnvironmentRequest(environment, environments, projectId) {
       delete environmentRequest.predecessorLabel;
     }
   } else {
-    const envIndex = environments.findIndex(env => env.label === environmentRequest.predecessorLabel);
+    const envIndex = environments.findIndex((env) => env.label === environmentRequest.predecessorLabel);
     if (envIndex > 0) {
       environmentRequest.predecessorLabel = environments[envIndex - 1].label;
     } else {

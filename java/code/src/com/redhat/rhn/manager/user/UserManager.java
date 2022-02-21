@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.user;
 
+import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -48,8 +49,8 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
-
 import com.redhat.rhn.manager.system.ServerGroupManager;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -62,9 +63,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.security.auth.login.LoginException;
 
-import static java.util.Optional.of;
+import javax.security.auth.login.LoginException;
 
 /**
  * UserManager - the singleton class used to provide Business Operations
@@ -112,7 +112,26 @@ public class UserManager extends BaseManager {
         params.put("pid", packageId);
         params.put("org_id", org.getId());
         DataResult dr = m.execute(params);
+        /*
+         * Ok... this query will result in returning a single row containing '1' if the
+         * org has access to this channel. If the org *does not* have access to the given
+         * package (org the package doesn't exist), nothing will be returned from the query
+         * and we will end up with an empty DataResult object.
+         */
+        return (!dr.isEmpty());
+    }
 
+    /**
+     * Verifies that a given org has access to a given list of packages.
+     * @param org The org in question
+     * @param packageIds The ids of the packages in question
+     * @return Returns true if the org has access to the package, false otherwise.
+     */
+    public static boolean verifyPackagesAccess(Org org, List<Long> packageIds) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_user");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("org_id", org.getId());
+        DataResult dr = m.execute(params, packageIds);
         /*
          * Ok... this query will result in returning a single row containing '1' if the
          * org has access to this channel. If the org *does not* have access to the given

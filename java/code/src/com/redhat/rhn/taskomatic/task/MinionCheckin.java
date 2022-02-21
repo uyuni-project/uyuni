@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,10 +22,10 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 
+import org.quartz.JobExecutionContext;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.quartz.JobExecutionContext;
 
 
 /**
@@ -34,6 +34,11 @@ import org.quartz.JobExecutionContext;
 public class MinionCheckin extends RhnJavaJob {
 
     private SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_checkin";
+    }
 
     /**
      * @param context the job execution context

@@ -193,9 +193,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <property name="minionId" column="minion_id" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
+            <property name="sshPushPort" column="ssh_push_port" access="field"/>
             <set name="accessTokens" lazy="true" inverse="true">
                 <key column="minion_id"/>
                 <one-to-many class="com.redhat.rhn.domain.channel.AccessToken"/>
+            </set>
+
+            <set name="pillars" lazy="true" inverse="true" cascade="all" access="field">
+                <key column="server_id"/>
+                <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
             </set>
         </joined-subclass>
     </class>
@@ -534,19 +540,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <sql-query name="Server.listNewestPkgsForServerErrata">
         <return-scalar column="serverId" type="long"/>
         <return-scalar column="packageName" type="string"/>
+        <return-scalar column="packageArch" type="string"/>
         <return-scalar column="packageVersion" type="string"/>
-        <![CDATA[select X.server_id as serverId, X.name as packageName,
+        <![CDATA[select X.server_id as serverId, X.name as packageName, X.package_arch as packageArch,
             case when (X.evr).epoch is null
                 then (X.evr).version || '-' || (X.evr).release
                 else (X.evr).epoch || ':' || (X.evr).version || '-' || (X.evr).release
             end  as packageVersion
-            FROM ( select distinct sc.server_id, pn.name, max(pevr.evr) evr
+            FROM ( select distinct sc.server_id, pn.name, max(pevr.evr) evr, pa.label as package_arch
                  FROM rhnErrata e,
                       rhnServerChannel sc,
                       rhnChannelErrata ce,
                       rhnErrataPackage ep,
                       rhnServerPackage sp,
                       rhnPackage p,
+                      rhnPackageArch pa,
                       rhnPackageEVR pevr,
                       rhnPackageEVR spevr,
                       rhnPackageName pn
@@ -562,8 +570,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                       (pevr.evr).type = (spevr.evr).type AND
                       pevr.evr > spevr.evr AND
                       p.package_arch_id = sp.package_arch_id AND
+                      p.package_arch_id = pa.id AND
                       p.name_id = pn.id
-                 GROUP BY sc.server_id, pn.name) X]]>
+                 GROUP BY sc.server_id, pn.name, pa.label) X]]>
     </sql-query>
 
     <sql-query name="Server.findServerInSSMByChannel">

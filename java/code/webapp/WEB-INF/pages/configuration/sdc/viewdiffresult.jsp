@@ -67,7 +67,9 @@
         </tr>
         <tr>
                 <th><bean:message key="sdc.config.diff_result.comparison_time"/>:</th>
-                        <td> <span class="legacy-date-time"><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ssZ" value="${revisionBean.modified}" /></span></td>
+                        <td>
+                          <rhn:formatDate value="${revisionBean.modified}" />
+                        </td>
         </tr>
         <tr>
                 <th><bean:message key="sdc.config.diff_result.diff"/>:</th>

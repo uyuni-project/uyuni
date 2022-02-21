@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,8 +16,6 @@ package com.redhat.rhn.domain.action.salt.build;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.user.User;
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -53,20 +51,4 @@ public class ImageBuildAction extends Action {
         return formatter;
     }
 
-    @Override
-    public String getHistoryDetails(Server server, User currentUser) {
-        StringBuilder retval = new StringBuilder();
-        retval.append("</br>");
-        if (getDetails() != null) {
-            for (ImageBuildActionResult result : getDetails().getResults()) {
-                if (result.getServerId().equals(server.getId())) {
-                    retval.append("Results:");
-                    retval.append("</br>");
-                    retval.append("<pre>");
-                    retval.append("</pre>");
-                }
-            }
-        }
-        return retval.toString();
-    }
 }

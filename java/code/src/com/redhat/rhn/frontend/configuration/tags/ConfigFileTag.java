@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.configuration.tags;
 
-import java.io.IOException;
-
 import com.redhat.rhn.frontend.taglibs.IconTag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+
+import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.system.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -24,6 +23,8 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     public void setUp() throws Exception {
         super.setUp();
-        manager = new ServerGroupManager();
+        manager = new ServerGroupManager(new TestSaltApi());
     }
 
     public void testCreate() {

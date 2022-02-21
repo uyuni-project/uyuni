@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.action.dup;
 
-import java.io.Serializable;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
+
+import java.io.Serializable;
 
 /**
  * Class representation of a task to perform during a distribution upgrade.

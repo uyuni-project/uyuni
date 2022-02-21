@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import java.util.function.Function;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -48,7 +49,8 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     public <T> T fold(
             Function<SCCRepositoryBasicAuth, ? extends T> basicAuth,
             Function<SCCRepositoryNoAuth, ? extends T> noAuth,
-            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth) {
+            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
+            Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return noAuth.apply(this);
     }
 }

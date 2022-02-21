@@ -1,4 +1,75 @@
-- implement package locking for salt minions
+-------------------------------------------------------------------
+Tue Feb 15 10:07:07 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * make tools aware of the reporting database
+  * create taskomatic schedule to update report database
+  * create susemanager-schema-utility RPM package
+  * Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
+  * Add created and modified fields to suseMinionInfo to make
+    uyuni roster module cache validation more accurate
+  * add ubuntu errata data and install handling
+  * FIX error when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
+  * SLES PAYG client support on cloud
+
+-------------------------------------------------------------------
+Tue Jan 25 17:32:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Rerun the migration from CentOS8 client tools to EL8 client
+    tools, for users that workarounded the problem
+
+-------------------------------------------------------------------
+Mon Jan 24 17:02:22 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Fix the migration for users that had CentOS 8 and/or Oracle
+    Linux 8, and AlmaLinux 8 and/or Rocky Linux 8 as well
+
+-------------------------------------------------------------------
+Tue Jan 18 14:07:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Continue with index migration when the expected indexes do not exist
+    (bsc#1192566)
+  * Add upgrade script to migrate pillar and formula data to database
+  * Remove minion_pillars PL/SQL function
+  * Force metadata files regeneration for Debian based repos
+    to change the format of the repos to flat
+  * Added rights column to rhnerrata to handle copyright information
+  * Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
+  * Change rhnPackageCapability name data type to TEXT
+  * Add support for custom SSH port for SSH minions
+  * Fix changing of existing proxy path
+  * Add pillars to Apply States action
+  * require PostgreSQL14 on SUSE Linux Enteprise 15 SP4
+
+-------------------------------------------------------------------
+Fri Dec 03 12:32:54 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Use Almalinux Mirror List
+  * Use EL8 Client Tools for EL8 clones, as CentOS8 will be end of
+    life by the end of the year
+
+-------------------------------------------------------------------
+Fri Nov 05 14:06:37 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add table to store salt pillars
+  * Add 'flush_cache' flag to Ansible playbook execution action
+    (bsc#1190405)
+  * create unique index on package details action id (bsc#1190396, bsc#1190275)
+
+-------------------------------------------------------------------
+Fri Sep 17 12:16:58 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Support syncing patches with advisory status 'pending' (bsc#1190455)
+  * allow Ansible Control Node entitlement for aarch64, ppc64le
+    and s390x (bsc#1189799)
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 09 11:10:15 CEST 2021 - jgonzalez@suse.com

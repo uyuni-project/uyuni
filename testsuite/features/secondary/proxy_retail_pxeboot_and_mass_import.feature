@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -12,7 +12,6 @@
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
 @buildhost
-@long_test
 @proxy
 @private_net
 @pxeboot_minion
@@ -43,44 +42,24 @@ Feature: PXE boot a Retail terminal
     And I check the "vsftpd" formula
     And I check the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be checked
     And the "vsftpd" formula should be checked
     And the "pxe" formula should be checked
 
-  Scenario: Configure PXE part of DNS on the branch server
+  Scenario: Configure general info for PXE part of DNS on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    # general information:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    # direct zone example.org:
-    And I press "Add Item" in first CNAME section
-    And I enter "ftp" in first CNAME alias field
-    And I enter "proxy" in first CNAME name field
-    And I press "Add Item" in first CNAME section
-    And I enter "tftp" in second CNAME alias field
-    And I enter "proxy" in second CNAME name field
-    And I press "Add Item" in first CNAME section
-    And I enter "salt" in third CNAME alias field
-    And I enter the hostname of "proxy" in third CNAME name field
-    # direct zone tf.local:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    And I scroll to the top of the page
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
-    # end
-    And I scroll to the top of the page
-    And I should see a "Bind" text
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter "ftp" in first CNAME alias field of example.org zone
+    And I enter "proxy" in first CNAME name field of example.org zone
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter "tftp" in second CNAME alias field of example.org zone
+    And I enter "proxy" in second CNAME name field of example.org zone
+    And I press "Add Item" in CNAME section of example.org zone
+    And I enter "salt" in third CNAME alias field of example.org zone
+    And I enter "proxy" in third CNAME name field of example.org zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -160,6 +139,10 @@ Feature: PXE boot a Retail terminal
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
     Then I should see a "System group SERVERS created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to SERVERS server group." text
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
@@ -167,6 +150,7 @@ Feature: PXE boot a Retail terminal
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "saltboot" formula should be checked
 
   Scenario: Parametrize the Saltboot formula
@@ -211,7 +195,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
@@ -251,6 +235,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "pxe" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "tftpd" formula should be unchecked
     And the "pxe" formula should be unchecked
 
@@ -258,9 +243,9 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    And I press "Remove Item" in third CNAME section
-    And I press "Remove Item" in second CNAME section
-    And I press "Remove Item" in first CNAME section
+    And I press "Remove Item" in salt CNAME of example.org zone section
+    And I press "Remove Item" in tftp CNAME of example.org zone section
+    And I press "Remove Item" in ftp CNAME of example.org zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -298,6 +283,7 @@ Feature: PXE boot a Retail terminal
     And I check the "tftpd" formula
     And I check the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be checked
     And the "saltboot" formula should be checked
     And the "tftpd" formula should be checked
@@ -309,26 +295,6 @@ Feature: PXE boot a Retail terminal
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
 
-  Scenario: Cheat with missing avahi domain
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
   Scenario: Apply the highstate to take into account the imported formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -338,8 +304,7 @@ Feature: PXE boot a Retail terminal
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    When I stop and disable avahi on the PXE boot minion
-    And I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
+    When I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
@@ -409,15 +374,11 @@ Feature: PXE boot a Retail terminal
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
     # direct zone example.org:
-    And I press "Remove Item" in fifth CNAME section
-    And I press "Remove Item" in fourth CNAME section
-    And I press "Remove Item" in third CNAME section
-    And I press "Remove Item" in second CNAME section
-    And I press "Remove Item" in first CNAME section
-    # direct zone tf.local:
-    And I scroll to the top of the page
-    And I press minus sign in third configured zone section
-    And I press minus sign in third available zone section
+    And I press "Remove Item" in salt CNAME of example.org zone section
+    And I press "Remove Item" in tftp CNAME of example.org zone section
+    And I press "Remove Item" in ftp CNAME of example.org zone section
+    And I press "Remove Item" in dhcp CNAME of example.org zone section
+    And I press "Remove Item" in dns CNAME of example.org zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -429,6 +390,7 @@ Feature: PXE boot a Retail terminal
     And I uncheck the "tftpd" formula
     And I uncheck the "vsftpd" formula
     And I click on "Save"
+    And I wait until I see "Formula saved." text
     Then the "pxe" formula should be unchecked
     And the "saltboot" formula should be unchecked
     And the "tftpd" formula should be unchecked
@@ -448,3 +410,7 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+  Scenario: Reset TFTP defaults
+    When I stop tftp on the proxy
+    And I reset tftp defaults on the proxy

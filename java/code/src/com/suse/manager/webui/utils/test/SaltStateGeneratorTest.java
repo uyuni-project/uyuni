@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,13 +17,16 @@ package com.suse.manager.webui.utils.test;
 
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltStateGenerator;
+
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import junit.framework.TestCase;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for SparkTestUtils.
@@ -167,17 +170,17 @@ public class SaltStateGeneratorTest extends TestCase {
 
         List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("emacs.x86_64", "24.5.1");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("jed.x86_64", "1.2.3");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("mutt.x86_64", "5.0.5");
             }
@@ -201,17 +204,17 @@ public class SaltStateGeneratorTest extends TestCase {
 
         List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("emacs.x86_64", ">24.5.1");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("jed.x86_64", ">1.2.3");
             }
         }));
-        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
+        assertTrue(pkgs.contains(new LinkedHashMap<String, Object>() {
             {
                 put("mutt.x86_64", ">5.0.5");
             }

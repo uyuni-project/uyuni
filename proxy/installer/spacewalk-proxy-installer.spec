@@ -29,7 +29,7 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.1
+Version:        4.3.5
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -57,6 +57,7 @@ Requires:       rhn-client-tools > 2.8.4
 Requires:       rhnlib
 %endif
 Requires:       libxslt
+Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
 %if 0%{?pylint_check}
 BuildRequires:  python3-rhn-client-tools
@@ -87,20 +88,6 @@ Run configure-proxy.sh after installation to configure proxy.
 /usr/bin/docbook2man configure-proxy.sh.sgml
 /usr/bin/gzip configure-proxy.sh.8
 
-%post
-%if 0%{?suse_version}
-if [ -f /etc/sysconfig/apache2 ]; then
-    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
-fi
-sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
-if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
-    sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
-fi
-if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
-    sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
-fi
-%endif
-
 %install
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
@@ -114,6 +101,7 @@ install -m 644 rhn.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 cobbler-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 insights-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 755 configure-proxy.sh $RPM_BUILD_ROOT/%{_usr}/sbin
+install -m 755 spacewalk-setup-httpd $RPM_BUILD_ROOT/%{_bindir}
 install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
@@ -134,6 +122,29 @@ install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certific
 spacewalk-python3-pylint .
 %endif
 
+%post
+%if 0%{?suse_version}
+if [ -f /etc/sysconfig/apache2 ]; then
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+fi
+if [ -e /etc/squid/squid.conf ]; then
+    sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
+    if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
+        sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
+    fi
+    if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
+        sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
+    fi
+fi
+%endif
+if [ $1 -eq 2 ]
+then
+  if [ -e %{apacheconfdir}/vhosts.d/ssl.conf ]
+  then
+    sed 's/^SSLProtocol all.*$//g' %{apacheconfdir}/vhosts.d/ssl.conf
+  fi
+fi
+
 %files
 %defattr(-,root,root,-)
 %dir %{defaultdir}
@@ -148,6 +159,7 @@ spacewalk-python3-pylint .
 %{_usr}/share/rhn/get_system_id.xslt
 %{_usr}/sbin/rhn-proxy-activate
 %{_usr}/sbin/fetch-certificate
+%{_bindir}/spacewalk-setup-httpd
 %doc answers.txt
 %license LICENSE
 %dir %{_usr}/share/rhn/proxy-template

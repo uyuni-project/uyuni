@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -260,6 +260,24 @@ public class ScheduleHandler extends BaseHandler {
         dr.elaborate();
 
         return dr.toArray();
+    }
+
+    /**
+     * List all the scheduled actions that have been completed.
+     * @param loggedInUser The current user
+     * @return Returns a list of actions with details
+     *
+     * @xmlrpc.doc Returns a list of actions that have been completed.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype
+     * #array_begin()
+     *   $ScheduleActionSerializer
+     * #array_end()
+     */
+    public Object[] listAllCompletedActions(User loggedInUser) {
+        // the second argument is "PageControl". This is not needed for the api usage;
+        // therefore, null will be used.
+        return ActionManager.allCompletedActions(loggedInUser, null).toArray();
     }
 
     /**

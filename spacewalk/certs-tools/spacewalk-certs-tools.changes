@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:02:00 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * add new setup tool to check and deploy TLS certificates for
+    Uyuni/SUSE Manager Server and Proxy
+
+-------------------------------------------------------------------
+Tue Jan 18 13:51:12 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Make bootstrap script to use bash when called with a different
+    interpreter (bsc#1191656)
+
+-------------------------------------------------------------------
+Fri Dec 03 12:21:24 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Allow "--force-bundle" attribute when generating bootstrap script
+
+-------------------------------------------------------------------
+Fri Nov 05 13:36:40 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * set key format to PEM when generating key for traditional
+    clients push ssh (bsc#1189643)
+  * add GPG keys using apt-key on debian machines (bsc#1187998)
+
+-------------------------------------------------------------------
 Mon Aug 09 10:58:52 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

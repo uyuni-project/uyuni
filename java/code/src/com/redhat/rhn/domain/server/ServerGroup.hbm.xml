@@ -22,7 +22,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      column="group_type" cascade="none" insert="false" update="false" lazy="false"/>
 
         <many-to-one name="org" class="com.redhat.rhn.domain.org.Org" column="org_id"/>
-        
+
+        <set name="pillars" lazy="true" inverse="true" cascade="all" access="field">
+            <key column="group_id"/>
+            <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
+        </set>
+
         <subclass name="com.redhat.rhn.domain.server.ManagedServerGroup" discriminator-value="null">
             <set name="associatedAdmins" lazy="true" table="rhnUserServerGroupPerms" cascade="save-update">
                 <key column="server_group_id"/>

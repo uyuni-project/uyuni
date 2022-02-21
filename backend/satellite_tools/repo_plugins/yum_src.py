@@ -37,6 +37,7 @@ import sys
 import tempfile
 import types
 import urlgrabber
+import json
 
 try:
     from urllib import urlencode, unquote, quote
@@ -49,6 +50,7 @@ import xml.etree.ElementTree as etree
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import checksum, fileutils
+from uyuni.common.context_managers import cfg_component
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
@@ -120,7 +122,9 @@ class ZyppoSync:
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
             # Collect GPG keys from the Spacewalk GPG keyring
-            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
+            # The '--export-options export-clean' is needed avoid exporting key signatures
+            # which are not needed and can cause issues when importing into the RPMDB
+            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
             process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             for line in process.stdout.readlines():
                line_l = line.decode().split(":")
@@ -155,7 +159,8 @@ class ZypperRepo:
        self.root = root
        self.baseurl = [url]
        self.basecachedir = os.path.join(CACHE_DIR, org)
-       self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
+       with cfg_component('server.satellite') as CFG:
+           self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
        self.urls = self.baseurl
        # Make sure baseurl ends with / and urljoin will work correctly
        if self.urls[0][-1] != '/':
@@ -395,7 +400,7 @@ class ContentSource:
     def __init__(self, url, name, insecure=False, interactive=True,
                  yumsrc_conf=None, org="1", channel_label="",
                  no_mirrors=False, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None):
+                 client_key_file=None, channel_arch="", http_headers={}):
         """
         Plugin constructor.
         """
@@ -417,61 +422,57 @@ class ContentSource:
         self.sslcacert = ca_cert_file
         self.sslclientcert = client_cert_file
         self.sslclientkey = client_key_file
-        self.http_headers = {}
+        self.http_headers = http_headers
 
-        comp = CFG.getComponent()
-        # read configuration from /etc/rhn/rhn.conf
-        initCFG('server.satellite')
+        # keep authtokens for mirroring
+        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        if query:
+            self.authtoken = query
 
-        # ensure the config namespace will be switched back in any case
-        try:
-            # keep authtokens for mirroring
-            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
-            if query:
-                self.authtoken = query
+        # load proxy configuration based on the url
+        self._load_proxy_settings(self.url)
 
-            # load proxy configuration based on the url
-            self._load_proxy_settings(self.url)
+        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
+            http_headers_cfg = configparser.ConfigParser()
+            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
+            section_name = None
 
-            # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
-            if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
-                http_headers_cfg = configparser.ConfigParser()
-                http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
-                section_name = None
+            if http_headers_cfg.has_section(self.name):
+                section_name = self.name
+            elif http_headers_cfg.has_section(channel_label):
+                section_name = channel_label
+            elif http_headers_cfg.has_section('main'):
+                section_name = 'main'
 
-                if http_headers_cfg.has_section(self.name):
-                    section_name = self.name
-                elif http_headers_cfg.has_section(channel_label):
-                    section_name = channel_label
-                elif http_headers_cfg.has_section('main'):
-                    section_name = 'main'
+            if section_name:
+                for hdr in http_headers_cfg[section_name]:
+                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
 
-                if section_name:
-                    for hdr in http_headers_cfg[section_name]:
-                        self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+        # perform authentication if implemented
+        self._authenticate(url)
 
-            # perform authentication if implemented
-            self._authenticate(url)
+        # Make sure baseurl ends with / and urljoin will work correctly
+        self.urls = [url]
+        if self.urls[0][-1] != '/':
+            self.urls[0] += '/'
 
-            # Make sure baseurl ends with / and urljoin will work correctly
-            self.urls = [url]
-            if self.urls[0][-1] != '/':
-                self.urls[0] += '/'
+        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
+        self.channel_label = channel_label
+        self.channel_arch = channel_arch
 
-            # Replace non-valid characters from reponame (only alphanumeric chars allowed)
-            self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
-            self.channel_label = channel_label
+        # SUSE vendor repositories belongs to org = NULL
+        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
 
-            # SUSE vendor repositories belongs to org = NULL
-            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
-            root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
+        self.num_packages = 0
+        self.num_excluded = 0
+        self.gpgkey_autotrust = None
+        self.groupsfile = None
 
-            self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
-            self.num_packages = 0
-            self.num_excluded = 0
-            self.gpgkey_autotrust = None
-            self.groupsfile = None
-
+        with cfg_component('server.satellite') as CFG:
             # configure network connection
             try:
                 # bytes per second
@@ -483,45 +484,37 @@ class ContentSource:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
-        finally:
-            # set config component back to original
-            initCFG(comp)
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
-        comp = CFG.getComponent()
-        initCFG('server.satellite')
+        with cfg_component('server.satellite') as CFG:
+            # Get the global HTTP Proxy settings from DB or per-repo
+            # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
+            if CFG.http_proxy:
+                self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
+                self.proxy_hostname = self.proxy_url
+            elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
+                zypper_cfg = configparser.ConfigParser()
+                zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
+                section_name = None
 
-        # Get the global HTTP Proxy settings from DB or per-repo
-        # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
-        if CFG.http_proxy:
-            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
-            self.proxy_hostname = self.proxy_url
-        elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
-            zypper_cfg = configparser.ConfigParser()
-            zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
-            section_name = None
+                if zypper_cfg.has_section(self.name):
+                    section_name = self.name
+                elif zypper_cfg.has_section(channel_label):
+                    section_name = channel_label
+                elif zypper_cfg.has_section('main'):
+                    section_name = 'main'
 
-            if zypper_cfg.has_section(self.name):
-                section_name = self.name
-            elif zypper_cfg.has_section(channel_label):
-                section_name = channel_label
-            elif zypper_cfg.has_section('main'):
-                section_name = 'main'
+                if section_name:
+                    if zypper_cfg.has_option(section_name, option='proxy'):
+                        self.proxy_hostname = zypper_cfg.get(section_name, option='proxy')
+                        self.proxy_url = "http://%s" % self.proxy_hostname
 
-            if section_name:
-                if zypper_cfg.has_option(section_name, option='proxy'):
-                    self.proxy_hostname = zypper_cfg.get(section_name, option='proxy')
-                    self.proxy_url = "http://%s" % self.proxy_hostname
+                    if zypper_cfg.has_option(section_name, 'proxy_username'):
+                        self.proxy_user = zypper_cfg.get(section_name, 'proxy_username')
 
-                if zypper_cfg.has_option(section_name, 'proxy_username'):
-                    self.proxy_user = zypper_cfg.get(section_name, 'proxy_username')
-
-                if zypper_cfg.has_option(section_name, 'proxy_password'):
-                    self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
-
-        # set config component back to original
-        initCFG(comp)
+                    if zypper_cfg.has_option(section_name, 'proxy_password'):
+                        self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
     def _get_mirror_list(self, repo, url):
         mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
@@ -582,7 +575,7 @@ class ContentSource:
                 if re.match('^\s*\#.*', line) or re.match('^\s*$', line):
                     continue
                 mirror = re.sub('\n$', '', line) # no more trailing \n's
-                (mirror, count) = re.subn('\$ARCH', '$BASEARCH', mirror)
+                mirror = re.sub('\$(?:BASE)?ARCH', self.channel_arch, mirror, flags=re.IGNORECASE)
                 returnlist.append(mirror)
 
         returnlist = _replace_and_check_url(returnlist)
@@ -619,7 +612,10 @@ type=rpm-md
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
         elif self.http_headers:
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&repo_name={}&channel_label={}'.format(quote(zypp_repo_url), self.name, self.channel_label)
+           headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
+           with open(headers_location, "w") as repo_headers_file:
+               repo_headers_file.write(json.dumps(self.http_headers))
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(zypp_repo_url), quote(headers_location))
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
@@ -749,7 +745,7 @@ type=rpm-md
         """
         if self._md_exists('repomd'):
             repomd_path = self._retrieve_md_path('repomd')
-            infile = self._decompress(repomd_path)
+            infile = fileutils.decompress_open(repomd_path)
             for repodata in etree.parse(infile).getroot():
                 if repodata.get('type') == 'primary':
                     checksum_elem = repodata.find(REPO_XML+'checksum')
@@ -897,7 +893,7 @@ type=rpm-md
         susedata = []
         if self._md_exists('susedata'):
             data_path = self._retrieve_md_path('susedata')
-            infile = self._decompress(data_path)
+            infile = fileutils.decompress_open(data_path)
             for package in etree.parse(infile).getroot():
                 d = {}
                 d['pkgid'] = package.get('pkgid')
@@ -932,7 +928,7 @@ type=rpm-md
         products = []
         if self._md_exists('products'):
             data_path = self._retrieve_md_path('products')
-            infile = self._decompress(data_path)
+            infile = fileutils.decompress_open(data_path)
             for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
@@ -958,7 +954,9 @@ type=rpm-md
         if self._md_exists('updateinfo'):
             notices = {}
             updates_path = self._retrieve_md_path('updateinfo')
-            infile = self._decompress(updates_path)
+            if not os.path.exists(updates_path) and self._md_exists('updateinfo_zck'):
+                updates_path = self._retrieve_md_path('updateinfo_zck')
+            infile = fileutils.decompress_open(updates_path)
             for _event, elem in etree.iterparse(infile):
                 if elem.tag == 'update':
                     un = UpdateNotice(elem)
@@ -969,7 +967,7 @@ type=rpm-md
             return ('updateinfo', notices.values())
         elif self._md_exists('patches'):
             patches_path = self._retrieve_md_path('patches')
-            infile = self._decompress(patches_path)
+            infile = fileutils.decompress_open(patches_path)
             notices = []
             for patch in etree.parse(infile).getroot():
                 checksum_elem = patch.find(PATCHES_XML+'checksum')
@@ -999,6 +997,10 @@ type=rpm-md
         groups = None
         if self._md_exists('group'):
             groups = self._retrieve_md_path('group')
+            if not os.path.exists(groups) and self._md_exists('group_xz'):
+                groups = self._retrieve_md_path('group_xz')
+            if not os.path.exists(groups) and self._md_exists('group_gz'):
+                groups = self._retrieve_md_path('group_gz')
         return groups
 
     def get_modules(self):
@@ -1242,12 +1244,3 @@ type=rpm-md
 
     def _authenticate(self, url):
         pass
-
-    def _decompress(self, filename):
-        if filename.endswith('.gz'):
-            return gzip.open(filename)
-        elif filename.endswith('.bz2'):
-            return bz2.open(filename)
-        elif filename.endswith('.xz'):
-            return lzma.open(filename)
-        return open(filename, 'rt')

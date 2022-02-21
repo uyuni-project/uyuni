@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,18 +22,21 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
+import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Ansible XMLRPC handler
@@ -41,6 +44,20 @@ import java.util.Optional;
  * @xmlrpc.doc Provides methods to manage Ansible systems
  */
 public class AnsibleHandler extends BaseHandler {
+
+    // Keys to pass to schedulePlaybook endpoint as additional args for Ansible
+    public static final String ANSIBLE_FLUSH_CACHE = "flushCache";
+
+    private final AnsibleManager ansibleManager;
+
+    /**
+     * Constructor
+     *
+     * @param managerIn the ansible manager
+     */
+    public AnsibleHandler(AnsibleManager managerIn) {
+        ansibleManager = managerIn;
+    }
 
     /**
      * Schedule a playbook execution
@@ -70,7 +87,7 @@ public class AnsibleHandler extends BaseHandler {
     }
 
     /**
-     * Schedule a playbook execution with test mode option
+     * Schedule a playbook execution
      *
      * @param loggedInUser the current user
      * @param playbookPath the path to the playbook file
@@ -92,16 +109,90 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+            Date earliestOccurrence, String actionChainLabel, boolean testMode) {
+        return schedulePlaybook(loggedInUser, playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
+                actionChainLabel, testMode, Collections.emptyMap());
+    }
+
+    /**
+     * Schedule a playbook execution with test mode option
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence earliest occurrence of the execution command
+     * @param actionChainLabel label af action chain to use
+     * @param ansibleArgs the dictionary of additional arguments to pass to ansiblegate
+     * @return the execute playbook action id
+     *
+     * @xmlrpc.doc Schedule a playbook execution
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
+     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @xmlrpc.param
+     *     #struct_begin("ansibleArgs")
+     *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
+     *     #struct_end()
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     */
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+            Date earliestOccurrence, String actionChainLabel, Map<String, Object> ansibleArgs) {
+        return schedulePlaybook(loggedInUser, playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
+                actionChainLabel, false, ansibleArgs);
+    }
+
+    /**
+     * Schedule a playbook execution with test mode option
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence earliest occurrence of the execution command
+     * @param actionChainLabel label af action chain to use
+     * @param testMode true if the playbook shall be executed in test mode
+     * @param ansibleArgs the dictionary of additional arguments to pass to ansiblegate
+     * @return the execute playbook action id
+     *
+     * @xmlrpc.doc Schedule a playbook execution
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
+     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
+     * @xmlrpc.param
+     *     #struct_begin("ansibleArgs")
+     *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
+     *     #struct_end()
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
-            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel, boolean testMode) {
+            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel, boolean testMode,
+            Map<String, Object> ansibleArgs) {
+
+        // Validate the args map and set defaults
+        Map<String, Object> argMap = new HashMap<>(ansibleArgs);
+        validateMap(Set.of(ANSIBLE_FLUSH_CACHE), argMap);
+        argMap.putIfAbsent(ANSIBLE_FLUSH_CACHE, false);
+
         try {
             return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, testMode,
-                    earliestOccurrence, Optional.ofNullable(actionChainLabel), loggedInUser);
+                    (Boolean) argMap.get(ANSIBLE_FLUSH_CACHE), earliestOccurrence,
+                    Optional.ofNullable(actionChainLabel), loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException | ClassCastException e) {
             throw new InvalidParameterException("Invalid parameter", e);
         }
     }
@@ -262,7 +353,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
         try {
-            return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
+            return ansibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {
@@ -295,7 +386,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
         try {
-            return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
+            return ansibleManager.discoverPlaybooks(pathId, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {
@@ -326,7 +417,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
         try {
-            return AnsibleManager.introspectInventory(pathId, loggedInUser)
+            return ansibleManager.introspectInventory(pathId, loggedInUser)
                     .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {

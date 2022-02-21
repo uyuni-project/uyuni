@@ -48,8 +48,9 @@ def do_filepreservation_list(self, args, doreturn=False):
 
     if not doreturn:
         print('\n'.join(sorted(lists)))
-    else:
-        return lists
+        return None
+
+    return lists
 
 ####################
 
@@ -84,9 +85,8 @@ def do_filepreservation_create(self, args):
 
             if userinput == '':
                 break
-            else:
-                if userinput not in files:
-                    files.append(userinput)
+            if userinput not in files:
+                files.append(userinput)
 
     print('')
     print(_('File List'))

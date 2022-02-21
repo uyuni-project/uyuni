@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt.test;
+
+import static java.util.Optional.empty;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -34,8 +36,6 @@ import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Optional.empty;
 
 public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 
@@ -87,11 +87,13 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", admin.getOrg());
         ContentProjectFactory.save(cp);
-        ContentEnvironment env = manager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, admin);
+        ContentEnvironment env = manager.createEnvironment(cp.getLabel(), empty(), "fst", "first env",
+                "desc", false, admin);
         manager.attachSource("cplabel", ProjectSource.Type.SW_CHANNEL, channel.getLabel(), empty(), admin);
 
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter = manager.createFilter("my-filter", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria, admin);
+        ContentFilter filter = manager.createFilter(
+                "my-filter", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria, admin);
         manager.attachFilter("cplabel", filter.getId(), admin);
 
         handler.buildProject(admin, "cplabel");
@@ -111,8 +113,10 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 
         FilterCriteria criteria1 = new FilterCriteria(Matcher.EQUALS, "module_stream", "firstmodule:notexists");
         FilterCriteria criteria2 = new FilterCriteria(Matcher.EQUALS, "module_stream", "secondmodule:notexists");
-        ContentFilter filter1 = manager.createFilter("my-filter-1", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria1, admin);
-        ContentFilter filter2 = manager.createFilter("my-filter-2", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria2, admin);
+        ContentFilter filter1 = manager.createFilter(
+                "my-filter-1", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria1, admin);
+        ContentFilter filter2 = manager.createFilter(
+                "my-filter-2", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria2, admin);
         manager.attachFilter("cplabel", filter1.getId(), admin);
         manager.attachFilter("cplabel", filter2.getId(), admin);
 
@@ -143,7 +147,8 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 
         // Add an invalid module filter
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "mymodule:notexists");
-        ContentFilter filter = manager.createFilter("my-filter", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria, admin);
+        ContentFilter filter = manager.createFilter(
+                "my-filter", ContentFilter.Rule.ALLOW, EntityType.MODULE, criteria, admin);
         manager.attachFilter("cplabel", filter.getId(), admin);
 
         // Create second environment

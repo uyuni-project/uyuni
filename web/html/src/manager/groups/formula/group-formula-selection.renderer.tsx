@@ -1,8 +1,11 @@
 import * as React from "react";
-import Network from "utils/network";
-import { FormulaSelection } from "components/formula-selection";
-import { Utils } from "utils/functions";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { FormulaSelection } from "components/formula-selection";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 const capitalize = Utils.capitalize;
 
@@ -29,12 +32,12 @@ export const renderer = (renderId, { groupId, warningMessage }) => {
     formData.selected = selectedFormulas;
 
     return Network.post("/rhn/manager/api/formulas/select", formData).then(
-      data => {
+      (data) => {
         component.setState({
-          messages: data.map(msg => getMessageText(msg)),
+          messages: data.map((msg) => getMessageText(msg)),
         });
       },
-      xhr => {
+      (xhr) => {
         try {
           component.setState({
             errors: [JSON.parse(xhr.responseText)],

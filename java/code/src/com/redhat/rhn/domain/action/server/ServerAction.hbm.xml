@@ -43,6 +43,18 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         ]]>
         </query>
 
+        <!--
+            The explicit cast in this query is needed since the postgresql jdbc driver is not able to define the type.
+            See more info at https://bit.ly/3Gh3Ez5
+         -->
+        <query name="ServerAction.findByServerAndActionTypeAndCreatedDate">
+            <![CDATA[from com.redhat.rhn.domain.action.server.ServerAction as sa
+                    where sa.server = :server
+                                and (cast(:actionType as string) is null or sa.parentAction.actionType.name = :actionType)
+                                and (cast(:date as date) is null or sa.created >= :date)
+                        ]]>
+        </query>
+
         <query name="ServerAction.findByServerAndAction">
            <![CDATA[from com.redhat.rhn.domain.action.server.ServerAction as sa
                     where sa.server = :server

@@ -263,7 +263,7 @@ SELECT C.name,
        CS.checksum_type checksumtype,
        F.file_mode,
        F.linkto,
-       TO_CHAR(F.mtime, 'YYYY-MM-DD HH24:MI:SS') AS MTIME
+       F.mtime AS MTIME
   FROM rhnPackageFile F left outer join rhnChecksumView CS
     ON F.checksum_id = CS.id,
        rhnPackageCapability C
@@ -888,7 +888,8 @@ SELECT p.package_id,
        p.epoch,
        p.name_id,
        p.evr_id,
-       p.arch
+       p.arch,
+       l.pending 
   FROM rhnlockedpackages l
   LEFT JOIN (
 SELECT pkg.id AS package_id,
@@ -1016,6 +1017,11 @@ SELECT  P.id AS ID,
         E.advisory_type,
         E.advisory,
         E.id AS ADVISORY_ID,
+        CASE WHEN (SELECT 1 FROM rhnPackageProvides PP
+                            JOIN rhnPackageCapability PC ON PP.capability_id = PC.id
+                           WHERE PP.package_id = P.id
+                             AND PC.name = 'installhint(reboot-needed)') = 1
+             THEN 1 ELSE 0 END AS pkg_reboot,
         CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
         CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart,
         COUNT(DISTINCT SNC.server_id) NUM_SYSTEMS
@@ -1112,6 +1118,14 @@ SELECT  n.id AS id,
           SOP.errata_id AS errata_id,
           SOP.errata_advisory AS errata_advisory,
           E.advisory_type AS errata_advisory_type,
+	  CASE WHEN (SELECT 1 FROM rhnPackage P
+	                      JOIN rhnPackageProvides PP ON PP.package_id = P.id
+                              JOIN rhnPackageCapability PC ON PP.capability_id = PC.id
+                             WHERE P.name_id = PN.id
+                               AND P.evr_id = SOP.package_evr_id
+                               AND P.package_arch_id = SOP.package_arch_id
+                               AND PC.name = 'installhint(reboot-needed)') = 1
+               THEN 1 ELSE 0 END AS pkg_reboot,
           CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
           CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart
     FROM  rhnServerOutdatedPackages SOP
@@ -1214,6 +1228,24 @@ SELECT DISTINCT pa.label, pa.name
    AND cpac.channel_arch_id = ca.id
    AND ca.label
     IN (%s)
+  </query>
+</mode>
+
+<mode name="packages_available_to_user">
+  <query params="org_id">
+SELECT 1
+  FROM rhnPackage P
+ WHERE p.id IN (%s)
+   AND (   P.org_id = :org_id
+        OR EXISTS (SELECT 1
+                     FROM rhnOrgChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+                    WHERE CT.org_id = :org_id
+                      AND CP.package_id = P.id)
+        OR EXISTS (SELECT 1
+                     FROM rhnSharedChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+                    WHERE CT.org_id = :org_id
+                      AND CP.package_id = P.id)
+       )
   </query>
 </mode>
 
@@ -2249,9 +2281,14 @@ ORDER BY 8
 <mode name="obsoleting_packages">
   <query params="pid, org_id">
 SELECT P2.id AS ID, PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '-' ||
-      PA.label AS NVREA, AC.channel_id, AC.channel_name, EP.errata_id, E.advisory, E.advisory_type,
-      CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
-      CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart
+       PA.label AS NVREA, AC.channel_id, AC.channel_name, EP.errata_id, E.advisory, E.advisory_type,
+       CASE WHEN (SELECT 1 FROM rhnPackageProvides PP
+                           JOIN rhnPackageCapability PC ON PP.capability_id = PC.id
+                          WHERE PP.package_id = P2.id
+                            AND PC.name = 'installhint(reboot-needed)') = 1
+             THEN 1 ELSE 0 END AS pkg_reboot,
+       CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
+       CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart
   FROM
        rhnPackageArch PA,
        rhnPackageName PN,

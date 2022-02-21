@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.task.TaskManager;
@@ -52,8 +51,7 @@ public class TaskStatusAction extends RhnAction {
             String name = "task.status." + info.get("name");
             info.put("name", name);
             Date startTime = (Date) info.get("start_time");
-            info.put("start_time",
-                    LocalizationService.getInstance().formatCustomDate(startTime));
+            info.put("start_time", startTime);
         }
 
         TaskomaticApi taskomatic = new TaskomaticApi();

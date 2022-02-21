@@ -1,1 +1,0 @@
-RedHat8.sls

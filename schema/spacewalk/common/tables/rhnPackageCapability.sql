@@ -19,7 +19,7 @@ CREATE TABLE rhnPackageCapability
     id        NUMERIC NOT NULL
                   CONSTRAINT rhn_pkg_capability_id_pk PRIMARY KEY
                   ,
-    name      VARCHAR(4000) NOT NULL,
+    name      TEXT NOT NULL,
     version   VARCHAR(512),
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,

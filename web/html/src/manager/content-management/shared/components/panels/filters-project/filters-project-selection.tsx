@@ -1,11 +1,14 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { LinkButton } from "components/buttons";
-import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import { ProjectFilterServerType } from "../../../type";
-import { Loading } from "components/utils/Loading";
+
 import _xor from "lodash/xor";
+
+import { LinkButton } from "components/buttons";
+import { Loading } from "components/utils/Loading";
+
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { getClmFilterDescription } from "../../../business/filters.enum";
+import { ProjectFilterServerType } from "../../../type";
 
 type FiltersProps = {
   projectId: string;
@@ -22,7 +25,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {
-    onActionAllFilters({}, "get").then(apiAllFilters => setAllFilters(apiAllFilters));
+    onActionAllFilters({}, "get").then((apiAllFilters) => setAllFilters(apiAllFilters));
   }, []);
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
     <React.Fragment>
       {allFilters &&
         allFilters.length > 0 &&
-        allFilters.map(filter => (
+        allFilters.map((filter) => (
           <div key={filter.id} className="checkbox">
             <input
               type="checkbox"
@@ -49,7 +52,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
               id={"child_" + filter.id}
               name="filterSelection"
               checked={onGoingSelectedFilters.includes(filter.id)}
-              onChange={event =>
+              onChange={(event) =>
                 setOnGoingSelectedFilters(_xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]))
               }
             />

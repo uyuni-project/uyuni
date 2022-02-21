@@ -1,13 +1,15 @@
 import * as React from "react";
-import { LinkButton, Button } from "components/buttons";
+
+import { Button, LinkButton } from "components/buttons";
 import { FromNow } from "components/datetime";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { PopUp } from "components/popup";
-import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
+import { Form } from "components/input/Form";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { PopUp } from "components/popup";
+
 import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
@@ -169,7 +171,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
   renderInstanceDetails(row) {
     let data;
     if (row.instances) {
-      data = Object.keys(row.instances).map(i => (
+      data = Object.keys(row.instances).map((i) => (
         <tr key={i}>
           <td>{i}</td>
           <td>{row.instances[i]}</td>
@@ -198,7 +200,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
     let totalCount = 0;
     if (data.instances) {
       totalCount = Object.keys(data.instances)
-        .map(k => Number(data.instances[k]))
+        .map((k) => Number(data.instances[k]))
         .reduce((a, b) => a + b, 0);
     }
 
@@ -212,7 +214,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
           title={t("View cluster summary")}
           icon="fa-external-link"
           item={data}
-          onClick={data =>
+          onClick={(data) =>
             this.setState({
               instancePopupContent: {
                 name: data.name,
@@ -378,7 +380,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                     </li>
                     <li>
                       <ul>
-                        {data.channels.children.map(ch => (
+                        {data.channels.children.map((ch) => (
                           <li key={ch.id}>
                             <a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>
                               {ch.name}
@@ -399,7 +401,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul className="list-group">
                     <li className="list-group-item">{data.installedProducts.base}</li>
-                    {data.installedProducts.addons.map(addon => (
+                    {data.installedProducts.addons.map((addon) => (
                       <li key={addon} className="list-group-item">
                         {addon}
                       </li>
@@ -645,11 +647,11 @@ class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
 type BuildDialogProps = {
   data: any;
   onBuild?: (...args: any[]) => any;
-}
+};
 
 type BuildDialogState = {
   model: {
-    earliest: moment.Moment,
+    earliest: moment.Moment;
   };
 };
 
@@ -712,7 +714,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
           onChange={this.onChange.bind(this)}
           divClass="col-md-12"
         >
-          <InputDateTime name="earliest" required  />
+          <InputDateTime name="earliest" required />
         </Form>
       </div>
     );
@@ -728,7 +730,7 @@ type InspectDialogProps = {
 
 type InspectDialogState = {
   model: {
-    earliest: moment.Moment,
+    earliest: moment.Moment;
   };
 };
 

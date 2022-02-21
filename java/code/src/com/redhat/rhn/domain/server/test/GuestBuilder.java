@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import org.hibernate.Session;
 
 /**
@@ -174,6 +175,7 @@ public class GuestBuilder {
      * Creates the host with given name and foreign entitlement for the guest under
      * construction.
      *
+     * @param digitalServerId the server ID
      * @return This builder
      *
      * @throws Exception if an error occurs.

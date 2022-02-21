@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,16 @@
 
 package com.redhat.rhn.frontend.taglibs;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.CSVWriter;
+import com.redhat.rhn.common.util.ExportWriter;
+import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.frontend.struts.RequestContext;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -23,16 +33,6 @@ import java.util.Iterator;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.util.CSVWriter;
-import com.redhat.rhn.common.util.ExportWriter;
-import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
  * Base class for ListDisplayTag implementation.

@@ -1,9 +1,10 @@
 import * as React from "react";
-import Validation from "components/validation";
+
 import { FormContext } from "components/input/Form";
 import { FormMultiInput } from "components/input/FormMultiInput";
-import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
+import Validation from "components/validation";
 
 type Props = {};
 
@@ -17,7 +18,7 @@ export function Vlans(props: Props) {
           id="vlans"
           title={t("VLANs")}
           prefix={"vlans"}
-          onAdd={index => {
+          onAdd={(index) => {
             formContext.setModelValue?.(`vlans${index}_tag`, "");
             // If adding more than 1 VLAN tag, the user surely needs trunking too, auto enable it.
             if (index > 0) {
@@ -26,10 +27,10 @@ export function Vlans(props: Props) {
           }}
           onRemove={(index: number) => {
             Object.keys(model)
-              .filter(key => key.startsWith(`vlans${index}_`))
-              .forEach(key => formContext.setModelValue?.(key, undefined));
+              .filter((key) => key.startsWith(`vlans${index}_`))
+              .forEach((key) => formContext.setModelValue?.(key, undefined));
             // Vlan trunking makes no sense if there is zero or one vlan tag setup, disable it in those cases.
-            if (Object.keys(model).filter(key => key.match(/^vlan[0-9]+_tag$/)).length <= 1) {
+            if (Object.keys(model).filter((key) => key.match(/^vlan[0-9]+_tag$/)).length <= 1) {
               formContext.setModelValue?.(`vlantrunk`, false);
             }
           }}

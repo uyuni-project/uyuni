@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.slave.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
@@ -26,6 +23,9 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SlaveHandlerTest extends BaseHandlerTestCase {
 

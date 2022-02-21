@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -56,24 +58,24 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
-import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
+import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
+import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -82,80 +84,81 @@ import java.util.List;
  *
  * Stores a list of hibernate annotation classes for registration the first time the
  * ConnectionManager.
-*/
+ */
 public class AnnotationRegistry {
 
     private AnnotationRegistry() {
         // Hide the default constructor.
     }
 
-    private static final List<Class> ANNOTATION_CLASSES;
-    static {
-        ANNOTATION_CLASSES = new LinkedList<>();
-        ANNOTATION_CLASSES.add(ImageStore.class);
-        ANNOTATION_CLASSES.add(ImageStoreType.class);
-        ANNOTATION_CLASSES.add(DockerfileProfile.class);
-        ANNOTATION_CLASSES.add(KiwiProfile.class);
-        ANNOTATION_CLASSES.add(ImageProfile.class);
-        ANNOTATION_CLASSES.add(ProfileCustomDataValue.class);
-        ANNOTATION_CLASSES.add(ImageInfo.class);
-        ANNOTATION_CLASSES.add(ImageInfoCustomDataValue.class);
-        ANNOTATION_CLASSES.add(ImageOverview.class);
-        ANNOTATION_CLASSES.add(ImagePackage.class);
-        ANNOTATION_CLASSES.add(ImageBuildHistory.class);
-        ANNOTATION_CLASSES.add(ImageRepoDigest.class);
-        ANNOTATION_CLASSES.add(VirtualHostManagerNodeInfo.class);
-        ANNOTATION_CLASSES.add(NotificationMessage.class);
-        ANNOTATION_CLASSES.add(UserNotification.class);
-        ANNOTATION_CLASSES.add(SCCRepository.class);
-        ANNOTATION_CLASSES.add(SCCSubscription.class);
-        ANNOTATION_CLASSES.add(SCCOrderItem.class);
-        ANNOTATION_CLASSES.add(SUSEProductSCCRepository.class);
-        ANNOTATION_CLASSES.add(SCCRepositoryAuth.class);
-        ANNOTATION_CLASSES.add(SCCRepositoryNoAuth.class);
-        ANNOTATION_CLASSES.add(SCCRepositoryBasicAuth.class);
-        ANNOTATION_CLASSES.add(SCCRepositoryTokenAuth.class);
-        ANNOTATION_CLASSES.add(ContentProject.class);
-        ANNOTATION_CLASSES.add(ContentEnvironment.class);
-        ANNOTATION_CLASSES.add(ProjectSource.class);
-        ANNOTATION_CLASSES.add(SoftwareProjectSource.class);
-        ANNOTATION_CLASSES.add(ContentFilter.class);
-        ANNOTATION_CLASSES.add(ContentProjectFilter.class);
-        ANNOTATION_CLASSES.add(PackageFilter.class);
-        ANNOTATION_CLASSES.add(ErrataFilter.class);
-        ANNOTATION_CLASSES.add(ModuleFilter.class);
-        ANNOTATION_CLASSES.add(EnvironmentTarget.class);
-        ANNOTATION_CLASSES.add(SoftwareEnvironmentTarget.class);
-        ANNOTATION_CLASSES.add(ContentProjectHistoryEntry.class);
-        ANNOTATION_CLASSES.add(PackageExtraTagsKeys.class);
-        ANNOTATION_CLASSES.add(PackageProvides.class);
-        ANNOTATION_CLASSES.add(PackageRequires.class);
-        ANNOTATION_CLASSES.add(PackageRecommends.class);
-        ANNOTATION_CLASSES.add(PackageObsoletes.class);
-        ANNOTATION_CLASSES.add(PackageBreaks.class);
-        ANNOTATION_CLASSES.add(PackageSupplements.class);
-        ANNOTATION_CLASSES.add(PackageConflicts.class);
-        ANNOTATION_CLASSES.add(PackageSuggests.class);
-        ANNOTATION_CLASSES.add(PackagePreDepends.class);
-        ANNOTATION_CLASSES.add(PackageEnhances.class);
-        ANNOTATION_CLASSES.add(RecurringAction.class);
-        ANNOTATION_CLASSES.add(MinionRecurringAction.class);
-        ANNOTATION_CLASSES.add(GroupRecurringAction.class);
-        ANNOTATION_CLASSES.add(OrgRecurringAction.class);
-        ANNOTATION_CLASSES.add(Cluster.class);
-        ANNOTATION_CLASSES.add(MaintenanceSchedule.class);
-        ANNOTATION_CLASSES.add(MaintenanceCalendar.class);
-        ANNOTATION_CLASSES.add(SCCRegCacheItem.class);
-        ANNOTATION_CLASSES.add(AnsiblePath.class);
-        ANNOTATION_CLASSES.add(InventoryPath.class);
-        ANNOTATION_CLASSES.add(PlaybookPath.class);
-    }
+    private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
+        ImageStore.class,
+        ImageStoreType.class,
+        DockerfileProfile.class,
+        KiwiProfile.class,
+        ImageProfile.class,
+        ProfileCustomDataValue.class,
+        ImageInfo.class,
+        ImageInfoCustomDataValue.class,
+        ImageOverview.class,
+        ImagePackage.class,
+        ImageBuildHistory.class,
+        ImageRepoDigest.class,
+        VirtualHostManagerNodeInfo.class,
+        NotificationMessage.class,
+        UserNotification.class,
+        SCCRepository.class,
+        SCCSubscription.class,
+        SCCOrderItem.class,
+        SUSEProductSCCRepository.class,
+        SCCRepositoryAuth.class,
+        SCCRepositoryNoAuth.class,
+        SCCRepositoryBasicAuth.class,
+        SCCRepositoryTokenAuth.class,
+        SCCRepositoryCloudRmtAuth.class,
+        ContentProject.class,
+        ContentEnvironment.class,
+        ProjectSource.class,
+        SoftwareProjectSource.class,
+        ContentFilter.class,
+        ContentProjectFilter.class,
+        PackageFilter.class,
+        ErrataFilter.class,
+        ModuleFilter.class,
+        EnvironmentTarget.class,
+        SoftwareEnvironmentTarget.class,
+        ContentProjectHistoryEntry.class,
+        PackageExtraTagsKeys.class,
+        PackageProvides.class,
+        PackageRequires.class,
+        PackageRecommends.class,
+        PackageObsoletes.class,
+        PackageBreaks.class,
+        PackageSupplements.class,
+        PackageConflicts.class,
+        PackageSuggests.class,
+        PackagePreDepends.class,
+        PackageEnhances.class,
+        RecurringAction.class,
+        MinionRecurringAction.class,
+        GroupRecurringAction.class,
+        OrgRecurringAction.class,
+        MaintenanceSchedule.class,
+        MaintenanceCalendar.class,
+        SCCRegCacheItem.class,
+        AnsiblePath.class,
+        InventoryPath.class,
+        PlaybookPath.class,
+        Pillar.class,
+        CloudRmtHost.class,
+        PaygSshData.class
+    );
 
     /**
      * Returns the list of all available hibernate annotation classes.
      * @return List of hibernate annotation classes.
      */
-    public static List<Class> getAnnotationClasses() {
+    public static List<Class<?>> getAnnotationClasses() {
         return ANNOTATION_CLASSES;
     }
 }

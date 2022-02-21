@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.entitlement;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.manager.reactor.utils.ValueMap;

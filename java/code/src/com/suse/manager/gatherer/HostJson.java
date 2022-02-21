@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,8 +15,8 @@
 
 package com.suse.manager.gatherer;
 
-import java.util.Map;
 import java.util.Collections;
+import java.util.Map;
 
 
 /**

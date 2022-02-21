@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,25 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
-import org.hibernate.HibernateException;
-
-import redstone.xmlrpc.XmlRpcFault;
-import redstone.xmlrpc.XmlRpcInvocationHandler;
-
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
@@ -50,9 +32,27 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcFault;
+import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 /**
  * A basic xmlrpc handler class.  Uses reflection + an arbitrary algorithm
@@ -82,6 +82,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      * @return the results of the method of the subclass
      * @exception XmlRpcFault if some error occurs
      */
+    @Override
     public Object invoke(String methodCalled, List params) throws XmlRpcFault {
         Class myClass = this.getClass();
         Method[] methods;
@@ -194,8 +195,13 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private Method findPerfectMethod(List params, List<Method> matchedMethods) {
         //now lets try to find one that matches parameters exactly
         for (Method currMethod : matchedMethods) {
+            log.debug("findPerfectMethod test:" + currMethod.toGenericString());
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
+                if (log.isDebugEnabled()) {
+                    log.debug("  findPerfectMethod: compare: " + types[i].getCanonicalName() +
+                            " isAssignableFrom " + params.get(i).getClass().getCanonicalName());
+                }
                 //if we find a param that doesn't match, go to the next method
                 if (!types[i].isAssignableFrom(params.get(i).getClass())) {
                     break;
@@ -203,6 +209,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 //if we have gone through all of the params, and are here it is a
                 //      perfect match.
                 if (i == types.length - 1) {
+                    log.debug("  all parameter match");
                     return currMethod;
                 }
             }
@@ -348,17 +355,6 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     public static void ensureImageAdmin(User user)
         throws PermissionCheckFailureException {
         ensureUserRole(user, RoleFactory.IMAGE_ADMIN);
-    }
-
-    /**
-     * Private helper method to make sure a user has cluster admin role.
-     * If not, this will throw a generic Permission exception.
-     * @param user The user to check
-     * @throws PermissionCheckFailureException if user is not an image admin.
-     */
-    public static void ensureClusterAdmin(User user)
-            throws PermissionCheckFailureException {
-        ensureUserRole(user, RoleFactory.CLUSTER_ADMIN);
     }
 
     /**

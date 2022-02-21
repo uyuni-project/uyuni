@@ -27,7 +27,6 @@ VERSION = $(shell echo `awk '{ print $$1 }' version`)
 PERL_DEST   = $(PREFIX)/$(BINDIR)
 SBIN_DEST   = $(PREFIX)/$(SBINDIR)
 CONF_DEST   = $(PREFIX)/$(CONFDIR)
-GPGKEY_DEST = $(PREFIX)/$(GPGKEYDIR)
 SYSTEMD_DEST = $(PREFIX)/$(SYSTEMDDIR)
 
 SCRIPTS = rhn-config-satellite.pl \
@@ -40,8 +39,6 @@ SCRIPTS = rhn-config-satellite.pl \
 SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config
 
 CONF_FILES = service-list
-
-GPGKEY_FILES = RHN-GPG-KEY
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
@@ -60,10 +57,9 @@ DIR_INSTALL    = install -d -m 755
 # install scripts
 all:
 
-install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(GPGKEY_FILES) $(GPGKEY_DEST) $(SBIN_SCRIPTS) $(SBIN_DEST)
+install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(SBIN_SCRIPTS) $(SBIN_DEST)
 	$(BIN_INSTALL) $(SCRIPTS) $(PERL_DEST)
 	$(CONF_INSTALL) $(CONF_FILES) $(CONF_DEST)
-	$(GPGKEY_INSTALL) $(GPGKEY_FILES) $(GPGKEY_DEST)
 	$(BIN_INSTALL) $(SBIN_SCRIPTS) $(SBIN_DEST)
 
 install_systemd: $(SYSTEMD_DEST) $(SYSTEMD_FILES)
@@ -77,9 +73,6 @@ $(PERL_DEST):
 	$(DIR_INSTALL) $@
 
 $(CONF_DEST):
-	$(DIR_INSTALL) $@
-
-$(GPGKEY_DEST):
 	$(DIR_INSTALL) $@
 
 $(SBIN_DEST):

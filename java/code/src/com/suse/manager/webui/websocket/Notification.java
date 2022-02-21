@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,27 +16,40 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnError;
-import javax.websocket.Session;
-import javax.websocket.EndpointConfig;
-import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import javax.websocket.EndpointConfig;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
@@ -45,11 +58,15 @@ import java.util.concurrent.TimeUnit;
 @ServerEndpoint(value = "/websocket/notifications", configurator = WebsocketSessionConfigurator.class)
 public class Notification {
 
+    public static final String USER_NOTIFICATIONS = "user-notifications";
+    public static final String SSM_COUNT = "ssm-count";
+
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
     private static final Object LOCK = new Object();
-    private static Map<Session, Long> wsSessions = new HashMap<>();
+    private static final Gson GSON = new GsonBuilder().create();
+    private static Map<Session, Set<String>> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
 
     /**
@@ -66,14 +83,6 @@ public class Notification {
                         LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
                         handshakeSession(userId, session);
 
-                        // update the notification counter to the unread messages
-                        try {
-                            sendMessage(session,
-                                    String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(userId)));
-                        }
-                        finally {
-                            HibernateFactory.closeSession();
-                        }
                     },
                     ()-> LOG.debug("no authenticated user."));
         }
@@ -99,7 +108,30 @@ public class Notification {
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        LOG.debug(String.format("Received [message:%s] from session [id:%s].", messageBody, session.getId()));
+        // Each session sends messages to tell us what action ID they need to monitor
+        Set<String> watched = wsSessions.get(session);
+        if (watched != null) {
+            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get("webUserID"))
+                    .map(webUserID -> UserFactory.lookupById((Long) webUserID));
+            userOpt.ifPresentOrElse(user -> {
+                        try {
+                            Set<String> request = GSON.fromJson(messageBody,
+                                    new TypeToken<Set<String>>() { }.getType());
+                            watched.addAll(request);
+
+                            // Send the data
+                            sendData(session, user, request);
+                        }
+                        catch (JsonSyntaxException e) {
+                            LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
+                        }
+                    },
+                    () -> LOG.debug("no authenticated user.")
+                );
+        }
+        else {
+            LOG.debug(String.format("Session not registered or broken: [id:%s]", session.getId()));
+        }
     }
 
     /**
@@ -153,14 +185,51 @@ public class Notification {
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
+     *
+     * @param property which property to spread to all sessions
      */
-    public static void spreadUpdate() {
+    public static void spreadUpdate(String property) {
+        // Check for closed sessions before notifying them
+        clearBrokenSessions();
+
         synchronized (LOCK) {
             // if there are unread messages, notify it to all attached WebSocket sessions
-            wsSessions.forEach((session, user) -> {
-                sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
+            wsSessions.forEach((session, watched) -> {
+                if (watched.contains(property)) {
+                    Optional.ofNullable(session.getUserProperties().get("webUserID"))
+                            .map(webUserID -> UserFactory.lookupById((Long) webUserID))
+                            .ifPresent(user -> sendData(session, user, Set.of(property)));
+                }
             });
         }
+    }
+
+    private static void sendData(Session session, User user, Set<String> properties) {
+        Map<String, BiFunction<Session, User, Object>> preparers = Map.of(
+                USER_NOTIFICATIONS, Notification::prepareUserNotifications,
+                SSM_COUNT, Notification::prepareSsmCount
+        );
+        try {
+            Map<String, Object> data = properties.stream()
+                    .filter(preparers::containsKey)
+                    .collect(Collectors.toMap(Function.identity(),
+                            property -> preparers.get(property).apply(session, user)));
+            if (!data.isEmpty()) {
+                sendMessage(session, GSON.toJson(data));
+            }
+        }
+        finally {
+            HibernateFactory.closeSession();
+        }
+    }
+
+    private static Object prepareUserNotifications(Session session, User user) {
+        return UserNotificationFactory.unreadUserNotificationsSize(user);
+    }
+
+    private static Object prepareSsmCount(Session session, User user) {
+        RhnSet systemSet = RhnSetDecl.SYSTEMS.lookup(user);
+        return systemSet != null ? systemSet.size() : 0;
     }
 
     /**
@@ -199,7 +268,7 @@ public class Notification {
      */
     private static void handshakeSession(long userId, Session session) {
         synchronized (LOCK) {
-            wsSessions.put(session, userId);
+            wsSessions.put(session, new HashSet<>());
         }
     }
 
@@ -219,7 +288,7 @@ public class Notification {
         ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
                 clearBrokenSessions();
-                spreadUpdate();
+                spreadUpdate(USER_NOTIFICATIONS);
             }
             catch (Exception e) {
                 LOG.error("Notification scheduledExecutorService exception", e);

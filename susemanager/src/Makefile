@@ -23,6 +23,7 @@ SPACEWALK_FILES		= __init__ \
 			mgr_sync/logger
 SCRIPTS  = mgr-clean-old-patchnames \
 	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
+SALT_SSH_SCRIPT = mgr-salt-ssh
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 
@@ -54,6 +55,7 @@ include $(TOP)/Makefile.defs
 all :: $(SCRIPTS)
 install :: $(SCRIPTS) $(PREFIX)/$(SBINDIR) $(SUMA_INSTALL_DATA_FILES)
 	$(INSTALL_BIN) $(SCRIPTS) $(PREFIX)/$(SBINDIR)
+	$(INSTALL_BIN) $(SALT_SSH_SCRIPT) $(PREFIX)/$(BINDIR)
 	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager
 ifeq ($(PYTHON_BIN), python3)
 	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager/__pycache__

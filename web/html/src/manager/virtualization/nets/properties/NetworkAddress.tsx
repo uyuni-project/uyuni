@@ -1,7 +1,9 @@
 import * as React from "react";
-import Validation from "components/validation";
-import { InputBase } from "components/input/InputBase";
+
 import { FormContext } from "components/input/Form";
+import { InputBase } from "components/input/InputBase";
+import Validation from "components/validation";
+
 import * as utils from "./utils";
 
 type Props = {
@@ -45,7 +47,7 @@ export const NetworkAddress = (props: Props) => {
       name={[`${props.prefix}_address`, `${props.prefix}_prefix`]}
       validators={[
         utils.allOrNone,
-        values => {
+        (values) => {
           const address = values[`${props.prefix}_address`] || "";
           const prefix = values[`${props.prefix}_prefix`] || "";
           return (

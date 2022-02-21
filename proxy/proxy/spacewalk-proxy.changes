@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:03:51 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * create directories for TLS Certificates
+
+-------------------------------------------------------------------
+Tue Jan 18 13:57:39 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove old Python 2 dependency on module new from rhnAuthCacheClient
+  * remove unnecessary package dependencies
+  * add an option to send salt-broker logs to standard output/error
+    instead of files
+  * Update the token in case a channel can't be found in the cache.
+    (bsc#1193585)
+
+-------------------------------------------------------------------
+Fri Nov 05 13:51:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * remove SSLProtocol configuration which should be done in the ssl
+    configuration file
+
+-------------------------------------------------------------------
 Mon Aug 09 11:02:14 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

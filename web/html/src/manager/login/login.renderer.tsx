@@ -1,5 +1,7 @@
-import ReactDOM from "react-dom";
 import * as React from "react";
+
+import ReactDOM from "react-dom";
+
 import Login from "./login";
 
 export const renderer = (
@@ -16,6 +18,7 @@ export const renderer = (
     legalNote,
     loginLength,
     passwordLength,
+    diskspaceSeverity,
   }
 ) => {
   const elementToRender = document.getElementById(id);
@@ -33,6 +36,7 @@ export const renderer = (
         legalNote={legalNote}
         loginLength={loginLength}
         passwordLength={passwordLength}
+        diskspaceSeverity={diskspaceSeverity}
       />,
       elementToRender
     );

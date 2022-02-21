@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 #
+# Copyright (c) 2010--2022 SUSE LLC
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -26,13 +27,12 @@ use File::Spec ();
 use File::Copy;
 use DBI ();
 use Digest::SHA qw/sha256_hex/;
-use DateTime ();
+use Time::Piece;
 use Sys::Hostname ();
 use Spacewalk::Setup ();
 use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
 use IO::Socket ();
 use RHN::DB ();
-use File::Copy;
 use MIME::Base64;
 
 my $DEBUG;
@@ -49,6 +49,7 @@ use constant COBBLER_COMMAND => 'spacewalk-setup-cobbler';
 my %opts = Spacewalk::Setup::parse_options();
 
 my %answers = ();
+$answers{'db-backend'} = 'postgresql'; # the only supported currently
 my @skip = ();
 push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
     if not Spacewalk::Setup::is_embedded_db(\%opts);
@@ -103,20 +104,7 @@ setup_cc(\%opts, \%answers);
 
 setup_default_proxy(\%answers);
 
-choose_database_schema(\%answers);
-
-# If Oracle was selected, call the Oracle specific setup script. If it turns
-# out we need a PostgreSQL specific setup script as well, refactor this to
-# something generic.
-if ($answers{'db-backend'} eq 'oracle') {
-    Spacewalk::Setup::oracle_setup_db(\%opts, \%answers);
-}
-elsif ($answers{'db-backend'} eq 'postgresql') {
-    Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
-}
-else {
-    die "No idea how to install to database: " . $answers{'db-backend'};
-}
+Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
 
 if ($opts{'db-only'}) {
     exit;
@@ -132,7 +120,6 @@ print Spacewalk::Setup::loc("* Setting up users and groups.\n");
 setup_users_and_groups();
 
 setup_services();
-setup_gpg(\%opts);
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
 
@@ -158,6 +145,10 @@ setup_jabberd(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Creating SSL certificates.\n");
 setup_ssl_certs(\%opts, \%answers);
+
+if(not $opts{"skip-reportdb-setup"}) {
+    Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+}
 
 print Spacewalk::Setup::loc("* Deploying configuration files.\n");
 populate_final_configs(\%opts, \%answers);
@@ -191,30 +182,6 @@ if ($opts{'upgrade'}) {
 
 exit 0;
 
-
-
-sub choose_database_schema {
-    my $answers = shift;
-
-    my %is_valid_schema = (
-        'oracle' => 1,
-        'postgresql' => 1,
-        );
-
-    my $question = "Choose your database backend ("
-        . join(", ", sort(keys(%is_valid_schema)))
-        . ")";
-
-    Spacewalk::Setup::ask(
-            -noninteractive => $opts{"non-interactive"},
-            -question => $question,
-            -test => sub {
-                my $text = shift;
-                $is_valid_schema{$text}
-            },
-            -answer => \$answers->{'db-backend'});
-
-}
 
 sub remove_old_jvm {
         my $opts = shift;
@@ -280,7 +247,9 @@ sub setup_cobbler {
   my $opts = shift;
   my $answers = shift;
 
-  system(COBBLER_COMMAND);
+  my %options = ();
+  Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
+  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'});
 
   my $skip_rhnconf = 0;
   open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
@@ -486,11 +455,11 @@ EOQ
 }
 
 sub default_cert_expiration {
-  my $dt = DateTime->now;
-  my $dt2 = new DateTime (year => 2038, month => 1, day => 18);
+  my $dt = Time::Piece->localtime;
+  my $dt2 = Time::Piece->strptime("2038-01-18", "%Y-%m-%d");
   my $diff = $dt2 - $dt;
 
-  return $diff->years - 1;
+  return int($diff->years) - 1;
 }
 
 
@@ -706,7 +675,6 @@ sub setup_ssl_certs {
     $system_name = join('.', @hostname_parts);
   }
 
-  $answers->{'ssl-server-rpm'} ||= 'rhn-org-httpd-ssl-key-pair-' . $system_name;
   $answers->{'ssl-dir'} ||= '/root/ssl-build';
 
   unless ($opts->{"skip-ssl-ca-generation"} || $use_own_certs) {
@@ -721,35 +689,13 @@ sub setup_ssl_certs {
                      '-set-common-name' => $answers->{'ssl-set-common-name'},
                      '-cert-expiration' => $answers->{'ssl-ca-cert-expiration'},
                     );
+    $answers->{'ssl-ca-cert'} = File::Spec->catfile($answers->{'ssl-dir'}, "RHN-ORG-TRUSTED-SSL-CERT");
   } elsif ($use_own_certs) {
-    my @opts = ( "--gen-ca",
-                 "--rpm-only",
-                 "--from-ca-cert=$answers->{'ssl-ca-cert'}" );
     my @osImageOpts = ("--ca-cert-full-path=$answers->{'ssl-ca-cert'}");
 
-    Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not import CA certificate.');
     Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not import CA certificate.');
     Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
-  } else {
-    check_ca_cert();
-    print Spacewalk::Setup::loc("** SSL: Generating CA rpm from present CA cert.\n");
-
-    generate_ca_rpm(-dir => $answers->{'ssl-dir'});
   }
-
-  print Spacewalk::Setup::loc("** SSL: Deploying CA certificate.\n");
-
-  # Set the document root depending on OS.
-  my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
-  $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
-
-  # Set the trust store folder depending on OS.
-  my $CA_TRUST_DIR = $Spacewalk::Setup::CA_TRUST_DIR;
-  $CA_TRUST_DIR = $Spacewalk::Setup::SUSE_CA_TRUST_DIR if(is_suse_like());
-
-  deploy_ca_cert("-source-dir" => $answers->{'ssl-dir'},
-                 "-target-dir" => $DOC_ROOT."/pub",
-                 "-trust-dir" => $CA_TRUST_DIR);
 
   if (!$use_own_certs) {
       print Spacewalk::Setup::loc("** SSL: Generating server certificate.\n");
@@ -765,22 +711,16 @@ sub setup_ssl_certs {
                            '-set-hostname' => $answers->{'hostname'},
                            '-set-cnames' => $answers->{'ssl-set-cnames'},
                           );
-  } else {
-    my @opts = ( "--gen-server",
-                 "--rpm-only",
-                 "--from-server-cert=$answers->{'ssl-server-cert'}",
-                 "--from-server-key=$answers->{'ssl-server-key'}" );
-    Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not import Server certificate and key.');
+     $answers->{"ssl-server-cert"} = File::Spec->catfile($answers->{'ssl-dir'}, $system_name, "server.crt");
+     $answers->{"ssl-server-key"} = File::Spec->catfile($answers->{'ssl-dir'}, $system_name, "server.key");
   }
 
-  print Spacewalk::Setup::loc("** SSL: Storing SSL certificates.\n");
+  my @opts = ("--root-ca-file=$answers->{'ssl-ca-cert'}",
+              "--server-cert-file=$answers->{'ssl-server-cert'}",
+	      "--server-key-file=$answers->{'ssl-server-key'}");
 
-  install_server_cert(-dir => $answers->{'ssl-dir'},
-                      -system => $system_name);
-
-  Spacewalk::Setup::generate_server_pem(-ssl_dir => $answers->{'ssl-dir'},
-                      -system => $system_name,
-                      -out_file => '/etc/pki/spacewalk/jabberd/server.pem');
+  Spacewalk::Setup::system_or_exit(['/usr/bin/mgr-ssl-cert-setup', @opts], 37,
+                 "Could not deploy the certificates.");
 
   store_ssl_cert(-ssl_dir => $answers->{'ssl-dir'});
 }
@@ -809,7 +749,7 @@ sub generate_ca_cert {
 
   $params{'cert-expiration'} *= 365;
 
-  my @opts = ( "--gen-ca", "--force" );
+  my @opts = ( "--gen-ca", "--force", "--no-rpm" );
 
   foreach my $name (keys %params) {
     next unless ($params{$name});
@@ -826,18 +766,6 @@ sub generate_ca_cert {
   return;
 }
 
-sub generate_ca_rpm {
-  my %params = validate(@_, {dir => 1});
-
-  my @opts = ( "--gen-ca", "--rpm-only", "--dir=$params{dir}" );
-  my @osImageOpts = ("--ca-cert=$params{dir}/" . DEFAULT_CA_CERT_NAME );
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 35, 'Could not generate CA certificate.');
-  Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not generate CA certificate.');
-  Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
-
-  return;
-}
 
 sub generate_server_cert {
   my %params = validate(@_, {
@@ -856,7 +784,7 @@ sub generate_server_cert {
 
   $params{'cert-expiration'} *= 365;
 
-  my @opts = "--gen-server";
+  my @opts = ("--gen-server", "--no-rpm");
 
   foreach my $name (keys %params) {
     next unless ($params{$name});
@@ -874,35 +802,6 @@ sub generate_server_cert {
   }
 
   Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 36, 'Could not generate server certificate.');
-
-  return;
-}
-
-sub deploy_ca_cert {
-  my %params = validate(@_, { "source-dir" => 1,
-                              "target-dir" => 1,
-                              "trust-dir" => 1 });
-
-  my @opts;
-
-  foreach my $key (keys %params) {
-    push @opts, qq(--$key=$params{$key});
-  }
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-deploy-ca-cert.pl', @opts], 37, 'Could not deploy CA certificate.');
-
-  return;
-}
-
-sub install_server_cert {
-  my %params = validate(@_, { dir => 1,
-                              system => 1 });
-
-  my @opts;
-
-  push @opts, '--dir=' . File::Spec->catfile($params{dir}, $params{system});
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-install-ssl-cert.pl', @opts], 38, 'Could not deploy SSL certificate.');
 
   return;
 }
@@ -929,10 +828,6 @@ sub populate_initial_configs {
     # TODO: This may need to be addressed. Can query this for postgresql with
     # "show client_encoding;":
     my $charset = 'UTF8';
-    if ($answers{'db-backend'} eq 'oracle') {
-        my %nls_database_paramaters = Spacewalk::Setup::get_nls_database_parameters($answers);
-        $charset = $nls_database_paramaters{NLS_CHARACTERSET};
-    }
 
     # Define some db specific settings:
     Spacewalk::Setup::set_hibernate_conf($answers);
@@ -941,7 +836,7 @@ sub populate_initial_configs {
     my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
     $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
 
-  my %config_opts =
+    my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
      kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
@@ -962,14 +857,18 @@ sub populate_initial_configs {
      hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
      jabberDOThostname => $answers->{hostname},
-     serverDOTsatelliteDOTca_chain => '/usr/share/rhn/RHNS-CA-CERT',
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
-     serverDOTsusemanagerDOTmirrcred_email => '',
-     serverDOTsusemanagerDOTmirrcred_user => '',
-     serverDOTsusemanagerDOTmirrcred_pass => '',
-     );
+     report_db_backend => $answers->{'db-backend'},
+     report_db_user => $answers->{'report-db-user'},
+     report_db_password => $answers->{'report-db-password'},
+     report_db_name => $answers->{'report-db-name'},
+     report_db_host => $answers->{'report-db-host'},
+     report_db_port => $answers->{'report-db-port'},
+     report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
+     report_db_sslrootcert => $answers->{'report-db-ca-cert'}
+    );
 
     for ($config_opts{'db_password'}) {
         s/\\/\\\\/g if defined $_;
@@ -977,11 +876,7 @@ sub populate_initial_configs {
 
   my %rhnopt = ();
   if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'server.satellite.rhn_parent'} = '';
     $rhnopt{'disconnected'} = "1";
-  }
-  else {
-    $rhnopt{'server.satellite.rhn_parent'} = $answers->{'rhn-parent'} || 'satellite.rhn.redhat.com';
   }
   for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
           web.l10n_resourcebundles web.default_mail_from/) {
@@ -1018,8 +913,10 @@ sub populate_initial_configs {
           chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
       }
   }
-  Spacewalk::Setup::write_config( \%rhnopt,
+  if(keys %rhnopt) {
+      Spacewalk::Setup::write_config( \%rhnopt,
                 '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
+  }
 
     foreach my $opt_name (qw/session_swap_secret session_secret/) {
         foreach my $i (1 .. 4) {
@@ -1116,53 +1013,6 @@ sub random_bits {
   return $rand_data;
 }
 
-sub setup_gpg {
-  my $opts = shift;
-
-  if ($opts->{"skip-gpg-key-import"}) {
-    print Spacewalk::Setup::loc("** GPG: Skipping gpg key import\n");
-    return 0;
-  }
-
-  print Spacewalk::Setup::loc("** GPG: Initializing GPG and importing key.\n");
-
-  unless (-d '/root/.gnupg') {
-    print Spacewalk::Setup::loc("** GPG: Creating /root/.gnupg directory\n");
-    Spacewalk::Setup::system_or_exit(['mkdir', '-m', '700', '/root/.gnupg'], 12, 'Could not create /root/.gnupg');
-  }
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/gpg', '--list-keys'], 12, 'Could not run gpg.');
-
-  my $key_path = '/usr/share/rhn/RHN-GPG-KEY';
-  if ( ! (-e $key_path) ) {
-    if ( -e '/etc/fedora-release' ) {
-
-      # this is a fedora system
-      $key_path = '/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora';
-
-    } elsif ( -e '/etc/redhat-release' ) {
-
-      # need to read the file to see if it's a Red Hat or CentOS system.
-      # we only want to import the key if it's a Red Hat system because
-      # the file doesn't exist on a CentOS system.
-      open(RELEASE, '/etc/redhat-release') or die "Could not open '/etc/redhat-release': $OS_ERROR\n";
-      my @release = <RELEASE>;
-      close(RELEASE);
-
-      my $rel_str = join('', @release);
-
-      # this is a RHEL system... RHEL 5 path.
-      if ( $rel_str =~ m/^Red Hat/ ) {
-        $key_path = '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release';
-      }
-    }
-  }
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/gpg', '--import', $key_path], 12, 'Could not import public GPG key.');
-
-  return 1;
-}
-
 # Satellite services are handled by chkconfig now.
 sub setup_services {
   Spacewalk::Setup::system_or_exit(["/usr/sbin/spacewalk-service", "--level", "35", "enable"], 11, 'Could not turn spacewalk services on.');
@@ -1242,10 +1092,6 @@ sub setup_users_and_groups {
 sub check_ca_key{
   my $password = shift;
   return Spacewalk::Setup::system_debug('/usr/bin/rhn-ssl-tool',"--check-key", "--password=$password");
-}
-
-sub check_ca_cert{
-  return Spacewalk::Setup::system_debug('/usr/bin/rhn-ssl-tool',"--check-cert");
 }
 
 sub valid_multiple_email {

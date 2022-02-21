@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -87,7 +88,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
 
         DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, 0, 100);
         packageBatch.elaborate();
-        Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(Arrays.asList(pkg1.getId(), pkg2.getId()));
+        Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(
+                Arrays.asList(pkg1.getId(), pkg2.getId()));
         for (PackageDto pkgDto : packageBatch) {
             pkgDto.setExtraTags(extraTags.get(pkgDto.getId()));
         }
@@ -142,7 +144,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
     }
 
     public static String cleanupContent(String packagesContent) {
-        packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/", "Filename: channel/getPackage/");
+        packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/",
+                "Filename: channel/getPackage/");
         packagesContent = packagesContent.replaceAll("MD5sum: .*\\s", "MD5sum: some-md5sum\n");
         packagesContent = packagesContent.replaceAll("Section: .*\\s", "Section: some-section\n");
         return packagesContent;

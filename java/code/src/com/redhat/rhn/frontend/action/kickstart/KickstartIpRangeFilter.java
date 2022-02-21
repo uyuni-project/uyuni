@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,10 +21,10 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidIpAddressException;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.IpAddressRange;
 
+import org.apache.log4j.Logger;
+
 import java.util.Locale;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * KickstartIpRangeFilter

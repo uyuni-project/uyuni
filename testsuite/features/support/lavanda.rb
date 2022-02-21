@@ -17,12 +17,20 @@ module LavandaBasic
     @in_full_hostname = fqdn.strip
   end
 
-  def init_ip(ip)
-    @in_ip = ip
+  def init_private_ip(private_ip)
+    @in_private_ip = private_ip
   end
 
   def init_public_ip(public_ip)
     @in_public_ip = public_ip
+  end
+
+  def init_private_interface(private_interface)
+    @in_private_interface = private_interface
+  end
+
+  def init_public_interface(public_interface)
+    @in_public_interface = public_interface
   end
 
   # getter functions, executed on testsuite
@@ -36,14 +44,24 @@ module LavandaBasic
     @in_full_hostname
   end
 
-  def ip
-    raise 'empty ip, something wrong' if @in_ip.empty?
-    @in_ip
+  def private_ip
+    raise 'empty private_ip, something wrong' if @in_private_ip.empty?
+    @in_private_ip
   end
 
   def public_ip
     raise 'empty public_ip, something wrong' if @in_public_ip.empty?
     @in_public_ip
+  end
+
+  def private_interface
+    raise 'empty private_interface, something wrong' if @in_private_interface.empty?
+    @in_private_interface
+  end
+
+  def public_interface
+    raise 'empty public_interface, something wrong' if @in_public_interface.empty?
+    @in_public_interface
   end
 
   # run functions

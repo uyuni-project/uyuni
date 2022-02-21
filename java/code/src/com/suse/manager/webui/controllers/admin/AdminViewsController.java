@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,20 +15,35 @@
 
 package com.suse.manager.webui.controllers.admin;
 
-import com.redhat.rhn.domain.user.User;
-import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
+
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
+import com.suse.manager.webui.utils.FlashScopeHelper;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class for admin pages.
@@ -36,6 +51,13 @@ import static spark.Spark.get;
 public class AdminViewsController {
 
     private static Logger log = Logger.getLogger(AdminViewsController.class);
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
+
+    private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
+
 
     private AdminViewsController() { }
 
@@ -46,6 +68,12 @@ public class AdminViewsController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+        get("/manager/admin/setup/payg",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
+        get("/manager/admin/setup/payg/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createPayg))), jade);
+        get("/manager/admin/setup/payg/:id",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
     }
 
     /**
@@ -60,4 +88,54 @@ public class AdminViewsController {
         return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
     }
 
+    /**
+     * show list of saved payg ssh connection data
+     * @param request
+     * @param response
+     * @param user
+     * @return list of payg ssh connection data
+     */
+    public static ModelAndView listPayg(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<PaygSshData> payg = PAYG_ADMIN_MANAGER.list();
+        data.put("flashMessage", FlashScopeHelper.flash(request));
+        data.put("contentPaygInstances", GSON.toJson(PaygResponseMappers.mapPaygPropertiesResumeFromDB(payg)));
+        return new ModelAndView(data, "controllers/admin/templates/payg_list.jade");
+    }
+
+    /**
+     * Reder new payg ssh connection data create page
+     * @param request
+     * @param response
+     * @param user
+     * @return return the form to create a new payg ssh connection data
+     */
+    public static ModelAndView createPayg(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/payg_create.jade");
+    }
+
+    /**
+     * retrieve information about one payg ssh connection data
+     * @param request
+     * @param response
+     * @param user
+     * @return one payg ssh connection data
+     */
+    public static ModelAndView showPayg(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        Integer sshPaygId = Integer.valueOf(request.params("id"));
+        Optional<PaygSshData> paygSshDataOptional = PaygSshDataFactory.lookupById(sshPaygId);
+
+        paygSshDataOptional.ifPresent(paygSshData -> {
+            data.put("paygInstance", GSON.toJson(PaygResponseMappers.mapPaygPropertiesFullFromDB(paygSshData)));
+        });
+        if (!paygSshDataOptional.isEmpty()) {
+            data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(request));
+        }
+        else {
+            data.put("paygInstance", GSON.toJson(null));
+        }
+        return new ModelAndView(data, "controllers/admin/templates/payg.jade");
+    }
 }

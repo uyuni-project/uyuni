@@ -1,1 +1,1 @@
-export * from './localizedMoment';
+export * from "./localizedMoment";

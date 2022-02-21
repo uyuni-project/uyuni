@@ -1,6 +1,8 @@
 import * as React from "react";
-import GuestsConsole from "./guests-console";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import GuestsConsole from "./guests-console";
 
 type RendererProps = {
   hostId: string;
@@ -11,7 +13,10 @@ type RendererProps = {
   token: string;
 };
 
-export const renderer = (id: string, { hostId, guestUuid, guestName, guestState, graphicsType, token }: RendererProps) => {
+export const renderer = (
+  id: string,
+  { hostId, guestUuid, guestName, guestState, graphicsType, token }: RendererProps
+) => {
   SpaRenderer.renderNavigationReact(
     <GuestsConsole
       hostId={hostId}

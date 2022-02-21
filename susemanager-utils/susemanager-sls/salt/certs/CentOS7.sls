@@ -1,1 +1,0 @@
-RedHat7.sls

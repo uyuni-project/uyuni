@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -53,6 +53,7 @@ import com.suse.manager.model.maintenance.ScheduleFactory;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -824,7 +825,7 @@ public class MaintenanceManager {
      * @param server the server to check
      * @return true when the action is inside of a maintenance window, otherwise falsegg
      */
-    public boolean isSystemInMaintenanceMode(MinionServer server) {
+    public boolean isSystemInMaintenanceMode(Server server) {
         return server.getMaintenanceScheduleOpt()
                 .map(schedule -> !getCalendarForNow(schedule).isEmpty())
                 .orElse(true);

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
+
+import static java.util.Collections.singleton;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -38,10 +40,9 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.Map;
 import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.util.Collections.singleton;
 
 /**
  * SystemPendingEventsCancelAction

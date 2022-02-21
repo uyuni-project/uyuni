@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -134,6 +134,10 @@ public class RegistrationUtils {
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
+        }
+        else {
+            // SSH Minions need this to set last booted value.
+            statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
         MessageQueue.publish(new ApplyStatesEventMessage(
                 minion.getId(),

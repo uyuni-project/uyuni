@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,26 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWER;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWEREQ;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -30,23 +50,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EXISTS;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_NAME;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LT_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_LE_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
-import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GT_EVR;
 
 
 /**
@@ -68,8 +71,16 @@ public class FilterCriteria {
 
     static {
         validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
+        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevr"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevr"));
+        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevra"));
+        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevra"));
         validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
         validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
@@ -88,7 +99,8 @@ public class FilterCriteria {
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
         validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
         validCombinations.add(Triple.of(MODULE, EQUALS, "module_stream"));
-        validCombinations.add(Triple.of(PACKAGE, EXISTS, "module_stream"));
+        validCombinations.add(Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"));
+        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name"));
     }
 
     /**
@@ -103,11 +115,14 @@ public class FilterCriteria {
         CONTAINS_PKG_EQ_EVR("contains_pkg_eq_evr"), // ==
         CONTAINS_PKG_GE_EVR("contains_pkg_ge_evr"), // >=
         CONTAINS_PKG_GT_EVR("contains_pkg_gt_evr"), // >
+        LOWER("lower"),
+        LOWEREQ("lowereq"),
         EQUALS("equals"),
         GREATER("greater"),
         GREATEREQ("greatereq"),
         MATCHES("matches"),
-        EXISTS("exists");
+        PROVIDES_NAME("provides_name"),
+        CONTAINS_PROVIDES_NAME("contains_provides_name");
 
         private String label;
 

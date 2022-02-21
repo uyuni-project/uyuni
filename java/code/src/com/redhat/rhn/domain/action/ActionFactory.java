@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,10 +23,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -45,6 +41,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.PlaybookAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -499,18 +496,6 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SUBSCRIBE_CHANNELS)) {
             retval = new SubscribeChannelsAction();
         }
-        else if (typeIn.equals(TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
-            retval = new ClusterGroupRefreshNodesAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_JOIN_NODE)) {
-            retval = new ClusterJoinNodeAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_REMOVE_NODE)) {
-            retval = new ClusterRemoveNodeAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_UPGRADE_CLUSTER)) {
-            retval = new ClusterUpgradeAction();
-        }
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
         }
@@ -667,6 +652,17 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method to get a {@link ApplyStatesActionDetails} by its action id.
+     * @param actionId the id of the {@link ApplyStatesActionDetails}
+     * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
+     */
+    public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
+        final Map<String, Long> params = Collections.singletonMap("action_id", actionId);
+        return (ApplyStatesActionDetails)
+                singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId", params, true);
+    }
+
+    /**
      * Insert or Update a Action.
      * @param actionIn Action to be stored in database.
      * @return action
@@ -799,6 +795,23 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a List of ServerAction objects for a given Server.
+     * @param serverIn you want to limit the list of Actions to
+     * @param actionType you want to limit the list of Actions to
+     * @param date you want to limit the completion date after
+     * @return List of ServerAction objects
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
+        final Map<String, Object> params = new HashMap<>();
+
+        params.put("server", serverIn);
+        params.put("actionType", actionType);
+        params.put("date", date);
+
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
+    }
+    /**
      * Lookup a List of ServerAction objects in the given states for a given Server.
      * @param serverIn you want to limit the list of Actions to
      * @param statusList to filter the ServerActoins by
@@ -919,6 +932,25 @@ public class ActionFactory extends HibernateFactory {
             .setParameter("queued", ActionFactory.STATUS_QUEUED)
             .executeUpdate();
         }
+    }
+
+    /**
+     * Update the {@link ActionStatus} to "PickedUp" of several rhnServerAction rows identified
+     * by server and action IDs.
+     *
+     * @param actionIn associated action of rhnServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     */
+    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
+        if (log.isDebugEnabled()) {
+            log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
+                    " is going to b set for these servers: " + serverIds);
+        }
+        Map<String, Object>  parameters = new HashMap<String, Object>();
+        parameters.put("action_id", actionIn.getId());
+        parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
+
+        udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
     }
 
     /**
@@ -1357,30 +1389,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_VOLUME_DELETE =
             lookupActionTypeByLabel("virt.volume_delete");
-
-    /**
-     * The constant representing "Refresh cluster group nodes" [ID:515]
-     */
-    public static final ActionType TYPE_CLUSTER_GROUP_REFRESH_NODES =
-            lookupActionTypeByLabel("cluster.group_refresh_nodes");
-
-    /**
-     * The constant representing "Join node to cluster" [ID:516]
-     */
-    public static final ActionType TYPE_CLUSTER_JOIN_NODE =
-            lookupActionTypeByLabel("cluster.join_node");
-
-    /**
-     * The constant representing "Remove node from cluster" [ID:517]
-     */
-    public static final ActionType TYPE_CLUSTER_REMOVE_NODE =
-            lookupActionTypeByLabel("cluster.remove_node");
-
-    /**
-     * The constant representing "Upgrade cluster" [ID:518]
-     */
-    public static final ActionType TYPE_CLUSTER_UPGRADE_CLUSTER =
-            lookupActionTypeByLabel("cluster.upgrade_cluster");
 
     /**
      * The constant representing "Change a virtual network state" [ID:519]

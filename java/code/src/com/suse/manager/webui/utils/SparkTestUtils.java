@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,12 +15,10 @@
 
 package com.suse.manager.webui.utils;
 
-import com.mockobjects.servlet.MockServletInputStream;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpSession;
-import spark.Request;
-import spark.RequestResponseFactory;
-import spark.routematch.RouteMatch;
+
+import com.mockobjects.servlet.MockServletInputStream;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -28,6 +26,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import spark.Request;
+import spark.RequestResponseFactory;
+import spark.routematch.RouteMatch;
 
 /**
  * SparkTestUtils - utils methods for testing controllers.

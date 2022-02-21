@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,9 +14,8 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -27,13 +26,16 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.commons.io.FileUtils;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Test for {@link RefreshGeneratedSaltFilesEventMessageAction}
@@ -95,7 +97,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
             assertTrue(Files.exists(customPath.resolve(
                     "org_" + user.getOrg().getId() + ".sls")));
 
-            for(ServerGroup group : ServerGroupFactory.listManagedGroups(org)) {
+            for (ServerGroup group : ServerGroupFactory.listManagedGroups(org)) {
                 assertTrue(Files.exists(customPath.resolve(
                         "group_" + group.getId() + ".sls")));
             }

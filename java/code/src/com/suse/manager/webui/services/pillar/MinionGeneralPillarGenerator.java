@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,9 +23,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 
 import com.suse.manager.utils.MachinePasswordUtils;
-import com.suse.manager.webui.utils.SaltPillar;
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +42,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
     private static final Logger LOG = Logger.getLogger(MinionGeneralPillarGenerator.class);
 
     public static final MinionGeneralPillarGenerator INSTANCE = new MinionGeneralPillarGenerator();
+    public static final String CATEGORY = "general";
 
     private static final int PKGSET_INTERVAL = 5;
 
@@ -56,8 +57,13 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
-        SaltPillar pillar = new SaltPillar();
+    public Optional<Pillar> generatePillarData(MinionServer minion) {
+        Pillar pillar = minion.getPillarByCategory(CATEGORY).orElseGet(() -> {
+            Pillar newPillar = new Pillar(CATEGORY, new HashMap<>(), minion);
+            minion.getPillars().add(newPillar);
+            return newPillar;
+        });
+        pillar.getPillar().clear();
         pillar.add("org_id", minion.getOrg().getId());
 
         pillar.add("contact_method", minion.getContactMethod().getLabel());
@@ -145,4 +151,8 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "." + PILLAR_DATA_FILE_EXT;
     }
 
+    @Override
+    public String getCategory() {
+        return CATEGORY;
+    }
 }

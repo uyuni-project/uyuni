@@ -20,7 +20,7 @@ function stratifyPreprocessor(data?: any) {
     return d3.stratify()(data);
   }
 
-  instance.data = function(d) {
+  instance.data = function (d) {
     return arguments.length ? ((data = d), instance) : data;
   };
 
@@ -73,19 +73,19 @@ function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
   // function representing instance,
   // calling it causes refresh of output data
   function instance() {
-    const root = data.filter(d => d.parentId == null)[0];
-    const leaves = data.filter(d => d.parentId != null);
+    const root = data.filter((d) => d.parentId == null)[0];
+    const leaves = data.filter((d) => d.parentId != null);
 
     const groupElems = makeGroups(
       root,
-      groupingConfiguration.filter(criterion => criterion.length > 0)
+      groupingConfiguration.filter((criterion) => criterion.length > 0)
     );
     const allElems = [root] // root
       .concat(groupElems) // inner nodes (represantation of groups)
       .concat(
         groupData(
           leaves,
-          groupElems.filter(e => e.isLeafGroup),
+          groupElems.filter((e) => e.isLeafGroup),
           root
         )
       ); // systems partitioned by groups
@@ -93,12 +93,12 @@ function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
   }
 
   // getter/setter for data
-  instance.data = function(d) {
+  instance.data = function (d) {
     return arguments.length ? ((data = d), instance) : data;
   };
 
   // getter/setter for groupingConfiguration
-  instance.groupingConfiguration = function(gs) {
+  instance.groupingConfiguration = function (gs) {
     return arguments.length ? ((groupingConfiguration = gs), instance) : groupingConfiguration;
   };
 
@@ -137,7 +137,7 @@ function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
     const rstCfg = grpCfg.slice(1);
 
     return fstCfg
-      .map(g => {
+      .map((g) => {
         const newId = par.id + "-" + g.toString();
         const groups = (par.groups || []).concat(g);
         const elem = {
@@ -168,8 +168,8 @@ function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
   //  empty
   function groupData(data, groupCriterion, root) {
     // Helper function: does the superset contain all elements from sub?
-    let containsAll = function(superset, sub) {
-      return sub.map(e => superset.includes(e)).reduce((v1, v2) => v1 && v2, true);
+    let containsAll = function (superset, sub) {
+      return sub.map((e) => superset.includes(e)).reduce((v1, v2) => v1 && v2, true);
     };
 
     // corner case - no groups -> attach all elements to the root
@@ -178,10 +178,10 @@ function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
     }
 
     return groupCriterion
-      .map(gc =>
+      .map((gc) =>
         data
-          .filter(d => containsAll(d.managed_groups || [NO_GROUP_LABEL], gc.groups || []))
-          .map(d => Object.assign({}, d, { id: d.id + "-" + gc.id, parentId: gc.id }))
+          .filter((d) => containsAll(d.managed_groups || [NO_GROUP_LABEL], gc.groups || []))
+          .map((d) => Object.assign({}, d, { id: d.id + "-" + gc.id, parentId: gc.id }))
       )
       .reduce((v1, v2) => v1.concat(v2), []);
   }

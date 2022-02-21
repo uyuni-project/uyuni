@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -75,6 +77,9 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());
         assertEquals(managedGroup, sg1);
+
+        ServerGroup sg2 = ServerGroupFactory.lookupById(managedGroup.getId());
+        assertEquals(managedGroup, sg2);
     }
 
     public void testListNoAssociatedAdmins() throws Exception {
@@ -91,7 +96,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testRemove() throws Exception {
-        ServerGroupFactory.remove(managedGroup);
+        ServerGroupFactory.remove(new TestSaltApi(), managedGroup);
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());

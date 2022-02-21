@@ -55,7 +55,7 @@ export function useVirtNotification(
         setWebSocketErr(true);
       };
 
-      ws.onmessage = e => {
+      ws.onmessage = (e) => {
         if (typeof e.data === "string") {
           const newActions = JSON.parse(e.data);
           const refreshKind = newActions["refresh"];
@@ -77,13 +77,13 @@ export function useVirtNotification(
             {}
           );
           const updatedActions = Object.keys(newActions)
-            .filter(key => Object.keys(aidMap).includes(String(newActions[key].id)))
+            .filter((key) => Object.keys(aidMap).includes(String(newActions[key].id)))
             .reduce((res, key) => {
               const newAction = newActions[key];
               return Object.assign({}, res, { [aidMap[newAction.id]]: newAction });
             }, {});
           const addedActions = Object.keys(newActions)
-            .filter(key => !Object.keys(aidMap).includes(String(newActions[key].id)))
+            .filter((key) => !Object.keys(aidMap).includes(String(newActions[key].id)))
             .reduce((res, key) => Object.assign({}, res, { [key]: newActions[key] }), {});
           actions = Object.assign({}, actions, updatedActions, addedActions);
           setActionsResults(actions);

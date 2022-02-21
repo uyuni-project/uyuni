@@ -66,6 +66,8 @@ def complete_group_addsystems(self, text, line, beg, end):
     elif len(parts) > 2:
         return self.tab_complete_systems(parts[-1])
 
+    return None
+
 
 def do_group_addsystems(self, args):
     arg_parser = get_argument_parser()
@@ -118,6 +120,8 @@ def complete_group_removesystems(self, text, line, beg, end):
     elif len(parts) > 2:
         return self.tab_complete_systems(parts[-1])
 
+    return None
+
 
 def do_group_removesystems(self, args):
     arg_parser = get_argument_parser()
@@ -149,7 +153,7 @@ def do_group_removesystems(self, args):
         print('\n'.join(sorted(systems)))
 
         if not self.user_confirm(_('Remove these systems [y/N]:')):
-            return
+            return None
 
         self.client.systemgroup.addOrRemoveSystems(self.session,
                                                    group_name,
@@ -159,6 +163,8 @@ def do_group_removesystems(self, args):
     else:
         print(_("No systems found"))
         return 1
+
+    return None
 
 ####################
 
@@ -248,7 +254,7 @@ def do_group_backup(self, args):
         return 1
 
     groups = args
-    if len(args) and args[0] == 'ALL':
+    if len(args) > 0 and args[0] == 'ALL':      # pylint: disable=len-as-condition
         groups = self.do_group_list('', True)
 
     # use an output base from the user if it was passed
@@ -271,11 +277,21 @@ def do_group_backup(self, args):
     for group in groups:
         print(_("Backup Group: %s") % group)
         details = self.client.systemgroup.getDetails(self.session, group)
+        formulas = self.client.formula.getFormulasByGroupId(self.session, details['id'])
+        formula_data = {
+            f: self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+            for f in formulas
+        }
+
         outputpath = outputpath_base + "/" + group
         print(_("Output File: %s") % outputpath)
-        fh = open(outputpath, 'w')
-        fh.write(details['description'])
-        fh.close()
+
+        backup = {
+            'description': details['description'],
+            'formulas': formula_data
+        }
+
+        json_dump_to_file(backup, outputpath)
 
     return 0
 
@@ -302,6 +318,8 @@ def complete_group_restore(self, text, line, beg, end):
         groups = self.do_group_list('', True)
         groups.append('ALL')
         return tab_completer(groups, text)
+
+    return None
 
 
 def do_group_restore(self, args):
@@ -347,36 +365,68 @@ def do_group_restore(self, args):
 
     for groupname in self.do_group_list('', True):
         details = self.client.systemgroup.getDetails(self.session, groupname)
-        current[groupname] = details['description']
-        current[groupname] = current[groupname].rstrip('\n')
+        formulas = self.client.formula.getFormulasByGroupId(self.session, details['id'])
+        formula_data = {}
+        for f in formulas:
+            formula_data[f] = self.client.formula.getGroupFormulaData(self.session, details['id'], f)
+
+        current[groupname] = {
+            'description': details['description'],
+            'id': details['id'],
+            'formulas': formula_data
+        }
 
     for groupname in files:
-        fh = open(files[groupname], 'r')
-        details = fh.read()
-        fh.close()
-        details = details.rstrip('\n')
+        backup = json_read_from_file(files[groupname])
+        if backup is None:
+            # assume old backup, not in json format. Read complete file as string
+            logging.info(_("Assuming group to be in old plain text format"))
+            with open(files[groupname], 'r') as fh:
+                details = fh.read()
+            backup = {
+                'description': details.rstrip('\n'),
+                'formulas': {}
+            }
 
-        if groupname in current and current[groupname] == details:
-            logging.error(_N("Group %s already restored") % groupname)
-            continue
-
-        elif groupname in current:
-            logging.debug("Already have %s but the description has changed" % groupname)
-
-            if is_interactive(options):
-                print(_("Changing description from:"))
-                print("\n\"%s\"\nto\n\"%s\"\n" % (current[groupname], details))
-                userinput = prompt_user(_('Continue [y/N]:'))
-
-                if re.match('y', userinput, re.I):
-                    logging.info(_N("Updating description for group: %s") % groupname)
-                    self.client.systemgroup.update(self.session, groupname, details)
+        if groupname in current:
+            # pass id to the backup structure, so that comparison works
+            backup['id'] = current[groupname]['id']
+            if current[groupname] == backup:
+                logging.error(_N("Group %s already restored") % groupname)
             else:
-                logging.info(_N("Updating description for group: %s") % groupname)
-                self.client.systemgroup.update(self.session, groupname, details)
+                logging.debug("Already have %s but the data have changed" % groupname)
+
+                if is_interactive(options):
+                    if current[groupname]['description'] != backup['description']:
+                        print(_("Changing description from:"))
+                        print('\n"%s"\nto\n"%s"\n' % (current[groupname]['description'], backup['description']))
+                        userinput = prompt_user(_('Continue [y/N]:'))
+
+                        if userinput.lower() == 'y':
+                            logging.info(_N("Updating description for group: %s") % groupname)
+                            self.client.systemgroup.update(self.session, groupname, backup['description'])
+                    if current[groupname]['formulas'] != backup['formulas']:
+                        userinput = prompt_user(_('Update formula data from backup? [y/N]:'))
+                        if userinput.lower() == 'y':
+                            formulas = list(backup['formulas'].keys())
+                            self.client.formula.setFormulasOfGroup(self.session, current[groupname]['id'], formulas)
+                            for f, v in backup['formulas'].items():
+                                self.client.formula.setGroupFormulaData(self.session, current[groupname]['id'], f, v)
+                else:
+                    logging.info(_N("Updating data for group: %s") % groupname)
+                    self.client.systemgroup.update(self.session, groupname, backup['description'])
+                    formulas = list(backup['formulas'].keys())
+                    self.client.formula.setFormulasOfGroup(self.session, current[groupname]['id'], formulas)
+                    for f, v in backup['formulas'].items():
+                        self.client.formula.setGroupFormulaData(self.session, current[groupname]['id'], f, v)
+
         else:
             logging.info(_N("Creating new group %s") % groupname)
-            self.client.systemgroup.create(self.session, groupname, details)
+            details = self.client.systemgroup.create(self.session, groupname, backup['description'])
+            formulas = list(backup['formulas'].keys())
+            self.client.formula.setFormulasOfGroup(self.session, details['id'], formulas)
+            for f, v in backup['formulas'].items():
+                self.client.formula.setGroupFormulaData(self.session, details['id'], f, v)
 
     return 0
 
@@ -394,9 +444,9 @@ def do_group_list(self, args, doreturn=False):
 
     if doreturn:
         return groups
-    else:
-        if groups:
-            print('\n'.join(sorted(groups)))
+    if groups:
+        print('\n'.join(sorted(groups)))
+    return None
 
 ####################
 
@@ -417,7 +467,7 @@ def do_group_listsystems(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_group_listsystems()
-        return
+        return None
 
     group = args[0]
 
@@ -430,9 +480,10 @@ def do_group_listsystems(self, args, doreturn=False):
 
     if doreturn:
         return systems
-    else:
-        if systems:
-            print('\n'.join(sorted(systems)))
+    if systems:
+        print('\n'.join(sorted(systems)))
+
+    return None
 
 ####################
 
@@ -542,6 +593,7 @@ def complete_group_addconfigchannels(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_configchannel_list('', True),
                              text)
+    return None
 
 
 def do_group_addconfigchannels(self, args):
@@ -550,13 +602,11 @@ def do_group_addconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, options) = parse_command_arguments(args, arg_parser)
+    (args,_) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_addconfigchannels()
         return 1
-
-    add_separator = False
 
     group = args.pop(0)
     channels = args
@@ -581,6 +631,7 @@ def complete_group_removeconfigchannels(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_configchannel_list('', True),
                              text)
+    return None
 
 
 def do_group_removeconfigchannels(self, args):
@@ -589,16 +640,13 @@ def do_group_removeconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, options) = parse_command_arguments(args, arg_parser)
+    (args,_) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_removeconfigchannels()
         return 1
 
-    add_separator = False
-
     group = args.pop(0)
     channels = args
     self.client.systemgroup.unsubscribeConfigChannel(self.session, group, channels)
     return 0
-

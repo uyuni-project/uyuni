@@ -64,7 +64,7 @@
   <ul class="nav navbar-nav navbar-primary">
     <li id="notifications">
       <script>
-        spaImportReactPage('notifications/notifications')
+        spaImportReactPage('notifications/notifications');
       </script>
     </li>
     <c:if test="${requestScope.legends != null}">
@@ -77,31 +77,21 @@
         </div>
       </li>
     </c:if>
-    <li class="search">
-      <a href="#" class="toggle-box" data-toggle="collapse" data-target="form#search-form">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </a>
-      <form id="search-form" name="form1" class="box-wrapper form-inline collapse" role="form" action="/rhn/Search.do">
-        <rhn:csrf />
-        <rhn:submitted />
-        <div class="form-group">
-          <input type="search" class="form-control input-sm" name="search_string" size="20" accesskey="4"
-              autofocus="autofocus" placeholder="<bean:message key='button.search'/>" />
-          <select name="search_type" class="form-control input-sm">
-            <option value="systems"><bean:message key="header.jsp.systems" /></option>
-            <option value="packages"><bean:message key="header.jsp.packages" /></option>
-            <option value="errata"><bean:message key="header.jsp.errata" /></option>
-            <option value="docs"><bean:message key="header.jsp.documentation" /></option>
-          </select>
-          <button type="submit" class="btn btn-primary input-sm" id="search-btn">
-            <rhn:icon type="header-search" /><bean:message key='button.search'/>
-          </button>
-        </div>
-      </form>
+    <li class="search" id="header-search">
+      <script>
+        spaImportReactPage('header/search');
+      </script>
     </li>
     <li id="ssm-box" class="ssm-box">
       <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
-        <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
+        <div id="ssm-counter"></div>
+        <script type="text/javascript">
+          window.csrfToken = '<c:out value="${csrf_token}" />';
+          spaImportReactPage('systems/ssm/ssm-counter')
+            .then(function(module) {
+              module.renderer("ssm-counter", {})
+            });
+        </script>
       </a>
       <%--
         -- Make sure we set the return_url variable correctly here. This will make is to

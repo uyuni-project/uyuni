@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,19 +15,22 @@
 
 package com.suse.manager.webui.services.impl;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.salt.netapi.results.ModuleRun;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.product.Tuple2;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.salt.netapi.results.ModuleRun;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -131,9 +134,7 @@ public class MonitoringService {
         }
     };
 
-    private static Supplier<Boolean> tomcatJmxStatusSupplier = () ->
-            StringUtils.isNotEmpty(System.getProperty("com.sun.management.jmxremote.port")) &&
-                StringUtils.isNotEmpty(System.getProperty("java.rmi.server.hostname"));
+    private static Supplier<Boolean> tomcatJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
 
     private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
         TaskomaticApi taskomatic = new TaskomaticApi();
@@ -203,12 +204,8 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "mgrcompat_|-postgres_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("tomcat",
-                        "mgrcompat_|-jmx_tomcat_exporter_service_|-service.status_|-module_run"),
-                new Tuple2<>("taskomatic",
-                        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run"),
-                new Tuple2<>("tomcat:config",
                         "mgrcompat_|-jmx_tomcat_java_config_|-file.search_|-module_run"),
-                new Tuple2<>("taskomatic:config",
+                new Tuple2<>("taskomatic",
                         "mgrcompat_|-jmx_taskomatic_java_config_|-file.search_|-module_run"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
@@ -221,9 +218,9 @@ public class MonitoringService {
             status.getExporters().put("taskomatic", map.get("taskomatic"));
             status.getExporters().put("self_monitoring", map.get("self_monitoring"));
 
-            getTomcatMessage(map.get("tomcat"), map.get("tomcat:config"))
+            getTomcatMessage(map.get("tomcat"))
                     .ifPresent(msg -> status.getMessages().put("tomcat", msg));
-            getTaskomaticMessage(map.get("taskomatic"), map.get("taskomatic:config"))
+            getTaskomaticMessage(map.get("taskomatic"))
                     .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
             getSelfMonitoringMessage(map.get("self_monitoring"))
                     .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));
@@ -239,29 +236,18 @@ public class MonitoringService {
         return Optional.empty();
     }
 
-    private static Optional<String> getTomcatMessage(boolean exporterUp, boolean configPresent) {
-        return computeMessage(exporterUp, configPresent, getTomcatRuntimeJmxStatus());
+    private static Optional<String> getTomcatMessage(boolean configPresent) {
+        return computeMessage(configPresent, getTomcatRuntimeJmxStatus());
     }
 
-    private static Optional<String> getTaskomaticMessage(boolean exporterUp, boolean configPresent) {
-        return computeMessage(exporterUp, configPresent, getTaskomaticRuntimeJmxStatus());
+    private static Optional<String> getTaskomaticMessage(boolean configPresent) {
+        return computeMessage(configPresent, getTaskomaticRuntimeJmxStatus());
     }
 
-    private static Optional<String> computeMessage(boolean exporterUp, boolean configPresent,
+    private static Optional<String> computeMessage(boolean configPresent,
                                                    boolean runtimeJmxEnabled) {
-        if (exporterUp && configPresent && !runtimeJmxEnabled) {
+        if (configPresent != runtimeJmxEnabled) {
             return Optional.of("restart");
-        }
-        else if (exporterUp && !configPresent) {
-            // enable again to add missing config. Runtime JMX status doesn't matter in this case
-            return Optional.of("enable");
-        }
-        else if (!exporterUp && !configPresent && runtimeJmxEnabled) {
-            return Optional.of("restart");
-        }
-        else if (!exporterUp && configPresent) {
-            // disable again to remove config. Runtime JMX status doesn't matter in this case
-            return Optional.of("disable");
         }
         return Optional.empty();
     }
@@ -303,13 +289,10 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
-                        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-running"),
+                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-managed"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-running"),
-                new Tuple2<>("tomcat:config",
-                        "cmd_|-jmx_tomcat_config_|-sed*"),
-                new Tuple2<>("taskomatic:config",
-                        "cmd_|-jmx_taskomatic_config_|-sed*"),
+                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|" +
+                        "-managed"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-grep*")
         );
@@ -322,9 +305,9 @@ public class MonitoringService {
             status.getExporters().put("taskomatic", map.get("taskomatic"));
             status.getExporters().put("self_monitoring", map.get("self_monitoring"));
 
-            getTomcatMessage(map.get("tomcat"), map.get("tomcat:config"))
+            getTomcatMessage(map.get("tomcat"))
                     .ifPresent(msg -> status.getMessages().put("tomcat", msg));
-            getTaskomaticMessage(map.get("taskomatic"), map.get("taskomatic:config"))
+            getTaskomaticMessage(map.get("taskomatic"))
                     .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
             getSelfMonitoringMessage(map.get("self_monitoring"))
                     .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));
@@ -345,13 +328,10 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead"),
                 new Tuple2<>("tomcat",
-                        "service_|-jmx_exporter_tomcat_service_|-prometheus-jmx_exporter@tomcat_|-dead"),
+                        "file_|-jmx_tomcat_config_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-absent"),
                 new Tuple2<>("taskomatic",
-                        "service_|-jmx_exporter_taskomatic_service_|-prometheus-jmx_exporter@taskomatic_|-dead"),
-                new Tuple2<>("tomcat:config",
-                        "cmd_|-jmx_tomcat_config_|-grep*"),
-                new Tuple2<>("taskomatic:config",
-                        "cmd_|-jmx_taskomatic_config_|-grep*"),
+                        "file_|-jmx_taskomatic_config_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|" +
+                        "-absent"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-grep*")
                 ).map(map -> {
@@ -363,9 +343,9 @@ public class MonitoringService {
                     status.getExporters().put("taskomatic", !map.get("taskomatic"));
                     status.getExporters().put("self_monitoring", !map.get("self_monitoring"));
 
-                    getTomcatMessage(!map.get("tomcat"), !map.get("tomcat:config"))
+                    getTomcatMessage(!map.get("tomcat"))
                             .ifPresent(msg -> status.getMessages().put("tomcat", msg));
-                    getTaskomaticMessage(!map.get("taskomatic"), !map.get("taskomatic:config"))
+                    getTaskomaticMessage(!map.get("taskomatic"))
                             .ifPresent(msg -> status.getMessages().put("taskomatic", msg));
                     getSelfMonitoringMessage(!map.get("self_monitoring"))
                             .ifPresent(msg -> status.getMessages().put("self_monitoring", msg));

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,7 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
@@ -30,6 +29,8 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.manager.user.UserManager;
+
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;

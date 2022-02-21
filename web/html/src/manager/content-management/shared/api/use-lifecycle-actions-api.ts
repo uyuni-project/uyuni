@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 
@@ -59,7 +60,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
       setOnGoingNetworkRequest(networkRequest);
 
       return networkRequest
-        .then(response => {
+        .then((response) => {
           setIsLoading(false);
 
           if (!response.success) {
@@ -68,7 +69,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
 
           return response.data;
         })
-        .catch(xhr => {
+        .catch((xhr) => {
           let errMessages;
           if (xhr.status === 0) {
             errMessages = t("Request interrupted or invalid response received from the server. Please try again.");

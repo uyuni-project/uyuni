@@ -4,13 +4,13 @@ const domain = "messages";
 const gt = new Gettext();
 
 function getTranslationData() {
-    if (!window.translationData) {
-        window.translationData = gt;
+  if (!window.translationData) {
+    window.translationData = gt;
 
-        const poData = getPoAsJson(window.preferredLocale);
-        gt.addTranslations("", domain, poData);
-        window.t = translate;
-    }
+    const poData = getPoAsJson(window.preferredLocale);
+    gt.addTranslations("", domain, poData);
+    window.t = translate;
+  }
 }
 
 /**
@@ -18,14 +18,14 @@ function getTranslationData() {
  * return an empty string and use the default translation en_US
  */
 function getPoAsJson(locale?: string) {
-    if (!locale) {
-        return "";
-    }
-    try {
-        return require(`../../../po/${locale}.po`);
-    } catch (_) {
-        return "";
-    }
+  if (!locale) {
+    return "";
+  }
+  try {
+    return require(`../../../po/${locale}.po`);
+  } catch (_) {
+    return "";
+  }
 }
 
 /**
@@ -34,16 +34,16 @@ function getPoAsJson(locale?: string) {
  * Accepts any number of arguments after key.
  */
 function translate(key: string) {
-    var result = key;
+  var result = key;
 
-    window.translationData && (result = window.translationData.gettext(result));
+  window.translationData && (result = window.translationData.gettext(result));
 
-    // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
-    for (var i = 1; i < arguments.length; i++) {
-        result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), arguments[i]);
-    }
+  // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
+  for (var i = 1; i < arguments.length; i++) {
+    result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), arguments[i]);
+  }
 
-    return result;
+  return result;
 }
 
-export {getTranslationData};
+export { getTranslationData };

@@ -121,6 +121,7 @@ def complete_cryptokey_delete(self, text, line, beg, end):
         return tab_completer(self.do_cryptokey_list('', True),
                              text)
 
+    return None
 
 def do_cryptokey_delete(self, args):
     arg_parser = get_argument_parser()
@@ -164,9 +165,10 @@ def do_cryptokey_list(self, args, doreturn=False):
 
     if doreturn:
         return keys
-    else:
-        if keys:
-            print('\n'.join(sorted(keys)))
+    if keys:
+        print('\n'.join(sorted(keys)))
+
+    return None
 
 ####################
 

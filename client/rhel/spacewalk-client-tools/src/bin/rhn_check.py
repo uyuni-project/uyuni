@@ -129,8 +129,7 @@ class CheckCli(rhncli.RhnCli):
             print("""
             This could signal that you are *NOT* talking to a server
             whose certificate was signed by a Certificate Authority
-            listed in the %s file or that the
-            RHNS-CA-CERT file is invalid.""" % self.rhns_ca_cert)
+            listed in the %s file.""" % self.rhns_ca_cert)
             sys.exit(-1)
         except socket.error:
             print("Could not retrieve action from %s.\n"\
@@ -163,8 +162,7 @@ class CheckCli(rhncli.RhnCli):
             print("""
             This could signal that you are *NOT* talking to a server
             whose certificate was signed by a Certificate Authority
-            listed in the %s file or that the
-            RHNS-CA-CERT file is invalid.""" % self.rhns_ca_cert)
+            listed in the %s file.""" % self.rhns_ca_cert)
             sys.exit(-1)
         except socket.error:
             print("Could not retrieve action from %s.\n"\
@@ -250,8 +248,7 @@ class CheckCli(rhncli.RhnCli):
             print("""
             This could signal that you are *NOT* talking to a server
             whose certificate was signed by a Certificate Authority
-            listed in the %s file or that the
-            RHNS-CA-CERT file is invalid.""" % self.rhns_ca_cert)
+            listed in the %s file.""" % self.rhns_ca_cert)
             sys.exit(-1)
         except socket.error:
             print("Could not submit to %s.\n"\

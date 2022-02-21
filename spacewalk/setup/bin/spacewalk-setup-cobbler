@@ -90,15 +90,16 @@ def remove_virtual_host(conf_directory: str, conf_file: str):
     """
     full_path = os.path.join(conf_directory, conf_file)
     backup_file(full_path)
-    with open(full_path, "w") as http_config:
+    with open(full_path, "r") as http_config:
         http_lines = http_config.readlines()
         for i in range(0, len(http_lines)):
             if "VirtualHost" in http_lines[i]:
                 http_lines[i] = ""
-        http_config.writelines(http_lines)
+    with open (full_path, 'w') as http_config_update:
+        http_config_update.writelines(http_lines)
 
 
-def sanatize_args(args):
+def sanitize_args(args):
     global COBBLER_CONFIG_DIRECTORY
     COBBLER_CONFIG_DIRECTORY = os.path.join(args.cobbler_config_directory, '')
     global HTTPD_CONFIG_DIRECTORY
@@ -110,7 +111,7 @@ def main():
     Main entrypoint for the script to get Cobbler in the correct state for SUMA.
     """
     args = parser.parse_args()
-    sanatize_args(args)
+    sanitize_args(args)
     manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1])
     manipulate_cobbler_modules(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[0])
     remove_virtual_host(HTTPD_CONFIG_DIRECTORY, COBBLER_HTTP_CONFIG)

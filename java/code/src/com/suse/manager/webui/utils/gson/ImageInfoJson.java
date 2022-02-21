@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -25,7 +24,10 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.webui.utils.ViewHelper;
+
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import java.util.Map;
@@ -166,14 +168,17 @@ public class ImageInfoJson {
      * @param profileIn the image profile
      */
     public void setProfile(ImageProfile profileIn) {
-        if (profileIn == null) {
-            this.profile = null;
-            return;
-        }
         JsonObject json = new JsonObject();
-        json.addProperty("id", profileIn.getProfileId());
-        json.addProperty("label", profileIn.getLabel());
-        json.addProperty("type", profileIn.getImageType());
+        if (profileIn == null) { //Image profile can be null, if it is deleted without deleting the image.
+            json.addProperty("id", "");
+            json.addProperty("label", "");
+            json.addProperty("type", "");
+        }
+        else {
+            json.addProperty("id", profileIn.getProfileId());
+            json.addProperty("label", profileIn.getLabel());
+            json.addProperty("type", profileIn.getImageType());
+        }
         this.profile = json;
     }
 
@@ -188,15 +193,19 @@ public class ImageInfoJson {
      * @param storeIn the image store
      */
     public void setStore(ImageStore storeIn) {
-        if (storeIn == null) {
-            this.store = null;
-            return;
-        }
         JsonObject json = new JsonObject();
-        json.addProperty("id", storeIn.getId());
-        json.addProperty("label", storeIn.getLabel());
-        json.addProperty("uri", storeIn.getUri());
-        json.addProperty("type", storeIn.getStoreType().getLabel());
+        if (storeIn == null) { //Image Store can be null, if it is deleted without deleting the image.
+            json.addProperty("id", "");
+            json.addProperty("label", "");
+            json.addProperty("uri", "");
+            json.addProperty("type",  "");
+        }
+        else {
+            json.addProperty("id", storeIn.getId());
+            json.addProperty("label", storeIn.getLabel());
+            json.addProperty("uri", storeIn.getUri());
+            json.addProperty("type", storeIn.getStoreType().getLabel());
+        }
         this.store = json;
     }
 

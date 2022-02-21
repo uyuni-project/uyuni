@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"POT-Creation-Date: 2022-01-25 07:13+0000\n"
 "PO-Revision-Date: 2018-03-16 11:01+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Gujarati (http://www.transifex.com/projects/p/spacewalk/"
@@ -204,6 +204,280 @@ msgstr "ભૂલ ઉદ્દભવી છે:"
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
 msgstr "વધુ જાણકારી માટે /var/log/up2date જુઓ"
+
+#: ../src/up2date_client/rhnreg.py:76
+#, fuzzy
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "ચેતવણી: rhnsd ને chkconfig સાથે સક્રિય કરવામાં અસમર્થ"
+
+#: ../src/up2date_client/rhnreg.py:82
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "ચેતવણી: rhnsd ને chkconfig સાથે સક્રિય કરવામાં અસમર્થ"
+
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "સૂચના"
+
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "ચેતવણી"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "જ્યારે તમારી પસંદગી લાગુ કરી રહ્યા હોય ત્યારે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr "તમે અયોગ્ય પ્રોટોકોલ સ્પષ્ટ કરેલ છે. માત્ર https અને http માન્ય છે."
+
+#: ../src/up2date_client/rhnregGui.py:305
+#, fuzzy
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+"તમે તમારી સિસ્ટમને Red Hat Network સર્વર સાથે જોડ્યા વિના આ ઉમેદવારીઓના "
+"વિશેષાધિકારોના લાભો ઉઠાવવા માટે સમર્થ હશો નહિં."
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "પસંદ થયેલ સર્વરનો સંપર્ક કરી શકાતો નથી"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+msgstr "અમે '%s' આગળ સેટેલાઈટ અથવા પ્રોક્સીનો સંપર્ક કરી શક્યા નહિં."
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"સ્થાન બેવાર ચકાસો - શું '%s' બરાબર છે? જો નહિં, તો તમે તેને બરાબર કરી શકો છો અને ફરીથી "
+"પ્રયત્ન કરી શકો છો."
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr "ખાતરી કરો કે આ સિસ્ટમ પરનું નેટવર્ક જોડાણ વિધેયાત્મક છે."
+
+#: ../src/up2date_client/rhnregGui.py:341
+#, fuzzy
+msgid "There was an error communicating with Spacewalk server."
+msgstr "Red Hat Network સાથે સંપર્કવ્યવહાર કરવામાં ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr "સર્વર આઉટેજ સ્થિતિમાં હોઈ શકે. તમારે પછીથી જોડાવાનો પ્રયાસ કરવો જોઈએ."
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr "તમે ક્લાઈન્ટ ચલાવી રહ્યા હશો કે જે સર્વર સાથે અસુસંગત હશે."
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, fuzzy, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr ""
+"મહેરબાની કરીને <b>%s</b> Red Hat Network સેટેલાઇટ માટે તમારી ખાતા જાણકારીને દાખલ "
+"કરો:"
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "તમારે પ્રવેશ દાખલ કરવો જ પડશે."
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "તમારે પાસવર્ડ દાખલ કરવો જ પડશે."
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "પ્રવેશ કરવામાં સમસ્યા હતી."
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr "નોંધણી સર્વર સાથે સંપર્ક કરવામાં ત્યાં ભૂલ હતી.  સંદેશો આ હતો:\n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "જ્યારે રૂપરેખા માટે જાણકારીને ભેગી કરી રહ્યા હોય ત્યારે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "હાર્ડવેર રુપરેખા ચલાવતી વખતે સમસ્યા"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "રૂપરેખા રચતી વખતે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "તમારે આ રુપરેખા માટે નામ પસંદ કરવું જ જોઈએ."
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "રૂપરેખા રચતી વખતે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "સિસ્ટમ રજીસ્ટર કરી રહ્યા છીએ"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
+#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
+#: ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "સિસ્ટમની નોંધણી કરાવવામાં સમસ્યા:\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr ""
+"પૂરો પાડવામાં આવેલ સ્થાપન નંબર [ %s ] એ માન્ય સ્થાપન નંબર નથી. મહેરબાની કરીને પહેલાંની "
+"સ્ક્રીન પર પાછા જાવ અને તેને સુધારો."
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "સિસ્ટમની નોંધણી કરાવવામાં ભૂલ."
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "સિસ્ટમ id ને ડિસ્કમાં લખવામાં સમસ્યા."
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "આ સિસ્ટમની નોંધણી કરાવવામાં ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "હાર્ડવેર જાણકારી મોકલી રહ્યા છીએ"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "હાર્ડવેર જાણકારી મોકલવામાં સમસ્યા."
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "પેકેજ જાણકારી મોકલી રહ્યા છીએ"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "પેકેજ જાણકારી મોકલવામાં સમસ્યા."
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "પ્રમાણપત્ર  સ્થાપિત કરી રહ્યા હોય ત્યારે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "તમારે પ્રમાણપત્ર પસંદ કરવું જ પડશે."
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"ત્યાં SSL ભૂલ હતી. આ કદાચ તમે જે ફાઈલ લીધેલ હતી તે પ્રમાણપત્ર ફાઈલ ન હતી તેના કારણે હોઈ "
+"શકે."
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "નવું પ્રમાણપત્ર સ્થાપિત કરતી વખતે કંઈક ખોટું ગયું:\n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "અજ્ઞાત"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "હાર્ડવેરની યાદી મેળવી રહ્યા હોય ત્યારે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "પેકેજોની યાદીને બિલ્ડ કરી રહ્યા હોય ત્યારે ભૂલ હતી."
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "પેકેજ"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "પેટી"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr ""
+"તમારી સિસ્ટમ પર સ્થાપિત RPM પેકેજોની યાદી બનાવી રહ્યા છીએ.  મહેરબાની કરીને રાહ જુઓ."
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"તમારી રુપરેખા લાવવામાં ભૂલ હતી.  ખાતરી કરો કે તમારી\n"
+"પાસે /etc/sysconfig/rhn વાંચવાની પરવાનગી છે."
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr "ત્યાં રુપરેખાંકન સંગ્રહિત કરવામાં ભૂલ. ખાતરી કરો કે તે તમારુ પોતાનું %s છે."
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, fuzzy, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"ભૂલ ઉદ્ભવવી જોઈએ નહિં. જો તમે અમને આ કાર્યક્રમ સુધારવા માટે મદદ કરવા માંગો, તો મહેરબાની "
+"કરીને bugzilla.redhat.com આગળ ભૂલનો અહેવાલ જમા કરો. '%s' ના સંબંધિત ભાગોને સમાવવાનું "
+"ખૂબ મદદરૂપ હોઈ શકે. આભાર!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -791,12 +1065,6 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "મોટી ભૂલ"
 
-#: ../src/up2date_client/rhnreg_constants.py:244
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-msgid "Warning"
-msgstr "ચેતવણી"
-
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, fuzzy, python-format, python-brace-format
 msgid ""
@@ -962,274 +1230,6 @@ msgstr "હા, ચાલુ રાખો"
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
 msgstr "વિકલ્પ નાપસંદ કરવા માટે <space> દબાવો."
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "સૂચના"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "જ્યારે તમારી પસંદગી લાગુ કરી રહ્યા હોય ત્યારે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "તમે અયોગ્ય પ્રોટોકોલ સ્પષ્ટ કરેલ છે. માત્ર https અને http માન્ય છે."
-
-#: ../src/up2date_client/rhnregGui.py:305
-#, fuzzy
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"તમે તમારી સિસ્ટમને Red Hat Network સર્વર સાથે જોડ્યા વિના આ ઉમેદવારીઓના "
-"વિશેષાધિકારોના લાભો ઉઠાવવા માટે સમર્થ હશો નહિં."
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "પસંદ થયેલ સર્વરનો સંપર્ક કરી શકાતો નથી"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "અમે '%s' આગળ સેટેલાઈટ અથવા પ્રોક્સીનો સંપર્ક કરી શક્યા નહિં."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"સ્થાન બેવાર ચકાસો - શું '%s' બરાબર છે? જો નહિં, તો તમે તેને બરાબર કરી શકો છો અને ફરીથી "
-"પ્રયત્ન કરી શકો છો."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "ખાતરી કરો કે આ સિસ્ટમ પરનું નેટવર્ક જોડાણ વિધેયાત્મક છે."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Red Hat Network સાથે સંપર્કવ્યવહાર કરવામાં ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "સર્વર આઉટેજ સ્થિતિમાં હોઈ શકે. તમારે પછીથી જોડાવાનો પ્રયાસ કરવો જોઈએ."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "તમે ક્લાઈન્ટ ચલાવી રહ્યા હશો કે જે સર્વર સાથે અસુસંગત હશે."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"મહેરબાની કરીને <b>%s</b> Red Hat Network સેટેલાઇટ માટે તમારી ખાતા જાણકારીને દાખલ "
-"કરો:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "તમારે પ્રવેશ દાખલ કરવો જ પડશે."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "તમારે પાસવર્ડ દાખલ કરવો જ પડશે."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "પ્રવેશ કરવામાં સમસ્યા હતી."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "નોંધણી સર્વર સાથે સંપર્ક કરવામાં ત્યાં ભૂલ હતી.  સંદેશો આ હતો:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "જ્યારે રૂપરેખા માટે જાણકારીને ભેગી કરી રહ્યા હોય ત્યારે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "હાર્ડવેર રુપરેખા ચલાવતી વખતે સમસ્યા"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "રૂપરેખા રચતી વખતે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "તમારે આ રુપરેખા માટે નામ પસંદ કરવું જ જોઈએ."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "રૂપરેખા રચતી વખતે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "સિસ્ટમ રજીસ્ટર કરી રહ્યા છીએ"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "સિસ્ટમની નોંધણી કરાવવામાં સમસ્યા:\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"પૂરો પાડવામાં આવેલ સ્થાપન નંબર [ %s ] એ માન્ય સ્થાપન નંબર નથી. મહેરબાની કરીને પહેલાંની "
-"સ્ક્રીન પર પાછા જાવ અને તેને સુધારો."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "સિસ્ટમની નોંધણી કરાવવામાં ભૂલ."
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "સિસ્ટમ id ને ડિસ્કમાં લખવામાં સમસ્યા."
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "આ સિસ્ટમની નોંધણી કરાવવામાં ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "હાર્ડવેર જાણકારી મોકલી રહ્યા છીએ"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "હાર્ડવેર જાણકારી મોકલવામાં સમસ્યા."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "પેકેજ જાણકારી મોકલી રહ્યા છીએ"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "પેકેજ જાણકારી મોકલવામાં સમસ્યા."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "પ્રમાણપત્ર  સ્થાપિત કરી રહ્યા હોય ત્યારે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "તમારે પ્રમાણપત્ર પસંદ કરવું જ પડશે."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"ત્યાં SSL ભૂલ હતી. આ કદાચ તમે જે ફાઈલ લીધેલ હતી તે પ્રમાણપત્ર ફાઈલ ન હતી તેના કારણે હોઈ "
-"શકે."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "નવું પ્રમાણપત્ર સ્થાપિત કરતી વખતે કંઈક ખોટું ગયું:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "અજ્ઞાત"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "હાર્ડવેરની યાદી મેળવી રહ્યા હોય ત્યારે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "પેકેજોની યાદીને બિલ્ડ કરી રહ્યા હોય ત્યારે ભૂલ હતી."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "પેકેજ"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "પેટી"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"તમારી સિસ્ટમ પર સ્થાપિત RPM પેકેજોની યાદી બનાવી રહ્યા છીએ.  મહેરબાની કરીને રાહ જુઓ."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"તમારી રુપરેખા લાવવામાં ભૂલ હતી.  ખાતરી કરો કે તમારી\n"
-"પાસે /etc/sysconfig/rhn વાંચવાની પરવાનગી છે."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr "ત્યાં રુપરેખાંકન સંગ્રહિત કરવામાં ભૂલ. ખાતરી કરો કે તે તમારુ પોતાનું %s છે."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"ભૂલ ઉદ્ભવવી જોઈએ નહિં. જો તમે અમને આ કાર્યક્રમ સુધારવા માટે મદદ કરવા માંગો, તો મહેરબાની "
-"કરીને bugzilla.redhat.com આગળ ભૂલનો અહેવાલ જમા કરો. '%s' ના સંબંધિત ભાગોને સમાવવાનું "
-"ખૂબ મદદરૂપ હોઈ શકે. આભાર!"
-
-#: ../src/up2date_client/rhnreg.py:76
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "ચેતવણી: rhnsd ને chkconfig સાથે સક્રિય કરવામાં અસમર્થ"
-
-#: ../src/up2date_client/rhnreg.py:82
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "ચેતવણી: rhnsd ને chkconfig સાથે સક્રિય કરવામાં અસમર્થ"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
@@ -1422,12 +1422,6 @@ msgstr ""
 "અવગણવા માટે     પુન:પ્રયત્ન\n"
 "    કરો."
 
-#: ../src/bin/rhn_check.py:426
-#, fuzzy
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-"rhn_check. Exiting નાં એક કરતા વધારે નમૂનાને ચલાવવા માટે પ્રયત્ન કરી રહ્યા છે.\n"
-
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
@@ -1446,6 +1440,12 @@ msgstr "હાર્ડવેર રુપરેખા સુધારી રહ
 #: ../src/bin/rhn-profile-sync.py:52
 msgid "Updating virtualization profile..."
 msgstr "વર્ચ્યુઅલાઈઝેશન રૂપરેખા સુધારી રહ્યા છીએ..."
+
+#: ../src/bin/rhn_check.py:423
+#, fuzzy
+msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+msgstr ""
+"rhn_check. Exiting નાં એક કરતા વધારે નમૂનાને ચલાવવા માટે પ્રયત્ન કરી રહ્યા છે.\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -57,9 +57,13 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.core.AllOf;
@@ -90,9 +94,9 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
@@ -103,7 +107,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
     @Override
     public void setUp() throws Exception {
@@ -138,7 +143,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -188,7 +193,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
@@ -239,7 +244,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -289,7 +294,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
         context().checking(new Expectations() {{
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -339,7 +344,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -456,7 +461,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -514,7 +519,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -576,7 +581,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -643,7 +648,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock)
-                    .scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+                    .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             never(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         HibernateFactory.getSession().flush();
@@ -737,7 +742,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
-                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()),IsMapContaining.hasKey(minion2.getId()));
+                    AllOf.allOf(IsMapContaining.hasKey(minion1.getId()), IsMapContaining.hasKey(minion2.getId()));
             Matcher<Map<Long, Map<Long, ZonedDateTime>>> actionsMatcher =
                     AllOf.allOf(IsMapContaining.hasEntry(any(Long.class), minionMatcher));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));

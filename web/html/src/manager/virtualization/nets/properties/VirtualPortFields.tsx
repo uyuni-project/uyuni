@@ -1,8 +1,10 @@
 import * as React from "react";
-import Validation from "components/validation";
+
+import { FormContext } from "components/input/Form";
 import { Radio } from "components/input/Radio";
 import { Text } from "components/input/Text";
-import { FormContext } from "components/input/Form";
+import Validation from "components/validation";
+
 import * as utils from "./utils";
 
 type Props = {

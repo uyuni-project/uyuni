@@ -32,7 +32,7 @@ done
 shift $((OPTIND-1))
 
 
-NEW_VERSION=$(rpm -qi postgresql-server | grep Version | cut -d: -f2 | sed -e "s/ //g")
+NEW_VERSION=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)
 if [ $NEW_VERSION == "" ];then
     echo "$(timestamp)    ERROR: There is no postgresql-server package installed"
     exit 1
@@ -205,7 +205,7 @@ echo "$(timestamp)   Starting PostgreSQL service..."
 systemctl start postgresql
 echo "$(timestamp)   Reindexing database. This may take a while, please do not cancel it!"
 database=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
-spacewalk-sql --select-mode - <<<"REINDEX DATABASE ${database};"
+spacewalk-sql --select-mode - <<<"REINDEX DATABASE \"${database}\";"
 if [ ${?} -ne 0 ]; then
     echo "$(timestamp)   The reindexing failed. Please review the PostgreSQL logs at /var/lib/pgsql/data/log"
     exit 1

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PRE
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -32,6 +33,8 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -68,6 +71,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Note;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -149,8 +153,10 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.pillar.MinionCustomInfoPillarGenerator;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -158,9 +164,7 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -193,17 +197,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    new ServerGroupManager());
+                    serverGroupManager);
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -612,8 +617,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testScheduleChangeChannels() throws Exception {
-        SystemHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
         Server server1 = ServerFactoryTest.createTestServer(admin, true);
         Server server2 = ServerFactoryTest.createTestServer(admin, true);
@@ -640,7 +645,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         child3.setParentChannel(base1);
         Date earliest = new Date();
         var sids = List.of(sid1, sid2);
-        List<Long> actionIds = handler.scheduleChangeChannels(admin, sids, base1.getLabel(),
+        List<Long> actionIds = mockedHandler.scheduleChangeChannels(admin, sids, base1.getLabel(),
                     Arrays.asList(child3.getLabel()), earliest);
 
         assertEquals(1, actionIds.size());
@@ -660,8 +665,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testScheduleChangeChannelsNoChildren() throws Exception {
-        SystemHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
@@ -679,7 +684,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Channel base1 = ChannelFactoryTest.createTestChannel(admin);
         base1.setParentChannel(null);
         Date earliest = new Date();
-        long actionId = handler.scheduleChangeChannels(admin, sid, base1.getLabel(),
+        long actionId = mockedHandler.scheduleChangeChannels(admin, sid, base1.getLabel(),
                 Collections.emptyList(), earliest);
 
         Action action = ActionFactory.lookupById(actionId);
@@ -1009,19 +1014,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListAllEvents() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
-        List<Map<String, Object>>results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        final Server server = ServerFactoryTest.createTestServer(admin);
+
+        List<Map<String, Object>> results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(0, results.size());
 
-        Action a = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        Action action = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
+        ActionFactory.save(action);
 
-        ActionFactory.save(a);
-        a = reload(a);
+        // Ensure the other actions are created later
+        commitAndCloseSession();
+        Thread.sleep(2_000);
+        final Date earliestDate = new Date();
 
-        results = handler.listSystemEvents(admin,
-                server.getId().intValue());
+        action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
+                Arrays.asList("channels", "packages"), new Date());
+        ActionFactory.save(action);
 
+        action = ActionManager.schedulePackageRefresh(admin, server);
+        ActionFactory.save(action);
+        commitAndCloseSession();
+
+        results = handler.listSystemEvents(admin, server.getId().intValue());
+        assertEquals(3, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Apply states");
+        assertEquals(1, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), earliestDate);
+        assertEquals(2, results.size());
+
+        results = handler.listSystemEvents(admin, server.getId().intValue(), "Package List Refresh", earliestDate);
         assertEquals(1, results.size());
     }
 
@@ -1086,17 +1109,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     private Map<String, Object> readCustomInfoPillar(MinionServer minion) throws Exception {
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                minion.getMinionId() + "_custom_info." +
-                PILLAR_DATA_FILE_EXT);
+        Pillar pillar = minion.getPillarByCategory(MinionCustomInfoPillarGenerator.CATEGORY).orElseThrow();
 
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
+        Map<String, Object> map = pillar.getPillar();
 
         assertTrue(map.containsKey("custom_info"));
         map = (Map<String, Object>)map.get("custom_info");
@@ -1357,12 +1372,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(server);
-        ServerGroupManager manager = new ServerGroupManager();
-        manager.addServers(group, servers, admin);
+        serverGroupManager.addServers(group, servers, admin);
 
         Set admins = new HashSet();
         admins.add(regular);
-        manager.associateAdmins(group, admins, admin);
+        serverGroupManager.associateAdmins(group, admins, admin);
 
 
         User nonGroupAdminUser = UserTestUtils.createUser(
@@ -1429,6 +1443,61 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(((HistoryEvent) supposedHistory[0]).getId().longValue(),
                 event.getId().longValue());
+    }
+
+    public void testGetEventDetails() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        ServerHistoryEvent event = new ServerHistoryEvent();
+        event.setServer(server);
+        event.setDetails("details");
+        event.setSummary("summary");
+
+        Set history = server.getHistory();
+        server.setHistory(history);
+        TestUtils.saveAndFlush(event);
+        TestUtils.saveAndFlush(server);
+
+        Action action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
+                Arrays.asList("channels", "packages"), new Date());
+
+        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+
+        ActionFactory.save(action);
+        commitAndCloseSession();
+
+        // Retrieve the action event detail
+        final int sid = server.getId().intValue();
+
+        SystemEventDetailsDto eventDetail = handler.getEventDetails(admin, sid, event.getId().intValue());
+
+        assertNotNull(eventDetail);
+        assertEquals(eventDetail.getId(), eventDetail.getId());
+        assertNull(eventDetail.getCreated());
+        assertNull(eventDetail.getPickedUp());
+        assertNotNull(eventDetail.getCompleted());
+        assertNull(eventDetail.getHistoryTypeName());
+        assertEquals("summary", eventDetail.getSummary());
+        assertEquals("(n/a)", eventDetail.getHistoryStatus());
+        assertNull(eventDetail.getEarliestAction());
+        assertNull(eventDetail.getResultMsg());
+        assertNull(eventDetail.getResultCode());
+
+        eventDetail = handler.getEventDetails(admin, sid, action.getId().intValue());
+
+        assertNotNull(eventDetail);
+        assertEquals(action.getId(), eventDetail.getId());
+        assertNotNull(eventDetail.getCreated());
+        assertNotNull(eventDetail.getPickedUp());
+        assertNull(eventDetail.getCompleted());
+        assertEquals("states.apply", eventDetail.getHistoryType());
+        assertEquals("Apply states", eventDetail.getHistoryTypeName());
+        assertEquals("Apply states [channels, packages] scheduled by " + admin.getLogin(), eventDetail.getSummary());
+        assertEquals("Picked Up", eventDetail.getHistoryStatus());
+        assertNotNull(eventDetail.getEarliestAction());
+        assertNull(eventDetail.getResultMsg());
+        assertNull(eventDetail.getResultCode());
     }
 
     public void testGetRelevantErrata() throws Exception {
@@ -2473,8 +2542,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         try {
             handler.listMigrationTargets(admin, server.getId().intValue());
         }
-        catch(FaultException e) {
-            if(e.getMessage().contains("Server has no Products installed")) {
+        catch (FaultException e) {
+            if (e.getMessage().contains("Server has no Products installed")) {
                 thrown = true;
             }
         }
@@ -2527,7 +2596,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
 
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Performance Computing 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(),
+                "SUSE Linux Enterprise High Performance Computing 12 SP2");
         assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
 
@@ -2584,9 +2654,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
 
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP2");
+        assertContains(result.get(0).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP2");
         assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+        assertContains(result.get(1).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
     public void testListMigrationTargetExtensionNotSynced() throws Exception {
@@ -2647,7 +2719,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNotEmpty("no target found", result);
         assertEquals(1, result.size());
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+        assertContains(result.get(0).get("friendly").toString(),
+                "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
     public void testGetInstalledProducts() throws Exception {
@@ -2806,7 +2879,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         try {
             getMockedHandler().createSystemProfile(admin, "test system", Collections.emptyMap());
             fail("An exception should have been thrown.");
-        } catch (InvalidParameterException e) {
+        }
+        catch (InvalidParameterException e) {
             // no-op
         }
     }
@@ -2867,8 +2941,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler systemHandler = getMockedHandler();
 
         // Installed 'Latest'(state = 0 & versionConstraint = 0)
-        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
-        assertEquals(1,result);
+        int  result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
+        assertEquals(1, result);
         Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
         Set<PackageState> pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2883,8 +2958,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
 
         // Installed 'Any'(state =0 versionConstraint = 1)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 1);
-        assertEquals(1,result);
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2898,9 +2974,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
-        assertEquals(1,result);
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2913,9 +2991,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
-        assertEquals(1,result);
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(0, pstates.size());
@@ -2946,9 +3026,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             assertContains(e.getMessage(), "not available in assigned channels");
         }
 
-        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        int result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
-        assertEquals(1,result);
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        int result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1, result);
         Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
         Set<PackageState>  pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
@@ -2961,9 +3043,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             }
         }
 
-        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
-        assertEquals(1,result);
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be
+        // used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1, result);
         sstate = StateFactory.latestStateRevision(server);
         pstates = sstate.get().getPackageStates();
         assertEquals(0, pstates.size());
@@ -2989,7 +3073,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // IllegalArgumentException in case of invalid state
         try {
-            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 3, 1);
+            int actionId = systemHandler.updatePackageState(
+                    admin, minionServer.getId().intValue(), "test-package", 3, 1);
             fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
@@ -2997,7 +3082,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
         // IllegalArgumentException in case of invalid version constraint
         try {
-            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 2, 4);
+            int actionId = systemHandler.updatePackageState(
+                    admin, minionServer.getId().intValue(), "test-package", 2, 4);
             fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
@@ -3018,13 +3104,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
      * @throws Exception
      */
     public void testListPackageState() throws Exception {
-        MinionServer server =MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
 
         SystemHandler systemHandler = getMockedHandler();
 
-        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
-        assertEquals(1,result);
+        int  result = systemHandler.updatePackageState(
+                admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
+        assertEquals(1, result);
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
         assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());
@@ -3032,10 +3119,141 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(VersionConstraints.LATEST.id() == packageStates.iterator().next().getVersionConstraintId());
     }
 
+    /**
+     * Test the SystemHandler.refreshPillar method
+     * @throws Exception if anything failed
+     */
+    public void testRefreshPillar() throws Exception {
+        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(admin);
+        Server server3 = ServerFactoryTest.createTestServer(admin);
+
+        SystemHandler systemHandler = getMockedHandler();
+        List<Integer> skipped = systemHandler.refreshPillar(admin, "General",
+                List.of(server1.getId().intValue(), server2.getId().intValue(), server3.getId().intValue()));
+        assertEquals(1, skipped.size());
+        assertEquals(Integer.valueOf(server3.getId().intValue()), skipped.get(0));
+    }
+
+    /**
+     * Test the SystemHandler.changeProxy method
+     * @throws Exception if anything failed
+     */
+    public void testChangeProxy() throws Exception {
+        SystemHandler systemHandler = getMockedHandler();
+        ActionManager.setTaskomaticApi(systemHandler.getTaskomaticApi());
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer minionSsh1 = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer minionSsh2 = MinionServerFactoryTest.createTestMinionServer(admin);
+        minionSsh1.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        minionSsh2.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
+
+        Server proxy = ServerFactoryTest.createTestProxyServer(admin, true);
+        proxy.setHostname("testproxy");
+
+        List<Long> actions = systemHandler.changeProxy(admin,
+                                List.of(minion.getId().intValue()), proxy.getId().intValue());
+
+        assertEquals(1, actions.size());
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("bootstrap.set_proxy", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for normal minions the new proxy appears in the pillar of the scheduled state action
+        assertEquals(proxy.getHostname(), details.getPillarsMap().get().get("mgr_server"));
+
+        actions = systemHandler.changeProxy(admin,
+                        List.of(minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                        proxy.getId().intValue());
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("channels", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for ssh minions the proxy is updated directly
+        assertEquals(proxy.getHostname(), minionSsh1.getFirstServerPath().get().getHostname());
+        assertEquals(proxy.getHostname(), minionSsh2.getFirstServerPath().get().getHostname());
+
+        // mix of normal and ssh minions creates 2 actions
+        actions = systemHandler.changeProxy(admin,
+                    List.of(minion.getId().intValue(), minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                    proxy.getId().intValue());
+
+        assertEquals(2, actions.size());
+
+        // back to direct connection to SUMA
+        actions = systemHandler.changeProxy(admin, List.of(minion.getId().intValue()), 0);
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("bootstrap.set_proxy", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // direct connection to SUMA
+        assertEquals(ConfigDefaults.get().getCobblerHost(), details.getPillarsMap().get().get("mgr_server"));
+
+        actions = systemHandler.changeProxy(admin,
+                             List.of(minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),
+                             0);
+
+        assertEquals(1, actions.size());
+        action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        details = action.getDetails();
+        assertNotNull(details);
+        assertEquals(1, details.getMods().size());
+        assertEquals("channels", details.getMods().get(0));
+        assertFalse(details.isTest());
+
+        // for ssh minions directly connected to SUMA the path should be empty
+        assertEquals(0, minionSsh1.getServerPaths().size());
+        assertEquals(0, minionSsh2.getServerPaths().size());
+
+        // only normal minions are supported, not proxies
+        try {
+            actions = systemHandler.changeProxy(admin, List.of(proxy.getId().intValue()), proxy.getId().intValue());
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            // success
+        }
+
+        // proxy is not a proxy
+        try {
+            actions = systemHandler.changeProxy(admin,
+                        List.of(minionSsh1.getId().intValue()),
+                        minion.getId().intValue());
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            // success
+        }
+    }
+
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
+                systemManager, serverGroupManager);
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

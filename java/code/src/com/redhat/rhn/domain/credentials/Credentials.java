@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,14 +15,15 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.user.User;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.user.User;
 
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
@@ -36,13 +37,17 @@ public class Credentials extends BaseDomainHelper {
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
     public static final String TYPE_REGISTRY = "registrycreds";
+    public static final String TYPE_CLOUD_RMT = "cloudrmt";
 
     private Long id;
     private User user;
     private CredentialsType type;
     private String url;
+    private byte[] extraAuthData;
     private String username;
     private String encodedPassword;
+
+    private PaygSshData paygSshData;
 
     /**
      * Get the ID of this object.
@@ -162,6 +167,22 @@ public class Credentials extends BaseDomainHelper {
         else {
             this.encodedPassword = null;
         }
+    }
+
+    public byte[] getExtraAuthData() {
+        return extraAuthData;
+    }
+
+    public void setExtraAuthData(byte[] extraAuthDataIn) {
+        this.extraAuthData = extraAuthDataIn;
+    }
+
+    public PaygSshData getPaygSshData() {
+        return paygSshData;
+    }
+
+    public void setPaygSshData(PaygSshData paygSshDataIn) {
+        this.paygSshData = paygSshDataIn;
     }
 
     /**

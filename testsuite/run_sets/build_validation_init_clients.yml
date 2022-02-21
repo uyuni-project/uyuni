@@ -39,5 +39,9 @@
 - features/build_validation/init_clients/debian9_ssh_minion.feature
 - features/build_validation/init_clients/debian10_minion.feature
 - features/build_validation/init_clients/debian10_ssh_minion.feature
+- features/build_validation/init_clients/debian11_minion.feature
+- features/build_validation/init_clients/debian11_ssh_minion.feature
+
+- features/build_validation/init_clients/opensuse153arm_minion.feature
 
 ## Init clients END ###

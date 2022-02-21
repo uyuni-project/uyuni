@@ -14,6 +14,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="playbookPath" column="playbook_path" type="string" />
         <property name="inventoryPath" column="inventory_path" type="string" />
         <property name="testMode" column="test_mode" type="yes_no"/>
+        <property name="flushCache" column="flush_cache" type="yes_no"/>
         <property name="created" type="timestamp" insert="false" update="false" />
         <property name="modified" type="timestamp" insert="false" update="false" />
         <many-to-one name="parentAction" column="action_id" class="com.redhat.rhn.domain.action.Action"

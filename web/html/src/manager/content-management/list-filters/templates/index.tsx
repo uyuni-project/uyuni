@@ -1,8 +1,10 @@
-import { FormContext, Select } from "components/input";
 import * as React from "react";
+
+import { FormContext, Select } from "components/input";
+
 import { Props as FilterFormProps } from "../filter-form";
-import LivePatching from "./live-patching";
 import AppStreams from "./app-streams";
+import LivePatching from "./live-patching";
 
 export enum Template {
   LivePatchingSystem = "LivePatchingSystem",
@@ -37,7 +39,7 @@ export default (props: FilterFormProps) => {
     {
       label: t("AppStream modules with defaults"),
       value: Template.AppStreamsWithDefaults,
-    }
+    },
   ];
   return (
     <>

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,12 @@
  */
 package com.redhat.rhn.manager.audit.scap;
 
+import com.redhat.rhn.domain.audit.XccdfTestResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.redhat.rhn.domain.audit.XccdfTestResult;
 
 /**
  * TestResultDiffer - Facility for comparison of xccdf:TestResult

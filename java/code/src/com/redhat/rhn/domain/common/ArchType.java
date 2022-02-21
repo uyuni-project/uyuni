@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

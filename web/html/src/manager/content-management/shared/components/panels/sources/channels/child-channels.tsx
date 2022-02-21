@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Highlight } from "components/table/Highlight";
-import { ChannelAnchorLink } from "components/links";
+
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import { ChannelType } from "core/channels/type/channels.type";
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
+import { ChannelType } from "core/channels/type/channels.type";
+
+import { ChannelAnchorLink } from "components/links";
+import { Highlight } from "components/table/Highlight";
 
 type PropsType = {
   base: ChannelType;
@@ -26,7 +28,7 @@ const ChildChannels = (props: PropsType) => {
     <>
       {props.childChannelsId
         .map((cId: number): ChannelType => props.channelsTree.channelsById[cId])
-        .map(c => {
+        .map((c) => {
           const toolTip = dependenciesTooltip(c.id, Object.values(props.channelsTree.channelsById));
           const mandatoryChannelsForBaseId: Set<number> | null | undefined =
             props.base && requiredChannels.get(props.base.id);
@@ -39,7 +41,7 @@ const ChildChannels = (props: PropsType) => {
                 id={"child_" + c.id}
                 name="childChannels"
                 checked={props.selectedChannelsIdsInGroup.includes(c.id)}
-                onChange={event => props.onChannelToggle(parseInt(event.target.value, 10))}
+                onChange={(event) => props.onChannelToggle(parseInt(event.target.value, 10))}
               />
               <label title={toolTip} htmlFor={"child_" + c.id}>
                 <Highlight enabled={(props.search || "").length > 0} text={c.name} highlight={props.search}></Highlight>

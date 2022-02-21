@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:04:10 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * integrate new TLS Certificate deployment tool
+
+-------------------------------------------------------------------
+Tue Jan 18 13:58:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Update Squid config only when available
+  * Remove outdated Squid config cleanup code
+
+-------------------------------------------------------------------
+Fri Dec 03 12:25:40 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * during setup detect venv-salt-minion
+
+-------------------------------------------------------------------
+Fri Nov 05 13:51:44 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * use system default for SSLProtocol
+
+-------------------------------------------------------------------
 Mon Aug 09 11:02:43 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

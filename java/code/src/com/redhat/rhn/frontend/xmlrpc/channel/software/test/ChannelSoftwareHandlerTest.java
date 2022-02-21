@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -36,7 +35,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
@@ -55,7 +53,6 @@ import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -66,12 +63,17 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -80,9 +82,7 @@ import org.jmock.lib.concurrent.Synchroniser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +100,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
     private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
@@ -108,14 +108,15 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             sshMinionBootstrapper
     );
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
-    private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    new ServerGroupManager());
+    private SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+    private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+            systemManager, serverGroupManager);
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
             systemHandler);
     private ErrataHandler errataHandler = new ErrataHandler();
@@ -299,7 +300,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelFactory.save(child2);
         assertFalse(child2.isBaseChannel());
 
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
         int sid = server.getId().intValue();
@@ -327,7 +328,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetBaseChannel() throws Exception {
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
 
@@ -572,17 +573,17 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         Map<String, String> details = new HashMap<>();
         details.put("checksum_label", "sha256");
-        details.put("name","new-name");
+        details.put("name", "new-name");
         details.put("summary", "new-summary");
         details.put("description", "new-dsc");
-        details.put("maintainer_name","foo");
-        details.put("maintainer_email","foo@bar.com");
-        details.put("maintainer_phone","+18098098");
-        details.put("gpg_key_url","http://gpg.url");
-        details.put("gpg_key_id","AE1234BC");
-        details.put("gpg_key_fp"," CA20 8686 2BD6 9DFC 65F6 ECC4 2191 80CD DB42 A60E");
+        details.put("maintainer_name", "foo");
+        details.put("maintainer_email", "foo@bar.com");
+        details.put("maintainer_phone", "+18098098");
+        details.put("gpg_key_url", "http://gpg.url");
+        details.put("gpg_key_id", "AE1234BC");
+        details.put("gpg_key_fp", " CA20 8686 2BD6 9DFC 65F6 ECC4 2191 80CD DB42 A60E");
         details.put("gpg_check", "True");
-        csh.setDetails(admin,c.getLabel(),details);
+        csh.setDetails(admin, c.getLabel(), details);
 
         channelDetailsEquality(c, result);
 
@@ -651,7 +652,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
-                "apiTestChanName", "apiTestSummary", "channel-x86_64", null, "sha1", new HashMap<String, String>(),false);
+                "apiTestChanName", "apiTestSummary", "channel-x86_64", null,
+                "sha1", new HashMap<String, String>(), false);
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
         assertNotNull(c);
@@ -852,7 +854,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel childChan = ChannelFactoryTest.createTestChannel(admin);
         childChan.setParentChannel(baseChan);
 
-        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                 serverGroupManager);
 
         int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());

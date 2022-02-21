@@ -29,7 +29,7 @@ describe("immer produce", () => {
 
   // These operations cover everything that we have in the codebase right now: assignments, deletes, modifications
   const standardProduce = (draft: Input) => {
-    draft.bar = draft.bar.map(item => {
+    draft.bar = draft.bar.map((item) => {
       // We intentionally modify a nested object instead of creating a new one to test whether it's safe
       item.value = item.value * 2;
       return item;

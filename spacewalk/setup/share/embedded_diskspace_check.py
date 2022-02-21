@@ -103,7 +103,7 @@ def paths2freespace(paths):
     pathsd = {} # 1:1
     for path in paths:
         vfs = os.statvfs(path)
-        pathsd[path] = (six.PY3 and int or long)(vfs.f_bavail) * vfs.f_bsize
+        pathsd[path] = (six.PY3 and int)(vfs.f_bavail) * vfs.f_bsize
 
     return pathsd
 
@@ -217,5 +217,5 @@ def main():
 if __name__ == "__main__":
     """
     Run main function if this script is called directly.
-    """
+    """      # pylint: disable=pointless-string-statement
     main()

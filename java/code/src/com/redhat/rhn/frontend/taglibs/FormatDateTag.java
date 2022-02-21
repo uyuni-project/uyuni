@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.taglibs;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -218,10 +220,7 @@ public class FormatDateTag extends TagSupport {
     protected String getFormattedDate() {
         String fmtDate;
         // use spacewalk defaults if the formatter is not customized
-        if (!isFormatCustomized()) {
-            fmtDate = LocalizationService.getInstance().formatDate(getValue());
-        }
-        else {
+        if (isFormatCustomized()) {
             DateFormat fmt = getFormatter();
             fmt.setTimeZone(LocalizationService.getInstance().determineTimeZone());
             if (getPattern() != null) {
@@ -229,6 +228,9 @@ public class FormatDateTag extends TagSupport {
                 simplefmt.applyPattern(pattern);
             }
             fmtDate = fmt.format(value);
+        }
+        else {
+            fmtDate = LocalizationService.getInstance().formatDate(getValue());
         }
         return fmtDate;
     }
@@ -369,7 +371,8 @@ public class FormatDateTag extends TagSupport {
         dateStyle = null;
         timeStyle = null;
         type = null;
-        pattern = null;
+        // default to RHN_CUSTOM_DATEFORMAT (consistency with the ReactJS frontend)
+        pattern = LocalizationService.RHN_CUSTOM_DATEFORMAT;
     }
 
 }

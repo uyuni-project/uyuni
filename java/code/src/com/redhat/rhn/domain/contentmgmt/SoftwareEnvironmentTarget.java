@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,16 +15,18 @@
 
 package com.redhat.rhn.domain.contentmgmt;
 
+import static java.util.Optional.of;
+
 import com.redhat.rhn.domain.channel.Channel;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Optional;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-
-import static java.util.Optional.of;
 
 /**
  * Content Environment Target targeting software Channel

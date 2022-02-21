@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,13 +14,13 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -36,6 +36,9 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -419,7 +422,19 @@ public interface SaltApi {
      * @param minionId of the target minion.
      * @return raw salt call result in json format.
      */
-    Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId);
+    Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId);
+
+    /**
+     * Execute generic salt call.
+     * @param call salt call to execute.
+     * @param minionId of the target minion.
+     * @return raw salt call result in json format.
+     * @deprecated this method should not be used for new code
+     */
+    @Deprecated
+    default Optional<JsonElement> rawJsonCallOld(LocalCall<?> call, String minionId) {
+        return callSync(new ElementCallJson(call), minionId);
+    }
 
     /**
      * @deprecated this function is too general and should be replaced by more specific functionality.

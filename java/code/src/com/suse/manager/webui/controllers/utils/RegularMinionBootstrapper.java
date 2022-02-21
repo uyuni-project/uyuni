@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,14 +18,16 @@ package com.suse.manager.webui.controllers.utils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.wheel.Key;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -90,8 +92,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     protected BootstrapResult bootstrapInternal(BootstrapParameters input, User user,
                                                 String defaultContactMethod) {
         String minionId = input.getHost();
-        MinionPendingRegistrationService.addMinion(
-                user, minionId, defaultContactMethod, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, minionId, defaultContactMethod);
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
@@ -113,4 +114,5 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         LOG.info("Minion bootstrap success: " + result.isSuccess());
         return result;
     }
+
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,8 +15,11 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -30,23 +33,26 @@ import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.ssm.ScheduleChannelChangesResultDto;
+import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
+import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.redhat.rhn.manager.ssm.SsmManager;
+import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.suse.manager.webui.utils.gson.SsmAllowedBaseChannelsJson;
-import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
-import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.suse.manager.webui.utils.gson.SsmScheduleChannelChangesJson;
 import com.suse.manager.webui.utils.gson.SsmScheduleChannelChangesResultJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import spark.Request;
-import spark.Response;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -57,10 +63,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import spark.Request;
+import spark.Response;
 
 /**
  * Controller class providing backend code for the SSM pages.
@@ -206,5 +210,4 @@ public class SsmController {
         );
         return json(GSON, response, ResultJson.success(result));
     }
-
 }

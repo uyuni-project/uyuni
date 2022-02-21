@@ -1,2 +1,2 @@
-[dbschema]
-rhn-conf/rhn_server_xmlrpc.conf=4.3.1
+[rhn-conf/rhn_server_xmlrpc.conf]
+min_schema_version=4.3.1

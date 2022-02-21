@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Wed Jan 26 11:48:40 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Fix installation problem for SLE15SP4 due missing python-selinux
+
+-------------------------------------------------------------------
+Tue Jan 18 13:30:50 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Fix python selinux package name depending on build target (bsc#1193600)
+  * Do not build python 2 package for SLE15SP4 and higher
+
+-------------------------------------------------------------------
+Fri Nov 05 13:33:47 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Remove unused legacy code
+
+-------------------------------------------------------------------
 Mon Aug 09 10:48:16 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

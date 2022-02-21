@@ -1,16 +1,19 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { AsyncButton, LinkButton } from "components/buttons";
-import { TopPanel } from "components/panels/TopPanel";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
-import { Table } from "components/table/Table";
-import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
-import { Messages } from "components/messages";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import SpaRenderer from "core/spa/spa-renderer";
+import { Messages } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/list-stores.jade
 declare global {
@@ -42,9 +45,6 @@ type State = {
 class ImageStores extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    ["reloadData", "handleSelectItems", "selectStore", "deleteStores"].forEach(
-      method => (this[method] = this[method].bind(this))
-    );
     this.state = {
       messages: [],
       imagestores: [],
@@ -63,14 +63,14 @@ class ImageStores extends React.Component<Props, State> {
     return true;
   }
 
-  reloadData() {
-    Network.get("/rhn/manager/api/cm/imagestores").then(data => {
+  reloadData = () => {
+    Network.get("/rhn/manager/api/cm/imagestores").then((data) => {
       this.setState({
         imagestores: data,
       });
     });
     this.clearMessages();
-  }
+  };
 
   clearMessages() {
     this.setState({
@@ -78,23 +78,20 @@ class ImageStores extends React.Component<Props, State> {
     });
   }
 
-  handleSelectItems(items) {
+  handleSelectItems = (items) => {
     this.setState({
       selectedItems: items,
     });
-  }
+  };
 
-  selectStore(row) {
+  selectStore = (row) => {
     this.setState({
       selected: row,
     });
-  }
+  };
 
-  deleteStores(idList) {
-    return Network.post(
-      "/rhn/manager/api/cm/imagestores/delete",
-      idList
-    ).then(data => {
+  deleteStores = (idList) => {
+    return Network.post("/rhn/manager/api/cm/imagestores/delete", idList).then((data) => {
       if (data.success) {
         this.setState({
           messages: (
@@ -107,14 +104,14 @@ class ImageStores extends React.Component<Props, State> {
               ]}
             />
           ),
-          imagestores: this.state.imagestores.filter(store => !idList.includes(store.id)),
-          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
+          imagestores: this.state.imagestores.filter((store) => !idList.includes(store.id)),
+          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
         });
       } else {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -122,7 +119,7 @@ class ImageStores extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   isFiltered(criteria) {
     return criteria && criteria.length > 0;
@@ -166,9 +163,8 @@ class ImageStores extends React.Component<Props, State> {
           {this.state.messages}
           <Table
             data={this.state.imagestores}
-            identifier={imagestore => imagestore.id}
+            identifier={(imagestore) => imagestore.id}
             initialSortColumnKey="id"
-            initialItemsPerPage={window.userPrefPageSize}
             searchField={<SearchField filter={this.searchData} />}
             selectable
             selectedItems={this.state.selectedItems}
@@ -179,14 +175,14 @@ class ImageStores extends React.Component<Props, State> {
               width="50%"
               comparator={Utils.sortByText}
               header={t("Label")}
-              cell={row => row.label}
+              cell={(row) => row.label}
             />
             <Column
               columnKey="type"
               width="35%"
               comparator={Utils.sortByText}
               header={t("Type")}
-              cell={row => typeMap[row.type]}
+              cell={(row) => typeMap[row.type]}
             />
             {window.isAdmin && (
               <Column
@@ -194,7 +190,7 @@ class ImageStores extends React.Component<Props, State> {
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t("Actions")}
-                cell={row => {
+                cell={(row) => {
                   return (
                     <div className="btn-group">
                       <LinkButton
@@ -228,7 +224,7 @@ class ImageStores extends React.Component<Props, State> {
             </span>
           }
           item={this.state.selected}
-          onConfirm={item => this.deleteStores([item.id])}
+          onConfirm={(item) => this.deleteStores([item.id])}
           onClosePopUp={() => this.selectStore(undefined)}
         />
         <DeleteDialog

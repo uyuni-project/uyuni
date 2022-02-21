@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.domain.common;
 
-import java.util.Calendar;
-import java.util.Date;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.BaseDomainHelper;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * ResetPassword

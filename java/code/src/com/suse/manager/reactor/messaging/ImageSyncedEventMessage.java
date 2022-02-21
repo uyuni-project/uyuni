@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,9 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

@@ -26,7 +26,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I check the "prometheus" formula
     And I check the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Configure Prometheus formula
     When I follow "Formulas" in the content area
@@ -63,7 +63,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I uncheck the "prometheus" formula
     And I uncheck the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Cleanup: apply highstate after test monitoring
     And I follow "States" in the content area

@@ -50,13 +50,17 @@ done
 plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
 plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
 
+plugin_command "find /srv/tomcat/webapps/rhn/WEB-INF/lib/ | xargs file | grep broken"
+plugin_command "find /usr/share/spacewalk/taskomatic/ | xargs file | grep broken"
+plugin_command "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
+
 section_header "SSL Configuration"
 
-pconf_files /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-plugin_command "/bin/ls -l --time-style=long-iso /srv/www/htdocs/pub/ | grep -i trusted"
+plugin_command "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
 
 
 plugin_command "psql --version"

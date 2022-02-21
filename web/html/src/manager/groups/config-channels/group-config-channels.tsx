@@ -1,8 +1,11 @@
 import * as React from "react";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
 import { ConfigChannels } from "components/config-channels";
 import { Utils as MessagesUtils } from "components/messages";
+
 import Network from "utils/network";
-import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/build/classes/com/suse/manager/webui/templates/groups/custom.jade
 declare global {
@@ -16,14 +19,11 @@ function matchUrl(target) {
 }
 
 function applyRequest(component) {
-  return Network.post(
-    "/rhn/manager/api/states/apply",
-    {
-      id: window.groupId,
-      type: "GROUP",
-      states: ["custom_groups"],
-    },
-  ).then(data => {
+  return Network.post("/rhn/manager/api/states/apply", {
+    id: window.groupId,
+    type: "GROUP",
+    states: ["custom_groups"],
+  }).then((data) => {
     component.setState({
       messages: MessagesUtils.info(
         t("Applying the config channels has been scheduled for each minion server in this group")
@@ -33,14 +33,11 @@ function applyRequest(component) {
 }
 
 function saveRequest(states) {
-  return Network.post(
-    "/rhn/manager/api/states/save",
-    {
-      id: window.groupId,
-      type: "GROUP",
-      channels: states,
-    }
-  );
+  return Network.post("/rhn/manager/api/states/save", {
+    id: window.groupId,
+    type: "GROUP",
+    channels: states,
+  });
 }
 
 export const renderer = () =>

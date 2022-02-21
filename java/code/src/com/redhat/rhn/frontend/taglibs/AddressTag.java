@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,12 +18,13 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * <strong>AddressTag</strong><br>

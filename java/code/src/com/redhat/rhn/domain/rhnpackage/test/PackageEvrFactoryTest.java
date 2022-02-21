@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,6 +45,7 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
      * @param epoch the epoch
      * @param version the version
      * @param release the release
+     * @param type the package type
      * @return Returns a test PackageEvr
      */
     public static PackageEvr createTestPackageEvr(String epoch,
@@ -59,6 +60,7 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
 
     /**
      * Test method to create a test PackageEvr
+     * @param packageType the package type
      * @return Returns a test PackageEvr
      */
     public static PackageEvr createTestPackageEvr(PackageType packageType) {

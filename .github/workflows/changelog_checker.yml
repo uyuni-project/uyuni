@@ -1,7 +1,7 @@
 name: changelog_test
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited, synchronize, reopened, closed]
 
 jobs:
@@ -14,10 +14,13 @@ jobs:
       with:
         fetch-depth: 1
     - uses: actions/setup-ruby@v1
-    - name: Run a changelog checker
+    - id: files
+      uses: Ana06/get-changed-files@v2.0.0
+      with:
+        filter: '*.changes'
+    - name: Run changelog checker
       run: |
-        files_modified=`git diff --name-only "origin/$GITHUB_BASE_REF..HEAD" | xargs`
-        ruby .github/scripts/changelog.rb "$files_modified"
+        ruby .github/scripts/changelog.rb ${{ steps.files.outputs.added_modified }}
         
   changelog_approved:
     if: github.event.action != 'closed'

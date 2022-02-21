@@ -16,7 +16,7 @@ Feature: Operate an Ansible control node in SSH minion
   Scenario: Pre-requisite: Enable client tools repositories
     Given I am on the Systems overview page of this "ssh_minion"
     When I enable client tools repositories on "ssh_minion"
-    And I enable repository "os_pool_repo os_update_repo os_ltss_repo" on this "ssh_minion"
+    And I enable repository "os_pool_repo os_update_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"
 
   Scenario: Enable "Ansible control node" system type
@@ -90,5 +90,5 @@ Feature: Operate an Ansible control node in SSH minion
   Scenario: Cleanup: Disable client tools channel
     Given I am on the Systems overview page of this "ssh_minion"
     When I disable client tools repositories on "ssh_minion"
-    And I disable repository "os_pool_repo os_update_repo os_ltss_repo" on this "ssh_minion"
+    And I disable repository "os_pool_repo os_update_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,6 @@ import static com.redhat.rhn.common.util.FileUtils.setAttributes;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
@@ -38,6 +37,7 @@ import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -129,7 +129,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                 }
             }
 
-            SaltStateGeneratorService.INSTANCE.generateMgrConfPillar(Paths.get(SUMA_PILLAR_DATA_PATH));
+            SaltStateGeneratorService.generateMgrConfPillar();
 
             Path saltPath = suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR);
             Path oldSaltPath = saltGenerationTempDir.resolve(

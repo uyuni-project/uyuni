@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="gu">
     <body>
@@ -1172,28 +1172,42 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
+      <target state="new"/>
   </trans-unit>
       <trans-unit id="Ansible Control Node" xml:space="preserve">
         <source>Control Node</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
+      <target state="new"/>
   </trans-unit>
       <trans-unit id="Playbooks" xml:space="preserve">
         <source>Playbooks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
+      <target state="new"/>
   </trans-unit>
       <trans-unit id="Inventories" xml:space="preserve">
         <source>Inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="configchannel.nav.systems.appstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
+        </context-group>
+      <target state="new"/>
   </trans-unit>
       </body>
   </file>

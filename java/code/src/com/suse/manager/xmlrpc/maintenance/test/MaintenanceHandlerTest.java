@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.suse.manager.xmlrpc.maintenance.test;
+
+import static java.util.Collections.emptyList;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -40,8 +42,6 @@ import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcSerializer;
 
-import static java.util.Collections.emptyList;
-
 public class MaintenanceHandlerTest extends BaseHandlerTestCase {
 
     private MaintenanceHandler handler = new MaintenanceHandler();
@@ -64,12 +64,17 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
         Server sapServer = ServerTestUtils.createTestSystem(admin);
         Server coreServer = ServerTestUtils.createTestSystem(admin);
 
-        MaintenanceCalendar mcal = handler.createCalendar(admin, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = handler.createSchedule(admin, "SAP Maintenance Window", "multi", mcal.getLabel());
-        MaintenanceSchedule coreSchedule = handler.createSchedule(admin, "Core Server Window", "multi", mcal.getLabel());
+        MaintenanceCalendar mcal = handler.createCalendar(
+                admin, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = handler.createSchedule(
+                admin, "SAP Maintenance Window", "multi", mcal.getLabel());
+        MaintenanceSchedule coreSchedule = handler.createSchedule(
+                admin, "Core Server Window", "multi", mcal.getLabel());
 
-        handler.assignScheduleToSystems(admin, sapSchedule.getName(), Collections.singletonList(sapServer.getId().intValue()), emptyList());
-        handler.assignScheduleToSystems(admin, coreSchedule.getName(), Collections.singletonList(coreServer.getId().intValue()), emptyList());
+        handler.assignScheduleToSystems(
+                admin, sapSchedule.getName(), Collections.singletonList(sapServer.getId().intValue()), emptyList());
+        handler.assignScheduleToSystems(
+                admin, coreSchedule.getName(), Collections.singletonList(coreServer.getId().intValue()), emptyList());
 
 
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
@@ -102,10 +107,12 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, coreActionsAfter.size());
 
         assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapAction2)).count());
-        assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapActionEx)).count()); //Action not tied to maintenance mode
+        assertEquals(1, sapActionsAfter.stream()
+                .filter(a -> a.equals(sapActionEx)).count()); //Action not tied to maintenance mode
 
         assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreAction1)).count());
-        assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
+        assertEquals(1, coreActionsAfter.stream()
+                .filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
 
         for (RescheduleResult r : result) {
             RescheduleResultSerializer serializer = new RescheduleResultSerializer();

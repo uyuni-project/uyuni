@@ -32,6 +32,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="issueDate" column="issue_date" type="timestamp" />
         <property name="updateDate" column="update_date" type="timestamp" />
         <property name="notes" column="notes" type="string" length="4000" />
+        <property name="rights" column="rights" type="string" length="100" />
         <property name="refersTo" column="refers_to" type="string"
             length="4000" />
         <property name="advisoryName" column="advisory_name" type="string"
@@ -189,6 +190,22 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="pid" type="long" />
         <return-scalar column="sid" type="long" />
     </sql-query>
+
+    <sql-query name="Errata.retractedPackagesByNevra">
+        <![CDATA[
+            SELECT pid, sid
+            FROM suseServerChannelsRetractedPackagesView
+                JOIN rhnpackage p on p.id = pid
+                JOIN rhnpackagename pn on pn.id = p.name_id
+                JOIN rhnpackageevr pevr on pevr.id = p.evr_id
+                JOIN rhnpackagearch parch on parch.id = p.package_arch_id
+            WHERE (pn.name || '-' || COALESCE(pevr.epoch || ':', '') || pevr.version || '-' || pevr.release || '.' || parch.label) in (:nevras)
+                AND sid in (:sids)
+        ]]>
+        <return-scalar column="pid" type="long" />
+        <return-scalar column="sid" type="long" />
+    </sql-query>
+
     <sql-query name="Errata.searchById">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
                     e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,

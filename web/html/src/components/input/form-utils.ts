@@ -1,5 +1,5 @@
 import _isNil from "lodash/isNil";
-import validator from 'validator';
+import validator from "validator";
 
 type SingleOrArray<T> = T | T[];
 interface TreeLikeModel<T = any> {
@@ -47,25 +47,29 @@ export function flattenModel<T = any>(treeModel: TreeLikeModel<T>): Record<strin
  * Remove the empty string and null values from the model.
  */
 export function stripBlankValues<T = any>(flatModel: Record<string, T>): Record<string, T> {
-  return Object.fromEntries(Object.entries(flatModel).filter(entry => {
-    if (typeof entry[1] === "string") {
-      return entry[1] !== "";
-    }
-    return !_isNil(entry[1]);
-  }));
+  return Object.fromEntries(
+    Object.entries(flatModel).filter((entry) => {
+      if (typeof entry[1] === "string") {
+        return entry[1] !== "";
+      }
+      return !_isNil(entry[1]);
+    })
+  );
 }
 
 /** Parse string values to integers where possible */
 export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, T> {
-  return Object.fromEntries(Object.entries(flatModel).map(entry => {
-    if (typeof entry[1] === "string" && (validator.isFloat(entry[1]) || validator.isInt(entry[1]))) {
-      const floatValue = Number.parseFloat(entry[1]);
-      if (!Number.isNaN(floatValue)) {
-        return [entry[0], floatValue];
+  return Object.fromEntries(
+    Object.entries(flatModel).map((entry) => {
+      if (typeof entry[1] === "string" && (validator.isFloat(entry[1]) || validator.isInt(entry[1]))) {
+        const floatValue = Number.parseFloat(entry[1]);
+        if (!Number.isNaN(floatValue)) {
+          return [entry[0], floatValue];
+        }
       }
-    }
-    return entry;
-  }));
+      return entry;
+    })
+  );
 }
 
 /**
@@ -91,8 +95,8 @@ export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T
   const mergeArrays = (model: any): any => {
     return Object.keys(model).reduce((result, key) => {
       const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
-      const mergedValue = typeof model[key] === "object" && !Array.isArray(model[key]) ?
-        mergeArrays(model[key]) : model[key];
+      const mergedValue =
+        typeof model[key] === "object" && !Array.isArray(model[key]) ? mergeArrays(model[key]) : model[key];
       if (matcher) {
         const name = matcher[1];
         const array = result[name] || [];
@@ -105,7 +109,7 @@ export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T
 
   Object.keys(flatModel)
     .sort()
-    .forEach(name => {
+    .forEach((name) => {
       aggregate(treeModel, name, flatModel[name]);
     });
 

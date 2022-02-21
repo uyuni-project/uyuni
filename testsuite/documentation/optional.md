@@ -355,18 +355,26 @@ Inside the testsuite, the scenarios that are tagged with
 are executed only if the HTTP proxy is available.
 
 
-## Portus server
+## Docker Registry server
 
-Using a Portus Docker access server when testing is not mandatory.
+Using a Docker Authenticated Registry server when testing is not mandatory.
 
-If you do not want a Portus server, do not define `PORTUS_URI` nor `PORTUS_CREDENTIALS`
+If you do not want an authenticated registry server, do not define `AUTH_REGISTRY` nor `AUTH_REGISTRY_CREDENTIALS`
 environment variables before you run the testsuite. That's all.
 
-If you want to specify a Portus server to be used when testing Docker, make the
-`PORTUS_URI` variable contain the URI of the Portus server,
-and place the credentials on that server in the `PORTUS_CREDENTIALS` separated
+If you want to specify an authenticated registry server to be used when testing Docker, make the
+`AUTH_REGISTRY` variable contain the URI of the registry server,
+and place the credentials on that server in the `AUTH_REGISTRY_CREDENTIALS` separated
 by a vertical bar:
 ```bash
-export PORTUS_URI = "hostname:port/path"
-export PORTUS_CREDENTIALS = "user|password"
+export AUTH_REGISTRY = "hostname:port/path"
+export AUTH_REGISTRY_CREDENTIALS = "user|password"
 ```
+
+In case you want to use a non-authenticated registry, you need to use:
+```bash
+export NO_AUTH_REGISTRY = "hostname:port/path"
+```
+
+You can also set this option from sumaform:
+https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#alternative-authenticated-docker-registry

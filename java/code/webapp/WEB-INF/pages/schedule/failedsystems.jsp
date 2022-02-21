@@ -26,7 +26,7 @@
         </rhn:column>
 
         <rhn:column header="failedsystems.jsp.failed">
-            <c:out value="${current.displayDate}"/>
+            <rhn:formatDate value="${current.date}" />
         </rhn:column>
 
         <rhn:column header="failedsystems.jsp.message">

@@ -120,10 +120,19 @@ class RPM_Header:
         """
         Get modularity label tag.
         Returns string of modularity label or None if tag is not there.
+
+        Fix: Some distributions use the DISTTAG (1155) tag instead of
+        MODULARITYLABEL (5096) to label modular packages in the format:
+        `module(n:s:v:c:a)`. We need to check this tag as a fallback
+        (bsc#1192487).
         """
         mtag = None
         if rpm.RPMTAG_MODULARITYLABEL in self.hdr.keys():
             mtag = self.hdr[rpm.RPMTAG_MODULARITYLABEL]
+        elif rpm.RPMTAG_DISTTAG in self.hdr.keys() \
+                and self.hdr[rpm.RPMTAG_DISTTAG].startswith(b"module("):
+            # Strip away 'module(...)' wrap
+            mtag = self.hdr[rpm.RPMTAG_DISTTAG][7:-1]
         return mtag
 
     def checksum_type(self):

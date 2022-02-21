@@ -48,14 +48,10 @@ describe("localizedMoment", () => {
   test("correctly rolls between zones", () => {
     const original = localizedMoment(validISOString);
     // This is not how we usually consume this, but it is a valid use case which covers corner cases
-    const zonedStringA = localizedMoment(original)
-      .tz(localizedMoment.userTimeZone)
-      .toISOString(true);
+    const zonedStringA = localizedMoment(original).tz(localizedMoment.userTimeZone).toISOString(true);
     expect(zonedStringA).toEqual("2020-01-30T15:00:00.000-08:00");
 
-    const zonedStringB = localizedMoment(zonedStringA)
-      .tz(localizedMoment.serverTimeZone)
-      .toISOString(true);
+    const zonedStringB = localizedMoment(zonedStringA).tz(localizedMoment.serverTimeZone).toISOString(true);
     // Note the shifted date
     expect(zonedStringB).toEqual("2020-01-31T08:00:00.000+09:00");
 

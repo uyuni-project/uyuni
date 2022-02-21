@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
+
+import com.mockobjects.helpers.TagTestHelper;
+import com.mockobjects.servlet.MockJspWriter;
+
 import java.util.Date;
+
 import javax.servlet.jsp.JspException;
 
 public class FormatDateTagTest extends RhnBaseTestCase {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,15 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 import com.redhat.rhn.taskomatic.task.ErrataQueue;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class ErrataQueueTest extends BaseTestCaseWithUser {
 

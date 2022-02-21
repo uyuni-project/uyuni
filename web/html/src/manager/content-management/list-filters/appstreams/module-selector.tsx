@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
-import { Select, FormContext } from "components/input";
+
+import { FormContext, Select } from "components/input";
 
 type ModuleSelectorProps = {
   modules: {
@@ -14,11 +15,11 @@ type ModuleSelectorProps = {
 
 export default function ModuleSelector(props: ModuleSelectorProps) {
   const formContext = useContext(FormContext);
-  const createOption = value => ({ value: value, label: value });
+  const createOption = (value) => ({ value: value, label: value });
   const moduleOptions = Object.keys(props.modules).map(createOption);
-  const getModuleName = ctx => ctx.model["moduleName"];
-  const getStreamOptions = ctx => ((props.modules[getModuleName(ctx)] || {}).streams || []).map(createOption);
-  const getDefaultStream = module => (props.modules[module] || {}).default;
+  const getModuleName = (ctx) => ctx.model["moduleName"];
+  const getStreamOptions = (ctx) => ((props.modules[getModuleName(ctx)] || {}).streams || []).map(createOption);
+  const getDefaultStream = (module) => (props.modules[module] || {}).default;
 
   return (
     <>

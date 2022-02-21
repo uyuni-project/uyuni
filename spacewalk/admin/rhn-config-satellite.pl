@@ -28,6 +28,8 @@ my $target = '';
 my @options = ();
 my @removals = ();
 my $help = '';
+# bsc#1190040
+my @allowed_target_files = qw(/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf);
 
 GetOptions("target=s" => \$target, "option=s" => \@options, "remove=s" => \@removals, "help" => \$help) or die $usage;
 
@@ -42,6 +44,10 @@ unless ($target and (@options || @removals)) {
 my %options = map { split(/=/,$_, 2) } @options;
 
 my $tmpfile = $target . ".bak.${PID}";
+
+if (! grep { $_ eq $target} @allowed_target_files) {
+  die("Cannot modify a file that is not a spacewalk config file: " . $target);
+}
 
 if (-e $target . ".orig") {
   unlink($target . ".orig") or die "Could not remove $target to ${target}.orig prior to new backup: $OS_ERROR";

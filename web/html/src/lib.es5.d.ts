@@ -1,12 +1,12 @@
 /**
  * Fixes https://github.com/microsoft/TypeScript/issues/16655 for `Array.prototype.filter()`
  * For example, using the fix the type of `bar` is `string[]` in the below snippet as it should be.
- * 
+ *
  *  const foo: (string | null | undefined)[] = [];
  *  const bar = foo.filter(Boolean);
- * 
+ *
  * For related definitions, see https://github.com/microsoft/TypeScript/blob/master/src/lib/es5.d.ts
- * 
+ *
  * Original licenses apply, see
  *  - https://github.com/microsoft/TypeScript/blob/master/LICENSE.txt
  *  - https://stackoverflow.com/help/licensing

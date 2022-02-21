@@ -131,7 +131,7 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
     if not isinstance(ca, list):
         ca = [ca]
 
-    rhns_ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]
+    rhns_ca_certs = ca or ["/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"]
     if cfg["enableProxy"]:
         proxyHost = config.getProxySetting()
     else:
@@ -173,7 +173,7 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
     if lang:
         s.setlang(lang)
 
-    # require RHNS-CA-CERT file to be able to authenticate the SSL connections
+    # require SSL CA file to be able to authenticate the SSL connections
     need_ca = [ True for i in s.serverList.serverList
                      if urlparse.urlparse(i)[0] == 'https']
     if need_ca:

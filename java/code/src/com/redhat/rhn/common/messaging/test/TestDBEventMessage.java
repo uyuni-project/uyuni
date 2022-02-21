@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,8 +31,9 @@ public class TestDBEventMessage implements EventDatabaseMessage {
     }
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public String toText() {
         return "This is a DB test";
     }

@@ -1,6 +1,8 @@
 import * as React from "react";
-import { NetsList } from "./nets-list";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { NetsList } from "./nets-list";
 
 type RendererProps = {
   serverId: string;

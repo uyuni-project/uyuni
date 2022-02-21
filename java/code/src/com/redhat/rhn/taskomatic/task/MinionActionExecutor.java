@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,13 +17,13 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
@@ -45,6 +45,16 @@ public class MinionActionExecutor extends RhnJavaJob {
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
     private SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+
+    @Override
+    public int getDefaultRescheduleTime() {
+        return 10;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "minion_action_executor";
+    }
 
     /**
      * @param context the job execution context
@@ -139,7 +149,7 @@ public class MinionActionExecutor extends RhnJavaJob {
         serverActions.forEach(sa -> {
             SystemManager.updateServerChannels(user, sa.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels(), null);
+                    sca.getDetails().getChannels());
             sa.setStatus(ActionFactory.STATUS_COMPLETED);
             sa.setCompletionTime(new Date());
             sa.setResultCode(0L);

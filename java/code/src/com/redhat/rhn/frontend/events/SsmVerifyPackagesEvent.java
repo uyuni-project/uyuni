@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,13 +14,14 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import java.util.Date;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.ActionChain;
+
 import org.hibernate.Transaction;
+
+import java.util.Date;
 
 /**
  * Event carrying information necessary to schedule package verifications on systems

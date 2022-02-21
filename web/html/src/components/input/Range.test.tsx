@@ -1,5 +1,6 @@
 import * as React from "react";
-import { render, screen, clear, type, waitForElementToBeRemoved } from "utils/test-utils";
+
+import { clear, render, screen, type, waitForElementToBeRemoved } from "utils/test-utils";
 
 import { Form } from "./Form";
 import { Range } from "./Range";
@@ -59,7 +60,7 @@ describe("Range", () => {
     expect(model).toStrictEqual({ port_start: "900", port_end: "903" });
   });
 
-  test("validation", async done => {
+  test("validation", async (done) => {
     onChange = () => done();
 
     renderWithForm(
@@ -69,8 +70,8 @@ describe("Range", () => {
         label="Port range"
         invalidHint={t("Both values need to be positive integers")}
         validators={[
-          value => Object.values(value).every(item => item != null),
-          value => Object.values(value).every(item => typeof item === "string" && item.match(/^[0-9]+$/)),
+          (value) => Object.values(value).every((item) => item != null),
+          (value) => Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/)),
           ({ port_start, port_end }) => parseInt(port_start, 10) <= parseInt(port_end, 10),
         ]}
       />

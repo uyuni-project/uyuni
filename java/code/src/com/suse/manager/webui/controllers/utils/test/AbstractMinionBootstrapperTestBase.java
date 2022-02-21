@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,21 +15,26 @@
 
 package com.suse.manager.webui.controllers.utils.test;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -38,9 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Base for tests for bootstrapping minions.
@@ -112,6 +114,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(empty()));
             allowing(mock).getProxy();
             will(returnValue(null));
+            allowing(mock).maybeGetReactivationKey();
+            will(returnValue(empty()));
         }});
     }
 
@@ -156,7 +160,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData(Optional.empty());
+            Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.empty());
             // return success when calling low-level bootstrap
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
@@ -187,6 +191,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(of(key.getKey())));
             allowing(input).getActivationKeys();
             will(returnValue(List.of(key.getKey())));
+            allowing(input).maybeGetReactivationKey();
+            will(returnValue(null));
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
@@ -206,6 +212,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(Collections.singletonList(key.getKey())));
             allowing(input).getFirstActivationKey();
             will(returnValue(of(key.getKey())));
+            allowing(input).maybeGetReactivationKey();
+            will(returnValue(empty()));
 
             allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
@@ -217,7 +225,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData(Optional.of(key));
+            Map<String, Object> pillarData = createPillarData(Optional.of(key), Optional.empty());
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
             Object sshResult = createSuccessResult();
@@ -228,7 +236,48 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
     }
 
-    protected abstract Map<String, Object> createPillarData(Optional<ActivationKey> key);
+    /**
+     * Base for tests that check that bootstrap SUCCEEDS with on current bootstrapper (set
+     * in implementations of this base class) and given activation key.
+     * @param key activation key
+     * @param reactKey an reactivation key
+     * @throws Exception if anything goes wrong
+     */
+    protected void testCompatibleActivationKeysBase(ActivationKey key, ActivationKey reactKey) throws Exception {
+        BootstrapHostsJson input = mockStandardInput();
+        context().checking(new Expectations() {{
+            allowing(input).getActivationKeys();
+            will(returnValue(Collections.singletonList(key.getKey())));
+            allowing(input).getFirstActivationKey();
+            will(returnValue(of(key.getKey())));
+            allowing(input).maybeGetReactivationKey();
+            will(returnValue(Optional.of(reactKey.getKey())));
+
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            will(returnValue(false));
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+            will(returnValue(false));
+
+            Key.Pair keyPair = mockKeyPair();
+            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            will(returnValue(keyPair));
+
+            List<String> bootstrapMods = bootstrapMods();
+            Map<String, Object> pillarData = createPillarData(Optional.of(key), Optional.of(reactKey));
+            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                    with(bootstrapMods), with(pillarData));
+            Object sshResult = createSuccessResult();
+            will(returnValue(new Result<>(Xor.right(sshResult))));
+        }});
+
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        assertTrue(params.getReactivationKey().isPresent());
+        assertEquals(params.getReactivationKey().get(), reactKey.getKey());
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+    }
+
+    protected abstract Map<String, Object> createPillarData(Optional<ActivationKey> key,
+            Optional<ActivationKey> reactKey);
 
     protected abstract List<String> bootstrapMods();
 

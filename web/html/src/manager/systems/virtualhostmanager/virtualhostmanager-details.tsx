@@ -1,14 +1,16 @@
 import * as React from "react";
+
 import { Button } from "components/buttons";
-import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { Utils } from "utils/functions";
-import Network from "utils/network";
+import { ModalButton } from "components/dialog/ModalButton";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { Table } from "components/table/Table";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
+
+import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 type Props = {
   data: any;
@@ -25,33 +27,28 @@ type State = {
 class VirtualHostManagerDetails extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    ["onRefresh", "handleResponseError"].forEach(method => (this[method] = this[method].bind(this)));
     this.state = {
       messages: [],
     };
   }
 
-  handleResponseError(jqXHR) {
+  handleResponseError = (jqXHR) => {
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
-  }
+  };
 
   UNSAFE_componentWillMount() {
     Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
-      .then(data => {
+      .then((data) => {
         this.setState({ nodes: data.data });
       })
       .catch(this.handleResponseError);
   }
 
-  onRefresh() {
-    return Network.post(
-      "/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
-      this.props.data.id
-    )
-      .then(data => {
+  onRefresh = () => {
+    return Network.post("/rhn/manager/api/vhms/" + this.props.data.id + "/refresh", this.props.data.id)
+      .then((data) => {
         if (data.success) {
           this.setState({
             messages: MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered.")),
@@ -63,7 +60,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
         }
       })
       .catch(this.handleResponseError);
-  }
+  };
 
   render() {
     return (
@@ -74,12 +71,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
         </BootstrapPanel>
         {this.state.nodes && this.state.nodes.length > 0 && (
           <BootstrapPanel title={t("Nodes")}>
-            <Table
-              data={this.state.nodes}
-              identifier={node => node.type + "_" + node.id}
-              initialSortColumnKey="name"
-              initialItemsPerPage={window.userPrefPageSize}
-            >
+            <Table data={this.state.nodes} identifier={(node) => node.type + "_" + node.id} initialSortColumnKey="name">
               <Column
                 columnKey="name"
                 comparator={Utils.sortByText}
@@ -163,8 +155,8 @@ function ConfigParams(props) {
   }
 
   const items = Object.keys(data.config)
-    .filter(key => !key.includes("secret"))
-    .map(key => {
+    .filter((key) => !key.includes("secret"))
+    .map((key) => {
       return (
         <tr>
           <td>{Utils.capitalize(key)}:</td>

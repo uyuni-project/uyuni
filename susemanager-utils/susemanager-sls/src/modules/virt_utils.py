@@ -63,7 +63,7 @@ def get_cluster_filesystem(path):
                         == directory_value
                     ):
                         return resource.get("id")
-    except FileNotFoundError as err:
+    except OSError as err:
         log.debug("Failed to get cluster resource name for path, %s: %s", path, err)
 
     return None
@@ -75,12 +75,11 @@ def vm_info(name=None):
     """
     try:
         infos = __salt__["virt.vm_info"](name)
-        all_vms = {
-            vm_name: {
+        all_vms = {}
+        for vm_name in infos.keys():
+            all_vms[vm_name] = {
                 "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
             }
-            for vm_name in infos.keys()
-        }
     except CommandExecutionError as err:
         all_vms = {}
 
@@ -92,11 +91,9 @@ def vm_info(name=None):
                 stdout=subprocess.PIPE,
             ).communicate()[0]
         )
-        resource_states = {
-            resource.get('id'): resource.get('active') == "true"
-            for resource
-            in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']")
-        }
+        resource_states = {}
+        for resource in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']"):
+            resource_states[resource.get('id')] = resource.get('active') == "true"
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
                 ["crm", "configure", "show", "xml", "type:primitive"],
@@ -138,7 +135,7 @@ def vm_info(name=None):
             # No need to parse more XML files if we already had the ones we're looking for
             if name is not None and name_node == name:
                 break
-    except FileNotFoundError as err:
+    except OSError as err:
         log.debug("Failed to get cluster configuration: %s", err)
 
     return all_vms
@@ -162,7 +159,7 @@ def host_info():
             for node in crm_conf.findall(".//node")
             if node.get("uname") != node_name
         ]
-    except FileNotFoundError as err:
+    except OSError as err:
         log.debug("Failed to get cluster configuration: %s", err)
 
     return {
@@ -215,7 +212,7 @@ def vm_definition(uuid):
                         uuid_node = desc.find("./uuid")
                         if uuid_node is not None and uuid_node.text == uuid:
                             return {"definition": desc_content}
-        except FileNotFoundError:
+        except OSError:
             # May be this is not a cluster node
             pass
         finally:

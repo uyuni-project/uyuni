@@ -5,9 +5,12 @@
  */
 import * as React from "react";
 import { useState } from "react";
+
 import ReactDOM from "react-dom";
-import { localizedMoment } from "utils";
+
 import { DateTimePicker } from "components/datetime";
+
+import { localizedMoment } from "utils";
 
 function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
   if (!mountingPoint) {
@@ -29,8 +32,6 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
 
   // Raw value is an ISO 8601 format date time string with timezone info intact, a-la `"2021-06-08T20:00+0100"`
   const rawValue = mountingPoint.getAttribute("data-value") || mountingPoint.innerText;
-  // We store the expected UTC offset separately so we can set it back before setting values for the legacy inputs
-  const utcOffset = localizedMoment.parseZone(rawValue).utcOffset();
   const initialValue = localizedMoment(rawValue);
   if (!rawValue || !initialValue.isValid()) {
     Loggerhead.error("Found no valid value for picker");
@@ -53,8 +54,10 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
     const [value, setValue] = useState(initialValue);
 
     const onChange = (value: moment.Moment) => {
-      // Create a copy of the value in the original UTC offset
-      const adjustedValue = localizedMoment(value).utcOffset(utcOffset);
+      // Per default the picker outputs the time in server timezone. Since in this case converting to
+      // server timezone is already done on the backend side we create a copy of the value in the user
+      // selected timezone to prevent applying the offset between server and user timezone twice.
+      const adjustedValue = localizedMoment(value).utc().tz(localizedMoment.userTimeZone);
       yearInput.value = adjustedValue.year().toString();
       monthInput.value = adjustedValue.month().toString();
       dateInput.value = adjustedValue.date().toString();
@@ -62,7 +65,7 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
       const hour = adjustedValue.hour();
       if (isAmPm) {
         hourInput.value = (hour > 12 ? hour % 12 : hour).toString();
-        amPmInput!.value = hour > 12 ? "1" : "0";
+        amPmInput!.value = hour >= 12 ? "1" : "0";
       } else {
         hourInput.value = hour.toString();
       }
@@ -95,7 +98,7 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
 }
 
 function mountAll() {
-  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach(node =>
+  Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach((node) =>
     mountDateTimePickerTo(node)
   );
 }

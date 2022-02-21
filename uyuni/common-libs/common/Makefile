@@ -7,18 +7,19 @@ TOP     = ..
 # Specific stuff
 SUBDIR  = common
 SPACEWALK_FILES	=   __init__ \
-            rhnLib \
-	    checksum \
-	    cli \
-	    fileutils \
-	    rhn_deb \
-	    rhn_mpm \
-	    rhn_pkg \
-	    rhn_rpm \
-	    stringutils \
-	    timezone_utils \
-	    usix \
-	    notificationUtils
+		checksum \
+		cli \
+		context_managers \
+		fileutils \
+		notificationUtils \
+		rhnLib \
+		rhn_deb \
+		rhn_mpm \
+		rhn_pkg \
+		rhn_rpm \
+		stringutils \
+		timezone_utils \
+		usix
 
 SCRIPTS =
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -139,14 +139,14 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
         SystemManager.subscribeServerToChannel(user, server, channel);
         PackageListItem pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
-        assertEquals(newerPkg.getId(),pkg.getPackageId());
+        assertEquals(newerPkg.getId(), pkg.getPackageId());
 
         // now subscribe to the clone, where the patch is not retracted
         // the newest package should be "newestPkg" now
         SystemManager.unsubscribeServerFromChannel(server, channel);
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
         pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
-        assertEquals(newestPkg.getId(),pkg.getPackageId());
+        assertEquals(newestPkg.getId(), pkg.getPackageId());
     }
 
     public void testListPackagesInChannelForList() throws Exception {
@@ -168,7 +168,8 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
-        Map<Long, PackageOverview> pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        Map<Long, PackageOverview> pkgsOriginalMap = pkgsOriginal.stream()
+                .collect(Collectors.toMap(p -> p.getId(), p -> p));
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
         assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
@@ -236,7 +237,8 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // list the possible package updates when subscribed to the original
         assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
-        assertTrue(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()).isEmpty()); // newest is retracted
+        // newest is retracted
+        assertTrue(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()).isEmpty());
 
         // list the possible package updates when subscribed to the clone
         SystemManager.unsubscribeServerFromChannel(server, channel);

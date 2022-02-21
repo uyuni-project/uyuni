@@ -1,0 +1,13 @@
+include ./minion-header.jade
+
+#proxy
+
+script(type="text/javascript").
+    window.csrfToken = "#{csrf_token}";
+    window.minions = [{id: #{server.id}, name: "#{server.name}"}];
+    window.proxies = !{proxies};
+    window.currentProxy = !{currentProxy};
+
+script(type='text/javascript').
+    spaImportReactPage('systems/proxy')
+        .then(function(module) { module.renderer('proxy') });

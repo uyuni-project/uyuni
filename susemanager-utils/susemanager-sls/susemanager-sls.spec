@@ -29,13 +29,14 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.1
+Version:        4.3.7
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
+Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
 BuildRequires:  python3-mock
@@ -78,6 +79,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
 mkdir -p %{buildroot}/usr/share/susemanager/modules/engines
+mkdir -p %{buildroot}/usr/share/susemanager/modules/roster
 mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
@@ -89,6 +91,7 @@ cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
+cp -R modules/roster/* %{buildroot}/usr/share/susemanager/modules/roster
 cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
@@ -125,44 +128,12 @@ py.test%{?rhel:-3}
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
-# Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
-USERLAND="/srv/salt"
-TOP="$USERLAND/top.sls"
-if [ -d "$USERLAND" ]; then
-    if [ ! -f "$TOP" ]; then
-	cat <<EOF >> $TOP
-# This only calls no-op statement from
-# /usr/share/susemanager/salt/util/noop.sls state
-# Feel free to change it.
 
-base:
-  '*':
-    - util.noop
-EOF
-    fi
-fi
-# Restrict Java RMI to localhost (bsc#1184617)
-restrict_to_localhost()
-{
-  JMXREMOTE_HOST='-Dcom.sun.management.jmxremote.host='
-  JMXREMOTE_PORT='-Dcom.sun.management.jmxremote.port='
-  RMI_SERVER_HOSTNAME='-Djava.rmi.server.hostname='
-  systemctl is-enabled ${1} > /dev/null 2>&1
-  jmx_exporter_enabled=$?
-  grep -q -- $JMXREMOTE_HOST ${2}
-  jmxremote_host_configured=$?
-  if [ $jmx_exporter_enabled -eq 0 ] && [ $jmxremote_host_configured -eq 1 ]; then
-    sed -ri "s/JAVA_OPTS=\"(.*)${JMXREMOTE_PORT}(.*)\"/JAVA_OPTS=\"\1${JMXREMOTE_HOST}localhost\ ${JMXREMOTE_PORT}\2\"/" ${2}
-    sed -ri "s/JAVA_OPTS=\"(.*)${RMI_SERVER_HOSTNAME}\S*(.*)\"/JAVA_OPTS=\"\1${RMI_SERVER_HOSTNAME}localhost\2\"/" ${2}
-  fi
-}
-tomcat_config=/etc/sysconfig/tomcat
-taskomatic_config=/etc/rhn/taskomatic.conf
-if [ $1 -gt 1 ] && [ -e $tomcat_config ]; then
-  restrict_to_localhost prometheus-jmx_exporter@tomcat.service $tomcat_config
-fi
-if [ $1 -gt 1 ] && [ -e $taskomatic_config ]; then
-  restrict_to_localhost prometheus-jmx_exporter@taskomatic.service $taskomatic_config
+%posttrans
+# Run JMX exporter as Java Agent (bsc#1184617)
+grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' /etc/rhn/rhn.conf
+if [[ $? == 0 ]]; then
+  /usr/sbin/mgr-monitoring-ctl enable
 fi
 
 %files
@@ -175,6 +146,7 @@ fi
 /usr/share/susemanager/modules/tops
 /usr/share/susemanager/modules/runners
 /usr/share/susemanager/modules/engines
+/usr/share/susemanager/modules/roster
 /usr/share/susemanager/formulas
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap

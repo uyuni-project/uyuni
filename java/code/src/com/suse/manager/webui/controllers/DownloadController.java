@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,18 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.head;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -38,8 +44,6 @@ import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import spark.Request;
-import spark.Response;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -51,10 +55,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.head;
+import spark.Request;
+import spark.Response;
 
 
 /**
@@ -92,12 +94,16 @@ public class DownloadController {
                 DownloadController::downloadPackage);
         get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+        get("/manager/download/:channel/media.1/:file",
+                DownloadController::downloadMediaFiles);
         head("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/getPackage/:org/:checksum/:file",
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+        head("/manager/download/:channel/media.1/:file",
+                DownloadController::downloadMediaFiles);
     }
 
     /**
@@ -265,6 +271,31 @@ public class DownloadController {
     }
 
     /**
+     * Download media metadata taking the channel and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public static Object downloadMediaFiles(Request request, Response response) {
+        String channelLabel = request.params(":channel");
+        String filename = request.params(":file");
+
+        if (checkTokens) {
+            String token = getTokenFromRequest(request);
+            validateToken(token, channelLabel, filename);
+        }
+        if (filename.equals("products")) {
+            File file = getMediaProductsFile(ChannelFactory.lookupByLabel(channelLabel));
+            if (file != null && file.exists()) {
+                return downloadFile(request, response, file);
+            }
+        }
+        halt(HttpStatus.SC_NOT_FOUND, String.format("%s not found", filename));
+        return null;
+    }
+
+    /**
      * Determines the comps file for a channel.
      * If the channel doesn't have comps file associated and it's a cloned one, try to
      * use the comps of the original channel.
@@ -302,6 +333,28 @@ public class DownloadController {
         }
         if (modules != null) {
             return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsoluteFile();
+        }
+
+        return null;
+    }
+
+    /**
+     * Determines the media products file for a channel.
+     * If the channel doesn't have products file associated and it's a cloned one, try to
+     * use the products file of the original channel.
+     *
+     * @param channel - the channel
+     * @return media products file to be used for this channel
+     */
+    private static File getMediaProductsFile(Channel channel) {
+        MediaProducts product = channel.getMediaProducts();
+
+        if (product == null && channel.isCloned()) {
+            product = channel.getOriginal().getMediaProducts();
+        }
+        if (product != null) {
+            return new File(MOUNT_POINT_PATH, product.getRelativeFilename())
+                    .getAbsoluteFile();
         }
 
         return null;
@@ -464,10 +517,17 @@ public class DownloadController {
             Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
-            if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
-                log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
-                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-            }
+            Opt.consume(channelClaim, () -> {
+                log.info(String.format("Token %s does provide access to any channel", token));
+            }, channels -> {
+                if (!channels.contains(channel)) {
+                    log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
+                                           token, channel));
+                    log.info(String.format("Token allow access only to the following channels: %s",
+                                           String.join(",", channels)));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
+                }
+            });
 
             // enforce org claim
             Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));

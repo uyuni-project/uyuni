@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,29 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.server.MinionServer;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserServerPreferenceId;
@@ -47,6 +33,23 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemOverviewAction
@@ -155,6 +158,17 @@ public class SystemOverviewAction extends RhnAction {
                 !(s.getLocation() == null || s.getLocation().isEmpty()));
         request.setAttribute("kernelLiveVersion",
                 s.asMinionServer().map(MinionServer::getKernelLiveVersion).orElse(null));
+
+        // Is live patching available for the system?
+        // Check if the base product is a live patch supported one
+        request.setAttribute("isLivePatchingAvailable",
+                s.getInstalledProducts().stream()
+                        .filter(InstalledProduct::isBaseproduct)
+                        .map(InstalledProduct::getSUSEProduct)
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                        .map(p -> SUSEProductFactory.getLivePatchSupportedProducts().anyMatch(p::equals))
+                        .orElse(false));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

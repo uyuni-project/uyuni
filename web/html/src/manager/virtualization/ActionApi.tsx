@@ -1,7 +1,9 @@
 import * as React from "react";
-import Network from "utils/network";
+
 import { Utils as MessagesUtils } from "components/messages";
 import { MessageType } from "components/messages";
+
+import Network from "utils/network";
 
 type Props = {
   /** URL path part with @ACTION@ as action placeholder. */
@@ -32,7 +34,7 @@ export function ActionApi(props: Props) {
 
   const onAction = (urlModifier: (arg0: string) => string, action: string, parameters: any) => {
     Network.post(urlModifier(props.urlTemplate), parameters).then(
-      response => {
+      (response) => {
         if (Object.values(response).includes("Failed")) {
           setMessages(MessagesUtils.error(t(`Failed to trigger ${action}`)));
         } else {
@@ -44,7 +46,7 @@ export function ActionApi(props: Props) {
           }
         }
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? MessagesUtils.error(

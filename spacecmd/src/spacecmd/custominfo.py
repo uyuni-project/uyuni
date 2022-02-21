@@ -122,9 +122,10 @@ def do_custominfo_listkeys(self, args, doreturn=False):
 
     if doreturn:
         return keys
-    else:
-        if keys:
-            print('\n'.join(sorted(keys)))
+    if keys:
+        print('\n'.join(sorted(keys)))
+
+    return None
 
 ####################
 

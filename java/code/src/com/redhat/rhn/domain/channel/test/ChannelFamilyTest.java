@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -75,6 +75,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
 
     /**
      * Utility method that ensures that a channel family has maximum members.
+     * @param user the user
      * @param channelFamily the channel family
      */
     public static void ensurePrivateChannelFamilyExists(User user, ChannelFamily channelFamily) {
@@ -87,7 +88,6 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             channelFamily.addPrivateChannelFamily(privateChannelFamily);
 
             HibernateFactory.getSession().save(privateChannelFamily);
-
         }
     }
 }

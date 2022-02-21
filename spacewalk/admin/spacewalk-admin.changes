@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Mon Feb 21 12:07:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * migrate postgresql auth to scram-sha-256
+  * fix autogeneration of the reportdb password
+
+-------------------------------------------------------------------
+Tue Feb 15 10:01:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * integrate check for the reporting database into the startup
+    procedure
+  * Generate uyuni_roster.conf with salt-secrets-config
+
+-------------------------------------------------------------------
+Tue Jan 18 13:38:15 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * check the database version on SUSE Linux Enterprise 15 SP4
+
+-------------------------------------------------------------------
+Fri Nov 05 14:13:23 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Add connection details for postgresql salt pillar
+  * replaced pidof with pgrep and removed sysvinit-tools dependency
+
+-------------------------------------------------------------------
+Thu Oct 28 12:16:53 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Fix setup with rhn-config-satellite (bsc#1190300)
+  * Allow admins to modify only spacewalk config files with
+    rhn-config-satellite.pl (bsc#1190040) (CVE-2021-40348)
+
+-------------------------------------------------------------------
 Mon Aug 09 10:57:26 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

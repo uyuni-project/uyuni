@@ -1,8 +1,5 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
-# Please, do not run this feature after the retail one:
-# proxy_retail_pxeboot_and_mass_import.feature
 #
 
 @proxy
@@ -26,34 +23,6 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-  Scenario: Configure PXE part of DNS on the proxy
-    When I follow first "Bind" in the content area
-    # general information:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    # direct zone tf.local:
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    And I scroll to the top of the page
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in third file name field
-    And I enter the hostname of "proxy" in third name server field
-    And I enter "admin@tf.local." in third contact field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "proxy" in fifth A name field
-    And I enter the IP address of "proxy" in fifth A address field
-    And I press "Add Item" in third A section
-    And I enter the hostname of "server" in sixth A name field
-    And I enter the IP address of "server" in sixth A address field
-    And I press "Add Item" in third NS section
-    And I enter the hostname of "proxy" in third NS field
-    # end
-    And I scroll to the top of the page
-    And I should see a "Bind" text
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
   Scenario: Apply the highstate after the formula setup
     When I follow "States" in the content area
     And I click on "Apply Highstate"
@@ -62,7 +31,6 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
-    And I ensure the "server" resolves its own public address
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -71,10 +39,18 @@ Feature: PXE boot a terminal with Cobbler
     And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
     And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
-    And I enter "useonlinerepo insecure=1" as "kernelopts"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP2-TFTP" link
+
+  # WORKAROUND bsc#1195842
+  # Default cobbler kernel parameters are wrong in case of proxy
+  Scenario: Fix kernel parameters
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP2-TFTP"
+    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP2-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp2-installer-updates-x86_64/SLE-15-SP2-TFTP" as "kernelopts"
+    And I click on "Update Autoinstallable Distribution"
+    Then I should see a "Autoinstallable Distribution Updated" text
 
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -85,10 +61,12 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Create"
     Then I should see a "Autoinstallation: 15-sp2-cobbler" text
     And I should see a "Autoinstallation Details" text
+
+  Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP2-TFTP" text
@@ -99,12 +77,15 @@ Feature: PXE boot a terminal with Cobbler
     And I configure tftp on the "proxy"
     And I synchronize the tftp configuration on the proxy with the server
 
+  Scenario: Restart squid so proxy.example.org is recognized
+    When I restart squid service on the proxy
+
   Scenario: PXE boot the PXE boot minion
     Given I set the default PXE menu entry to the "target profile" on the "proxy"
     When I reboot the PXE boot minion
     And I wait for "60" seconds
     And I set the default PXE menu entry to the "local boot" on the "proxy"
-    And I wait at most 900 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
     And I am on the Systems page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
@@ -113,7 +94,7 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Check connection from PXE boot minion to the proxy
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the PXE boot minion
     When I install the GPG key of the test packages repository on the PXE boot minion
@@ -150,18 +131,8 @@ Feature: PXE boot a terminal with Cobbler
     Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
 
-  Scenario: Cleanup: remove DNS records added by mass import
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    # direct zone tf.local:
-    And I scroll to the top of the page
-    And I press minus sign in third configured zone section
-    And I press minus sign in third available zone section
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
+    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I enter "boot/pxelinux.0" in pxeboot filename field

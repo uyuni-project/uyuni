@@ -4,18 +4,19 @@
  */
 
 import * as React from "react";
-import { render, waitForElementToBeRemoved, screen, server, type, RenderOptions } from "utils/test-utils";
 
-import { Table } from "./Table";
+import { render, RenderOptions, screen, server, type, waitForElementToBeRemoved } from "utils/test-utils";
+
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
+import { Table } from "./Table";
 
 describe("Table component", () => {
   // IMPROVE: Would be nice to infer types here to ensure this stays in sync with the component
   // Minimal required props based on the table's types
   const baseProps = {
     data: [],
-    identifier: item => item.value,
+    identifier: (item) => item.value,
     // Only used to await loading states here in tests
     loadingText: "LOADING_TEXT",
   };
@@ -27,7 +28,7 @@ describe("Table component", () => {
     return result;
   }
 
-  test("renders with minimal props", async done => {
+  test("renders with minimal props", async (done) => {
     expect(async () => {
       await renderAndLoad(<Table {...baseProps}>{null}</Table>);
       done();
@@ -49,11 +50,11 @@ describe("Table component", () => {
 
     await renderAndLoad(
       <Table {...baseProps} data={data}>
-        <Column columnKey="value" cell={item => item.value} />
+        <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
 
-    data.forEach(item => {
+    data.forEach((item) => {
       expect(screen.queryByText(item.value)).not.toBe(null);
     });
   });
@@ -77,11 +78,11 @@ describe("Table component", () => {
 
     await renderAndLoad(
       <Table {...baseProps} data={"/getData"}>
-        <Column columnKey="value" cell={item => item.value} />
+        <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
 
-    data.forEach(item => {
+    data.forEach((item) => {
       expect(screen.queryByText(item.value)).not.toBe(null);
     });
   });
@@ -97,7 +98,7 @@ describe("Table component", () => {
 
     await renderAndLoad(
       <Table {...baseProps} data={"/getData"} initialItemsPerPage={itemsPerPage}>
-        <Column columnKey="value" cell={item => item.value} />
+        <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
 
@@ -111,14 +112,18 @@ describe("Table component", () => {
   test("loading indicator for tables using SimpleDataProvider", async () => {
     const data = [{ value: "Value 0" }];
 
-    const { rerender } = render(<Table {...baseProps} loading={true}>{null}</Table>);
+    const { rerender } = render(
+      <Table {...baseProps} loading={true}>
+        {null}
+      </Table>
+    );
 
     // Check if loading indicator appears
     expect(screen.queryByText(baseProps.loadingText)).not.toBe(null);
 
     rerender(
       <Table {...baseProps} data={data} loading={false}>
-        <Column columnKey="value" cell={item => item.value} />
+        <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
     await waitForElementToBeRemoved(() => screen.queryByText(baseProps.loadingText));
@@ -148,7 +153,7 @@ describe("Table component", () => {
     };
     await renderAndLoad(
       <Table {...baseProps} data={data} searchField={<SearchField filter={filter} />}>
-        <Column columnKey="value" cell={item => item.value} />
+        <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
     const input = screen.getByRole("textbox");

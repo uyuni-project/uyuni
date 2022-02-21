@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -132,6 +132,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * product, eg. a row in suseproductchannel).
      * @param channel the channel
      * @param product the SUSE product
+     * @param mandatory whether the channel is mandatory
      */
     public static void createTestSUSEProductChannel(Channel channel, SUSEProduct product, boolean mandatory) {
         Set<SUSEProductChannel> pcs = product.getSuseProductChannels();
@@ -315,7 +316,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
         return channel;
     }
 
-    public static Channel createChildChannelsForProduct(SUSEProduct product, Channel baseChannel, User admin) throws Exception {
+    public static Channel createChildChannelsForProduct(SUSEProduct product, Channel baseChannel, User admin)
+            throws Exception {
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         channel.setChannelArch(channelArch);
@@ -337,7 +339,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param withRepos set true if repos should be added
      * @throws Exception
      */
-    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos) throws Exception {
+    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos)
+            throws Exception {
         createVendorSUSEProductEnvironment(admin, testDataPath, withRepos, false);
     }
 
@@ -350,7 +353,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param fromdir set true if fromdir option should be simulated
      * @throws Exception
      */
-    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos, boolean fromdir) throws Exception {
+    public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos,
+                                                          boolean fromdir) throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -360,27 +364,41 @@ public class SUSEProductTestUtils extends HibernateFactory {
         else if (!testDataPath.endsWith("/")) {
             testDataPath = testDataPath + "/";
         }
-        InputStreamReader inputStreamReader = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "productsUnscoped.json"));
-        List<SCCProductJson> products = gson.fromJson(inputStreamReader, new TypeToken<List<SCCProductJson>>() {}.getType());
-        InputStreamReader inputStreamReader2 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(inputStreamReader2, new TypeToken<List<UpgradePathJson>>() {}.getType());
-        InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
-        List<ChannelFamilyJson> channelFamilies = gson.fromJson(inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() {}.getType());
-        InputStreamReader inputStreamReader4 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "product_tree.json"));
-        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() {}.getType());
-        InputStreamReader inputStreamReader5 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
-        List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStreamReader inputStreamReader = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "productsUnscoped.json"));
+        List<SCCProductJson> products = gson.fromJson(
+                inputStreamReader, new TypeToken<List<SCCProductJson>>() { }.getType());
+        InputStreamReader inputStreamReader2 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(
+                inputStreamReader2, new TypeToken<List<UpgradePathJson>>() { }.getType());
+        InputStreamReader inputStreamReader3 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
+        List<ChannelFamilyJson> channelFamilies = gson.fromJson(
+                inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
+        InputStreamReader inputStreamReader4 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "product_tree.json"));
+        List<ProductTreeEntry> staticTree = JsonParser.GSON.fromJson(
+                inputStreamReader4, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+        InputStreamReader inputStreamReader5 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "repositories.json"));
+        List<SCCRepositoryJson> repositories = gson.fromJson(
+                inputStreamReader5, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        InputStreamReader inputStreamReader6 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_repositories.json"));
-        List<SCCRepositoryJson> add_repos = gson.fromJson(inputStreamReader6, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStreamReader inputStreamReader6 = new InputStreamReader(
+                ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_repositories.json"));
+        List<SCCRepositoryJson> addRepos = gson.fromJson(
+                inputStreamReader6, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
         InputStream pres = ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_products.json");
         if (pres != null) {
             InputStreamReader inputStreamReader7 = new InputStreamReader(pres);
-            List<SCCProductJson> add_products = gson.fromJson(inputStreamReader7, new TypeToken<List<SCCProductJson>>() {}.getType());
-            products.addAll(add_products);
-            add_repos.addAll(ContentSyncManager.collectRepos(ContentSyncManager.flattenProducts(add_products).collect(Collectors.toList())));
+            List<SCCProductJson> addProducts = gson.fromJson(
+                    inputStreamReader7, new TypeToken<List<SCCProductJson>>() { }.getType());
+            products.addAll(addProducts);
+            addRepos.addAll(ContentSyncManager.collectRepos(
+                    ContentSyncManager.flattenProducts(addProducts).collect(Collectors.toList())));
         }
-        repositories.addAll(add_repos);
+        repositories.addAll(addRepos);
 
         ContentSyncManager csm = new ContentSyncManager();
         Credentials credentials = null;
@@ -408,7 +426,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
 
         csm.updateChannelFamilies(channelFamilies);
-        csm.updateSUSEProducts(products, upgradePaths, staticTree, add_repos);
+        csm.updateSUSEProducts(products, upgradePaths, staticTree, addRepos);
         if (withRepos) {
             csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
@@ -428,7 +446,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
         .filter(pr -> pr.isMandatory())
         .forEach(pr -> {
             try {
-                if (pr.getParentChannelLabel() != null && ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
+                if (pr.getParentChannelLabel() != null &&
+                        ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
                     csm.addChannel(pr.getParentChannelLabel(), null);
                 }
                 csm.addChannel(pr.getChannelLabel(), null);
@@ -550,9 +569,15 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     public static Credentials createSCCCredentials(String name, User user) {
+        Credentials credentials = createSecondarySCCCredentials(name, user);
+        credentials.setUrl("dummy");
+        CredentialsFactory.storeCredentials(credentials);
+        return credentials;
+    }
+
+    public static Credentials createSecondarySCCCredentials(String name, User user) {
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setPassword(TestUtils.randomString());
-        credentials.setUrl("dummy");
         credentials.setUsername(name);
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);

@@ -94,6 +94,8 @@ $ret = system('cp', $cert_target_file, $trust_dir);
 if ($ret) {
   die "Could not link $cert_target_file to $trust_dir";
 }
+# give systemd timer a bit time to finish
+sleep(3);
 if ( -e '/usr/sbin/update-ca-certificates' ) {
     $ret = system('/usr/sbin/update-ca-certificates');
 } else {

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
@@ -1322,7 +1322,7 @@
         </context-group>
         <target>Oracle ポート</target>
       </trans-unit>
-      <trans-unit id="Oracle SID" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Oracle SID" xml:space="preserve">
         <source>Oracle SID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
@@ -2898,7 +2898,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEA Weblogic" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="BEA Weblogic" xml:space="preserve">
           <source>BEA Weblogic</source>
         <target>BEA Weblogic</target>
         <context-group name="ctx">
@@ -2940,7 +2940,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Oracle" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Oracle" xml:space="preserve">
           <source>Oracle</source>
         <target>Oracle</target>
         <context-group name="ctx">
@@ -3185,7 +3185,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="LongLegs" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
         <target>LongLegs</target>
         <context-group name="ctx">
@@ -3360,7 +3360,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Servlet" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Servlet" xml:space="preserve">
           <source>Servlet</source>
         <target>Servlet</target>
         <context-group name="ctx">
@@ -3395,7 +3395,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="TNS Ping" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="TNS Ping" xml:space="preserve">
           <source>TNS Ping</source>
         <target>TNS Ping</target>
         <context-group name="ctx">
@@ -3465,21 +3465,21 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 4" xml:space="preserve">
           <source>Red Hat Enterprise Linux 4</source>
         <target>Red Hat Enterprise Linux 4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
         <target>Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
           <source>Red Hat Enterprise Linux 2.1</source>
         <target>Red Hat Enterprise Linux 2.1</target>
         <context-group name="ctx">
@@ -3626,13 +3626,13 @@
         </context-group>
         <target state="translated">(GMT+0800) マレーシア</target>
       </trans-unit>
-      <trans-unit id="Asia/Beijing" xml:space="preserve" approved="yes">
+      <trans-unit id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="final">(GMT+0800) 中国</target>
-      </trans-unit>
-    </body>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

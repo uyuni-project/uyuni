@@ -1,0 +1,19 @@
+{
+  "vim": {
+    "old": "",
+    "new": [
+      {
+        "install_date_time_t": 1498636531,
+        "version": "1.42.11",
+        "release": "7.1",
+        "arch": "x86_64"
+      },
+      {
+        "install_date_time_t": 1498640000,
+        "version": "1.42.11",
+        "release": "7.1",
+        "arch": "x86_64"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,29 +15,32 @@
 
 package com.suse.manager.webui.controllers.utils;
 
+import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
+import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
+
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
-import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
 
 /**
  * Code for bootstrapping salt-ssh systems using salt-ssh.
@@ -92,16 +95,21 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         String minionId = params.getHost();
         try {
             if (result.isSuccess()) {
-                Optional<List<String>> proxyPath = params.getProxyId()
-                        .map(proxyId -> ServerFactory.lookupById(proxyId))
-                        .map(proxy -> SaltSSHService.proxyPathToHostnames(
-                                proxy.getServerPaths(), proxy));
-                MinionPendingRegistrationService.addMinion(user, minionId,
+                List<String> proxyPath = params.getProxyId()
+                                               .map(ServerFactory::lookupById)
+                                               .map(SaltSSHService::proxyPathToHostnames)
+                                               .orElse(Collections.emptyList());
+
+                MinionPendingRegistrationService.addMinion(
+                        user,
+                        minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
-                        proxyPath);
-                getRegisterAction().registerSSHMinion(
-                        minionId, params.getProxyId(),
-                        params.getFirstActivationKey());
+                        proxyPath,
+                        params.getPort().orElse(SSH_PUSH_PORT)
+                );
+
+                getRegisterAction().registerSSHMinion(minionId, params.getPort().orElse(SSH_PUSH_PORT),
+                    params.getProxyId(), params.getFirstActivationKey());
             }
         }
         finally {
@@ -126,8 +134,6 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         if (StringUtils.isEmpty(input.getUser())) {
             params.setUser(getSSHUser());
         }
-
-        params.setPort(Optional.of(SSH_PUSH_PORT));
 
         return params;
     }

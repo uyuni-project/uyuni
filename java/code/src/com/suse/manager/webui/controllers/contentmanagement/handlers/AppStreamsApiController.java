@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,26 +14,34 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.suse.manager.webui.utils.gson.ResultJson;
-import org.apache.http.HttpStatus;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
+
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+
+import com.suse.manager.webui.utils.gson.ResultJson;
+
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
+
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller ContentManagement AppStreams API
  */
 public class AppStreamsApiController {
 
-    private static ModulemdApi api = new ModulemdApi();
+    private static final Logger LOG = Logger.getLogger(AppStreamsApiController.class);
+    private static final ModulemdApi API = new ModulemdApi();
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private AppStreamsApiController() { }
 
@@ -54,10 +62,14 @@ public class AppStreamsApiController {
     public static String getModulesInChannel(Request req, Response res, User user) {
         try {
             Channel channel = ChannelManager.lookupByIdAndUser(Long.parseLong(req.params("channelId")), user);
-            return json(res, ResultJson.success(api.getAllModulesInChannel(channel)));
+            return json(res, ResultJson.success(API.getAllModulesInChannel(channel)));
         }
         catch (NumberFormatException e) {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+        catch (ModulemdApiException e) {
+            LOG.error(e);
+            return json(res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
         }
     }
 

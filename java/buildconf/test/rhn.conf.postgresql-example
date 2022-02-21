@@ -74,7 +74,7 @@ web.config_delim_end = |}
 web.maximum_config_file_size = 131072
 
 # Versions
-web.version = 2.4
+web.version = 4.3.999
 java.apiversion = 16
 
 # Satellite Installer settings

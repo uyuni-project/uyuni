@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,6 +18,8 @@ package com.redhat.rhn.manager.action.test;
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -60,6 +62,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -95,7 +98,10 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -103,6 +109,8 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -135,13 +143,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
+    private final SystemManager systemManager =
+            new SystemManager(ServerFactory.SINGLETON, new ServerGroupFactory(), saltApi);
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -196,7 +206,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
 
         try {
             // Regular users cannot see orphan actions
@@ -220,7 +230,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
 
-        SystemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(user, server.getId());
         // Admins should see orphan actions
         result = ActionManager.lookupAction(user, action.getId());
         assertNotNull(result);
@@ -289,7 +299,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 i -> {
                     try {
                         return MinionServerFactoryTest.createTestMinionServer(user);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -454,10 +465,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                     try {
                         if (i < 3) {
                             return MinionServerFactoryTest.createTestMinionServer(user);
-                        } else {
+                        }
+                        else {
                             return ServerFactoryTest.createTestServer(user, true);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -521,6 +534,46 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
         assertActionsForUser(user, 1); // shouldn't have been deleted
+    }
+
+    public void testCancelActionForSubsetOfServerWithMultipleServerActions() throws Exception {
+        Action parent = createActionWithServerActions(user, 2);
+        List<Action> actionList = Collections.singletonList(parent);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        List<Server> servers = actionList.stream()
+                .flatMap(a -> a.getServerActions().stream())
+                .map(ServerAction::getServer)
+                .collect(Collectors.toList());
+
+        Server ignoreFirst = servers.remove(0);
+        Collection<Long> activeServers = servers.stream().map(Server::getId).collect(Collectors.toList());
+
+        Map<Action, Set<Server>> actionMap = actionList.stream()
+                .map(a -> new ImmutablePair<>(
+                                a,
+                                a.getServerActions().stream()
+                                        .map(sa -> sa.getServer())
+                                        .collect(toSet())
+                        )
+                )
+                .collect(toMap(
+                        Pair::getLeft,
+                        Pair::getRight
+                ));
+
+        context().checking(new Expectations() { {
+            never(taskomaticMock).deleteScheduledActions(with(same(actionMap)));
+        } });
+
+        assertServerActionCount(parent, 2);
+        assertActionsForUser(user, 1);
+        ActionManager.cancelActions(user, actionList, Optional.of(activeServers));
+        assertServerActionCount(parent, 1);
+        assertActionsForUser(user, 1); // shouldn't have been deleted
+        // check that action was indeed not canceled on taskomatic side
+        context().assertIsSatisfied();
     }
 
     public void testCancelActionWithParentFails() throws Exception {
@@ -905,7 +958,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
         } });
 
         MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(user);

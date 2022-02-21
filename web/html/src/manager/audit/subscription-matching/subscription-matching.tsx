@@ -1,18 +1,22 @@
 import * as React from "react";
-import { TabContainer } from "components/tab-container";
-import { Subscriptions } from "./subscription-matching-subscriptions";
-import { Pins } from "./subscription-matching-pins";
-import { Messages } from "./subscription-matching-messages";
-import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
-import { MatcherRunPanel } from "./subscription-matching-matcher-run-panel";
-import { WarningIcon } from "./subscription-matching-util";
-import { Messages as MessageContainer } from "components/messages";
-import { TopPanel } from "components/panels/TopPanel";
-import { Utils as MessagesUtils } from "components/messages";
-import Network from "utils/network";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { Messages as MessageContainer } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { TabContainer } from "components/tab-container";
+
 import { Cancelable } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
+import { MatcherRunPanel } from "./subscription-matching-matcher-run-panel";
+import { Messages } from "./subscription-matching-messages";
+import { Pins } from "./subscription-matching-pins";
+import { Subscriptions } from "./subscription-matching-subscriptions";
+import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
+import { WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionMatchingProps = {
   refreshInterval: number;
@@ -38,13 +42,13 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   refreshServerData = () => {
     this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data");
     this.refreshRequest
-      .then(data => {
+      .then((data) => {
         this.setState({
           serverData: data,
           error: null,
         });
       })
-      .catch(response => {
+      .catch((response) => {
         this.setState({
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
@@ -55,7 +59,7 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
       });
   };
 
-  onPinChanged = pinnedMatches => {
+  onPinChanged = (pinnedMatches) => {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
@@ -99,7 +103,7 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   }
 }
 
-const ErrorMessage = props => (
+const ErrorMessage = (props) => (
   <MessageContainer
     items={
       props.error === "authentication"
@@ -125,7 +129,7 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
     });
   }
 
-  onTabHashChange = hash => {
+  onTabHashChange = (hash) => {
     window.history.pushState(null, "", hash);
     this.setState({ activeTabHash: hash });
   };
@@ -138,7 +142,9 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
     }
 
     const pinLabelIcon =
-      data.pinnedMatches.filter(p => p.status === "unsatisfied").length > 0 ? <WarningIcon iconOnRight={true} /> : null;
+      data.pinnedMatches.filter((p) => p.status === "unsatisfied").length > 0 ? (
+        <WarningIcon iconOnRight={true} />
+      ) : null;
 
     const messageLabelIcon = data.messages.length > 0 ? <WarningIcon iconOnRight={true} /> : null;
 

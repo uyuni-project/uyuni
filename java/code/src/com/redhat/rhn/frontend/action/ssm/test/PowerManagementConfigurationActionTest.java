@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,10 +25,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
-import servletunit.HttpServletRequestSimulator;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests PowerManagementConfigurationAction

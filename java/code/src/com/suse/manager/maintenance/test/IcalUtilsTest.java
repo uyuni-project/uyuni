@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +21,7 @@ import static java.util.Optional.of;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.maintenance.IcalUtils;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
@@ -143,18 +144,18 @@ public class IcalUtilsTest extends TestCase {
         // NY maintenance windows take place every weekday, 8:00 - 10:00 local time
         assertEquals(
                 List.of(
-                        Pair.of("2020-06-12T08:00:00" ,"2020-06-12T10:00:00"),
-                        Pair.of("2020-06-15T08:00:00" ,"2020-06-15T10:00:00"),
-                        Pair.of("2020-06-16T08:00:00" ,"2020-06-16T10:00:00")
+                        Pair.of("2020-06-12T08:00:00" , "2020-06-12T10:00:00"),
+                        Pair.of("2020-06-15T08:00:00" , "2020-06-15T10:00:00"),
+                        Pair.of("2020-06-16T08:00:00" , "2020-06-16T10:00:00")
                 ),
                 nycEvents);
 
         // Sri Lanka maintenance windows take place just on MO, WE & FR, 8:00 - 10:30 local time
         assertEquals(
                 List.of(
-                        Pair.of("2020-06-15T08:00:00" ,"2020-06-15T10:30:00"),
-                        Pair.of("2020-06-17T08:00:00" ,"2020-06-17T10:30:00"),
-                        Pair.of("2020-06-19T08:00:00" ,"2020-06-19T10:30:00")
+                        Pair.of("2020-06-15T08:00:00" , "2020-06-15T10:30:00"),
+                        Pair.of("2020-06-17T08:00:00" , "2020-06-17T10:30:00"),
+                        Pair.of("2020-06-19T08:00:00" , "2020-06-19T10:30:00")
                 ),
                 sriLankaEvts);
 

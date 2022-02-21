@@ -1,11 +1,12 @@
-import { ActionChain } from "components/action-schedule";
-
 import * as React from "react";
+
+import { ActionChain } from "components/action-schedule";
 import { TopPanel } from "components/panels/TopPanel";
 import { Loading } from "components/utils/Loading";
+
 import { SimpleActionApi } from "../../SimpleActionApi";
-import { VirtualizationNetworkDefinitionApi } from "../virtualization-network-definition-api";
 import { NetworkProperties } from "../network-properties";
+import { VirtualizationNetworkDefinitionApi } from "../virtualization-network-definition-api";
 
 type Props = {
   serverId: string;

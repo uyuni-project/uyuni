@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -40,8 +40,9 @@ public class TestDBAction implements MessageAction {
     }
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         TestDBEventMessage tm = (TestDBEventMessage) msg;
         System.out.println("Execute ..");

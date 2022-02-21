@@ -6,6 +6,8 @@ module.exports = {
   preset: "ts-jest/presets/js-with-babel",
   // Required for in-memory rendering with @testing-library/react
   testEnvironment: "jsdom",
+  // We sometimes get slow runs in our internal infra when the load is high on tests that otherwise pass
+  testTimeout: 30000,
   verbose: true,
   moduleFileExtensions: [...defaults.moduleFileExtensions, "ts", "tsx"],
   moduleNameMapper: {

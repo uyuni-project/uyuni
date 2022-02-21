@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,7 +56,7 @@ public class InstalledProductTest extends RhnBaseTestCase {
         Set<InstalledProduct> readProducts = server.getInstalledProducts();
         assertNotNull(readProducts);
 
-        readProducts.forEach( p -> {
+        readProducts.forEach(p -> {
                 assertEquals(installedPrd.getName(), p.getName());
                 assertEquals(installedPrd.getVersion(), p.getVersion());
                 assertNull(p.getRelease());

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"POT-Creation-Date: 2022-02-06 10:53+0000\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -34,11 +34,38 @@ msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
 msgid "declined proxy authentication"
 msgstr "otentikasi proxy yang ditolak"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, fuzzy, python-format
+msgid "Invalid request received (%s)."
+msgstr "Permintaan tidak valid diterima (%s)."
+
+#: ../server/apacheRequest.py:120
+#, fuzzy, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"PESAN PENTING BERIKUT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, fuzzy, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Saat menjalankan '%s': tertangkap\n"
+"%s : %s (Dalam Bahasa Inggris)"
+
+#: ../server/apacheRequest.py:606
+#, fuzzy, python-format
+msgid "Invalid URI %s"
+msgstr "URI “%s” Tidak Sah"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -63,11 +90,6 @@ msgstr "ISS dinonaktifkan di server ini."
 #, fuzzy, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
-
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Pasangan system_id/action_id tidak valid."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, fuzzy, python-format
@@ -94,6 +116,16 @@ msgstr "Kunci sesi tidak valid"
 #, fuzzy
 msgid "This server ID no longer exists"
 msgstr "ID server ini tidak ada lagi"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, fuzzy, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, fuzzy, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Tindakan %s bukan milik server %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 #, fuzzy
@@ -143,20 +175,15 @@ msgstr "Mengharapkan kamus sebagai argumen produk"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Pasangan system_id/action_id tidak valid."
+
+#: ../server/handlers/xmlrpc/up2date.py:249
 #, fuzzy, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Nilai %s (%s) tidak valid"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, fuzzy, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipe nilai tindakan %s (%s) tidak valid"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, fuzzy, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Tindakan %s bukan milik server %s"
 
 #: ../server/importlib/userAuth.py:98
 #, fuzzy
@@ -191,100 +218,6 @@ msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
 "               Silakan hubungi administrator Organisasi Anda untuk bantuan "
 "lebih lanjut."
-
-#: ../server/rhnHandler.py:62
-#, fuzzy
-msgid "Please run rhn_register as root on this client"
-msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
-
-#: ../server/rhnHandler.py:75
-#, fuzzy, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, fuzzy, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arsitektur '%s' tidak didukung"
-
-#: ../server/rhnServer/server_token.py:78
-#, fuzzy, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
-
-#: ../server/rhnServer/server_token.py:80
-#, fuzzy
-msgid "Conflicting base channels"
-msgstr "Saluran dasar yang bertentangan"
-
-#: ../server/rhnServer/server_token.py:190
-#, fuzzy, python-format
-msgid "Failed to add server to group %s"
-msgstr "Gagal menambahkan server ke grup %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, fuzzy, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Jumlah penggunaan maksimum dari %s tercapai"
-
-#: ../server/rhnServer/server_token.py:744
-#, fuzzy
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
-"didukung"
-
-#: ../server/rhnServer/server_token.py:811
-#, fuzzy, python-format
-msgid "Could not find token '%s'"
-msgstr "Tidak dapat menemukan token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-#, fuzzy
-msgid "Tokens from mismatching orgs"
-msgstr "Token dari organisasi yang tidak cocok"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-#, fuzzy
-msgid "Kickstart session mismatch"
-msgstr "Ketidakcocokan sesi kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-#, fuzzy
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Penumpukan token pendaftaran ulang tidak didukung"
-
-#: ../server/apacheRequest.py:59
-#, fuzzy, python-format
-msgid "Invalid request received (%s)."
-msgstr "Permintaan tidak valid diterima (%s)."
-
-#: ../server/apacheRequest.py:120
-#, fuzzy, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"PESAN PENTING BERIKUT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, fuzzy, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Saat menjalankan '%s': tertangkap\n"
-"%s : %s (Dalam Bahasa Inggris)"
-
-#: ../server/apacheRequest.py:606
-#, fuzzy, python-format
-msgid "Invalid URI %s"
-msgstr "URI “%s” Tidak Sah"
 
 #: ../server/rhnChannel.py:1999
 #, fuzzy, python-format
@@ -354,6 +287,16 @@ msgstr ""
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
+#: ../server/rhnHandler.py:62
+#, fuzzy
+msgid "Please run rhn_register as root on this client"
+msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
+
+#: ../server/rhnHandler.py:75
+#, fuzzy, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, fuzzy, python-format
@@ -364,6 +307,62 @@ msgstr "Paket RPM %s tidak valid diminta"
 #, fuzzy
 msgid "Package not found"
 msgstr "Paket tidak ditemukan"
+
+#: ../server/rhnServer/server_class.py:97
+#, fuzzy, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arsitektur '%s' tidak didukung"
+
+#: ../server/rhnServer/server_token.py:78
+#, fuzzy, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
+
+#: ../server/rhnServer/server_token.py:80
+#, fuzzy
+msgid "Conflicting base channels"
+msgstr "Saluran dasar yang bertentangan"
+
+#: ../server/rhnServer/server_token.py:190
+#, fuzzy, python-format
+msgid "Failed to add server to group %s"
+msgstr "Gagal menambahkan server ke grup %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, fuzzy, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Jumlah penggunaan maksimum dari %s tercapai"
+
+#: ../server/rhnServer/server_token.py:744
+#, fuzzy
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
+"didukung"
+
+#: ../server/rhnServer/server_token.py:811
+#, fuzzy, python-format
+msgid "Could not find token '%s'"
+msgstr "Tidak dapat menemukan token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+#, fuzzy
+msgid "Tokens from mismatching orgs"
+msgstr "Token dari organisasi yang tidak cocok"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+#, fuzzy
+msgid "Kickstart session mismatch"
+msgstr "Ketidakcocokan sesi kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+#, fuzzy
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Penumpukan token pendaftaran ulang tidak didukung"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 #, fuzzy
@@ -426,16 +425,6 @@ msgstr "username harus setidaknya %d karakter panjang"
 #, fuzzy, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
-
-#: ../common/rhnTB.py:205
-#, fuzzy, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "GALAT: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, fuzzy, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1156,48 +1145,21 @@ msgstr "Galat Info Kelas: %s"
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
+#: ../common/rhnTB.py:205
+#, fuzzy, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "GALAT: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, fuzzy, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, fuzzy, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "format dari %s harus setidaknya YYYYMMDD."
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:121
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, fuzzy, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (ditentukan dalam baris perintah)\n"
-"tidak dapat dibuka dan dibaca:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, fuzzy, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" tidak dapat dibuka\n"
-"dan/atau tertulis kepada:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, fuzzy, python-format
@@ -1390,6 +1352,43 @@ msgstr "Mengimpor pohon kickstartable (%d)"
 #, fuzzy, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
+
+#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
+#: ../satellite_tools/reposync.py:117
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
+
+#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, fuzzy, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (ditentukan dalam baris perintah)\n"
+"tidak dapat dibuka dan dibaca:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, fuzzy, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" tidak dapat dibuka\n"
+"dan/atau tertulis kepada:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
@@ -2045,47 +2044,47 @@ msgstr "GALAT: Tidak dapat menyambung ke pangkalan data: %s"
 msgid "ERROR: Check if your database is running."
 msgstr "GALAT: Periksa apakah database Anda berjalan."
 
-#: ../satellite_tools/satsync.py:2336
+#: ../satellite_tools/satsync.py:2334
 #, fuzzy, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
 msgstr "GALAT: --debug-level mengambil nilai bilangan bulat dalam kisaran %s."
 
-#: ../satellite_tools/satsync.py:2338
+#: ../satellite_tools/satsync.py:2336
 #, fuzzy
 msgid "  0  - little logging/messaging."
 msgstr "0 - sedikit penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2339
+#: ../satellite_tools/satsync.py:2337
 #, fuzzy
 msgid "  1  - minimal logging/messaging."
 msgstr "1 - minimal penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2340
+#: ../satellite_tools/satsync.py:2338
 #, fuzzy
 msgid "  2  - normal level of logging/messaging."
 msgstr "2 - tingkat normal penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2341
+#: ../satellite_tools/satsync.py:2339
 #, fuzzy
 msgid "  3  - lots of logging/messaging."
 msgstr "3 - banyak penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2342
+#: ../satellite_tools/satsync.py:2340
 #, fuzzy
 msgid "  4+ - excessive logging/messaging."
 msgstr "4+ - penebangan/pesan yang berlebihan."
 
-#: ../satellite_tools/satsync.py:2355
+#: ../satellite_tools/satsync.py:2353
 #, fuzzy
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr "GALAT: Opsi --master hanya berlaku dengan opsi --mount-point"
 
-#: ../satellite_tools/satsync.py:2365
+#: ../satellite_tools/satsync.py:2363
 #, fuzzy, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
 msgstr "GALAT: Tidak dapat mencari Id Organisasi %s"
 
-#: ../satellite_tools/satsync.py:2374
+#: ../satellite_tools/satsync.py:2372
 #, fuzzy
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
@@ -2093,7 +2092,7 @@ msgstr ""
 "PERINGATAN: Opsi --list-channels menimpa opsi --step apa pun. --langkah "
 "diabaikan."
 
-#: ../satellite_tools/satsync.py:2389
+#: ../satellite_tools/satsync.py:2387
 #, fuzzy, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
@@ -2101,7 +2100,7 @@ msgstr ""
 "GALAT: '%s' bukan langkah yang valid. Lihat 'man satellite-sync' untuk "
 "detail lebih lanjut."
 
-#: ../satellite_tools/satsync.py:2421
+#: ../satellite_tools/satsync.py:2419
 #, fuzzy
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
@@ -2112,112 +2111,112 @@ msgstr ""
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
-#: ../satellite_tools/satsync.py:2470 ../satellite_tools/satsync.py:2474
+#: ../satellite_tools/satsync.py:2468 ../satellite_tools/satsync.py:2472
 #, fuzzy
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
 msgstr "GALAT: --batch-size harus memiliki nilai dalam kisaran: 1..50"
 
-#: ../satellite_tools/satsync.py:2482
+#: ../satellite_tools/satsync.py:2480
 #, fuzzy, python-format
 msgid "ERROR: no such directory %s"
 msgstr "Galat sewaktu membuat direktori %s."
 
-#: ../satellite_tools/satsync.py:2487
+#: ../satellite_tools/satsync.py:2485
 #, fuzzy
 msgid "Error Codes: Returned codes means:"
 msgstr "Kode kesalahan: Kode yang dikembalikan berarti:"
 
-#: ../satellite_tools/satsync.py:2488
+#: ../satellite_tools/satsync.py:2486
 #, fuzzy
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr "-1 - Tidak dapat mengunci file atau KeyboardInterrupt atau SystemExit"
 
-#: ../satellite_tools/satsync.py:2489
+#: ../satellite_tools/satsync.py:2487
 #, fuzzy
 msgid "  0  - User interrupted or intentional exit"
 msgstr "0 - Pengguna terganggu atau disengaja keluar"
 
-#: ../satellite_tools/satsync.py:2490
+#: ../satellite_tools/satsync.py:2488
 #, fuzzy
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
 msgstr "1 - mencoba untuk menjalankan lebih dari satu contoh mgr-inter-sync."
 
-#: ../satellite_tools/satsync.py:2491
+#: ../satellite_tools/satsync.py:2489
 #, fuzzy
 msgid "  2  - Unable to find synchronization tools."
 msgstr "2 - Tidak dapat menemukan alat sinkronisasi."
 
-#: ../satellite_tools/satsync.py:2492
+#: ../satellite_tools/satsync.py:2490
 #, fuzzy
 msgid "  3  - a general socket exception occurred"
 msgstr "3 - pengecualian soket umum terjadi"
 
-#: ../satellite_tools/satsync.py:2493
+#: ../satellite_tools/satsync.py:2491
 #, fuzzy
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr "4 - terjadi kesalahan SSL. Periksa kembali pengaturan SSL Anda."
 
-#: ../satellite_tools/satsync.py:2494
+#: ../satellite_tools/satsync.py:2492
 #, fuzzy
 msgid "  5  - ISS error"
 msgstr "5 - Kesalahan ISS"
 
-#: ../satellite_tools/satsync.py:2495
+#: ../satellite_tools/satsync.py:2493
 #, fuzzy
 msgid "  6  - unhandled exception occurred"
 msgstr "6 - pengecualian ditangani terjadi"
 
-#: ../satellite_tools/satsync.py:2496
+#: ../satellite_tools/satsync.py:2494
 #, fuzzy
 msgid "  7  - unknown sync error"
 msgstr "7 - kesalahan sinkronisasi tidak diketahui"
 
-#: ../satellite_tools/satsync.py:2497
+#: ../satellite_tools/satsync.py:2495
 #, fuzzy
 msgid "  8  - ERROR: must be root to execute"
 msgstr "8 - ERROR: harus root untuk mengeksekusi"
 
-#: ../satellite_tools/satsync.py:2498
+#: ../satellite_tools/satsync.py:2496
 #, fuzzy
 msgid "  9  - rpclib fault during synchronization init"
 msgstr "9 - rpclib kesalahan selama sinkronisasi init"
 
-#: ../satellite_tools/satsync.py:2499
+#: ../satellite_tools/satsync.py:2497
 #, fuzzy
 msgid "  10 - synchronization init error"
 msgstr "10 - sinkronisasi init kesalahan"
 
-#: ../satellite_tools/satsync.py:2500
+#: ../satellite_tools/satsync.py:2498
 #, fuzzy
 msgid "  11 - Error parsing XML stream"
 msgstr "11 - Kesalahan parsing XML stream"
 
-#: ../satellite_tools/satsync.py:2501
+#: ../satellite_tools/satsync.py:2499
 #, fuzzy
 msgid "  12 - Channel do not exist"
 msgstr "12 - Saluran tidak ada"
 
-#: ../satellite_tools/satsync.py:2502
+#: ../satellite_tools/satsync.py:2500
 #, fuzzy
 msgid "  13 - SQL error during importing package metadata"
 msgstr "13 - Galat SQL selama mengimpor metadata paket"
 
-#: ../satellite_tools/satsync.py:2503
+#: ../satellite_tools/satsync.py:2501
 #, fuzzy
 msgid "  14 - SQL error during linking channel packages"
 msgstr "14 - Galat SQL selama menghubungkan paket saluran"
 
-#: ../satellite_tools/satsync.py:2504
+#: ../satellite_tools/satsync.py:2502
 #, fuzzy
 msgid "  15 - SQL error during xml processing"
 msgstr "15 - Galat SQL selama pemrosesan xml"
 
-#: ../satellite_tools/satsync.py:2505
+#: ../satellite_tools/satsync.py:2503
 #, fuzzy
 msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "16 - server.mount_point tidak ditetapkan dalam file konfigurasi"
 
-#: ../satellite_tools/satsync.py:2506
+#: ../satellite_tools/satsync.py:2504
 #, fuzzy
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
@@ -2226,57 +2225,57 @@ msgstr ""
 "17 - GALAT SQL selama mengambil saluran yang sudah diimpor dalam database "
 "SUSE Manager"
 
-#: ../satellite_tools/satsync.py:2507
+#: ../satellite_tools/satsync.py:2505
 #, fuzzy
 msgid "  18 - Wrong db connection string in rhn.conf"
 msgstr "18 - String koneksi db salah di rhn.conf"
 
-#: ../satellite_tools/satsync.py:2508
+#: ../satellite_tools/satsync.py:2506
 #, fuzzy
 msgid "  19 - Bad arguments"
 msgstr "19 - Argumen buruk"
 
-#: ../satellite_tools/satsync.py:2509
+#: ../satellite_tools/satsync.py:2507
 #, fuzzy
 msgid "  20 - Could not connect to db."
 msgstr "20 - Tidak dapat terhubung ke db."
 
-#: ../satellite_tools/satsync.py:2510
+#: ../satellite_tools/satsync.py:2508
 #, fuzzy
 msgid "  21 - Bad debug level"
 msgstr "21 - Tingkat debug buruk"
 
-#: ../satellite_tools/satsync.py:2511
+#: ../satellite_tools/satsync.py:2509
 #, fuzzy
 msgid "  22 - Not valid step"
 msgstr "22 - Tidak berlaku langkah"
 
-#: ../satellite_tools/satsync.py:2512
+#: ../satellite_tools/satsync.py:2510
 #, fuzzy
 msgid "  24 - no such file"
 msgstr "24 - tidak ada file tersebut"
 
-#: ../satellite_tools/satsync.py:2513
+#: ../satellite_tools/satsync.py:2511
 #, fuzzy
 msgid "  25 - no such directory"
 msgstr "25 - tidak ada direktori tersebut"
 
-#: ../satellite_tools/satsync.py:2514
+#: ../satellite_tools/satsync.py:2512
 #, fuzzy
 msgid "  26 - mount_point does not exist"
 msgstr "26 - mount_point tidak ada"
 
-#: ../satellite_tools/satsync.py:2515
+#: ../satellite_tools/satsync.py:2513
 #, fuzzy
 msgid "  27 - No such org"
 msgstr "27 - Tidak ada organisasi seperti itu"
 
-#: ../satellite_tools/satsync.py:2516
+#: ../satellite_tools/satsync.py:2514
 #, fuzzy
 msgid "  28 - error: --master is only valid with --mount-point"
 msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 
-#: ../satellite_tools/satsync.py:2523
+#: ../satellite_tools/satsync.py:2521
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"

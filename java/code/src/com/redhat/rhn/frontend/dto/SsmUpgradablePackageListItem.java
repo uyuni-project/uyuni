@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,6 +25,7 @@ public class SsmUpgradablePackageListItem extends PackageListItem {
     private String advisoryType;
     private Long advisoryId;
     private Long numSystems;
+    private boolean packageReboot;
     private boolean errataReboot;
     private boolean errataRestart;
 
@@ -88,6 +89,24 @@ public class SsmUpgradablePackageListItem extends PackageListItem {
      */
     public void setNumSystems(Long numSystemsIn) {
         this.numSystems = numSystemsIn;
+    }
+
+    /**
+     * Gets if {@code installhint(reboot-needed)} flag is set for the package.
+     *
+     * @return True if {@code installhint(reboot-needed)} flag is set.
+     */
+    public boolean isPkgReboot() {
+        return packageReboot;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag for the advisory.
+     *
+     * @param pkgRebootIn {@code reboot_suggested} flag
+     */
+    public void setPkgReboot(boolean pkgRebootIn) {
+        this.packageReboot = pkgRebootIn;
     }
 
     /**

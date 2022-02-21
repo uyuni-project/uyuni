@@ -69,6 +69,11 @@ start() {
     fi
     echo "  Running DB schema upgrade. This may take a while."
     echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
+    if grep -E -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf && \
+       grep "md5" /var/lib/pgsql/data/pg_hba.conf >/dev/null; then
+         echo
+         echo "INFO: Migrating password encryption mechanism to scram-sha-256"
+    fi
     MSG1=$(systemctl start spacewalk.target 2>&1) || {
         MSG2=$(systemctl status uyuni-check-database.service)
         if [ $? -ne 0 ]; then

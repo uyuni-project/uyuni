@@ -1,5 +1,6 @@
-import { cloneReactElement } from "components/utils";
 import * as React from "react";
+
+import { cloneReactElement } from "components/utils";
 
 type SearchPanelProps = {
   /** number representing the number of the first displayed item */
@@ -37,7 +38,7 @@ type SearchPanelProps = {
 export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className="spacewalk-list-filter table-search-wrapper">
-      {React.Children.toArray(props.children).map(child =>
+      {React.Children.toArray(props.children).map((child) =>
         cloneReactElement(child, { criteria: props.criteria, onSearch: props.onSearch })
       )}
       <div className="d-inline-block">

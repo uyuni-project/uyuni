@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataDetailsSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * ErrataDetailsSetupActionTest
@@ -30,26 +35,48 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
 
-        Errata e = ErrataFactoryTest.createTestErrata(
-                sah.getUser().getOrg().getId());
-        e.addKeyword("test");
+        Errata errata = ErrataFactoryTest.createTestErrata(sah.getUser().getOrg().getId());
 
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
+        errata.setAdvisory("SUSE-15-SP3-2021-3413");
+        errata.setAdvisoryName("SUSE-15-SP3-2021-3413");
+        errata.setAdvisoryRel(1L);
+        errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+        errata.setAdvisoryStatus(AdvisoryStatus.STABLE);
+        errata.setProduct("SUSE Updates SLE-Module-Basesystem 15-SP3 x86 64");
+        errata.setDescription("This update for suse-module-tools fixes bugs.");
+        errata.setSynopsis("Recommended update for suse-module-tools");
+        errata.setIssueDate(new GregorianCalendar(2021, Calendar.OCTOBER, 13).getTime());
+        errata.setUpdateDate(new GregorianCalendar(2021, Calendar.OCTOBER, 13).getTime());
+        errata.setErrataFrom("maint-coord@suse.de");
+        errata.addKeyword("test");
+
+        ErrataFactory.save(errata);
+
+        sah.getRequest().setupAddParameter("eid", errata.getId().toString());
 
         sah.executeAction();
 
-        assertNotNull(sah.getRequest().getAttribute("errata"));
-        assertNotNull(sah.getRequest().getAttribute("issued"));
-        assertNotNull(sah.getRequest().getAttribute("updated"));
-        assertNotNull(sah.getRequest().getAttribute("topic"));
-        assertNotNull(sah.getRequest().getAttribute("description"));
-        assertNotNull(sah.getRequest().getAttribute("solution"));
-        assertNotNull(sah.getRequest().getAttribute("notes"));
-        assertNotNull(sah.getRequest().getAttribute("references"));
+        assertEquals(errata, sah.getRequest().getAttribute("errata"));
+        assertEquals("10/13/21", sah.getRequest().getAttribute("issued"));
+        assertEquals("10/13/21", sah.getRequest().getAttribute("updated"));
+        assertEquals("This update for suse-module-tools fixes bugs.", sah.getRequest().getAttribute("description"));
+        assertEquals("Stable", sah.getRequest().getAttribute("advisoryStatus"));
+
+
+        String advisoryLink = "<a target=\"_blank\" " +
+                "href=\"https://www.suse.com/support/update/announcement/2021/suse-ru-20213413-1/\">" +
+                "SUSE-RU-2021:3413-1</a>";
+        assertEquals(advisoryLink, sah.getRequest().getAttribute("vendorAdvisory"));
+
+        assertEquals("test topic", sah.getRequest().getAttribute("topic"));
+        assertEquals("Test solution", sah.getRequest().getAttribute("solution"));
+        assertEquals("Test notes for test errata", sah.getRequest().getAttribute("notes"));
+        assertEquals("rhn unit tests", sah.getRequest().getAttribute("references"));
+
         assertNotNull(sah.getRequest().getAttribute("channels"));
         assertNotNull(sah.getRequest().getAttribute("fixed"));
         assertNotNull(sah.getRequest().getAttribute("cve"));
-        assertNotNull(sah.getRequest().getAttribute("keywords"));
-        assertNotNull(sah.getRequest().getAttribute("advisoryStatus"));
+
+        assertEquals("keyword, test", sah.getRequest().getAttribute("keywords"));
     }
 }

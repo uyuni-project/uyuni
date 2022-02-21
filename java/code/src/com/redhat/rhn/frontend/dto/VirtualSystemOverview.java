@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,6 +32,7 @@ public class VirtualSystemOverview extends SystemOverview
     private String stateName;
     private String stateLabel;
     private Long hostSystemId;
+    private String hostServerName;
     private Long virtualSystemId;
     private Long countActiveInstances;
     private Long countTotalInstances;
@@ -207,6 +208,21 @@ public class VirtualSystemOverview extends SystemOverview
     public Long getHostSystemId() {
         return hostSystemId;
     }
+
+    /**
+     * @return value of hostServerName
+     */
+    public String getHostServerName() {
+        return hostServerName;
+    }
+
+    /**
+     * @param hostServerNameIn value of hostServerName
+     */
+    public void setHostServerName(String hostServerNameIn) {
+        hostServerName = hostServerNameIn;
+    }
+
     /**
      * @param hostSystemIdIn the system id to set
      */

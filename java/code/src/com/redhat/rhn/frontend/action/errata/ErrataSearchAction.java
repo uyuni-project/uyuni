@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,6 +13,24 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.errata;
+
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.action.BaseSearchAction;
+import com.redhat.rhn.frontend.action.common.DateRangePicker;
+import com.redhat.rhn.frontend.action.common.DateRangePicker.DatePickerResults;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.errata.ErrataManager;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -29,26 +47,8 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
-
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.util.DatePicker;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.frontend.action.BaseSearchAction;
-import com.redhat.rhn.frontend.action.common.DateRangePicker;
-import com.redhat.rhn.frontend.action.common.DateRangePicker.DatePickerResults;
-import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 /**
  * SearchAction

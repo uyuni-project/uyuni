@@ -1,17 +1,182 @@
-- Improved timezone support
-- implement package locking for salt minions
-- Show AppStreams tab just for modular channels
-- Fix Json null comparison in virtual network info parsing (bsc#1189167)
-- 'AppStreams with defaults' filter template in CLM
-- Add a link to OS image store dir in image list page
-- Do not log XMLRPC fault exceptions as errors (bsc#1188853)
-- AppStreams tab for modular channels
-- Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
-- Link to CLM filter creation from system details page
-- Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
-- XMLRPC: Add call for listing application monitoring endpoints
-- Bring back Beta product tag
-- fix NPE when no redhat info could be fetched
+-------------------------------------------------------------------
+Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Revert: Improvements on list packages query processing
+    by using query elaborator (bsc#1187333)
+
+-------------------------------------------------------------------
+Tue Feb 15 10:03:14 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Write data into reporting database using a taskomatic job
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
+  * Fix virtualization list rendering for foreign systems (bsc#1195712)
+  * Change order of 'Relevant' and 'All' in patches menu
+  * When adding a product, check if the new vendor channels conflicts
+    with any of the existing custom channel (bsc#1193448)
+  * Use uyuni roster salt module instead of flat roster files
+  * Improvements on list packages query processing by using query
+    elaborator (bsc#1187333)
+  * add ubuntu errata data and install handling
+  * fix possible race condition in job handling (bsc#1192510)
+  * Remove verbose token log (bsc#1195666)
+  * FIX errors when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
+  * SLES PAYG client support on cloud
+  * fix ClassCastException during action processing (bsc#1195043)
+  * Install product by default after a channel is subscribed
+  * Improve token validation logs
+  * Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Tue Feb 08 13:15:56 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Fix stack overflow when building a CLM project from modular sources (bsc#1194990)
+
+-------------------------------------------------------------------
+Mon Jan 24 11:17:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Tue Jan 18 13:52:58 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Remove cluster management feature
+  * Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
+  * Store formula pillar data in database
+  * Add new endpoints to packages API: schedulePackageLockChange, listPackagesLockStatus
+  * Generate flat repositories metadata for Debian based systems
+  * Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
+  * Added rights field to generated updateinfo.xml to handle copyright
+  * fix XML syntax in cobbler snippets (bsc#1193694)
+  * Migrate the displaying of the date/time to rhn:formatDate
+  * Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+  * Add route for virtual systems ReactJS page
+  * fix actionchain stuck in pending/picked up (bsc#1189561)
+  * provide static configuration key name for SSHMinionActionExecutor
+    parallel threads
+  * Add link to the original vendor advisory in the patch details page
+  * fix issue with empty action chains getting deleted too early (bsc#1191377)
+  * Move pickedup actions to history as soon as they are pickedup (bsc#1191444)
+  * Add additional matchers to package (nevra) filter
+  * Add greater equals matcher to package (nevra) filter
+  * Add support for custom SSH port for SSH minions
+  * UI and API call for changing proxy
+  * Use an 'allow' filter for the kernel packages with live patching
+    filter templates (bsc#1191460)
+  * require postgresql14 on SLE15 SP4
+
+-------------------------------------------------------------------
+Fri Dec 03 12:21:41 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * fix parsing error by making SCAP Profile description attribute optional
+    (bsc#1192321)
+  * fix openscap scan with tailoring-file option (bsc#1192321)
+  * Pass the "allow_vendor_change" flag using the right name when installing patches
+  * Fix legacy timepicker passing wrong time to the backend if server and
+    user time differ (bsc#1192699)
+  * Fix legacy timepicker passing wrong time to the backend if selected
+    date is in summer time (bsc#1192776)
+
+-------------------------------------------------------------------
+Tue Nov 16 12:58:01 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
+
+-------------------------------------------------------------------
+Tue Nov 16 10:06:56 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * update last boot time of SSH Minions after bootstrapping (bsc#1191899)
+  * Fix package update action with shared channels (bsc#1191313)
+  * Implement using re-activation keys when bootstrapping with the Web UI
+    or XMLRPC API
+  * Show salt ssh error message in failed action details
+  * switch to best repo auth item for contentsources (bsc#1191442)
+  * Add compressed flag to image pillars when kiwi image is
+    compressed (bsc#1191702)
+
+-------------------------------------------------------------------
+Fri Nov 05 13:49:19 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove NullPointerException in rhn_web_ui.log when building an
+    image (bsc#1185951)
+  * Bugfix: Prevent "no session" hibernate error on deleting server
+  * Set product name and version in the User-Agent header when
+    connecting to SCC
+  * On salt-ssh minions, enforce package list refresh after state apply
+  * Improve the API to query system events and history
+  * Fix internal server error on DuplicateSystemsCompare (bsc#1191643)
+  * Fix Service Package migration with pillar in database
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Allow usage of jinja template in Salt config channels
+  * Store Salt minion pillars in database
+  * Fix datetime format parsing with moment (bsc#1191348)
+  * trigger reboot needed message also when installhint is available
+    on package level
+  * add Content Lifecycle Management filter for package provides and
+    use it in live patching filter template
+  * Update proxy path on minion connection
+  * mgr-sync refresh logs when a vendor channel is expired and shows
+    how to remove it (bsc#1191222)
+  * Hide link to CLM live patching template in system details for
+    products that don't support live patching (bsc#1190866)
+  * fix logging of the spark framework and map requests to media.1
+    directory in the download controller (bsc#1189933)
+  * Add 'Last build date' column to CLM project list (jsc#PM-2644)
+    (jsc#SUMA-61)
+  * Improve exception handling and logging for mgr-libmod calls
+  * Execute the diskcheck script at login to validate the available space
+  * Add checksums to repository metadata filenames (bsc#1188315)
+  * Fix ISE in product migration if base product is missing (bsc#1190151)
+  * Add 'Flush cache' option to Ansible playbook execution
+    (bsc#1190405)
+  * Update kernel live patch version on minion startup (bsc#1190276)
+  * use TLSv1.3 if it is a supported Protocol
+  * Adapt auto errata update to skip during CLM build (bsc#1189609)
+  * Adapt auto errata update to respect maintenance windows
+  * fix ISE in SSM when scheduling patches on multiple
+    systems (bsc#1190396, bsc#1190275)
+  * Add new endpoints to saltkeys API: acceptedList, pendingList,
+    rejectedList, deniedList, accept and reject
+  * add CentOS 7/8 aarch64
+  * add Oracle Linux 7/8 aarch64
+  * add Rocky Linux 8 aarch64
+  * add AlmaLinux 8 aarch64
+  * add Amazon Linux 2 aarch64
+
+-------------------------------------------------------------------
+Fri Sep 17 12:18:34 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Allow getting all completed actions via XMLRPC without display limit (bsc#1181223)
+  * Add XMLRPC API to force refreshing pillar data (bsc#1190123)
+  * Add missing string on XCCDF scan results (bsc#1190164)
+  * Support syncing patches with advisory status 'pending' (bsc#1190455)
+  * Updated Enterprise Linux servlet requirement.
+  * Ignore duplicates in 'pkg.installed' result when applying patches (bsc#1187572)
+  * Improved timezone support
+  * implement package locking for salt minions
+  * Show AppStreams tab just for modular channels
+  * Fix Json null comparison in virtual network info parsing (bsc#1189167)
+  * 'AppStreams with defaults' filter template in CLM
+  * Add a link to OS image store dir in image list page
+  * Do not log XMLRPC fault exceptions as errors (bsc#1188853)
+  * AppStreams tab for modular channels
+  * Allow getting all archived actions via XMLRPC without display limit (bsc#1181223)
+  * Link to CLM filter creation from system details page
+  * Delete ActionChains when the last action is a Reboot and it completes (bsc#1188163)
+  * XMLRPC: Add call for listing application monitoring endpoints
+  * Bring back Beta product tag
+  * fix NPE when no redhat info could be fetched
 
 -------------------------------------------------------------------
 Mon Aug 09 11:00:52 CEST 2021 - jgonzalez@suse.com

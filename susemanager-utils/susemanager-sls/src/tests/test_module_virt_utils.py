@@ -99,7 +99,7 @@ def test_get_cluster_filesystem_nocrm():
     with patch.object(virt_utils, "Path", MagicMock(wraps=virt_utils.Path)) as path_mock:
         path_mock.return_value.resolve.return_value = virt_utils.Path("/srv/clusterfs/xml")
         with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
-            popen_mock.return_value.communicate.side_effect = FileNotFoundError("No such file or directory: 'crm'")
+            popen_mock.return_value.communicate.side_effect = OSError("No such file or directory: 'crm'")
             assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None
 
 

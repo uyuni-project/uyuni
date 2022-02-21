@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.manager.contentmgmt.test;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -31,19 +34,16 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.RepositoryNotModularException;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
-import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,9 +51,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
 /**
  * Mock class for libmodulemd API
@@ -74,13 +71,6 @@ public class MockModulemdApi extends ModulemdApi {
         return moduleStreamsMap;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated this endpoint is not currently used by the
-     * {@link com.redhat.rhn.manager.contentmgmt.DependencyResolver} logic.
-     */
-    @Deprecated
     @Override
     public List<String> getAllPackages(List<Channel> sources) {
         // Dummy call to trigger RepositoryNotModular exception:
@@ -146,11 +136,7 @@ public class MockModulemdApi extends ModulemdApi {
         List<String> nevras = doGetAllPackages();
         // perl 5.26 is a special package which is included in the module definition even though it's not served as a
         // modular package. We need it in the channel to be able to test this case.
-        String perlNevra = "perl-5.26.3-416.el8:4.x86_64";
-        nevras.add(perlNevra);
-
-        // 'modularitylabel' rpm tag determines that a package belongs to a module
-        PackageExtraTagsKeys modularityHeader = PackageManagerTest.createExtraTagKey("modularitylabel");
+        nevras.add("perl-5.26.3-416.el8:4.x86_64");
 
         Pattern nevraPattern = Pattern.compile("^(.*)-(\\d+):(.*)-(.*)\\.(.*)$");
         for (String nevra : nevras) {
@@ -163,12 +149,6 @@ public class MockModulemdApi extends ModulemdApi {
                                 packageArch.getArchType().getPackageType()),
                                 packageArch
                         );
-
-                if (!perlNevra.equals(nevra)) {
-                    // Exclude non-modular Perl package mentioned above
-                    pkg.setExtraTags(Collections.singletonMap(modularityHeader, "my:nsvc"));
-                }
-
                 channel.addPackage(pkg);
             }
         }

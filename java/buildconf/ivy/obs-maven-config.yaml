@@ -92,6 +92,14 @@ artifacts:
     package: hibernate5
     jar: hibernate-c3p0
     repository: Uyuni_Other
+  - artifact: hibernate-types
+    repository: Uyuni_Other
+  - artifact: jackson-annotations
+    repository: Leap
+  - artifact: jackson-core
+    repository: Leap
+  - artifact: jackson-databind
+    repository: Leap
   - artifact: hibernate-commons-annotations
     repository: Uyuni_Other
   - artifact: hibernate-core
@@ -167,6 +175,12 @@ artifacts:
   - artifact: netty-transport-native-unix-common
     package: netty
     repository: Uyuni_Other
+  - artifact: client
+    package: ongres-scram-client
+    repository: Leap
+  - artifact: common
+    package: ongres-scram
+    repository: Leap
   - artifact: oro
     repository: Leap
   - artifact: pgjdbc-ng

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,13 +24,16 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.content.ubuntu.UbuntuErrataManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +44,16 @@ import java.util.Optional;
  * This really just calls a python script.
  */
 public class RepoSyncTask extends RhnJavaJob {
+
+    @Override
+    public int getDefaultRescheduleTime() {
+        return 30;
+    }
+
+    @Override
+    public String getConfigNamespace() {
+        return "reposync";
+    }
 
     /**
      * {@inheritDoc}
@@ -100,6 +113,12 @@ public class RepoSyncTask extends RhnJavaJob {
             else {
                 log.error("No such channel with channel_id " + channelId);
             }
+        }
+        try {
+            UbuntuErrataManager.sync(new HashSet<>(channelIds));
+        }
+        catch (IOException e) {
+            log.error(e);
         }
     }
 

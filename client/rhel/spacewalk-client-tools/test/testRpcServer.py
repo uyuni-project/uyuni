@@ -126,7 +126,7 @@ class TestGetServer(unittest.TestCase):
 
     def testGetServerMultipleCaCert(self):
         "getServer with a multiple CA certs"
-        rpcServer.rhns_ca_certs = ["/usr/share/rhn/RHNS-CA-CERT", "/usr/share/rhn/RHNS-CA-CERT"]
+        rpcServer.rhns_ca_certs = ["/etc/ssl/certs/ISRG_Root_X1.pem", "/etc/ssl/certs/ISRG_Root_X1.pem"]
 
         try:
             s = rpcServer.getServer()

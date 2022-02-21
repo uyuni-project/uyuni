@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,22 +18,14 @@ package com.suse.manager.utils;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.cluster.BaseClusterAction;
-import com.redhat.rhn.domain.action.cluster.ClusterActionCommand;
-import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -52,10 +44,9 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -80,7 +71,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -88,28 +78,24 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.clusters.ClusterManager;
-import com.suse.manager.clusters.ClusterNode;
-import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -121,7 +107,6 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
-import com.suse.manager.webui.utils.salt.custom.MgrClustersResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -144,20 +129,16 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -192,7 +173,7 @@ public class SaltUtils {
     /** Package-affecting Salt state module names. */
     private static final List<String> PKG_STATE_MODULES = Arrays.asList(
         "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
-        "pkg.purged", "pkg.removed", "pkg.uptodate"
+        "pkg.purged", "pkg.removed", "pkg.uptodate", "product.all_installed"
     );
 
     /** Package-affecting Salt execution module names. */
@@ -203,16 +184,10 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
-    public static final String SYSTEM_LOCK_FORMULA = "system-lock";
-
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
     private final SystemQuery systemQuery;
     private final SaltApi saltApi;
-    private final ClusterManager clusterManager;
-    private final FormulaManager formulaManager;
-    private final ServerGroupManager serverGroupManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -238,18 +213,10 @@ public class SaltUtils {
      *
      * @param systemQueryIn
      * @param saltApiIn
-     * @param clusterManagerIn
-     * @param formulaManagerIn
-     * @param serverGroupManagerIn
      */
-    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
-                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
-                     ServerGroupManager serverGroupManagerIn) {
+    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
-        this.clusterManager = clusterManagerIn;
-        this.formulaManager = formulaManagerIn;
-        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -395,11 +362,10 @@ public class SaltUtils {
             String name = e.getKey();
             Change<List<Info>> change = e.getValue();
 
+            // Sometimes Salt lists the same NEVRA twice, only with different install timestamps.
+            // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
-                .collect(Collectors.toMap(
-                    info -> packageToKey(name, info),
-                    Function.identity()
-                ));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
 
             change.getOldValue().stream().forEach(info -> {
                 String key = packageToKey(name, info);
@@ -417,7 +383,7 @@ public class SaltUtils {
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
                     .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> name, info -> new Tuple2(name, info)));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -527,7 +493,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\"ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
@@ -539,49 +505,7 @@ public class SaltUtils {
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-            ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-
-            // Revisit the action status if test=true
-            if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
-                serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-            }
-
-            ApplyStatesActionResult statesResult = Optional.ofNullable(
-                    applyStatesAction.getDetails().getResults())
-                    .orElse(Collections.emptySet())
-                    .stream()
-                    .filter(result ->
-                            serverAction.getServerId().equals(result.getServerId()))
-                    .findFirst()
-                    .orElse(new ApplyStatesActionResult());
-            applyStatesAction.getDetails().addResult(statesResult);
-            statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
-            statesResult.setServerId(serverAction.getServerId());
-            statesResult.setReturnCode(retcode);
-
-            // Set the output to the result
-            statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
-
-            // Create the result message depending on the action status
-            String states = applyStatesAction.getDetails().getMods().isEmpty() ?
-                    "highstate" : applyStatesAction.getDetails().getMods().toString();
-            String message = "Successfully applied state(s): " + states;
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                message = "Failed to apply state(s): " + states;
-
-                NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
-                        new StateApplyFailed(serverAction.getServer().getName(),
-                                serverAction.getServerId(), serverAction.getParentAction().getId()));
-
-                Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
-                // TODO: are also org admins and the creator part of this list?
-                UserNotificationFactory.storeForUsers(nm, admins);
-            }
-            if (applyStatesAction.getDetails().isTest()) {
-                message += " (test-mode)";
-            }
-            serverAction.setResultMsg(message);
+            handleStateApplyData(serverAction, jsonResult, retcode, success);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
@@ -724,21 +648,61 @@ public class SaltUtils {
             // Intentionally don't get only the comment since the changes value could be interesting
             serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
-            handleClusterGroupRefreshNodes(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_JOIN_NODE)) {
-            handleClusterJoinNode(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_REMOVE_NODE)) {
-            handleClusterRemoveNode(serverAction, jsonResult, action);
-        }
-        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER)) {
-            handleClusterUpgrade(serverAction, jsonResult, action);
-        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+    }
+
+    private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
+            boolean success) {
+        ApplyStatesAction applyStatesAction = (ApplyStatesAction)serverAction.getParentAction();
+
+        // Revisit the action status if test=true
+        if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        }
+
+        ApplyStatesActionResult statesResult = Optional.ofNullable(
+                applyStatesAction.getDetails().getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(result ->
+                        serverAction.getServerId().equals(result.getServerId()))
+                .findFirst()
+                .orElse(new ApplyStatesActionResult());
+        applyStatesAction.getDetails().addResult(statesResult);
+        statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
+        statesResult.setServerId(serverAction.getServerId());
+        statesResult.setReturnCode(retcode);
+
+        // Set the output to the result
+        statesResult.setOutput(getJsonResultWithPrettyPrint(jsonResult).getBytes());
+
+        // Create the result message depending on the action status
+        String states = applyStatesAction.getDetails().getMods().isEmpty() ?
+                "highstate" : applyStatesAction.getDetails().getMods().toString();
+        String message = "Successfully applied state(s): " + states;
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            message = "Failed to apply state(s): " + states;
+
+            NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                    new StateApplyFailed(serverAction.getServer().getName(),
+                            serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+            Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+            // TODO: are also org admins and the creator part of this list?
+            UserNotificationFactory.storeForUsers(nm, admins);
+        }
+        if (applyStatesAction.getDetails().isTest()) {
+            message += " (test-mode)";
+        }
+        serverAction.setResultMsg(message);
+
+        serverAction.getServer().asMinionServer().ifPresent(minion -> {
+            if (jsonResult.isJsonObject()) {
+                updateSystemInfo(jsonResult, minion);
+            }
+        });
     }
 
     private void handlePackageLockData(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -772,120 +736,6 @@ public class SaltUtils {
         }
     }
 
-    private void handleClusterGroupRefreshNodes(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        ClusterGroupRefreshNodesAction clusterAction = (ClusterGroupRefreshNodesAction)action;
-        Cluster cluster = clusterAction.getCluster();
-
-        // remove existing nodes from cluster, except the management node
-        List<Server> nodesToRemove = cluster.getGroup().getServers().stream()
-                .filter(s -> !s.getId().equals(cluster.getManagementNode().getId()))
-                .collect(Collectors.toList());
-        serverGroupManager.removeServers(cluster.getGroup(), nodesToRemove);
-
-        // add new nodes if matching registered systems are found
-        List<ClusterNode> clusterNodes = new ArrayList<>();
-        Json.GSON.fromJson(jsonResult, ClusterOperationsSlsResult.class)
-                .listNodesResult().getChanges().getRet()
-                .forEach((k, v) -> clusterNodes.add(new ClusterNode(k, v)));
-        clusterManager.matchClusterNodes(clusterNodes);
-
-        List<Server> matchedMinions = clusterNodes.stream()
-                .filter(n -> n.getServer().isPresent())
-                .map(n -> n.getServer().get())
-                .collect(Collectors.toList());
-
-        serverGroupManager.addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
-    }
-
-    private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        ClusterJoinNodeAction clusterAction = (ClusterJoinNodeAction)action;
-        handleClusterAction(serverAction, jsonResult,
-                "mgrcompat_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-module_run", action,
-                clusterAction, true);
-    }
-
-    private void handleClusterRemoveNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        ClusterRemoveNodeAction clusterAction = (ClusterRemoveNodeAction)action;
-        handleClusterAction(serverAction, jsonResult,
-                "mgrcompat_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-module_run", action,
-                clusterAction, true);
-    }
-
-    private void handleClusterUpgrade(ServerAction serverAction, JsonElement jsonResult, Action action) {
-        ClusterUpgradeAction clusterAction = (ClusterUpgradeAction) action;
-        handleClusterAction(serverAction, jsonResult,
-                "mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run",
-                action, clusterAction, false);
-    }
-
-    private void handleClusterAction(ServerAction serverAction, JsonElement jsonResult, String resulMatch,
-                                     Action action, BaseClusterAction clusterAction, boolean scheduleGroupRefresh) {
-        try {
-            Map<String, StateApplyResult<RetOpt<JsonElement>>> stateApplyResult = Json.GSON.fromJson(jsonResult,
-                    new TypeToken<Map<String, StateApplyResult<RetOpt<JsonElement>>>>() {
-                    }.getType());
-            var allNodesResults = stateApplyResult.entrySet().stream()
-                    .filter(e -> stateNameMatches(resulMatch, e.getKey()))
-                    .map(e -> {
-                        var stateRes = e.getValue();
-                        return e.getValue().getChanges().getRetOpt()
-                            .map(jsonRet -> {
-                                MgrClustersResult result = Json.GSON.fromJson(jsonRet,
-                                        MgrClustersResult.class);
-                                return new Tuple2<>(result.isSuccess(), formatClusterActionOutput(jsonRet));
-                            })
-                                .orElseGet(() -> new Tuple2<>(false, stateRes.getComment()));
-                    })
-                    .reduce(new Tuple2<>(true, ""),
-                            (partial, tuple) ->
-                                    new Tuple2<>(partial.getA() && tuple.getA(), // success
-                                            String.join("\n---\n", partial.getB(), tuple.getB()))); // resultMsg
-            serverAction.setResultMsg(allNodesResults.getB());
-            if (allNodesResults.getA()) {
-                // refresh cluster group after add/remove node
-                if (scheduleGroupRefresh) {
-                    scheduleClusterRefresh(action, clusterAction);
-                }
-                serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-            }
-            else {
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            }
-        }
-        catch (JsonSyntaxException e) {
-            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            return;
-        }
-    }
-
-    private boolean stateNameMatches(String resultMatch, String resultKey) {
-        return FilenameUtils.wildcardMatch(resultKey, resultMatch);
-    }
-
-    private String formatClusterActionOutput(JsonElement result) {
-        return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(result, Object.class));
-    }
-
-    private void scheduleClusterRefresh(Action action, BaseClusterAction clusterAction) {
-        ClusterActionCommand<ClusterGroupRefreshNodesAction> cmd =
-                new ClusterActionCommand(Optional.of(action.getSchedulerUser()),
-                        action.getOrg(),
-                        new Date(),
-                        null,
-                        ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES,
-                        clusterAction.getCluster().getManagementNode(),
-                        clusterAction.getCluster(),
-                        clusterAction.getCluster().getGroup().getName(),
-                        null);
-        try {
-            cmd.store();
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error(e);
-        }
-    }
-
     /**
      * Return the path where scripts from Remote Commands Actions are stored.
      * @param scriptActionId the ID of the ScriptAction
@@ -901,9 +751,7 @@ public class SaltUtils {
      * @param jsonResult json result with pretty print
      */
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        return gson.toJson(returnObject);
+        return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -911,27 +759,23 @@ public class SaltUtils {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
-            // activate the new tokens
-            List<Long> newTokenIds = sca.getDetails().getAccessTokens()
-                    .stream()
-                    .filter(ac -> ac.getMinion() != null)
-                    .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
-                    .map(AccessToken::getId)
-                    .collect(Collectors.toList());
-
             // if successful update channels in db and trigger pillar refresh
             SystemManager.updateServerChannels(
                     action.getSchedulerUser(),
                     serverAction.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels(),
-                    newTokenIds);
+                    sca.getDetails().getChannels());
         }
         else {
-            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(returnObject);
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
+            //set the token as invalid
+            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+            sca.getDetails().getAccessTokens().forEach(token -> {
+                token.setValid(false);
+                AccessTokenFactory.save(token);
+            });
+
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
+                    getJsonResultWithPrettyPrint(jsonResult));
         }
     }
 
@@ -1135,65 +979,72 @@ public class SaltUtils {
 
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
-        ImageBuildAction ba = (ImageBuildAction)action;
+        ImageBuildAction ba = (ImageBuildAction) action;
         ImageBuildActionDetails details = ba.getDetails();
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
-        // Pretty-print the whole return map (or whatever fits into 1024 characters)
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(returnObject);
-        serverAction.setResultMsg(json);
+        serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            Optional<ImageProfile> profileOpt =
-                    ImageProfileFactory.lookupById(details.getImageProfileId());
-
-            profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+            if (details == null) {
+                LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Long imageProfileId = details.getImageProfileId();
+            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
+                LOG.warn("Image Profile ID not found while performing: "  +
+                        action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
+            profileOpt.ifPresentOrElse(p -> {
+                p.asKiwiProfile().ifPresent(kiwiProfile -> {
+                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     // Download the built Kiwi image to SUSE Manager server
-                    OSImageInspectSlsResult.Bundle bundleInfo =
+                    List<OSImageInspectSlsResult.Bundle> bundles =
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                    .getKiwiBuildInfo().getChanges().getRet().getBundle();
+                                    .getKiwiBuildInfo().getChanges().getRet().getBundles();
                     infoOpt.ifPresent(info -> info.setChecksum(
-                            ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = systemQuery
+                            ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
+                    bundles.stream().forEach(bundleInfo -> {
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
                                     OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                    if (collectResult.getReturnCode() != 0) {
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        serverAction.setResultMsg(StringUtils
-                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()), 1024));
-                    }
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
+                                .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                        1024));
+                        }
+                    });
+                    });
                 });
-            }));
-            ImageInspectAction iAction = ActionManager.scheduleImageInspect(
-                    action.getSchedulerUser(),
-                    action.getServerActions()
-                            .stream()
-                            .map(ServerAction::getServerId)
-                            .collect(Collectors.toList()),
-                    Optional.of(action.getId()),
-                    details.getVersion(),
-                    profileOpt.map(ImageProfile::getLabel).orElse(null),
-                    profileOpt.map(ImageProfile::getTargetStore).orElse(null),
-                    Date.from(Instant.now())
-            );
-            try {
-                TASKOMATIC_API.scheduleActionExecution(iAction);
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule image inspection");
-                LOG.error(e);
-            }
-
-            infoOpt.ifPresent(info -> {
-                info.setRevisionNumber(info.getRevisionNumber() + 1);
-                info.setInspectAction(iAction);
-                ImageInfoFactory.save(info);
-            });
+                ImageInspectAction iAction = ActionManager.scheduleImageInspect(
+                        action.getSchedulerUser(),
+                        action.getServerActions()
+                                .stream()
+                                .map(ServerAction::getServerId)
+                                .collect(Collectors.toList()),
+                        Optional.of(action.getId()),
+                        details.getVersion(),
+                        p.getLabel(),
+                        p.getTargetStore(),
+                        Date.from(Instant.now())
+                );
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(iAction);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule image inspection ", e);
+                }
+                infoOpt.ifPresent(info -> {
+                    info.setRevisionNumber(info.getRevisionNumber() + 1);
+                    info.setInspectAction(iAction);
+                    ImageInfoFactory.save(info);
+                });
+        }, () -> LOG.warn("Could not find any profile for profile ID " + imageProfileId));
         }
     }
 
@@ -1202,14 +1053,23 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
+        if (details == null) {
+            LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
+        Long imageStoreId = details.getImageStoreId();
+        if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
+            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
         ImageInfoFactory
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer -> handleImagePackageProfileUpdate(
-                                imageInfo, Json.GSON.fromJson(jsonResult,
-                                        ImagesProfileUpdateSlsResult.class),
-                                serverAction)));
+                        .ifPresent(minionServer ->
+                                handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
+                                                ImagesProfileUpdateSlsResult.class),
+                                        serverAction)));
     }
 
     /**
@@ -1371,7 +1231,7 @@ public class SaltUtils {
                 if ("pxe".equals(ret.getImage().getType())) {
                     Org org = serverAction.getParentAction().getOrg();
                     String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(org);
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
+                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundles().get(0),
                             ret.getBootImage(), storeDirectory, org);
                 }
             }
@@ -1516,33 +1376,6 @@ public class SaltUtils {
 
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
-
-        if (ConfigDefaults.get().isAutomaticSystemLockForClusterNodesEnabled()) {
-            // For special nodes: enable minion blackout (= locking) via pillar
-            enableMinionSystemLockForSpecialNodes(server);
-        }
-    }
-
-    private void enableMinionSystemLockForSpecialNodes(MinionServer server) {
-        if (server.getPackages().stream().anyMatch(p -> p.getName().getName().contains(CAASP_PATTERN_IDENTIFIER))) {
-            // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
-            Map<String, Object> data = new HashMap<>();
-            data.put("minion_blackout", true);
-            // List of Salt `module.function` that are allowed in blackout mode
-            data.put("minion_blackout_whitelist", Arrays.asList(
-                    "test.ping",
-                    "grains.item",
-                    "grains.items"
-            ));
-            try {
-                formulaManager.enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                saltApi.refreshPillar(new MinionList(server.getMinionId()));
-            }
-            catch (IOException | ValidatorException e) {
-                LOG.error("Could not enable blackout formula", e);
-            }
-        }
     }
 
     /**
@@ -1942,27 +1775,67 @@ public class SaltUtils {
 
     /**
      * Update the system info through grains and data returned by status.uptime
+     *
      * @param jsonResult response from salt master against util.systeminfo state
-     * @param minionId ID of the minion for which information should be updated
+     * @param minion the minion for which information should be updated
      */
-    public void updateSystemInfo(JsonElement jsonResult, String minionId) {
-        Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
-        minionServer.ifPresent(minion -> {
-            SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
-            updateSystemInfo(systemInfo, minion);
-        });
+    public void updateSystemInfo(JsonElement jsonResult, MinionServer minion) {
+        SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+        updateSystemInfo(systemInfo, minion);
+    }
+
+
+    /**
+     * Update the minion connection path according to master/proxy hostname
+     * @param minion the minion
+     * @param master master/proxy hostname
+     * @return true if the path has changed
+     */
+    public boolean updateMinionConnectionPath(MinionServer minion, String master) {
+        boolean changed = minion.updateServerPaths(master);
+
+        if (changed) {
+            ServerFactory.save(minion);
+
+            // Regenerate the pillar data
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+
+            // push the changed pillar data to the minion
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(minion.getCreator(),
+                    Collections.singletonList(minion.getId()),
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                    new Date());
+            try {
+                TASKOMATIC_API.scheduleActionExecution(action, false);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule channels state application");
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
+                          minion.getMinionId());
+            }
+
+        }
+        return changed;
     }
 
     /**
-     * Update the system info of the minion
+     * Update the system info of the minion and set Reboot Actions to completed
      * @param systemInfo response from salt master against util.systeminfo state
      * @param minion  minion for which information should be updated
      */
     public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
-        systemInfo.getKerneRelese().ifPresent(kerneRelese -> {
-            minion.setRunningKernel(kerneRelese);
-            ServerFactory.save(minion);
-        });
+        systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
+        systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+        ServerFactory.save(minion);
+
+        if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
+            systemInfo.getMaster().ifPresent(master -> {
+                updateMinionConnectionPath(minion, master);
+            });
+        }
+
         //Update the uptime
         systemInfo.getUptimeSeconds().ifPresent(us-> handleUptimeUpdate(minion, us.longValue()));
     }
@@ -2004,23 +1877,35 @@ public class SaltUtils {
 
     private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
+        boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
-                return bootTime.after(sa.getPickupTime());
+                result = bootTime.after(sa.getPickupTime());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
-                return bootTime.after(action.getEarliestAction());
+                result = bootTime.after(action.getEarliestAction());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                 if (action.getPrerequisite() != null) {
                     // queued reboot actions that do not complete in 12 hours will
                     // be cleaned up by MinionActionUtils.cleanupMinionActions()
-                    return false;
+                    result = false;
                 }
-                return bootTime.after(sa.getParentAction().getEarliestAction());
+                else {
+                    result = bootTime.after(sa.getParentAction().getEarliestAction());
+                }
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("shouldCleanupAction" +
+                        " Server:" + sa.getServer().getId() +
+                        " Action: " + sa.getParentAction().getId() +
+                        " BootTime: " + bootTime +
+                        " PickupTime: " + sa.getPickupTime() +
+                        " EarliestAction " + action.getEarliestAction() +
+                        " Result: " + result);
             }
         }
-        return false;
+        return result;
     }
 
     /**

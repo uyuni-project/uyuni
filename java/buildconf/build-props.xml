@@ -83,6 +83,10 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
+  <condition property="jaf" value="jakarta-activation" else="jaf">
+    <available file="${java.lib.dir}/jakarta-activation/jakarta.activation.jar"/>
+  </condition>
+
   <!-- com.sun.xml.bind replacement (jaxb) -->
   <condition property="jaxb-api" value="jaxb-api" else="">
     <available file="${java.lib.dir}/jaxb-api.jar" />
@@ -106,7 +110,7 @@
 
   <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.0-api"/>
 
-  <property name="hibernate5deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jakarta-persistence-api byte-buddy jboss-logging javassist slf4j/log4j12 ${ehcache} classmate statistics"/>
+  <property name="hibernate5deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jakarta-persistence-api byte-buddy jboss-logging javassist slf4j/log4j12 ${ehcache} classmate statistics hibernate-types-52-2.12.1 jackson-databind jackson-core jackson-annotations"/>
 
   <available file="${java.lib.dir}/hibernate3.jar" type="file" property="hibernate" value="${hibernate3.2deps}" />
   <available file="${java.lib.dir}/hibernate3/hibernate-core-3.jar" type="file" property="hibernate" value="${hibernate3.6deps}" />
@@ -129,7 +133,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
-             bcprov bcpg jcommon stringtree-json postgresql-jdbc
+             bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              logdriver quartz dwr slf4j-api slf4j-log4j12
              concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
@@ -156,7 +160,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j jaf ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -178,7 +182,7 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr jaf ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
@@ -188,7 +192,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} ${javamail} jdom jsch dwr
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
-             jcommon stringtree-json postgresql-jdbc
+             jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
              ${suse-common-jars} velocity
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
@@ -199,11 +203,11 @@
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
              ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
-             jaf ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
+             ${jaf} ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             postgresql-jdbc snakeyaml simple-xml
+             postgresql-jdbc ongres-scram/client ongres-scram/common snakeyaml simple-xml
              ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
 

@@ -1,22 +1,25 @@
-import { searchCriteriaInExtension } from "./products.utils";
-
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import * as React from "react";
-import Network from "utils/network";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { AsyncButton, Button } from "components/buttons";
+import { CustomDiv } from "components/custom-objects";
+import { ModalLink } from "components/dialog/ModalLink";
+import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { PopUp } from "components/popup";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
-import { ModalLink } from "components/dialog/ModalLink";
-import { Button, AsyncButton } from "components/buttons";
-import { SCCDialog } from "./products-scc-dialog";
-import { PopUp } from "components/popup";
-import { CustomDiv } from "components/custom-objects";
 import { Toggler } from "components/toggler";
 import { HelpLink } from "components/utils/HelpLink";
-import { ChannelLink } from "components/links";
-import SpaRenderer from "core/spa/spa-renderer";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
+import { searchCriteriaInExtension } from "./products.utils";
+import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
   interface Window {
@@ -63,6 +66,12 @@ const _SETUP_WIZARD_STEPS = [
     label: "Products",
     url: window.location.href.split(/\?|#/)[0],
     active: true,
+  },
+  {
+    id: "wizard-step-suse-payg",
+    label: "Pay-as-you-go",
+    url: "/rhn/manager/admin/setup/payg",
+    active: false,
   },
 ];
 
@@ -130,14 +139,14 @@ class ProductsPageWrapper extends React.Component {
   refreshServerData = () => {
     this.setState({ loading: true });
     var currentObject = this;
-    let resultMessages: MessageType[] = [];
+    let resultMessages: MessageType[] = currentObject.state.errors;
     if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
       resultMessages = MessagesUtils.warning(
         t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown.")
       );
     }
     reloadData()
-      .then(data => {
+      .then((data) => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
           errors: resultMessages,
@@ -150,17 +159,17 @@ class ProductsPageWrapper extends React.Component {
       .catch(this.handleResponseError);
   };
 
-  handleSelectedItems = items => {
+  handleSelectedItems = (items) => {
     let arr = this.state.selectedItems;
     // add all items those are not yet in the existsing set
-    arr = arr.concat(items.filter(i => !arr.map(a => a.identifier).includes(i.identifier)));
+    arr = arr.concat(items.filter((i) => !arr.map((a) => a.identifier).includes(i.identifier)));
     this.setState({ selectedItems: arr });
   };
 
-  handleUnselectedItems = items => {
+  handleUnselectedItems = (items) => {
     let arr = this.state.selectedItems;
     // keep all items in the existsing set those are not in the unselected items
-    arr = arr.filter(a => !items.map(i => i.identifier).includes(a.identifier));
+    arr = arr.filter((a) => !items.map((i) => i.identifier).includes(a.identifier));
     this.setState({ selectedItems: arr });
   };
 
@@ -168,7 +177,7 @@ class ProductsPageWrapper extends React.Component {
     this.setState({ selectedItems: [] });
   };
 
-  updateSccSyncRunning = sccSyncStatus => {
+  updateSccSyncRunning = (sccSyncStatus) => {
     // if it was running and now it's finished
     if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
@@ -183,22 +192,30 @@ class ProductsPageWrapper extends React.Component {
 
   submit = () => {
     const currentObject = this;
-    currentObject.setState({ addingProducts: true });
+    currentObject.setState({ addingProducts: true, errors: [] });
     Network.post(
       "/rhn/manager/admin/setup/products",
-      currentObject.state.selectedItems.map(i => i.identifier)
+      currentObject.state.selectedItems.map((i) => i.identifier)
     )
-      .then(data => {
-        // returned data format is { productId : isFailedFlag }
-        let failedProducts = currentObject.state.selectedItems.filter(i => data[i.identifier]);
+      .then((data) => {
+        // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
+        let failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
         let resultMessages: MessageType[] | null = null;
         if (failedProducts.length === 0) {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
         } else {
           resultMessages = MessagesUtils.warning(
-            "The following product installations failed: '" +
-              failedProducts.reduce((a, b) => a.label + ", " + b.label) +
-              "'. Please check log files."
+            <>
+              <p>The following product installations failed:</p>
+              <ul>
+                {failedProducts.map((a) => (
+                  <li>
+                    {a.label}: {data[a.identifier]}
+                  </li>
+                ))}
+              </ul>
+              <p className="margin-bottom-xs">Please check log files.</p>
+            </>
           );
         }
         currentObject.setState({
@@ -217,19 +234,18 @@ class ProductsPageWrapper extends React.Component {
     var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
     Network.post("/rhn/manager/admin/setup/products", [id])
-      .then(data => {
-        if (!data[id]) {
+      .then((data) => {
+        // if the id is not present in the response or it is null, the operation went fine.
+        if (data[id] == null) {
           currentObject.setState({
             errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
-            scheduleResyncItems: scheduleResyncItemsNew.filter(i => !DEPRECATED_unsafeEquals(i, id)),
+            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
             scheduledItems: currentObject.state.scheduledItems.concat([id]),
           });
         } else {
           currentObject.setState({
-            errors: MessagesUtils.warning(
-              "The product '" + name + "' sync was not scheduled correctly. Please check server log files."
-            ),
-            scheduleResyncItems: scheduleResyncItemsNew.filter(i => !DEPRECATED_unsafeEquals(i, id)),
+            errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
+            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
           });
         }
       })
@@ -257,7 +273,7 @@ class ProductsPageWrapper extends React.Component {
     const tabs = (
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
-          {_SETUP_WIZARD_STEPS.map(step => (
+          {_SETUP_WIZARD_STEPS.map((step) => (
             <li key={step.id} className={step.active ? "active" : ""}>
               <a className="js-spa" href={step.url}>
                 {t(step.label)}
@@ -339,14 +355,14 @@ class ProductsPageWrapper extends React.Component {
           <div className="col-sm-3 hidden-xs" id="wizard-faq">
             <SCCDialog
               forceStart={this.forceStartSccSync()}
-              updateSccSyncRunning={sccSyncStatus => this.updateSccSyncRunning(sccSyncStatus)}
+              updateSccSyncRunning={(sccSyncStatus) => this.updateSccSyncRunning(sccSyncStatus)}
             />
             <hr />
             {this.state.selectedItems.length > 0 ? (
               <div className="text-left">
                 <h4>Selected products</h4>
                 <ul>
-                  {this.state.selectedItems.map(i => (
+                  {this.state.selectedItems.map((i) => (
                     <li key={i.identifier}>
                       {i.label} [{i.arch}]
                     </li>
@@ -380,7 +396,7 @@ class ProductsPageWrapper extends React.Component {
     }
 
     const prevStyle = { marginLeft: "10px", verticalAlign: "middle" };
-    const activeStep = _SETUP_WIZARD_STEPS.find(step => step.active);
+    const activeStep = _SETUP_WIZARD_STEPS.find((step) => step.active);
     const currentStepIndex = activeStep ? _SETUP_WIZARD_STEPS.indexOf(activeStep) : -1;
     const footer = (
       <div className="panel-footer">
@@ -443,42 +459,42 @@ class Products extends React.Component<ProductsProps> {
     const currentObject = this;
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
-    jQuery("select#product-arch-filter.apply-select2js-on-this").each(function() {
+    jQuery("select#product-arch-filter.apply-select2js-on-this").each(function () {
       var select = jQuery(this);
       // apply select2js only one time
       if (!select.hasClass("select2js-applied")) {
         select.addClass("select2js-applied");
 
         var select2js = select.select2({ placeholder: t("Filter by architecture") });
-        select2js.on("change", function(event) {
+        select2js.on("change", function (event) {
           currentObject.handleFilterArchChange(select.val() || []);
         });
       }
     });
   }
 
-  getDistinctArchsFromData = data => {
+  getDistinctArchsFromData = (data) => {
     var archs: any[] = [];
     Object.keys(data)
-      .map(id => data[id])
-      .forEach(function(x) {
+      .map((id) => data[id])
+      .forEach(function (x) {
         if (!archs.includes(x.arch)) archs.push(x.arch);
       });
     return archs;
   };
 
-  handleFilterArchChange = archs => {
+  handleFilterArchChange = (archs) => {
     this.setState({ archCriteria: archs });
   };
 
   filterDataByArch = (data: any[]) => {
     if (this.state.archCriteria.length > 0) {
-      return data.filter(p => this.state.archCriteria.includes(p.arch));
+      return data.filter((p) => this.state.archCriteria.includes(p.arch));
     }
     return data;
   };
 
-  handleSelectedItems = items => {
+  handleSelectedItems = (items) => {
     this.props.handleSelectedItems(items);
   };
 
@@ -499,18 +515,18 @@ class Products extends React.Component<ProductsProps> {
     return prod1.label.toLowerCase().localeCompare(prod2.label.toLowerCase());
   };
 
-  buildRows = message => {
-    return Object.keys(message).map(id => message[id]);
+  buildRows = (message) => {
+    return Object.keys(message).map((id) => message[id]);
   };
 
-  showChannelsfor = item => {
+  showChannelsfor = (item) => {
     this.setState({ popupItem: item });
   };
 
-  handleVisibleSublist = id => {
+  handleVisibleSublist = (id) => {
     let arr = this.state.visibleSubList;
     if (arr.includes(id)) {
-      arr = arr.filter(i => i !== id);
+      arr = arr.filter((i) => i !== id);
     } else {
       arr = arr.concat([id]);
     }
@@ -538,8 +554,7 @@ class Products extends React.Component<ProductsProps> {
       <div>
         <CustomDataHandler
           data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
-          identifier={raw => raw.identifier}
-          initialItemsPerPage={window.userPrefPageSize}
+          identifier={(raw) => raw.identifier}
           loading={this.props.loading}
           additionalFilters={[archFilter]}
           searchField={
@@ -551,7 +566,7 @@ class Products extends React.Component<ProductsProps> {
           }
         >
           <CheckList
-            data={d => d}
+            data={(d) => d}
             bypassProps={{
               nestedKey: "extensions",
               isSelectable: true,
@@ -591,7 +606,7 @@ type CheckListProps = {
  * Generate a custom list of elements for the products data
  */
 class CheckList extends React.Component<CheckListProps> {
-  isRootLevel = level => {
+  isRootLevel = (level) => {
     return DEPRECATED_unsafeEquals(level, 1);
   };
 
@@ -683,12 +698,12 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     }
   }
 
-  isRootLevel = level => {
+  isRootLevel = (level) => {
     return DEPRECATED_unsafeEquals(level, 1);
   };
 
   isSelected = (item, selectedItems) => {
-    return selectedItems.filter(i => DEPRECATED_unsafeEquals(i.identifier, item.identifier)).length === 1;
+    return selectedItems.filter((i) => DEPRECATED_unsafeEquals(i.identifier, item.identifier)).length === 1;
   };
 
   isInstalled = () => {
@@ -727,24 +742,24 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     }
   };
 
-  getChildrenTree = item => {
+  getChildrenTree = (item) => {
     var arr = this.getNestedData(item);
     let nestedArr = [];
-    arr.forEach(child => {
+    arr.forEach((child) => {
       nestedArr = nestedArr.concat(this.getChildrenTree(child));
     });
     return arr.concat(nestedArr);
   };
 
-  getRecommendedChildrenTree = item => {
-    return this.getChildrenTree(item).filter(el => el.recommended);
+  getRecommendedChildrenTree = (item) => {
+    return this.getChildrenTree(item).filter((el) => el.recommended);
   };
 
-  handleSelectedItems = items => {
+  handleSelectedItems = (items) => {
     this.props.handleSelectedItems(items);
   };
 
-  handleUnselectedItems = items => {
+  handleUnselectedItems = (items) => {
     this.props.handleUnselectedItems(items);
   };
 
@@ -766,11 +781,11 @@ class CheckListItem extends React.Component<CheckListItemProps> {
 
   // check if all recommended children are in the selection set,
   // and set the 'withRecommended' flag state accordingly
-  handleWithRecommendedState = arr => {
+  handleWithRecommendedState = (arr) => {
     // it matters only for the root node
     if (DEPRECATED_unsafeEquals(this.props.treeLevel, 1)) {
       this.setState({
-        withRecommended: this.getRecommendedChildrenTree(this.props.item).every(i => arr.includes(i)) ? true : false,
+        withRecommended: this.getRecommendedChildrenTree(this.props.item).every((i) => arr.includes(i)) ? true : false,
       });
     }
   };
@@ -787,7 +802,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     this.props.bypassProps.resyncProduct(this.props.item.identifier, this.props.item.label);
   };
 
-  getNestedData = item => {
+  getNestedData = (item) => {
     if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
       return item[this.props.bypassProps.nestedKey];
     }
@@ -799,7 +814,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     const wrapPrefix = isRootProduct ? null : "(";
     const wrapSuffix = isRootProduct ? null : ")";
     const testPrefix = isRootProduct ? "Product" : "Child products";
-    if (channelList.filter(c => c.status === _CHANNEL_STATUS.failed).length > 0) {
+    if (channelList.filter((c) => c.status === _CHANNEL_STATUS.failed).length > 0) {
       return (
         <span className="text-danger" title={t(testPrefix + " channels sync failed")}>
           {wrapPrefix}
@@ -807,7 +822,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
           {wrapSuffix}
         </span>
       );
-    } else if (channelList.filter(c => c.status === _CHANNEL_STATUS.syncing).length > 0) {
+    } else if (channelList.filter((c) => c.status === _CHANNEL_STATUS.syncing).length > 0) {
       return (
         <span className="text-info" title={t(testPrefix + " channels sync in progress")}>
           {wrapPrefix}
@@ -815,7 +830,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
           {wrapSuffix}
         </span>
       );
-    } else if (channelList.filter(c => c.status === _CHANNEL_STATUS.synced).length > 0) {
+    } else if (channelList.filter((c) => c.status === _CHANNEL_STATUS.synced).length > 0) {
       return (
         <span className="text-success" title={t(testPrefix + " channels synced")}>
           {wrapPrefix}
@@ -896,7 +911,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     if (
       !this.isInstalled() &&
       this.isRootLevel(this.props.treeLevel) &&
-      this.getNestedData(currentItem).some(i => i.recommended)
+      this.getNestedData(currentItem).some((i) => i.recommended)
     ) {
       recommendedTogglerContent = (
         <Toggler
@@ -910,7 +925,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     /** generate channel sync status **/
     let channelSyncContent;
     if (this.isInstalled()) {
-      let currentProductChannels = currentItem.channels.filter(c => c.status !== _CHANNEL_STATUS.notSynced);
+      let currentProductChannels = currentItem.channels.filter((c) => c.status !== _CHANNEL_STATUS.notSynced);
       channelSyncContent = this.channelsStatusSync(currentProductChannels, true);
     }
 
@@ -920,11 +935,11 @@ class CheckListItem extends React.Component<CheckListItemProps> {
 
       // add all channels of the subtree
       this.getChildrenTree(currentItem)
-        .filter(product => product.status === _PRODUCT_STATUS.installed)
-        .forEach(prod => {
+        .filter((product) => product.status === _PRODUCT_STATUS.installed)
+        .forEach((prod) => {
           prod.channels
-            .filter(channel => channel.status !== _CHANNEL_STATUS.notSynced)
-            .forEach(chan => {
+            .filter((channel) => channel.status !== _CHANNEL_STATUS.notSynced)
+            .forEach((chan) => {
               childProductChannels.push(chan);
             });
         });
@@ -1045,7 +1060,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   }
 }
 
-const ChannelsPopUp = props => {
+const ChannelsPopUp = (props) => {
   const titlePopup = t("Product Channels - ") + (props.item != null ? props.item.label : "");
   const contentPopup =
     props.item != null ? (
@@ -1053,14 +1068,14 @@ const ChannelsPopUp = props => {
         <ChannelList
           title={t("Mandatory Channels")}
           items={props.item.channels
-            .filter(c => !c.optional)
+            .filter((c) => !c.optional)
             .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))}
           className={"product-channel-list"}
         />
         <ChannelList
           title={t("Optional Channels")}
           items={props.item.channels
-            .filter(c => c.optional)
+            .filter((c) => c.optional)
             .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))}
           className={"product-channel-list"}
         />
@@ -1069,7 +1084,7 @@ const ChannelsPopUp = props => {
   return <PopUp id="show-channels-popup" title={titlePopup} content={contentPopup} className="modal-xs" />;
 };
 
-const decodeChannelStatus = status => {
+const decodeChannelStatus = (status) => {
   let decoded: React.ReactNode = "";
   switch (status) {
     case _CHANNEL_STATUS.notSynced:
@@ -1088,12 +1103,12 @@ const decodeChannelStatus = status => {
   return decoded;
 };
 
-const ChannelList = props => {
+const ChannelList = (props) => {
   return props.items.length > 0 ? (
     <div>
       <h4>{props.title}</h4>
       <ul className={props.className}>
-        {props.items.map(c => (
+        {props.items.map((c) => (
           <li key={c.label}>
             <strong>{c.name}</strong>
             &nbsp;{decodeChannelStatus(c.status)}

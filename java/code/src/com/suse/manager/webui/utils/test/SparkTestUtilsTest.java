@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +16,7 @@
 package com.suse.manager.webui.utils.test;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
+
 import junit.framework.TestCase;
 
 /**
@@ -44,3 +45,4 @@ public class SparkTestUtilsTest extends TestCase {
     }
 
 }
+

@@ -1,15 +1,16 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @proxy
 @private_net
+@sle12sp5_terminal
 Feature: PXE boot a SLES 12 SP5 retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
 
-  Scenario: Configure image-synchronization formula at branch server for SLE12 SP5 terminal deplyoment
+  Scenario: Configure image-synchronization formula at branch server for SLE12 SP5 terminal deployment
     When I execute "image_sync" for "SLE12 SP5" via semi-xmlrpc-tester
 
   Scenario: Prepare branch server for SLE12 SP5 terminal deployment

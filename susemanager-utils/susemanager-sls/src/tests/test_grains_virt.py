@@ -35,8 +35,8 @@ def test_features_cluster(cluster, start_resources):
   </parameters>
 </resource-agent>
 """.format(param)
-    popen_mock = MagicMock(side_effect=FileNotFoundError())
-    check_call_mock = MagicMock(side_effect=FileNotFoundError())
+    popen_mock = MagicMock(side_effect=OSError())
+    check_call_mock = MagicMock(side_effect=OSError())
     if cluster:
         popen_mock = MagicMock()
         popen_mock.return_value.communicate.side_effect = [(crm_resources, None), (b"libvirtd (libvirt) 5.1.0\n", None)]

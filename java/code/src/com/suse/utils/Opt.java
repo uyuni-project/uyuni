@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,8 @@
 package com.suse.utils;
 
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -121,5 +123,20 @@ public class Opt {
         else {
             return second.get();
         }
+    }
+
+    /**
+     * Wraps the first non-null value into an optional.
+     * @param values an array of values
+     * @param <T> The type of the values
+     * @return the first non-null value from the given array, or empty if all the values are null.
+     */
+    @SafeVarargs
+    public static <T> Optional<T> wrapFirstNonNull(T... values) {
+        if (values == null) {
+            return Optional.empty();
+        }
+
+        return Arrays.stream(values).filter(Objects::nonNull).findFirst();
     }
 }

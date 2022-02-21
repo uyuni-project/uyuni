@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,10 +15,6 @@
 
 package com.redhat.rhn.frontend.nav.test;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.frontend.nav.DepthGuard;
 import com.redhat.rhn.frontend.nav.NavCache;
 import com.redhat.rhn.frontend.nav.NavDigester;
@@ -30,6 +26,10 @@ import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.nav.TextRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.log4j.Logger;
 
 public class NavTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(NavTest.class);

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 13:44+0200\n"
+"POT-Creation-Date: 2022-02-06 10:53+0000\n"
 "PO-Revision-Date: 2021-08-21 07:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -41,11 +41,38 @@ msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致し�
 msgid "declined proxy authentication"
 msgstr "プロキシ認証が拒否されました"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "無効な要求を受け取りました (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要なメッセージです:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"「%s」の実行中: 次をキャッチしました\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "無効な URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -71,10 +98,6 @@ msgstr "このサーバでは ISS が無効化されています。"
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "サーバー「%s」は ISS に有効になっていません。"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "system_id/action_id の対が正しくありません。"
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -99,6 +122,16 @@ msgstr "無効なセッションキー"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "このサーバー ID は既になくなりました"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "無効な動作値タイプ %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "動作 %s はサーバー %s に属していません"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -141,20 +174,14 @@ msgstr "製品の引数としてディクショナリが期待されています
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "system_id/action_id の対が正しくありません。"
+
+#: ../server/handlers/xmlrpc/up2date.py:249
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "無効な値 %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "無効な動作値タイプ %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "動作 %s はサーバー %s に属していません"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -187,95 +214,6 @@ msgstr ""
 "\n"
 "               %s アカウントは本サーバー上では無効化されています。\n"
 "                   詳しくは組織の管理者にお問い合わせください。"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "トークン `%s' には複数のベースチャンネルが割り当てられています"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "競合しているベースチャンネル"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "グループ %s へのサーバーの追加に失敗しました"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "最大使用数 %s に達しました"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
-"ん"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "トークン「%s」は見つかりませんでした"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "不一致の org からのトークンです"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "キックスタートセッションの不一致です"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "再登録トークンの積み重ねには対応していません"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "無効な要求を受け取りました (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要なメッセージです:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"「%s」の実行中: 次をキャッチしました\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "無効な URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -352,6 +290,16 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -361,6 +309,57 @@ msgstr "無効な RPM パッケージ %s を要求しています"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "パッケージが見つかりません"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "トークン `%s' には複数のベースチャンネルが割り当てられています"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "競合しているベースチャンネル"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "グループ %s へのサーバーの追加に失敗しました"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "最大使用数 %s に達しました"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
+"ん"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "トークン「%s」は見つかりませんでした"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "不一致の org からのトークンです"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "キックスタートセッションの不一致です"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "再登録トークンの積み重ねには対応していません"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -421,16 +420,6 @@ msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてく�
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "%s で終わるユーザー名は登録できません"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "エラー: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "トレースバック: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -531,10 +520,13 @@ msgstr ""
 "\n"
 "     匿名サーバー機能は利用できなくなっています。\n"
 "\n"
-"     root になり mgr_register を実行してこのシステムの再登録を行ってください。\n"
+"     root になり mgr_register を実行してこのシステムの再登録を行ってくださ"
+"い。\n"
 "     このシステムに対してサービスを有効にする場合は、 \n"
-"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスするか、\n"
-"     https://%(hostname)s でログインしてから \"概要\" タブ内の \"サブスクリプション管理\"\n"
+"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスする"
+"か、\n"
+"     https://%(hostname)s でログインしてから \"概要\" タブ内の \"サブスクリプ"
+"ション管理\"\n"
 "     を選択してください。\n"
 "     "
 
@@ -558,10 +550,13 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     このシステムには SUSE Manager 用の有効なエンタイトルメントがありません。\n"
+"     このシステムには SUSE Manager 用の有効なエンタイトルメントがありませ"
+"ん。\n"
 "     このシステムに対してサービスを有効にする場合は、\n"
-"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスするか、\n"
-"     https://%(hostname)s でログインしてから \"概要\" タブ内にある \"サブスクリプション管理\"\n"
+"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスする"
+"か、\n"
+"     https://%(hostname)s でログインしてから \"概要\" タブ内にある \"サブスク"
+"リプション管理\"\n"
 "     を選択してください。\n"
 "     "
 
@@ -621,8 +616,10 @@ msgstr ""
 "\n"
 "     ユーザーグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加はできません。\n"
-"     サーバに対してサブスクリプションを設定できる最大ユーザー数を変更する必要がある場合は、\n"
+"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加は"
+"できません。\n"
+"     サーバに対してサブスクリプションを設定できる最大ユーザー数を変更する必要"
+"がある場合は、\n"
 "     組織の管理者にご確認ください。\n"
 "     "
 
@@ -642,8 +639,10 @@ msgstr ""
 "\n"
 "     システムグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     お使いのアカウントの現在の設定では、これ以上のシステムプロファイルの追加はできません。\n"
-"     お使いのアカウントでサブスクリプションを設定できるシステムプロファイル数の最大値を\n"
+"     お使いのアカウントの現在の設定では、これ以上のシステムプロファイルの追加"
+"はできません。\n"
+"     お使いのアカウントでサブスクリプションを設定できるシステムプロファイル数"
+"の最大値を\n"
 "     変更する必要がある場合は、組織の管理者にご確認ください。\n"
 "     "
 
@@ -1082,46 +1081,21 @@ msgstr "エラークラス情報: %s\n"
 msgid "Explanation: %s"
 msgstr "説明: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "エラー: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "トレースバック: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 電子メールでログを送信 +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同期。 %s からのレポート"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1145,9 +1119,12 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありました。\n"
-"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行してありますか？\n"
-"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを行ない、\n"
+"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありまし"
+"た。\n"
+"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行して"
+"ありますか？\n"
+"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを"
+"行ない、\n"
 "       一時リポジトリー (%s) 内に再投入してください。\n"
 
 #: ../satellite_tools/messages.py:39
@@ -1190,8 +1167,10 @@ msgid ""
 "       %s\n"
 msgstr ""
 "\n"
-"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があります。\n"
-"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同期させる\n"
+"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
+"ます。\n"
+"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
+"期させる\n"
 "       必要があります。このトランザクションに対する親が見つかりません:\n"
 "       %s\n"
 
@@ -1310,6 +1289,41 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
+
+#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 電子メールでログを送信 +++"
+
+#: ../satellite_tools/reposync.py:117
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同期。 %s からのレポート"
+
+#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1890,50 +1904,50 @@ msgstr "エラー: データベースに接続できません: %s"
 msgid "ERROR: Check if your database is running."
 msgstr "エラー: データベースが動作しているかどうかご確認ください。"
 
-#: ../satellite_tools/satsync.py:2336
+#: ../satellite_tools/satsync.py:2334
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
 msgstr "エラー: --debug-level には %s の範囲内の整数値を指定します。"
 
-#: ../satellite_tools/satsync.py:2338
+#: ../satellite_tools/satsync.py:2336
 msgid "  0  - little logging/messaging."
 msgstr "  0  - ごくわずかなログ／メッセージのみ。"
 
-#: ../satellite_tools/satsync.py:2339
+#: ../satellite_tools/satsync.py:2337
 msgid "  1  - minimal logging/messaging."
 msgstr "  1  - 最小限のログ／メッセージのみ。"
 
-#: ../satellite_tools/satsync.py:2340
+#: ../satellite_tools/satsync.py:2338
 msgid "  2  - normal level of logging/messaging."
 msgstr "  2  - 通常レベルのログ／メッセージ。"
 
-#: ../satellite_tools/satsync.py:2341
+#: ../satellite_tools/satsync.py:2339
 msgid "  3  - lots of logging/messaging."
 msgstr "  3  - 多くのログ／メッセージ。"
 
-#: ../satellite_tools/satsync.py:2342
+#: ../satellite_tools/satsync.py:2340
 msgid "  4+ - excessive logging/messaging."
 msgstr "  4+ - 非常に多くのログ／メッセージ。"
 
-#: ../satellite_tools/satsync.py:2355
+#: ../satellite_tools/satsync.py:2353
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr ""
 "エラー: --master オプションは --mount-point オプションと併用した場合にのみ有"
 "効です"
 
-#: ../satellite_tools/satsync.py:2365
+#: ../satellite_tools/satsync.py:2363
 #, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
 msgstr "エラー: 組織 ID %s を参照できません"
 
-#: ../satellite_tools/satsync.py:2374
+#: ../satellite_tools/satsync.py:2372
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
 "警告: --list-channels オプションは --step オプションを上書きしてしまいます。 "
 "--step 側が無視されます。"
 
-#: ../satellite_tools/satsync.py:2389
+#: ../satellite_tools/satsync.py:2387
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
@@ -1941,7 +1955,7 @@ msgstr ""
 "エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' をお"
 "読みください。"
 
-#: ../satellite_tools/satsync.py:2421
+#: ../satellite_tools/satsync.py:2419
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
@@ -1952,94 +1966,94 @@ msgstr ""
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
-#: ../satellite_tools/satsync.py:2470 ../satellite_tools/satsync.py:2474
+#: ../satellite_tools/satsync.py:2468 ../satellite_tools/satsync.py:2472
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
 msgstr "エラー: --batch-size の値は 1..50 までの値でなければなりません"
 
-#: ../satellite_tools/satsync.py:2482
+#: ../satellite_tools/satsync.py:2480
 #, python-format
 msgid "ERROR: no such directory %s"
 msgstr "エラー: そのようなディレクトリはありません %s"
 
-#: ../satellite_tools/satsync.py:2487
+#: ../satellite_tools/satsync.py:2485
 msgid "Error Codes: Returned codes means:"
 msgstr "エラーコード: 返された値の意味は下記のとおりです:"
 
-#: ../satellite_tools/satsync.py:2488
+#: ../satellite_tools/satsync.py:2486
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr ""
 " -1  - ファイルをロックできなかったか、キーボード割り込みやシステムの終了が発"
 "生しています"
 
-#: ../satellite_tools/satsync.py:2489
+#: ../satellite_tools/satsync.py:2487
 msgid "  0  - User interrupted or intentional exit"
 msgstr "  0  - ユーザ側での割り込みか終了指示が行なわれました"
 
-#: ../satellite_tools/satsync.py:2490
+#: ../satellite_tools/satsync.py:2488
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
 msgstr "  1  - mgr-inter-sync のインスタンスを複数個実行しようとしています。"
 
-#: ../satellite_tools/satsync.py:2491
+#: ../satellite_tools/satsync.py:2489
 msgid "  2  - Unable to find synchronization tools."
 msgstr "  2  - 同期ツールが見つかりませんでした。"
 
-#: ../satellite_tools/satsync.py:2492
+#: ../satellite_tools/satsync.py:2490
 msgid "  3  - a general socket exception occurred"
 msgstr "  3  - 一般的なソケット例外が発生しました"
 
-#: ../satellite_tools/satsync.py:2493
+#: ../satellite_tools/satsync.py:2491
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr "  4  - SSL エラーが発生しました。 SSL の設定を再確認してください。"
 
-#: ../satellite_tools/satsync.py:2494
+#: ../satellite_tools/satsync.py:2492
 msgid "  5  - ISS error"
 msgstr "  5  - ISS エラー"
 
-#: ../satellite_tools/satsync.py:2495
+#: ../satellite_tools/satsync.py:2493
 msgid "  6  - unhandled exception occurred"
 msgstr "  6  - ハンドルされていない例外が発生しました"
 
-#: ../satellite_tools/satsync.py:2496
+#: ../satellite_tools/satsync.py:2494
 msgid "  7  - unknown sync error"
 msgstr "  7  - 未知の同期エラーです"
 
-#: ../satellite_tools/satsync.py:2497
+#: ../satellite_tools/satsync.py:2495
 msgid "  8  - ERROR: must be root to execute"
 msgstr "  8  - エラー: 実行するには root でなければなりません"
 
-#: ../satellite_tools/satsync.py:2498
+#: ../satellite_tools/satsync.py:2496
 msgid "  9  - rpclib fault during synchronization init"
 msgstr "  9  - 同期の準備時に rpclib の例外が発生しました"
 
-#: ../satellite_tools/satsync.py:2499
+#: ../satellite_tools/satsync.py:2497
 msgid "  10 - synchronization init error"
 msgstr "  10 - 同期の準備時にエラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2500
+#: ../satellite_tools/satsync.py:2498
 msgid "  11 - Error parsing XML stream"
 msgstr "  11 - XML ストリームの処理時にエラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2501
+#: ../satellite_tools/satsync.py:2499
 msgid "  12 - Channel do not exist"
 msgstr "  12 - チャンネルが存在していません"
 
-#: ../satellite_tools/satsync.py:2502
+#: ../satellite_tools/satsync.py:2500
 msgid "  13 - SQL error during importing package metadata"
 msgstr "  13 - パッケージのメタデータを処理する際に SQL エラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2503
+#: ../satellite_tools/satsync.py:2501
 msgid "  14 - SQL error during linking channel packages"
 msgstr "  14 - チャンネルパッケージのリンク時に SQL エラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2504
+#: ../satellite_tools/satsync.py:2502
 msgid "  15 - SQL error during xml processing"
 msgstr "  15 - XML 処理時に SQL エラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2505
+#: ../satellite_tools/satsync.py:2503
 msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "  16 - 設定ファイル内で server.mount_point が設定されていません"
 
-#: ../satellite_tools/satsync.py:2506
+#: ../satellite_tools/satsync.py:2504
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
@@ -2047,48 +2061,48 @@ msgstr ""
 "  17 - SUSE Manager データベース内に既に取り込まれているチャンネルを取得する"
 "際に、 SQL エラーが発生しました"
 
-#: ../satellite_tools/satsync.py:2507
+#: ../satellite_tools/satsync.py:2505
 msgid "  18 - Wrong db connection string in rhn.conf"
 msgstr "  18 - rhn.conf 内の DB 接続文字列が正しくありません"
 
-#: ../satellite_tools/satsync.py:2508
+#: ../satellite_tools/satsync.py:2506
 msgid "  19 - Bad arguments"
 msgstr "  19 - 引数が正しくありません"
 
-#: ../satellite_tools/satsync.py:2509
+#: ../satellite_tools/satsync.py:2507
 msgid "  20 - Could not connect to db."
 msgstr "  20 - DB に接続できませんでした。"
 
-#: ../satellite_tools/satsync.py:2510
+#: ../satellite_tools/satsync.py:2508
 msgid "  21 - Bad debug level"
 msgstr "  21 - デバッグレベルが正しくありません"
 
-#: ../satellite_tools/satsync.py:2511
+#: ../satellite_tools/satsync.py:2509
 msgid "  22 - Not valid step"
 msgstr "  22 - ステップが正しくありません"
 
-#: ../satellite_tools/satsync.py:2512
+#: ../satellite_tools/satsync.py:2510
 msgid "  24 - no such file"
 msgstr "  24 - そのようなファイルはありません"
 
-#: ../satellite_tools/satsync.py:2513
+#: ../satellite_tools/satsync.py:2511
 msgid "  25 - no such directory"
 msgstr "  25 - そのようなディレクトリはありません"
 
-#: ../satellite_tools/satsync.py:2514
+#: ../satellite_tools/satsync.py:2512
 msgid "  26 - mount_point does not exist"
 msgstr "  26 - mount_point が存在しません"
 
-#: ../satellite_tools/satsync.py:2515
+#: ../satellite_tools/satsync.py:2513
 msgid "  27 - No such org"
 msgstr "  27 - そのような組織はありません"
 
-#: ../satellite_tools/satsync.py:2516
+#: ../satellite_tools/satsync.py:2514
 msgid "  28 - error: --master is only valid with --mount-point"
 msgstr ""
 "  28 - エラー: --master は --mount-point とともに指定した場合にのみ有効です"
 
-#: ../satellite_tools/satsync.py:2523
+#: ../satellite_tools/satsync.py:2521
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"

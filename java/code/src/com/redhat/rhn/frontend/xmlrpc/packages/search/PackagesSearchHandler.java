@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -13,18 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.search;
-
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import redstone.xmlrpc.XmlRpcFault;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -45,6 +33,18 @@ import com.redhat.rhn.frontend.xmlrpc.SearchServerQueryException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import redstone.xmlrpc.XmlRpcFault;
 
 
 /**

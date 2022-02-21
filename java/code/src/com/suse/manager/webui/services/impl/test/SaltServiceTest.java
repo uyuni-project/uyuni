@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2016--2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -6,8 +20,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -46,8 +58,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH, Optional.empty());
-        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH);
+        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT);
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
@@ -100,7 +112,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     public void tearDown() {
         try {
             Files.deleteIfExists(tempDir);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,8 +32,9 @@ public class TestAction implements MessageAction {
     }
 
     /**
-     * Perform the action on the EventMessage
+     * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         TestEventMessage tm = (TestEventMessage) msg;
         tm.setMessageReceived(true);

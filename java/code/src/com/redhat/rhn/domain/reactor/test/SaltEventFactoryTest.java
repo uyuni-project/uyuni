@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
  */
 public class SaltEventFactoryTest extends RhnBaseTestCase {
 
-    private static String INSERT_INTO_SUSE_SALT_EVENT_QUERY =
+    private static final String INSERT_INTO_SUSE_SALT_EVENT_QUERY =
             "INSERT INTO suseSaltEvent (id, minion_id, data, queue) VALUES (:id, :minionId, :data, :queue)";
 
     public void testCountSaltEvents() {
@@ -119,7 +119,8 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         IntStream.range(0, 4).forEach(queue -> {
             List<SaltEvent> popedEvents = SaltEventFactory.popSaltEvents(count, queue).collect(Collectors.toList());
             assertEquals(popedEvents.size(), hashedSaltEvents.getOrDefault(queue, new ArrayList<>()).size());
-            assertTrue(popedEvents.stream().allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(se -> pse.equals(se))));
+            assertTrue(popedEvents.stream()
+                    .allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(se -> pse.equals(se))));
         });
 
         saltEventsCount = SaltEventFactory.countSaltEvents(4);

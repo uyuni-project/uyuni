@@ -229,6 +229,25 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
+            <h2><bean:message key="details.jsp.vendoradvisory"/></h2>
+        </div>
+        <div class="panel-body">
+            <div class="page-summary">
+                ${vendorAdvisory}
+                <c:if test="${empty vendorAdvisory}">
+                    <bean:message key="details.jsp.none"/>
+                </c:if>
+                <c:if test="${not empty vendorAdvisory}">
+                    <c:if test="${empty fn:trim(vendorAdvisory)}">
+                        <bean:message key="details.jsp.none"/>
+                    </c:if>
+                </c:if>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
             <h2><bean:message key="details.jsp.references"/></h2>
         </div>
         <div class="panel-body">

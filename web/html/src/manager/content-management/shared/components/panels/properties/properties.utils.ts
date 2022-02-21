@@ -7,7 +7,7 @@ export function getVersionMessage(historyEntry: ProjectHistoryEntry): string {
 export function getVersionMessageByNumber(version: number, historyEntries: Array<ProjectHistoryEntry>): string {
   let versionMessage = "";
   if (version) {
-    const matchedVersion = historyEntries.find(historyEntry => historyEntry.version === version);
+    const matchedVersion = historyEntries.find((historyEntry) => historyEntry.version === version);
     if (matchedVersion) {
       versionMessage = getVersionMessage(matchedVersion);
     }

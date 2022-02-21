@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,11 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static java.util.stream.Collectors.toList;
+import static spark.Spark.get;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -22,23 +27,21 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static java.util.stream.Collectors.toList;
-import static spark.Spark.get;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller ContentManagement Live Patching API

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.struts.action.ActionForward;
-
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
@@ -29,6 +23,12 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.struts.action.ActionForward;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ErrataSearchActionTest

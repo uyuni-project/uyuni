@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import java.util.Date;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
 
 import org.quartz.JobExecutionContext;
 
-import com.redhat.rhn.manager.audit.CVEAuditManager;
+import java.util.Date;
 
 /**
  * Trigger the population of the suseCVEServerChannels table, which is
@@ -26,6 +26,11 @@ import com.redhat.rhn.manager.audit.CVEAuditManager;
  *
  */
 public class CVEServerChannels extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "cve_server_channels";
+    }
 
     /**
      * @param context the job execution context

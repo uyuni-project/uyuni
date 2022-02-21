@@ -1,6 +1,80 @@
 - Postgres exporter package was renamed
-- don't use libvirt API to get its version for the virt features grain
-- implement package locking for salt minions
+
+-------------------------------------------------------------------
+Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Improve `pkgset` beacon with using `salt.cache`
+    to notify about the changes made while the minion was stopped
+  * Add dnfnotify plugin support for pkgset beacon
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * fix deprecation warnings
+  * Implement uyuni roster module for Salt
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
+  * Fix issues running mgr_events on Salt 3004
+
+-------------------------------------------------------------------
+Tue Jan 18 14:08:20 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Remove cluster management feature
+  * Fix dnf plugin path calculation when using Salt Bundle
+  * Use global import for which_bin in sumautil module
+  * Get the formula pillar data from the database
+  * Use flat repositories format for Debian based systems
+  * Add checking for libvirtd binary to grains.virt module
+  * Fix errors on calling sed -E ... by force_restart_minion
+    with action chains
+  * Fix problem installing/removing packages using action chains
+    in transactional systems
+  * Add state for changing proxy
+  * Enable basic support for Debian 11
+
+-------------------------------------------------------------------
+Fri Dec 03 12:33:13 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * fix openscap scan with tailoring options (bsc#1192321)
+  * Align allow_vendor_change pillar name across SLS files
+  * Use venv-salt-minion instead of salt for docker states
+  * Fix libvirt engine config destination for Salt Bundle
+  * Allow "mgr_force_venv_salt_minion" as pillar when bootstrapping
+    in order to force venv-salt-minion installation
+
+-------------------------------------------------------------------
+Tue Nov 16 10:09:40 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Implement using re-activation keys when bootstrapping
+  * Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
+
+-------------------------------------------------------------------
+Fri Nov 05 14:07:05 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * revert disable unaccessible local repos before bootstrapping (bsc#1186405)
+  * Don't create skeleton /srv/salt/top.sls
+  * Replace FileNotFoundError by python2-compatible OSError (bsc#1191139)
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Fix virt_utils module python 2.6 compatibility (bsc#1191123)
+  * Update proxy path on minion connection
+  * deploy certificate on SLE Micro 5.1
+  * Fix cpuinfo grain and virt_utils state python2 compatibility
+    (bsc#1191139, bsc#1191123)
+  * Fix pkgset beacon to work with salt-minion 2016.11.10 (bsc#1189260)
+  * Add 'flush_cache' flag to 'ansible.playbooks' call (bsc#1190405)
+  * Update kernel live patch version on minion startup (bsc#1190276)
+  * Fix virt grain python2 compatibility
+  * disable unaccessible local repos before bootstrapping (bsc#1186405)
+  * Fix mgrcompat state module to work with Salt 3003 and 3004
+
+-------------------------------------------------------------------
+Fri Sep 17 12:17:49 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * don't use libvirt API to get its version for the virt features grain
+  * implement package locking for salt minions
 
 -------------------------------------------------------------------
 Mon Aug 09 11:11:17 CEST 2021 - jgonzalez@suse.com

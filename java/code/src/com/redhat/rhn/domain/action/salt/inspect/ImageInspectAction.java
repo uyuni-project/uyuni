@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,8 +16,6 @@ package com.redhat.rhn.domain.action.salt.inspect;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.user.User;
 
 /**
  * ImageInspectAction
@@ -53,20 +51,4 @@ public class ImageInspectAction extends Action {
         return formatter;
     }
 
-    @Override
-    public String getHistoryDetails(Server server, User currentUser) {
-        // LocalizationService ls = LocalizationService.getInstance();
-        StringBuilder retval = new StringBuilder();
-        retval.append("</br>");
-        for (ImageInspectActionResult result : getDetails().getResults()) {
-            if (result.getServerId().equals(server.getId())) {
-                retval.append("Results:");
-                retval.append("</br>");
-                retval.append("<pre>");
-                retval.append("");
-                retval.append("</pre>");
-            }
-        }
-        return retval.toString();
-    }
 }

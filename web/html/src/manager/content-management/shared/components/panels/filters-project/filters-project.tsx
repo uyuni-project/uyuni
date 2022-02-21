@@ -1,17 +1,19 @@
 import * as React from "react";
-import { LinkButton } from "components/buttons";
 
-import styles from "./filters-project.css";
-import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
-import CreatorPanel from "components/panels/CreatorPanel";
-import { ProjectMessageType, ProjectFilterServerType } from "../../../type";
-import FiltersProjectSelection from "./filters-project-selection";
-import statesEnum from "../../../business/states.enum";
-import { getClmFilterDescription } from "../../../business/filters.enum";
-import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
+import { LinkButton } from "components/buttons";
+import CreatorPanel from "components/panels/CreatorPanel";
+import { showErrorToastr, showSuccessToastr } from "components/toastr";
+
+import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import { getClmFilterDescription } from "../../../business/filters.enum";
+import statesEnum from "../../../business/states.enum";
+import { ProjectFilterServerType, ProjectMessageType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
+import styles from "./filters-project.css";
+import FiltersProjectSelection from "./filters-project-selection";
 
 type FiltersProps = {
   projectId: string;
@@ -77,9 +79,9 @@ const FiltersProject = (props: FiltersProps) => {
   const displayingFilters = [...props.selectedFilters];
   displayingFilters.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-  const allowFilters = displayingFilters.filter(filter => filter.entityType !== "module" && filter.rule === "allow");
-  const denyFilters = displayingFilters.filter(filter => filter.entityType !== "module" && filter.rule === "deny");
-  const moduleFilters = displayingFilters.filter(filter => filter.entityType === "module");
+  const allowFilters = displayingFilters.filter((filter) => filter.entityType !== "module" && filter.rule === "allow");
+  const denyFilters = displayingFilters.filter((filter) => filter.entityType !== "module" && filter.rule === "deny");
+  const moduleFilters = displayingFilters.filter((filter) => filter.entityType === "module");
 
   const messages = getRenderedMessages(props.messages || []);
 
@@ -94,7 +96,7 @@ const FiltersProject = (props: FiltersProps) => {
       customIconClass="fa-small"
       disableEditing={!hasEditingPermissions}
       onCancel={() => cancelAction()}
-      onOpen={({ setItem }) => setItem(props.selectedFilters.map(filter => filter.id))}
+      onOpen={({ setItem }) => setItem(props.selectedFilters.map((filter) => filter.id))}
       onSave={({ closeDialog, item, setErrors }) => {
         const requestParam = {
           projectLabel: props.projectId,
@@ -102,12 +104,12 @@ const FiltersProject = (props: FiltersProps) => {
         };
 
         onAction(requestParam, "update", props.projectId)
-          .then(projectWithUpdatedSources => {
+          .then((projectWithUpdatedSources) => {
             closeDialog();
             showSuccessToastr(t("Filter edited successfully"));
             props.onChange(projectWithUpdatedSources);
           })
-          .catch(error => {
+          .catch((error) => {
             setErrors(error.errors);
             showErrorToastr(error.messages, { autoHide: false });
           });
@@ -118,8 +120,8 @@ const FiltersProject = (props: FiltersProps) => {
             isUpdatingFilter={isLoading}
             projectId={props.projectId}
             initialSelectedFiltersIds={props.selectedFilters
-              .filter(filter => !statesEnum.isDeletion(filter.state))
-              .map(filter => filter.id)}
+              .filter((filter) => !statesEnum.isDeletion(filter.state))
+              .map((filter) => filter.id)}
             onChange={setItem}
           />
         );

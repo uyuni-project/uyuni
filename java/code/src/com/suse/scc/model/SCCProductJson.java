@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
 
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Collections;

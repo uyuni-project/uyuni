@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,10 +34,10 @@ import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
-import servletunit.HttpServletRequestSimulator;
-
 import java.util.Date;
 import java.util.HashMap;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests SsmKSScheduleAction.

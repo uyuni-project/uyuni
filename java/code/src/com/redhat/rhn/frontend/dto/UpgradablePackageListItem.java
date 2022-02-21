@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,6 +33,7 @@ public class UpgradablePackageListItem extends PackageListItem {
     private List errataAdvisoryType = new ArrayList();
     private Set installed;
     private String installedPackage = new String();
+    private boolean packageReboot;
     private boolean errataReboot;
     private boolean errataRestart;
     /**
@@ -128,6 +129,24 @@ public class UpgradablePackageListItem extends PackageListItem {
             retval.add(current);
         }
         return retval;
+    }
+
+    /**
+     * Gets if {@code installhint(reboot-needed)} flag is set for the package.
+     *
+     * @return True if {@code installhint(reboot-needed)} flag is set.
+     */
+    public boolean isPkgReboot() {
+        return packageReboot;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag for the advisory.
+     *
+     * @param pkgRebootIn {@code reboot_suggested} flag
+     */
+    public void setPkgReboot(boolean pkgRebootIn) {
+        this.packageReboot = pkgRebootIn;
     }
 
     /**

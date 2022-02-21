@@ -1,8 +1,10 @@
 import * as React from "react";
-import { Select } from "components/input/Select";
+
 import { FormContext } from "components/input/Form";
+import { Select } from "components/input/Select";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+
 import { GuestDiskFileFields } from "./GuestDiskFileFields";
 import { GuestDiskVolumeFields } from "./GuestDiskVolumeFields";
 
@@ -21,10 +23,10 @@ export function GuestDiskFields(props: Props) {
   const device = formContext.model[`disk${props.index}_device`] || "disk";
   const busTypes = props.domainCaps
     ? props.domainCaps.devices.disk.bus
-        .filter(bus => (device === "floppy" && bus === "fdc") || (device !== "floppy" && bus !== "fdc"))
-        .filter(bus => (device === "cdrom" && !["virtio", "xen"].includes(bus)) || device !== "cdrom")
+        .filter((bus) => (device === "floppy" && bus === "fdc") || (device !== "floppy" && bus !== "fdc"))
+        .filter((bus) => (device === "cdrom" && !["virtio", "xen"].includes(bus)) || device !== "cdrom")
     : [];
-  const preferredBusses = ["virtio", "xen"].filter(type => busTypes.includes(type));
+  const preferredBusses = ["virtio", "xen"].filter((type) => busTypes.includes(type));
   const defaultBus = preferredBusses.length > 0 ? preferredBusses[0] : busTypes[0];
 
   // Ensure the value is in the options

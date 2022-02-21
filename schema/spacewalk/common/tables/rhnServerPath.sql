@@ -27,14 +27,13 @@ CREATE TABLE rhnServerPath
     created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
     modified         TIMESTAMPTZ
-                         DEFAULT (current_timestamp) NOT NULL
+                         DEFAULT (current_timestamp) NOT NULL,
+
+    CONSTRAINT rhn_serverpath_sid_pos UNIQUE
+        (server_id, position) DEFERRABLE INITIALLY DEFERRED
 )
 
 ;
-
-CREATE UNIQUE INDEX rhn_serverpath_sid_pos_uq
-    ON rhnServerPath (server_id, position)
-    ;
 
 CREATE UNIQUE INDEX rhn_serverpath_psid_sid_uq
     ON rhnServerPath (proxy_server_id, server_id)

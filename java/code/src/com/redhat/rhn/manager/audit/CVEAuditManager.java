@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,6 +88,11 @@ public class CVEAuditManager {
     private static final String KERNEL_DEFAULT_NAME = "kernel-default";
 
     private static final String KERNEL_XEN_NAME = "kernel-xen";
+
+    /** Magic number signalling a patch present in a product migration channel */
+    private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
+    /** Magic number signalling a patch present in a product predecessor channel */
+    private static final int PREDECESSOR_PRODUCT_RANK_BOUNDARY = 100_000;
 
     /**
      * Not to be instantiated.
@@ -503,7 +509,8 @@ public class CVEAuditManager {
                 .collect(Collectors.toList());
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
-        int currentRank = maxRank;
+
+        int currentRank = SUCCESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
@@ -537,7 +544,7 @@ public class CVEAuditManager {
         }
 
         // Increase the rank for indication of older products (previous SPs)
-        currentRank = 99999;
+        currentRank = PREDECESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
@@ -927,7 +934,7 @@ public class CVEAuditManager {
      * @return list of system records with patch status
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
-    public static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
+    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
             EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
@@ -956,6 +963,8 @@ public class CVEAuditManager {
                     .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
                     .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
 
+            AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
+
             // Loop through affected packages one by one
             for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
                 if (livePatchedPackages.contains(packageResults.getKey())) {
@@ -977,11 +986,14 @@ public class CVEAuditManager {
                     if (result.isChannelAssigned()) {
                         assignedChannels.add(channel);
                     }
+                    else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
+                        patchInSuccessorProduct.set(true);
+                    }
                 });
             }
-
             system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
-                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty()));
+                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty(),
+                    patchInSuccessorProduct.get()));
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(system.getPatchStatus())) {
@@ -1005,7 +1017,8 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < 100000)
+                .filter(r -> r.isPackageInstalled() &&
+                        r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
@@ -1073,17 +1086,21 @@ public class CVEAuditManager {
      * @param allChannelsForOneErrataAssigned the true if system has all
      * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
+     * @param patchInSuccessorProduct if the patch is present in a successor product (requires product migration)
      * @return the patch status
      */
     public static PatchStatus getPatchStatus(
             boolean allPackagesForAllErrataInstalled,
-            boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
+            boolean allChannelsForOneErrataAssigned, boolean hasErrata, boolean patchInSuccessorProduct) {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
             }
             else if (allChannelsForOneErrataAssigned) {
                 return PatchStatus.AFFECTED_PATCH_APPLICABLE;
+            }
+            else if (patchInSuccessorProduct) {
+                return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import java.util.Date;
 
@@ -386,5 +388,24 @@ public class ConfigTestUtils extends Assert {
         SystemManagerTest.giveCapability(server.getId(),
                 SystemManager.CAP_CONFIGFILES_MTIME_UPLOAD, 1L);
 
+    }
+
+    /**
+     * Removes all the files associated with a config channel.
+     * @param channel The channel for which to remove files from the disk.
+     */
+    public static void removeChannelFiles(ConfigChannel channel) {
+        ConfigChannelSaltManager saltManager = ConfigChannelSaltManager.getInstance();
+        saltManager.removeConfigChannelFiles(channel);
+    }
+
+    /**
+     * Looks up if channel files are generated on the disk.
+     * @param channel The channel for which to look up the generated files.
+     * @return True if files were generated on the disk, false otherwise.
+     */
+    public static boolean lookUpChannelFiles(ConfigChannel channel) {
+        ConfigChannelSaltManager saltManager = ConfigChannelSaltManager.getInstance();
+        return saltManager.areFilesGenerated(channel);
     }
 }

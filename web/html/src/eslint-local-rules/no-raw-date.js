@@ -10,19 +10,35 @@ module.exports = {
     fixable: false,
     schema: [],
   },
-  create: function(context) {
+  create: function (context) {
     return {
-      Identifier: function(node) {
+      Identifier: function (node) {
         if (node.name === "Date" && node.parent.type === "NewExpression") {
-          const args = (node.parent.arguments || []).map(arg => arg.raw).filter(Boolean);
+          const args = (node.parent.arguments || []).map((arg) => arg.raw).filter(Boolean);
           context.report({
             node: node.parent,
             message: "Don't use raw Javascript Date instances",
             suggest: [
               {
-                desc: "Use `moment()` instead",
-                fix: function(fixer) {
+                desc: "Use `localizedMoment()` instead",
+                fix: function (fixer) {
                   return fixer.replaceText(node.parent, `moment(${args.join(", ")})`);
+                },
+              },
+            ],
+          });
+        } else if (
+          node.name === "moment" &&
+          (node.parent.type === "CallExpression" || node.parent.type === "MemberExpression")
+        ) {
+          context.report({
+            node: node,
+            message: "Prefer `localizedMoment()` over `moment()`",
+            suggest: [
+              {
+                desc: "Use `localizedMoment()` instead",
+                fix: function (fixer) {
+                  return fixer.replaceText(node, "localizedMoment");
                 },
               },
             ],

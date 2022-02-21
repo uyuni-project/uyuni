@@ -8,7 +8,14 @@
   <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-    <h2><rhn:icon type="header-proxy" /><bean:message key="sdc.details.connection.header"/></h2>
+    <rhn:toolbar base="h2" icon="header-proxy"
+           aclMixins="com.redhat.rhn.common.security.acl.SystemAclHandler"
+           miscUrl="/rhn/manager/systems/details/proxy?sid=${system.id}"
+           miscText="sdc.details.connection.change"
+           miscIcon="header-proxy"
+           miscAcl="user_role(org_admin); not system_is_proxy(); system_has_salt_entitlement()">
+      <bean:message key="sdc.details.connection.header"/>
+    </rhn:toolbar>
 
     <p><bean:message key="sdc.details.connection.summary1"/></p>
     <p><bean:message key="sdc.details.connection.summary2"/></p>

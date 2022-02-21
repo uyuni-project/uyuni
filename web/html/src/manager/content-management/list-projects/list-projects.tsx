@@ -1,25 +1,31 @@
 import { hot } from "react-hot-loader/root";
+
 import * as React from "react";
 import { useEffect } from "react";
+
 import _truncate from "lodash/truncate";
 
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
+import { LinkButton } from "components/buttons";
+import { FromNow } from "components/datetime/FromNow";
+import withPageWrapper from "components/general/with-page-wrapper";
+import { ServerMessageType } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { Utils } from "utils/functions";
-import { LinkButton } from "components/buttons";
 import { showSuccessToastr } from "components/toastr/toastr";
-import withPageWrapper from "components/general/with-page-wrapper";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
-import { ServerMessageType } from "components/messages";
+
+import { Utils } from "utils/functions";
 
 type ContentProjectOverviewType = {
   properties: {
     label: String;
     name: String;
     description: String;
+    lastBuildDate: moment.Moment;
   };
   environments: Array<String>;
   needRebuild: Boolean;
@@ -44,7 +50,7 @@ const ListProjects = (props: Props) => {
     const keysToSearch = ["name", "description", "environmentLifecycle"];
     if (criteria) {
       return keysToSearch
-        .map(key => row[key])
+        .map((key) => row[key])
         .join()
         .toLowerCase()
         .includes(criteria.toLowerCase());
@@ -52,10 +58,11 @@ const ListProjects = (props: Props) => {
     return true;
   };
 
-  const normalizedProjects = props.projects.map(project => ({
+  const normalizedProjects = props.projects.map((project) => ({
     label: project.properties.label,
     name: project.properties.name,
     description: project.properties.description,
+    lastBuildDate: project.properties.lastBuildDate,
     environmentLifecycle: project.environments.join(" > "),
   }));
 
@@ -83,16 +90,15 @@ const ListProjects = (props: Props) => {
     >
       <Table
         data={normalizedProjects}
-        identifier={row => row.label}
+        identifier={(row) => row.label}
         initialSortColumnKey="name"
-        initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by any value")} />}
       >
         <Column
           columnKey="name"
           comparator={Utils.sortByText}
           header={t("Name")}
-          cell={row => (
+          cell={(row) => (
             <a className="js-spa" href={`/rhn/manager/contentmanagement/project/${row.label}`}>
               {row.name}
             </a>
@@ -102,12 +108,18 @@ const ListProjects = (props: Props) => {
           columnKey="description"
           comparator={Utils.sortByText}
           header={t("Description")}
-          cell={row => _truncate(row.description, { length: 120 })}
+          cell={(row) => _truncate(row.description, { length: 120 })}
+        />
+        <Column
+          columnKey="lastBuildDate"
+          comparator={Utils.sortByDate}
+          header={t("Last Build")}
+          cell={(row) => (row.lastBuildDate ? <FromNow value={row.lastBuildDate} /> : t("never"))}
         />
         <Column
           columnKey="environmentLifecycle"
           header={t("Environment Lifecycle")}
-          cell={row => row.environmentLifecycle}
+          cell={(row) => row.environmentLifecycle}
         />
       </Table>
     </TopPanel>

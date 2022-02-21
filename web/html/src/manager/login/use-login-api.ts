@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import Network from "utils/network";
+
 import { useImmer } from "use-immer";
+
+import Network from "utils/network";
 
 type LoginApiStateType = {
   messages: Array<string>;
@@ -23,7 +25,7 @@ const useLoginApi = () => {
 
   useEffect(
     () =>
-      window.addEventListener("beforeunload", e => {
+      window.addEventListener("beforeunload", (e) => {
         if (loginApiState.loading) {
           const confirmationMessage = t("Are you sure you want to close this page while login is in progress?");
           (e || window.event).returnValue = confirmationMessage;
@@ -34,7 +36,7 @@ const useLoginApi = () => {
   );
 
   const onLogin = ({ login, password }: { login: string; password: string }) => {
-    setLoginApiState(state => {
+    setLoginApiState((state) => {
       state.loading = false;
     });
 
@@ -44,20 +46,20 @@ const useLoginApi = () => {
     };
 
     return Network.post("/rhn/manager/api/login", formData).then(
-      data => {
-        setLoginApiState(state => {
+      (data) => {
+        setLoginApiState((state) => {
           state.success = data.success;
-          state.messages = data.messages && data.messages.map(msg => errorsMessage[msg]);
+          state.messages = data.messages && data.messages.map((msg) => errorsMessage[msg]);
           state.loading = false;
         });
         return data.success;
       },
-      xhr => {
+      (xhr) => {
         const errMessages =
           xhr.status === 0
             ? [t("Request interrupted or invalid response received from the server. Please try again.")]
             : Network.errorMessageByStatus(xhr.status);
-        setLoginApiState(state => {
+        setLoginApiState((state) => {
           state.success = false;
           state.messages = errMessages;
           state.loading = false;

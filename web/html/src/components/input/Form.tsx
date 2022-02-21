@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { InputBase } from "./InputBase";
 
 type InputBaseRef = React.ElementRef<typeof InputBase>;
@@ -84,7 +85,7 @@ export class Form extends React.Component<Props> {
   };
 
   allValid(): boolean {
-    return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
+    return Object.keys(this.inputs).every((name) => this.inputs[name]?.isValid());
   }
 
   validateForm = () => {
@@ -129,7 +130,7 @@ export class Form extends React.Component<Props> {
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
-      Object.keys(this.inputs).forEach(name => {
+      Object.keys(this.inputs).forEach((name) => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
           this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);

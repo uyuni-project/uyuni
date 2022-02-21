@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.List;
-import java.util.Map;
-
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * SnapshotUnservablePackagesAction

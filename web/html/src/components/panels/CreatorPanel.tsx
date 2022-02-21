@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
-import { Panel } from "./Panel";
-import { ModalLink } from "../dialog/ModalLink";
-import { closeDialog, Dialog } from "../dialog/LegacyDialog";
+
 import { Button } from "../buttons";
+import { closeDialog, Dialog } from "../dialog/LegacyDialog";
+import { ModalLink } from "../dialog/ModalLink";
+import { Panel } from "./Panel";
 
 type Props = {
   id: string;

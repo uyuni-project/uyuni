@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
@@ -32,10 +32,25 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
 
     private static final long serialVersionUID = 5351605245345217308L;
 
-    private static final Logger LOG = Logger
-            .getLogger(EmptyVarcharInterceptor.class);
+    private static final Logger LOG = Logger.getLogger(EmptyVarcharInterceptor.class);
 
-    private boolean autoConvert = false;
+    private boolean autoConvert;
+
+    /**
+     * Default constructor. Auto conversion is disabled by default.
+     */
+    public EmptyVarcharInterceptor() {
+        this(false);
+    }
+
+    /**
+     * Build a new instance specifying if empty varchar will be automatically converted to null.
+     *
+     * @param autoConvertIn if true automatically convert all empty varchar fields to null.
+     */
+    public EmptyVarcharInterceptor(boolean autoConvertIn) {
+        this.autoConvert = autoConvertIn;
+    }
 
     protected static boolean emptyStringToNull(Object entity, Serializable id,
             Object[] state, String[] propertyNames, Type[] types,

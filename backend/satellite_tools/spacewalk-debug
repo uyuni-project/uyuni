@@ -423,7 +423,7 @@ if [ $IS_SUSE -eq 1 ]; then
         /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
     fi
 
-    ls -laR /srv/www/htdocs/pub > $DIR/ls-laR-htdocs
+    ls -laR $(spacewalk-cfg-get documentroot)/pub > $DIR/ls-laR-htdocs
 fi
 
 echo "    * timestamping"

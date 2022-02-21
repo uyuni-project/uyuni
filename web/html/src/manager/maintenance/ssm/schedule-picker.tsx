@@ -1,18 +1,17 @@
 import * as React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
+import { Check } from "components/input/Check";
 import { Form, FormContext } from "components/input/Form";
 import { Select } from "components/input/Select";
-import { Check } from "components/input/Check";
 import { Utils as MessagesUtils } from "components/messages";
-
-import CancelActionsDialog from "../shared/cancel-actions-dialog";
-
 import { MessageType } from "components/messages";
 
 import Network from "utils/network";
+
+import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 type ScheduleType = {
   id: number;
@@ -22,7 +21,10 @@ type ScheduleType = {
 type WithMaintenanceSchedulesProps = {
   systems: string[];
   onMessage: (messages: MessageType[]) => void;
-  children: (schedules: ScheduleType[], onAssign: (scheduleId: number, cancelActions: boolean) => Promise<any>) => JSX.Element;
+  children: (
+    schedules: ScheduleType[],
+    onAssign: (scheduleId: number, cancelActions: boolean) => Promise<any>
+  ) => JSX.Element;
 };
 
 export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
@@ -47,7 +49,7 @@ export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
 
     return Network.post(uri, data)
       .then(() => props.onMessage(MessagesUtils.success(successMsg)))
-      .catch(xhr => props.onMessage(MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
+      .catch((xhr) => props.onMessage(MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
   };
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
   const [model, setModel] = useState<any>({});
   const [isValid, setValid] = useState(false);
   const onSubmit = () => props.onAssign(parseInt(model.scheduleId, 10), model.cancelActions);
-  const onChange = model => setModel(Object.assign({}, model));
+  const onChange = (model) => setModel(Object.assign({}, model));
 
   return (
     <>
@@ -129,9 +131,7 @@ export function SchedulePicker(props: { schedules: ScheduleType[] }) {
         divClass="col-md-6"
         required
         defaultValue=""
-        options={options.concat(
-          props.schedules.map(s => ({ value: s.id, label: s.name }))
-        )}
+        options={options.concat(props.schedules.map((s) => ({ value: s.id, label: s.name })))}
       />
       {context.model.scheduleId !== "0" && (
         <Check name="cancelActions" label={t("Cancel affected actions")} divClass="col-md-6 col-md-offset-3" />

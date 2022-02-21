@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,20 @@
  */
 package com.redhat.rhn.frontend.action.audit.scap;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.frontend.action.BaseSearchAction;
+import com.redhat.rhn.frontend.action.common.DateRangePicker;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.taglibs.list.TagHelper;
+import com.redhat.rhn.manager.audit.ScapManager;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+
 import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Collections;
@@ -25,22 +39,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
-
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
-
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.util.DatePicker;
-import com.redhat.rhn.frontend.action.BaseSearchAction;
-import com.redhat.rhn.frontend.action.common.DateRangePicker;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.taglibs.list.TagHelper;
-import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * XccdfSearchAction

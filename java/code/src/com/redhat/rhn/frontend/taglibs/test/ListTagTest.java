@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,21 +14,22 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.frontend.taglibs.ListTag;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TagTestUtils;
+
+import com.mockobjects.helpers.TagTestHelper;
+import com.mockobjects.servlet.MockJspWriter;
+import com.mockobjects.servlet.MockPageContext;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
-import com.mockobjects.servlet.MockPageContext;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.frontend.taglibs.ListTag;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TagTestUtils;
 
 /**
  * ColumnTagTest

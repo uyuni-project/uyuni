@@ -1,13 +1,14 @@
 import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
 import { getChannelsTreeValues } from "core/channels/api/use-channels-tree-api";
 import { ChannelType } from "core/channels/type/channels.type";
+
 import { channelsFiltersAvailable } from "./channels-selection.state";
 
 export function orderBaseChannels(channelsTree: ChannelsTreeType, selectedBaseChannelId: number): Array<ChannelType> {
   const orderedBaseChannels = channelsTree.baseIds
-    .map(cId => channelsTree.channelsById[cId])
+    .map((cId) => channelsTree.channelsById[cId])
     .sort((b1, b2) => b1.id - b2.id)
-    .filter(b => b.id !== selectedBaseChannelId);
+    .filter((b) => b.id !== selectedBaseChannelId);
 
   if (selectedBaseChannelId) {
     orderedBaseChannels.unshift(channelsTree.channelsById[selectedBaseChannelId]);
@@ -18,7 +19,9 @@ export function orderBaseChannels(channelsTree: ChannelsTreeType, selectedBaseCh
 
 export function getVisibleChannels(channelsTree: ChannelsTreeType, activeFilters: Array<string>): Array<number> {
   return getChannelsTreeValues(channelsTree)
-    .filter(c => activeFilters.map(filterId => channelsFiltersAvailable[filterId]).some(filter => filter.isVisible(c)))
+    .filter((c) =>
+      activeFilters.map((filterId) => channelsFiltersAvailable[filterId]).some((filter) => filter.isVisible(c))
+    )
     .map((c: ChannelType) => c.id);
 }
 
@@ -32,7 +35,9 @@ export function isGroupVisible(
 ) {
   const isSearchPresentInGroup =
     baseChannel.name.toLowerCase().includes(search.toLowerCase()) ||
-    baseChannel.children.some(cId => channelsTree.channelsById[cId].name.toLowerCase().includes(search.toLowerCase()));
+    baseChannel.children.some((cId) =>
+      channelsTree.channelsById[cId].name.toLowerCase().includes(search.toLowerCase())
+    );
   const isSameArchAsSelectedBase = baseChannel.archLabel === channelsTree.channelsById[selectedBaseChannelId].archLabel;
   const hasAtLeastOneSelection = selectedChannelsIdsInGroup.length > 0;
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,8 +33,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -111,7 +111,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
         if (!isSkipChannelChangedEvent()) {
             MessageQueue.publish(new ChannelsChangedEventMessage(
-                    server.getId(), user.getId(), null,
+                    server.getId(), user.getId(),
                     isScheduleApplyChannelsState()));
         }
         super.store();

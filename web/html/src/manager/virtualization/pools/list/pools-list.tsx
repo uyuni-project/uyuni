@@ -1,24 +1,25 @@
 import * as React from "react";
-import { Tree } from "components/tree/tree";
-import { TreeItem, TreeData } from "components/tree/tree";
-import { CustomDiv } from "components/custom-objects";
-import { ProgressBar } from "components/progressbar";
-import { CustomDataHandler } from "components/table/CustomDataHandler";
-import { SearchField } from "components/table/SearchField";
+
+import { ActionStatus } from "components/action/ActionStatus";
 import { LinkButton } from "components/buttons";
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
+import { CustomDiv } from "components/custom-objects";
+import { ActionConfirm } from "components/dialog/ActionConfirm";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { ActionStatus } from "components/action/ActionStatus";
-import { ActionConfirm } from "components/dialog/ActionConfirm";
+import { MessageType } from "components/messages";
+import { ProgressBar } from "components/progressbar";
+import { CustomDataHandler } from "components/table/CustomDataHandler";
+import { SearchField } from "components/table/SearchField";
+import { Tree } from "components/tree/tree";
+import { TreeData, TreeItem } from "components/tree/tree";
+import { cloneReactElement } from "components/utils";
+
+import { HypervisorCheck } from "../../HypervisorCheck";
+import { useVirtNotification } from "../../useVirtNotification";
 import { VirtualizationListRefreshApi } from "../../virtualization-list-refresh-api";
 import { VirtualizationPoolsActionApi } from "../virtualization-pools-action-api";
-import { useVirtNotification } from "../../useVirtNotification";
-import { HypervisorCheck } from "../../HypervisorCheck";
-
-import { MessageType } from "components/messages";
-import { cloneReactElement } from "components/utils";
 
 type Props = {
   serverId: string;
@@ -41,14 +42,14 @@ function poolsInfoToTree(pools: any) {
     const poolItem = {
       id: pool.uuid,
       data: Object.assign({}, pool, { itemType: "pool" }),
-      children: volumes.map(volume => volume.id),
+      children: volumes.map((volume) => volume.id),
     };
     return result.concat([poolItem], volumes);
   }, []);
 
   const rootNode = {
     id: "root",
-    children: children.filter(child => child.data.itemType === "pool").map(child => child.id),
+    children: children.filter((child) => child.data.itemType === "pool").map((child) => child.id),
   };
 
   return {
@@ -59,7 +60,7 @@ function poolsInfoToTree(pools: any) {
 
 function getPoolsAndVolumes(tree: TreeData | null | undefined): Array<TreeItem> {
   const items = tree != null ? tree.items : [];
-  return items.filter(item => item.data && (item.data.itemType === "pool" || item.data.itemType === "volume"));
+  return items.filter((item) => item.data && (item.data.itemType === "pool" || item.data.itemType === "volume"));
 }
 
 function searchData(datum, criteria): boolean {
@@ -76,37 +77,37 @@ type FilteredTreeProps = {
 };
 
 function FilteredTree(props: FilteredTreeProps) {
-  const ids = (props.data || []).map(item => item.id).concat(["root"]);
+  const ids = (props.data || []).map((item) => item.id).concat(["root"]);
 
-  const filteredItems = props.tree.items.filter(item => ids.includes(item.id));
+  const filteredItems = props.tree.items.filter((item) => ids.includes(item.id));
 
   // Extract the volumes of the filtered pools
-  const filteredPools = filteredItems.filter(item => item.data && item.data.itemType === "pool");
+  const filteredPools = filteredItems.filter((item) => item.data && item.data.itemType === "pool");
   const poolVolumesIds = filteredPools.reduce((acc, item) => acc.concat(item.children), [] as any[]);
 
   // Extract the pools containing the filtered volumes
-  const filteredVolumes = filteredItems.filter(item => item.data && item.data.itemType === "volume");
+  const filteredVolumes = filteredItems.filter((item) => item.data && item.data.itemType === "volume");
   const volumePoolIds = filteredVolumes
-    .map(vol => props.tree.items.filter(item => (item.children || []).includes(vol.id)))
+    .map((vol) => props.tree.items.filter((item) => (item.children || []).includes(vol.id)))
     .reduce((acc, item) => acc.concat(item), [])
-    .map(item => item.id);
+    .map((item) => item.id);
 
   const allIds = ids.concat(poolVolumesIds, volumePoolIds);
 
   const filteredTreeData = {
     rootId: "root",
-    items: props.tree.items.filter(item => allIds.includes(item.id)),
+    items: props.tree.items.filter((item) => allIds.includes(item.id)),
   };
 
   return (
-    <>{React.Children.toArray(props.children).map(child => cloneReactElement(child, { data: filteredTreeData }))}</>
+    <>{React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: filteredTreeData }))}</>
   );
 }
 
-const DeleteActionConfirm = props => {
+const DeleteActionConfirm = (props) => {
   const [purge, setPurge] = React.useState(false);
 
-  const isPool = props.selected.every(item => item.itemType === "pool");
+  const isPool = props.selected.every((item) => item.itemType === "pool");
   return (
     <ActionConfirm
       id={props.id}
@@ -120,7 +121,7 @@ const DeleteActionConfirm = props => {
         if (isPool) {
           props.onAction(
             type,
-            items.map(pool => pool.name),
+            items.map((pool) => pool.name),
             Object.assign({}, parameters, { purge })
           );
         } else {
@@ -137,7 +138,7 @@ const DeleteActionConfirm = props => {
     >
       {isPool && (
         <p>
-          <input type="checkbox" id="purge" checked={purge} onChange={event => setPurge(event.target.checked)} />
+          <input type="checkbox" id="purge" checked={purge} onChange={(event) => setPurge(event.target.checked)} />
           <label htmlFor="purge">
             {t("Delete the pool, including the contained volumes. ")}
             <strong>{t("Cannot be undone")}</strong>
@@ -180,8 +181,8 @@ export function PoolsList(props: Props) {
 
   function getCreationActionMessages(): Array<MessageType> {
     return Object.keys(actionsResults)
-      .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.pool_create")
-      .flatMap(key => {
+      .filter((key) => key.startsWith("new-") && actionsResults[key].type === "virt.pool_create")
+      .flatMap((key) => {
         const action = actionsResults[key];
         return MessagesUtils.info(
           <p>
@@ -370,10 +371,12 @@ export function PoolsList(props: Props) {
                   </div>
                   <h2>{t("Virtual Storage Pools and Volumes")}</h2>
                   <p>{t("This is the list of storage pools defined on this host containing virtual guests disks.")}</p>
-                  <Messages items={([] as MessageType[]).concat(messages, refreshError || [], getCreationActionMessages())} />
+                  <Messages
+                    items={([] as MessageType[]).concat(messages, refreshError || [], getCreationActionMessages())}
+                  />
                   <CustomDataHandler
                     data={getPoolsAndVolumes(tree)}
-                    identifier={raw => raw.id}
+                    identifier={(raw) => raw.id}
                     initialItemsPerPage={Number(props.pageSize)}
                     loading={tree == null}
                     additionalFilters={[]}
@@ -393,7 +396,7 @@ export function PoolsList(props: Props) {
                   </CustomDataHandler>
                   <DeleteActionConfirm
                     id="delete-modal"
-                    selected={[selected].filter(item => item)}
+                    selected={[selected].filter((item) => item)}
                     isOpen={deleteModalOpen}
                     onClose={() => {
                       setDeleteModalOpen(false);

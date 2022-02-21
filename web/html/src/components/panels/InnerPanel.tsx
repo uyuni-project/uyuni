@@ -1,36 +1,40 @@
 import * as React from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { cloneReactElement } from "components/utils";
 
 type Props = {
   title: string;
   icon: string;
-  buttons: React.ReactNode[];
+  buttons?: React.ReactNode[];
   buttonsLeft?: React.ReactNode[];
   children: React.ReactNode;
 };
 
 function InnerPanel(props: Props) {
-  let toolbar;
+  let toolbar: React.ReactNode = null;
 
-  if (props.buttons?.length > 0 || props.buttonsLeft?.length !== 0) {
-    toolbar =
+  if (props.buttons?.length || props.buttonsLeft?.length) {
+    toolbar = (
       <SectionToolbar>
-        {
-          props.buttonsLeft?.length !== 0 ?
-            <div className="selector-button-wrapper">
-              <div className="btn-group">{props.buttonsLeft}</div>
+        {props.buttonsLeft?.length ? (
+          <div className="selector-button-wrapper">
+            <div className="btn-group">
+              {React.Children.toArray(props.buttonsLeft).map((child, index) =>
+                cloneReactElement(child, { key: index })
+              )}
             </div>
-            : null
-        }
-        {
-          props.buttons?.length > 0 ?
-            <div className="action-button-wrapper">
-              <div className="btn-group">{props.buttons}</div>
+          </div>
+        ) : null}
+        {props.buttons?.length ? (
+          <div className="action-button-wrapper">
+            <div className="btn-group">
+              {React.Children.toArray(props.buttons).map((child, index) => cloneReactElement(child, { key: index }))}
             </div>
-            : null
-        }
-      </SectionToolbar>;
+          </div>
+        ) : null}
+      </SectionToolbar>
+    );
   }
 
   return (
@@ -39,7 +43,7 @@ function InnerPanel(props: Props) {
         <i className={`fa ${props.icon}`} />
         {props.title}
       </h2>
-      { toolbar }
+      {toolbar}
       <div className="row">
         <div className="panel panel-default">
           <div className="panel-body">{props.children}</div>

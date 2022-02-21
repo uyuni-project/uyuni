@@ -1,17 +1,20 @@
 import * as React from "react";
-import Network from "utils/network";
-import { Utils } from "utils/functions";
+
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages";
+import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
+
 import {
   FormulaFormContext,
   FormulaFormContextProvider,
   FormulaFormRenderer,
-  text,
   get,
+  text,
 } from "./formulas/FormulaComponentGenerator";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
@@ -79,7 +82,7 @@ class FormulaForm extends React.Component<Props, State> {
 
     window.addEventListener(
       "beforeunload",
-      function(this: FormulaForm, e) {
+      function (this: FormulaForm, e) {
         if (!this.state.formulaChanged) return null;
 
         let confirmationMessage = "You have unsaved changes. If you leave before saving, your changes will be lost.";
@@ -100,7 +103,7 @@ class FormulaForm extends React.Component<Props, State> {
       dataPromise = Network.get(this.props.dataUrl);
     }
 
-    dataPromise.then(data => {
+    dataPromise.then((data) => {
       if (data === null)
         this.setState({
           formulaName: "",
@@ -112,11 +115,7 @@ class FormulaForm extends React.Component<Props, State> {
           metadata: {},
         });
       else {
-        if (
-          data.formula_list.filter(
-            formula => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name)
-          ).length > 1
-        ) {
+        if (data.formula_list.filter((formula) => DEPRECATED_unsafeEquals(formula, data.formula_name)).length > 1) {
           this.state.warnings.push(
             t(
               'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
@@ -138,7 +137,7 @@ class FormulaForm extends React.Component<Props, State> {
     });
   };
 
-  saveFormula = data => {
+  saveFormula = (data) => {
     this.setState({ formulaChanged: false });
     let scope = this.props.scope;
     let formType = scope.toUpperCase();
@@ -167,12 +166,12 @@ class FormulaForm extends React.Component<Props, State> {
       };
 
       Network.post(this.props.saveUrl, formData).then(
-        function(this: FormulaForm, data) {
+        function (this: FormulaForm, data) {
           if (data instanceof Array) {
-            this.setState({ messages: data.map(msg => this.getMessageText(msg)), errors: [] });
+            this.setState({ messages: data.map((msg) => this.getMessageText(msg)), errors: [] });
           }
         }.bind(this),
-        function(this: FormulaForm, error) {
+        function (this: FormulaForm, error) {
           try {
             this.setState({
               errors: [JSON.parse(error.responseText)],
@@ -188,7 +187,7 @@ class FormulaForm extends React.Component<Props, State> {
     }
   };
 
-  getMessageText = msg => {
+  getMessageText = (msg) => {
     if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
       return t(defaultMessageTexts[msg]);
     }
@@ -205,16 +204,16 @@ class FormulaForm extends React.Component<Props, State> {
       <p>{t("On this page you can configure Salt Formulas to automatically install and configure software.")}</p>
     );
 
-    let messageItems: MessageType[] = this.state.messages.map(msg => {
+    let messageItems: MessageType[] = this.state.messages.map((msg) => {
       return { severity: "info", text: msg };
     });
     messageItems = messageItems.concat(
-      this.state.errors.map(msg => {
+      this.state.errors.map((msg) => {
         return { severity: "error", text: msg };
       })
     );
     messageItems = messageItems.concat(
-      this.state.warnings.map(msg => {
+      this.state.warnings.map((msg) => {
         return { severity: "warning", text: msg };
       })
     );

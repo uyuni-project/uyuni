@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -65,7 +65,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private List status;
     private List actionId;
     private boolean rhnSatellite;
-    private boolean rhnProxy;
+    private boolean proxy;
     private List entitlement;
     private List serverGroupTypeId;
     private List entitlementPermanent;
@@ -154,14 +154,14 @@ public class SystemOverview extends BaseDto implements Serializable  {
     /**
      * @return Returns the isRhnProxy.
      */
-    public boolean isRhnProxy() {
-        return rhnProxy;
+    public boolean isProxy() {
+        return proxy;
     }
     /**
      * @param serverId The server id, null if not a proxy
      */
-    public void setIsRhnProxy(Long serverId) {
-        this.rhnProxy = (serverId != null);
+    public void setIsProxy(Long serverId) {
+        this.proxy = (serverId != null);
     }
     /**
      * @return Returns the isRhnSatellite.
@@ -311,7 +311,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the lastCheckin.
      */
     public String getLastCheckin() {
-        return LocalizationService.getInstance().formatDate(lastCheckin);
+        return lastCheckin != null ? LocalizationService.getInstance().formatDate(lastCheckin) : null;
     }
     /**
      * @param lastCheckinIn The lastCheckin to set.

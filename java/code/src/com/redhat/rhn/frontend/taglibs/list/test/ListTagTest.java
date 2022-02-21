@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.frontend.taglibs.list.test;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.jmock.Expectations.returnValue;
+
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.taglibs.list.ListCommand;
@@ -22,21 +25,18 @@ import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
-import java.io.Writer;
 
 import org.jmock.Expectations;
 import org.jmock.api.Action;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
 
+import java.io.Writer;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.jmock.Expectations.returnValue;
 
 public class ListTagTest extends MockObjectTestCase {
     private ListSetTag lst;

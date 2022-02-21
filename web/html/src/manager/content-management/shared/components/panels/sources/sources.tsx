@@ -1,17 +1,19 @@
 import * as React from "react";
+
+import { isOrgAdmin } from "core/auth/auth.utils";
+import useRoles from "core/auth/use-roles";
+
 import { Select } from "components/input";
-import { Panel } from "components/panels/Panel";
 import CreatorPanel from "components/panels/CreatorPanel";
+import { Panel } from "components/panels/Panel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 
-import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
-import ChannelsSelection from "./channels/channels-selection";
-import styles from "./sources.css";
-import useRoles from "core/auth/use-roles";
-import { isOrgAdmin } from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import statesEnum from "../../../business/states.enum";
+import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
+import ChannelsSelection from "./channels/channels-selection";
+import styles from "./sources.css";
 
 type SourcesProps = {
   projectId: string;
@@ -29,23 +31,24 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
           label={t("Type")}
           labelClass="col-md-3"
           divClass="col-md-8"
+          defaultValue="software"
           options={[{ value: "software", label: t("Channel") }]}
         />
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
         initialSelectedIds={softwareSources
-          .filter(source => !statesEnum.isDeletion(source.state))
-          .map(source => source.channelId)}
-        onChange={selectedChannels => {
-          onChange(selectedChannels.map(c => c.label));
+          .filter((source) => !statesEnum.isDeletion(source.state))
+          .map((source) => source.channelId)}
+        onChange={(selectedChannels) => {
+          onChange(selectedChannels.map((c) => c.label));
         }}
       />
     </form>
   );
 };
 
-const renderSourceEntry = source => {
+const renderSourceEntry = (source) => {
   const unsyncedPatches = source.hasUnsyncedPatches ? "(" + t("has unsynchronized patches") + ")" : "";
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
@@ -97,20 +100,20 @@ const Sources = (props: SourcesProps) => {
       collapsible
       customIconClass="fa-small"
       onCancel={() => cancelAction()}
-      onOpen={({ setItem }) => setItem(props.softwareSources.map(source => source.label))}
+      onOpen={({ setItem }) => setItem(props.softwareSources.map((source) => source.label))}
       onSave={({ closeDialog, item }) => {
         const requestParam = {
           projectLabel: props.projectId,
-          softwareSources: item.map(label => ({ label })),
+          softwareSources: item.map((label) => ({ label })),
         };
 
         onAction(requestParam, "update", props.projectId)
-          .then(projectWithUpdatedSources => {
+          .then((projectWithUpdatedSources) => {
             closeDialog();
             showSuccessToastr(t("Sources edited successfully"));
             props.onChange(projectWithUpdatedSources);
           })
-          .catch(error => {
+          .catch((error) => {
             showErrorToastr(error.messages, { autoHide: false });
           });
       }}
@@ -118,7 +121,7 @@ const Sources = (props: SourcesProps) => {
         return (
           <ModalSourceCreationContent
             softwareSources={props.softwareSources}
-            onChange={channelsLabel => {
+            onChange={(channelsLabel) => {
               setItem(channelsLabel);
             }}
             isLoading={isLoading}
@@ -141,7 +144,7 @@ const Sources = (props: SourcesProps) => {
                     <dt className="col-xs-2">Child Channels:</dt>
                     <dd className="col-xs-6">
                       <ul className="list-unstyled">
-                        {props.softwareSources.slice(1, props.softwareSources.length).map(source => (
+                        {props.softwareSources.slice(1, props.softwareSources.length).map((source) => (
                           <li key={`softwareSources_entry_${source.channelId}`}>{renderSourceEntry(source)}</li>
                         ))}
                       </ul>

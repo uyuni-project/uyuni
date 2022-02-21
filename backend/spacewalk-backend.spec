@@ -32,6 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
+%global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
 %endif
 
@@ -40,6 +41,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
+%global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
 %endif
 
@@ -47,7 +49,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.1
+Version:        4.3.8
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -81,6 +83,7 @@ BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
+BuildRequires:  python3-rpm-macros
 BuildRequires:  python3-uyuni-common-libs
 
 %description
@@ -224,6 +227,7 @@ Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
 %if 0%{?rhel}
+Requires:       python3-dnf
 BuildRequires:  systemd-rpm-macros
 %else
 %{?systemd_requires}
@@ -231,7 +235,7 @@ BuildRequires:  systemd-rpm-macros
 
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
-Requires:       python3-urlgrabber < 4
+Requires:       python3-urlgrabber >= 4
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
@@ -239,7 +243,7 @@ Requires:       (python3-dateutil or python3-python-dateutil)
 %if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
 Requires:       apache2-prefork
-Requires:       zypp-plugin-python
+Requires:       python3-zypp-plugin
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
@@ -321,13 +325,15 @@ install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/sate
 %if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
 sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
+
+sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
 %if 0%{?suse_version}
 sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %fdupes %{buildroot}/%{python3rhnroot}

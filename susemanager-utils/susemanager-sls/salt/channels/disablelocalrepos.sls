@@ -21,7 +21,7 @@ disable_repo_{{ repos_disabled.count }}:
 {% endif %}
 {% endfor %}
 {% else %}
-{% if (repos_disabled.match_str in alias)|string == repos_disabled.matching|string and data.get('enabled', True) %}
+{% if (repos_disabled.match_str in alias)|string == repos_disabled.matching|string and data.get('enabled', True) in [True, '1'] %}
 disable_repo_{{ alias }}:
   mgrcompat.module_run:
     - name: pkg.mod_repo

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.OrgFactory;
 
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -42,6 +43,11 @@ import java.util.Map;
  * This is a port of the ErrataEngine taskomatic task
  */
 public class ErrataMailer extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "errata_mailer";
+    }
 
     /**
      * {@inheritDoc}

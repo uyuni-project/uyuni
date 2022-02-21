@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -25,6 +27,7 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -36,6 +39,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -54,8 +58,6 @@ import java.util.stream.Stream;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
-
-import static java.util.Collections.singletonList;
 
 /**
  * TaskomaticApi
@@ -115,8 +117,21 @@ public class TaskomaticApi {
      */
     public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion)
             throws TaskomaticApiException {
+        scheduleSSHActionExecution(actionIn, sshMinion, false);
+    }
+
+    /**
+     * Schedule a single ssh minion action.
+     * @param actionIn the action
+     * @param sshMinion the Salt ssh minion
+     * @param forcePackageListRefresh force package list refresh when set to true
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion, boolean forcePackageListRefresh)
+            throws TaskomaticApiException {
         Map scheduleParams = new HashMap();
         scheduleParams.put("action_id", Long.toString(actionIn.getId()));
+        scheduleParams.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
         scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
         invoke("tasko.scheduleSingleSatBunchRun",
                 "ssh-minion-action-executor-bunch",
@@ -736,6 +751,19 @@ public class TaskomaticApi {
             LOG.debug("Unscheduling jobs: " + jobLabels);
             invoke("tasko.unscheduleSatBunches", jobLabels);
         }
+    }
+
+    /**
+     * Schedule a single reposync
+     * @param sshdata the payg ssh connection data
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSinglePaygUpdate(PaygSshData sshdata)
+            throws TaskomaticApiException {
+        Map scheduleParams = new HashMap();
+        scheduleParams.put("sshData_id", sshdata.getId().toString());
+        invoke("tasko.scheduleSingleSatBunchRun",
+                "update-payg-data-bunch", scheduleParams);
     }
 
     /**

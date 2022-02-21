@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:02:26 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Tue Jan 18 13:52:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * require python macros for building
+  * do not build python 2 package for SLE15
+
+-------------------------------------------------------------------
+Tue Nov 16 10:04:57 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Fri Nov 05 13:37:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove unused legacy code
+
+-------------------------------------------------------------------
+Fri Sep 17 12:03:34 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Update translation strings
+
+-------------------------------------------------------------------
 Mon Aug 09 11:00:24 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

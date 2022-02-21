@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,6 +43,8 @@ import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -225,7 +227,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, false);
 
-        ServerGroupManager manager = new ServerGroupManager();
+        ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 
@@ -260,7 +262,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         // information as we rely on errata cache in our query
         ErrataCacheManager.insertNeededErrataCache(server.getId(), e.getId(), p.getId());
 
-        ServerGroupManager manager = new ServerGroupManager();
+        ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 

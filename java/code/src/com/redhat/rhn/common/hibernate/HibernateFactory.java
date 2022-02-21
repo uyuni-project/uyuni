@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -30,7 +30,6 @@ import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -68,7 +67,7 @@ import javax.persistence.criteria.Root;
  */
 public abstract class HibernateFactory {
 
-    private static ConnectionManager connectionManager = new ConnectionManager();
+    private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
     private static final Logger LOG = Logger.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 
@@ -775,26 +774,6 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Makes sure the specified entity, presumably loaded via Hibernate's {@link Session#get(Class, Serializable)},
-     * is not a proxy.
-     *
-     * Impelmentation is copied from Hibernate 5.2.10 and this method should be removed after that release.
-     *
-     * @param entity an entity
-     * @param <T> type of entity
-     * @return the entity and not a proxy
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T unproxy(T entity) {
-        Hibernate.initialize(entity);
-        if (entity instanceof HibernateProxy) {
-            entity = (T) ((HibernateProxy) entity).getHibernateLazyInitializer()
-                    .getImplementation();
-        }
-        return entity;
-    }
-
-    /**
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
      * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
@@ -880,6 +859,17 @@ public abstract class HibernateFactory {
                     return queryFunction.get();
                 })
                 .reduce(identity, accumulator::apply);
+    }
+
+    /**
+     * Loads the full hibernate object in case the object is currently just a proxy
+     * @param proxy object to unproxy
+     * @param <T> type of the object to unproxy
+     * @return the unproxied hibernate object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T unproxy(T proxy) {
+        return (T) Hibernate.unproxy(proxy);
     }
 
 }

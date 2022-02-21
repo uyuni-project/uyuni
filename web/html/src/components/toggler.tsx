@@ -17,7 +17,7 @@ type Props = {
 
   /** className of the component. */
   className?: string;
-}
+};
 
 /**
  * A customized toggle switch element to represent boolean values.

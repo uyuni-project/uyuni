@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -40,14 +39,11 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -61,13 +57,10 @@ import java.util.Set;
 public class AccessTest extends BaseTestCaseWithUser {
 
     private Acl acl;
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
-    private final FormulaManager formulaManager = new FormulaManager(saltApi);
-    private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
@@ -77,11 +70,11 @@ public class AccessTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         acl = new Acl();
-        acl.registerHandler(new Access(clusterManager));
+        acl.registerHandler(new Access());
     }
 
     public void testAccessNotFoundEntry() {
-        Access access = new Access(clusterManager);
+        Access access = new Access();
         String[] foo = {"FOO"};
         boolean rc = access.aclIs(null, foo);
         assertFalse(rc);
@@ -97,7 +90,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         c.setBoolean("test.on", "on");
         c.setBoolean("test.ON", "ON");
 
-        Access access = new Access(clusterManager);
+        Access access = new Access();
         String[] foo = new String[1];
 
         foo[0] = "test.true";
@@ -375,7 +368,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 
-        Access a = new Access(clusterManager);
+        Access a = new Access();
         Map ctx = new HashMap();
         ctx.put("sid", guest.getId());
         ctx.put("user", user);

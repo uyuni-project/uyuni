@@ -1,7 +1,10 @@
 import * as React from "react";
-import { PoolsEdit } from "./pools-edit";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { ActionChain } from "components/action-schedule";
+
+import { PoolsEdit } from "./pools-edit";
 
 type RendererProps = {
   serverId: string;

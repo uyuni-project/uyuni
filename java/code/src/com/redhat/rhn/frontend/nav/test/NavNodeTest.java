@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
-import org.apache.commons.beanutils.MethodUtils;
-
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.commons.beanutils.MethodUtils;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * NavNodeTest

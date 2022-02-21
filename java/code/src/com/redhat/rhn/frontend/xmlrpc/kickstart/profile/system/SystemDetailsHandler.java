@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -298,7 +298,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setLocale(User loggedInUser, String ksLabel, String locale,
-            boolean useUtc) throws FaultException {
+            Boolean useUtc) throws FaultException {
 
         ensureConfigAdmin(loggedInUser);
 

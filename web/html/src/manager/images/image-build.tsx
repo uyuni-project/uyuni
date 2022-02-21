@@ -1,18 +1,21 @@
 import * as React from "react";
-import { TopPanel } from "components/panels/TopPanel";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
-import Network from "utils/network";
-import { SubmitButton, LinkButton } from "components/buttons";
+
+import SpaRenderer from "core/spa/spa-renderer";
+
+import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { LinkButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Select } from "components/input/Select";
 import { Text } from "components/input/Text";
-import { ActionLink, ActionChainLink } from "components/links";
-import { ActionChain, ActionSchedule } from "components/action-schedule";
-import SpaRenderer from "core/spa/spa-renderer";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { ActionChainLink, ActionLink } from "components/links";
+import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
+import { TopPanel } from "components/panels/TopPanel";
+
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
@@ -71,20 +74,11 @@ class BuildImage extends React.Component<Props, State> {
       messages: [],
     };
 
-    [
-      "handleProfileChange",
-      "onFormChange",
-      "onValidate",
-      "onBuild",
-      "onDateTimeChanged",
-      "onActionChainChanged",
-    ].forEach(method => (this[method] = this[method].bind(this)));
-
     this.getProfiles();
   }
 
   getProfiles() {
-    Network.get("/rhn/manager/api/cm/imageprofiles").then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles").then((res) => {
       this.setState({
         profiles: res,
       });
@@ -98,7 +92,7 @@ class BuildImage extends React.Component<Props, State> {
   getProfileDetails(profileId) {
     if (!profileId) return true;
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
         var data = res.data;
 
@@ -125,7 +119,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   getBuildHosts(type) {
-    Network.get("/rhn/manager/api/cm/build/hosts/" + type).then(res => {
+    Network.get("/rhn/manager/api/cm/build/hosts/" + type).then((res) => {
       this.setState({
         hosts: res,
       });
@@ -138,9 +132,9 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  handleProfileChange(name, value) {
+  handleProfileChange = (name, value) => {
     this.changeProfile(value);
-  }
+  };
 
   changeProfile(id) {
     const model = Object.assign({}, this.state.model);
@@ -169,44 +163,41 @@ class BuildImage extends React.Component<Props, State> {
     return encodeURIComponent("/rhn/manager/cm/build" + (qstr ? "?" + qstr : ""));
   }
 
-  onFormChange(model) {
+  onFormChange = (model) => {
     this.setState({
       model: model,
     });
-  }
+  };
 
-  onValidate(isValid) {
+  onValidate = (isValid) => {
     this.setState({
       isInvalid: !isValid,
     });
-  }
+  };
 
-  onDateTimeChanged(value: moment.Moment) {
-     const model: State['model'] = Object.assign({}, this.state.model, {
+  onDateTimeChanged = (value: moment.Moment) => {
+    const model: State["model"] = Object.assign({}, this.state.model, {
       earliest: value,
       actionChain: null,
-     });
+    });
     this.setState({
       actionChain: null,
       model,
     });
-  }
+  };
 
-  onActionChainChanged(actionChain: ActionChain | null) {
-    const model: State['model'] = Object.assign({}, this.state.model, {
+  onActionChainChanged = (actionChain: ActionChain | null) => {
+    const model: State["model"] = Object.assign({}, this.state.model, {
       actionChain: actionChain?.text,
     });
     this.setState({
       actionChain,
       model,
     });
-  }
+  };
 
-  onBuild(model) {
-    Network.post(
-      "/rhn/manager/api/cm/build/" + this.state.model.profileId,
-      model
-    ).then(data => {
+  onBuild = (model) => {
+    Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
         const msg = MessagesUtils.info(
           this.state.model.actionChain ? (
@@ -230,7 +221,7 @@ class BuildImage extends React.Component<Props, State> {
         this.setState({
           messages: (
             <Messages
-              items={data.messages.map(msg => {
+              items={data.messages.map((msg) => {
                 return { severity: "error", text: msgMap[msg] };
               })}
             />
@@ -238,7 +229,7 @@ class BuildImage extends React.Component<Props, State> {
         });
       }
     });
-  }
+  };
 
   renderProfileSummary() {
     var p = this.state.profile;
@@ -307,7 +298,7 @@ class BuildImage extends React.Component<Props, State> {
                               </li>
                               <li>
                                 <ul>
-                                  {p.channels.children.map(ch => (
+                                  {p.channels.children.map((ch) => (
                                     <li key={ch.id}>
                                       <a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>
                                         {ch.name}
@@ -376,7 +367,7 @@ class BuildImage extends React.Component<Props, State> {
               </span>
             }
             options={this.state.profiles}
-            getOptionValue={option => option.profileId}
+            getOptionValue={(option) => option.profileId}
           />
 
           {this.state.profile.imageType === "dockerfile" && (
@@ -389,8 +380,8 @@ class BuildImage extends React.Component<Props, State> {
             label={t("Build Host")}
             labelClass="col-md-3"
             divClass="col-md-9"
-            getOptionLabel={option => option.name}
-            getOptionValue={option => option.id}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}
             options={this.state.hosts}
           />
 

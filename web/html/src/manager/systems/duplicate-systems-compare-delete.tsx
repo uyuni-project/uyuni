@@ -1,6 +1,8 @@
 import * as React from "react";
-import { DeleteSystem } from "./delete-system";
+
 import SpaRenderer from "core/spa/spa-renderer";
+
+import { DeleteSystem } from "./delete-system";
 
 // See java/code/webapp/WEB-INF/pages/systems/duplicate/duplicatesystemscompare.jsp
 declare global {
@@ -23,7 +25,7 @@ function postForm(serverId) {
 }
 
 export const renderer = () => {
-  window.getServerIdsToDelete().forEach(serverId => {
+  window.getServerIdsToDelete().forEach((serverId) => {
     SpaRenderer.renderNavigationReact(
       <DeleteSystem
         serverId={serverId}

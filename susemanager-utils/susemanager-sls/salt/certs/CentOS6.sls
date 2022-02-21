@@ -1,1 +1,0 @@
-RedHat6.sls

@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @<client>
-Feature: Adding a Maintenance Update custom channel and the custom repositories for <client>
+Feature: Add a Maintenance Update custom channel and the custom repositories for <client>
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

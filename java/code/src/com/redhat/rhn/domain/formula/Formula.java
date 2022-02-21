@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,6 @@ public class Formula {
     private String name;
     private String description;
     private String group;
-    private boolean locked;
 
     /**
      * Default constructor
@@ -41,7 +40,6 @@ public class Formula {
     public void setMetadata(Map<String, Object> metadata) {
         description = (String) metadata.getOrDefault("description", "");
         group = (String) metadata.getOrDefault("group", "");
-        locked = "cluster-provider".equals(metadata.getOrDefault("type", ""));
     }
 
     /**

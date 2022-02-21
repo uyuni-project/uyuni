@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
-import java.util.Date;
-import java.io.Serializable;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * KickstartPackage

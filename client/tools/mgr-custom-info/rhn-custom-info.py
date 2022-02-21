@@ -54,7 +54,7 @@ def create_server_obj(server_url):
     if isinstance(ca, basestring):
         ca = [ca]
 
-    ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]
+    ca_certs = ca or ["/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"]
 
     lang = None
     for env in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':

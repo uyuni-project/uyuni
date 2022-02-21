@@ -37,11 +37,11 @@
     </tr>
     <tr>
         <td><b><bean:message key="ssm.operations.viewlog.started"/></b></td>
-        <td><c:out value="${operationData.startedDateString}"/></td>
+        <td><rhn:formatDate value="${operationData.started}" /></td>
     </tr>
     <tr>
         <td><b><bean:message key="ssm.operations.viewlog.modified"/></b></td>
-        <td><c:out value="${operationData.modifiedDateString}"/></td>
+        <td><rhn:formatDate value="${operationData.modified}" /></td>
     </tr>
 </table>
 

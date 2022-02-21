@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
 import { FormMultiInput } from "components/input/FormMultiInput";
 import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
+import { Select } from "components/input/Select";
+import { Text } from "components/input/Text";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 
@@ -13,7 +13,7 @@ function addNic(index: number, model: any, changeModel: Function, networks: Arra
   changeModel(
     Object.assign(model, {
       [`network${index}_type`]: "network",
-      [`network${index}_source`]: networks.find(item => item.name === "default") ? "default" : first_nic,
+      [`network${index}_source`]: networks.find((item) => item.name === "default") ? "default" : first_nic,
       [`network${index}_mac`]: "",
     })
   );
@@ -42,8 +42,8 @@ function guestNicFields(
           key={`network${index}_source`}
           disabled={!onlyHandledNics}
           required
-          defaultValue={networks.find(net => net.name === "default") ? "default" : first_nic}
-          options={networks.map(k => k.name)}
+          defaultValue={networks.find((net) => net.name === "default") ? "default" : first_nic}
+          options={networks.map((k) => k.name)}
         />
       )}
       <Text
@@ -61,7 +61,7 @@ function guestNicFields(
 
 function guestNicsPanel(model: any, changeModel: Function, networks: Array<any>) {
   const allNics = getOrderedItemsFromModel(model, "network");
-  const onlyHandledNics = allNics.every(index => model[`network${index}_type`] === "network");
+  const onlyHandledNics = allNics.every((index) => model[`network${index}_type`] === "network");
 
   const removeNic = (index: number): void => {
     changeModel(
@@ -85,7 +85,7 @@ function guestNicsPanel(model: any, changeModel: Function, networks: Array<any>)
         id="networks"
         title={t("Networks")}
         prefix="network"
-        onAdd={newIndex => addNic(newIndex, model, changeModel, networks)}
+        onAdd={(newIndex) => addNic(newIndex, model, changeModel, networks)}
         onRemove={removeNic}
         disabled={!onlyHandledNics}
         panelTitle={getNicPanelTitle}

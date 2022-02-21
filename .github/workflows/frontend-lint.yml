@@ -1,0 +1,47 @@
+name: Frontend lint
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'web/html/src/**'
+      - 'susemanager-frontend/**'
+  pull_request:
+    paths:
+      - 'web/html/src/**'
+      - 'susemanager-frontend/**'
+
+jobs:
+  frontend_lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Use Yarn cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install dependencies
+      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+
+    # Run lint without fixes so the job fails if there are fixes to be applied
+    - name: Run lint
+      run: yarn --cwd web/html/src lint:production

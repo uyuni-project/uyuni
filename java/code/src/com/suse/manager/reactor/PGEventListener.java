@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EventListener;
+
 import org.apache.log4j.Logger;
 
 import java.util.function.Function;

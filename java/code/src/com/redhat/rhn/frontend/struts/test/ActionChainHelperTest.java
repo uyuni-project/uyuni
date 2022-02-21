@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,13 +17,14 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.mockobjects.servlet.MockHttpServletRequest;
 
 import org.apache.struts.action.DynaActionForm;
 import org.stringtree.json.JSONWriter;

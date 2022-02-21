@@ -1,15 +1,23 @@
 <datasource_modes>
 
-<mode name="auto_errata_candidates">
+<mode name="auto_errata_systems">
   <query>
+select s.id
+ from rhnServer s
+ join rhnServerFeaturesView sfv
+ on s.id = sfv.server_id
+ where upper(s.auto_update) = 'Y'
+   and sfv.label = 'ftr_auto_errata_updates'
+   </query>
+ </mode>
+
+ <mode name="auto_errata_candidates">
+   <query>
 select distinct s.id as server_id, s.org_id, snc.errata_id
   from rhnServer s,
-       rhnServerFeaturesView sfv,
        rhnServerNeededCache snc
- where upper(s.auto_update) = 'Y'
-   and s.id = sfv.server_id
-   and sfv.label = 'ftr_auto_errata_updates'
-   and s.id = snc.server_id
+   where s.id = snc.server_id
+   and s.id in (%s)
    and snc.errata_id IS NOT NULL
    and not exists ( -- not regenerating channel metadata where this errata exists
        select 1
@@ -18,8 +26,12 @@ select distinct s.id as server_id, s.org_id, snc.errata_id
                   select c.label
                     from rhnChannel c
                     join rhnChannelErrata ce ON c.id = ce.channel_id
-                   where ce.errata_id = snc.errata_id)
-        )
+                   where ce.errata_id = snc.errata_id))
+   and not exists ( -- no CLM build in process where this errata exists
+        select 1
+         from susecontentenvironmenttarget cet
+        where cet.channel_id = snc.channel_id
+          and (cet.status = 'BUILDING' or cet.status = 'GENERATING_REPODATA'))
    and not exists ( -- haven't already scheduled action
        select 1
          from rhnServerAction sa,

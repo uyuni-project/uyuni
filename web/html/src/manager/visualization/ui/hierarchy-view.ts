@@ -15,11 +15,11 @@ import * as Utils from "../utils";
 function hierarchyView(container, rootIn?: any) {
   // default params
   let root = rootIn;
-  let deriveClass = d => "";
-  let deriveIconClass = d => "fa-question-circle";
+  let deriveClass = (d) => "";
+  let deriveIconClass = (d) => "fa-question-circle";
   let simulation: any = null;
   let onNodeClick = () => {};
-  let captionFunction = d => d.data.name;
+  let captionFunction = (d) => d.data.name;
 
   // cache of x,y coordinates per object id
   // this improves the positioning of the nodes that were hidden and then shown again
@@ -27,11 +27,11 @@ function hierarchyView(container, rootIn?: any) {
 
   function my() {}
 
-  my.refresh = function() {
+  my.refresh = function () {
     const nodes = root.descendants();
     const links = root.links();
 
-    nodes.forEach(n => {
+    nodes.forEach((n) => {
       const cachedPos = positionCache[n.id];
       if (cachedPos) {
         n.x = cachedPos[0];
@@ -39,26 +39,23 @@ function hierarchyView(container, rootIn?: any) {
       }
     });
 
-    const node = container.selectAll("g.node").data(nodes, function(d) {
+    const node = container.selectAll("g.node").data(nodes, function (d) {
       return d.id;
     });
 
     node.exit().remove();
 
-    const gEnter = node
-      .enter()
-      .append("g")
-      .on("click", onNodeClick);
+    const gEnter = node.enter().append("g").on("click", onNodeClick);
 
     gEnter
       .append("svg:foreignObject") // The icon starts to be drawn at top-left and it's developed to bottom-right.
       // Set the offset as half negative of its dimension to center.
-      .attr("x", d => -(getIconDimensionByType(d) / 2) + "px")
-      .attr("y", d => -(getIconDimensionByType(d) / 2) + "px")
-      .attr("width", d => getIconDimensionByType(d) + "px")
-      .attr("height", d => getIconDimensionByType(d) + "px")
+      .attr("x", (d) => -(getIconDimensionByType(d) / 2) + "px")
+      .attr("y", (d) => -(getIconDimensionByType(d) / 2) + "px")
+      .attr("width", (d) => getIconDimensionByType(d) + "px")
+      .attr("height", (d) => getIconDimensionByType(d) + "px")
       .html(
-        d =>
+        (d) =>
           '<div class="icon-wrapper" title="' +
           captionFunction(d) +
           '"><i class="fa ' +
@@ -68,7 +65,7 @@ function hierarchyView(container, rootIn?: any) {
     // otherwise the fa icon is not visible
 
     // common for enter + update sections
-    node.merge(gEnter).attr("class", d => "node " + deriveClass(d));
+    node.merge(gEnter).attr("class", (d) => "node " + deriveClass(d));
 
     // text captions are handled separately so that they'll render on the top of other elements in SVG
     // remove all text captions to re-render them on the top
@@ -77,41 +74,38 @@ function hierarchyView(container, rootIn?: any) {
     container
       .selectAll("text.caption")
       .data(
-        nodes.filter(d => d.children != null),
-        function(d) {
+        nodes.filter((d) => d.children != null),
+        function (d) {
           return d.id;
         }
       )
       .enter()
       .append("text")
       .attr("class", "caption")
-      .attr("dx", d => getIconDimensionByType(d) / 2 + "px")
+      .attr("dx", (d) => getIconDimensionByType(d) / 2 + "px")
       .attr("dy", ".15em")
       .attr("filter", "url(#textStyle)")
       .style("pointer-events", "none")
       .text(captionFunction);
 
-    const link = container.selectAll("line.link").data(links, d => d.target.id);
+    const link = container.selectAll("line.link").data(links, (d) => d.target.id);
 
     link.exit().remove();
 
-    link
-      .enter()
-      .insert("line", "g")
-      .attr("class", "link");
+    link.enter().insert("line", "g").attr("class", "link");
 
     // feed simulation with data
     if (simulation != null) {
       // refresh the update section
-      const node = container.selectAll("g.node").data(nodes, function(d) {
+      const node = container.selectAll("g.node").data(nodes, function (d) {
         return d.id;
       });
-      const link = container.selectAll("line.link").data(links, d => d.target.id);
+      const link = container.selectAll("line.link").data(links, (d) => d.target.id);
 
       simulation.nodes(nodes);
       simulation.force("link").links(links);
       simulation.on("tick", () => {
-        node.each(d => {
+        node.each((d) => {
           if (d.data.partition) {
             d.x += simulation.alpha() * 6;
           } else {
@@ -119,47 +113,47 @@ function hierarchyView(container, rootIn?: any) {
           }
           positionCache[d.id] = [d.x, d.y]; // update the position cache
         });
-        node.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+        node.attr("transform", (d) => "translate(" + d.x + "," + d.y + ")");
 
         container
           .selectAll("text.caption")
-          .data(nodes, function(d) {
+          .data(nodes, function (d) {
             return d.id;
           })
-          .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+          .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")");
 
         link
           .attr("class", "link")
-          .attr("x1", s => s.source.x)
-          .attr("y1", s => s.source.y)
-          .attr("x2", s => s.target.x)
-          .attr("y2", s => s.target.y);
+          .attr("x1", (s) => s.source.x)
+          .attr("y1", (s) => s.source.y)
+          .attr("x2", (s) => s.target.x)
+          .attr("y2", (s) => s.target.y);
       });
       simulation.alpha(0.1).restart();
     }
   };
 
-  my.root = function(r): any {
+  my.root = function (r): any {
     return arguments.length ? ((root = r), my) : root;
   };
 
-  my.simulation = function(s): any {
+  my.simulation = function (s): any {
     return arguments.length ? ((simulation = s), my) : simulation;
   };
 
-  my.deriveClass = function(f): any {
+  my.deriveClass = function (f): any {
     return arguments.length ? ((deriveClass = f), my) : deriveClass;
   };
 
-  my.deriveIconClass = function(f): any {
+  my.deriveIconClass = function (f): any {
     return arguments.length ? ((deriveIconClass = f), my) : deriveIconClass;
   };
 
-  my.onNodeClick = function(c): any {
+  my.onNodeClick = function (c): any {
     return arguments.length ? ((onNodeClick = c), my) : onNodeClick;
   };
 
-  my.captionFunction = function(f): any {
+  my.captionFunction = function (f): any {
     return arguments.length ? ((captionFunction = f), my) : captionFunction;
   };
 
@@ -170,7 +164,10 @@ function getIconDimensionByType(node) {
   let size;
   if (node.data.id === "root") {
     size = "50";
-  } else if ((window.view === "proxy-hierarchy" && node.data.type === "proxy") || ["vhm", "group"].includes(node.data.type)) {
+  } else if (
+    (window.view === "proxy-hierarchy" && node.data.type === "proxy") ||
+    ["vhm", "group"].includes(node.data.type)
+  ) {
     size = "34";
   } else if (Utils.isSystemType(node)) {
     size = "26";

@@ -4,12 +4,12 @@
 Given(/^a postgresql database is running$/) do
   $output, _code = $server.run('file /var/lib/pgsql/data/postgresql.conf', check_errors: false)
   unless $output.include? 'ASCII text'
-    puts 'Tests require Postgresql database, skipping...'
+    log 'Tests require Postgresql database, skipping...'
     pending
   end
   smdba_db_status, _code = $server.run('smdba db-status', check_errors: false)
   if smdba_db_status.include? 'online'
-    puts 'Database is running'
+    log 'Database is running'
   else
     $server.run('smdba db-start')
     smdba_db_status, _code = $server.run('smdba db-status', check_errors: false)
@@ -93,8 +93,8 @@ end
 When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do |bkp_dir, uid, gid|
   $server.run("mkdir /#{bkp_dir};chown #{uid}:#{gid} /#{bkp_dir}")
   bkp_dir.sub!('/', '')
-  puts 'Backup directory:'
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
+  log 'Backup directory:'
+  log $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
 end
 
 Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
@@ -114,9 +114,9 @@ end
 When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_dir, acl_octal|
   bkp_dir.sub!('/', '')
   $server.run("test -d /#{bkp_dir} && chmod #{acl_octal} /#{bkp_dir}")
-  puts "Backup directory, ACL to \"#{acl_octal}\":"
-  puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
-  puts "\n*** Taking backup, this might take a while ***\n"
+  log "Backup directory, ACL to \"#{acl_octal}\":"
+  log $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
+  log "\n*** Taking backup, this might take a while ***\n"
 end
 
 Then(/^base backup is taken$/) do
@@ -157,11 +157,11 @@ When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and valu
     $server.run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false)[0],
     val
   )
-  puts "Table \"#{tbl}\" has been created with some dummy data inside"
+  log "Table \"#{tbl}\" has been created with some dummy data inside"
 end
 
 When(/^I restore database from the backup$/) do
-  puts "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
+  log "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
   $server.run('smdba backup-restore')
 end
 

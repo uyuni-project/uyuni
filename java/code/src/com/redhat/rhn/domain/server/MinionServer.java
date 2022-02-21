@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -37,7 +37,9 @@ public class MinionServer extends Server implements SaltConfigurable {
     private String minionId;
     private String osFamily;
     private String kernelLiveVersion;
+    private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
+    private Set<Pillar> pillars = new HashSet<>();
 
     /**
      * Constructs a MinionServer instance.
@@ -94,6 +96,14 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setKernelLiveVersion(String kernelLiveVersionIn) {
         this.kernelLiveVersion = kernelLiveVersionIn;
+    }
+
+    public Integer getSSHPushPort() {
+        return sshPushPort;
+    }
+
+    public void setSSHPushPort(Integer sshPushPortIn) {
+        this.sshPushPort = sshPushPortIn;
     }
 
     /**
@@ -240,6 +250,31 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * @return value of pillars
+     */
+    public Set<Pillar> getPillars() {
+        return pillars;
+    }
+
+    /**
+     * @param pillarsIn value of pillars
+     */
+    public void setPillars(Set<Pillar> pillarsIn) {
+        pillars.clear();
+        pillars.addAll(pillarsIn);
+    }
+
+    /**
+     * Get the pillar corresponding to a category.
+     *
+     * @param category the category of the pillar to look for
+     * @return the pillar if found
+     */
+    public Optional<Pillar> getPillarByCategory(String category) {
+        return pillars.stream().filter(pillar -> pillar.getCategory().equals(category)).findFirst();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -304,5 +339,54 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public Optional<MinionServer> asMinionServer() {
         return Optional.of(this);
+    }
+
+    /**
+     * Updates Server Path according to Salt master/proxy hostname.
+     * @param hostname hostname of Salt master the minion is connected to
+     * @return <code>true</code> if the path has been changed
+     */
+    public boolean updateServerPaths(String hostname) {
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(hostname);
+
+        return updateServerPaths(proxy, Optional.of(hostname));
+    }
+
+    /**
+     * Updates Server Path according to proxyId.
+     * @param proxyId Id of a proxy the minion is connected to
+     * @return <code>true</code> if the path has been changed
+     */
+    public boolean updateServerPaths(Optional<Long> proxyId) {
+        return updateServerPaths(proxyId.map(id -> ServerFactory.lookupById(id)), Optional.empty());
+    }
+
+    private boolean updateServerPaths(Optional<Server> proxy, Optional<String> hostname) {
+
+        boolean changed = false;
+
+        if (proxy.isPresent()) {
+                // the system is connected to a proxy
+                // check if serverPath already exists
+                Optional<ServerPath> path = ServerFactory.findServerPath(this, proxy.get());
+                if (!path.isPresent() || path.get().getPosition() != 0) {
+                    // proxy path does not exist -> create it
+                    Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(this, proxy.get(),
+                                                 hostname.orElse(proxy.get().getHostname()));
+                    getServerPaths().clear();
+                    getServerPaths().addAll(proxyPaths);
+
+                    changed = true;
+                }
+         }
+         else {
+                if (!getServerPaths().isEmpty()) {
+                    // reconnecting from proxy to master
+                    getServerPaths().clear();
+
+                    changed = true;
+                }
+        }
+        return changed;
     }
 }

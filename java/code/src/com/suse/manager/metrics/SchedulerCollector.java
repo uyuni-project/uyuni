@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,9 @@
  */
 package com.suse.manager.metrics;
 
-import io.prometheus.client.Collector;
+import static com.suse.manager.metrics.CustomCollectorUtils.counterFor;
+import static com.suse.manager.metrics.CustomCollectorUtils.gaugeFor;
+
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -22,8 +24,7 @@ import org.quartz.SchedulerException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.suse.manager.metrics.CustomCollectorUtils.counterFor;
-import static com.suse.manager.metrics.CustomCollectorUtils.gaugeFor;
+import io.prometheus.client.Collector;
 
 /**
  * Collector for a Taskomatic Scheduler.

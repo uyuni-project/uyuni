@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
@@ -1937,7 +1937,7 @@
         </context-group>
         <target>アカウントを停止する</target>
       </trans-unit>
-      <trans-unit id="disableself.jsp.message" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="disableself.jsp.message" xml:space="preserve">
         <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability
 to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
@@ -2098,7 +2098,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>ログインの作成</target>
       </trans-unit>
-      <trans-unit id="usercreate.jsp.pam" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="usercreate.jsp.pam" xml:space="preserve">
         <source>Pluggable Authentication Modules (PAM): </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
@@ -3701,7 +3701,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>監査検索</target>
       </trans-unit>
-      <trans-unit id="auditview.jsp.norecords" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="auditview.jsp.norecords" xml:space="preserve">
         <source>No audit records found!</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
@@ -4291,7 +4291,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>パッケージがありません。</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.add.success.plural" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errata.edit.packages.add.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
@@ -4300,7 +4300,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.add.success.singular" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errata.edit.packages.add.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
@@ -4309,7 +4309,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errata.edit.packages.remove.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
@@ -4318,7 +4318,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errata.edit.packages.remove.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
@@ -4882,7 +4882,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target>「すべてのフィールド」を使用して概要、詳細、トピックおよび解決法を検索します。</target>
       </trans-unit>
-      <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
@@ -5107,7 +5107,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target>概要:</target>
       </trans-unit>
-      <trans-unit id="errata.create.jsp.bugurl" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="errata.create.jsp.bugurl" xml:space="preserve">
         <source>Bugzilla URL:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
@@ -5439,14 +5439,14 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.channels.memberships" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.channels.memberships" xml:space="preserve">
           <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
         <target>システムの &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;チャンネルメンバーシップ&lt;/a&gt; を管理します</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.channels.subscriptions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.channels.subscriptions" xml:space="preserve">
           <source>Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;config channel subscriptions&lt;/a&gt;</source>
         <target>システムの &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;設定チャンネルサブスクリプション&lt;/a&gt; を管理します</target>
         <context-group name="ctx">
@@ -5481,7 +5481,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.remotecommands" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.remotecommands" xml:space="preserve">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
         <target>&lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; を実行します</target>
         <context-group name="ctx">
@@ -5499,7 +5499,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
@@ -5583,21 +5583,21 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
         <target>&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;ハードウェアプロファイル&lt;/a&gt; の更新</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.packageprofiles" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
         <target>&lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;パッケージプロファイル&lt;/a&gt; の更新</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.systempreferences" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
         <target>&lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;システム設定&lt;/a&gt; の更新</target>
         <context-group name="ctx">
@@ -6903,7 +6903,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="duplicate.compares.max_limit.message" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="duplicate.compares.max_limit.message" xml:space="preserve">
           <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <target>比較に対して {0} 個以上のシステムプロファイルを選択しています。比較を行なうには &lt;strong&gt;{0} 個もしくはそれ未満の個数のシステム&lt;/strong&gt; の組み合わせを選択して &lt;strong&gt;{1}&lt;/strong&gt; を選んでください</target>
         <context-group name="ctx">
@@ -7837,14 +7837,14 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target>説明</target>
       </trans-unit>
-      <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
         <target>CPU Mhz</target>
       </trans-unit>
-      <trans-unit id="systemsearch_cpu_mhz_gt_column" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="systemsearch_cpu_mhz_gt_column" xml:space="preserve">
         <source>CPU Mhz</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
@@ -9620,7 +9620,7 @@ on a @@PRODUCT_NAME@@.</source>
         <target state="translated">@@PRODUCT_NAME@@ により、@@PRODUCT_NAME@@ 上に複数の '組織' を作成する
 ことが可能になります。</target>
       </trans-unit>
-      <trans-unit id="general.jsp.org.summary2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="general.jsp.org.summary2" xml:space="preserve">
         <source>Organizations are a way to place boundaries between sets of systems, system
 groups, software channels, autoinstallation profiles,
 activation keys, configuration channels and files, users - everything
@@ -9955,7 +9955,7 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Cobbler" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Cobbler" xml:space="preserve">
           <source>Cobbler</source>
         <target>Cobbler</target>
         <context-group name="ctx">
@@ -10298,11 +10298,11 @@ Please note that some manual configuration of these scripts may still be require
         <source>Filters</source>
         <target>フィルタ</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.filters.tip" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="repos.jsp.filters.tip" xml:space="preserve">
         <source>-zsh*,kernel +zsh-html</source>
         <target>-zsh*,kernel +zsh-html</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.filters.error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
         <target>フィルターの構文が間違っています。</target>
       </trans-unit>
@@ -12399,7 +12399,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         </context-group>
         <target>キックスタートスクリプトの詳細</target>
       </trans-unit>
-      <trans-unit id="kickstart.script.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.script.summary" xml:space="preserve">
         <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
 You can access the network in this section, but you must use IP addresses (name service has not been configured at this point).  For more details on
 kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;
@@ -12459,7 +12459,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>非 chroot</target>
       </trans-unit>
-      <trans-unit id="kickstart.script.erroronfail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.script.erroronfail" xml:space="preserve">
         <source>erroronfail</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
@@ -13262,7 +13262,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.subscriptions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.subscriptions" xml:space="preserve">
         <source>Manage &lt;strong&gt;System Types&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -13276,14 +13276,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>&lt;strong&gt;エンタイトルメントとサブスクリプションの管理&lt;/strong&gt;:</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.activationkeys" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.activationkeys" xml:space="preserve">
         <source>Manage &lt;strong&gt;Activation Keys&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
         <target>&lt;strong&gt;アクティベーションキー&lt;/strong&gt; の管理</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve">
         <source>Manage &lt;strong&gt;Organizations&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -13304,14 +13304,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>システムの &lt;strong&gt;登録&lt;/strong&gt;</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.kickstart" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.kickstart" xml:space="preserve">
         <source>Manage &lt;strong&gt;Autoinstallations&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
         <target>&lt;strong&gt;自動インストール&lt;/strong&gt; の管理</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.configuration" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.tasks.configuration" xml:space="preserve">
         <source>Manage &lt;strong&gt;Configuration Files&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -18014,7 +18014,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>削除するリビジョンが見つかりませんでした。</target>
       </trans-unit>
       <!-- filedetails.jsp -->
-      <trans-unit id="filedetails.header.jspf.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="filedetails.header.jspf.label" xml:space="preserve">
         <source>Revision {1} of {0} from channel &lt;a href="{3}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDetails.do</context>
@@ -18260,7 +18260,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
         <target>シンボリックリンク</target>
       </trans-unit>
-      <trans-unit id="filedetails.manage_header.jspf.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="filedetails.manage_header.jspf.label" xml:space="preserve">
         <source>{0} from channel &lt;a href="{2}"&gt;{1}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
@@ -18359,7 +18359,7 @@ This is a binary file, and can not be displayed.
 これはバイナリファイルであるため表示できません。
 </target>
       </trans-unit>
-      <trans-unit id="filedetails.contents.jspf.binary-canupload" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="filedetails.contents.jspf.binary-canupload" xml:space="preserve">
         <source>You &lt;strong&gt;can&lt;/strong&gt; upload a new revision of this binary file below, however.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
@@ -18697,7 +18697,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target>{0} オーバーライド</target>
       </trans-unit>
-      <trans-unit id="managedsystems.jsp.local" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="managedsystems.jsp.local" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;{1}&lt;/a&gt; ({2})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
@@ -18742,7 +18742,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target>1 チャンネル</target>
       </trans-unit>
-      <trans-unit id="managedsystems.jsp.global" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="managedsystems.jsp.global" xml:space="preserve">
         <source>{0} from &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
@@ -19768,7 +19768,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="diffconfirm.jsp.widgetsummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="diffconfirm.jsp.widgetsummary" xml:space="preserve">
           <source>You may schedule configuration file compare actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
         <target>以下の時間で設定ファイル比較処理が動作するようスケジュールすることができます。 &lt;br/&gt; &lt;strong&gt;注意: 以下の時間は最も早く動作を起こすことができる時間を示しています。&lt;/strong&gt;</target>
         <context-group name="ctx">
@@ -19920,7 +19920,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffFiles.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.widgetsummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="deployconfirm.jsp.widgetsummary" xml:space="preserve">
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
         <target>以下の時間で設定ファイル配備処理が動作するようスケジュールすることができます。 &lt;br/&gt; &lt;strong&gt; 注記: 以下の時間が動作を実行できる最も早い時間になります。&lt;/strong&gt;</target>
         <context-group name="ctx">
@@ -20393,7 +20393,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewDiffResult.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff_result.rev" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.config.diff_result.rev" xml:space="preserve">
           <source>rev {0}</source>
         <target>rev {0}</target>
         <context-group name="ctx">
@@ -21962,7 +21962,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target>キックスタートプロファイルがありません。</target>
       </trans-unit>
-      <trans-unit id="kickstart.packageprofiles.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.packageprofiles.jsp.summary" xml:space="preserve">
         <source>You may sync kickstarting systems to the package profile
 of a system registered to @@PRODUCT_NAME@@ by choosing a package profile
 below.  &lt;strong&gt;Note&lt;/strong&gt;: This list will
@@ -22028,7 +22028,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>再プロビジョニングのゲストシステムは現在サポートされていません。</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.visit.host.virt.tab" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.schedule.visit.host.virt.tab" xml:space="preserve">
         <source>If this guest system is no longer needed you can delete the guest. To provision a new guest on this system's host, &lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt;please visit the 'Virtualization' tab of the host's system details page&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
@@ -22603,7 +22603,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>システムを @@PRODUCT_NAME@@ に登録</target>
       </trans-unit>
-      <trans-unit id="kickstart.session_status.jsp.status_profile" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.session_status.jsp.status_profile" xml:space="preserve">
         <source>Sync system to &lt;a href="/rhn/profiles/Details.do?prid={0}"&gt;package profile&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
@@ -22979,84 +22979,6 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
  &lt;strong&gt; 選択されたベースチャンネルに該当するインストーラー生成が見つかりません。 &lt;/strong&gt;
 </target>
       </trans-unit>
-      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
-        <source>Virtual Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>仮想システム</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>システム</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
-        <source>No Virtual Systems.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>仮想システムはありません。</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
-        <source>System</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>システム</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
-        <source>Host</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>ホスト</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
-        <source>{0} Active Virtual Systems, {1} Total.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-          <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
-        </context-group>
-        <target>{0} 個の有効な仮想システム、合計 {1} 個。</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
-        <source>View All</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>すべて表示</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
-        <source>Updates</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>更新</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
-        <source>Status</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>状態</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
-        <source>Base Software Channel</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>ベースソフトウェアチャンネル</target>
-      </trans-unit>
-      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
-        <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
-        </context-group>
-        <target>このシステムは選択できません - @@PRODUCT_NAME@@ に登録されていません</target>
-      </trans-unit>
       <trans-unit id="virtualguestslist.jsp.header" xml:space="preserve">
         <source>Hosted Virtual Systems</source>
         <context-group name="ctx">
@@ -23323,7 +23245,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>自動インストールプロファイルの選択</target>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="virtualization.provision.first.jsp.summary1" xml:space="preserve">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
         <target>&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; でホストされる新しい仮想システムを作成するため、下記のフォームに入力を行なってください</target>
         <context-group name="ctx">
@@ -23365,7 +23287,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.guest_name.message1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="virtualization.provision.first.jsp.guest_name.message1" xml:space="preserve">
         <source>What name shall be used to identify the guest on this host?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
@@ -24704,9 +24626,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.header" xml:space="preserve">
-        <source>System Activation Key</source>
-        <target>システムのアクティベーションキー</target>
+      <trans-unit id="sdc.details.activation.header" xml:space="preserve" approved="yes">
+        <source>System Reactivation Key</source>
+        <target state="final">システムの再アクティベーションキー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -25228,7 +25150,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>このシステムのベースソフトウェアチャンネルの修正を確認すると、以下のソフトウェアチャンネルにサブスクライブするようになります:</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.confirmNewBase.otherChannelsWarning" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.channels.confirmNewBase.otherChannelsWarning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; If you have installed packages from any channels that are highlighted above, those packages will &lt;strong&gt;no longer receive software updates&lt;/strong&gt;, including &lt;strong&gt;critical security updates&lt;/strong&gt;, when this system is moved to Extended Update Support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
@@ -25615,7 +25537,7 @@ Below is a list of channels in your organization.
           </context-group>
         <target>ベースチャンネルの変更</target>
       </trans-unit>
-      <trans-unit id="basesub.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="basesub.jsp.summary" xml:space="preserve">
           <source>
 As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
@@ -25978,7 +25900,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>Packages by Name</source>
         <target>名前別のパッケージ</target>
       </trans-unit>
-      <trans-unit id="packagesbyname.jsp.introparagraph" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="packagesbyname.jsp.introparagraph" xml:space="preserve">
         <source>NOTE: Different architectures of the same package can exist in a
 single channel, this may cause a package to be listed twice for a
 given channel.</source>
@@ -26107,7 +26029,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.about.overviewsummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -26273,7 +26195,7 @@ given channel.</source>
         <source>Compare Packages</source>
         <target>パッケージの比較</target>
       </trans-unit>
-      <trans-unit id="nvrea" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nvrea" xml:space="preserve">
         <source>nvrea</source>
         <target>nvrea</target>
       </trans-unit>
@@ -26759,7 +26681,7 @@ given channel.</source>
         <source>Solaris Release</source>
         <target>Solaris リリース</target>
       </trans-unit>
-      <trans-unit id="package.jsp.readme" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="package.jsp.readme" xml:space="preserve">
         <source>Readme</source>
         <target>Readme</target>
       </trans-unit>
@@ -27212,7 +27134,7 @@ given channel.</source>
         </context-group>
         <target>チャンネルの削除</target>
       </trans-unit>
-      <trans-unit id="channel.delete.jsp.introparagraph" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.delete.jsp.introparagraph" xml:space="preserve">
         <source>Are you sure you wish to delete this channel? Packages in the channel will
            be removed from the channel, but will remain on the server. You will be
            given the option to delete them after the channel has been deleted. Patches
@@ -27291,7 +27213,7 @@ given channel.</source>
         </context-group>
         <target>システムのサブスクライブの中止</target>
       </trans-unit>
-      <trans-unit id="channel.delete.jsp.unsubparagraph" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.delete.jsp.unsubparagraph" xml:space="preserve">
         <source>Unsubscribe all trusted organization systems that are subscribed to the
             {0} channel. Subscribed systems will lose access to packages specific to this channel.
          </source>
@@ -28635,7 +28557,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve">
           <source>
           Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance.
           This operation cannot be undone - make sure you really want to do this!
@@ -29008,10 +28930,6 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
         <target>Salt で管理されたシステムに対してチャンネルの割り当てを変更した場合、次回の highstate 適用で変更が反映されます</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.info.change" xml:space="preserve">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
-        <target>製品を含むチャンネルのサブスクリプションを設定した場合、既に登録されているシステムに対して製品パッケージが自動インストールされます。 Salt で管理されているシステムの場合は、 highstate をできる限り速やかに適用してください。</target>
-      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
         <target>設定ファイルの作成</target>
@@ -29256,7 +29174,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>このユーザ名の資格情報は既に存在しています</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
         <target>Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
@@ -29435,7 +29353,7 @@ given channel.</source>
         <source>Bootstrap</source>
         <target>ブートストラップ</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.body" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="copyright.jsp.body" xml:space="preserve">
         <source>
 &lt;p&gt;
     This software is a modular operating system comprised of numerous components
@@ -29493,7 +29411,7 @@ given channel.</source>
         <source>States</source>
         <target>状態</target>
       </trans-unit>
-      <trans-unit id="Highstate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Highstate" xml:space="preserve">
         <source>Highstate</source>
         <target>Highstate</target>
       </trans-unit>
@@ -29505,7 +29423,7 @@ given channel.</source>
         <source>Configuration Channels</source>
         <target>設定チャンネル</target>
       </trans-unit>
-      <trans-unit id="Formula" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Formula" xml:space="preserve">
         <source>Formula</source>
         <target>Formula</target>
       </trans-unit>
@@ -29723,60 +29641,157 @@ given channel.</source>
         <source>Product Migration</source>
         <target state="translated">製品移行</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.title.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.title.repo" xml:space="preserve">
           <source>We're sorry, but the repository could not be found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">申し訳ありませんが、リポジトリーが見つかりませんでした。</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">要求されたリポジトリーは存在しません。これは、ブックマークまたはその他のハイパーリンク以外からこのページにアクセスした場合に発生する可能性があります。</target>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <target state="final">このリポジトリーを表示する許可がありません。</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
         <target state="final">Ansible playbookの実行</target>
       </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         <target state="final">オプションのOVALファイル(カンマ区切り)</target>
       </trans-unit>
-      <trans-unit id="system.event.scapOvalFiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="final">&lt;strong&gt;OVALファイル(カンマ区切り): &lt;/strong&gt; </target>
       </trans-unit>
-      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.channel-modular-data-cleanup" xml:space="preserve">
         <source>Modular Data Cleanup</source>
         <target state="final">モジュラーデータのクリーンアップ</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-forward-registration" xml:space="preserve">
         <source>Forward Registration</source>
         <target state="final">登録の転送</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
         <target state="final">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
       </trans-unit>
-    </body>
+      <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
+        <source>No Modules</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+	</context-group>
+        <target state="final">モジュールなし</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.streamname" xml:space="preserve">
+        <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+        <target state="final">ストリーム名(存在する場合は&lt;span class="label label-primary"&gt;デフォルト&lt;/span&gt;)</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.modulename" xml:space="preserve">
+        <source>Module Name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/AppStreams</context>
+        </context-group>
+        <target state="final">モジュール名</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
+          <source>Optional OVAL Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
+        <target state="final">オプションのOVALファイル</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstream.jsp.headerappstream" xml:space="preserve">
+        <source>AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
+        </context-group>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.create_clm_filter" xml:space="preserve">
+        <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">&lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;のライブパッチ適用フィルタの作成</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.jsp.appstreams" xml:space="preserve">
+        <source>AppStreams</source>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve" approved="yes">
+          <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+        </context-group>
+        <target state="final">ミニオンを別の&lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;に接続します</target>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
+          <source>Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="final">プロキシ</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.connection.change" xml:space="preserve" approved="yes">
+        <source>Change</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Connection.do</context>
+        </context-group>
+        <target state="final">変更</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve" approved="yes">
+        <source>Vendor Advisory</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+        <target state="final">ベンダアドバイザリー</target>
+      </trans-unit>
+    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <source>Update Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <source>Update Reporting Database</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Text, DateTime, Radio, Select, Form } from "components/input";
-import AppStreamsForm from "./appstreams/appstreams";
-import { FilterFormType } from "../shared/type/filter.type";
-import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
+
+import { DateTime, Form, Radio, Select, Text } from "components/input";
+
+import { localizedMoment } from "utils";
 import produce from "utils/produce";
 
+import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
+import { FilterFormType } from "../shared/type/filter.type";
+import AppStreamsForm from "./appstreams/appstreams";
 import TemplatesForm from "./templates";
-import { localizedMoment } from "utils";
 
 enum FilterBy {
   Type = "Type",
@@ -31,7 +33,7 @@ const FilterForm = (props: Props) => {
   useEffect(() => {
     if (!editing) {
       onChange(
-        produce(filter, draft => {
+        produce(filter, (draft) => {
           const selectedFilter = findClmFilterByKey(filter.type);
           if (selectedFilter && selectedFilter.matchers.length === 1) {
             draft.matcher = selectedFilter.matchers[0].key;
@@ -58,7 +60,7 @@ const FilterForm = (props: Props) => {
       model={{ ...props.filter }}
       errors={props.errors}
       onValidate={props.onClientValidate}
-      onChange={model => {
+      onChange={(model) => {
         props.onChange(model);
       }}
     >
@@ -117,8 +119,8 @@ const FilterForm = (props: Props) => {
               required
               disabled={props.editing}
               options={getClmFiltersOptions()}
-              getOptionValue={filter => filter.key}
-              formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+              getOptionValue={(filter) => filter.key}
+              formatOptionLabel={(filter) => `${filter.entityType.text} (${filter.text})`}
             />
 
             {selectedFilterMatchers?.length ? (
@@ -130,8 +132,8 @@ const FilterForm = (props: Props) => {
                 required
                 disabled={props.editing}
                 options={selectedFilterMatchers}
-                getOptionValue={matcher => matcher.key}
-                getOptionLabel={matcher => matcher.text}
+                getOptionValue={(matcher) => matcher.key}
+                getOptionLabel={(matcher) => matcher.text}
               />
             ) : null}
 
@@ -228,6 +230,26 @@ const FilterForm = (props: Props) => {
               <Text
                 name={clmFilterOptions.PACKAGE_NAME.key}
                 label={t("Package Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PACKAGE_PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PACKAGE_PROVIDES_NAME.key}
+                label={t("Package Provides Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PROVIDES_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PROVIDES_NAME.key}
+                label={t("Provides Name")}
                 labelClass="col-md-3"
                 divClass="col-md-8"
                 required

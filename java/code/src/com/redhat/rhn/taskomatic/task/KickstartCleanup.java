@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -38,6 +38,11 @@ import java.util.Map;
  */
 
 public class KickstartCleanup extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "kickstart_cleanup";
+    }
 
     /**
      * Primarily a convenience method to make testing easier

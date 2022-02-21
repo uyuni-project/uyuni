@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -88,7 +88,8 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         subscribedChannel.addErrata(retracted);
 
         // insert newer & newest
-        ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), retracted.getId(), List.of(newestPkg.getId()));
+        ErrataCacheManager.insertCacheForChannelPackages(
+                subscribedChannel.getId(), retracted.getId(), List.of(newestPkg.getId()));
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newerPkg.getId()));
 
         // only the newer should be in the cache since newest is retracted
@@ -166,7 +167,8 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
 
         // insert "newer" into cache should be ok
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newerPkg.getId()));
-        ErrataCacheDto needingUpdates = (ErrataCacheDto) assertSingleAndGet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        ErrataCacheDto needingUpdates = (ErrataCacheDto) assertSingleAndGet(
+                ErrataCacheManager.packagesNeedingUpdates(server.getId()));
         assertEquals(newerPkg.getId(), needingUpdates.getPackageId());
 
         // insert "newest" into cache should be a no-op

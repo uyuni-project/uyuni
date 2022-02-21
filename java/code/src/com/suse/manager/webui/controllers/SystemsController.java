@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,8 +15,14 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -24,11 +30,15 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -37,25 +47,29 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
-import org.apache.commons.lang3.StringUtils;
+import com.suse.manager.webui.utils.gson.VirtualSystem;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import spark.Request;
-import spark.Response;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -68,10 +82,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import javax.servlet.http.HttpServletRequest;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the systems page.
@@ -99,8 +115,12 @@ public class SystemsController {
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      * @param systemsController instance to register.
+     * @param jade Jade template engine
      */
-    public static void initRoutes(SystemsController systemsController) {
+    public static void initRoutes(SystemsController systemsController, JadeTemplateEngine jade) {
+        get("/manager/systems/list/virtual",
+                withCsrfToken(withDocsLocale(withUser(systemsController::virtualListPage))), jade);
+
         post("/manager/api/systems/:sid/delete", withUser(systemsController::delete));
         get("/manager/api/systems/:sid/channels", withUser(systemsController::getChannels));
         get("/manager/api/systems/:sid/channels-available-base",
@@ -108,8 +128,48 @@ public class SystemsController {
         post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(systemsController::getAccessibleChannelChildren));
+        get("/manager/api/systems/list/virtual", withUser(systemsController::virtualSystems));
     }
 
+    private Object virtualSystems(Request request, Response response, User user) {
+        response.type("application/json");
+        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
+        if ("id".equals(pageHelper.getFunction())) {
+            return json(response, virtual.stream()
+                    .filter(SystemOverview::isSelectable)
+                    .map(VirtualSystemOverview::getUuid)
+                    .collect(Collectors.toList())
+            );
+        }
+
+        virtual = pageHelper.processPageControl(virtual, new HashMap<>());
+        List<VirtualSystem> systems = virtual.stream()
+                .map(system -> {
+                    system.setSystemId(system.getVirtualSystemId());
+                    if (system.getSystemId() != null) {
+                        system.updateStatusType(user);
+                    }
+                    return new VirtualSystem(system);
+                })
+                .collect(Collectors.toList());
+        return json(response, new PagedDataResultJson<VirtualSystem>(systems, virtual.getTotalSize()));
+    }
+
+    /**
+     * Get the virtual systems list page
+     *
+     * @param requestIn the request
+     * @param responseIn the response
+     * @param userIn the user
+     * @return the jade rendered template
+     */
+    private ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        return new ModelAndView(data, "templates/systems/virtual-list.jade");
+    }
     /**
      * Deletes a system.
      * @param request the request
@@ -153,7 +213,9 @@ public class SystemsController {
 
         try {
             // Now we can remove the system
-            SystemManager.deleteServer(user, sid);
+            SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+                    saltApi);
+            systemManager.deleteServer(user, sid);
             createSuccessMessage(request.raw(), "message.serverdeleted.param",
                     Long.toString(sid));
         }

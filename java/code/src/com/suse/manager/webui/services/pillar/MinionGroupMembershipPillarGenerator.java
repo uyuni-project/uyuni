@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,13 +19,13 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 
-import com.suse.manager.webui.utils.SaltPillar;
-
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,16 +40,22 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
 
     public static final MinionGroupMembershipPillarGenerator INSTANCE = new MinionGroupMembershipPillarGenerator();
 
+    public static final String CATEGORY = "group_memberships";
+
     /**
      * Generates pillar containing the information of the server groups the passed minion is member of
      * @param minion the minion server
-     * @return the SaltPillar containing the pillar data
+     * @return the Pillar containing the pillar data
      */
     @Override
-    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
+    public Optional<Pillar> generatePillarData(MinionServer minion) {
         LOG.debug("Generating group memberships pillar file for minion: " + minion.getMinionId());
-
-        SaltPillar pillar = new SaltPillar();
+        Pillar pillar = minion.getPillarByCategory(CATEGORY).orElseGet(() -> {
+            Pillar newPillar = new Pillar(CATEGORY, new HashMap<>(), minion);
+            minion.getPillars().add(newPillar);
+            return newPillar;
+        });
+        pillar.getPillar().clear();
 
         List<String> addonGroupTypes = minion.getEntitledGroupTypes().stream()
                 .map(ServerGroupType::getLabel).collect(Collectors.toList());
@@ -64,6 +70,11 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
 
     @Override
     public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + "group_memberships" + "." + PILLAR_DATA_FILE_EXT;
+        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + CATEGORY + "." + PILLAR_DATA_FILE_EXT;
+    }
+
+    @Override
+    public String getCategory() {
+        return CATEGORY;
     }
 }

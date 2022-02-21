@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
@@ -202,6 +203,10 @@ public class SCCWebClient implements SCCClient {
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
         request.addHeader("SMS", uuid != null ? uuid : "undefined");
+
+        // overwrite the default
+        request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
+                ConfigDefaults.get().getProductVersion());
     }
 
     @Override

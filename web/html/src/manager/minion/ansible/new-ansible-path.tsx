@@ -1,9 +1,10 @@
 import * as React from "react";
-import { TextField } from "components/fields";
+
 import { AsyncButton } from "components/buttons";
+import { TextField } from "components/fields";
 
 const NewAnsiblePath = (props) => {
-  return(
+  return (
     <>
       <h4>{props.title}</h4>
       <div className="form-group">
@@ -24,7 +25,7 @@ const NewAnsiblePath = (props) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default NewAnsiblePath;

@@ -27,6 +27,9 @@ CREATE TABLE rhnActionPlaybook
     test_mode           CHAR(1) DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_action_playbook_testmode_ck
                                 CHECK (test_mode IN ('Y', 'N')),
+    flush_cache         CHAR(1) DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_action_playbook_flushcache_ck
+                                CHECK (flush_cache IN ('Y', 'N')),
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ

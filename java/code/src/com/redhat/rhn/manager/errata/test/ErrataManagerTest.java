@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -137,7 +137,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
     }
 
-    private void searchByPackagesIdsHelper(Optional<Channel> channel, Function<List, List<ErrataOverview>> errataSearchFn) throws Exception {
+    private void searchByPackagesIdsHelper(Optional<Channel> channel,
+                                           Function<List, List<ErrataOverview>> errataSearchFn) throws Exception {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
@@ -473,7 +474,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
@@ -1120,7 +1121,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
@@ -1223,7 +1224,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)),with(any(Boolean.class)));
+            allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
@@ -1350,7 +1351,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
         assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
-        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        assertTrue("server 1 has been added to the chain",
+                actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
             .map(e -> e.getAction())
@@ -1361,10 +1363,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
         assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
-        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
+        assertTrue("server 2 has been added to the chain",
+                actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
         assertEquals("action chain actually has 2 entries", 2, actionChain.getEntries().size());
-        assertEquals("action chain points to 2 actions only", 2, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
-        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        assertEquals("action chain points to 2 actions only", 2,
+                actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+        assertEquals("action chain points to 2 servers", 2,
+                actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
             .map(e -> e.getAction())
@@ -1453,7 +1458,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
         assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
-        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        assertTrue("server 1 has been added to the chain",
+                actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
             .map(e -> e.getAction())
@@ -1464,10 +1470,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
         assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
-        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
+        assertTrue("server 2 has been added to the chain",
+                actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
         assertEquals("action chain actually has 4 entries", 4, actionChain.getEntries().size());
-        assertEquals("action chain points to 4 actions", 4, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
-        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        assertEquals("action chain points to 4 actions", 4,
+                actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+        assertEquals("action chain points to 2 servers", 2,
+                actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
             .map(e -> e.getAction())

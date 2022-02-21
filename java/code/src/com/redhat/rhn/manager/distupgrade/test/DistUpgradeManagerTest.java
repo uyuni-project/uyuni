@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2013 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -35,9 +35,7 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
@@ -65,7 +63,14 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.
@@ -196,8 +201,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
-        SUSEProductExtension e = new SUSEProductExtension(sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
+        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonProduct, sourceBaseChannel, user);
+        SUSEProductExtension e = new SUSEProductExtension(
+                sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
         TestUtils.saveAndReload(e);
 
         sourceAddons.add(sourceAddonProduct);
@@ -236,10 +243,13 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
+        Channel targetAddonChannel =
+                SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
-        SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
-        SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        SUSEProductExtension e2 = new SUSEProductExtension(
+                sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(
+                targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
         TestUtils.saveAndReload(e2);
         TestUtils.saveAndReload(e3);
 
@@ -272,9 +282,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                Optional.of(sourceProducts), arch, user);
 
-        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -315,8 +327,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
-        SUSEProductExtension e = new SUSEProductExtension(sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
+        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonProduct, sourceBaseChannel, user);
+        SUSEProductExtension e = new SUSEProductExtension(
+                sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
         TestUtils.saveAndReload(e);
 
         sourceAddons.add(sourceAddonProduct);
@@ -353,10 +367,13 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
+        Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                targetAddonProduct, targetBaseChannel, user);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
-        SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
-        SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        SUSEProductExtension e2 = new SUSEProductExtension(
+                sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(
+                targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
         TestUtils.saveAndReload(e2);
         TestUtils.saveAndReload(e3);
 
@@ -387,9 +404,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets =
+                DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
-        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -421,9 +440,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
+        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonProduct, sourceBaseChannel, user);
         sourceChildChannel.setLabel("sourceChildChannel");
-        SUSEProductExtension e = new SUSEProductExtension(sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e = new SUSEProductExtension(
+                sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
         e = TestUtils.saveAndReload(e);
 
         sourceAddons.add(sourceAddonProduct);
@@ -467,8 +488,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         /* No Synced Channel for the target addon product !*/
 
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
-        SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
-        SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        SUSEProductExtension e2 = new SUSEProductExtension(
+                sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(
+                targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
         e2 = TestUtils.saveAndReload(e2);
         e3 = TestUtils.saveAndReload(e3);
 
@@ -501,9 +524,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets =
+                DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
-        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -760,8 +785,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         List<SUSEProduct> slesSP1Addons = new ArrayList<>();
         SUSEProduct ltssSP1AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel ltssSP1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP1AddonProduct, slesSP1BaseChannel, user);
-        SUSEProductExtension e = new SUSEProductExtension(slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
+        Channel ltssSP1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                ltssSP1AddonProduct, slesSP1BaseChannel, user);
+        SUSEProductExtension e = new SUSEProductExtension(
+                slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
         TestUtils.saveAndReload(e);
 
         slesSP1Addons.add(ltssSP1AddonProduct);
@@ -814,22 +841,26 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Verify that target products are returned correctly
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+        List<SUSEProductSet> targetProductSets =
+                DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
         Set<String> msg = new HashSet<String>();
-        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.of(msg));
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.of(msg));
 
         assertNotNull(targetProductSets);
         assertEquals(0, targetProductSets.size());
-        assert(msg.contains(ltssSP1AddonProduct.getFriendlyName()));
+        assert msg.contains(ltssSP1AddonProduct.getFriendlyName());
 
 
         // Setup target ltss addon product + upgrade path
         SUSEProduct ltssSP2AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel ltssSP2AddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP2AddonProduct, slesSP2BaseChannel, user);
+        Channel ltssSP2AddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                ltssSP2AddonProduct, slesSP2BaseChannel, user);
 
         ltssSP1AddonProduct.setUpgrades(Collections.singleton(ltssSP2AddonProduct));
-        SUSEProductExtension e3 = new SUSEProductExtension(slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(
+                slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);
         TestUtils.saveAndReload(e3);
 
         SCCRepository ltssSP2SCCRepository = SUSEProductTestUtils.createSCCRepository();
@@ -847,7 +878,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
-        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         // now the migration should be possible
         assertNotNull(targetProductSets);

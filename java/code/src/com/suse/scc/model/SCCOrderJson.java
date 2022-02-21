@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +17,8 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
@@ -81,17 +83,14 @@ public class DebReleaseWriter {
                     .stream().map(name -> new File(pathPrefix + name))
                     .collect(Collectors.toList());
 
-            // assume we always use the "main" component for our repos
-            String filePrefix = "main/binary-" + toArchString(channel.getChannelArch()) + "/";
-
             writer.println("MD5Sum:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, file));
 
             writer.println("SHA1:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha1Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha1Hex, file));
 
             writer.println("SHA256:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, file));
         }
         catch (IOException e) {
             log.error("Could not generate Release file for channel " + channel.getLabel(), e);
@@ -99,7 +98,10 @@ public class DebReleaseWriter {
     }
 
     private String toArchString(ChannelArch channelArch) {
-        return channelArch.getLabel().replaceAll("channel-", "").replaceAll("-deb", "");
+        return (String)channelArch.getCompatiblePackageArches().stream().
+               map(a -> ((PackageArch)a).getLabel().replaceAll("-deb", "")).
+               filter(a -> !("all".equals(a) || "src".equals(a))).
+               sorted().collect(Collectors.joining(" "));
     }
 
     @FunctionalInterface
@@ -107,9 +109,9 @@ public class DebReleaseWriter {
         String apply(InputStream input) throws IOException;
     }
 
-    private void appendSum(PrintWriter writer, ChecksumFunction checksum, String prefix, File file) {
+    private void appendSum(PrintWriter writer, ChecksumFunction checksum, File file) {
         try (FileInputStream pkgIn = new FileInputStream(file)) {
-            writer.println(" " + checksum.apply(pkgIn) + " " + file.length() + " " + prefix + file.getName());
+            writer.println(" " + checksum.apply(pkgIn) + " " + file.length() + " " + file.getName());
         }
         catch (IOException e) {
             log.error("Could not compute checksum for " + file.getName());

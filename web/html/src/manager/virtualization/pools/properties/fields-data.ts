@@ -219,9 +219,9 @@ export function computeSourceAdapterSelection(model: any) {
   const adapter_type = model.source_adapter_type || "scsi_host";
   const selection_types = Object.keys(getValue("scsi", `source_adapter.${adapter_type}.selection`, {}));
   const possible_selections = selection_types
-    .filter(selection => {
+    .filter((selection) => {
       const fields = getValue("scsi", `source_adapter.${adapter_type}.${selection}`, []);
-      return fields.some(field => {
+      return fields.some((field) => {
         // CamelCase to get the property name
         const name = field
           .split("_")
@@ -231,7 +231,7 @@ export function computeSourceAdapterSelection(model: any) {
         return model[property_name] != null;
       });
     })
-    .filter(selection => selection !== "automatic");
+    .filter((selection) => selection !== "automatic");
 
   return possible_selections.length > 0 ? possible_selections[0] : undefined;
 }

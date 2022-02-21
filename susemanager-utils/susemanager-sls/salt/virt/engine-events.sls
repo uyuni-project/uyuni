@@ -1,5 +1,6 @@
 {% if pillar['virt_entitled'] %}
-/etc/salt/minion.d/libvirt-events.conf:
+{% set minion_config_dir = salt["config.get"]("config_dir") %}
+{{ minion_config_dir }}/minion.d/libvirt-events.conf:
   file.managed:
     - contents: |
         engines:
@@ -10,7 +11,7 @@
 
 {% else %}
 
-/etc/salt/minion.d/libvirt-events.conf:
+{{ minion_config_dir }}/minion.d/libvirt-events.conf:
   file.absent
 
 {% endif %}

@@ -23,7 +23,7 @@
 %global __python /usr/bin/python3
 %endif
 
-%if !(0%{?rhel} >= 8)
+%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
 %global build_py2   1
 %endif
 
@@ -80,7 +80,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.3.1
+Version:        4.3.6
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
@@ -275,6 +275,7 @@ Requires:       python3-dbus
 Requires:       python3-gobject-base
 %endif
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 
 %ifnarch s390 s390x
@@ -677,7 +678,9 @@ rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
 %endif
 
 %if 0%{?suse_version}
+%if 0%{?build_py2}
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
@@ -750,9 +753,6 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhn-profile-sync
 
 %ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
-
-#public keys and certificates
-%{_datadir}/rhn/RHNS-CA-CERT
 
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 %{_presetdir}/50-spacewalk-client.preset

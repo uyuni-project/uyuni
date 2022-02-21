@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
+
 import com.suse.manager.webui.utils.gson.StateSourceDto;
 
 import java.util.HashSet;
@@ -48,7 +49,7 @@ public class StateSourceService {
         Set<String> processedFormulas = new HashSet<>();
 
         // Index formulas for anchors
-        List<String> activeFormulas = FormulaFactory.getCombinedFormulasByServerId(minion.getId());
+        List<String> activeFormulas = FormulaFactory.getCombinedFormulasByServer(minion);
         Map<String, Integer> formulaIndex = IntStream.range(0, activeFormulas.size()).boxed()
                 .collect(Collectors.toMap(activeFormulas::get, i -> i));
 
@@ -58,7 +59,7 @@ public class StateSourceService {
 
         // System formulas
         stateOrigins = Stream.concat(stateOrigins, getFormulaSources(formulaIndex,
-                FormulaFactory.getFormulasByMinionId(minion.getMinionId()), minion, processedFormulas));
+                FormulaFactory.getFormulasByMinion(minion), minion, processedFormulas));
 
         // Group states
         stateOrigins = Stream.concat(stateOrigins, minion.getGroups().stream()
@@ -68,7 +69,7 @@ public class StateSourceService {
         // Group formulas
         stateOrigins = Stream.concat(stateOrigins, minion.getGroups().stream()
                 .flatMap(g -> getFormulaSources(formulaIndex,
-                        FormulaFactory.getFormulasByGroupId(g.getId()), g, processedFormulas)));
+                        FormulaFactory.getFormulasByGroup(g), g, processedFormulas)));
 
         // Org states
         stateOrigins = Stream.concat(stateOrigins, StateFactory.latestConfigChannels(minion.getOrg())

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -143,7 +143,7 @@ public class RepomdIndexWriter {
             handler.startElement("data", attr);
 
             attr.clear();
-            attr.addAttribute("href", "repodata/" + location);
+            attr.addAttribute("href", "repodata/" + data.getChecksum() + "-" + location);
             handler.startElement("location", attr);
             handler.endElement("location");
 

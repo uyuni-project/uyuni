@@ -30,7 +30,7 @@ export class SearchField extends React.Component<SearchFieldProps> {
         value={props.criteria || ""}
         placeholder={props.placeholder}
         type="text"
-        onChange={e => props.onSearch?.(e.target.value)}
+        onChange={(e) => props.onSearch?.(e.target.value)}
         name={props.name}
       />
     );

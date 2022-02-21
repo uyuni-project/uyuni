@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,7 +56,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -70,13 +69,13 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -86,11 +85,13 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.results.Result;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import com.suse.salt.netapi.datatypes.target.Target;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -118,6 +119,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
     private SystemEntitlementManager systemEntitlementManager;
+    private ServerGroupManager serverGroupManager;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -127,23 +129,26 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         VirtManager virtManager = new TestVirtManager() {
             @Override
-            public void updateLibvirtEngine(MinionServer minion) {
+            public void updateLibvirtEngine(MinionServer minionIn) {
             }
         };
         SaltService saltService = new SaltService() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
-                return Optional.of(new JsonObject());
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
+                return Optional.of(Result.success(new JsonObject()));
+            }
+
+            @Override
+            public void refreshPillar(MinionList minionList) {
             }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         saltServerActionService = createSaltServerActionService(saltService, saltService);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltService);
+        serverGroupManager = new ServerGroupManager(saltService);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltService, virtManager, monitoringManager, serverGroupManager)
         );
 
         taskomaticMock = mock(TaskomaticApi.class);
@@ -151,24 +156,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager
-        );
-        SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, clusterManager,
-                formulaManager, new SaltKeyUtils(saltApi));
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
+        SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
         service.setSkipCommandScriptPerms(true);
         return service;
     }
 
     public void testPackageUpdate() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         List<MinionServer> mins = new ArrayList<>();
-        mins.add(minion);
+        mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
@@ -196,28 +193,29 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(minion, action);
+        ActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction, minionSummaries);
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(
+                updateAction, minionSummaries);
         assertEquals(1, result.values().size());
         MinionSummary minionSummary = result.values().iterator().next().iterator().next();
-        assertEquals(new MinionSummary(minion), minionSummary);
+        assertEquals(new MinionSummary(testMinionServer), minionSummary);
     }
 
     public void testRetractedPackageInstall() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         List<MinionServer> mins = new ArrayList<>();
-        mins.add(minion);
+        mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
-        SystemManager.subscribeServerToChannel(user, minion, channel);
+        SystemManager.subscribeServerToChannel(user, testMinionServer, channel);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
         Errata retracted = ErrataFactoryTest.createTestErrata(null);
         retracted.addChannel(channel);
@@ -243,13 +241,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(minion, action);
+        ActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction, minionSummaries);
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(
+                updateAction, minionSummaries);
         assertEquals(1, result.values().size());
         List<MinionSummary> summaries = result.values().iterator().next();
         assertTrue(summaries.isEmpty());
@@ -258,10 +257,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testPackageRemoveDebian() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         List<MinionServer> mins = new ArrayList<>();
-        mins.add(minion);
+        mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
@@ -279,7 +278,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(minion, action);
+        ActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), Collections.singletonList(pkgMap));
         TestUtils.flushAndEvict(action);
@@ -301,10 +300,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testPackageUpdateDebian() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         List<MinionServer> mins = new ArrayList<>();
-        mins.add(minion);
+        mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
@@ -332,7 +331,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(minion, action);
+        ActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
@@ -397,7 +396,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testVirtActions() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
+                user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
         List<ActionType> actionTypes = Arrays.asList(ActionFactory.TYPE_VIRTUALIZATION_DELETE,
@@ -421,7 +421,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testVirtForceoff() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
+                user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
@@ -436,7 +437,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testVirtReset() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
+                user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
@@ -455,7 +457,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @SuppressWarnings("unchecked")
-    private void assertStateApplyWithPillar(String expectedState, String pillarEntry, Object pillarValue, LocalCall<?> call) {
+    private void assertStateApplyWithPillar(String expectedState, String pillarEntry,
+                                            Object pillarValue, LocalCall<?> call) {
         assertEquals("state", call.getModuleName());
         assertEquals("apply", call.getFunctionName());
         Map<String, Object> kwargs = ((Map<String, Object>)call.getPayload().get("kwarg"));
@@ -468,42 +471,41 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager
-        );
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
 
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
             @Override
-            public Map<MinionSummary, Integer> createActionChainSLSFiles(ActionChain actionChain, MinionSummary minion,
-                    List<SaltState> states, Optional<String> extraFileRefs) {
+            public Map<MinionSummary, Integer> createActionChainSLSFiles(ActionChain actionChain,
+                        MinionSummary minionServer, List<SaltState> states, Optional<String> extraFileRefs) {
                 assertEquals(3, states.size());
                 SaltModuleRun scriptRun = (SaltModuleRun)states.get(0);
                 SaltSystemReboot reboot = (SaltSystemReboot)states.get(1);
                 SaltModuleRun highstate = (SaltModuleRun)states.get(2);
 
                 long scriptActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                        .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
+                                ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
                 long rebootActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
+                        .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
+                                ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
                 long highstateActionId = actionChain.getEntries().stream()
-                        .filter(ace -> ace.getServerId().equals(minion.getServerId()) && ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                        .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
+                                ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
                         .map(ace -> ace.getActionId())
                         .findFirst().get();
-                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + scriptActionId,
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
+                                "_action_" + scriptActionId,
                         scriptRun.getId());
-                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + rebootActionId,
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
+                                "_action_" + rebootActionId,
                         reboot.getId());
-                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + highstateActionId,
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
+                                "_action_" + highstateActionId,
                         highstate.getId());
 
                 assertEquals(true, scriptRun.getKwargs().get("queue"));
@@ -567,8 +569,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionManager.createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels",
-                Date.from(now.toInstant()));
+        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionManager.createAction(
+                user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels", Date.from(now.toInstant()));
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
@@ -587,7 +589,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(1, calls.size());
 
-        Map<String, Object> pillar = (Map<String, Object>)((Map<String, Object>)calls.keySet().stream().findFirst().get().getPayload().get("kwarg")).get("pillar");
+        Map<String, Object> pillar = (Map<String, Object>)((Map<String, Object>)calls.keySet().stream()
+                .findFirst()
+                .get().getPayload().get("kwarg")).get("pillar");
         assertEquals("mgr_channels_new", pillar.get("_mgr_channels_items_name"));
         Map<String, Object> channels = (Map<String, Object>)pillar.get("mgr_channels_new");
         assertEquals(3, channels.size());
@@ -606,7 +610,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 .allMatch(token ->
                         token.getStart().toInstant().isAfter(now.toInstant()) &&
                         token.getStart().toInstant().isBefore(now.toInstant().plus(10, ChronoUnit.SECONDS))));
-        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> !token.getValid()));
+        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> token.getValid()));
         assertTokenExists(base, action);
         assertTokenExists(ch1, action);
         assertTokenExists(ch2, action);
@@ -626,7 +630,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private SaltServerActionService countSaltActionCalls(AtomicInteger counter) {
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter.incrementAndGet();
                 throw new RuntimeException();
             }
@@ -643,7 +647,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testSkipActionComplex() throws Exception {
         AtomicInteger counter = new AtomicInteger();
-        SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
+        SaltServerActionService testService = countSaltActionCalls(counter);
         successWorker();
 
         // prerequisite is still queued
@@ -655,7 +659,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         // both status and remaining tries should remain unchanged
         assertEquals(STATUS_QUEUED, serverAction.getStatus());
@@ -664,18 +668,18 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         AtomicInteger counter2 = new AtomicInteger();
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter2.incrementAndGet();
-                return Optional.of(new JsonObject());
+                return Optional.of(Result.success(new JsonObject()));
             }
         };
-        saltServerActionService = createSaltServerActionService(new TestSystemQuery(), saltApi);
+        testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
-        saltServerActionService.executeSSHAction(prereq, minion);
+        testService.executeSSHAction(prereq, minion);
         assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
 
         // 2nd try
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
         assertEquals(STATUS_COMPLETED, serverAction.getStatus());
 
         assertEquals(0, counter.get());
@@ -690,11 +694,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testDontExecuteCompletedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
-        SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
+        SaltServerActionService testService = countSaltActionCalls(counter);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_COMPLETED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         assertEquals(STATUS_COMPLETED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
@@ -731,11 +735,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testDontExecuteFailedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
-        SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
+        SaltServerActionService testService = countSaltActionCalls(counter);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_FAILED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
@@ -750,7 +754,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testDontExecuteActionWhenPrerequisiteFailed() throws Exception {
         AtomicInteger counter = new AtomicInteger();
-        SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
+        SaltServerActionService testService = countSaltActionCalls(counter);
 
         // prerequisite failed
         Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
@@ -760,7 +764,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals("Prerequisite failed.", serverAction.getResultMsg());
@@ -801,16 +805,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.empty();
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(new TestSystemQuery(), saltApi);
+        SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals("Minion is down or could not be contacted.", serverAction.getResultMsg());
@@ -827,16 +831,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 throw new RuntimeException();
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(new TestSystemQuery(), saltApi);
+        SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
         try {
-            saltServerActionService.executeSSHAction(action, minion);
-        } catch (RuntimeException e) {
+            testService.executeSSHAction(action, minion);
+        }
+        catch (RuntimeException e) {
             fail("Runtime exception should not have been thrown.");
         }
 
@@ -855,16 +860,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
         SaltApi saltApi = new TestSaltApi() {
             @Override
-            public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
-                return Optional.of(new JsonObject());
+            public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
+                return Optional.of(Result.success(new JsonObject()));
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(new TestSystemQuery(), saltApi);
+        SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
         Action action = createRebootAction(new Date(1L));
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         assertEquals(STATUS_PICKED_UP, serverAction.getStatus());
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
@@ -885,7 +890,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testSkipActionWhenPrerequisiteQueued() throws Exception {
         AtomicInteger counter = new AtomicInteger();
-        SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
+        SaltServerActionService testService = countSaltActionCalls(counter);
         successWorker();
 
         // prerequisite is still queued
@@ -898,7 +903,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
-        saltServerActionService.executeSSHAction(action, minion);
+        testService.executeSSHAction(action, minion);
 
         // both status and remaining tries should remain unchanged
         assertEquals(STATUS_QUEUED, serverAction.getStatus());
@@ -907,29 +912,30 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testExectueSSHAction() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        createChildServerAction(action, STATUS_QUEUED, sshMinion,5L);
-        createChildServerAction(action, STATUS_QUEUED, minion,5L);
+        createChildServerAction(action, STATUS_QUEUED, sshMinion, 5L);
+        createChildServerAction(action, STATUS_QUEUED, testMinionServer, 5L);
         HibernateFactory.getSession().flush();
 
         SaltService saltServiceMock = mock(SaltService.class);
-        SaltServerActionService saltServerActionService = createSaltServerActionService(saltServiceMock, saltServiceMock);
-        saltServerActionService.setTaskomaticApi(taskomaticMock);
+        SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
+        testService.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion);
-            oneOf(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
+            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion, false);
+            oneOf(saltServiceMock).callAsync(
+                    with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
             LocalAsyncResult<?> result = new LocalAsyncResult() {
                 public List<String> getMinions() {
-                    return Arrays.asList(minion.getMinionId());
+                    return Arrays.asList(testMinionServer.getMinionId());
                 }
             };
             will(returnValue(Optional.of(result)));
         } });
 
-        saltServerActionService.execute(action, false, false, Optional.empty());
+        testService.execute(action, false, false, Optional.empty());
 
     }
 
@@ -946,10 +952,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private void successWorker() throws IOException {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi) {
             @Override
             public boolean shouldRefreshPackageList(String function,
                                                     Optional<JsonElement> callResult) {

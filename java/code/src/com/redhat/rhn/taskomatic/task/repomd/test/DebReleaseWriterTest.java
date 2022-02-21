@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -75,18 +75,18 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
         String rel = "Archive: " + channel.getLabel() + "\n" +
                 "Label: " + channel.getLabel() + "\n" +
                 "Suite: " + channel.getLabel() + "\n" +
-                "Architectures: ia64\n" +
+                "Architectures: i386 ia64\n" +
                 "Date: " + releaseDatetime + "\n" +
                 "Description: TestChannel description\n" +
                 "MD5Sum:\n" +
-                " d41d8cd98f00b204e9800998ecf8427e 0 main/binary-ia64/Packages\n" +
-                " 3970e82605c7d109bb348fc94e9eecc0 20 main/binary-ia64/Packages.gz\n" +
+                " d41d8cd98f00b204e9800998ecf8427e 0 Packages\n" +
+                " 3970e82605c7d109bb348fc94e9eecc0 20 Packages.gz\n" +
                 "SHA1:\n" +
-                " da39a3ee5e6b4b0d3255bfef95601890afd80709 0 main/binary-ia64/Packages\n" +
-                " e03849ea786b9f7b28a35c17949e85a93eb1cff1 20 main/binary-ia64/Packages.gz\n" +
+                " da39a3ee5e6b4b0d3255bfef95601890afd80709 0 Packages\n" +
+                " e03849ea786b9f7b28a35c17949e85a93eb1cff1 20 Packages.gz\n" +
                 "SHA256:\n" +
-                " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 main/binary-ia64/Packages\n" +
-                " f5d031af01f137ae07fa71720fab94d16cc8a2a59868766002918b7c240f3967 20 main/binary-ia64/Packages.gz\n";
+                " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 Packages\n" +
+                " f5d031af01f137ae07fa71720fab94d16cc8a2a59868766002918b7c240f3967 20 Packages.gz\n";
         assertEquals(rel, releaseContent);
     }
 

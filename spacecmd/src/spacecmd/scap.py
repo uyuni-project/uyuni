@@ -86,7 +86,8 @@ def do_scap_listxccdfscans(self, args):
         scan_list = self.client.system.scap.listXccdfScans(self.session, system_id)
 
         for s in scan_list:
-            print(_('XID: %d Profile: %s Path: (%s) Completed: %s') % (s['xid'], s['profile'], s['path'], s['completed']))
+            print(_('XID: %d Profile: %s Path: (%s) Completed: %s')
+                  % (s['xid'], s['profile'], s['path'], s['completed']))
 
     return 0
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2019 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,10 +17,11 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
+import java.util.Optional;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.Optional;
 
 /**
  * This filter must be applied on {@link Module} objects. In order to apply the filtering on

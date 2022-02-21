@@ -142,6 +142,8 @@ for PACKAGE in ${PACKAGES}; do
     echo "ERROR: ${OSC_PROJECT_WC}/${PACKAGE} does not exist! Do you need to checkout the package?"
     exit 1
   fi
+  # Remove the package content, not the metadata
+  rm ${OSC_PROJECT_WC}/${PACKAGE}/*
   cp /tmp/push-packages-to-obs/SRPMS/${PACKAGE}/* ${OSC_PROJECT_WC}/${PACKAGE}
   cd ${OSC_PROJECT_WC}/${PACKAGE}
   set +e
@@ -174,7 +176,7 @@ else
   for PACKAGE in ${PACKAGES}; do
     echo "Reverting ${PACKAGE}..."
     cd ${OSC_PROJECT_WC}/${PACKAGE}
-    ${OSC} revert * || true # Tolerate errors, in case there are untracked files
+    ${OSC} revert . || true # Tolerate errors, in case there are untracked files
   done
 fi
 exit 0 

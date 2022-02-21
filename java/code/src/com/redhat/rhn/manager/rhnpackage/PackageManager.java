@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -419,6 +419,17 @@ public class PackageManager extends BaseManager {
     }
 
     /**
+     * Find packages by using the id column of rhnPackage
+     * @param ids List of package id
+     * @param user The user performing the lookup
+     * @return List of Package objects
+     */
+    public static List<Package> lookupByIdAndUser(List<Long> ids, User user) {
+        return PackageFactory.lookupByIdAndUser(ids, user);
+    }
+
+
+    /**
      * Returns a dataResult containing all of the packages available to an
      * errata. Picks the right query depending on whether or not the errata
      * is published.
@@ -688,7 +699,7 @@ public class PackageManager extends BaseManager {
      * @param sid Server ID.
      * @param packages List of packages to unlock.
      */
-    public static void unlockPackages(Long sid, List<Package> packages) {
+    public static void unlockPackages(Long sid, Set<Package> packages) {
         for (Package pkg : packages) {
             Map params = new HashMap();
             params.put("sid", sid);
@@ -771,15 +782,12 @@ public class PackageManager extends BaseManager {
     /**
      * Sets the pending status on locked packages. If parameter "pendingStatus" is null,
      * the packages in the set are considered locked.
-     * @param pkgs List of packages.
+     * @param pkgs Set of packages.
      * @param pendingStatus Status for all of them.
      */
-    public static void setPendingStatusOnLockedPackages(List<Package> pkgs,
+    public static void setPendingStatusOnLockedPackages(Set<Package> pkgs,
                                                         String pendingStatus) {
-        for (int i = 0; i < pkgs.size(); i++) {
-            PackageManager.setPendingStatusOnLockedPackage(pkgs.get(i).getId(),
-                                                           pendingStatus);
-        }
+        pkgs.forEach(x -> PackageManager.setPendingStatusOnLockedPackage(x.getId(), pendingStatus));
     }
 
     /**

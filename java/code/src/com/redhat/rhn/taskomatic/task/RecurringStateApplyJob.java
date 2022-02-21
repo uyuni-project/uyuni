@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +21,7 @@ import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -33,6 +34,11 @@ import java.util.Optional;
 public class RecurringStateApplyJob extends RhnJavaJob {
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
+    @Override
+    public String getConfigNamespace() {
+        return "recurring_state_apply";
+    }
 
     /**
      * Schedule highstate application.

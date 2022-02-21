@@ -19,7 +19,7 @@ const Group = (props: Props) => {
         visible ? "formula-content-section-open group-heading" : "formula-content-section-closed group-heading"
       }
     >
-      <SectionToggle setVisible={() => setVisible(!visible)} isVisible={index => visible}>
+      <SectionToggle setVisible={() => setVisible(!visible)} isVisible={(index) => visible}>
         <h4 id={props.id} key={props.id}>
           {props.header}
         </h4>

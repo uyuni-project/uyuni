@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,6 +25,11 @@ import java.util.List;
  * SatSyncTask
  */
 public class SatSyncTask extends RhnJavaJob {
+
+    @Override
+    public String getConfigNamespace() {
+        return "satsync";
+    }
 
     /**
      * {@inheritDoc}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,22 +14,22 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.audit.ScapManager;
+import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
+import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
+import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.scap.ScapActionDetails;
-import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.org.OrgConfig;
-import com.redhat.rhn.manager.audit.ScapManager;
-import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
-import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
-import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 
 /**
  * XccdfTestResult - Class representation of the table rhnXccdfTestResult.

@@ -27,7 +27,7 @@ AutoReqProv:    no
 %global debug_package %{nil}
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.3.1
+Version:        4.3.5
 Release:        1
 
 Summary:        Node.js software used by SUSE Manager at build time

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,11 +26,11 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Bug;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -51,8 +51,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -319,8 +317,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         systems = handler.listAffectedSystems(admin, vendorErrata.getAdvisory());
         assertNotNull(systems);
         assertEquals(systems.length, 2);
-        assertTrue(Arrays.stream(systems).allMatch(sys -> ((Map)sys).get("id").equals(server1.getId())
-                || ((Map)sys).get("id").equals(server2.getId())));
+        assertTrue(Arrays.stream(systems).allMatch(sys -> ((Map)sys).get("id").equals(server1.getId()) ||
+                ((Map)sys).get("id").equals(server2.getId())));
     }
 
     public void testBugzillaFixes() throws Exception {
@@ -418,7 +416,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Set<String> vendorKeywords = vendorErrata.getKeywords().stream()
                 .map(Keyword::getKeyword).collect(Collectors.toSet());
 
-        Set<String> allKeywords =new HashSet<String>();
+        Set<String> allKeywords = new HashSet<String>();
         allKeywords.addAll(vendorKeywords);
         allKeywords.addAll(userKeywords);
 
@@ -531,8 +529,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(cves.size(), 2);
         assertTrue(cves.stream().allMatch(cve -> userErrata.getCves().stream()
-                .anyMatch(userCve -> cve.equals(userCve.getName()))
-                || vendorErrata.getCves().stream()
+                .anyMatch(userCve -> cve.equals(userCve.getName())) || vendorErrata.getCves().stream()
                 .anyMatch(vendorCve -> cve.equals(vendorCve.getName()))));
     }
 
@@ -582,8 +579,9 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(pkgs.size() == 2);
 
         assertEquals(pkgs.stream()
-                .filter(outerMap ->userStoredPackages.stream().anyMatch(usrPkg -> outerMap.get("id").equals(usrPkg.getId())
-                        || vendorStoredPackages.stream().anyMatch(vndrPkg -> outerMap.get("id").equals(vndrPkg.getId()))))
+                .filter(outerMap ->userStoredPackages.stream()
+                        .anyMatch(usrPkg -> outerMap.get("id").equals(usrPkg.getId()) || vendorStoredPackages.stream()
+                                .anyMatch(vndrPkg -> outerMap.get("id").equals(vndrPkg.getId()))))
                 .count(), 2);
     }
 
@@ -680,7 +678,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         channel.addPackage(chanPack);
 
-        Long orgId = admin.getOrg().getId();;
+        Long orgId = admin.getOrg().getId();
         if (vendor) {
             orgId = null;
         }
