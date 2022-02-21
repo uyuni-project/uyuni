@@ -23,7 +23,7 @@
 import sys
 import os
 from rhn.connections import idn_puny_to_unicode
-from rhn.i18n import bstr, sstr
+from rhn.stringutils import bstr, sstr
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)

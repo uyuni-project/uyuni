@@ -39,7 +39,7 @@ from optparse import Option
 from optparse import OptionParser
 
 from rhn import rpclib, SSL
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 try: # python2
     import xmlrpclib

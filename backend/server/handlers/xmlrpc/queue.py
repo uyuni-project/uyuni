@@ -24,7 +24,7 @@ except ImportError:
     import xmlrpc.client as xmlrpclib
 
 from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 # Global modules
 from spacewalk.common import rhnFlags

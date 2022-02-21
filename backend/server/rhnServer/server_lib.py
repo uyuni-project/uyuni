@@ -28,7 +28,7 @@ from spacewalk.common.rhnException import rhnException
 from spacewalk.common.rhnConfig import CFG
 
 from spacewalk.server import rhnSQL
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 # Do not import server.apacheAuth in this module, or the secret generation
 # script will traceback - since it would try to import rhnSecret which doesn't

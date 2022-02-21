@@ -17,7 +17,7 @@ import os
 import sys
 import time
 import traceback
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 class Logger:
     debug_level = 1

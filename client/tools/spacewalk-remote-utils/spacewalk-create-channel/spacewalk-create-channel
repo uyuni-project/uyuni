@@ -22,7 +22,7 @@ from os import path
 from optparse import OptionParser
 from rhn.connections import idn_ascii_to_puny
 from socket import gethostname
-from rhn.i18n import ustr
+from rhn.stringutils import ustr
 
 DATA_DIR = "./data/"
 DATA_DIR_RHN = "/usr/share/rhn/channel-data/"

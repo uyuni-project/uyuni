@@ -28,7 +28,7 @@ except ImportError: # python3
 
 import inspect
 from config_common.rhn_log import log_debug
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 hashlib_has_usedforsecurity = False
 
