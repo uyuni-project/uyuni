@@ -57,6 +57,10 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
 
+%if 0%{?rhel}
+BuildRequires:  gettext
+%endif
+
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
 %else
