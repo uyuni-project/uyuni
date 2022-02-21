@@ -30,7 +30,7 @@ public class WriteMode extends BaseMode {
      * @param session hibernate database session to be used
      * @param parsedMode the mode
      */
-    public WriteMode(Session session, ParsedMode parsedMode) {
+    /*package*/ WriteMode(Session session, ParsedMode parsedMode) {
         super(session, parsedMode);
     }
 

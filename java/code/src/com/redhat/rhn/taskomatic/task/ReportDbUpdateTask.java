@@ -15,9 +15,8 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.ParsedMode;
-import com.redhat.rhn.common.db.datasource.ParsedQuery;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
@@ -28,7 +27,6 @@ import org.hibernate.Session;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,146 +38,53 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
     private static final int BATCH_SIZE = 100;
 
+    @SuppressWarnings("unchecked")
     private <T> Stream<DataResult<T>> batchStream(SelectMode m, int batchSize, int initialOffset) {
         return Stream.iterate(initialOffset, i -> i + batchSize)
-                .map(offset -> (DataResult<T>)m.execute(Map.of(
-                        "offset", offset,
-                        "limit", batchSize
-                )))
+                .map(offset -> (DataResult<T>) m.execute(Map.of("offset", offset, "limit", batchSize)))
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
-    private WriteMode generateDelete(String table, Session session) {
-        return new WriteMode(session, new ParsedMode() {
-            @Override
-            public String getName() {
-                return "generated.delete." + table;
-            }
+    private WriteMode generateDelete(Session session, String table) {
+        final String sqlStatement = "DELETE FROM " + table + " WHERE mgm_id = :mgm_id";
+        final List<String> params = List.of("mgm_id");
 
-            @Override
-            public ModeType getType() {
-                return ModeType.WRITE;
-            }
-
-            @Override
-            public ParsedQuery getParsedQuery() {
-                return new ParsedQuery() {
-                    @Override
-                    public String getName() {
-                        return "";
-                    }
-
-                    @Override
-                    public String getAlias() {
-                        return "";
-                    }
-
-                    @Override
-                    public String getSqlStatement() {
-                        return "DELETE FROM " + table + " WHERE mgm_id = :mgm_id";
-                    }
-
-                    @Override
-                    public String getElaboratorJoinColumn() {
-                        return "";
-                    }
-
-                    @Override
-                    public List<String> getParameterList() {
-                        return List.of("mgm_id");
-                    }
-
-                    @Override
-                    public boolean isMultiple() {
-                        return false;
-                    }
-                };
-            }
-
-            @Override
-            public String getClassname() {
-                return null;
-            }
-
-            @Override
-            public List<ParsedQuery> getElaborators() {
-                return null;
-            }
-        });
+        return new GeneratedWriteMode("delete." + table, session, sqlStatement, params);
     }
 
-    private WriteMode generateInsert(long mgmId, String table, Set<String> params, Session session) {
-        return new WriteMode(session, new ParsedMode() {
-            @Override
-            public String getName() {
-                return "generated.insert." + table;
-            }
+    private WriteMode generateInsert(Session session, String table, long mgmId, Set<String> params) {
+        final String sqlStatement = String.format(
+            "INSERT INTO %s (mgm_id, synced_date, %s) VALUES (%s, current_timestamp, %s)",
+            table,
+            String.join(",", params),
+            mgmId,
+            params.stream().map(p -> ":" + p).collect(Collectors.joining(","))
+        );
 
-            @Override
-            public ModeType getType() {
-                return ModeType.WRITE;
-            }
-
-            @Override
-            public ParsedQuery getParsedQuery() {
-                return new ParsedQuery() {
-                    @Override
-                    public String getName() {
-                        return "";
-                    }
-
-                    @Override
-                    public String getAlias() {
-                        return "";
-                    }
-
-                    @Override
-                    public String getSqlStatement() {
-                        return String.format(
-                                "INSERT INTO %s (mgm_id, synced_date, %s) VALUES (%s, current_timestamp, %s)",
-                                table,
-                                params.stream().collect(Collectors.joining(",")),
-                                mgmId,
-                                params.stream().map(p -> ":" + p).collect(Collectors.joining(",")));
-                    }
-
-                    @Override
-                    public String getElaboratorJoinColumn() {
-                        return "";
-                    }
-
-                    @Override
-                    public List<String> getParameterList() {
-                        return new ArrayList<>(params);
-                    }
-
-                    @Override
-                    public boolean isMultiple() {
-                        return false;
-                    }
-                };
-            }
-
-            @Override
-            public String getClassname() {
-                return null;
-            }
-
-            @Override
-            public List<ParsedQuery> getElaborators() {
-                return null;
-            }
-        });
+        return new GeneratedWriteMode("insert." + table, session, sqlStatement, params);
     }
 
-    private void fillReportDbTable(Session session, String xmlQueryName, String queryMode, String tableName,
-                                   Set<String> columns, long mgmId) {
-        SelectMode query = ModeFactory.getMode(xmlQueryName, queryMode, Map.class);
-        WriteMode delete = generateDelete(tableName, session);
+    private void fillReportDbTable(Session session, String xmlName, String tableName, long mgmId) {
+        SelectMode query = ModeFactory.getMode(xmlName, tableName, Map.class);
+
+        // Remove all the existing data
+        WriteMode delete = generateDelete(session, tableName);
         delete.executeUpdate(Map.of("mgm_id", 1));
-        WriteMode insert = generateInsert(mgmId, tableName, columns, session);
-        this.<Map<String, Object>>batchStream(query, BATCH_SIZE, 0)
-                .forEach(insert::executeUpdates);
+
+        // Extract the first batch
+        @SuppressWarnings("unchecked")
+        DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", BATCH_SIZE));
+        if (!firstBatch.isEmpty()) {
+            // Generate the insert using the column name retrieved from the select
+            WriteMode insert = generateInsert(session, tableName, mgmId, firstBatch.get(0).keySet());
+            insert.executeUpdates(firstBatch);
+
+            // Iterate further if we can have additional rows
+            if (firstBatch.size() == BATCH_SIZE) {
+                this.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
+                    .forEach(batch -> insert.executeUpdates(batch));
+            }
+        }
     }
 
     @Override
@@ -187,57 +92,36 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
         long mgmId = 1;
-        //fillSystems(rh.getSession());
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", "System",
-            Set.of("system_id", "profile_name", "hostname", "minion_id",
-                "minion_os_family", "minion_kernel_live_version", "machine_id",
-                "registered_by", "registration_time", "last_checkin_time", "kernel_version",
-                "architecture", "organization", "hardware"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", "SystemHistory",
-            Set.of("history_id", "system_id", "event", "event_data", "event_time", "hostname"), mgmId);
 
-        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", "Channel",
-            Set.of("channel_id", "name", "label", "type", "arch", "summary", "description",
-                "parent_channel_label", "organization"), mgmId);
-        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", "Errata",
-            Set.of("errata_id", "advisory_name", "advisory_type", "advisory_status", "issue_date",
-                "update_date", "severity", "reboot_required", "affects_package_manager", "cve",
-                "synopsis", "organization"), mgmId);
-        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", "Package",
-            Set.of("package_id", "arch", "epoch", "installed_size", "name", "organization",
-                "package_size", "payload_size", "release", "type", "vendor", "version"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", "SystemAction",
-            Set.of("action_id", "system_id", "completion_time", "event", "event_data", "hostname", "pickup_time",
-                "status"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemChannel", "SystemChannel",
-            Set.of("channel_id", "system_id", "architecture_name", "description", "name", "parent_channel_id",
-                "parent_channel_name"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemConfigChannel", "SystemConfigChannel",
-            Set.of("config_channel_id", "system_id", "name", "position"), mgmId);
+        try {
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemChannel", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemConfigChannel", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetInterface", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV4", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV6", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroup", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemErrata", mgmId);
 
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", "SystemVirtualData",
-            Set.of("instance_id", "host_system_id", "virtual_system_id", "confirmed", "instance_type_name",
-                "memory_size", "name", "state_name", "uuid", "vcpus"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetInterface", "SystemNetInterface",
-            Set.of("system_id", "interface_id", "name", "hardware_addres", "module", "primary_interface"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV4", "SystemNetAddressV4",
-            Set.of("system_id", "interface_id", "address", "netmask", "broadcast"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV6", "SystemNetAddressV6",
-            Set.of("system_id", "interface_id", "scope", "address", "netmask"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", "SystemOutdated",
-            Set.of("system_id", "errata_out_of_date", "packages_out_of_date"), mgmId);
-        fillReportDbTable(rh.getSession(), "ChannelReport_queries", "SystemErrata", "SystemErrata",
-            Set.of("system_id", "errata_id", "advisory_name", "advisory_type", "hostname"), mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroup", "SystemGroup",
-            Set.of("system_id", "system_group_id", "current_members", "description", "name", "organization"),
-            mgmId);
-        fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", "SystemEntitlement",
-            Set.of("system_id", "system_group_id", "current_members", "description", "group_type",
-                "group_type_name", "name", "organization"), mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", mgmId);
 
-        rh.commitTransaction();
-        rh.closeSession();
-        rh.closeSessionFactory();
+            rh.commitTransaction();
+        }
+        catch (RuntimeException ex) {
+            log.warn("Unable to fill reporting db", ex);
+            rh.rollbackTransaction();
+        }
+        finally {
+            rh.closeSession();
+            rh.closeSessionFactory();
+        }
     }
 
     @Override

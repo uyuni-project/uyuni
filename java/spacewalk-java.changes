@@ -1,3 +1,4 @@
+- Improved task to update the reporting database
 - allow SCC to display the last check-in time for registered systems
 - generate the system ssh key when bootstrapping a salt-ssh client
   (bsc#1194909)
