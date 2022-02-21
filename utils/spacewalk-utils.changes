@@ -1,3 +1,5 @@
+  * Removed pylint according to Fedora packaging guidelines.
+
 -------------------------------------------------------------------
 Tue Jan 18 14:01:26 CET 2022 - jgonzalez@suse.com
 
