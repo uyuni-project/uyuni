@@ -19,7 +19,6 @@
 
 #!BuildIgnore:  udev-mini libudev-mini1
 %if 0%{?fedora} || 0%{?rhel} 
-%{!?pylint_check: %global pylint_check 1}
 %define apacheconfdir %{_sysconfdir}/httpd
 %else
 %define apacheconfdir %{_sysconfdir}/apache2
@@ -59,10 +58,6 @@ Requires:       rhnlib
 Requires:       libxslt
 Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
-%if 0%{?pylint_check}
-BuildRequires:  python3-rhn-client-tools
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  /usr/bin/docbook2man
 
 Obsoletes:      proxy-installer < 5.3.0
@@ -117,10 +112,6 @@ install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-acti
 install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
 %check
-%if 0%{?pylint_check}
-# check coding style
-spacewalk-python3-pylint .
-%endif
 
 %post
 %if 0%{?suse_version}
