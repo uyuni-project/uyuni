@@ -116,6 +116,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" product has been added
 
+@opensuse153arm_minion
+  Scenario: Add openSUSE 15.3 for ARM
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "openSUSE Leap 15.3 aarch64" as the filtered product description
+    And I select "openSUSE Leap 15.3 aarch64" as a product
+    Then I should see the "openSUSE Leap 15.3 aarch64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "openSUSE Leap 15.3 aarch64" product has been added
+
 @ceos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -189,6 +200,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
      And I wait until I see "Debian 11" product has been added
 
+@proxy
   Scenario: Add SUSE Manager Proxy 4.3 x86_64
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -199,6 +211,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
 
+@proxy
   Scenario: Add SUSE Manager Retail Branch Server 4.3 x86_64
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text

@@ -50,15 +50,3 @@ Feature: Add common channels and schedule their synchronization
 
   # No common channels for Ubuntu 20.04
 
-@opensuse153arm_minion
-  Scenario: Add common channels for openSUSE 15.3 ARM
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_3" with arch "aarch64"
-    And I follow the left menu "Software > Manage > Channels"
-    And I follow "openSUSE Leap 15.3 (aarch64)"
-    And I follow "Repositories" in the content area
-    And I select the "External - openSUSE Leap 15.3 (aarch64)" repo
-    And I click on "Save Repositories"
-    Then I should see a "repository information was successfully updated" text
-    When I follow "Sync"
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for openSUSE Leap 15.3 (aarch64)" text
