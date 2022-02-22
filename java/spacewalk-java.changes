@@ -1,3 +1,5 @@
+- add schedule_type=date to lock/unlock schedule page (bsc#1195271)
+
 -------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
 
