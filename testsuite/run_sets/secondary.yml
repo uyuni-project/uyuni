@@ -27,7 +27,7 @@
 - features/secondary/min_centos_remote-command.feature
 - features/secondary/min_centos_ssh.feature
 - features/secondary/trad_centos_client.feature
-- features/secondary/trad_centos_migrate_to_min.feature.feature
+- features/secondary/trad_centos_migrate_to_min.feature
 - features/secondary/min_ubuntu_openscap_audit.feature
 - features/secondary/min_ubuntu_remote-command.feature
 - features/secondary/min_ubuntu_ssh.feature
