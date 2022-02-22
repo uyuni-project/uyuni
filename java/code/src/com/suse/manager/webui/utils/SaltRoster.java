@@ -55,7 +55,7 @@ public class SaltRoster {
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<String> privKeyPath, Optional<String> privKeyPasswd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<List> sshOption, Optional<Integer> timeout,
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
             Optional<Map<String, Object>> minionOpts,
             Optional<String> sshPreflightScriptPath,
             Optional<List<Object>> sshPreflightScriptArgs) {
@@ -93,7 +93,7 @@ public class SaltRoster {
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<List> sshOption, Optional<Integer> timeout,
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
             Optional<Map<String, Object>> minionOpts) {
         addHost(host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding, sshOption, timeout,
                 minionOpts, Optional.empty(), Optional.empty());
