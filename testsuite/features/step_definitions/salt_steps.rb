@@ -172,26 +172,6 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click

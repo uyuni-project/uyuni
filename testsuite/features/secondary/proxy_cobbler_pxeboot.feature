@@ -94,7 +94,7 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Check connection from PXE boot minion to the proxy
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the PXE boot minion
     When I install the GPG key of the test packages repository on the PXE boot minion

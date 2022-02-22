@@ -566,6 +566,26 @@ Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
 end
 
+Then(/^I should see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
+end
+
+Then(/^I should see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
+end
+
 #
 # Test for text in a snippet textarea
 #
