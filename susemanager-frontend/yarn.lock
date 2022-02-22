@@ -2119,6 +2119,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.15.4":
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
+  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.8.7":
   version "7.9.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
@@ -2955,6 +2962,11 @@
     invariant "^2.2.3"
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
+
+"@seznam/compose-react-refs@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@seznam/compose-react-refs/-/compose-react-refs-1.0.6.tgz#6ec4e70bdd6e32f8e70b4100f27267cf306bd8df"
+  integrity sha512-izzOXQfeQLonzrIQb8u6LQ8dk+ymz3WXTIXjvOlTXHq6sbzROg3NWU+9TTAOpEoK9Bth24/6F/XrfHJ5yR5n6Q==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
@@ -4298,6 +4310,18 @@
   dependencies:
     "@typescript-eslint/types" "4.10.0"
     eslint-visitor-keys "^2.0.0"
+
+"@virtuoso.dev/react-urx@^0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@virtuoso.dev/react-urx/-/react-urx-0.2.12.tgz#6c75cdbea2503c129b34d1ce2ee8cd649503b47c"
+  integrity sha512-Lcrrmq/UztM+rgepAdThdIk8dL3LEi9o2NTkL6ZLKPrTGjr5tSmsauD30/O8yu7Q0ncDnptmMR3OObdvMGuEKQ==
+  dependencies:
+    "@virtuoso.dev/urx" "^0.2.12"
+
+"@virtuoso.dev/urx@^0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@virtuoso.dev/urx/-/urx-0.2.12.tgz#fa9bd1a2777cf70b19d4c9836b8d92b04f079c64"
+  integrity sha512-Q9nlRqYb5Uq4Ynu8cWPSJ7LxpuZsI+MZ09IJlDAAgwuNgfWRArpVRP0VN0coYgUo2fKMjhmV69MTqaUbIBhu/g==
 
 "@vue/compiler-core@3.0.11":
   version "3.0.11"
@@ -14092,6 +14116,11 @@ react-inspector@^4.0.0:
     is-dom "^1.0.9"
     prop-types "^15.6.1"
 
+react-is-mounted-hook@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-is-mounted-hook/-/react-is-mounted-hook-1.1.2.tgz#0e57d237c0ed60f6a8dc0520634608a80ae864ff"
+  integrity sha512-yjq3Tj34CiFcdVOS/h6JerWLOLdJqEGKMNpTHc4kWebzz2YtIpgqMRrqxdmQhewM1KJREojdAV2tsNvBsUWyhA==
+
 react-is@^16.7.0, react-is@^16.8.1:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
@@ -14142,6 +14171,16 @@ react-property@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-property/-/react-property-1.0.1.tgz#4ae4211557d0a0ae050a71aa8ad288c074bea4e6"
   integrity sha512-1tKOwxFn3dXVomH6pM9IkLkq2Y8oh+fh/lYW3MJ/B03URswUTqttgckOlbxY2XHF3vPG6uanSc4dVsLW/wk3wQ==
+
+react-select-async-paginate@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/react-select-async-paginate/-/react-select-async-paginate-0.6.0.tgz#48e8e20345fa4df2432d8b9d1fb2498edd5aa440"
+  integrity sha512-20k3NAy2C90j0gw7KDTPhMg2/U4Pe68HiHiGxxKdsyPUR0jGO/1O8WftpTlI7LFP5Ym9lJQ/DSeiJsOTSIuUeA==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+    "@seznam/compose-react-refs" "^1.0.6"
+    react-is-mounted-hook "^1.1.2"
+    sleep-promise "^9.1.0"
 
 react-select-event@^5.3.0:
   version "5.3.0"
@@ -14210,6 +14249,14 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.1:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-virtuoso@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-2.5.1.tgz#73d562ea1760eed6c39b6357873040beac37057a"
+  integrity sha512-qHNuUEeSoORN6mQq1nLtGfE82ctMCRg+WOdLCrF8loXNl0VCAV2zj5jxXVPWuUJWbkmjgKugBu3wNyFM6dy2NA==
+  dependencies:
+    "@virtuoso.dev/react-urx" "^0.2.12"
+    "@virtuoso.dev/urx" "^0.2.12"
 
 react@^16.14.0:
   version "16.14.0"
@@ -15336,6 +15383,11 @@ slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
+
+sleep-promise@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/sleep-promise/-/sleep-promise-9.1.0.tgz#101ebe65700bcd184709da95d960967b02b79d03"
+  integrity sha512-UHYzVpz9Xn8b+jikYSD6bqvf754xL2uBUzDFwiU6NcdZeifPr6UfgU43xpkPu67VMS88+TI2PSI7Eohgqf2fKA==
 
 slice-ansi@^4.0.0:
   version "4.0.0"

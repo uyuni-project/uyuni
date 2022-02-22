@@ -1,64 +1,154 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
-import Select from "react-select";
-import { useImmerReducer } from "use-immer";
+import debounce from "lodash/debounce";
+import xor from "lodash/xor";
 
-import { ChannelsTreeType } from "core/channels/api/use-channels-tree-api";
-import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
-import { UseChannelsType } from "core/channels/api/use-channels-tree-api";
-import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
-import { getSelectedChannelsIdsInGroup } from "core/channels/utils/channels-state.utils";
+import { ProjectSoftwareSourceType } from "manager/content-management/shared/type";
 
+import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
+
+import { Select } from "components/input/Select";
 import { Loading } from "components/utils/Loading";
+import { VirtualList } from "components/virtual-list";
 
+import BaseChannel from "./base-channel";
+import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-api";
+import ChannelsFilters from "./channels-filters";
+import { getInitialFiltersState } from "./channels-filters-state";
+import ChannelProcessor from "./channels-processor";
 import styles from "./channels-selection.css";
-import { ActionChannelsSelectionType, FilterType, StateChannelsSelectionType } from "./channels-selection.state";
-import {
-  getChannelsFiltersAvailableValues,
-  initialStateChannelsSelection,
-  reducerChannelsSelection,
-} from "./channels-selection.state";
-import { getVisibleChannels, isGroupVisible, orderBaseChannels } from "./channels-selection.utils";
-import GroupChannels from "./group-channels";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
-  initialSelectedIds: Array<number>;
-  onChange: Function;
+  initialSelectedSources: ProjectSoftwareSourceType[];
+  // For some reason, the wrapper expects labels, not channels or ids, but that's fine by us
+  onChange: (channelLabels: string[]) => void;
 };
 
 const ChannelsSelection = (props: PropsType) => {
-  const { fetchChannelsTree, isChannelsTreeLoaded, channelsTree }: UseChannelsType = useChannelsTreeApi();
-  const { fetchMandatoryChannelsByChannelIds, isDependencyDataLoaded, requiredChannelsResult } =
-    useMandatoryChannelsApi();
-  const [state, dispatchChannelsSelection]: [StateChannelsSelectionType, (arg0: ActionChannelsSelectionType) => void] =
-    useImmerReducer(
-      (draft, action) => reducerChannelsSelection(draft, action, channelsTree, requiredChannelsResult),
-      initialStateChannelsSelection(props.initialSelectedIds)
-    );
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadSelectOptions] = useLoadSelectOptions();
+  const [channelsWithMandatoryPromise] = useChannelsWithMandatoryApi();
 
-  const isAllApiDataLoaded = isChannelsTreeLoaded && isDependencyDataLoaded;
+  const [channelProcessor] = useState(new ChannelProcessor());
+  const [rows, setRows] = useState<ChannelTreeType[] | undefined>(undefined);
+
+  const initialSelectedChannelIds = props.initialSelectedSources.map((channel) => channel.channelId);
+  const [selectedChannelIds, setSelectedChannelIds] = useState<Set<number>>(new Set(initialSelectedChannelIds));
+
+  const initialSelectedBaseChannelId = props.initialSelectedSources[0]?.channelId;
+  const [openRows, setOpenRows] = useState<Set<number>>(new Set([initialSelectedBaseChannelId]));
+
+  const [activeFilters, setActiveFilters] = useState<string[]>(getInitialFiltersState());
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetchChannelsTree().then((channelsTree: ChannelsTreeType) => {
-      fetchMandatoryChannelsByChannelIds({ channels: Object.values(channelsTree.channelsById) });
+    // Use the initial filter configuration
+    channelProcessor.setActiveFilters(activeFilters);
+
+    channelsWithMandatoryPromise.then(({ channels, channelsMap, requiresMap, requiredByMap }) => {
+      if (isLoading) {
+        setIsLoading(false);
+      }
+
+      const initialSelectedBaseChannelId = props.initialSelectedSources[0]?.channelId;
+      channelProcessor
+        .setChannels(channels, channelsMap, requiresMap, requiredByMap, initialSelectedBaseChannelId)
+        .then((newRows) => {
+          if (newRows) {
+            setRows(newRows);
+          }
+        });
     });
   }, []);
 
-  useEffect(() => {
-    // set lead base channel as first and notify
-    const sortedSelectedChannelsId = state.selectedChannelsIds.filter((cId) => cId !== state.selectedBaseChannelId);
-    sortedSelectedChannelsId.unshift(state.selectedBaseChannelId);
-    isAllApiDataLoaded &&
-      props.onChange(
-        sortedSelectedChannelsId
-          .filter((cId) => channelsTree.channelsById[cId])
-          .map((cId) => channelsTree.channelsById[cId])
-      );
-  }, [state.selectedChannelsIds]);
+  const onSelectedBaseChannelIdChange = (channelId: number) => {
+    channelProcessor.setSelectedBaseChannelId(channelId).then((newRows) => {
+      if (newRows) {
+        setRows(newRows);
+      }
 
-  if (!isAllApiDataLoaded || props.isSourcesApiLoading) {
+      // Select the new base along with any recommended children
+      const channel = channelProcessor.channelIdToChannel(channelId);
+      onToggleChannelSelect(channel, true);
+      if (isBaseChannel(channel)) {
+        onToggleChannelOpen(channel, true);
+        channel.recommendedChildren.forEach((child) => {
+          onToggleChannelSelect(child, true);
+        });
+      }
+    });
+  };
+
+  const onSearch = useCallback(
+    debounce((newSearch: string) => {
+      channelProcessor.setSearch(newSearch).then((newRows) => {
+        if (newRows) {
+          setRows(newRows);
+        }
+
+        if (newSearch) {
+          // Open all channels when search changes so visible child matches are also visible
+          setOpenRows(new Set(newRows?.map((row) => row.base.id)));
+        } else if (channelProcessor.selectedBaseChannelId) {
+          // When change is cleared, close all besides the selected base
+          setOpenRows(new Set([channelProcessor.selectedBaseChannelId]));
+        }
+      });
+    }, 100),
+    []
+  );
+
+  const onToggleChannelSelect = (channel: BaseChannelType | ChildChannelType, toState?: boolean) => {
+    if (typeof toState === "undefined") {
+      toState = !selectedChannelIds.has(channel.id);
+    }
+    if (toState) {
+      selectedChannelIds.add(channel.id);
+      const requires = channelProcessor.requiresMap.get(channel.id);
+      requires?.forEach((item) => selectedChannelIds.add(item.id));
+      setSelectedChannelIds(new Set([...selectedChannelIds]));
+    } else {
+      selectedChannelIds.delete(channel.id);
+      const requiredBy = channelProcessor.requiredByMap.get(channel.id);
+      requiredBy?.forEach((item) => selectedChannelIds.delete(item.id));
+      setSelectedChannelIds(new Set([...selectedChannelIds]));
+    }
+
+    // Propagate selection to parent views
+    const selectedChannelLabels = channelProcessor.channelIdsToLabels(Array.from(selectedChannelIds));
+    props.onChange(selectedChannelLabels);
+  };
+
+  const onToggleChannelOpen = (channel: BaseChannelType, toState?: boolean) => {
+    if (typeof toState === "undefined") {
+      toState = !openRows.has(channel.id);
+    }
+    if (toState) {
+      setOpenRows(new Set([...openRows, channel.id]));
+    } else {
+      openRows.delete(channel.id);
+      setOpenRows(new Set([...openRows]));
+    }
+  };
+
+  const Row = (channel: ChannelTreeType) => {
+    return (
+      <BaseChannel
+        rowDefinition={channel}
+        search={search}
+        openRows={openRows}
+        selectedRows={selectedChannelIds}
+        selectedBaseChannelId={channelProcessor.selectedBaseChannelId}
+        channelProcessor={channelProcessor}
+        onToggleChannelSelect={(selfOrChild, toState) => onToggleChannelSelect(selfOrChild, toState)}
+        onToggleChannelOpen={(channelId) => onToggleChannelOpen(channelId)}
+      />
+    );
+  };
+
+  if (isLoading || props.isSourcesApiLoading) {
     return (
       <div className="form-group">
         <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
@@ -66,161 +156,91 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }
 
-  const onSearch = (search: string) =>
-    dispatchChannelsSelection({
-      type: "search",
-      search,
-    });
-
-  const visibleChannels = getVisibleChannels(channelsTree, state.activeFilters);
-  // Order all base channels by id and set the lead base channel as first
-  let orderedBaseChannels = orderBaseChannels(channelsTree, state.selectedBaseChannelId);
+  const defaultValueOption = props.initialSelectedSources[0]
+    ? {
+        base: props.initialSelectedSources[0],
+      }
+    : undefined;
 
   return (
-    <div>
-      <div className="form-group">
-        <label className="col-lg-3 control-label">{t("New Base Channel")}</label>
-        <div className="col-lg-8">
-          <Select
-            name="selectedBaseChannel"
-            id="selectedBaseChannel"
-            value={orderedBaseChannels.find((item) => item.id === state.selectedBaseChannelId)}
-            onChange={(value) => {
-              if (typeof value === "object" && !Array.isArray(value)) {
-                dispatchChannelsSelection({
-                  type: "lead_channel",
-                  newBaseId: parseInt(value.id, 10),
-                });
-              }
-            }}
-            options={orderedBaseChannels}
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.id}
-            menuPortalTarget={document.body}
-            classNamePrefix={`class-selectedBaseChannel`}
-            styles={{
-              menu: (styles: {}) => ({
-                ...styles,
-                zIndex: 3,
-              }),
-              menuPortal: (styles: {}) => ({
-                ...styles,
-                zIndex: 9999,
-              }),
-            }}
-          />
-          <span className="help-block">{t("Choose the channel to be elected as the new base channel")}</span>
-        </div>
+    <React.Fragment>
+      <div className="row">
+        <Select
+          loadOptions={loadSelectOptions}
+          defaultValueOption={defaultValueOption}
+          paginate={true}
+          label={t("New Base Channel")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          hint={t("Choose the channel to be elected as the new base channel")}
+          getOptionLabel={(option) => option.base.name}
+          getOptionValue={(option) => option.base.id}
+          onChange={(name, rawValue) => {
+            const value = parseInt(rawValue, 10);
+            if (isNaN(value)) {
+              return;
+            }
+            onSelectedBaseChannelIdChange(value);
+          }}
+        />
       </div>
-      {state.selectedBaseChannelId && (
-        <div className="form-group">
-          <label className="col-lg-3 control-label">
-            <div className="row" style={{ marginBottom: "30px" }}>
-              {`${t("Child Channels")} (${state.selectedChannelsIds.length})`}
-            </div>
+      {rows && (
+        <div className="row" style={{ display: "flex" }}>
+          <div className="col-lg-3 control-label">
+            <label className="row" style={{ marginBottom: "30px" }}>
+              {`${t("Child Channels")} (${selectedChannelIds.size})`}
+            </label>
             <div className="row panel panel-default panel-body text-left">
               <div style={{ position: "relative" }}>
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Search a channel"
-                  value={state.search}
-                  onChange={(event) => onSearch(event.target.value)}
+                  value={search}
+                  onChange={(event) => {
+                    const newSearch = event.target.value;
+                    setSearch(newSearch);
+                    onSearch(newSearch);
+                  }}
                 />
                 <span className={`${styles.search_icon_container} clear`}>
                   <i
-                    onClick={() => onSearch("")}
+                    onClick={() => {
+                      setSearch("");
+                      onSearch("");
+                    }}
                     className="fa fa-times-circle-o no-margin"
                     title={t("Clear Search")}
                   />
                 </span>
               </div>
               <hr />
-              {getChannelsFiltersAvailableValues().map((filter: FilterType) => (
-                <div key={filter.id} className="checkbox">
-                  <input
-                    type="checkbox"
-                    value={filter.id}
-                    checked={state.activeFilters.includes(filter.id)}
-                    id={`filter_${filter.id}`}
-                    onChange={(event) =>
-                      dispatchChannelsSelection({
-                        type: "toggle_filter",
-                        filter: event.target.value,
-                      })
+              <ChannelsFilters
+                activeFilters={activeFilters}
+                onChange={(value) => {
+                  const newActiveFilters = xor(activeFilters, [value]);
+                  setActiveFilters(newActiveFilters);
+                  channelProcessor.setActiveFilters(newActiveFilters).then((newRows) => {
+                    if (newRows) {
+                      setRows(newRows);
                     }
-                  />
-                  <label htmlFor={`filter_${filter.id}`}>{filter.text}</label>
-                </div>
-              ))}
-            </div>
-          </label>
-          <div className="col-lg-8">
-            <div>
-              {orderedBaseChannels.map((baseChannel) => {
-                const selectedChannelsIdsInGroup = getSelectedChannelsIdsInGroup(
-                  state.selectedChannelsIds,
-                  baseChannel
-                );
-
-                if (
-                  !isGroupVisible(
-                    baseChannel,
-                    channelsTree,
-                    visibleChannels,
-                    selectedChannelsIdsInGroup,
-                    state.selectedBaseChannelId,
-                    state.search
-                  )
-                ) {
-                  return null;
-                }
-
-                const isOpen = state.openGroupsIds.some(
-                  (openId) => openId === baseChannel.id || baseChannel.children.includes(openId)
-                );
-
-                return (
-                  <GroupChannels
-                    key={`group_${baseChannel.id}`}
-                    base={baseChannel}
-                    search={state.search}
-                    childChannelsId={baseChannel.children}
-                    selectedChannelsIdsInGroup={selectedChannelsIdsInGroup}
-                    selectedBaseChannelId={state.selectedBaseChannelId}
-                    isOpen={isOpen}
-                    setAllRecommentedChannels={(enable) => {
-                      dispatchChannelsSelection({
-                        type: "set_recommended",
-                        baseId: baseChannel.id,
-                        enable,
-                      });
-                    }}
-                    onChannelToggle={(channelId) =>
-                      dispatchChannelsSelection({
-                        type: "toggle_channel",
-                        baseId: baseChannel.id,
-                        channelId,
-                      })
-                    }
-                    onOpenGroup={(open) =>
-                      dispatchChannelsSelection({
-                        type: "open_group",
-                        baseId: baseChannel.id,
-                        open,
-                      })
-                    }
-                    channelsTree={channelsTree}
-                    requiredChannelsResult={requiredChannelsResult}
-                  />
-                );
-              })}
+                  });
+                }}
+              />
             </div>
           </div>
+          <VirtualList items={rows} renderItem={Row} defaultItemHeight={29} itemKey={(row) => row.base.id} />
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 
-export default ChannelsSelection;
+// This whole view is expensive with large lists, so rerender only when we really need to
+export default memo(ChannelsSelection, (prevProps, nextProps) => {
+  return (
+    prevProps.isSourcesApiLoading === nextProps.isSourcesApiLoading &&
+    // This prop is a filtet result but memoed so this works fine
+    prevProps.initialSelectedSources === nextProps.initialSelectedSources
+  );
+});
