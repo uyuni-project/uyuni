@@ -502,7 +502,7 @@ class rpmChangeLog(ChangeLog):
                 try:
                     self[i].encode("utf-8")
                 except:
-                    self[i] = repr(self[i]).encode("utf-8")
+                    self[i] = self[i].encode('utf-8', errors='replace').decode('utf-8')
 
 
 def sanitizeList(l):
