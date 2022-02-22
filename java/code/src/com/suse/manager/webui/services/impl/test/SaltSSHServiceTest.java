@@ -42,12 +42,14 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandNoProxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(Collections.emptyList(), "ssh-push", "minion", 22);
+        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+                Collections.emptyList(), "ssh-push", "minion", 22);
         assertFalse(res.isPresent());
     }
 
     public void testProxyCommandSSHPush1Proxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(List.of("proxy1"), "ssh-push", "minion", 22);
+        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+                List.of("proxy1"), "ssh-push", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
@@ -58,7 +60,8 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testProxyCommandSSHPushTunnel1Proxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(List.of("proxy1"), "ssh-push-tunnel", "minion", 22);
+        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+                List.of("proxy1"), "ssh-push-tunnel", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
