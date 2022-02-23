@@ -47,7 +47,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   constructor(props: EditGroupProps) {
     super(props);
     this.state = {
-      visible: props.sectionsExpanded === "expanded",
+      visible: props.sectionsExpanded !== "collapsed",
     };
   }
 
@@ -167,8 +167,6 @@ type EditPrimitiveGroupProps = {
   value: any;
   element: ElementDefinition;
   formulaForm: any;
-  sectionsExpanded: string;
-  setSectionsExpanded: (string) => void;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
 };
@@ -227,7 +225,6 @@ type EditPrimitiveDictionaryGroupProps = {
   element: ElementDefinition;
   formulaForm: any;
   sectionsExpanded: string;
-  setSectionsExpanded: (string) => void;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
 };
@@ -334,9 +331,6 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
     this.state = {
       visibility: new Map(),
     };
-    for (let i in props.value) {
-      this.state.visibility.set(i, props.sectionsExpanded === "expanded");
-    }
   }
 
   componentDidUpdate(prevProps: Readonly<EditDictionaryGroupProps>) {
@@ -370,7 +364,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
   }
 
   isVisible = (index) => {
-    return !(this.state.visibility.get(index) === undefined || this.state.visibility.get(index) === false);
+    return this.state.visibility.get(index) === undefined || this.state.visibility.get(index) !== false;
   };
 
   setVisible = (index, visible) => {
@@ -431,11 +425,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
               disabled={this.props.element.$minItems! >= this.props.value.length || this.props.isDisabled}
             />
           </div>
-          <div>
-            {!(this.state.visibility.get(i) === undefined || this.state.visibility.get(i) === false)
-              ? item_elements
-              : null}
-          </div>
+          <div>{this.state.visibility.get(i) !== false ? item_elements : null}</div>
         </div>
       );
     }
