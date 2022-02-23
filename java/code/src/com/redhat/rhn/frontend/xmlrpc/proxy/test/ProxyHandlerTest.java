@@ -131,15 +131,6 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertEquals(1, rc);
     }
 
-    public void aTestWithExistingProxy() throws Exception {
-        Server server = ServerFactory.lookupById(1005012107L);
-        ClientCertificate cert = SystemManager.createClientCertificate(server);
-        cert.validate(server.getSecret());
-        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
-        int rc = ph.deactivateProxy(cert.toString());
-        assertEquals(1, rc);
-    }
-
     public void testListProxyClients() throws Exception {
         // create user
         User user = UserTestUtils.findNewUser("testuser", "testorg");
