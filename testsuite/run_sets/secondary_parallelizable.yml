@@ -28,12 +28,12 @@
 - features/secondary/srv_manage_channels_page.feature
 - features/secondary/srv_xmlrpc_channel.feature
 - features/secondary/srv_patches_page.feature
-- features/secondary/srv_spacewalk_channel.feature
 - features/secondary/srv_content_lifecycle.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_scc_user_credentials.feature
 - features/secondary/srv_push_package.feature
+- features/secondary/trad_spacewalk_channel.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
