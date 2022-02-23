@@ -18,11 +18,11 @@ type Props = {
 };
 
 const Group = (props: Props) => {
-  const [visible, setVisible] = useState(props.sectionsExpanded === "expanded");
+  const [visible, setVisible] = useState(props.sectionsExpanded !== "collapsed");
 
   useEffect(() => {
     if (props.sectionsExpanded !== "mixed") {
-      setVisible(props.sectionsExpanded === "expanded");
+      setVisible(props.sectionsExpanded !== "collapsed");
     }
   }, [props.sectionsExpanded]);
 
