@@ -190,6 +190,7 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
+Requires:       rng-tools
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
@@ -662,6 +663,11 @@ echo "#### SYMLINKS END ####"
 %pre -n spacewalk-taskomatic
 %if !0%{?rhel}
 %service_add_pre taskomatic.service
+%endif
+
+%post
+%if 0%{?rhel}
+systemctl start rngd
 %endif
 
 %post -n spacewalk-taskomatic
