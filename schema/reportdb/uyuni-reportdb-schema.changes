@@ -1,4 +1,5 @@
-  * Corrected source URL in spec file.
+- Fixed data duplication in multiple tables
+- Corrected source URL in spec file.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:09:27 CET 2022 - jgonzalez@suse.com
