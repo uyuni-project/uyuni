@@ -94,7 +94,7 @@ if __name__ == '__main__':
             except AttributeError: # Python 2
                 sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
-        usage = '%(prog)s [options] [command]'
+        usage = '%(prog)s [options] [command] [-- [command options]]'
         parser = argparse.ArgumentParser(usage=usage)
         parser.add_argument('-c', '--config',
                              help=_('config file to use [default: ~/.spacecmd/config]'))
