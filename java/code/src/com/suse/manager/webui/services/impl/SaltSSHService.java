@@ -432,30 +432,6 @@ public class SaltSSHService {
                     "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s%s %s ",
                     key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
         }
-        /*
-        Termporary disable this block to test if it's really required
-        //import org.apache.commons.lang3.text.StrSubstitutor;
-        if (tunnel) {
-            Map<String, String> values = new HashMap<>();
-            values.put("pushKey", PROXY_SSH_PUSH_KEY);
-            values.put("user", getSSHUser());
-            values.put("pushPort", getSshPushRemotePort() + "");
-            values.put("proxy", proxyPath.get(proxyPath.size() - 1));
-            values.put("sslPort", SSL_PORT + "");
-            values.put("minion", minionHostname);
-            values.put("ownKey",
-                    ("root".equals(getSSHUser()) ? "/root" : "/home/" + getSSHUser()) +
-                            "/.ssh/mgr_own_id");
-            values.put("sshPort", Integer.toString(sshPushPort));
-
-            StrSubstitutor sub = new StrSubstitutor(values);
-            proxyCommand.append(
-                sub.replace("/usr/bin/ssh -i ${pushKey} -o StrictHostKeyChecking=no " +
-                        "-o User=${user} -R ${pushPort}:${proxy}:${sslPort} ${minion} " +
-                            "ssh -i ${ownKey} -W ${minion}:${sshPort} " +
-                            "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
-        }
-        */
         proxyCommand.append("'");
         return Optional.of(Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString()));
     }
