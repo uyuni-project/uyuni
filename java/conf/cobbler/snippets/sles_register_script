@@ -12,7 +12,13 @@ if [ -x /usr/bin/curl ]; then
 else
     wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
 fi
-/usr/share/rhn/certs/update-ca-cert-trust.sh $mycert
+if [ -x /usr/sbin/update-ca-certificates -a -d /etc/pki/trust/anchors ]; then
+    ln -s $mycert /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT.pem
+    /usr/sbin/update-ca-certificates
+else
+    ln -s $mycert /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
+    c_rehash
+fi
 for f in /etc/sysconfig/rhn/*; do
     if [ -f "$f" ]; then
         perl -npe 's/RHNS-CA-CERT/$mycert_file/g' -i "$f"
