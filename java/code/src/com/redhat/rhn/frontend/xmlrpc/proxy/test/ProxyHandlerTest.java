@@ -54,15 +54,19 @@ import java.util.Set;
 
 public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
-    private SaltApi saltApi = new TestSaltApi();
-    private SystemQuery systemQuery = new TestSystemQuery();
-    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
-    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+    private static final String TEST_USER = "testuser";
+    private static final String TEST_ORG = "testorg";
+
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(
+            systemQuery, saltApi);
+    private final SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+    private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
+    private final SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
             saltApi);
 
     @Override
@@ -73,16 +77,16 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     }
 
     public void testDeactivateProxyWithReload() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestProxyServer(user, true);
         assertTrue(server.isProxy());
-        server = SystemManager.deactivateProxy(server);
-        assertFalse(server.isProxy());
+        Server changedServer = SystemManager.deactivateProxy(server);
+        assertFalse(changedServer.isProxy());
     }
 
     public void testActivateProxy() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -98,7 +102,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     }
 
     public void testActivateSaltProxy() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -114,7 +118,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     }
 
     public void testDeactivateProxy() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -133,7 +137,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     public void testListProxyClients() throws Exception {
         // create user
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // create proxy
