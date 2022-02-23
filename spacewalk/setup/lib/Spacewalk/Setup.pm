@@ -875,6 +875,11 @@ sub postgresql_reportdb_setup {
 
     postgresql_get_reportdb_answers($opts, $answers);
 
+    if ($opts->{"clear-db"}) {
+        print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing report database.\n");
+	postgresql_drop_reportdb($answers);
+    }
+
     system("spacewalk-setup-db-ssl-certificates", $answers->{'report-db-ca-cert'});
     $ENV{PGSSLMODE}="verify-full";
 
@@ -1109,6 +1114,13 @@ sub postgresql_clear_db {
                 $dbh->do($c);
         }
         $dbh->disconnect;
+        return 1;
+}
+
+sub postgresql_drop_reportdb {
+        my $answers = shift;
+
+        system_debug('/usr/bin/uyuni-setup-reportdb', '--db='.$answers->{'report-db-name'}, '--user='.$answers->{'report-db-user'});
         return 1;
 }
 
