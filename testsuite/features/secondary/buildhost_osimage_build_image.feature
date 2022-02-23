@@ -13,6 +13,7 @@
 # This feature leaves an JeOS image built
 # The image is used in proxy_retail_pxeboot_and_mass_import.feature
 
+@cloud_compatibility
 @buildhost
 @scope_retail
 @scope_building_container_images
