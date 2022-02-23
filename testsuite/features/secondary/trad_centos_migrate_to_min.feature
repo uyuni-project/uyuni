@@ -7,10 +7,10 @@ Feature: Migrate a CentOS 7 traditional client into a Salt minion
   As an authorized user
   I want to migrate this CentOS 7 traditional client to a Salt minion
 
-  Scenario: Delete the CentOS minion in the migration context
+  Scenario: Delete the CentOS 7 minion in the migration context
     Given I am authorized for the "Admin" section
     When I am on the Systems overview page of this "ceos_client"
-    When I follow "Delete System"
+    And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
