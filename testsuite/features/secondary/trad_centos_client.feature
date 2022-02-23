@@ -27,6 +27,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
   Scenario: Prepare the CentOS 7 traditional client
     When I enable repository "CentOS-Base" on this "ceos_client"
     And I enable client tools repositories on "ceos_client"
+    And I refresh the packages list via package manager on "ceos_client"
     And I install the traditional stack utils on "ceos_client"
     And I install OpenSCAP dependencies on "ceos_client"
     And I register "ceos_client" as traditional client
