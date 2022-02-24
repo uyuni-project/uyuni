@@ -21,7 +21,9 @@ HistoryReport                    :: SystemAction \
                                     SystemHistory
 SystemInactivityReport           :: System
 InventoryReport                  :: System \
-                                    SystemPrimaryAddress \
+                                    SystemNetInterface \
+                                    SystemNetAddressV4 \
+                                    SystemNetAddressV6 \
                                     SystemEntitlement \
                                     SystemGroup \
                                     SystemVirtualData \
