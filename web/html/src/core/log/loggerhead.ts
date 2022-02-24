@@ -4,58 +4,56 @@ type Headers = Record<string, string>;
 type Level = "info" | "debug" | "warning" | "error";
 
 export default class Loggerhead {
-  private config = {
-    url: "",
-    levels: { info: true, debug: true, warning: true, error: true },
-    console: { info: true, debug: true, warning: true, error: true },
-  };
+  private url = "";
+  private levels = { info: true, debug: true, warning: true, error: true };
+  private console = { info: true, debug: true, warning: true, error: true };
   private setHeaders: (headers: Headers) => Headers;
 
   constructor(url: string, setHeaders: (headers: Headers) => Headers) {
-    this.config.url = url;
+    this.url = url;
     this.setHeaders = setHeaders;
   }
 
   info(message: string, callback?: (...args: any[]) => void) {
-    if (this.config.levels.info) {
+    if (this.levels.info) {
       this.postData({ level: "info", message }, callback);
     }
-    if (this.config.console.info) {
+    if (this.console.info) {
       console.info(message);
     }
   }
 
   debug(message: string, callback?: (...args: any[]) => void) {
-    if (this.config.levels.debug) {
+    if (this.levels.debug) {
       this.postData({ level: "debug", message }, callback);
     }
-    if (this.config.console.debug) {
+    if (this.console.debug) {
       console.debug(message);
     }
   }
 
   warn(message: string, callback?: (...args: any[]) => void) {
-    if (this.config.levels.warning) {
+    if (this.levels.warning) {
       this.postData({ level: "warning", message }, callback);
     }
-    if (this.config.console.warning) {
+    if (this.console.warning) {
       console.warn(message);
     }
   }
 
   error(message: string, callback?: (...args: any[]) => void) {
-    if (this.config.levels.error) {
+    if (this.levels.error) {
       this.postData({ level: "error", message }, callback);
     }
-    if (this.config.console.error) {
+    if (this.console.error) {
       console.error(message);
     }
   }
 
   private postData(data: { level: Level; message: string }, callback?: (...args: any[]) => void) {
-    if (this.config.url === "") {
+    if (this.url === "") {
       var errorMessage = "[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ";
-      if (this.config.console.error) {
+      if (this.console.error) {
         console.error(errorMessage);
       }
       return;
@@ -66,7 +64,7 @@ export default class Loggerhead {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", this.config.url);
+    xhr.open("POST", this.url);
 
     Object.keys(this.setHeaders(headers)).forEach((key) => {
       xhr.setRequestHeader(key, headers[key]);
@@ -80,7 +78,7 @@ export default class Loggerhead {
         } catch (e) {
           console.error(
             "The POST request to the url: '" +
-              this.config.url +
+              this.url +
               "' was not successfully completed and the response cannot be parsed."
           );
         }
