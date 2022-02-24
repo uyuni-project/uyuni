@@ -5,8 +5,8 @@ type Level = "info" | "debug" | "warning" | "error";
 
 export default class Loggerhead {
   private url = "";
-  private levels = { info: true, debug: true, warning: true, error: true };
-  private console = { info: true, debug: true, warning: true, error: true };
+  private levels: Record<Level, boolean> = { info: true, debug: true, warning: true, error: true };
+  private console: Record<Level, boolean> = { info: true, debug: true, warning: true, error: true };
   private setHeaders: (headers: Headers) => Headers;
 
   constructor(url: string, setHeaders: (headers: Headers) => Headers) {
