@@ -14,43 +14,43 @@ export default class Loggerhead {
     this.setHeaders = setHeaders;
   }
 
-  info(message: string, callback?: (...args: any[]) => void) {
+  info(message: string) {
     if (this.levels.info) {
-      this.postData({ level: "info", message }, callback);
+      this.postData({ level: "info", message });
     }
     if (this.console.info) {
       console.info(message);
     }
   }
 
-  debug(message: string, callback?: (...args: any[]) => void) {
+  debug(message: string) {
     if (this.levels.debug) {
-      this.postData({ level: "debug", message }, callback);
+      this.postData({ level: "debug", message });
     }
     if (this.console.debug) {
       console.debug(message);
     }
   }
 
-  warn(message: string, callback?: (...args: any[]) => void) {
+  warn(message: string) {
     if (this.levels.warning) {
-      this.postData({ level: "warning", message }, callback);
+      this.postData({ level: "warning", message });
     }
     if (this.console.warning) {
       console.warn(message);
     }
   }
 
-  error(message: string, callback?: (...args: any[]) => void) {
+  error(message: string) {
     if (this.levels.error) {
-      this.postData({ level: "error", message }, callback);
+      this.postData({ level: "error", message });
     }
     if (this.console.error) {
       console.error(message);
     }
   }
 
-  private postData(data: { level: Level; message: string }, callback?: (...args: any[]) => void) {
+  private postData(data: { level: Level; message: string }) {
     if (this.url === "") {
       var errorMessage = "[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ";
       if (this.console.error) {
@@ -85,13 +85,6 @@ export default class Loggerhead {
       }
     };
 
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        if (callback && typeof callback === "function") {
-          callback(JSON.parse(xhr.responseText));
-        }
-      }
-    };
     xhr.send(JSON.stringify(data));
 
     return xhr;
