@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -92,10 +92,19 @@ Feature: Migrate a traditional client into a Salt minion
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
+  @susemanager
   Scenario: Cleanup: register minion again as traditional client
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd
+
+  @uyuni
+  Scenario: Cleanup: register minion again as traditional client
+    When I enable client tools repositories on "sle_client"
+    And I install the traditional stack utils on "sle_client"
+    And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
