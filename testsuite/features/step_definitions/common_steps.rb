@@ -78,12 +78,6 @@ Then(/^the system name for "([^"]*)" should be correct$/) do |host|
   step %(I should see a "#{system_name}" text)
 end
 
-Then(/^the activation key should be "([^"]*)"$/) do |activation_key_value|
-  shown_activation_key = find(:xpath, "//td[text()='Activation Key:']/following-sibling::td[1]").text
-  log "Found #{shown_activation_key} as activation key"
-  raise unless activation_key_value.eql? shown_activation_key
-end
-
 # rubocop:disable Metrics/BlockLength
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   # TODO remove extra logging information once debugged
