@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
 
 import { isFiltered } from "./FormulaComponentGenerator";
@@ -8,21 +9,21 @@ import SectionToggle from "./SectionToggle";
 
 type Props = {
   id: string;
-  sectionsExpanded: string;
-  setSectionsExpanded: (string) => void;
+  sectionsExpanded: SectionState;
+  setSectionsExpanded: (SectionState) => void;
   header?: React.ReactNode;
   help?: React.ReactNode;
   children?: React.ReactNode;
-  isVisibleByCriteria?: any;
+  isVisibleByCriteria?: () => boolean;
   criteria: string;
 };
 
 const Group = (props: Props) => {
-  const [visible, setVisible] = useState(props.sectionsExpanded !== "collapsed");
+  const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
 
   useEffect(() => {
-    if (props.sectionsExpanded !== "mixed") {
-      setVisible(props.sectionsExpanded !== "collapsed");
+    if (props.sectionsExpanded !== SectionState.Mixed) {
+      setVisible(props.sectionsExpanded !== SectionState.Collapsed);
     }
   }, [props.sectionsExpanded]);
 
@@ -32,7 +33,7 @@ const Group = (props: Props) => {
 
   const setVisibility = (index, visible) => {
     setVisible(visible);
-    props.setSectionsExpanded("mixed");
+    props.setSectionsExpanded(SectionState.Mixed);
   };
 
   return props.isVisibleByCriteria?.() ? (
