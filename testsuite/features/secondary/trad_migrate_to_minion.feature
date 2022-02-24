@@ -116,8 +116,3 @@ Feature: Migrate a traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Management" regex, refreshing the page
-
-  Scenario: Cleanup: check that we still have the activation key
-    Given I am on the Systems overview page of this "sle_client"
-    Then the activation key should be "1-SUSE-KEY-x86_64"
-    
