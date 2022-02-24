@@ -44,7 +44,6 @@ declare global {
 
   function t(msg: string, ...args: Array<any>): string;
   var onDocumentReadyInitOldJS: Function;
-  var Loggerhead: any;
   var ace: any;
   var d3: d3;
 
