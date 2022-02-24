@@ -72,6 +72,14 @@
     "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP3 x86_64"
   },
   {
+    "label" : "HPC15-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP4 ARM64"
+  },
+  {
+    "label" : "HPC15-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP4 x86_64"
+  },
+  {
     "label" : "HPE-HELION-OPENSTACK-X86",
     "name" : "HPE Helion Openstack (x86)"
   },
