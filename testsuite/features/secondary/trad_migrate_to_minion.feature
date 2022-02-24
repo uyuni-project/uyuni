@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -44,6 +44,10 @@ Feature: Migrate a traditional client into a Salt minion
   Scenario: Check that service nhsd has been stopped
     When I run "systemctl status nhsd" on "sle_client" without error control
     Then the command should fail
+
+  Scenario: Check that minion has the new activation key
+    Given I am on the Systems overview page of this "sle_client"
+    Then the activation key should be "1-SUSE-KEY-x86_64"
 
   Scenario: Check that channels are still the same after migration
     Given I am on the Systems overview page of this "sle_client"
@@ -112,3 +116,7 @@ Feature: Migrate a traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Management" regex, refreshing the page
+
+  Scenario: Cleanup: check that we still have the activation key
+    Given I am on the Systems overview page of this "sle_client"
+    Then the activation key should be "1-SUSE-KEY-x86_64"
