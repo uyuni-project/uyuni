@@ -11,12 +11,10 @@ CREATE TABLE IF NOT EXISTS SystemNetInterface
     hardware_address            VARCHAR(96),
     module                      VARCHAR(128),
     primary_interface           BOOLEAN NOT NULL DEFAULT FALSE,
-    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
+    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp),
+
+    CONSTRAINT SystemNetInterface_pk PRIMARY KEY (mgm_id, system_id, interface_id)
 );
-
-ALTER TABLE SystemNetInterface DROP CONSTRAINT IF EXISTS SystemNetInterface_pk;
-
-ALTER TABLE SystemNetInterface ADD CONSTRAINT SystemNetInterface_pk PRIMARY KEY (mgm_id, system_id, interface_id);
 
 CREATE TABLE IF NOT EXISTS SystemNetAddressV4
 (
@@ -26,12 +24,10 @@ CREATE TABLE IF NOT EXISTS SystemNetAddressV4
     address                     VARCHAR(64) NOT NULL,
     netmask                     VARCHAR(64),
     broadcast                   VARCHAR(64),
-    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
+    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp),
+
+    CONSTRAINT SystemNetAddressV4_pk PRIMARY KEY (mgm_id, system_id, interface_id, address)
 );
-
-ALTER TABLE SystemNetAddressV4 DROP CONSTRAINT IF EXISTS SystemNetAddressV4_pk;
-
-ALTER TABLE SystemNetAddressV4 ADD CONSTRAINT SystemNetAddressV4_pk PRIMARY KEY (mgm_id, system_id, interface_id, address);
 
 CREATE TABLE IF NOT EXISTS SystemNetAddressV6
 (
@@ -41,21 +37,23 @@ CREATE TABLE IF NOT EXISTS SystemNetAddressV6
     scope                       VARCHAR(64) NOT NULL,
     address                     VARCHAR(64) NOT NULL,
     netmask                     VARCHAR(64),
-    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)
+    synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp),
+
+    CONSTRAINT SystemNetAddressV6_pk PRIMARY KEY (mgm_id, system_id, interface_id, scope, address)
 );
-
-ALTER TABLE SystemNetAddressV6 DROP CONSTRAINT IF EXISTS SystemNetAddressV6_pk;
-
-ALTER TABLE SystemNetAddressV6 ADD CONSTRAINT SystemNetAddressV6_pk PRIMARY KEY (mgm_id, system_id, interface_id, scope, address);
 
 -- Temporary sequence to fill the missing instance_id and allow it to be not null
 CREATE SEQUENCE IF NOT EXISTS instance_id_seq;
 
 ALTER TABLE SystemVirtualData ADD COLUMN IF NOT EXISTS instance_id NUMERIC NOT NULL DEFAULT nextval('instance_id_seq');
 
-ALTER TABLE SystemVirtualData DROP CONSTRAINT IF EXISTS SystemVirtualdata_pk;
-
-ALTER TABLE SystemVirtualData ADD CONSTRAINT SystemVirtualdata_pk PRIMARY KEY (mgm_id, instance_id);
+DO $$
+  BEGIN
+    ALTER TABLE SystemVirtualData ADD CONSTRAINT SystemVirtualdata_pk PRIMARY KEY (mgm_id, instance_id);
+  EXCEPTION
+    WHEN invalid_table_definition THEN RAISE NOTICE 'Primary key for table "systemvirtualdata" already exists.';
+  END;
+$$;
 
 -- Drop the temporary default value and sequence
 ALTER TABLE SystemVirtualData ALTER COLUMN instance_id DROP DEFAULT;
