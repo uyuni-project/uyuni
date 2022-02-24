@@ -6,16 +6,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-06 10:53+0000\n"
-"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"PO-Revision-Date: 2022-02-24 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
-">\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -26,10 +26,11 @@ msgstr "testimoni incomplet del servidor intermediari: %s"
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr ""
+"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "s'ha rebutjat l'autenticació d'intermediari"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -69,16 +70,19 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   El compte %s s'ha desactivat en aquest servidor.\n"
+"                   Poseu-vos en contacte amb l'administrador de "
+"l'organització per obtenir més ajuda."
 
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
-msgstr "ISS està inhabilitat en aquest satellite."
+msgstr "ISS està desactivat en aquest servidor."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -88,7 +92,7 @@ msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "S'esperava un nom de paquet, no %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
