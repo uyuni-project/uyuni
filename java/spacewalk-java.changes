@@ -1,4 +1,4 @@
-  * Require rng-tools to generate more entropy faster.
+  * Require rng-tools for EL8 to generate more entropy faster.
 
 -------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
