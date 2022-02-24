@@ -18,7 +18,7 @@ export const renderer = (id: string, { payg_instances, flashMessage }: RendererP
   try {
     projectsJson = JSON.parse(payg_instances || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

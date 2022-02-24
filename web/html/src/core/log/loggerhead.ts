@@ -1,3 +1,5 @@
+// This file is allowed to use console, everyone else is not
+/* eslint-disable no-console */
 type Headers = Record<string, string>;
 type Level = "info" | "debug" | "warning" | "error";
 
@@ -32,7 +34,7 @@ export default class Loggerhead {
     }
   }
 
-  warning(message: string, callback?: (...args: any[]) => void) {
+  warn(message: string, callback?: (...args: any[]) => void) {
     if (this.config.levels.warning) {
       this.postData({ level: "warning", message }, callback);
     }
