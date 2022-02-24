@@ -74,7 +74,7 @@ export default class Loggerhead {
 
     xhr.onload = () => {
       if (xhr.status !== 200) {
-        // try to parse the xhr response, but catch if it fails unless an infinite loop of failure-and-logging would start
+        // Try to parse the xhr response, but catch if it fails to avoid an infinite loop of failure-and-logging
         try {
           console.error(JSON.parse(xhr.response));
         } catch (e) {
