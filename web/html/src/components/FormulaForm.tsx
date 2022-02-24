@@ -24,6 +24,12 @@ const defaultMessageTexts = {
   pillar_only_formula_saved: <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>,
 };
 
+export enum SectionState {
+  Expanded,
+  Mixed,
+  Collapsed,
+}
+
 type Props = {
   /** URL to get the server data */
   dataUrl: string;
@@ -64,7 +70,7 @@ type State = {
   messages: string[];
   warnings: string[];
   errors: string[];
-  sectionsExpanded: string;
+  sectionsExpanded: SectionState;
   searchCriteria: string;
 };
 
@@ -82,7 +88,7 @@ class FormulaForm extends React.Component<Props, State> {
       messages: [],
       warnings: [],
       errors: [],
-      sectionsExpanded: "collapsed",
+      sectionsExpanded: SectionState.Collapsed,
       searchCriteria: "",
     };
 
@@ -259,14 +265,14 @@ class FormulaForm extends React.Component<Props, State> {
       const prevHref = this.props.getFormulaUrl(this.props.formulaId - 1);
       const showAllButton = (
         <Button
-          handler={() => this.setState({ sectionsExpanded: "expanded" })}
+          handler={() => this.setState({ sectionsExpanded: SectionState.Expanded })}
           text={t("Expand All Sections")}
           className="btn-link"
         />
       );
       const hideAllButton = (
         <Button
-          handler={() => this.setState({ sectionsExpanded: "collapsed" })}
+          handler={() => this.setState({ sectionsExpanded: SectionState.Collapsed })}
           text={t("Collapse All Sections")}
           className="btn-link"
         />
@@ -332,7 +338,7 @@ class FormulaForm extends React.Component<Props, State> {
                 </div>
               </SectionToolbar>
               <BootstrapPanel
-                title={capitalize(get(this.state.formulaName, "Unnamed"))}
+                title={capitalize(get(this.state.formulaName, t("Unnamed")))}
                 buttons={
                   <div>
                     {showAllButton} | {hideAllButton}
@@ -343,7 +349,7 @@ class FormulaForm extends React.Component<Props, State> {
                   <SearchField
                     placeholder={t("Search by formula's group name")}
                     criteria={this.state.searchCriteria}
-                    onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: "expanded" })}
+                    onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: SectionState.Expanded })}
                   />
                   <hr />
                   <p>{text(this.state.formulaMetadata.description)}</p>

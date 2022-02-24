@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { default as Jexl } from "jexl";
 
+import { SectionState } from "components/FormulaForm";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
@@ -45,9 +46,9 @@ type Context = {
   getCleanValues?: any | null;
   clearValues: any | null;
   validate: any | null;
-  sectionsExpanded: any | null;
-  setSectionsExpanded: any | null;
-  searchCriteria: any | null;
+  sectionsExpanded: SectionState | null | undefined;
+  setSectionsExpanded: ((SectionState) => void) | null | undefined;
+  searchCriteria: string | null | undefined;
 };
 
 export const FormulaFormContext = React.createContext<Context>({
@@ -359,6 +360,8 @@ function isVisibleByCriteria(element: any, criteria: string) {
   let visibilityForcedByChildren = false;
   // check if all children are not visible by criteria so we can hide the parent (this element) as well
   for (var child_name in element) {
+    // We want to apply the search and filter only on top of nested components the child elements that start
+    // with '$' are normal labels or other values so we skip them.
     if (child_name.startsWith("$")) continue;
     visibilityForcedByChildren = isVisibleByCriteria(element[child_name], criteria);
     if (visibilityForcedByChildren) break;
@@ -461,12 +464,12 @@ export const FormulaFormRenderer = () => (
 type UnwrappedFormulaFormRendererProps = {
   scope: string | null;
   values: any;
-  sectionsExpanded: string;
-  setSectionsExpanded: (string) => void;
+  sectionsExpanded: SectionState | null | undefined;
+  setSectionsExpanded: ((SectionState) => void) | null | undefined;
   layout?: any;
   onChange?: (id: string, value: string) => any;
   registerValidationTrigger?: (...args: any[]) => any;
-  searchCriteria: string | null;
+  searchCriteria: string | null | undefined;
 };
 
 // layout
@@ -639,8 +642,8 @@ type FormulaFormContextProviderProps = {
   systemData?: any;
   groupData?: any;
   scope?: any;
-  sectionsExpanded?: string | undefined;
-  setSectionsExpanded?: (status: string) => void | undefined;
+  sectionsExpanded?: SectionState;
+  setSectionsExpanded?: (status: SectionState) => void;
   searchCriteria?: string;
 };
 
