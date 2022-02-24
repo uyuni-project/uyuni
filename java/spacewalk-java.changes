@@ -1,4 +1,4 @@
-- Require rng-tools to generate more entropy faster.
+- Require rng-tools for EL8 to generate more entropy faster.
 - Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
 - Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
 - Provide link for CVEs
