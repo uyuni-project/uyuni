@@ -190,7 +190,9 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
-Requires:       rng-tools
+%if 0%{?rhel} == 8
+Recommends:       rng-tools
+%endif
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
@@ -666,8 +668,9 @@ echo "#### SYMLINKS END ####"
 %endif
 
 %post
-%if 0%{?rhel}
-systemctl start rngd
+%if 0%{?rhel} == 8
+echo "Trying to start optional rngd service..."
+systemctl start rngd ||:
 %endif
 
 %post -n spacewalk-taskomatic
