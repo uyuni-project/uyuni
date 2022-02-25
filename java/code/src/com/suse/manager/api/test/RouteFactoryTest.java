@@ -60,7 +60,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         routeFactory = new RouteFactory(createTestSerializerFactory());
     }
 
-    private SerializerFactory createTestSerializerFactory() {
+    static SerializerFactory createTestSerializerFactory() {
         return new SerializerFactory() {
             private final List<ApiResponseSerializer<?>> serializers = List.of(
                     new TestSerializer(),

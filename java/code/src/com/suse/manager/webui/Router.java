@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
@@ -218,6 +219,10 @@ public class Router implements SparkApplication {
 
         // Image Upload
         ImageUploadController.initRoutes();
+
+        // HTTP API
+        HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
+        httpApiRegistry.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
