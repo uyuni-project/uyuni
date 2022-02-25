@@ -68,7 +68,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Check that SSH minion has the new activation key
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Activation Key:       1-SUSE-KEY-x86_64" text
+    Then the activation key should be "1-SUSE-KEY-x86_64"
 
   Scenario: Check that channels are still the same after migration to Salt SSH
     Given I am on the Systems overview page of this "sle_client"
@@ -138,4 +138,4 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Cleanup: check that we still have the activation key after migration
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Activation Key:	1-SUSE-KEY-x86_64" text
+    Then the activation key should be "1-SUSE-KEY-x86_64"
