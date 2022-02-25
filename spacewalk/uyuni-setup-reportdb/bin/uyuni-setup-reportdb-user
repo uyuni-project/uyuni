@@ -197,7 +197,7 @@ else ### INTERACTIVE=0
 
 fi
 
-ADMIN_USERS=$(echo "SELECT usename FROM pg_catalog.pg_user WHERE usesuper='t' " | spacewalk-sql -i | tail -n +3 | head -n -2 | tr '[:upper:]' '[:lower:]')
+ADMIN_USERS=$(echo "SELECT usename FROM pg_catalog.pg_user WHERE usesuper='t' " | spacewalk-sql -select-mode - | tail -n +3 | head -n -2 | tr '[:upper:]' '[:lower:]')
 
 for USER in $ADMIN_USERS; do
     if [ "$DBUSER" == "$USER" ]; then
