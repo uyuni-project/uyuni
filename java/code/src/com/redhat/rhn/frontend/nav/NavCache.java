@@ -30,7 +30,7 @@ import java.util.Map;
 public class NavCache {
     // the cache itself; a nice, happy, synchronized map
     private static Map<URL, NavTree> cache = Collections
-            .synchronizedMap(new HashMap<URL, NavTree>());
+            .synchronizedMap(new HashMap<>());
 
     /** Private constructor, this is a utility cass  */
     private NavCache() {

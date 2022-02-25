@@ -175,8 +175,8 @@ public class ForwardWrapper extends ActionForward {
         // the query string contains &amp; entities
         String query = getPath().substring(index + 1);
         String[] nv = StringUtils.split(query, '&');
-        for (int i = 0; i < nv.length; i++) {
-            String[] param = StringUtils.split(nv[i], '=');
+        for (String sIn : nv) {
+            String[] param = StringUtils.split(sIn, '=');
             params.put(param[0], param[1]);
         }
     }

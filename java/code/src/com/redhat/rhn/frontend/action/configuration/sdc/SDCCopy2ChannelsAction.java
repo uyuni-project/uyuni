@@ -66,7 +66,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
         ActionForward forward = super.doCopy(mapping, req, user);
         RequestContext ctx = new RequestContext(req);
         Server s = ctx.lookupAndBindServer();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, s.getId());
         return getStrutsDelegate().forwardParams(forward, params);
     }
@@ -80,7 +80,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
 
         DataResult rs =  cm.listGlobalChannels(user, null);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("user_id", user.getId());
         rs.elaborate(elabParams);
         return rs;

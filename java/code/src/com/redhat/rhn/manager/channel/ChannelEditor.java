@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,15 +79,13 @@ public class ChannelEditor {
                                 Collection packageIds, boolean add) {
         //Make sure the person adding packages is a channel admin
         if (!UserManager.verifyChannelAdmin(user, channel)) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have channel admin access to channel: ");
-            msg.append(channel.getLabel());
 
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
+            String msg = "User: " + user.getLogin() + " does not have channel admin access to channel: " +
+                    channel.getLabel();
+            PermissionException pex = new PermissionException(msg);
             pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
             throw pex;
@@ -96,8 +93,8 @@ public class ChannelEditor {
 
         // make sure we work with long ids
         List<Long> longPackageIds = new ArrayList();
-        for (Iterator it = packageIds.iterator(); it.hasNext();) {
-            longPackageIds.add(((Number) it.next()).longValue());
+        for (Object packageIdIn : packageIds) {
+            longPackageIds.add(((Number) packageIdIn).longValue());
         }
 
 
@@ -126,7 +123,7 @@ public class ChannelEditor {
      */
     private void updateChannel(Channel channel) {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "update_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channel.getId());
         m.execute(params, new HashMap());
     }

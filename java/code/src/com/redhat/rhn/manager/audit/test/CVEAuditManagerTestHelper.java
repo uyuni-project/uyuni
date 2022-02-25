@@ -45,7 +45,7 @@ public class CVEAuditManagerTestHelper {
     public static List<ServerChannelIdPair> getRelevantChannels(Long systemID) {
         SelectMode selectMode = ModeFactory.getMode("test_queries",
                 "find_relevant_channels");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", systemID);
         DataResult<ServerChannelIdPair> ret = selectMode.execute(params);
         return ret;
@@ -59,7 +59,7 @@ public class CVEAuditManagerTestHelper {
     public static List<ServerChannelIdPair> getAllRelevantChannels() {
         SelectMode selectMode = ModeFactory.getMode("test_queries",
                 "find_all_relevant_channels");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         DataResult<ServerChannelIdPair> ret = selectMode.execute(params);
         return ret;
     }

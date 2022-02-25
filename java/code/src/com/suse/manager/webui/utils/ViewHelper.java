@@ -96,7 +96,7 @@ public enum ViewHelper {
         String rendererClass = "com.redhat.rhn.frontend.nav.DialognavRenderer";
         try {
             Map<String, String> sparkParams = request.params().entrySet().stream().collect(
-                    Collectors.toMap(entry -> entry.getKey().substring(1), entry -> entry.getValue()));
+                    Collectors.toMap(entry -> entry.getKey().substring(1), Map.Entry::getValue));
             return RENDER_UTILS.renderNavigationMenu(
                     request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams, additionalParams);
         }

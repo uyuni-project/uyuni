@@ -69,7 +69,7 @@ public abstract class BaseListAction extends RhnAction implements Listable {
 
     protected Map getParamsMap(HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.TOKEN_ID,
                     context.getRequiredParam(RequestContext.TOKEN_ID));
         return params;

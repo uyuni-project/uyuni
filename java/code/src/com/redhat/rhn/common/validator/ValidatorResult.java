@@ -148,11 +148,9 @@ public class ValidatorResult {
         }
         if (!fieldValidationErrors.isEmpty()) {
             str.append("FIELD_ERRORS:\n");
-            fieldValidationErrors.forEach((field, fieldErrors) -> {
-                fieldErrors.forEach((fieldError) ->
-                        str.append(field).append(" - ").append(fieldError.getMessage()).append("\n")
-                );
-            });
+            fieldValidationErrors.forEach((field, fieldErrors) -> fieldErrors.forEach((fieldError) ->
+                    str.append(field).append(" - ").append(fieldError.getMessage()).append("\n")
+            ));
         }
         if (!validationWarnings.isEmpty()) {
             str.append("WARNINGS:\n");

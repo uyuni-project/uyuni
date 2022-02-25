@@ -68,7 +68,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             1,
             0L,
             TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<Runnable>(),
+                new LinkedBlockingQueue<>(),
             new BasicThreadFactory.Builder()
                 .namingPattern(i == 0 ? "salt-global-event-thread-%d" : String.format("salt-event-thread-%d", i))
                 .build()
@@ -152,7 +152,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     @Override
     public void notification(int processId, String channelName, String payload) {
         List<Long> counts = Arrays.stream(payload.split(","))
-                .map(str -> Long.valueOf(str))
+                .map(Long::valueOf)
                 .collect(Collectors.toList());
         notification(counts);
     }

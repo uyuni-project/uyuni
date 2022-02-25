@@ -46,10 +46,10 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
      * @param ids The ids of the regtokens to remove.
     */
     public void removeTokensByIds(List<Long> ids) {
-        Set<String> keysToRemove = new HashSet<String>();
+        Set<String> keysToRemove = new HashSet<>();
 
         for (Long id : ids) {
-            Set<Token> tokenSetCopy = new HashSet<Token>();
+            Set<Token> tokenSetCopy = new HashSet<>();
             tokenSetCopy.addAll(this.getKickstartData().getDefaultRegTokens());
             for (Token token : tokenSetCopy) {
                 if (token.getId() == id) {
@@ -63,7 +63,7 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
                 CobblerXMLRPCHelper.getConnection(this.getUser()),
                 this.getKickstartData().getCobblerId());
         if (prof != null) {
-            prof.syncRedHatManagementKeys(keysToRemove, new ArrayList<String>());
+            prof.syncRedHatManagementKeys(keysToRemove, new ArrayList<>());
         }
         prof.save();
     }
@@ -73,7 +73,7 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
      * @param ids The ids of the regtokens to add.
     */
     public void addTokensByIds(List<Long> ids) {
-        Set<String> keysToAdd = new HashSet<String>();
+        Set<String> keysToAdd = new HashSet<>();
 
         for (Long id : ids) {
             Token token = TokenFactory.lookupById(id);
@@ -89,7 +89,7 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
                 CobblerXMLRPCHelper.getConnection(this.getUser()),
                 this.getKickstartData().getCobblerId());
         if (prof != null) {
-            prof.syncRedHatManagementKeys(new ArrayList<String>(), keysToAdd);
+            prof.syncRedHatManagementKeys(new ArrayList<>(), keysToAdd);
         }
         prof.save();
     }
@@ -103,7 +103,7 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
         if (this.ksdata.getDefaultRegTokens() != null) {
             return this.ksdata.getDefaultRegTokens();
         }
-        return new HashSet<Token>();
+        return new HashSet<>();
     }
 
 }

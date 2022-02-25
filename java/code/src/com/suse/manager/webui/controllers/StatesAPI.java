@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.PackageState;
@@ -96,6 +97,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -235,7 +237,7 @@ public class StatesAPI {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
         StateTargetType type = StateTargetType.valueOf(request.queryParams("type"));
-        long id = Long.valueOf(request.queryParams("id"));
+        long id = Long.parseLong(request.queryParams("id"));
 
         // Lookup assigned states
         List<ConfigChannel> assignedStates = handleTarget(type, id,
@@ -283,7 +285,7 @@ public class StatesAPI {
         ServerConfigChannelsJson json = GSON.fromJson(request.body(), ServerConfigChannelsJson.class);
 
         List<ConfigChannel> channels = json.getChannels().stream()
-                .sorted((a, b) -> a.getPosition() - b.getPosition())
+                .sorted(Comparator.comparingInt(ConfigChannelJson::getPosition))
                 .map(j -> configManager.lookupConfigChannel(user, j.getId()))
                 .collect(Collectors.toList());
 
@@ -491,7 +493,7 @@ public class StatesAPI {
                         checkUserHasPermissionsOnServerGroup(user, group);
                         List<Long> minionServerIds = MinionServerUtils
                                 .filterSaltMinions(ServerGroupFactory.listServers(group))
-                                .map(s -> s.getId())
+                                .map(Server::getId)
                                 .collect(Collectors.toList());
 
                         List<String> states = json.getStates();

@@ -218,10 +218,8 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
 
 
             cmd.setLabel(form.getString(LABEL));
-            cmd.setActive(Boolean.valueOf(
-                    BooleanUtils.toBoolean((Boolean) form.get(ACTIVE))));
-            cmd.setIsOrgDefault(Boolean.valueOf(
-                    BooleanUtils.toBoolean((Boolean) form.get(ORG_DEFAULT))));
+            cmd.setActive(BooleanUtils.toBoolean((Boolean) form.get(ACTIVE)));
+            cmd.setIsOrgDefault(BooleanUtils.toBoolean((Boolean) form.get(ORG_DEFAULT)));
             cmd.getKickstartData().setPostLog(
                     BooleanUtils.toBoolean((Boolean) form.get(POST_LOG)));
             cmd.getKickstartData().setPreLog(

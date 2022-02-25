@@ -98,9 +98,8 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getChannels(Request request, Response response, User user) {
-        return withActivationKey(request, response, user, (activationKey) -> {
-            return json(response, ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels())));
-        });
+        return withActivationKey(request, response, user, (activationKey) -> json(response,
+                ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels()))));
     }
 
 
@@ -153,7 +152,7 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getChildChannelsByBaseId(Request request, Response response, User user) {
-        List<ChannelsJson> jsonChannels = new LinkedList<ChannelsJson>();
+        List<ChannelsJson> jsonChannels = new LinkedList<>();
 
         if (request.params("cid").equals("-1")) {
             getPossibleBaseChannels(user).forEach(base -> jsonChannels.add(generateChannelJson(base, user)));

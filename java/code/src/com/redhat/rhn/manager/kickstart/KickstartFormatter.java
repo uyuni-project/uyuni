@@ -236,11 +236,11 @@ public class KickstartFormatter {
      */
     public String getFileData() {
         RegistrationType regType = ksdata.getRegistrationType(user);
-        List<KickstartScript> l = new LinkedList<KickstartScript>(this.ksdata.getScripts());
+        List<KickstartScript> l = new LinkedList<>(this.ksdata.getScripts());
         Collections.sort(l);
-        List<KickstartScript> preScripts = new ArrayList<KickstartScript>();
-        List<KickstartScript> postBeforeRedHatScripts = new ArrayList<KickstartScript>();
-        List<KickstartScript> postAfterRedHatScripts = new ArrayList<KickstartScript>();
+        List<KickstartScript> preScripts = new ArrayList<>();
+        List<KickstartScript> postBeforeRedHatScripts = new ArrayList<>();
+        List<KickstartScript> postAfterRedHatScripts = new ArrayList<>();
         for (KickstartScript ks : l) {
             if (ks.getScriptType().equals(KickstartScript.TYPE_PRE)) {
                 preScripts.add(ks);
@@ -369,8 +369,8 @@ public class KickstartFormatter {
         StringBuilder commands = new StringBuilder();
         LinkedList l = new LinkedList(this.ksdata.getCommands());
         Collections.sort(l);
-        for (Iterator itr = l.iterator(); itr.hasNext();) {
-            KickstartCommand command = (KickstartCommand) itr.next();
+        for (Object oIn : l) {
+            KickstartCommand command = (KickstartCommand) oIn;
             String cname = command.getCommandName().getName();
             log.debug("getCommands name: " + cname);
 
@@ -395,7 +395,7 @@ public class KickstartFormatter {
             else if ("network".equals(cname)) {
                 commands.append(String.format(NETWORK_STRING, STATIC_NETWORK_VAR,
                         STATIC_NETWORK_VAR,
-                            cname + SPACE + command.getArguments()));
+                        cname + SPACE + command.getArguments()));
             }
             else {
                 String argVal = command.getArguments();
@@ -699,8 +699,8 @@ public class KickstartFormatter {
                 retval.append(CHDIR_OPT_RPMS + NEWLINE);
 
                 retval.append(WGET_OPT_RPMS);
-                for (Iterator itr = updatePackages.iterator(); itr.hasNext();) {
-                    retval.append(itr.next().toString() + SPACE);
+                for (Object updatePackageIn : updatePackages) {
+                    retval.append(updatePackageIn.toString() + SPACE);
                 }
                 retval.append(NEWLINE);
             }
@@ -709,15 +709,15 @@ public class KickstartFormatter {
                 retval.append(CHDIR_RPMS + NEWLINE);
 
                 retval.append(WGET_RPMS);
-                for (Iterator itr = freshPackages.iterator(); itr.hasNext();) {
-                    retval.append(itr.next().toString() + SPACE);
+                for (Object freshPackageIn : freshPackages) {
+                    retval.append(freshPackageIn.toString() + SPACE);
                 }
                 retval.append(NEWLINE);
             }
             if (isUpdate) {
                 retval.append(UPDATE_CMD);
-                for (int i = 0; i < UPDATE_PKG_NAMES.length; i++) {
-                    retval.append(UPDATE_OPT_PATH + UPDATE_PKG_NAMES[i] + "* ");
+                for (String updatePkgNameIn : UPDATE_PKG_NAMES) {
+                    retval.append(UPDATE_OPT_PATH + updatePkgNameIn + "* ");
                 }
                 retval.append(NEWLINE);
             }
@@ -777,11 +777,11 @@ public class KickstartFormatter {
                      NEWLINE);
         }
 
-        if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag().booleanValue()) {
+        if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag()) {
             retval.append(REMOTE_CMD + NEWLINE);
         }
 
-        if (this.ksdata.getKickstartDefaults().getCfgManagementFlag().booleanValue()) {
+        if (this.ksdata.getKickstartDefaults().getCfgManagementFlag()) {
             retval.append(CONFIG_CMD + NEWLINE);
         }
 
@@ -851,7 +851,7 @@ public class KickstartFormatter {
      */
     private static List<ActivationKey> generateActKeyTokens(KickstartData ksdata,
             KickstartSession ksession) {
-        List<ActivationKey> tokens = new ArrayList<ActivationKey>();
+        List<ActivationKey> tokens = new ArrayList<>();
         log.debug("Computing Activation Keys");
         // If we are in a KickstartSession and dont have any activation keys
         // associated with this KickstartProfile then we want to create a
@@ -879,11 +879,9 @@ public class KickstartFormatter {
         //add the activation keys associated with the kickstart profile
         if (ksdata.getDefaultRegTokens() != null) {
             if (ksdata.getDefaultRegTokens().size() > 0) {
-                for (Iterator itr = ksdata.getDefaultRegTokens().iterator();
-                    itr.hasNext();) {
-                    Token tk = (Token)itr.next();
+                for (Token tk : ksdata.getDefaultRegTokens()) {
                     ActivationKey act =
-                        ActivationKeyFactory.lookupByToken(tk);
+                            ActivationKeyFactory.lookupByToken(tk);
                     tokens.add(act);
                 }
             }
@@ -899,8 +897,7 @@ public class KickstartFormatter {
 
         // setup keys for rendering
         if (this.ksdata.getCryptoKeys() != null) {
-            for (Iterator itr = this.ksdata.getCryptoKeys().iterator(); itr.hasNext();) {
-                CryptoKey tmpKey = (CryptoKey)itr.next();
+            for (CryptoKey tmpKey : this.ksdata.getCryptoKeys()) {
                 if (tmpKey.isGPG()) {
                     gpgKeys.add(tmpKey);
                 }
@@ -926,7 +923,7 @@ public class KickstartFormatter {
      */
     private HashSet<String> getUpdatePackages(List<ActivationKey> keys) {
         log.debug("getUpdatePackages() ..");
-        HashSet<String> retval = new HashSet<String>();
+        HashSet<String> retval = new HashSet<>();
         Channel c = ksdata.getKickstartDefaults().getKstree().getChannel();
         for (ActivationKey key : keys) {
             if (key.getChannels() != null) {
@@ -939,15 +936,15 @@ public class KickstartFormatter {
             }
         }
         if (ksdata.isRhel4()) {
-            for (int i = 0; i < UPDATE_PKG_NAMES.length; i++) {
+            for (String updatePkgNameIn : UPDATE_PKG_NAMES) {
                 Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(),
-                        UPDATE_PKG_NAMES[i]);
+                        updatePkgNameIn);
                 if (packageId == null) {
                     log.debug("package:" + packageId + "not found in kickstart's channel");
                     continue;
                 }
 
-                log.debug("package  : " + UPDATE_PKG_NAMES[i]);
+                log.debug("package  : " + updatePkgNameIn);
                 log.debug("packageId: " + packageId);
                 Package p =
                         PackageFactory.lookupByIdAndUser(packageId, user);
@@ -990,7 +987,7 @@ public class KickstartFormatter {
         else if (ksdata.isRhel3() || ksdata.isRhel4()) {
             pkglist = FRESH_PKG_NAMES_RHEL34;
         }
-        HashSet<String> retval = new HashSet<String>();
+        HashSet<String> retval = new HashSet<>();
         for (String pkg : pkglist) {
             Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(), pkg);
             if (packageId != null) {
@@ -1037,9 +1034,9 @@ public class KickstartFormatter {
     private String renderSslKeys(HashSet setIn) {
         StringBuilder retval = new StringBuilder();
         int peg = 1;
-        for (Iterator itr = setIn.iterator(); itr.hasNext();) {
+        for (Object oIn : setIn) {
             retval.append("cat > /tmp/ssl-key-" + peg + " <<'EOF'" + NEWLINE);
-            CryptoKey myKey = (CryptoKey)itr.next();
+            CryptoKey myKey = (CryptoKey) oIn;
             retval.append(myKey.getKeyString() + NEWLINE);
             retval.append(NEWLINE);
             retval.append("EOF\n# ssl-key" + peg + NEWLINE);

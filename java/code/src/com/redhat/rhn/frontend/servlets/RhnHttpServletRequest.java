@@ -35,7 +35,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
 
     private static final String ACTIVE_LANG_ATTR = "rhnActiveLang";
 
-    private Vector<Locale> locales = new Vector<Locale>();
+    private Vector<Locale> locales = new Vector<>();
 
     /**
      * Constructs a new RhnHttpServletRequest based on the given parameters.
@@ -208,7 +208,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      * {@inheritDoc}
      */
     public Enumeration<String> getAttributeNames() {
-        Vector<String> tmp = new Vector<String>();
+        Vector<String> tmp = new Vector<>();
         tmp.add(ACTIVE_LANG_ATTR);
         for (Enumeration<String> e = super.getAttributeNames(); e.hasMoreElements();) {
             tmp.add(e.nextElement());

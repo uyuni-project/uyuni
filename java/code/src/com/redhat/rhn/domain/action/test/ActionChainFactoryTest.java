@@ -208,7 +208,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
     }
 
     private List<Integer> getOrders(Set<ActionChainEntry> entries) {
-        List<Integer> orders = new ArrayList<Integer>();
+        List<Integer> orders = new ArrayList<>();
         for (ActionChainEntry entry : entries) {
             orders.add(entry.getSortOrder());
         }
@@ -241,7 +241,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainFactory.removeActionChainEntrySortGaps(actionChain, 1);
         TestUtils.saveAndReload(actionChain);
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(0);
         result.add(0);
         result.add(1);
@@ -288,7 +288,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             System.out.println(entry + " " + entry.hashCode());
         }
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(0);
         result.add(0);
         result.add(1);
@@ -329,7 +329,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         Server server1 = ServerFactoryTest.createTestServer(user);
         Server server2 = ServerFactoryTest.createTestServer(user);
-        Map<Long, Integer> sortOrders = new HashMap<Long, Integer>();
+        Map<Long, Integer> sortOrders = new HashMap<>();
         for (int i = 0; i < 10; i++) {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());

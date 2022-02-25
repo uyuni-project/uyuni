@@ -23,8 +23,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -47,9 +45,7 @@ public class RecentSystemsRenderer extends BaseFragmentRenderer {
         DataResult<SystemOverview> rdr = SystemManager.registeredList(user, pc, 30);
         String registeredSystemsCSSTable = null;
 
-        Iterator<SystemOverview> i = rdr.iterator();
-        while (i.hasNext()) {
-            SystemOverview next = i.next();
+        for (SystemOverview next : rdr) {
             SystemListHelper.setSystemStatusDisplay(user, next);
         }
 

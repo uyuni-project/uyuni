@@ -70,7 +70,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(KEY, context.getRequiredParamAsString(KEY));
         params.put(KEY_TYPE, context.getRequiredParamAsString(KEY_TYPE));
         request.setAttribute("maxLimit", MAX_LIMIT);
@@ -78,7 +78,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
 
         if (!context.isSubmitted()) {
             List<SystemOverview> result = getResult(context);
-            Set<String> preSelect = new HashSet<String>();
+            Set<String> preSelect = new HashSet<>();
             for (int i = 0; i < Math.min(MAX_LIMIT, result.size()); i++) {
                 preSelect.add(result.get(i).getId().toString());
             }
@@ -121,7 +121,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
             getStrutsDelegate().saveMessages(request, errors);
         }
         else {
-            List<Long> sids = new LinkedList<Long>();
+            List<Long> sids = new LinkedList<>();
             for (String sid : helper.getSet()) {
                 sids.add(Long.valueOf(sid));
             }

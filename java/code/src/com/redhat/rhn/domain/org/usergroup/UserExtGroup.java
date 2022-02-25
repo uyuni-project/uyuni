@@ -33,7 +33,7 @@ public class UserExtGroup extends ExtGroup {
      */
     public Set<Role> getRoles() {
         if (roles == null) {
-            return new HashSet<Role>();
+            return new HashSet<>();
         }
         return roles;
     }

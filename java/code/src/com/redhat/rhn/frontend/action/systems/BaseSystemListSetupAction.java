@@ -28,8 +28,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -81,10 +79,8 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
      */
     public void setStatusDisplay(DataResult dr, User user) {
 
-        Iterator i = dr.iterator();
-
-        while (i.hasNext()) {
-            SystemOverview next = (SystemOverview) i.next();
+        for (Object oIn : dr) {
+            SystemOverview next = (SystemOverview) oIn;
             SystemListHelper.setSystemStatusDisplay(user, next);
         }
 

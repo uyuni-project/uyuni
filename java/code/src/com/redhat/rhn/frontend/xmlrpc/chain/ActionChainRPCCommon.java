@@ -67,9 +67,9 @@ public class ActionChainRPCCommon {
      * @return selectedPackages Map of the selected packages
      */
     public List<Map<String, Long>> resolvePackages(List<Integer> userPackages, User user) {
-        List<Map<String, Long>> selected = new ArrayList<Map<String, Long>>();
+        List<Map<String, Long>> selected = new ArrayList<>();
         for (Integer pkgId : userPackages) {
-            Map<String, Long> pkgMap = new HashMap<String, Long>();
+            Map<String, Long> pkgMap = new HashMap<>();
 
             Package pkg = PackageManager.lookupByIdAndUser(
                     pkgId.longValue(), user);

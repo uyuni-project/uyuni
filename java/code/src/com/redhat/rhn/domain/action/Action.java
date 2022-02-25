@@ -392,11 +392,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append(id);
-        result.append(" : ");
-        result.append(name);
-        return result.toString();
+        return " : " + name;
     }
 
     /**

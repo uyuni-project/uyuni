@@ -102,7 +102,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         channel.addPackage(chanPack);
         e.addPackage(errataPack);
 
-        List<Errata> errataList = new ArrayList<Errata>();
+        List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
         List<Errata> addedList = ErrataFactory.addToChannel(errataList, channel, user, false);
         Errata added = addedList.get(0);
@@ -293,7 +293,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         WriteMode m =
             ModeFactory.
                 getWriteMode("test_queries", "insert_into_rhnServerNeededCache");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("package_id", packageId);
         params.put("server_id", serverId);
         params.put("errata_id", errataId);

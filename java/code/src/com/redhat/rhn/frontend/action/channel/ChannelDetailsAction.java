@@ -84,10 +84,8 @@ public class ChannelDetailsAction extends RhnAction {
             chan = (Channel) ChannelFactory.reload(chan);
             params.put("cid", cid);
             fwd = "success";
-            ServerFactory.listMinionsByChannel(cid).stream().forEach(ms -> {
-                MinionPillarManager.INSTANCE.generatePillar(ms, false,
-                        Collections.emptySet());
-            });
+            ServerFactory.listMinionsByChannel(cid).stream()
+                    .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
         }
 
         request.setAttribute("systems_subscribed",

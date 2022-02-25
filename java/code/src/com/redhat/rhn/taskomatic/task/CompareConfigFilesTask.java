@@ -102,6 +102,6 @@ public class CompareConfigFilesTask extends RhnJavaJob {
 
     @Override
     protected void finishJob() {
-        actionsToSchedule.forEach(a -> TaskHelper.scheduleActionExecution(a));
+        actionsToSchedule.forEach(TaskHelper::scheduleActionExecution);
     }
 }

@@ -74,7 +74,7 @@ public class Network {
      * @return a map representation of the interface
      */
     Map<String, Object> toMap() {
-        Map<String, Object> inet = new HashMap<String, Object>();
+        Map<String, Object> inet = new HashMap<>();
         addToMap(inet, "macaddress-" + name, macAddress);
         addToMap(inet, netmaskVariableName + "-" + name, netmask);
         addToMap(inet, "ipaddress-" + name, ipAddress);

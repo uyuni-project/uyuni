@@ -179,7 +179,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcAddErrataUpdate() throws Exception {
-        List<Integer> errataIds = new ArrayList<Integer>();
+        List<Integer> errataIds = new ArrayList<>();
         errataIds.add(this.errata.getId().intValue());
         errataIds.add(this.errata2.getId().intValue());
         assertEquals(true, this.ach.addErrataUpdate(this.admin,
@@ -198,7 +198,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcPackageInstallation() throws Exception {
-        List<Integer> packages = new ArrayList<Integer>();
+        List<Integer> packages = new ArrayList<>();
         packages.add(this.channelPackage.getId().intValue());
         assertEquals(true,
                      this.ach.addPackageInstall(this.admin,
@@ -216,7 +216,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcPackageInstallationFailed() throws Exception {
-        List<Integer> packages = new ArrayList<Integer>();
+        List<Integer> packages = new ArrayList<>();
         packages.add(0);
         try {
             this.ach.addPackageInstall(this.admin,
@@ -235,7 +235,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcPackageRemoval() throws Exception {
-        List<Integer> packagesToRemove = new ArrayList<Integer>();
+        List<Integer> packagesToRemove = new ArrayList<>();
         packagesToRemove.add(this.pkg.getId().intValue());
         assertEquals(true, this.ach.addPackageRemoval(this.admin,
                                                       this.server.getId().intValue(),
@@ -255,7 +255,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         try {
             assertEquals(true, this.ach.addPackageRemoval(
                     this.admin, this.server.getId().intValue(),
-                    new ArrayList<Integer>(), CHAIN_LABEL) > 0);
+                    new ArrayList<>(), CHAIN_LABEL) > 0);
             fail("Expected exception: " +
                  InvalidParameterException.class.getCanonicalName());
         }
@@ -269,7 +269,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcPackageRemovalFailureOnUnknownPackages() throws Exception {
-        List<Integer> packagesToRemove = new ArrayList<Integer>();
+        List<Integer> packagesToRemove = new ArrayList<>();
         packagesToRemove.add(0);
 
         try {
@@ -448,7 +448,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         Map<String, Object> info =
                 ErrataCacheManagerTest.createServerNeededCache(this.admin,
                         ErrataFactory.ERRATA_TYPE_BUG);
-        List<Integer> upgradePackages = new ArrayList<Integer>();
+        List<Integer> upgradePackages = new ArrayList<>();
         Server system = (Server) info.get("server");
         upgradePackages.add(this.pkg.getId().intValue());
 
@@ -471,7 +471,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test package upgrade with an empty list.
      */
     public void testAcPackageUpgradeOnEmpty() {
-        List<Integer> upgradePackages = new ArrayList<Integer>();
+        List<Integer> upgradePackages = new ArrayList<>();
         try {
             this.ach.addPackageUpgrade(this.admin,
                                        this.server.getId().intValue(),
@@ -489,7 +489,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test package upgrade with an empty list.
      */
     public void testAcPackageUpgradeOnUnknown() {
-        List<Integer> upgradePackages = new ArrayList<Integer>();
+        List<Integer> upgradePackages = new ArrayList<>();
         upgradePackages.add(0);
         try {
             this.ach.addPackageUpgrade(this.admin,
@@ -509,7 +509,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcPackageVerify() {
         DataResult<PackageListItem> packageListItems =
                 PackageManager.systemPackageList(this.server.getId(), null);
-        List<Integer> packages = new ArrayList<Integer>();
+        List<Integer> packages = new ArrayList<>();
         for (PackageListItem packageListItem : packageListItems) {
             packages.add(packageListItem.getPackageId().intValue());
         }
@@ -530,7 +530,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         try {
             this.ach.addPackageVerify(this.admin,
                                       this.server.getId().intValue(),
-                                      new ArrayList<Integer>(),
+                    new ArrayList<>(),
                                       CHAIN_LABEL);
             fail("Expected exception: " +
                  InvalidParameterException.class.getCanonicalName());
@@ -544,7 +544,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test package verification failure when unknown package is verified.
      */
     public void testAcPackageVerifyFailureOnUnknown() {
-        List<Integer> packages = new ArrayList<Integer>();
+        List<Integer> packages = new ArrayList<>();
         packages.add(0);
         try {
             this.ach.addPackageVerify(this.admin,

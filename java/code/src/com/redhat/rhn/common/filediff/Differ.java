@@ -27,7 +27,7 @@ public class Differ {
     private Trace beforeCurrent;
     private int bestSoFar;
     private static final int NUMBEROFTRACESTOKEEP = 1000;
-    private final List<Integer> matches = new ArrayList<Integer>();
+    private final List<Integer> matches = new ArrayList<>();
 
     /**
      * @param oldLength The length of the old file

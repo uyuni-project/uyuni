@@ -517,9 +517,9 @@ public class DownloadController {
             Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
-            Opt.consume(channelClaim, () -> {
-                log.info(String.format("Token %s does provide access to any channel", token));
-            }, channels -> {
+            Opt.consume(channelClaim,
+                    () -> log.info(String.format("Token %s does provide access to any channel", token)),
+                    channels -> {
                 if (!channels.contains(channel)) {
                     log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
                                            token, channel));

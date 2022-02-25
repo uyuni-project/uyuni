@@ -126,9 +126,7 @@ public class ApplyStatesActionResult implements Serializable {
         try {
             @SuppressWarnings("unchecked")
             Map<String, Map<String, Object>> payload = yaml.loadAs(getOutputContents(), Map.class);
-            payload.entrySet().stream().forEach(e -> {
-                result.add(new StateResult(e));
-            });
+            payload.entrySet().stream().forEach(e -> result.add(new StateResult(e)));
         }
         catch (ConstructorException ce) {
             return Optional.empty();

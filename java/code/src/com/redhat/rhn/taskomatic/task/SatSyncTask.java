@@ -35,7 +35,7 @@ public class SatSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
-        List<String> cmd = new ArrayList<String>();
+        List<String> cmd = new ArrayList<>();
         String list = (String) ctx.getJobDetail().getJobDataMap().get("list");
         String channel = (String) ctx.getJobDetail().getJobDataMap().get("channel");
 

@@ -38,7 +38,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,18 +73,17 @@ public class LockUnlockSystemAction extends RhnListAction {
             boolean unlck = context.wasDispatched("ssm.misc.lockunlock.dispatch.unlock");
             if (lck || unlck) {
                 String reason = StringUtil.nullIfEmpty(form.getString("lock_reason"));
-                Iterator<Long> serverIdsIterator = set.getElementValues().iterator();
-                while (serverIdsIterator.hasNext()) {
+                for (Long longIn : set.getElementValues()) {
                     Server server = SystemManager.lookupByIdAndUser(
-                            serverIdsIterator.next(), context.getCurrentUser());
+                            longIn, context.getCurrentUser());
                     if (lck && (server.getLock() == null)) {
                         if (reason == null) {
                             reason = LocalizationService.getInstance()
-                                         .getMessage("sdc.details.overview.lock.reason");
+                                    .getMessage("sdc.details.overview.lock.reason");
                         }
 
                         SystemManager.lockServer(context.getCurrentUser(),
-                                                 server, reason);
+                                server, reason);
                         locledSys++;
                     }
                     else if (unlck && (server.getLock() != null)) {
@@ -147,8 +145,7 @@ public class LockUnlockSystemAction extends RhnListAction {
     public List getResult(RequestContext context) {
         List<SystemOverview> systems = SystemManager.inSet(context.getCurrentUser(),
                                                            RhnSetDecl.SYSTEMS.getLabel());
-        for (int i = 0; i < systems.size(); i++) {
-            SystemOverview systemOverview = systems.get(i);
+        for (SystemOverview systemOverview : systems) {
             systemOverview.setSelectable(1);
             Channel channel = SystemManager.lookupByIdAndUser(systemOverview.getId(),
                     context.getCurrentUser()).getBaseChannel();

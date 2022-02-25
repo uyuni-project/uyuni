@@ -471,7 +471,7 @@ public class ConfigChannelHandler extends BaseHandler {
      public ConfigRevision updateInitSls(User user, String channelLabel, Map<String, Object> data) {
         String path = "/init.sls";
         //confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add(ConfigRevisionSerializer.CONTENTS);
         validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
         validKeys.add(ConfigRevisionSerializer.REVISION);
@@ -558,7 +558,7 @@ public class ConfigChannelHandler extends BaseHandler {
                                                 Map<String, Object> data) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add(ConfigRevisionSerializer.OWNER);
         validKeys.add(ConfigRevisionSerializer.GROUP);
         validKeys.add(ConfigRevisionSerializer.PERMISSIONS);
@@ -573,9 +573,7 @@ public class ConfigChannelHandler extends BaseHandler {
         }
         validateMap(validKeys, data);
 
-        if (data.get(ConfigRevisionSerializer.SELINUX_CTX) == null) {
-            data.put(ConfigRevisionSerializer.SELINUX_CTX, "");
-        }
+        data.putIfAbsent(ConfigRevisionSerializer.SELINUX_CTX, "");
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
@@ -627,14 +625,12 @@ public class ConfigChannelHandler extends BaseHandler {
                                                 Map<String, Object> data) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add(ConfigRevisionSerializer.TARGET_PATH);
         validKeys.add(ConfigRevisionSerializer.REVISION);
         validKeys.add(ConfigRevisionSerializer.SELINUX_CTX);
         validateMap(validKeys, data);
-        if (data.get(ConfigRevisionSerializer.SELINUX_CTX) == null) {
-            data.put(ConfigRevisionSerializer.SELINUX_CTX, "");
-        }
+        data.putIfAbsent(ConfigRevisionSerializer.SELINUX_CTX, "");
 
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(loggedInUser, channelLabel);
@@ -676,7 +672,7 @@ public class ConfigChannelHandler extends BaseHandler {
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
+        List<ConfigRevision> revisions = new LinkedList<>();
         for (String path : paths) {
             ConfigFile cf = cm.lookupConfigFile(loggedInUser, channel.getId(), path);
             if (cf == null) {
@@ -849,7 +845,7 @@ public class ConfigChannelHandler extends BaseHandler {
          ConfigurationManager cm = ConfigurationManager.getInstance();
 
          // obtain the latest revision for the file provided by 'path'
-         Set<Long> revisions = new HashSet<Long>();
+         Set<Long> revisions = new HashSet<>();
          ConfigFile cf = cm.lookupConfigFile(loggedInUser, channel.getId(), path);
          if (cf == null) {
              throw new NoSuchConfigFilePathException(path, channelLabel);
@@ -857,7 +853,7 @@ public class ConfigChannelHandler extends BaseHandler {
          revisions.add(cf.getLatestConfigRevision().getId());
 
          // schedule the action for the servers specified
-         Set<Long> sids = new HashSet<Long>();
+         Set<Long> sids = new HashSet<>();
          for (Integer sid : serverIds) {
              sids.add(sid.longValue());
          }
@@ -941,7 +937,7 @@ public class ConfigChannelHandler extends BaseHandler {
         }
         List<ConfigSystemDto> dtos = manager.listChannelSystems(loggedInUser, channel,
                 null);
-        List<Server> servers = new ArrayList<Server>();
+        List<Server> servers = new ArrayList<>();
         for (ConfigSystemDto m : dtos) {
             Server s = SystemManager.lookupByIdAndUser(m.getId(), loggedInUser);
             if (s != null) {
@@ -1011,14 +1007,14 @@ public class ConfigChannelHandler extends BaseHandler {
         }
         List<ConfigSystemDto> dtos = manager.listChannelSystems(loggedInUser, channel,
                 null);
-        Set<Long> servers = new HashSet<Long>();
+        Set<Long> servers = new HashSet<>();
         for (ConfigSystemDto m : dtos) {
             Server s = SystemManager.lookupByIdAndUser(m.getId(), loggedInUser);
             if (s != null) {
                 servers.add(s.getId());
             }
         }
-        Set<Long> fileIds = new HashSet<Long>();
+        Set<Long> fileIds = new HashSet<>();
         fileIds.add(manager.lookupConfigFile(loggedInUser,
                 channel.getId(), filePath).getId());
 

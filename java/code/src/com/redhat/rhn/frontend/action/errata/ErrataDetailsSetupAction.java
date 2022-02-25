@@ -33,7 +33,6 @@ import com.suse.manager.errata.VendorSpecificErrataParser;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -78,11 +77,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
             keywordsDisplay = StringUtil.join(
                 LocalizationService.getInstance().getMessage("list delimiter"),
                 IteratorUtils.getIterator(CollectionUtils.collect(keywords,
-                        new Transformer() {
-                            public Object transform(Object o) {
-                                return o.toString();
-                            }
-                        })));
+                        o -> o.toString())));
         }
 
         request.setAttribute("errata", errata);

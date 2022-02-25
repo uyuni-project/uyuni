@@ -363,7 +363,7 @@ public class ConfigSystemDto extends BaseDto {
      * @return Whether enabling was a success.
      */
     public boolean isSuccess() {
-        return errorCode == null || errorCode.intValue() == ConfigurationManager.ENABLE_SUCCESS;
+        return errorCode == null || errorCode == ConfigurationManager.ENABLE_SUCCESS;
     }
 
     /**
@@ -376,7 +376,7 @@ public class ConfigSystemDto extends BaseDto {
         }
         LocalizationService ls = LocalizationService.getInstance();
 
-        switch (errorCode.intValue()) {
+        switch (errorCode) {
             case ConfigurationManager.ENABLE_SUCCESS:
                 return ls.getMessage("summary.jsp.noerror");
             case ConfigurationManager.ENABLE_ERROR_RHNTOOLS:

@@ -50,7 +50,7 @@ public class ManagerInfoFactory extends HibernateFactory {
      * @return last mgr-sync refresh date
      */
     public static Optional<Date> getLastMgrSyncRefresh() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         SelectMode m = ModeFactory.getMode("util_queries", "get_last_mgr_sync_refresh");
         DataResult<Map> dr = m.execute(params);
         if (!dr.isEmpty()) {
@@ -71,7 +71,7 @@ public class ManagerInfoFactory extends HibernateFactory {
      * @param milliseconds the time in milliseconds
      */
     public static void setLastMgrSyncRefresh(long milliseconds) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("lastrefresh", new Timestamp(milliseconds));
 
         WriteMode m = ModeFactory.getWriteMode("util_queries",

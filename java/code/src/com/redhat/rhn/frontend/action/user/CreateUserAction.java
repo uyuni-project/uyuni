@@ -57,7 +57,7 @@ public class CreateUserAction extends RhnAction {
         command.setLastName(form.getString("lastName"));
 
         //Should this user use pam authentication?
-        if (form.get("usepam") != null && ((Boolean)form.get("usepam")).booleanValue()) {
+        if (form.get("usepam") != null && (Boolean) form.get("usepam")) {
             command.setUsePamAuthentication(true);
         }
         else {
@@ -77,10 +77,9 @@ public class CreateUserAction extends RhnAction {
 
         // Put any validationErrors into ActionErrors object
         ValidatorError[] validationErrors = command.validate();
-        for (int i = 0; i < validationErrors.length; i++) {
-            ValidatorError err = validationErrors[i];
+        for (ValidatorError err : validationErrors) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage(err.getKey(), err.getValues()));
+                    new ActionMessage(err.getKey(), err.getValues()));
         }
 
         Address addr = UserFactory.createAddress();
@@ -125,7 +124,7 @@ public class CreateUserAction extends RhnAction {
          * password and allow it.
          */
         boolean validatePassword = true;
-        if (form.get("usepam") != null && ((Boolean) form.get("usepam")).booleanValue()) {
+        if (form.get("usepam") != null && (Boolean) form.get("usepam")) {
             String hash = MD5Crypt.crypt("" + System.currentTimeMillis());
             if (form.get(UserActionHelper.DESIRED_PASS) == null ||
                     form.get(UserActionHelper.DESIRED_PASS).equals("")) {
@@ -164,8 +163,7 @@ public class CreateUserAction extends RhnAction {
                 request.getServerName(),
                 (String) form.get(UserActionHelper.DESIRED_PASS));
 
-        user.setTimeZone(UserManager.getTimeZone(((Integer) form.get("timezone"))
-            .intValue()));
+        user.setTimeZone(UserManager.getTimeZone((Integer) form.get("timezone")));
 
         String preferredLocale = form.getString("preferredLocale");
         String preferredDocsLocale = form.getString("preferredDocsLocale");

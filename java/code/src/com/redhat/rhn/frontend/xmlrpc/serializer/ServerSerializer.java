@@ -102,7 +102,7 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;
-        List<String> addonEntitlements = new LinkedList<String>();
+        List<String> addonEntitlements = new LinkedList<>();
         for (Entitlement ent : server.getEntitlements()) {
             if (ent.isBase()) {
                 baseEntitlement = ent.getLabel();

@@ -111,7 +111,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
                         getStrutsDelegate().saveMessages(request, errors);
                         return handleFailure(mapping, context);
                 }
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
 
                 if (CREATE_MODE.equals(mapping.getParameter())) {
                     ActivationKey key = create(form, context);
@@ -154,7 +154,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         setupContactMethods(context);
 
         if (EDIT_MODE.equals(mapping.getParameter())) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.TOKEN_ID,
                         context.getParam(RequestContext.TOKEN_ID, true));
             return getStrutsDelegate().forwardParams(
@@ -169,7 +169,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
      * the form was submitted.
      */
     private List<String> entitlementsToRemove(Org org, List<String> selectedEntitlements) {
-        List<String> removeThese = new LinkedList<String>();
+        List<String> removeThese = new LinkedList<>();
         for (Entitlement ent : org.getValidAddOnEntitlementsForOrg()) {
             if (!selectedEntitlements.contains(ent.getLabel())) {
                 removeThese.add(ent.getLabel());
@@ -252,7 +252,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         }
 
         form.set(ORG_DEFAULT, key.isUniversalDefault());
-        List<String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<>();
         for (ServerGroupType type : key.getEntitlements()) {
             entitlements.add(type.getLabel());
         }
@@ -279,7 +279,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
     private void setupEntitlements(RequestContext context) {
         Org org = context.getCurrentUser().getOrg();
         Set<LabelValueEnabledBean> entWidgets = new
-                                            TreeSet<LabelValueEnabledBean>();
+                TreeSet<>();
         context.getRequest().setAttribute(POSSIBLE_ENTS, entWidgets);
         for (Entitlement ent : org.getValidAddOnEntitlementsForOrg()) {
             entWidgets.add(lve(ent.getHumanReadableLabel(), ent.getLabel(), false));

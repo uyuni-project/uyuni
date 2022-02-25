@@ -58,9 +58,9 @@ public class RhnValidationHelper {
             ValidatorError... errors) {
         ActionErrors messages = new ActionErrors();
 
-        for (int i = 0; i < errors.length; i++) {
+        for (ValidatorError errorIn : errors) {
             messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    errors[i].getKey(), errors[i].getValues()));
+                    errorIn.getKey(), errorIn.getValues()));
         }
         return messages;
     }
@@ -75,9 +75,9 @@ public class RhnValidationHelper {
             ValidatorWarning... warnings) {
         ActionMessages messages = new ActionMessages();
 
-        for (int i = 0; i < warnings.length; i++) {
+        for (ValidatorWarning warningIn : warnings) {
             messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    warnings[i].getKey(), warnings[i].getValues()));
+                    warningIn.getKey(), warningIn.getValues()));
         }
         return messages;
     }

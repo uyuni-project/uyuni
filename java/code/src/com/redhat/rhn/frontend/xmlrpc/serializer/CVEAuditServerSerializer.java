@@ -68,12 +68,12 @@ public class CVEAuditServerSerializer extends RhnXmlRpcCustomSerializer {
 
         CVEAuditServer system = (CVEAuditServer) value;
         Collection<ChannelIdNameLabelTriple> channels = system.getChannels();
-        List<String> channelLabels = new ArrayList<String>(channels.size());
+        List<String> channelLabels = new ArrayList<>(channels.size());
         for (ChannelIdNameLabelTriple channel : channels) {
             channelLabels.add(channel.getLabel());
         }
         Collection<ErrataIdAdvisoryPair> erratas = system.getErratas();
-        List<String> errataAdvisories = new ArrayList<String>(erratas.size());
+        List<String> errataAdvisories = new ArrayList<>(erratas.size());
         for (ErrataIdAdvisoryPair errata : erratas) {
             errataAdvisories.add(errata.getAdvisory());
         }

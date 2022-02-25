@@ -110,15 +110,14 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         PaygSshDataFactory.savePaygSshData(paygData);
 
         SUSEProduct productSleHa = SUSEProductFactory.lookupByProductId(1324);
-        CHANNEL_SUFFIX.keySet().forEach(suffix -> {
-            SCCCachingFactory.lookupRepositoryByName(productSleHa.getName() + "-" + productSleHa.getVersion() + suffix)
-                    .ifPresent(repo-> {
-                        SCCRepositoryCloudRmtAuth newAuth = new SCCRepositoryCloudRmtAuth();
-                        newAuth.setRepo(repo);
-                        newAuth.setCredentials(cred);
-                        SCCCachingFactory.saveRepositoryAuth(newAuth);
-                    });
-        });
+        CHANNEL_SUFFIX.keySet().forEach(suffix -> SCCCachingFactory
+                .lookupRepositoryByName(productSleHa.getName() + "-" + productSleHa.getVersion() + suffix)
+                .ifPresent(repo-> {
+                    SCCRepositoryCloudRmtAuth newAuth = new SCCRepositoryCloudRmtAuth();
+                    newAuth.setRepo(repo);
+                    newAuth.setCredentials(cred);
+                    SCCCachingFactory.saveRepositoryAuth(newAuth);
+                }));
         assertEquals(4, SCCCachingFactory.lookupRepositoryAuthByCredential(cred).size());
 
         paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
@@ -168,13 +167,9 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     private void populateProducts() {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductFactory.findAllSUSEProducts()
-                .forEach(suseProduct -> {
-                    CHANNEL_SUFFIX.forEach((suffix, installer) -> {
-                        createProductRepo(suseProduct,
-                                createTestRepo(suseProduct.getName() + "-" +
-                                        suseProduct.getVersion() + suffix, installer));
-                    });
-                });
+                .forEach(suseProduct -> CHANNEL_SUFFIX.forEach((suffix, installer) -> createProductRepo(suseProduct,
+                            createTestRepo(suseProduct.getName() + "-" +
+                                    suseProduct.getVersion() + suffix, installer))));
     }
 
     private SUSEProductSCCRepository createProductRepo(SUSEProduct suseProduct, SCCRepository sccRepository) {

@@ -60,10 +60,10 @@ public class SessionSwap {
      *         where D1... are the input data and HEX is the hex signature.
      */
     public static String encodeData(String[] in) {
-        for (int i = 0; i < in.length; i++) {
-            if (!StringUtils.containsOnly(in[i], HEX_CHARS)) {
+        for (String sIn : in) {
+            if (!StringUtils.containsOnly(sIn, HEX_CHARS)) {
                 throw new IllegalArgumentException("encodeData input must be " +
-                                                   "lowercase hex, but wasn't: " + in[i]);
+                        "lowercase hex, but wasn't: " + sIn);
             }
         }
 
@@ -110,18 +110,17 @@ public class SessionSwap {
      */
     public static String generateSwapKey(String data) {
         Config c = Config.get();
-        StringBuilder swapKey = new StringBuilder(20);
 
-        swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_1));
-        swapKey.append(":");
-        swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_2));
-        swapKey.append(":");
-        swapKey.append(data);
-        swapKey.append(":");
-        swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_3));
-        swapKey.append(":");
-        swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4));
-        return computeMD5Hash(swapKey.toString());
+        String swapKey = c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_1) +
+                ":" +
+                c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_2) +
+                ":" +
+                data +
+                ":" +
+                c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_3) +
+                ":" +
+                c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4);
+        return computeMD5Hash(swapKey);
     }
 
     /**

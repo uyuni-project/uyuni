@@ -62,9 +62,9 @@ public class ClonableErrataDto extends BaseDto {
      * @return List of channel maps
      */
     public List<Object> getChannelMap() {
-      List<Object> l = new ArrayList<Object>();
+      List<Object> l = new ArrayList<>();
         for (int i = 0; i < channelId.size(); i++) {
-          Map<String, Object> m = new HashMap<String, Object>();
+          Map<String, Object> m = new HashMap<>();
           m.put("id", channelId.get(i));
           m.put("name", channelName.get(i));
           l.add(m);

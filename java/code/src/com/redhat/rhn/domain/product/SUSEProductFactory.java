@@ -291,8 +291,8 @@ public class SUSEProductFactory extends HibernateFactory {
             return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream)
                     .filter(pc -> pc.getChannel().getChannelArch().equals(channel.getChannelArch()));
         }).orElse(Stream.empty())
-          .filter(pc -> pc.isMandatory())
-          .map(pc -> pc.getChannel());
+          .filter(SUSEProductChannel::isMandatory)
+          .map(SUSEProductChannel::getChannel);
     }
 
     /**
@@ -306,7 +306,7 @@ public class SUSEProductFactory extends HibernateFactory {
         return Stream.concat(
                 product.getRepositories()
                         .stream()
-                        .filter(p -> p.isMandatory())
+                        .filter(SUSEProductSCCRepository::isMandatory)
                         .filter(p -> p.getRootProduct().equals(root)),
                 SUSEProductFactory.findAllBaseProductsOf(product, root).stream()
                 .flatMap(p -> findAllMandatoryChannels(p, root))
@@ -321,7 +321,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Optional<SUSEProduct> findProductByChannelLabel(String channelLabel) {
         return lookupByChannelLabelFirst(channelLabel)
-                .map(p -> p.getProduct());
+                .map(SUSEProductSCCRepository::getProduct);
     }
 
     /**
@@ -331,12 +331,10 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a stream of suse product channels which are required by the channel
      */
     public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(String channelLabel) {
-        return lookupByChannelLabelFirst(channelLabel).map(spsr -> {
-            return findAllMandatoryChannels(
-                    spsr.getProduct(),
-                    spsr.getRootProduct()
-            );
-        }).orElseGet(Stream::empty);
+        return lookupByChannelLabelFirst(channelLabel).map(spsr -> findAllMandatoryChannels(
+                spsr.getProduct(),
+                spsr.getRootProduct()
+        )).orElseGet(Stream::empty);
     }
 
     /**
@@ -557,7 +555,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("baseId", base.getId());
         params.put("rootId", root.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllExtensionProductsForRootOf", params);
@@ -586,7 +584,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("extId", ext.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
     }
@@ -599,7 +597,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("extId", ext.getId());
         params.put("rootId", root.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsForRootOf", params);
@@ -612,7 +610,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct base) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("baseId", base.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
     }

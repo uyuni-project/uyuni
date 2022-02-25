@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,9 +70,8 @@ public class MapBuilder {
         Map retval = new HashMap();
         try {
             Map properties = BeanUtils.describe(bean);
-            Iterator i = properties.keySet().iterator();
-            while (i.hasNext()) {
-                String key = (String) i.next();
+            for (Object oIn : properties.keySet()) {
+                String key = (String) oIn;
                 if (includes.isEmpty() || includes.contains(key)) {
                     if (!excludes.contains(key)) {
                         if (properties.get(key) != null) {

@@ -116,7 +116,7 @@ public class Profile extends CobblerObject {
      * @return a list of profiles.
      */
     public static List<Profile> list(CobblerConnection connection) {
-        List<Profile> profiles = new LinkedList<Profile>();
+        List<Profile> profiles = new LinkedList<>();
         List<Map<String, Object>> cProfiles = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_profiles");
 
@@ -137,7 +137,7 @@ public class Profile extends CobblerObject {
      */
     public static List<Profile> list(CobblerConnection connection,
                                 Set<String> excludes) {
-        List<Profile> profiles = new LinkedList<Profile>();
+        List<Profile> profiles = new LinkedList<>();
         List<Map<String, Object>> cProfiles = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_profiles");
 

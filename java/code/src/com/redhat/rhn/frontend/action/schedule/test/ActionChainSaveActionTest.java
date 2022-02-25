@@ -29,8 +29,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.stringtree.json.JSONReader;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,12 +65,12 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
             ServerFactoryTest.createTestServer(user), 3);
 
         String newLabel = TestUtils.randomString();
-        List<Long> deletedEntries = new LinkedList<Long>();
+        List<Long> deletedEntries = new LinkedList<>();
         deletedEntries.add(lastAction.getId());
-        List<Integer> deletedSortOrders = new LinkedList<Integer>();
+        List<Integer> deletedSortOrders = new LinkedList<>();
         deletedSortOrders.add(0);
         deletedSortOrders.add(3);
-        List<Integer> reorderedSortOrders = new LinkedList<Integer>();
+        List<Integer> reorderedSortOrders = new LinkedList<>();
         reorderedSortOrders.add(2);
         reorderedSortOrders.add(1);
 
@@ -89,14 +87,9 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
         Set<ActionChainEntry> entries = actionChain.getEntries();
         assertEquals(4, entries.size());
 
-        List<ActionChainEntry> sortedEntries = new LinkedList<ActionChainEntry>();
+        List<ActionChainEntry> sortedEntries = new LinkedList<>();
         sortedEntries.addAll(entries);
-        Collections.sort(sortedEntries, new Comparator<ActionChainEntry>() {
-            @Override
-            public int compare(ActionChainEntry entry1, ActionChainEntry entry2) {
-                return entry1.getId().compareTo(entry2.getId());
-            }
-        });
+        sortedEntries.sort((entry1, entry2) -> entry1.getId().compareTo(entry2.getId()));
         for (int i = 0; i < sortedEntries.size(); i++) {
             assertEquals((Integer) (1 - i / 2), sortedEntries.get(i).getSortOrder());
         }

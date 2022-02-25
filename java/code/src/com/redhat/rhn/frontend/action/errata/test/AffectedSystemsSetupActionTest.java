@@ -21,8 +21,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
-import java.util.Iterator;
-
 /**
  * AffectedSystemsSetupActionTest
  */
@@ -50,9 +48,8 @@ public class AffectedSystemsSetupActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
-        Iterator itr = dr.iterator();
-        while (itr.hasNext()) {
-            SystemOverview s = (SystemOverview) itr.next();
+        for (Object oIn : dr) {
+            SystemOverview s = (SystemOverview) oIn;
             assertNotNull(s.getEntitlementLevel());
         }
         assertNotNull(request.getAttribute("errata"));

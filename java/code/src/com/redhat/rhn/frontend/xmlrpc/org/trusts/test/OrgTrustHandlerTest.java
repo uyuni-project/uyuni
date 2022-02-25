@@ -98,8 +98,8 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length >= 2);
 
         boolean foundOrg2 = false, foundOrg3 = false;
-        for (int i = 0; i < result.length; i++) {
-            TrustedOrgDto item = (TrustedOrgDto) result[i];
+        for (Object oIn : result) {
+            TrustedOrgDto item = (TrustedOrgDto) oIn;
             if (item.getName().equals(org2.getName())) {
                 assertNotNull(item.getSharedChannels());
                 foundOrg2 = true;
@@ -137,8 +137,8 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length >= 1);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName().equals(channel.getName())) {
                 foundChannel = true;
             }
@@ -168,8 +168,8 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length >= 1);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName().equals(channel.getName())) {
                 foundChannel = true;
             }
@@ -253,7 +253,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         flushAndEvict(s);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Package pkg = PackageTest.createTestPackage(orgA);
-        List<Long> packages = new ArrayList<Long>();
+        List<Long> packages = new ArrayList<>();
         packages.add(pkg.getId());
         List<Map<String, Object>> affected =
             handler.listSystemsAffected(

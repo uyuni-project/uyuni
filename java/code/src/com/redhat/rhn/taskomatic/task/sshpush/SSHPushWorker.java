@@ -43,7 +43,6 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -143,8 +142,8 @@ public class SSHPushWorker implements QueueWorker {
 
            // Loop through the proxy path and return 1st in chain
            if (retval != null) {
-               for (Iterator<?> itr = retval.iterator(); itr.hasNext();) {
-                   ServerPath path = (ServerPath) itr.next();
+               for (Object oIn : retval) {
+                   ServerPath path = (ServerPath) oIn;
                    if (path.getPosition().toString().equals("1")) {
                        if (Config.get().getBoolean(CONFIG_KEY_USE_HOSTNAME)) {
                            proxyHost = path.getHostname();

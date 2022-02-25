@@ -84,7 +84,7 @@ public class ControllerApiUtils {
     public static String listFiltersJsonResponse(Response res, User user) {
         Map<ContentFilter, List<ContentProject>> filtersWithProjects = ContentManager.listFilters(user)
                 .stream()
-                .collect(Collectors.toMap(p -> p, p -> ContentProjectFactory.listFilterProjects(p)));
+                .collect(Collectors.toMap(p -> p, ContentProjectFactory::listFilterProjects));
 
         return json(GSON, res, ResultJson.success(
                 ResponseMappers.mapFilterListingFromDB(filtersWithProjects)

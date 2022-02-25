@@ -556,18 +556,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 r.getActionsServers().keySet().forEach(a -> {
                     assertEquals(ActionFactory.TYPE_ERRATA, a.getActionType());
                     assertEquals(sapAction1, a);
-                    r.getActionsServers().get(a).forEach(s -> {
-                        assertEquals(sapServer.getId(), s.getId());
-                    });
+                    r.getActionsServers().get(a).forEach(s -> assertEquals(sapServer.getId(), s.getId()));
                 });
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
                     assertEquals(ActionFactory.TYPE_VIRTUALIZATION_START, a.getActionType());
                     assertEquals(coreAction3, a);
-                    r.getActionsServers().get(a).forEach(s -> {
-                        assertEquals(coreServer.getId(), s.getId());
-                    });
+                    r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));
                 });
             }
         }

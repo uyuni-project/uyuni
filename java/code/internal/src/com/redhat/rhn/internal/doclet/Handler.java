@@ -35,7 +35,7 @@ public class Handler implements Comparable<Handler> {
      * Constructor
      */
     public Handler() {
-        calls = new ArrayList<ApiCall>();
+        calls = new ArrayList<>();
     }
 
     /**

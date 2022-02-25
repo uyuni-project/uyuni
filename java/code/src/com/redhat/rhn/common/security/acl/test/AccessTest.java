@@ -286,8 +286,8 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         String[] methods = { "user_authenticated()" };
 
-        for (int i = 0; i < methods.length; i++) {
-            evalAclAssertFalse(acl, methods[i]);
+        for (String methodIn : methods) {
+            evalAclAssertFalse(acl, methodIn);
         }
     }
 

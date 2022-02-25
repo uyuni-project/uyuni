@@ -15,8 +15,6 @@
 
 package com.suse.pam;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,8 +38,7 @@ public class PamReturnValue {
     /**
      * The {@link List} of possible values.
      */
-    public static final List VALUES = Collections.unmodifiableList(Arrays
-            .asList(PRIVATE_VALUES));
+    public static final List VALUES = List.of(PRIVATE_VALUES);
 
     private final String description;
     private final int id;

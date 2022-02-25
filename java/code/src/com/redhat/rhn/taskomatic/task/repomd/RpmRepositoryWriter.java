@@ -259,10 +259,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             susedataFile = new CompressingDigestOutputWriter(
                     new FileOutputStream(prefix + SUSEDATA_FILE), checksumAlgo);
         }
-        catch (IOException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
+        catch (IOException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
 
@@ -448,10 +445,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                           channel.getLabel() + "'");
             }
         }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        catch (InterruptedException e) {
+        catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
         log.info("Solv file successfully create for '" + channel.getLabel() + "'");
@@ -474,7 +468,6 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         catch (IOException e) {
             log.warn("Cannot create " + NOREPO_FILE + " file.");
         }
-        return;
     }
 
     private String getRepoMetadataRelativeFilename(Channel channel, String metadataType) {
@@ -583,13 +576,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             updateinfoFile = new CompressingDigestOutputWriter(
                     new FileOutputStream(prefix + UPDATEINFO_FILE), checksumtypeIn);
         }
-        catch (FileNotFoundException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (IOException e) {
+        catch (IOException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
         BufferedWriter updateinfoBufferedWriter = new BufferedWriter(
@@ -625,10 +612,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     new FileOutputStream(prefix + PRODUCTS_FILE),
                     MessageDigest.getInstance(checksumtypeIn));
         }
-        catch (FileNotFoundException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
+        catch (FileNotFoundException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
         BufferedWriter productsBufferedWriter = new BufferedWriter(

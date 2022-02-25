@@ -62,8 +62,8 @@ public class MockMail implements Mail {
     */
     public void setRecipients(String[] recipIn) {
         if (recipIn != null) {
-            for (int i = 0; i < recipIn.length; i++) {
-                verifyAddress(recipIn[i]);
+            for (String sIn : recipIn) {
+                verifyAddress(sIn);
             }
         }
     }
@@ -73,8 +73,8 @@ public class MockMail implements Mail {
      */
     public void setCCRecipients(String[] emailAddrs) {
         if (emailAddrs != null) {
-            for (int i = 0; i < emailAddrs.length; i++) {
-                verifyAddress(emailAddrs[i]);
+            for (String emailAddrIn : emailAddrs) {
+                verifyAddress(emailAddrIn);
             }
         }
     }
@@ -84,8 +84,8 @@ public class MockMail implements Mail {
      */
     public void setBCCRecipients(String[] emailAddrs) {
         if (emailAddrs != null) {
-            for (int i = 0; i < emailAddrs.length; i++) {
-                verifyAddress(emailAddrs[i]);
+            for (String emailAddrIn : emailAddrs) {
+                verifyAddress(emailAddrIn);
             }
         }
     }
