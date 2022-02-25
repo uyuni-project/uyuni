@@ -82,7 +82,7 @@ const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSev
     if (diskspaceSeverity in severity_messages) {
       messages = messages.concat(severity_messages[diskspaceSeverity]);
     } else {
-      console.warn("Unknown disk space severity level: " + diskspaceSeverity);
+      Loggerhead.warn("Unknown disk space severity level: " + diskspaceSeverity);
       messages = messages.concat(severity_messages["undefined"]);
     }
   }

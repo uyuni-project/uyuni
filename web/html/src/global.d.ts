@@ -37,14 +37,12 @@ declare global {
   // WIP test env setup, see ./utils/test-utils
   namespace NodeJS {
     interface Global {
-      Loggerhead: any;
       jQuery: (window: Window, noGlobal?: boolean) => JQueryStatic;
     }
   }
 
   function t(msg: string, ...args: Array<any>): string;
   var onDocumentReadyInitOldJS: Function;
-  var Loggerhead: any;
   var ace: any;
   var d3: d3;
 
