@@ -1,3 +1,4 @@
+- handle npe when syncing ubuntu errata
 - Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
 - When adding a product, check if the new vendor channels conflicts
   with any of the existing custom channel (bsc#1193448)
