@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 echo "============================================================"
 echo "                      Migration test ReportDB               "
@@ -16,7 +17,9 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/uyuni-reportdb-schema-4.3.1-1.3.uyuni1.noarch.rpm
+rpm -ivh /root/uyuni-reportdb-schema-4.3.1-1.3.uyuni1.noarch.rpm \
+	 /root/susemanager-schema-4.3.8-1.3.uyuni1.noarch.rpm \
+	 /root/susemanager-schema-utility-4.3.8-1.3.uyuni1.noarch.rpm
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
@@ -34,11 +37,11 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-smdba system-check autotuning
+smdba system-check autotuning --max_connections=50
 
 # this command will fail with certificate error. This is ok, so ignore the error
 spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
-
+/manager/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password spacewalk --local
 
 # this copy the latest schema from the git into the system
 ./build-reportdb-schema.sh
@@ -46,7 +49,7 @@ spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test 
 RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/reportdb/uyuni-reportdb-schema.spec | head -n 1`
 NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
-if [ -d /etc/sysconfig/rhn/schema-upgrade/uyuni-reportdb-schema-$RPMVERSION-to-uyuni-reportdb-schema-$NEXTVERSION ]; then
+if [ -d /etc/sysconfig/rhn/reportdb-schema-upgrade/uyuni-reportdb-schema-$RPMVERSION-to-uyuni-reportdb-schema-$NEXTVERSION ]; then
     export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
 
 else
@@ -57,8 +60,8 @@ fi
 #export SUMA_TEST_SCHEMA_VERSION="4.3.0"
 
 # run the schema upgrade from git repo
-if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
-    cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
+if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y --reportdb; then
+    cat /var/log/spacewalk/reportdb-schema-upgrade/schema-from-*.log
     su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop"
     exit 1
 fi
