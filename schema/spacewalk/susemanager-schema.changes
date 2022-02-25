@@ -1,3 +1,4 @@
+- fix direct mode when calling reportdb
 - fix advisory status migration (bsc#1195765)
 - Corrected source URLs in spec file.
 
