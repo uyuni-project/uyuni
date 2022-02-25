@@ -77,8 +77,8 @@ Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
-Source0:        spacewalk-client-tools-%{version}.tar.gz
-Source1:        %{name}-rpmlintrc
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
 Version:        4.3.6
 Release:        1
