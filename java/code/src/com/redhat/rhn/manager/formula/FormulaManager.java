@@ -338,7 +338,7 @@ public class FormulaManager {
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
 
         Set<Long> groupIDs = managedGroupsPerServer.values().stream()
-                .flatMap(groupList -> groupList.stream().map(group -> group.getGroupID())).collect(Collectors.toSet());
+                .flatMap(groupList -> groupList.stream().map(SystemGroupID::getGroupID)).collect(Collectors.toSet());
 
         Map<Long, Map<String, Object>> groupsFormulaData = getGroupsFormulaData(groupIDs, formulaName);
 

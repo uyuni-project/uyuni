@@ -65,8 +65,7 @@ public class RhnHelper {
      */
     public static boolean pathNeedsSecurity(String[] nosecurityPaths,
             String path) {
-        for (int i = 0; i < nosecurityPaths.length; i++) {
-            String curr = nosecurityPaths[i];
+        for (String curr : nosecurityPaths) {
             if (path.startsWith(curr)) {
                 return false;
             }
@@ -130,8 +129,8 @@ public class RhnHelper {
             return null;
         }
         String[] pairs = StringUtils.split(queryString, "&");
-        for (int i = 0; i < pairs.length; i++) {
-            String[] param = StringUtils.split(pairs[i], "=");
+        for (String pairIn : pairs) {
+            String[] param = StringUtils.split(pairIn, "=");
             String iname = param[0];
             if (StringUtils.equals(name, iname) && param.length > 1) {
                 return param[1];

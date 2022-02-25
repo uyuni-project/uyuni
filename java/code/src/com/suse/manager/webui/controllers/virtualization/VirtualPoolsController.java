@@ -430,7 +430,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
                    action.setPoolName(key);
                    return action;
                },
-               data -> data.getPoolNames(),
+                VirtualPoolBaseActionJson::getPoolNames,
                jsonClass);
     }
 
@@ -449,7 +449,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
                     }
                     return action;
                 },
-                data -> data.getVolumesPath(),
+                VirtualVolumeBaseActionJson::getVolumesPath,
                 jsonClass
          );
     }

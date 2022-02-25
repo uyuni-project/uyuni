@@ -25,7 +25,6 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +83,11 @@ public class Config {
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
     /** set of configuration file names */
-    private final TreeSet<File> fileList = new TreeSet<File>(new Comparator<File>() {
+    private final TreeSet<File> fileList = new TreeSet<>(new Comparator<>() {
 
-        /** {inheritDoc} */
+        /**
+         * {inheritDoc}
+         */
         public int compare(File f1, File f2) {
             // Need to make sure we read the child namespace before the base
             // namespace.  To do that, we sort the list in reverse order based
@@ -323,7 +324,7 @@ public class Config {
      * @return instance of java.util.List populated with config values
      */
     public List<String> getList(String name) {
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         String[] vals = getStringArray(name);
         if (vals != null) {
             retval.addAll(Arrays.asList(vals));
@@ -482,8 +483,8 @@ public class Config {
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
             Properties newProps = new Properties();
-            for (Iterator j = props.keySet().iterator(); j.hasNext();) {
-                String key = (String) j.next();
+            for (Object oIn : props.keySet()) {
+                String key = (String) oIn;
                 String newKey = key;
                 if (!key.startsWith(ns)) {
                     newKey = ns + "." + key;

@@ -40,11 +40,11 @@ public class EulaManager {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
             TaskConstants.TASK_QUERY_REPOMD_GENERATOR_EULAS);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("package_id", pkgId);
         DataResult<Map<String, Object>> dataResult = m.execute(params);
 
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         for (Map<String, Object> row: dataResult) {
             result.add(HibernateFactory.getBlobContents(row.get("text")));
         }

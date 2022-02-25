@@ -106,8 +106,8 @@ public class RenderEngine {
             List subnodes = activeNode.getNodes();
             if (!activeNode.getShowChildrenIfActive()) {
                 showKids = false;
-                for (int j = 0; j < subnodes.size(); j++) {
-                    if (treeIndex.isNodeActive((NavNode) subnodes.get(j))) {
+                for (Object subnodeIn : subnodes) {
+                    if (treeIndex.isNodeActive((NavNode) subnodeIn)) {
                         showKids = true;
                         break;
                     }

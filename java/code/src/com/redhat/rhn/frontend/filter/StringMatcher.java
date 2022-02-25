@@ -38,7 +38,7 @@ class StringMatcher implements Matcher {
                                     filterColumn),
                                 new Object[0]));
         if (!StringUtils.isBlank(value)) {
-            return  value.toUpperCase().indexOf(filterData.toUpperCase()) >= 0;
+            return value.toUpperCase().contains(filterData.toUpperCase());
         }
         return false;
     }

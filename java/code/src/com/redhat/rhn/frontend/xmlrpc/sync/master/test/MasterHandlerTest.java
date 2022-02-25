@@ -331,7 +331,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
             o.setLocalOrg(admin.getOrg());
         }
 
-        master.resetMasterOrgs(new HashSet<IssMasterOrg>(orgs));
+        master.resetMasterOrgs(new HashSet<>(orgs));
 
         orgs = handler.getMasterOrgs(admin, master.getId().intValue());
         for (IssMasterOrg o : orgs) {
@@ -392,7 +392,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         IssMaster m4 = handler.getMaster(admin, master.getId().intValue());
         rc = handler.setMasterOrgs(admin,
                 m4.getId().intValue(),
-                new ArrayList<Map<String, Object>>());
+                new ArrayList<>());
         assertEquals(1, rc);
         orgSet = handler.getMasterOrgs(admin, master.getId().intValue());
         assertNotNull(orgSet);
@@ -477,7 +477,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     private void addOrgsTo(IssMaster master, boolean map) {
         List<IssMasterOrg> orgs = getBareOrgs(map);
-        master.resetMasterOrgs(new HashSet<IssMasterOrg>(orgs));
+        master.resetMasterOrgs(new HashSet<>(orgs));
         IssFactory.save(master);
     }
 
@@ -498,7 +498,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     // "masterId", "masterOrgId", "masterOrgName", "localOrgId"
     private List<Map<String, Object>> orgsToMaps(List<IssMasterOrg> orgs) {
-        List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> maps = new ArrayList<>();
         for (IssMasterOrg org : orgs) {
             Map<String, Object> orgMap =  orgToMap(org);
             maps.add(orgMap);
@@ -507,7 +507,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     }
 
     private Map<String, Object> orgToMap(IssMasterOrg org) {
-        Map<String, Object> orgMap = new HashMap<String, Object>();
+        Map<String, Object> orgMap = new HashMap<>();
 
         orgMap.put("masterOrgId", org.getMasterOrgId().intValue());
         orgMap.put("masterOrgName", org.getMasterOrgName());

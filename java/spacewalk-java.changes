@@ -1,4 +1,6 @@
-  * Require rng-tools for EL8 to generate more entropy faster.
+- Require rng-tools for EL8 to generate more entropy faster.
+- Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
+- Provide link for CVEs
 
 -------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com

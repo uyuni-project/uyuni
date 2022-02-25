@@ -102,7 +102,7 @@ public class Image extends CobblerObject {
      */
     @SuppressWarnings("unchecked")
     public static List<Image> list(CobblerConnection client) {
-        List<Image> result = new LinkedList<Image>();
+        List<Image> result = new LinkedList<>();
 
         List<Map<String, Object>> imageMaps = (List<Map<String, Object>>) client
             .invokeMethod("get_images");

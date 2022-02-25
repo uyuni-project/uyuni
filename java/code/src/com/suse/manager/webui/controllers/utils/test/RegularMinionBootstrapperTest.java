@@ -136,13 +136,11 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     @Override
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         Map<String, Object> pillarData = new HashMap<>();
-        key.ifPresent(k -> {
-            ActivationKeyManager.getInstance().findAll(user)
-            .stream()
-            .filter(ak -> k.getKey().equals(ak.getKey()))
-            .findFirst()
-            .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
-        });
+        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(user)
+        .stream()
+        .filter(ak -> k.getKey().equals(ak.getKey()))
+        .findFirst()
+        .ifPresent(ak -> pillarData.put("activation_key", ak.getKey())));
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("contact_method", key

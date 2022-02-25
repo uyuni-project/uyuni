@@ -91,7 +91,7 @@ public class ActionChainHelper {
      */
     public static void prepopulateActionChains(HttpServletRequest request) {
         log.debug("Prepopulating Action Chains");
-        List<Map<String, String>> result = new LinkedList<Map<String, String>>();
+        List<Map<String, String>> result = new LinkedList<>();
         User u = new RequestContext(request).getCurrentUser();
         List<ActionChain> actionChains = ActionChainFactory.getActionChainsByModificationDate(u);
 
@@ -115,7 +115,7 @@ public class ActionChainHelper {
      */
     private static void populateActionChain(List<Map<String, String>> result,
         String label) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("id", label);
         map.put("text", label);
         result.add(map);

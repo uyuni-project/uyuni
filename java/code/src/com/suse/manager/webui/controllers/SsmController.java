@@ -109,7 +109,7 @@ public class SsmController {
             // We don't need to do user auth, here because if the user doesn't have
             // subscribe access to the subscribed channel we still want to let them
             //  change the systems base channel
-            Channel c = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel c = ChannelFactory.lookupById(spc.getId());
             SsmAllowedBaseChannelsJson allowedBaseJson = new SsmAllowedBaseChannelsJson();
             allowedBaseJson.setBase(new SsmChannelDto(c.getId(), c.getName(), c.isCustom()));
 

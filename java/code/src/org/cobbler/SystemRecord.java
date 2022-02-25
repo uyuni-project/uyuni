@@ -143,7 +143,7 @@ public class SystemRecord extends CobblerObject {
      */
     public static List<SystemRecord> listByAssociatedProfile(CobblerConnection client,
                                                                     String profileName) {
-        List<SystemRecord> toReturn = new ArrayList<SystemRecord>();
+        List<SystemRecord> toReturn = new ArrayList<>();
         List<Map<String, Object>> maps =  lookupDataMapsByCriteria(
                         client, PROFILE, profileName, "find_system");
 
@@ -169,7 +169,7 @@ public class SystemRecord extends CobblerObject {
      * @return a list of systems.
      */
     public static List<SystemRecord> list(CobblerConnection connection) {
-        List<SystemRecord> systems = new LinkedList<SystemRecord>();
+        List<SystemRecord> systems = new LinkedList<>();
         List<Map<String, Object>> cSystems = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_systems");
 
@@ -190,7 +190,7 @@ public class SystemRecord extends CobblerObject {
      */
     public static List<SystemRecord> list(CobblerConnection connection,
                                 Set<String> excludes) {
-        List<SystemRecord> systems = new LinkedList<SystemRecord>();
+        List<SystemRecord> systems = new LinkedList<>();
         List<Map<String, Object>> cSystems = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_systems");
 
@@ -478,7 +478,7 @@ public class SystemRecord extends CobblerObject {
        * @param interfaces a list of network interfaces
        */
       public void setNetworkInterfaces(List<Network> interfaces) {
-          Map<String, Object> ifaces = new HashMap<String, Object>();
+          Map<String, Object> ifaces = new HashMap<>();
           for (Network net : interfaces) {
               ifaces.putAll(net.toMap());
           }
@@ -490,7 +490,7 @@ public class SystemRecord extends CobblerObject {
        */
       public List<Network>  getNetworkInterfaces() {
           reload();
-          List<Network> networks = new LinkedList<Network>();
+          List<Network> networks = new LinkedList<>();
           Map<String, Map<String, Object>> interfaces = (Map<String, Map<String, Object>>)
                                                       dataMap.get(GET_INTERFACES);
           if (interfaces != null) {

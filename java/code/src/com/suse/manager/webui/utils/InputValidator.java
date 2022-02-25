@@ -55,7 +55,7 @@ public enum InputValidator {
         }
 
         boolean invalidPort = params.getPort()
-                .map(port -> port.toString())
+                .map(Object::toString)
                 .filter(port -> !HostPortValidator.getInstance().isValidPort(port))
                 .isPresent();
         if (invalidPort) {

@@ -372,7 +372,7 @@ public class CreateChannelCommand {
         if (parent != null) {
             List<Map<String, String>> compatibleArches = ChannelManager
                     .compatibleChildChannelArches(parent.getChannelArch().getLabel());
-            Set<String> compatibleArchLabels = new HashSet<String>();
+            Set<String> compatibleArchLabels = new HashSet<>();
 
             for (Map<String, String> arch : compatibleArches) {
                 compatibleArchLabels.add(arch.get("label"));

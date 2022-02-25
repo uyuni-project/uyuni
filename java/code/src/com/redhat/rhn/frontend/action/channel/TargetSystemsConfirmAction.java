@@ -102,7 +102,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
                 Server s  = SystemManager.lookupByIdAndUser(id, user);
                 servers.add(s);
             }
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.CID, cid);
             try {
                 scheduleSubscribeChannels(form, user, servers, chan, request);

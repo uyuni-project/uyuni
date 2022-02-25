@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +163,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
         // Validate the input parameters.  We will use the RhnValidationHelper
         // for this which is also used to validate input if user entered it from the UI.
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("description", description);
         values.put("key", key);
         if (usageLimit != null) {
@@ -172,7 +171,7 @@ public class ActivationKeyHandler extends BaseHandler {
         }
 
         ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
-                values, new LinkedList<String>(values.keySet()), VALIDATION_XSD);
+                values, new LinkedList<>(values.keySet()), VALIDATION_XSD);
 
         if (!result.isEmpty()) {
             log.error("Validation errors:");
@@ -197,7 +196,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
             ActivationKey newKey = akm.createNewActivationKey(
                         loggedInUser, key, description, limit,
-                         baseChannel, universalDefault.booleanValue());
+                         baseChannel, universalDefault);
 
             akm.addEntitlements(newKey, entitlements);
 
@@ -417,7 +416,7 @@ public class ActivationKeyHandler extends BaseHandler {
         throws FaultException {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("description");
         validKeys.add("base_channel_label");
         validKeys.add("usage_limit");
@@ -468,14 +467,14 @@ public class ActivationKeyHandler extends BaseHandler {
         // Check if we need to override the usage_limit and set to unlimited:
         if (details.containsKey("unlimited_usage_limit")) {
             Boolean unlimited = (Boolean)details.get("unlimited_usage_limit");
-            if (unlimited.booleanValue()) {
+            if (unlimited) {
                 aKey.setUsageLimit(null);
             }
         }
 
         if (details.containsKey("universal_default")) {
             Boolean universalDefault = (Boolean)details.get("universal_default");
-            aKey.setUniversalDefault(universalDefault.booleanValue());
+            aKey.setUniversalDefault(universalDefault);
         }
 
         if (details.containsKey("disabled")) {
@@ -592,8 +591,8 @@ public class ActivationKeyHandler extends BaseHandler {
 
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
-        for (Iterator it = childChannelLabels.iterator(); it.hasNext();) {
-            String childChannelLabel = (String)it.next();
+        for (Object childChannelLabelIn : childChannelLabels) {
+            String childChannelLabel = (String) childChannelLabelIn;
 
             Channel childChannel = null;
             try {
@@ -645,8 +644,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = childChannelLabels.iterator(); it.hasNext();) {
-            String childChannelLabel = (String)it.next();
+        for (Object childChannelLabelIn : childChannelLabels) {
+            String childChannelLabel = (String) childChannelLabelIn;
 
             Channel childChannel = null;
             try {
@@ -688,8 +687,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = serverGroupIds.iterator(); it.hasNext();) {
-            Number serverGroupId = (Number)it.next();
+        for (Object serverGroupIdIn : serverGroupIds) {
+            Number serverGroupId = (Number) serverGroupIdIn;
 
             ManagedServerGroup group = null;
             try {
@@ -725,8 +724,8 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        for (Iterator it = serverGroupIds.iterator(); it.hasNext();) {
-            Integer serverGroupId = (Integer)it.next();
+        for (Object serverGroupIdIn : serverGroupIds) {
+            Integer serverGroupId = (Integer) serverGroupIdIn;
 
             ServerGroup group = null;
             try {
@@ -766,7 +765,7 @@ public class ActivationKeyHandler extends BaseHandler {
             List<Map<String, String>> packages) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
         validKeys.add("arch");
         for (Map<String, String> pkg : packages) {
@@ -819,7 +818,7 @@ public class ActivationKeyHandler extends BaseHandler {
             List<Map<String, String>> packages) {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
         validKeys.add("arch");
         for (Map<String, String> pkg : packages) {
@@ -858,7 +857,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *   #array_end()
      */
     public List<ActivationKey> listActivationKeys(User loggedInUser) {
-        List<ActivationKey> result = new ArrayList<ActivationKey>();
+        List<ActivationKey> result = new ArrayList<>();
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         for (ActivationKey key : manager.findAll(loggedInUser)) {
             try {
@@ -895,17 +894,17 @@ public class ActivationKeyHandler extends BaseHandler {
     public Object[] listActivatedSystems(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
-        List<Server> servers =  new LinkedList<Server>(
+        List<Server> servers = new LinkedList<>(
                 activationKey.getToken().getActivatedServers());
 
-        List<Object> returnList = new ArrayList<Object>();
+        List<Object> returnList = new ArrayList<>();
 
         // For this API, we don't need to pass back to the user all of the
         // information that is defined for a "Server" as would be returned
         // by the ServerSerializer; therefore, we'll just pull a few key
         // pieces of information.
         for (Server server : servers) {
-            Map<String, Object> system = new HashMap<String, Object>();
+            Map<String, Object> system = new HashMap<>();
 
             system.put("id", server.getId());
             system.put("hostname", server.getHostname());

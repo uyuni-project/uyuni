@@ -108,8 +108,8 @@ public class CachedStatement implements Serializable {
     /* package */ CachedStatement(Session sessionIn, ParsedQuery parsedQuery) {
         this.protoQuery = parsedQuery;
         this.name = parsedQuery.getName();
-        this.qMap = new HashMap<String, List<Integer>>();
-        this.params = new ArrayList<String>(parsedQuery.getParameterList());
+        this.qMap = new HashMap<>();
+        this.params = new ArrayList<>(parsedQuery.getParameterList());
         this.sqlStatement = parsedQuery.getSqlStatement();
         this.session = sessionIn;
     }
@@ -241,7 +241,7 @@ public class CachedStatement implements Serializable {
     List<Integer> executeUpdates(List<Map<String, Object>> parameterList) {
         return doWithStolenConnection(connection -> {
             try {
-                List<Integer> result = new ArrayList<Integer>(parameterList.size());
+                List<Integer> result = new ArrayList<>(parameterList.size());
 
                 sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
                 for (Map<String, Object> parameters : parameterList) {
@@ -292,7 +292,7 @@ public class CachedStatement implements Serializable {
 
         if (sqlStatement.indexOf("%s") > 0) {
             if (inClause == null || inClause.isEmpty()) {
-                return new DataResult<Object>(mode);
+                return new DataResult<>(mode);
             }
             // one of these two items is the return value. Ugly, but...
             Integer returnInt = null;
@@ -351,7 +351,7 @@ public class CachedStatement implements Serializable {
                 sb.append("'").append((String) value).append("'");
             }
             else {
-                sb.append(String.valueOf(value));
+                sb.append(value);
             }
         }
         return sb.toString();
@@ -359,7 +359,7 @@ public class CachedStatement implements Serializable {
 
     Collection<Object> executeElaborator(List<Object> resultList, Mode mode,
             Map<String, ?> parametersIn) {
-        List<Object> elaborated = new LinkedList<Object>();
+        List<Object> elaborated = new LinkedList<>();
         for (int batch = 0; batch < resultList.size(); batch = batch + BATCH_SIZE) {
             int toIndex = batch + BATCH_SIZE;
             if (toIndex > resultList.size()) {
@@ -388,7 +388,7 @@ public class CachedStatement implements Serializable {
         }
 
         // If we aren't actually operating on a list, just elaborate.
-        if (sqlStatement.indexOf("%s") == -1) {
+        if (!sqlStatement.contains("%s")) {
             return (DataResult<Object>) executeChecking(sqlStatement, qMap, parameters,
                     mode, resultList);
         }
@@ -398,7 +398,7 @@ public class CachedStatement implements Serializable {
                     "Column, " + getColumn() + ", not found in driving query results");
         }
         StringBuilder bindParams = new StringBuilder();
-        List<String> newParams = new ArrayList<String>(params);
+        List<String> newParams = new ArrayList<>(params);
         for (int i = 0; i < len; i++) {
             if (i > 0) { // don't prepend comma before first one
                 bindParams.append(", ");
@@ -425,7 +425,7 @@ public class CachedStatement implements Serializable {
                     "Query contains named parameter," + " but value map is null");
         }
         // Only pass the parameters from the original query.
-        Map<String, Object> intersection = new HashMap<String, Object>();
+        Map<String, Object> intersection = new HashMap<>();
         for (String curr : params) {
             if (!parameters.containsKey(curr)) {
                 throw new ParameterValueNotFoundException(
@@ -534,7 +534,7 @@ public class CachedStatement implements Serializable {
         throws SQLException {
 
         Iterator<String> i = outParams.keySet().iterator();
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         while (i.hasNext()) {
             String param = i.next();
             Iterator<Integer> positions = NamedPreparedStatement.getPositions(param, qMap);
@@ -589,10 +589,10 @@ public class CachedStatement implements Serializable {
         DataResult<Object> dr;
         if (currentResults != null) {
             pointers = generatePointers(currentResults, getColumn());
-            dr = new DataResult<Object>(currentResults);
+            dr = new DataResult<>(currentResults);
         }
         else {
-            dr = new DataResult<Object>(mode);
+            dr = new DataResult<>(mode);
         }
         String className = mode.getClassString();
         try {
@@ -613,7 +613,7 @@ public class CachedStatement implements Serializable {
                 if (className == null || className.equals("java.util.Map")) {
                     Map<String, Object> resultMap;
                     if (pointers == null) {
-                        resultMap = new HashMap<String, Object>();
+                        resultMap = new HashMap<>();
                     }
                     else {
                         Integer pos = pointers.get(getObject(rs, getColumn()));
@@ -681,13 +681,7 @@ public class CachedStatement implements Serializable {
         catch (SQLException e) {
             throw SqlExceptionTranslator.sqlException(e);
         }
-        catch (ClassNotFoundException e) {
-            throw new ObjectCreateWrapperException("Could not create " + className, e);
-        }
-        catch (InstantiationException e) {
-            throw new ObjectCreateWrapperException("Could not create " + className, e);
-        }
-        catch (IllegalAccessException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new ObjectCreateWrapperException("Could not create " + className, e);
         }
         finally {
@@ -699,10 +693,8 @@ public class CachedStatement implements Serializable {
     private void addToMap(List<String> columns, ResultSet rs, Map<String, Object> resultMap,
             int pos)
         throws SQLException {
-        Map<String, Object> newMap = new HashMap<String, Object>();
-        Iterator<String> i = columns.iterator();
-        while (i.hasNext()) {
-            String columnName = i.next();
+        Map<String, Object> newMap = new HashMap<>();
+        for (String columnName : columns) {
             newMap.put(columnName.toLowerCase(), getObject(rs, columnName));
         }
         if (resultMap.isEmpty()) {
@@ -729,7 +721,7 @@ public class CachedStatement implements Serializable {
                     newList = (List<Object>) resultMap.get(stmtName);
                 }
                 else {
-                    newList = new ArrayList<Object>();
+                    newList = new ArrayList<>();
                 }
                 newList.add(newMap);
                 resultMap.put(stmtName, newList);
@@ -752,12 +744,10 @@ public class CachedStatement implements Serializable {
             columnSkip = cb.getCallBackColumns();
         }
         else {
-            columnSkip = new ArrayList<String>();
+            columnSkip = new ArrayList<>();
         }
 
-        Iterator<String> i = columns.iterator();
-        while (i.hasNext()) {
-            String columnName = i.next();
+        for (String columnName : columns) {
             if (columnSkip.contains(columnName.toLowerCase())) {
                 continue;
             }
@@ -773,11 +763,11 @@ public class CachedStatement implements Serializable {
              * might not complete correctly if there are two set methods with
              * the same name
              */
-            for (int j = 0; j < methods.length; j++) {
+            for (Method methodIn : methods) {
                 // getName() gets the name of the set method
                 // setName is the name of the set method
-                if (methods[j].getName().equals(setName)) {
-                    Class<?> paramType = methods[j].getParameterTypes()[0];
+                if (methodIn.getName().equals(setName)) {
+                    Class<?> paramType = methodIn.getParameterTypes()[0];
                     if (Collection.class.isAssignableFrom(paramType)) {
                         isList = true;
                     }
@@ -786,11 +776,11 @@ public class CachedStatement implements Serializable {
             }
 
             if (isList) { // requires matching get method returning the same
-                          // list
+                // list
                 Collection<Object> c = (Collection<Object>) MethodUtil.callMethod(obj,
                         getName, new Object[0]);
                 if (c == null) {
-                    c = new ArrayList<Object>();
+                    c = new ArrayList<>();
                 }
                 c.add(getObject(rs, columnName));
                 MethodUtil.callMethod(obj, setName, c);
@@ -847,7 +837,7 @@ public class CachedStatement implements Serializable {
 
     private List<String> getColumnNames(ResultSetMetaData rsmd) {
         try {
-            ArrayList<String> columns = new ArrayList<String>();
+            ArrayList<String> columns = new ArrayList<>();
             int count = rsmd.getColumnCount();
 
             for (int i = 1; i <= count; i++) {
@@ -867,8 +857,8 @@ public class CachedStatement implements Serializable {
         }
         Class<?> clazz = obj.getClass();
         Method[] methods = clazz.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(StringUtil.beanify("get " + key))) {
+        for (Method methodIn : methods) {
+            if (methodIn.getName().equals(StringUtil.beanify("get " + key))) {
                 return true;
             }
         }
@@ -888,7 +878,7 @@ public class CachedStatement implements Serializable {
 
         Iterator<Object> i = dr.iterator();
         int pos = 0;
-        Map<Object, Integer> pointers = new HashMap<Object, Integer>();
+        Map<Object, Integer> pointers = new HashMap<>();
 
         while (i.hasNext()) {
             Object row = i.next();

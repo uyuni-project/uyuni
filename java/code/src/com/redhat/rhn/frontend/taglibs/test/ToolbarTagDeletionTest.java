@@ -81,11 +81,8 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
 
             verifyTag(output);
         }
-        catch (JspException je) {
+        catch (Exception je) {
             fail(je.toString());
-        }
-        catch (Exception e) {
-            fail(e.toString());
         }
     }
 
@@ -103,11 +100,8 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
 
             verifyTag(output);
         }
-        catch (JspException je) {
+        catch (Exception je) {
             fail(je.toString());
-        }
-        catch (Exception e) {
-            fail(e.toString());
         }
     }
 

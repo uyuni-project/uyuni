@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -106,12 +105,11 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
 
             buffy.append(renderHeading("config.upload.channels"));
 
-            Iterator channels = channelSet.iterator();
             //since you can only upload files into local channels (only sandbox right now),
             //there shouldn't be multiple entries of the same channel.
-            while (channels.hasNext()) {
+            for (Object oIn : channelSet) {
                 ConfigChannel channel = ((ConfigChannelAssociation)
-                        channels.next()).getConfigChannel();
+                        oIn).getConfigChannel();
                 buffy.append(renderChannel(channel));
                 buffy.append("<br />");
             }
@@ -126,10 +124,9 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         //(one per system).  Therefore, we will keep track of ones we have
         // already displayed.
         Set dealtWith = new HashSet();
-        Iterator filenames = fileNameSet.iterator();
-        while (filenames.hasNext()) {
+        for (Object oIn : fileNameSet) {
             ConfigFileName path =
-                ((ConfigFileNameAssociation) filenames.next()).getConfigFileName();
+                    ((ConfigFileNameAssociation) oIn).getConfigFileName();
             if (!dealtWith.contains(path.getId())) {
                 buffy.append(renderFileName(path));
                 dealtWith.add(path.getId());

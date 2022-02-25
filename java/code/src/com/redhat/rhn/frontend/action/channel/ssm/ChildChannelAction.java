@@ -91,14 +91,14 @@ public class ChildChannelAction extends RhnAction {
         request.setAttribute("bases", bases);
 
         int debugFound = 0;
-        Set<ChildChannelDto> nullParented = new HashSet<ChildChannelDto>();
+        Set<ChildChannelDto> nullParented = new HashSet<>();
 
         // Build a map of parents-to-children
         // (the combinatorics of this algorithm aren't very good, there is
         // room for a little optimisation here
         for (SystemsPerChannelDto systemsPerChannelDto : bases) {
 
-            List<ChildChannelDto> availableChildren = new ArrayList<ChildChannelDto>();
+            List<ChildChannelDto> availableChildren = new ArrayList<>();
             systemsPerChannelDto.setAvailableChildren(availableChildren);
 
             // Find all the children for "this" parent
@@ -113,7 +113,7 @@ public class ChildChannelAction extends RhnAction {
                     systemsPerChannelDto.getId())) {
                     DataResult<EssentialServerDto> sis =
                             SystemManager.systemsSubscribedToChannelInSet(
-                            childChannelDto.getId().longValue(), user,
+                                    childChannelDto.getId(), user,
                         RhnSetDecl.SYSTEMS.getLabel());
                     childChannelDto.setSystemCount(0L + sis.size());
                     availableChildren.add(childChannelDto);
@@ -139,8 +139,8 @@ public class ChildChannelAction extends RhnAction {
      */
     protected int processList(User user, HttpServletRequest request) {
 
-        List<String> subList = new ArrayList<String>();
-        List<String> unsubList = new ArrayList<String>();
+        List<String> subList = new ArrayList<>();
+        List<String> unsubList = new ArrayList<>();
 
         Enumeration<String> names = request.getParameterNames();
         while (names.hasMoreElements()) {

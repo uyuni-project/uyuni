@@ -103,7 +103,7 @@ public class CustomPackagesDeleteConfirmAction extends RhnAction {
             getStrutsDelegate().saveMessages(requestContext.getRequest(), msg);
 
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             return getStrutsDelegate().forwardParams(mapping.findForward("deleted"),
                     params);
 

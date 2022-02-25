@@ -58,7 +58,7 @@ public class CreateRedirectURI {
      * @throws ServletException If a servlet processing error occurs
      */
     public String execute(HttpServletRequest request) throws IOException, ServletException {
-        StringBuffer redirectURI = new StringBuffer(request.getRequestURI()).append("?");
+        StringBuilder redirectURI = new StringBuilder(request.getRequestURI()).append("?");
         String paramName = null;
         String paramValue = null;
 

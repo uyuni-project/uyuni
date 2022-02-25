@@ -114,8 +114,8 @@ public class RankChannelsAction  extends RhnAction {
         String rankedValues = (String)form.get(RANKED_VALUES);
         if (StringUtils.isNotBlank(rankedValues)) {
             String [] values = rankedValues.split(",");
-            for (int i = 0; i < values.length; i++) {
-                channels.add(Long.valueOf(values[i]));
+            for (String valueIn : values) {
+                channels.add(Long.valueOf(valueIn));
             }
         }
         return channels;

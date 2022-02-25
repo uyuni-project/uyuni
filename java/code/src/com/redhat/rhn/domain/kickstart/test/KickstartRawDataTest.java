@@ -123,7 +123,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         assertEquals(tree, data.getKickstartDefaults().getKstree());
         assertEquals(user.getOrg(), data.getOrg());
 
-        SortedSet<KickstartCommand> optionsSet = new TreeSet<KickstartCommand>();
+        SortedSet<KickstartCommand> optionsSet = new TreeSet<>();
         data.setCustomOptions(optionsSet);
 
         Distro d = Distro.lookupById(CobblerXMLRPCHelper.getConnection("test"),

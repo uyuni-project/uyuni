@@ -95,7 +95,7 @@ public class XccdfDeleteConfirmAction extends RhnAction {
            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                "system.audit.xccdfdeleteconfirm.jsp.message", messageParams));
            getStrutsDelegate().saveMessages(request, msg);
-           Map<String, Long> params = new HashMap<String, Long>();
+           Map<String, Long> params = new HashMap<>();
            params.put(RequestContext.SID, sid);
            return getStrutsDelegate().forwardParams(mapping.findForward("submit"),
                    params);

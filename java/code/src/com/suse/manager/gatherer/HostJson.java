@@ -17,6 +17,7 @@ package com.suse.manager.gatherer;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -188,10 +189,7 @@ public class HostJson {
      * @return map of guests optional data
      */
     public Map<String, Map<String, String>> getOptionalVmData() {
-        if (this.optionalVmData == null) {
-            return Collections.emptyMap();
-        }
-        return optionalVmData;
+        return Objects.requireNonNullElse(this.optionalVmData, Collections.emptyMap());
     }
 
     /**

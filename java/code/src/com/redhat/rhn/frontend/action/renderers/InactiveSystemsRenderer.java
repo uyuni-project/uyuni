@@ -22,8 +22,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -45,8 +43,7 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
                 SystemManager.inactiveListSortbyCheckinTime(user, pc);
         String inactiveSystemCSSTable = null;
         if (!isdr.isEmpty()) {
-            for (Iterator<SystemOverview> i = isdr.iterator(); i.hasNext();) {
-                SystemOverview so = i.next();
+            for (SystemOverview so : isdr) {
                 StringBuilder buffer = new StringBuilder();
                 Long lastCheckin = so.getLastCheckinDaysAgo();
                 if (lastCheckin.compareTo(1L) < 0) {
@@ -61,7 +58,7 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
                     buffer.append(ls.getMessage("filter-form.jspf.days"));
                 }
                 else if (lastCheckin.compareTo(7L) >= 0) {
-                    buffer.append(lastCheckin.longValue() / 7);
+                    buffer.append(lastCheckin / 7);
                     buffer.append(' ');
                     buffer.append(ls.getMessage("filter-form.jspf.weeks"));
                 }

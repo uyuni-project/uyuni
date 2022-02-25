@@ -134,7 +134,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             }
             Network net = new Network(getCobblerConnection(), "eth0");
             net.setMacAddress(newMac);
-            List<Network> nics = new LinkedList<Network>();
+            List<Network> nics = new LinkedList<>();
             nics.add(net);
             rec.setNetworkInterfaces(nics);
         }

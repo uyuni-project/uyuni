@@ -76,13 +76,13 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
-        minion.getAccessTokens().stream().filter(AccessToken::getValid).forEach(accessToken -> {
-            accessToken.getChannels().forEach(chan -> {
-                Map<String, Object> chanProps = getChannelPillarData(minion, accessToken, chan);
+        minion.getAccessTokens().stream()
+                .filter(AccessToken::getValid)
+                .forEach(accessToken -> accessToken.getChannels().forEach(chan -> {
+            Map<String, Object> chanProps = getChannelPillarData(minion, accessToken, chan);
 
-                chanPillar.put(chan.getLabel(), chanProps);
-            });
-        });
+            chanPillar.put(chan.getLabel(), chanProps);
+        }));
         pillar.add("channels", chanPillar);
 
         Map<String, Object> beaconConfig = new HashMap<>();

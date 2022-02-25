@@ -24,6 +24,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * a schedule represents a concrete bunch, that is scheduled with specified parameters,
@@ -69,12 +70,7 @@ public class TaskoSchedule {
         setJobLabel(jobLabelIn);
         data = serializeMap(dataIn);
         setCronExpr(cronExprIn);
-        if (activeFromIn == null) {
-            setActiveFrom(new Date());
-        }
-        else {
-            setActiveFrom(activeFromIn);
-        }
+        setActiveFrom(Objects.requireNonNullElseGet(activeFromIn, Date::new));
         if ((cronExprIn == null) || (cronExprIn.isEmpty())) {
             // set activeFrom for single runs
             setActiveTill(getActiveFrom());

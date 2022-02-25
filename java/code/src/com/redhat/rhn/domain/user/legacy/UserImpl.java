@@ -88,13 +88,13 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Create a new empty user
      */
     public UserImpl() {
-        groupMembers = new HashSet<UserGroupMembers>();
+        groupMembers = new HashSet<>();
         personalInfo = new PersonalInfo();
         personalInfo.setUser(this);
         userInfo = new UserInfo();
         userInfo.setUser(this);
-        stateChanges = new TreeSet<StateChange>();
-        addresses = new HashSet<Address>();
+        stateChanges = new TreeSet<>();
+        addresses = new HashSet<>();
         hiddenPanes = new HashSet();
         associatedServerGroups = new HashSet();
     }
@@ -194,7 +194,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * @return Set of UserGroups
      */
     protected Set<UserGroup> getUserGroups() {
-        Set<UserGroup> ugmSet = new HashSet<UserGroup>();
+        Set<UserGroup> ugmSet = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
             ugmSet.add(ugm.getUserGroup());
         }
@@ -210,15 +210,14 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        Set<Role> userRoles = new HashSet<>();
+        for (UserGroupMembers ugm : groupMembers) {
             userRoles.add(ugm.getUserGroup().getRole());
         }
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -228,9 +227,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getTemporaryRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        Set<Role> userRoles = new HashSet<>();
+        for (UserGroupMembers ugm : groupMembers) {
             if (ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -238,7 +236,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -248,9 +246,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     public Set<Role> getPermanentRoles() {
-        Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = i.next();
+        Set<Role> userRoles = new HashSet<>();
+        for (UserGroupMembers ugm : groupMembers) {
             if (!ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -258,7 +255,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
             Set<Role> orgRoles = org.getRoles();
-            Set<Role> localImplied = new HashSet<Role>();
+            Set<Role> localImplied = new HashSet<>();
             localImplied.addAll(UserFactory.IMPLIEDROLES);
             localImplied.retainAll(orgRoles);
             userRoles.addAll(localImplied);
@@ -296,7 +293,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     private void addRole(Role label, boolean temporary) {
         checkPermanentOrgAdmin();
-        Set<Role> roles = new HashSet<Role>();
+        Set<Role> roles = new HashSet<>();
         if (temporary) {
             roles = this.getTemporaryRoles();
         }
@@ -359,7 +356,7 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     private void checkPermanentOrgAdmin() {
         if (wasOrgAdmin == null) {
-            wasOrgAdmin = Boolean.valueOf(hasPermanentRole(RoleFactory.ORG_ADMIN));
+            wasOrgAdmin = hasPermanentRole(RoleFactory.ORG_ADMIN);
         }
     }
 
@@ -729,17 +726,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     * @return String output of the User
     */
     public String toString() {
-        StringBuilder retval = new StringBuilder();
-        retval.append(LocalizationService.getInstance().
-                                   getDebugMessage("user"));
-        retval.append(" ");
-        retval.append(getLogin());
-        retval.append(" (id ");
-        retval.append(String.valueOf(getId()));
-        retval.append(", org_id ");
-        retval.append(String.valueOf(getOrg().getId()));
-        retval.append(")");
-        return retval.toString();
+        return LocalizationService.getInstance().getDebugMessage("user") + " " + getLogin() +
+                " (id " + getId() + ", org_id " + getOrg().getId() + ")";
     }
 
     /**
@@ -910,12 +898,12 @@ public class UserImpl extends BaseDomainHelper implements User {
         Address addr = null;
         Address[] addrA = addresses.toArray(new Address[addresses.size()]);
         if (addresses.size() > 0) {
-            for (int i = 0; i < addrA.length; i++) {
-                if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
-                    addr = addrA[i];
+            for (Address addressIn : addrA) {
+                if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
+                    addr = addressIn;
                 }
-                if (addrA[i].getType().equals("B")) {
-                    baddr = addrA[i];
+                if (addressIn.getType().equals("B")) {
+                    baddr = addressIn;
                 }
             }
         }
@@ -1218,12 +1206,12 @@ public class UserImpl extends BaseDomainHelper implements User {
             Address addr = null;
             Address[] addrA = addresses.toArray(new Address[addresses.size()]);
             if (addresses.size() > 0) {
-                for (int i = 0; i < addrA.length; i++) {
-                    if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
-                        addr = addrA[i];
+                for (Address addressIn : addrA) {
+                    if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
+                        addr = addressIn;
                     }
-                    if (addrA[i].getType().equals("B")) {
-                        baddr = addrA[i];
+                    if (addressIn.getType().equals("B")) {
+                        baddr = addressIn;
                     }
                 }
             }

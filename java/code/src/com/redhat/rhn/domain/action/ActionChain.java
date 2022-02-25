@@ -50,7 +50,7 @@ public class ActionChain extends BaseDomainHelper {
      * Default constructor.
      */
     public ActionChain() {
-        entries = new HashSet<ActionChainEntry>();
+        entries = new HashSet<>();
     }
 
     /**

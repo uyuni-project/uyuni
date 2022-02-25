@@ -67,8 +67,8 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         long operationId = SsmOperationManager.createOperation(ssmUser,
                                             "Test testCreateAndAllOperations2 ", null);
         SsmOperationManager.associateServersWithOperation(operationId, ssmUser.getId(),
-                                                new ArrayList<Long>(serverSet.
-                                                                    getElementValues()));
+                new ArrayList<>(serverSet.
+                        getElementValues()));
         DataResult result = SsmOperationManager.allOperations(ssmUser);
 
         // Verify

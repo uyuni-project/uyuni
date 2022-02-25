@@ -140,17 +140,17 @@ public class ApiHandler extends BaseHandler {
                         .orElseThrow(() -> new RuntimeException("Handler " + namespace + " not found."))
                         .getClass();
         Map<String, Map<String, Object>> methods  =
-                                new HashMap<String, Map<String, Object>>();
+                new HashMap<>();
 
         for (Method method : handlerClass.getDeclaredMethods()) {
 
             if (0 != (method.getModifiers() & Modifier.PUBLIC)) {
 
-                Map<String, Object> methodInfo = new HashMap<String, Object>();
+                Map<String, Object> methodInfo = new HashMap<>();
 
                 methodInfo.put("name", method.getName());
 
-                List<String> paramList = new ArrayList<String>();
+                List<String> paramList = new ArrayList<>();
                 String paramListString = "";
                 for (Type paramType : method.getParameterTypes()) {
                     String paramTypeString = getType(paramType,
@@ -160,7 +160,7 @@ public class ApiHandler extends BaseHandler {
                 }
                 methodInfo.put("parameters", paramList);
 
-                Set<String> exceptList = new HashSet<String>();
+                Set<String> exceptList = new HashSet<>();
                 for (Class<?> exceptClass : method.getExceptionTypes()) {
                     exceptList.add(StringUtil.getClassNameNoPackage(exceptClass));
                 }

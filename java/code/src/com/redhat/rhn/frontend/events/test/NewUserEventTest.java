@@ -110,7 +110,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
     private List<User> createAdmins() {
         User adminOne = UserTestUtils.findNewUser("testUserOne", "testOrgOne", true);
         User adminTwo = UserTestUtils.findNewUser("testUserTwo", "testOrgTwo", true);
-        List<User> admins = new ArrayList<User>();
+        List<User> admins = new ArrayList<>();
         admins.add(adminOne);
         admins.add(adminTwo);
         return admins;

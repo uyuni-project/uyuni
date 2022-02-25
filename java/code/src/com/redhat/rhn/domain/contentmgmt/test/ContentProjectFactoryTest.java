@@ -26,6 +26,7 @@ import static java.util.Optional.of;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -675,14 +676,14 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         testEnv.addTarget(testTgt);
 
         // check dev environment
-        assertEquals(srcChannel, devTgt.getChannel().asCloned().map(c1 -> c1.getOriginal()).get());
+        assertEquals(srcChannel, devTgt.getChannel().asCloned().map(ClonedChannel::getOriginal).get());
         assertEquals(1, ContentProjectFactory.lookupClonesInProject(
                 devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).size());
         assertEquals(testChannel, ContentProjectFactory.lookupClonesInProject(
                 devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).iterator().next());
 
         // check test environment
-        assertEquals(devChannel, testTgt.getChannel().asCloned().map(c -> c.getOriginal()).get());
+        assertEquals(devChannel, testTgt.getChannel().asCloned().map(ClonedChannel::getOriginal).get());
         assertTrue(ContentProjectFactory.lookupClonesInProject(
                 testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
     }

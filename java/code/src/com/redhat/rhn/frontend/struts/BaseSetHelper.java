@@ -226,7 +226,7 @@ public class BaseSetHelper {
      **/
     public void unselectAll(Set set, String listName, List dataSet) {
 
-        List<String> keys = new ArrayList<String>();
+        List<String> keys = new ArrayList<>();
         String[] keysArray = {};
 
         // Mark the data-objects as not-selected

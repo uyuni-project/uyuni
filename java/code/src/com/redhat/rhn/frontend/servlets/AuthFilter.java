@@ -119,7 +119,7 @@ public class AuthFilter implements Filter {
             }
             // Send 401 for unauthorized API requests and senna SPA requests, else redirect to login
             else if (servletRequest.getServletPath().startsWith("/manager/api/") ||
-                    Boolean.valueOf(servletRequest.getHeader("x-pjax"))) {
+                    Boolean.parseBoolean(servletRequest.getHeader("x-pjax"))) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             else {

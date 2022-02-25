@@ -122,7 +122,7 @@ public class DialognavRenderer extends Renderable {
             StrSubstitutor substitutor = new StrSubstitutor(
                     ((Map<String, String[]>)parameters).entrySet().stream()
                         .filter(entry -> entry.getValue() != null && entry.getValue().length > 0)
-                        .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()[0])));
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()[0])));
             hrefNew = substitutor.replace(href);
         }
         String allowedFormVars = treeIndex.getTree().getFormvar();

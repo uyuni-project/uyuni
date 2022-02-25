@@ -20,6 +20,7 @@ import shutil
 import tempfile
 import time
 import subprocess
+from collections import namedtuple
 from datetime import datetime
 
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
@@ -27,7 +28,6 @@ from uyuni.common.fileutils import getUidGid
 
 LOGFILE = "/var/log/rhn/mgr-ssl-cert-setup.log"
 PKI_DIR = "/etc/pki/"
-SRV_CERT_NAME = "spacewalk.pem"
 SRV_KEY_NAME = "spacewalk.key"
 
 APACHE_CRT_NAME = "spacewalk.crt"
@@ -35,8 +35,7 @@ APACHE_CRT_FILE = os.path.join(PKI_DIR, "tls", "certs", APACHE_CRT_NAME)
 APACHE_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", SRV_KEY_NAME)
 PG_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", "pg-" + SRV_KEY_NAME)
 
-JABBER_CRT_NAME = "server.pem"
-JABBER_CRT_FILE = os.path.join(PKI_DIR, "spacewalk", "jabberd", JABBER_CRT_NAME)
+JABBER_CRT_FILE = os.path.join(PKI_DIR, "spacewalk", "jabberd", "server.pem")
 
 ROOT_CA_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
 
@@ -57,6 +56,8 @@ if not os.path.exists(CA_TRUST_DIR):
 class CertCheckError(Exception):
     pass
 
+
+FilesContent = namedtuple("FilesContent", ["root_ca", "server_cert", "server_key", "intermediate_cas"])
 
 def log_error(msg):
     frame = traceback.extract_stack()[-2]
@@ -103,80 +104,82 @@ def processCommandline():
     return options
 
 
-def checkOptions(options):
-    if not options.root_ca_file:
+def checkOptions(root_ca_file, server_cert_file, server_key_file, intermediate_ca_files):
+    if not root_ca_file:
         log_error("Root CA is required")
         sys.exit(1)
-    if not os.path.exists(options.root_ca_file):
-        log_error("Root CA: file not found {}".format(options.root_ca_file))
+    if not os.path.exists(root_ca_file):
+        log_error("Root CA: file not found {}".format(root_ca_file))
         sys.exit(1)
 
-    if not options.server_cert_file:
+    if not server_cert_file:
         log_error("Server Certificate is required")
         sys.exit(1)
-    if not os.path.exists(options.server_cert_file):
+    if not os.path.exists(server_cert_file):
         log_error(
-            "Server Certificate: file not found {}".format(options.server_cert_file)
+            "Server Certificate: file not found {}".format(server_cert_file)
         )
         sys.exit(1)
 
-    if not options.server_key_file:
+    if not server_key_file:
         log_error("Server Private Key is required")
         sys.exit(1)
-    if not os.path.exists(options.server_key_file):
+    if not os.path.exists(server_key_file):
         log_error(
-            "Server Private Key: file not found {}".format(options.server_key_file)
+            "Server Private Key: file not found {}".format(server_key_file)
         )
         sys.exit(1)
 
-    for ica in options.intermediate_ca_file:
+    for ica in intermediate_ca_files:
         if not os.path.exists(ica):
             log_error("Intermediate CA: file not found {}".format(ica))
             sys.exit(1)
 
 
-def prepareWorkdir(options, workdir):
+def readAllFiles(root_ca_file, server_cert_file, server_key_file, intermediate_ca_files):
+    allFiles = [root_ca_file, server_cert_file, server_key_file]
+    allFiles.extend(intermediate_ca_files)
+
+    contents = []
+    for input_file in allFiles:
+        with open(input_file, "r") as f:
+            contents.append(f.read())
+
+    return FilesContent(root_ca=contents[0], server_cert=contents[1],
+            server_key=contents[2], intermediate_cas=contents[3:])
+
+
+def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
     """
-    Create a tempdir and put all CAs as single files into it.
-    Also add the server certficate to it.
     Create a result dict with all certificates and pre-parsed data
     with the subject_hash as key.
     """
     ret = dict()
 
-    allCAs = [options.root_ca_file]
-    allCAs.extend(options.intermediate_ca_file)
+    allCAs = [root_ca_content]
+    allCAs.extend(intermediate_ca_content)
 
     isContent = False
     content = []
     for ca in allCAs:
-        with open(ca, "r") as f:
-            cert = ""
-            for line in f:
-                if not isContent and line.startswith("-----BEGIN"):
-                    isContent = True
-                    cert = ""
-                if isContent:
-                    cert += line
-                if isContent and line.startswith("-----END"):
-                    content.append(cert)
-                    isContent = False
+        cert = ""
+        for line in ca.splitlines(keepends=True):
+            if not isContent and line.startswith("-----BEGIN"):
+                isContent = True
+                cert = ""
+            if isContent:
+                cert += line
+            if isContent and line.startswith("-----END"):
+                content.append(cert)
+                isContent = False
 
-    counter = 0
     for cert in content:
-        counter += 1
-        cafile = os.path.join(workdir, "cert{0}.pem".format(counter))
-        with open(cafile, "w") as icert:
-            icert.write(cert)
-        data = getCertData(cafile)
-        data["file"] = cafile
+        data = getCertData(cert)
+        data["content"] = cert
         shash = data["subject_hash"]
         if shash:
             ret[shash] = data
-    # copy server cert and key as well
-    shutil.copy(options.server_key_file, os.path.join(workdir, SRV_KEY_NAME))
-    shutil.copy(options.server_cert_file, os.path.join(workdir, SRV_CERT_NAME))
-    data = getCertData(os.path.join(workdir, SRV_CERT_NAME))
+    data = getCertData(server_cert_content)
     shash = data["subject_hash"]
     if shash:
         ret[shash] = data
@@ -186,9 +189,10 @@ def prepareWorkdir(options, workdir):
 
 def isCA(cert):
     out = subprocess.run(
-        ["openssl", "x509", "-noout", "-ext", "basicConstraints", "-in", cert],
+        ["openssl", "x509", "-noout", "-ext", "basicConstraints", "-in", "-"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=cert.encode("utf-8"),
     )
     if out.returncode:
         log_error(
@@ -229,10 +233,11 @@ def getCertData(cert):
             "-issuer_hash",
             "-modulus",
             "-in",
-            cert,
+            "-",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=cert.encode("utf-8"),
     )
     if out.returncode:
         log_error(
@@ -255,7 +260,7 @@ def getCertData(cert):
         else:
             data["issuer_hash"] = line.strip()
     data["isca"] = isCA(cert)
-    data["file"] = cert
+    data["content"] = cert
     if data["subject"] == data["issuer"]:
         data["root"] = True
     else:
@@ -266,9 +271,10 @@ def getCertData(cert):
 
 def getCertWithText(cert):
     out = subprocess.run(
-        ["openssl", "x509", "-text", "-in", cert],
+        ["openssl", "x509", "-text", "-in", "-"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=cert.encode("utf-8"),
     )
     if out.returncode:
         log_error("Invalid Certificate: {}".format(out.stderr.decode("utf-8")))
@@ -279,9 +285,10 @@ def getCertWithText(cert):
 def getRsaKey(key):
     # set an invalid password to prevent asking in case of an encrypted one
     out = subprocess.run(
-        ["openssl", "rsa", "-passin", "pass:invalid", "-in", key],
+        ["openssl", "rsa", "-passin", "pass:invalid", "-in", "-"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=key.encode("utf-8")
     )
     if out.returncode:
         log_error("Invalid RSA Key: {}".format(out.stderr.decode("utf-8")))
@@ -291,18 +298,20 @@ def getRsaKey(key):
 
 def checkKeyBelongToCert(key, cert):
     out = subprocess.run(
-        ["openssl", "rsa", "-noout", "-modulus", "-in", key],
+        ["openssl", "rsa", "-noout", "-modulus", "-in", "-"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=key.encode("utf-8"),
     )
     if out.returncode:
         log_error("Invalid RSA Key: {}".format(out.stderr.decode("utf-8")))
         raise CertCheckError("Invalid Key")
     keyModulus = out.stdout.decode("utf-8")
     out = subprocess.run(
-        ["openssl", "x509", "-noout", "-modulus", "-in", cert],
+        ["openssl", "x509", "-noout", "-modulus", "-in", "-"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        input=cert.encode("utf-8"),
     )
     if out.returncode:
         log_error("Invalid Cert file: {}".format(out.stderr.decode("utf-8")))
@@ -314,14 +323,14 @@ def checkKeyBelongToCert(key, cert):
         raise CertCheckError("Key does not belong to Certificate")
 
 
-def checkCompleteCAChain(workdir, certData):
+def checkCompleteCAChain(server_cert_content, certData):
     foundRootCA = False
     if len(certData.keys()) == 0:
         raise CertCheckError("No CAs found")
 
     serverCertHash = None
     for h, data in certData.items():
-        if data["file"] == os.path.join(workdir, SRV_CERT_NAME):
+        if data["content"] == server_cert_content:
             serverCertHash = h
             break
 
@@ -333,7 +342,7 @@ def checkCompleteCAChain(workdir, certData):
     if not ihash or ihash not in certData:
         raise CertCheckError("No CA found for server certificate")
 
-    cert = getCertWithText(certData[serverCertHash]["file"])
+    cert = getCertWithText(certData[serverCertHash]["content"])
     if not cert:
         raise CertCheckError("Unable to parse the server certificate")
 
@@ -369,30 +378,19 @@ def checkCompleteCAChain(workdir, certData):
         )
 
 
-def generateJabberCert(options, workdir, certData):
-    certWithChain = generateCertWithChainFile(
-        os.path.join(workdir, SRV_CERT_NAME), workdir, certData
-    )
-    with open(os.path.join(workdir, JABBER_CRT_NAME), "w") as out:
-        key = getRsaKey(os.path.join(workdir, SRV_KEY_NAME))
-        if not key:
-            return False
-        out.write(certWithChain)
-        out.write(key)
-    os.chmod(os.path.join(workdir, JABBER_CRT_NAME), int("0600", 8))
-    return True
+def generateJabberCert(server_cert_content, server_key_content, certData):
+    certWithChain = generateCertWithChainFile(server_cert_content, certData)
+    key = getRsaKey(server_key_content)
+    if not key:
+        return None
+    return certWithChain + key
 
 
-def generateApacheCert(options, workdir, certData):
-    certWithChain = generateCertWithChainFile(
-        os.path.join(workdir, SRV_CERT_NAME), workdir, certData
-    )
-    with open(os.path.join(workdir, APACHE_CRT_NAME), "w") as out:
-        out.write(certWithChain)
-    return True
+def generateApacheCert(server_cert_content, certData):
+    return generateCertWithChainFile(server_cert_content, certData)
 
 
-def generateCertWithChainFile(serverCert, workdir, certData):
+def generateCertWithChainFile(serverCert, certData):
     retContent = ""
 
     if len(certData.keys()) == 0:
@@ -401,7 +399,7 @@ def generateCertWithChainFile(serverCert, workdir, certData):
 
     serverCertHash = None
     for h, data in certData.items():
-        if data["file"] == serverCert:
+        if data["content"] == serverCert:
             serverCertHash = h
             break
 
@@ -416,7 +414,7 @@ def generateCertWithChainFile(serverCert, workdir, certData):
     retContent += cert
     while ihash in certData:
         nexthash = certData[ihash]["issuer_hash"]
-        cert = getCertWithText(certData[ihash]["file"])
+        cert = getCertWithText(certData[ihash]["content"])
         if not cert:
             return ""
         if nexthash == ihash:
@@ -427,40 +425,39 @@ def generateCertWithChainFile(serverCert, workdir, certData):
     return retContent
 
 
-def deployApache(workdir):
+def deployApache(apache_cert_content, server_key_content):
     if os.path.exists(APACHE_KEY_FILE):
         os.remove(APACHE_KEY_FILE)
     if os.path.exists(APACHE_CRT_FILE):
         os.remove(APACHE_CRT_FILE)
-    shutil.copy(os.path.join(workdir, SRV_KEY_NAME), APACHE_KEY_FILE)
-    if os.path.exists(os.path.join(workdir, APACHE_CRT_NAME)):
-        shutil.copy(os.path.join(workdir, APACHE_CRT_NAME), APACHE_CRT_FILE)
+    with open(APACHE_KEY_FILE, "w") as f:
+        f.write(server_key_content)
+    with open(APACHE_CRT_FILE, "w") as f:
+        f.write(apache_cert_content)
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
 
 
-def deployJabberd(workdir):
+def deployJabberd(jabber_cert_content):
     j_uid, j_gid = getUidGid("jabber", "jabber")
     if j_uid and j_gid:
         if os.path.exists(JABBER_CRT_FILE):
             os.remove(JABBER_CRT_FILE)
-        if os.path.exists(os.path.join(workdir, JABBER_CRT_NAME)):
-            shutil.copy(os.path.join(workdir, JABBER_CRT_NAME), JABBER_CRT_FILE)
-            os.chmod(JABBER_CRT_FILE, int("0600", 8))
-            os.chown(JABBER_CRT_FILE, j_uid, j_gid)
-        else:
-            log_error("Certificate for Jabberd not found")
-            sys.exit(1)
+        with open(JABBER_CRT_FILE, "w") as f:
+            f.write(jabber_cert_content)
+        os.chmod(JABBER_CRT_FILE, int("0600", 8))
+        os.chown(JABBER_CRT_FILE, j_uid, j_gid)
 
 
-def deployPg(workdir):
+def deployPg(server_key_content):
     pg_uid, pg_gid = getUidGid("postgres", "postgres")
     if pg_uid and pg_gid:
         # deploy only the key with different permissions
         # the certificate is the same as for apache
         if os.path.exists(PG_KEY_FILE):
             os.remove(PG_KEY_FILE)
-        shutil.copy(os.path.join(workdir, SRV_KEY_NAME), PG_KEY_FILE)
+        with open(PG_KEY_FILE, "w") as f:
+            f.write(server_key_content)
         os.chmod(PG_KEY_FILE, int("0600", 8))
         os.chown(PG_KEY_FILE, pg_uid, pg_gid)
 
@@ -472,10 +469,12 @@ def deployCAUyuni(certData):
                 os.remove(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME))
             if os.path.exists(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME)):
                 os.remove(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME))
-            shutil.copy(ca["file"], os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME))
+            with open(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), "w") as f:
+                f.write(ca["content"])
             os.chmod(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), int("0644", 8))
             # TODO: or symlink?
-            shutil.copy(ca["file"], os.path.join(CA_TRUST_DIR, ROOT_CA_NAME))
+            with open(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME), "w") as f:
+                f.write(ca["content"])
             os.chmod(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME), int("0644", 8))
             break
     # in case a systemd timer try to do the same
@@ -486,40 +485,67 @@ def deployCAUyuni(certData):
         os.system("update-ca-trust extract")
 
 
-def checks(options, workdir, certData):
+def checks(server_key_content,server_cert_content, certData):
     """
     Perform different checks on the input data
     """
-    if not getRsaKey(os.path.join(workdir, SRV_KEY_NAME)):
+    if not getRsaKey(server_key_content):
         raise CertCheckError("Unable to read the server key. Encrypted?")
 
-    checkKeyBelongToCert(
-        os.path.join(workdir, SRV_KEY_NAME), os.path.join(workdir, SRV_CERT_NAME)
-    )
+    checkKeyBelongToCert(server_key_content, server_cert_content)
 
-    checkCompleteCAChain(workdir, certData)
+    checkCompleteCAChain(server_cert_content, certData)
+
+
+def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_content, server_key_content):
+    if not root_ca_content:
+        raise CertCheckError("Root CA is required")
+    if not server_cert_content:
+        raise CertCheckError("Server Certificate is required")
+    if not server_key_content:
+        raise CertCheckError("Server Private Key is required")
+
+    certData = prepareData(
+            root_ca_content,
+            server_cert_content,
+            intermediate_ca_content)
+    checks(server_key_content,server_cert_content, certData)
+    apache_cert_content = generateApacheCert(server_cert_content, certData)
+    if not apache_cert_content:
+        raise CertCheckError("Failed to generate certificates")
+    return apache_cert_content
 
 
 def _main():
     """main routine"""
 
     options = processCommandline()
-    checkOptions(options)
+    checkOptions(options.root_ca_file, options.server_cert_file, options.server_key_file, options.intermediate_ca_file)
 
-    with tempfile.TemporaryDirectory() as workdir:
-        certData = prepareWorkdir(options, workdir)
-        checks(options, workdir, certData)
-        ret = generateApacheCert(options, workdir, certData)
-        if not ret:
-            sys.exit(1)
-        ret = generateJabberCert(options, workdir, certData)
-        if not ret:
-            sys.exit(1)
+    files_content = readAllFiles(
+        options.root_ca_file,
+        options.server_cert_file,
+        options.server_key_file,
+        options.intermediate_ca_file,
+    )
+    certData = prepareData(
+            files_content.root_ca,
+            files_content.server_cert,
+            files_content.intermediate_cas)
+    checks(files_content.server_key, files_content.server_cert, certData)
+    apache_cert_content = generateApacheCert(files_content.server_cert, certData)
+    if not apache_cert_content:
+        log_error("Failed to generate certificate for Apache")
+        sys.exit(1)
+    jabber_cert_content = generateJabberCert(files_content.server_cert, files_content.server_key, certData)
+    if not jabber_cert_content:
+        log_error("Failed to generate certificate for Jabberd")
+        sys.exit(1)
 
-        deployApache(workdir)
-        deployPg(workdir)
-        deployJabberd(workdir)
-        deployCAUyuni(certData)
+    deployApache(apache_cert_content, files_content.server_key)
+    deployPg(files_content.server_key)
+    deployJabberd(jabber_cert_content)
+    deployCAUyuni(certData)
 
 
 def main():

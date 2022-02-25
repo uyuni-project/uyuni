@@ -42,9 +42,11 @@ public class SUSEProductFactoryTest extends BaseTestCaseWithUser {
 
         final SUSEProduct p = createTestSUSEProduct(channelFamily);
 
-        SUSEProductFactory.removeAllExcept(new LinkedList<SUSEProduct>() { {
-            add(p);
-        } });
+        SUSEProductFactory.removeAllExcept(new LinkedList<>() {
+            {
+                add(p);
+            }
+        });
 
         List<SUSEProduct> remaining = SUSEProductFactory.findAllSUSEProducts();
 

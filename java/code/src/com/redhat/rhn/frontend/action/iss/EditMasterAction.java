@@ -123,10 +123,10 @@ public class EditMasterAction extends RhnAction {
 
             applyFormValues(dynaForm, master);
 
-            List<IssMasterOrg> masterOrgs = new ArrayList<IssMasterOrg>(
-                            master.getMasterOrgs());
+            List<IssMasterOrg> masterOrgs = new ArrayList<>(
+                    master.getMasterOrgs());
             List<Org> locals = OrgFactory.lookupAllOrgs();
-            Map<Long, Org> findLocals = new HashMap<Long, Org>();
+            Map<Long, Org> findLocals = new HashMap<>();
             for (Org o : locals) {
                 findLocals.put(o.getId(), o);
             }

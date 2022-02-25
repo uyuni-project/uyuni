@@ -32,11 +32,11 @@ public class DistUpgradeActionDetails extends ActionChild {
 
     // Set of tasks to perform on single channels
     private Set<DistUpgradeChannelTask> channelTasks =
-            new HashSet<DistUpgradeChannelTask>();
+            new HashSet<>();
 
     // Set of product upgrades that will be performed
     // Note: product upgrades are relevant for SLE 10 only!
-    private Set<SUSEProductUpgrade> productUpgrades = new HashSet<SUSEProductUpgrade>();
+    private Set<SUSEProductUpgrade> productUpgrades = new HashSet<>();
 
     /**
      * Return the ID.

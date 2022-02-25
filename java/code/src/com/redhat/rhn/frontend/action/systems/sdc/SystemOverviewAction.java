@@ -42,7 +42,6 @@ import org.apache.struts.action.ActionMapping;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -85,11 +84,11 @@ public class SystemOverviewAction extends RhnAction {
         List childChannels = new ArrayList();
         DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
 
-        for (Iterator i = channelList.iterator(); i.hasNext();) {
-            Map ch = (HashMap) i.next();
+        for (Object oIn : channelList) {
+            Map ch = (HashMap) oIn;
 
             if (s.getBaseChannel() != null &&
-                ch.get("id").equals(s.getBaseChannel().getId())) {
+                    ch.get("id").equals(s.getBaseChannel().getId())) {
                 baseChannel.put("id", ch.get("id"));
                 baseChannel.put("name", ch.get("name"));
             }
@@ -182,11 +181,11 @@ public class SystemOverviewAction extends RhnAction {
             return serverPreferenceList;
         }
 
-        for (int j = 0; j < SERVER_PREFERENCES.length; ++j) {
+        for (String serverPreferenceIn : SERVER_PREFERENCES) {
             if (UserManager.lookupUserServerPreferenceValue(user,
-                                                            s,
-                                                            SERVER_PREFERENCES[j])) {
-                serverPreferenceList.add(SERVER_PREFERENCES[j]);
+                    s,
+                    serverPreferenceIn)) {
+                serverPreferenceList.add(serverPreferenceIn);
             }
         }
 
@@ -205,7 +204,7 @@ public class SystemOverviewAction extends RhnAction {
 
         if (lockValue != null) {
 
-            if (lockValue.longValue() == 1) {
+            if (lockValue == 1) {
                 if (s.getLock() == null) {
                     SystemManager.lockServer(user,
                                              s,
@@ -217,7 +216,7 @@ public class SystemOverviewAction extends RhnAction {
                                          s.getName());
                 }
             }
-            else if (lockValue.longValue() == 0) {
+            else if (lockValue == 0) {
                 if (s.getLock() != null) {
 
                     SystemManager.unlockServer(user, s);
@@ -236,7 +235,7 @@ public class SystemOverviewAction extends RhnAction {
     protected void processPing(User user, Server s, RequestContext rctx) {
         Long pingValue = rctx.getParamAsLong("ping");
 
-        if (pingValue != null && pingValue.longValue() == 1) {
+        if (pingValue != null && pingValue == 1) {
             s.getPushClient().setLastPingTime(new Date(System.currentTimeMillis()));
             s.getPushClient().setNextActionTime(null);
             SystemManager.storeServer(s);
@@ -250,7 +249,7 @@ public class SystemOverviewAction extends RhnAction {
     protected void proccessSatApplet(User user, Server s, RequestContext rctx) {
         Long appValue = rctx.getParamAsLong("applet");
 
-        if (appValue != null && appValue.longValue() == 1) {
+        if (appValue != null && appValue == 1) {
             Action a = ActionManager.createBaseAction(user,
                                                       s,
                                                       ActionFactory

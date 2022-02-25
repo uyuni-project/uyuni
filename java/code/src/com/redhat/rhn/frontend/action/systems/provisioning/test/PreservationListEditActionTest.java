@@ -63,7 +63,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(BasePreservationListEditAction.LABEL, testLabel);
         addRequestParameter(BasePreservationListEditAction.FILES_STRING, "1\n\2\n\3");
         actionPerform();
-        if (submit.booleanValue()) {
+        if (submit) {
             FileList fl = (FileList) getRequest().
                 getAttribute(BasePreservationListEditAction.FILE_LIST);
             assertNotNull(fl);

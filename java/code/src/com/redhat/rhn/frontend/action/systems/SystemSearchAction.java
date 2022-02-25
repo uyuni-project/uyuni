@@ -151,10 +151,10 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
          */
         boolean matchingViewModeFound = false;
         Map<String, List<Map<String, String>>> optGroupsMap =
-                        new HashMap<String, List<Map<String, String>>>();
+                new HashMap<>();
         LocalizationService ls = LocalizationService.getInstance();
         for (int j = 0; j < OPT_GROUPS_TITLES.length; ++j) {
-            List<Map<String, String>> options = new ArrayList<Map<String, String>>();
+            List<Map<String, String>> options = new ArrayList<>();
 
             for (int k = 0; k < OPT_GROUPS[j].length; ++k) {
                 options.add(createDisplayMap(LocalizationService.getInstance()
@@ -239,7 +239,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     invertResults,
                     whereToSearch, isFineGrained);
         }
-        catch (MalformedURLException e) {
+        catch (MalformedURLException | XmlRpcException e) {
             log.error("Caught Exception :" + e, e);
             errs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.connection_error"));
@@ -263,11 +263,6 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     new ActionMessage("packages.search.could_not_execute_query",
                                       searchString));
             }
-        }
-        catch (XmlRpcException e) {
-            log.error("Caught Exception :" + e, e);
-            errs.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("packages.search.connection_error"));
         }
         if (dr == null) {
             ActionMessages messages = new ActionMessages();
@@ -298,7 +293,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
      * @return Returns the map.
      */
     private Map createDisplayMap(String display, String value) {
-        Map<String, String> selection = new HashMap<String, String>();
+        Map<String, String> selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);
         return selection;

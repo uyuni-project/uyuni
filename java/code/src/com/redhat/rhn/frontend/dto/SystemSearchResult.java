@@ -83,7 +83,7 @@ public class SystemSearchResult extends SystemOverview {
                         " matchingField was null or blank");
             }
         }
-        catch (IllegalAccessException e) {
+        catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             // ignore
         }
@@ -91,10 +91,6 @@ public class SystemSearchResult extends SystemOverview {
             log.info("SystemSearchResult.lookupMatchingField() " +
                     "NoSuchMethodException caught looking up: " + field +
                     ", for system id = " + getId() + ">");
-        }
-        catch (InvocationTargetException e) {
-            e.printStackTrace();
-            // ignore
         }
         return value;
     }

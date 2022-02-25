@@ -140,7 +140,7 @@ public class ListSessionSetHelper extends ListSetHelper {
 
     /** {@inheritDoc} */
     protected Map getSelections() {
-        Map<String, String> selections = new HashMap<String, String>();
+        Map<String, String> selections = new HashMap<>();
         for (Object id : set) {
             selections.put(id.toString(), id.toString());
         }

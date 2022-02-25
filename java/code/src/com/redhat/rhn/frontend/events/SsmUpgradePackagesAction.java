@@ -38,7 +38,7 @@ public class SsmUpgradePackagesAction extends SsmPackagesAction {
 
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
-        List<Long> sids = new ArrayList<Long>();
+        List<Long> sids = new ArrayList<>();
         sids.addAll(supe.getSysPackageSet().keySet());
        return sids;
     }

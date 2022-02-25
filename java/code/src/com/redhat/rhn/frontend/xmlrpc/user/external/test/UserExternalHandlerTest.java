@@ -75,7 +75,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
 
         //make sure at least this group is in the list
         List<UserExtGroup> groups = handler.listExternalGroupToRoleMaps(satAdmin);
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         for (UserExtGroup g : groups) {
             names.add(g.getLabel());
         }
@@ -161,7 +161,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
 
         //make sure at least this group is in the list
         List<OrgUserExtGroup> groups = handler.listExternalGroupToSystemGroupMaps(admin);
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         for (OrgUserExtGroup g : groups) {
             names.add(g.getLabel());
         }

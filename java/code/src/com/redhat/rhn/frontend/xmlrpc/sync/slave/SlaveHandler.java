@@ -191,7 +191,7 @@ public class SlaveHandler extends BaseHandler {
      */
     public List<Integer> getAllowedOrgs(User loggedInUser, Integer slaveId) {
         IssSlave slave = getSlave(loggedInUser, slaveId);
-        List<Integer> allowedOrgIds = new ArrayList<Integer>();
+        List<Integer> allowedOrgIds = new ArrayList<>();
         for (Org o : slave.getAllowedOrgs()) {
             allowedOrgIds.add(o.getId().intValue());
         }
@@ -234,7 +234,7 @@ public class SlaveHandler extends BaseHandler {
     }
 
     private Set<Org> getOrgsFromIds(List<Integer> orgIds) {
-        Set<Org> orgs = new HashSet<Org>();
+        Set<Org> orgs = new HashSet<>();
         for (Integer oid : orgIds) {
             Org o = OrgFactory.lookupById(oid.longValue());
             orgs.add(o);

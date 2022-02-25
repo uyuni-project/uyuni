@@ -128,10 +128,8 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         boolean unentitledValueFound = false;
 
-        Iterator i = options.iterator();
-
-        while (i.hasNext()) {
-            LabelValueBean bean = (LabelValueBean) i.next();
+        for (Object optionIn : options) {
+            LabelValueBean bean = (LabelValueBean) optionIn;
 
             if (bean.getValue().equals("unentitle")) {
                 unentitledValueFound = true;
@@ -161,10 +159,8 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         boolean unentitledValueFound = false;
 
-        Iterator i = options.iterator();
-
-        while (i.hasNext()) {
-            LabelValueBean bean = (LabelValueBean) i.next();
+        for (Object optionIn : options) {
+            LabelValueBean bean = (LabelValueBean) optionIn;
 
             if (bean.getValue().equals("none")) {
                 unentitledValueFound = true;

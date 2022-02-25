@@ -104,10 +104,10 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testPackageSearch() {
-        List<Long> pids = new ArrayList<Long>();
+        List<Long> pids = new ArrayList<>();
         pids.add(2125L);
         pids.add(2915L);
-        List<String> arches = new ArrayList<String>();
+        List<String> arches = new ArrayList<>();
         arches.add("channel-ia32");
         arches.add("channel-ia64");
 
