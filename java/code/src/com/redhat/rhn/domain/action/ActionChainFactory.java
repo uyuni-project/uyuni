@@ -346,10 +346,10 @@ public class ActionChainFactory extends HibernateFactory {
         throws TaskomaticApiException {
 
         log.debug("Scheduling Action Chain " +  actionChain + " to date " + date);
-        Map<Server, Action> latest = new HashMap<Server, Action>();
+        Map<Server, Action> latest = new HashMap<>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
-        Map<Server, List<Action>> minionActions = new HashMap<Server, List<Action>>();
+        Map<Server, List<Action>> minionActions = new HashMap<>();
 
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {

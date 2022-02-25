@@ -29,7 +29,7 @@ public class ChannelOverview extends BaseDto implements Comparable {
     private String label;
     private Long relevantPackages;
     private Long originalId;
-    private List<PackageDto> packages = new ArrayList<PackageDto>();
+    private List<PackageDto> packages = new ArrayList<>();
 
     /**
      * @return Returns the originalId.

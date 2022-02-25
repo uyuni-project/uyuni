@@ -22,7 +22,6 @@ import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.FormPropertyConfig;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -124,9 +123,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
 
             // Get existing properties as well as new one
             // and add it to the config.
-            Iterator i = formPropertyConfigs.values().iterator();
-            while (i.hasNext()) {
-                beanConfig.addFormPropertyConfig((FormPropertyConfig) i.next());
+            for (Object oIn : formPropertyConfigs.values()) {
+                beanConfig.addFormPropertyConfig((FormPropertyConfig) oIn);
             }
 
             // Construct a corresponding DynaActionFormClass
@@ -166,8 +164,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
         // those of the actual list.
 
         Set keys = expected.keySet();
-        for (Iterator itr = keys.iterator(); itr.hasNext();) {
-            Object key = itr.next();
+        for (Object key : keys) {
             Object expValue = expected.get(key);
             Object actValue = actual.get(key);
 
@@ -176,16 +173,14 @@ public class RhnMockDynaActionForm extends DynaActionForm
             }
 
             if (!expValue.equals(actValue)) {
-                StringBuffer msg =
-                    new StringBuffer("Did not receive expected values.\n");
-                msg.append("key [");
-                msg.append(key);
-                msg.append("] expected value [");
-                msg.append(expValue);
-                msg.append("] actual value [");
-                msg.append(actValue);
-                msg.append("]");
-                throw new AssertionFailedError(msg.toString());
+                String msg = "Did not receive expected values.\n" + "key [" +
+                        key +
+                        "] expected value [" +
+                        expValue +
+                        "] actual value [" +
+                        actValue +
+                        "]";
+                throw new AssertionFailedError(msg);
             }
         }
     }

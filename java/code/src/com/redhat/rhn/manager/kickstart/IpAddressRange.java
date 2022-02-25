@@ -76,8 +76,8 @@ public class IpAddressRange {
      * @param maxIn IpNumber to set max IpAddress
      */
     public IpAddressRange(Long minIn, Long maxIn) {
-        this.min = new IpAddress(minIn.longValue());
-        this.max = new IpAddress(maxIn.longValue());
+        this.min = new IpAddress(minIn);
+        this.max = new IpAddress(maxIn);
         this.ksid = 0L;
     }
 

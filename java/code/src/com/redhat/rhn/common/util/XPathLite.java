@@ -18,7 +18,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -52,8 +51,8 @@ public class XPathLite {
      */
     public Element selectNode(Document doc) {
         Element current = doc.getRootElement();
-        for (int x = 0; x < names.length; x++) {
-            current = findChild(current, names[x]);
+        for (String nameIn : names) {
+            current = findChild(current, nameIn);
             if (current == null) {
                 break;
             }
@@ -76,8 +75,8 @@ public class XPathLite {
 
     private Element findChild(Element current, String name) {
         List children = current.getChildren();
-        for (Iterator iter = children.iterator(); iter.hasNext();) {
-            Element child = (Element) iter.next();
+        for (Object childIn : children) {
+            Element child = (Element) childIn;
             if (child.getName().equals(name)) {
                 current = child;
                 break;

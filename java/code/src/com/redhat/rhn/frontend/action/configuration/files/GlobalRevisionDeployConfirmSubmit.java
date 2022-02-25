@@ -41,7 +41,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -106,12 +105,11 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
         ActionType deploy = ActionFactory.TYPE_CONFIGFILES_DEPLOY;
 
         //go through all of the selected systems
-        Iterator itr = systems.getElements().iterator();
-        while (itr.hasNext()) {
+        for (RhnSetElement rhnSetElementIn : systems.getElements()) {
             // Each server-deploy should succeed or fail on its own merits (?)
             Set servers = new HashSet();
             //the current system
-            Long sid = ((RhnSetElement)itr.next()).getElement();
+            Long sid = rhnSetElementIn.getElement();
             servers.add(sid);
             //created the action.  One action per server.
             try {

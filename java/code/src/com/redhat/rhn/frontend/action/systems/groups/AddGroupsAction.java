@@ -62,7 +62,7 @@ public class AddGroupsAction extends RhnAction implements Listable {
         helper.execute();
 
         if (helper.isDispatched()) {
-            List<Server> servers = new LinkedList<Server>();
+            List<Server> servers = new LinkedList<>();
             servers.add(server);
 
             for (String id : helper.getSet()) {
@@ -74,7 +74,7 @@ public class AddGroupsAction extends RhnAction implements Listable {
                     "systems.groups.jsp.added",
                         new String [] {String.valueOf(helper.getSet().size())}, request);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, server.getId().toString());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         return strutsDelegate.forwardParams
@@ -91,13 +91,13 @@ public class AddGroupsAction extends RhnAction implements Listable {
         List<ManagedServerGroup> serverGroups = server.getManagedGroups();
         List<ManagedServerGroup> all = context.getCurrentUser().getOrg().
             getManagedServerGroups();
-        List<ManagedServerGroup> ret = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> ret = new LinkedList<>();
         for (ManagedServerGroup group : all) {
             if (!serverGroups.contains(group) && serverGroupManager.canAccess(
                         context.getCurrentUser(), group)) {
                 ret.add(group);
             }
         }
-        return new DataResult<ManagedServerGroup>(ret);
+        return new DataResult<>(ret);
     }
 }

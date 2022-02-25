@@ -29,7 +29,8 @@ public class FileDiffResultTest extends JMockBaseTestCaseWithUser  {
     static final String JSON_FILE_DIFF_RESPONSE = "dummy_files_diff_res.json";
     public void testFileDiffResult() throws Exception {
         String jsonResult = TestUtils.readAll(TestUtils.findTestData(JSON_FILE_DIFF_RESPONSE));
-        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };
+        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
+        };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
 
         //File exist on client with same contents
@@ -61,7 +62,8 @@ public class FileDiffResultTest extends JMockBaseTestCaseWithUser  {
         //Directory doesnt't exist on client
         fileDiffResult = results.get("file_|-file_deploy_7_|-/tmp/testdir_|-directory");
         TypeToken<Map<String, FilesDiffResult.DirectoryResult>> typeTokenD =
-                new TypeToken<Map<String, FilesDiffResult.DirectoryResult>>() { };
+                new TypeToken<>() {
+                };
         FilesDiffResult.DirectoryResult dirPchanges = fileDiffResult.getPChanges(typeTokenD)
                 .values()
                 .stream()

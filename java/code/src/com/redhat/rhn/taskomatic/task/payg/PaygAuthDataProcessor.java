@@ -89,7 +89,7 @@ public class PaygAuthDataProcessor {
         LOG.debug("Total repository authentication inserted: " + processedRepoAuth.size());
         existingRepos.stream()
                 .filter(er -> processedRepoAuth.stream().noneMatch(pr -> er.getId().equals(pr.getId())))
-                .forEach(er -> SCCCachingFactory.deleteRepositoryAuth(er));
+                .forEach(SCCCachingFactory::deleteRepositoryAuth);
 
         processCloudRmtHost(instance, paygData);
 
@@ -97,7 +97,7 @@ public class PaygAuthDataProcessor {
 
     private void processCloudRmtHost(PaygSshData instance, PaygInstanceInfo paygData) {
         CloudRmtHost rmtHost = Optional.ofNullable(instance.getRmtHosts())
-                .orElseGet(() -> CloudRmtHostFactory.createCloudRmtHost());
+                .orElseGet(CloudRmtHostFactory::createCloudRmtHost);
         rmtHost.setHost(paygData.getRmtHost().get("hostname"));
         rmtHost.setIp(paygData.getRmtHost().get("ip"));
         rmtHost.setSslCert(paygData.getRmtHost().get("server_ca"));

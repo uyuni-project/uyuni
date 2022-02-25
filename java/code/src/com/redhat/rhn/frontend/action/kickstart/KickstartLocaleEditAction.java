@@ -22,7 +22,6 @@ import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -83,12 +82,12 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
             useUtc = Boolean.FALSE;
         }
 
-        if (localeCmd.getKickstartData().isUsingUtc().booleanValue() &&
-            !useUtc.booleanValue()) {
+        if (localeCmd.getKickstartData().isUsingUtc() &&
+            !useUtc) {
             localeCmd.doNotUseUtc();
         }
-        else if (!localeCmd.getKickstartData().isUsingUtc().booleanValue() &&
-                 useUtc.booleanValue()) {
+        else if (!localeCmd.getKickstartData().isUsingUtc() &&
+                useUtc) {
             localeCmd.useUtc();
         }
 
@@ -119,10 +118,9 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      * @return Boolean valid, or not
      */
     protected Boolean isTimezoneValid(ArrayList validTimezones, String timezone) {
-        Iterator iter = validTimezones.iterator();
 
-        while (iter.hasNext()) {
-            Map possible = (Map) iter.next();
+        for (Object validTimezoneIn : validTimezones) {
+            Map possible = (Map) validTimezoneIn;
             if (timezone.equals(possible.get("value"))) {
                 return Boolean.TRUE;
             }

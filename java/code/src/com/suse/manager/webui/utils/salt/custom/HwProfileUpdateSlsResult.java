@@ -167,8 +167,8 @@ public class HwProfileUpdateSlsResult {
     private Optional<Map<String, Object>> getSmbiosRecords(
             Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecords) {
         return smbiosRecords
-                .map(result -> result.getChanges())
-                .map(changes -> changes.getRet())
+                .map(StateApplyResult::getChanges)
+                .map(Ret::getRet)
                 .map(records -> records.isEmpty() ?
                         Collections.emptyMap() : records.get(0).getData());
     }
@@ -181,11 +181,9 @@ public class HwProfileUpdateSlsResult {
      * @return list of custom fqdns.
      */
     public List<String> getCustomFqdns() {
-        return Optional.ofNullable(this.getGrains().get("susemanager")).flatMap(susemanager -> {
-            return Optional.ofNullable(
-                    (List<String>)((Map<String, Object>)susemanager).get("custom_fqdns")
-            );
-        }).orElseGet(Collections::emptyList);
+        return Optional.ofNullable(this.getGrains().get("susemanager")).flatMap(susemanager -> Optional.ofNullable(
+                (List<String>)((Map<String, Object>)susemanager).get("custom_fqdns")
+        )).orElseGet(Collections::emptyList);
     }
 
 }

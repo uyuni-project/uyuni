@@ -46,7 +46,7 @@ public class RhnUnpagedListAction extends RhnAction {
 
         String filterData = request.getParameter(RequestContext.FILTER_STRING);
         request.setAttribute("isFiltered",
-            Boolean.valueOf(!StringUtils.isEmpty(filterData)));
+                !StringUtils.isEmpty(filterData));
         if (!StringUtils.isBlank(filterData)) {
             HttpServletRequest req = (HttpServletRequest) request;
             createSuccessMessage(req, "filter.clearfilter", req.getRequestURI());

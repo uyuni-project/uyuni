@@ -112,7 +112,6 @@
     >
       <src>
         <path location="code/src" />
-        <path location="code/scripts/src" />
         <path location="code/internal/src" />
       </src>
     </javac>

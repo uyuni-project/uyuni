@@ -76,7 +76,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -235,7 +234,7 @@ public class ErrataHandler extends BaseHandler {
 
         Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
-        Map<String, Object> errataMap = new HashMap<String, Object>();
+        Map<String, Object> errataMap = new HashMap<>();
 
         errataMap.put("id", errata.getId());
         if (errata.getIssueDate() != null) {
@@ -340,7 +339,7 @@ public class ErrataHandler extends BaseHandler {
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("synopsis");
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
@@ -422,8 +421,8 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_release")) {
             Long rel = Long.valueOf((Integer)details.get("advisory_release"));
-            if (rel.longValue() > ErrataManager.MAX_ADVISORY_RELEASE) {
-                throw new InvalidAdvisoryReleaseException(rel.longValue());
+            if (rel > ErrataManager.MAX_ADVISORY_RELEASE) {
+                throw new InvalidAdvisoryReleaseException(rel);
             }
             errata.setAdvisoryRel(rel);
         }
@@ -987,9 +986,9 @@ public class ErrataHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        List<Errata> errataToClone = new ArrayList<Errata>();
-        List<Long> errataIds = new ArrayList<Long>();
-        Optional<Org> originalChannelOrg = ofNullable(original).map(c -> c.getOrg());
+        List<Errata> errataToClone = new ArrayList<>();
+        List<Long> errataIds = new ArrayList<>();
+        Optional<Org> originalChannelOrg = ofNullable(original).map(Channel::getOrg);
         //We loop through once, making sure all the errata exist
         for (String advisory : advisoryNames) {
             Errata toClone = lookupAccessibleErratum(advisory, originalChannelOrg, loggedInUser.getOrg());
@@ -1175,7 +1174,7 @@ public class ErrataHandler extends BaseHandler {
             throws InvalidChannelRoleException {
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("synopsis");
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
@@ -1264,26 +1263,23 @@ public class ErrataHandler extends BaseHandler {
         if (errataInfo.get("severity") != null) {
             newErrata.setSeverity(Severity.getByName(severity));
         }
-        for (Iterator<Map<String, Object>> itr = bugs.iterator(); itr.hasNext();) {
-            Map<String, Object> bugMap = itr.next();
+        for (Map<String, Object> bugMap : bugs) {
             String url = null;
             if (bugMap.containsKey("url")) {
                 url = (String) bugMap.get("url");
             }
 
             Bug bug = ErrataFactory.createBug(
-                    ((Integer)bugMap.get("id")).longValue(),
-                    (String)bugMap.get("summary"), url);
+                    ((Integer) bugMap.get("id")).longValue(),
+                    (String) bugMap.get("summary"), url);
             newErrata.addBug(bug);
         }
-        for (Iterator<String> itr = keywords.iterator(); itr.hasNext();) {
-            String keyword = itr.next();
+        for (String keyword : keywords) {
             newErrata.addKeyword(keyword);
         }
 
         newErrata.setPackages(new HashSet());
-        for (Iterator<Integer> itr = packageIds.iterator(); itr.hasNext();) {
-            Integer pid = itr.next();
+        for (Integer pid : packageIds) {
             Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
             if (pack != null) {
@@ -1295,7 +1291,7 @@ public class ErrataHandler extends BaseHandler {
         }
 
         ErrataFactory.save(newErrata);
-        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
+        List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         if (!vendorChannels.isEmpty()) {
             log.warn("Errata " + newErrata.getAdvisory() + " added to vendor channels " +
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
@@ -1343,7 +1339,7 @@ public class ErrataHandler extends BaseHandler {
     public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
-        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
+        List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         Errata toPublish = lookupAccessibleErratum(advisory, empty(), loggedInUser.getOrg());
         if (!vendorChannels.isEmpty()) {
             log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +
@@ -1471,14 +1467,9 @@ public class ErrataHandler extends BaseHandler {
         // just want to make sure the caller is logged in.
 
         List<Errata> erratas = ErrataManager.lookupByCVE(cveName);
-        for (Iterator<Errata> iter = erratas.iterator(); iter.hasNext();) {
-            Errata errata = iter.next();
-            // Remove errata that do not apply to the user's org
-            if (errata.getOrg() != null &&
-                    !errata.getOrg().equals(loggedInUser.getOrg())) {
-                iter.remove();
-            }
-        }
+        // Remove errata that do not apply to the user's org
+        erratas.removeIf(errata -> errata.getOrg() != null &&
+                !errata.getOrg().equals(loggedInUser.getOrg()));
         return erratas;
     }
 

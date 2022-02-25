@@ -62,7 +62,7 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         RequestContext context = new RequestContext(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("eid", context.getRequiredParam("eid"));
 
         RhnSetDecl decl = RhnSetDecl.PACKAGES_TO_ADD.createCustom(
@@ -88,7 +88,7 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable {
         User user = context.getCurrentUser();
 
         HttpServletRequest request = context.getRequest();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("eid", context.getRequiredParam("eid"));
 
         String setName = RhnSetDecl.PACKAGES_TO_ADD.createCustom(

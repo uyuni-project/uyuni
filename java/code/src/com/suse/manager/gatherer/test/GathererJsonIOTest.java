@@ -123,7 +123,7 @@ public class GathererJsonIOTest extends TestCase {
         assertEquals("x86_64", h.getCpuArch());
         assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
         assertEquals("amd", h.getCpuVendor());
-        assertEquals(3092.212727, h.getCpuMhz().doubleValue());
+        assertEquals(3092.212727, h.getCpuMhz());
         assertEquals("10.162.186.111", h.getName());
         assertEquals("de8-9a-8f-bd-a1-48.d3.cloud.mydomain.de", h.getHostIdentifier());
         assertEquals("VMware ESXi", h.getOs());

@@ -123,7 +123,7 @@ public class PackageIndexAction extends LookupDispatchAction {
     }
 
     protected Map getKeyMethodMap() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("packagesindex.jsp.update", "update");
         return params;
     }

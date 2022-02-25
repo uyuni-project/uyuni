@@ -60,6 +60,7 @@ import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
 
@@ -503,7 +504,7 @@ public class SaltSSHService {
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
                     parameters.getPassword(),
-                    tmpKeyFileAbsolutePath.map(p -> p.toString()),
+                    tmpKeyFileAbsolutePath.map(Path::toString),
                     parameters.getPrivateKeyPassphrase(),
                     parameters.getPort(),
                     portForwarding,
@@ -523,7 +524,7 @@ public class SaltSSHService {
             return result.get(parameters.getHost());
         }
         finally {
-            tmpKeyFileAbsolutePath.ifPresent(path -> cleanUpTempKeyFile(path));
+            tmpKeyFileAbsolutePath.ifPresent(this::cleanUpTempKeyFile);
         }
     }
 
@@ -579,16 +580,16 @@ public class SaltSSHService {
             Result<SSHResult<T>>> sshResults) {
          return sshResults.entrySet().stream()
                 .collect(Collectors.toMap(
-                        kv -> kv.getKey(),
+                        Map.Entry::getKey,
                         kv -> kv.getValue().fold(
-                                err -> new Result<T>(Xor.left(err)),
+                                err -> new Result<>(Xor.left(err)),
                                 succ -> {
                                     if (succ.getReturn().isPresent()) {
-                                        return new Result<T>(Xor.right(
+                                        return new Result<>(Xor.right(
                                                 succ.getReturn().get()));
                                     }
                                     else {
-                                        return new Result<T>(Xor.left(
+                                        return new Result<>(Xor.left(
                                                 succ.getStderr().map(stderr ->
                                                         new GenericError("Error unwrapping ssh return: " + stderr))
                                                         .orElse(new GenericError(
@@ -653,7 +654,7 @@ public class SaltSSHService {
                         sshConfigBuilder.roster("uyuni");
                         LOG.info("No roster file used, using Uyuni roster module!");
                     });
-            extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
+            extraFilerefs.ifPresent(sshConfigBuilder::extraFilerefs);
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
             LOG.debug("Local callSyncSSH: " + SaltService.localCallToString(call));
@@ -806,7 +807,7 @@ public class SaltSSHService {
                                         SaltUtils.decodeSaltErr(saltErr))),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
-                                    .map(value -> value.getComment())
+                                    .map(StateApplyResult::getComment)
                                     .collect(Collectors
                                             .collectingAndThen(Collectors.toList(),
                                                     (list) -> list.isEmpty() ?
@@ -922,12 +923,12 @@ public class SaltSSHService {
     public Map<MinionSummary, List<Long>> findApplyHighstateActionsPerMinion(Map<MinionSummary,
             List<SaltState>> statesPerMinion) {
         return statesPerMinion.entrySet().stream()
-                .filter(entry -> entry.getValue().stream().anyMatch(state -> isApplyHighstate(state)))
+                .filter(entry -> entry.getValue().stream().anyMatch(SaltSSHService::isApplyHighstate))
                 .collect(Collectors.toMap(
-                        entry -> entry.getKey(),
+                        Map.Entry::getKey,
                         entry -> entry.getValue()
                                 .stream()
-                                .filter(state -> isApplyHighstate(state))
+                                .filter(SaltSSHService::isApplyHighstate)
                                 .filter(state -> state instanceof ActionSaltState)
                                 .map(state -> ((ActionSaltState)state).getActionId())
                         .collect(Collectors.toList())

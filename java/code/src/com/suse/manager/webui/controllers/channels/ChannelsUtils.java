@@ -81,7 +81,7 @@ public class ChannelsUtils {
         }
 
         return baseProduct.get().getSuseProductChannels().stream()
-                .filter(pc -> pc.isMandatory())
+                .filter(SUSEProductChannel::isMandatory)
                 .map(SUSEProductChannel::getChannel)
                 // filter out channels with different base than the given one
                 .filter(c -> c.getParentChannel() == null ||

@@ -24,7 +24,6 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.LookupDispatchAction;
 import org.apache.struts.util.LabelValueBean;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,8 +81,7 @@ public abstract class RhnLookupDispatchAction extends LookupDispatchAction {
              * of <method-to-execute>.alternateParameter
              * ex: selectall.dispatch.x
              */
-            for (Iterator<String> itr = keyset.iterator(); itr.hasNext();) {
-                String key = itr.next();
+            for (String key : keyset) {
                 // Look for the alternateParameter portion in the key
                 if (key.indexOf(alternateParameter) > 0) {
                     // if we find alternateParameter in the key, set the method name

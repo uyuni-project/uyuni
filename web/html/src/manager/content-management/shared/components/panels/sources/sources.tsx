@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useMemo } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -23,6 +24,11 @@ type SourcesProps = {
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
+  const initialSelectedSources = useMemo(
+    () => softwareSources.filter((source) => !statesEnum.isDeletion(source.state)),
+    [softwareSources]
+  );
+
   return (
     <form className="form-horizontal">
       <div className="row">
@@ -37,11 +43,9 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
-        initialSelectedIds={softwareSources
-          .filter((source) => !statesEnum.isDeletion(source.state))
-          .map((source) => source.channelId)}
-        onChange={(selectedChannels) => {
-          onChange(selectedChannels.map((c) => c.label));
+        initialSelectedSources={initialSelectedSources}
+        onChange={(selectedChannelLabels) => {
+          onChange(selectedChannelLabels);
         }}
       />
     </form>

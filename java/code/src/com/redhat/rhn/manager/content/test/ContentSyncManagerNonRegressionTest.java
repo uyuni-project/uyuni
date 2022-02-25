@@ -137,20 +137,16 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         .filter(c -> !ep.getChannelLabels().contains(toChannelLabel(c)))
                         .collect(Collectors.toList());
 
-                    unexpectedChannels.forEach(c -> {
-                        failures.add("Product " + product.toString() +
-                                " has unexpected channel " + toChannelLabel(c));
-                    });
+                    unexpectedChannels.forEach(c -> failures.add("Product " + product.toString() +
+                            " has unexpected channel " + toChannelLabel(c)));
 
                     List<String> missingChannels = ep.getChannelLabels().stream().filter(
                         label -> !product.getChannels().stream()
                             .anyMatch(c -> toChannelLabel(c).equals(label))
                     ).collect(Collectors.toList());
 
-                    missingChannels.forEach(c -> {
-                        failures.add("Product " + product.toString() +
-                                " does not have expected channel " + c);
-                    });
+                    missingChannels.forEach(c -> failures.add("Product " + product.toString() +
+                            " does not have expected channel " + c));
                 }
                 else {
                     failures.add("Product was expected but not found: " + ep +
@@ -160,9 +156,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             }
 
             products.removeAll(checkedProducts);
-            products.forEach(p -> {
-                failures.add("Product was not expected: " + p);
-            });
+            products.forEach(p -> failures.add("Product was not expected: " + p));
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(expectedProductsCSV);

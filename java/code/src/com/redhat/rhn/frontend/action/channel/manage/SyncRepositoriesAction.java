@@ -97,7 +97,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
             }
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.CID, chan.getId().toString());
 
         ListHelper helper = new ListHelper(this, request, params);
@@ -137,7 +137,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
             }
 
             try {
-                Map<String, String> mparams = new HashMap<String, String>();
+                Map<String, String> mparams = new HashMap<>();
                 String [] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
 
                 for (String p : lparams) {
@@ -226,12 +226,12 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
         String log = getLastSyncLog(chan);
 
         Map<String, Map<String, Object>> repositories =
-                new HashMap<String, Map<String, Object>>();
+                new HashMap<>();
 
         String[] allRepoLog = log.split("Repo URL: ");
 
         for (String repoLog : allRepoLog) {
-            Map<String, Object> syncingRepo = new HashMap<String, Object>();
+            Map<String, Object> syncingRepo = new HashMap<>();
             String[] lines = repoLog.split("\\n");
 
             String lastLine = lines[lines.length - 1];

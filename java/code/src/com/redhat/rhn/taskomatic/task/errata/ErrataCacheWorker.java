@@ -114,7 +114,7 @@ public class ErrataCacheWorker implements QueueWorker {
      */
     private void removeTask() {
         WriteMode mode = ModeFactory.getWriteMode("Task_queries", "delete_task");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", task.getOrg().getId());
         params.put("name", task.getName());
         params.put("task_data", task.getData());

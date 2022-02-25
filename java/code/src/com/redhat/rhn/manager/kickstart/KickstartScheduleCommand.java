@@ -70,7 +70,6 @@ import org.cobbler.SystemRecord;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -406,7 +405,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             if (arch != null) {
                 SelectMode mode = getMode();
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
                 params.put("org_id", this.user.getOrg().getId());
                 params.put("prim_arch_id", arch.getId());
                 if (arch.getName().equals("x86_64")) {
@@ -683,10 +682,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
             if (oldkeys != null) {
                 log.debug("** Removing old tokens");
-                Iterator i = oldkeys.iterator();
-                while (i.hasNext()) {
+                for (Object oldkeyIn : oldkeys) {
                     log.debug("removing key.");
-                    ActivationKey oldkey =  (ActivationKey) i.next();
+                    ActivationKey oldkey = (ActivationKey) oldkeyIn;
                     ActivationKeyFactory.removeKey(oldkey);
                 }
             }
@@ -1012,9 +1010,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 lookupAllKickstartSessionsByServer(hostServer.getId());
         if (sessions != null) {
             log.debug("    Found sessions: " + sessions);
-            Iterator i = sessions.iterator();
-            while (i.hasNext()) {
-                KickstartSession sess = (KickstartSession) i.next();
+            for (Object sessionIn : sessions) {
+                KickstartSession sess = (KickstartSession) sessionIn;
                 if (sess != null &&
                         sess.getState() != null) {
                     log.debug("    Working with session: " +
@@ -1028,13 +1025,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                             hostServer.getId() + " sess.hostServer: " +
                             (sess.getHostServer() == null ?
                                     "null" :
-                                        "" + sess.getHostServer().getId()));
+                                    "" + sess.getHostServer().getId()));
                     if (sess.getHostServer() != null &&
                             sess.getHostServer().getId().equals(hostServer.getId())) {
                         log.debug("    Marking session failed.");
                         sess.markFailed(
                                 LocalizationService.getInstance().
-                                getMessage("kickstart.session.newsession"));
+                                        getMessage("kickstart.session.newsession"));
                     }
                 }
             }
@@ -1056,10 +1053,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         Server hostServer = getHostServer();
-        Set<Long> serverChannelIds = new HashSet<Long>();
-        Iterator<Channel> i = hostServer.getChannels().iterator();
-        while (i.hasNext()) {
-            Channel c = i.next();
+        Set<Long> serverChannelIds = new HashSet<>();
+        for (Channel c : hostServer.getChannels()) {
             serverChannelIds.add(c.getId());
         }
 
@@ -1109,7 +1104,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @return a ValidationError or null
      */
     public Map<String, Long> findKickstartPackageToInstall(Collection<Long> channelIds) {
-        List<Map<String, Long>> results = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> results = new LinkedList<>();
 
         for (Long chnnelId : channelIds) {
             log.debug("    Checking on:" + chnnelId + " for: " + this.ksdata.getKickstartPackageNameForTraditional());
@@ -1119,7 +1114,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
             for (Map<String, Object> aPackage : packages) {
                 log.debug("    Found the package: " + aPackage);
-                Map<String, Long> result = new HashMap<String, Long>();
+                Map<String, Long> result = new HashMap<>();
                 result.put("name_id", (Long)aPackage.get("name_id"));
                 result.put("evr_id", (Long)aPackage.get("evr_id"));
                 result.put("arch_id", (Long)aPackage.get("package_arch_id"));
@@ -1130,15 +1125,12 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         if (!results.isEmpty()) {
-            return Collections.max(results, new Comparator<Map<String, Long>>() {
-                @Override
-                public int compare(Map<String, Long> o1In, Map<String, Long> o2In) {
-                    PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
-                            o1In.get("evr_id"));
-                    PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
-                            o2In.get("evr_id"));
-                    return evr1.compareTo(evr2);
-                }
+            return Collections.max(results, (o1In, o2In) -> {
+                PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
+                        o1In.get("evr_id"));
+                PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
+                        o2In.get("evr_id"));
+                return evr1.compareTo(evr2);
             });
         }
         else {

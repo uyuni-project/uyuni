@@ -112,7 +112,7 @@ public class RemoveMastersAction extends RhnAction {
     }
 
     private List<IssMaster> findSelectedMasters(Set sessionSet, Long midIn) {
-        List<IssMaster> masters = new ArrayList<IssMaster>();
+        List<IssMaster> masters = new ArrayList<>();
 
         if (sessionSet != null) {
             for (String mid : (Set<String>) sessionSet) {

@@ -39,18 +39,18 @@ public class MockConnection extends CobblerConnection {
 
     private Logger log = Logger.getLogger(MockConnection.class);
 
-    private static List<Map> profiles = new ArrayList<Map>();
-    private static List<Map> distros = new ArrayList<Map>();
-    private static List<Map> systems = new ArrayList<Map>();
-    private static List<Map> images = new ArrayList<Map>();
+    private static List<Map> profiles = new ArrayList<>();
+    private static List<Map> distros = new ArrayList<>();
+    private static List<Map> systems = new ArrayList<>();
+    private static List<Map> images = new ArrayList<>();
 
 
-    private static Map<String, Map> systemMap = new HashMap<String, Map>();
-    private static Map<String, Map> profileMap = new HashMap<String, Map>();
-    private static Map<String, Map> distroMap = new HashMap<String, Map>();
-    private static Map<String, Map> imageMap = new HashMap<String, Map>();
+    private static Map<String, Map> systemMap = new HashMap<>();
+    private static Map<String, Map> profileMap = new HashMap<>();
+    private static Map<String, Map> distroMap = new HashMap<>();
+    private static Map<String, Map> imageMap = new HashMap<>();
 
-    private static List<String> powerCommands = new ArrayList<String>();
+    private static List<String> powerCommands = new ArrayList<>();
 
     private static final Map<String, String> REMAP_KEYS = new HashMap<>();
 
@@ -245,7 +245,7 @@ public class MockConnection extends CobblerConnection {
         return true;
     }
     else if ("new_image".equals(name)) {
-        Map<String, Object> image = new HashMap<String, Object>();
+        Map<String, Object> image = new HashMap<>();
         String uid = random();
         image.put("uid", uid);
         images.add(image);
@@ -351,7 +351,7 @@ public class MockConnection extends CobblerConnection {
 
 
    private List<Map<String, Object>> find(Map<String, Object> criteria, List<Map> maps) {
-       List<Map<String, Object>> ret = new LinkedList<Map<String, Object>>();
+       List<Map<String, Object>> ret = new LinkedList<>();
        for (Map map : maps) {
            int matched = 0;
            for (String key : criteria.keySet()) {
@@ -376,7 +376,7 @@ public class MockConnection extends CobblerConnection {
      */
     public Object invokeTokenMethod(String procedureName,
                                     Object... args) {
-        List<Object> params = new LinkedList<Object>(Arrays.asList(args));
+        List<Object> params = new LinkedList<>(Arrays.asList(args));
         params.add(token);
         return invokeMethod(procedureName, params.toArray());
     }
@@ -420,16 +420,16 @@ public class MockConnection extends CobblerConnection {
     }
 
     public static void clear() {
-        profiles = new ArrayList<Map>();
-        distros = new ArrayList<Map>();
-        systems = new ArrayList<Map>();
-        images = new ArrayList<Map>();
+        profiles = new ArrayList<>();
+        distros = new ArrayList<>();
+        systems = new ArrayList<>();
+        images = new ArrayList<>();
 
 
-        systemMap = new HashMap<String, Map>();
-        profileMap = new HashMap<String, Map>();
-        distroMap = new HashMap<String, Map>();
-        imageMap = new HashMap<String, Map>();
+        systemMap = new HashMap<>();
+        profileMap = new HashMap<>();
+        distroMap = new HashMap<>();
+        imageMap = new HashMap<>();
     }
 
 }

@@ -321,7 +321,7 @@ public class ContentProject extends BaseDomainHelper {
     public List<ContentFilter> getActiveFilters() {
         return getProjectFilters().stream()
                 .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)
-                .map(f -> f.getFilter())
+                .map(ContentProjectFilter::getFilter)
                 .collect(Collectors.toList());
     }
 
@@ -349,7 +349,7 @@ public class ContentProject extends BaseDomainHelper {
                 // When a filter is detached we either transit it to BUILT or EDITED depending on the previous state
                 // If the filter was edited after the last built time it transits to EDITED otherwise to BUILT
                 ContentProjectFilter.State newState = getFirstEnvironmentOpt()
-                        .flatMap(env -> env.computeBuiltTime())
+                        .flatMap(ContentEnvironment::computeBuiltTime)
                         .filter(builtTime -> filter.getModified().after(builtTime))
                         .map(builtTime -> ContentProjectFilter.State.EDITED)
                         .orElse(ContentProjectFilter.State.BUILT);

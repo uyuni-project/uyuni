@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,9 +84,8 @@ public class PackagePushAction extends RhnSetAction {
 
 
         //Load up all the packages
-        Set<Package> filePackages = new HashSet<Package>();
-        for (Iterator i = set.getElements().iterator(); i.hasNext();) {
-            RhnSetElement element = (RhnSetElement) i.next();
+        Set<Package> filePackages = new HashSet<>();
+        for (RhnSetElement element : set.getElements()) {
             Package p = PackageManager.lookupByIdAndUser(element.getElement(), user);
             filePackages.add(p);
         }

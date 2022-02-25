@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
             // DELETE THE OLD ONES - less error-prone than trying to do
             // set-theoretic operations based on set-diffs
             //IssFactory.clearMapsForSlave(sid);
-            theSlave.setAllowedOrgs(new HashSet<Org>());
+            theSlave.setAllowedOrgs(new HashSet<>());
             helper.updateSet(sessionSet, LIST_NAME);
             return handleDispatchAction(mapping, requestContext, sid, sessionSet);
         }
@@ -123,7 +122,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
             RequestContext context,
             Long sid,
             Set sessionSet) {
-        Set<Org> allowedOrgs = new HashSet<Org>();
+        Set<Org> allowedOrgs = new HashSet<>();
         IssSlave s = IssFactory.lookupSlaveById(sid);
         for (String soid : (Set<String>) sessionSet) {
             Long oid = Long.parseLong(soid);
@@ -153,12 +152,12 @@ public class AllowSlaveOrgsAction extends RhnAction {
     }
 
     protected List<OrgDto> fromOrgs(List<Org> orgs) {
-        List<OrgDto> outList = new ArrayList<OrgDto>();
+        List<OrgDto> outList = new ArrayList<>();
         for (Org o : orgs) {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
 
-        Collections.sort(outList, new OrgComparator());
+        outList.sort(new OrgComparator());
 
         return outList;
     }

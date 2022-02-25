@@ -117,7 +117,7 @@ public class ListControl {
         // iterate over the data in its entirety to
         // generate the set of actual characters that
         // exist in the alpha column
-        Map<Character, Integer> alphaSet = new HashMap<Character, Integer>();
+        Map<Character, Integer> alphaSet = new HashMap<>();
         Iterator di = dr.iterator();
         int i = 0;
         while (di.hasNext()) {

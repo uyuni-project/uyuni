@@ -41,7 +41,6 @@ import org.cobbler.Profile;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,9 +89,9 @@ public class KickstartLister extends BaseManager {
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "kickstarts_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         DataResult<KickstartDto> returnDataResult = makeDataResult(params,
                                                             elabParams, pc, m);
         if (logger.isDebugEnabled()) {
@@ -114,7 +113,7 @@ public class KickstartLister extends BaseManager {
                     ", PageControl pc=" + pc + ") - start");
         }
         SelectMode m = ModeFactory.getMode("General_queries", "kickstart_trees_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult retval = makeDataResult(params, null, pc, m);
         if (logger.isDebugEnabled()) {
@@ -134,10 +133,10 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult<KickstartScript> scriptsInKickstart(Org orgIn, Long ksIn) {
         SelectMode m = ModeFactory.getMode("General_queries", "scripts_for_kickstart");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("kickstart_id", ksIn);
         params.put("org_id", orgIn.getId());
-        Map<String, String> elabParams = new HashMap<String, String>();
+        Map<String, String> elabParams = new HashMap<>();
         DataResult<KickstartScript> returnDataResult = makeDataResultNoPagination(params,
                 elabParams, m);
         if (logger.isDebugEnabled()) {
@@ -193,9 +192,9 @@ public class KickstartLister extends BaseManager {
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "org_ks_ip_ranges");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         DataResult returnDataResult = makeDataResult(params, elabParams, pc, m);
         if (logger.isDebugEnabled()) {
             logger.debug("kickstartIpRangesInOrg(Org, PageControl) - end - return value=" +
@@ -217,7 +216,7 @@ public class KickstartLister extends BaseManager {
                     orgIn + ") - start");
         }
         SelectMode m = ModeFactory.getMode("General_queries", "crypto_keys_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), null, m);
         if (logger.isDebugEnabled()) {
@@ -239,7 +238,7 @@ public class KickstartLister extends BaseManager {
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "preservations_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
 
@@ -265,7 +264,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                            "activation_keys_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult<ActivationKeyDto>  returnDataResult = makeDataResult(params,
                                                     Collections.EMPTY_MAP, pc, m);
@@ -291,7 +290,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                            "active_activation_keys_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
 
@@ -316,7 +315,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                            "systems_currently_kickstarted_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
         if (logger.isDebugEnabled()) {
@@ -340,7 +339,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                      "systems_scheduled_tobe_kickstarted_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
         if (logger.isDebugEnabled()) {
@@ -365,7 +364,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                      "kickstart_summary_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResultNoPagination(params,
                                                                  new HashMap(), m);
@@ -389,7 +388,7 @@ public class KickstartLister extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                                      "valid_timezones_for_kickstart_profile");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("ksid", ksId);
         DataResult returnDataResult = makeDataResultNoPagination(params,
                                                                  new HashMap(), m);
@@ -412,7 +411,7 @@ public class KickstartLister extends BaseManager {
         SelectMode m =
                 ModeFactory.getMode("General_queries",
                         "valid_timezones_for_kickstart_install_type");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", ksInstallType.getId());
 
         return (DataResult<StringDto>) makeDataResultNoPagination(params, new HashMap(), m);
@@ -427,10 +426,10 @@ public class KickstartLister extends BaseManager {
      */
     public List<CobblerProfileDto> listCobblerProfiles(User user) {
         logger.debug("Adding cobblerProfiles to the list");
-        Set<String> excludes = new HashSet<String>(
-                    KickstartFactory.listKickstartDataCobblerIds());
+        Set<String> excludes = new HashSet<>(
+                KickstartFactory.listKickstartDataCobblerIds());
 
-        List<CobblerProfileDto> profiles = new LinkedList<CobblerProfileDto>();
+        List<CobblerProfileDto> profiles = new LinkedList<>();
 
         List<Profile> cProfiles = Profile.list(CobblerXMLRPCHelper.getConnection(user),
                                                                 excludes);
@@ -472,7 +471,7 @@ public class KickstartLister extends BaseManager {
      * @return a list of cobbler profiles or empty list.
      */
     public List<KickstartDto> listProfilesForSsm(User user) {
-        List<KickstartDto> ret = new LinkedList<KickstartDto>();
+        List<KickstartDto> ret = new LinkedList<>();
         ret.addAll(kickstartsInOrg(user.getOrg(), null));
         pruneInvalid(user, ret);
         ret.addAll(listCobblerProfiles(user));
@@ -489,19 +488,14 @@ public class KickstartLister extends BaseManager {
      * @param profiles the kickstart dto list to be pruned
      */
     public void pruneInvalid(User user, List<KickstartDto> profiles) {
-        Set<Long> ids = new HashSet<Long>();
+        Set<Long> ids = new HashSet<>();
         List<KickstartableTree> trees = KickstartManager.getInstance().
                         removeInvalid(KickstartFactory.
                                     lookupAccessibleTreesByOrg(user.getOrg()));
         for (KickstartableTree tree : trees) {
             ids.add(tree.getId());
         }
-        for (Iterator<KickstartDto> itr = profiles.iterator(); itr.hasNext();) {
-            KickstartDto dto = itr.next();
-            if (StringUtils.isBlank(dto.getCobblerId()) ||
-                            !ids.contains(dto.getKstreeId())) {
-                itr.remove();
-            }
-        }
+        profiles.removeIf(dto -> StringUtils.isBlank(dto.getCobblerId()) ||
+                !ids.contains(dto.getKstreeId()));
     }
 }

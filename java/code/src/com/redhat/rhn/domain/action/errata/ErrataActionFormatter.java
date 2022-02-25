@@ -78,7 +78,7 @@ public class ErrataActionFormatter extends ActionFormatter {
     @Override
     public String getRelatedObjectDescription() {
         Set<Errata> allErrata = ((ErrataAction) this.getAction()).getErrata();
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         if (allErrata != null) {
             for (Errata errata : allErrata) {
                 result.add(

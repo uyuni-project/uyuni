@@ -63,7 +63,7 @@ public class SystemOverviewComparator implements Comparator<SystemOverview> {
             retval = 0;
         }
         if (retval == -2) {
-            long diff = first.longValue() - second.longValue();
+            long diff = first - second;
             if (diff < 0) {
                 retval = -1;
             }

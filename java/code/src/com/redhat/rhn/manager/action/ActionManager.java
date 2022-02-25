@@ -116,7 +116,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -167,8 +166,8 @@ public class ActionManager extends BaseManager {
      */
     public static int removeActions(List actionIds) {
         int failed = 0;
-        for (Iterator ids = actionIds.iterator(); ids.hasNext();) {
-            Long actionId = (Long) ids.next();
+        for (Object actionIdIn : actionIds) {
+            Long actionId = (Long) actionIdIn;
             failed += ActionFactory.removeAction(actionId);
         }
         return failed;
@@ -225,7 +224,7 @@ public class ActionManager extends BaseManager {
 
         //TODO: put this in the hibernate lookup query
         SelectMode m = ModeFactory.getMode("Action_queries", "visible_to_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("aid", aid);
@@ -276,7 +275,7 @@ public class ActionManager extends BaseManager {
     public static void deleteActions(User user, String label) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "delete_actions");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("label", label);
@@ -305,7 +304,7 @@ public class ActionManager extends BaseManager {
     public static void archiveActions(User user, String label) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "archive_actions");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("label", label);
@@ -390,7 +389,7 @@ public class ActionManager extends BaseManager {
                             .filter(sa -> isMinionServer(sa.getServer()))
                             .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
                             .filter(sa -> servers.contains(sa.getServer()))
-                            .map(sa -> sa.getServer())
+                            .map(ServerAction::getServer)
                             .collect(toSet())
                         )
                 )
@@ -420,7 +419,7 @@ public class ActionManager extends BaseManager {
 
         // run post-actions
         actionsToDelete.stream()
-                .forEach(a ->a.onCancelAction());
+                .forEach(Action::onCancelAction);
     }
 
     /**
@@ -430,9 +429,9 @@ public class ActionManager extends BaseManager {
      * @param actionsIds List of action ids to be deleted
      */
     public static void deleteActionsById(User user, List actionsIds) {
-        List<Action> actions = new ArrayList<Action>();
-        for (Iterator<Number> ai = actionsIds.iterator(); ai.hasNext();) {
-            long actionId = ai.next().longValue();
+        List<Action> actions = new ArrayList<>();
+        for (Number actionsIdIn : (Iterable<Number>) actionsIds) {
+            long actionId = actionsIdIn.longValue();
             Action action = ActionManager.lookupAction(user, actionId);
             if (action != null) {
                 // check, whether the actions are archived
@@ -533,9 +532,8 @@ public class ActionManager extends BaseManager {
         addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
-        Iterator i = filenames.iterator();
-        while (i.hasNext()) {
-            Long cfnid = (Long)i.next();
+        for (Object filenameIn : filenames) {
+            Long cfnid = (Long) filenameIn;
             /*
              * We are using ConfigurationFactory to lookup the config file name
              * instead of ConfigurationManager.  If we used ConfigurationManager,
@@ -805,7 +803,7 @@ public class ActionManager extends BaseManager {
             long age) {
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "recently_scheduled_action_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("age", age);
@@ -868,7 +866,7 @@ public class ActionManager extends BaseManager {
             String setLabel, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "pending_actions_to_delete_in_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
@@ -943,7 +941,7 @@ public class ActionManager extends BaseManager {
     private static DataResult getActions(User user, PageControl pc, String mode,
             String setLabel, boolean noLimit) {
         SelectMode m = ModeFactory.getMode("Action_queries", mode);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
@@ -999,7 +997,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getPackageList(Long aid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_associated_with_action");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
@@ -1018,7 +1016,7 @@ public class ActionManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Errata_queries",
                 "errata_associated_with_action");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1034,7 +1032,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileUploadList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "upload_action_status");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1050,7 +1048,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileDeployList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "config_action_revisions");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1066,7 +1064,7 @@ public class ActionManager extends BaseManager {
     public static DataResult getConfigFileDiffList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "diff_action_revisions");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
         DataResult dr = m.execute(params);
@@ -1088,7 +1086,7 @@ public class ActionManager extends BaseManager {
             String mode) {
 
         SelectMode m = ModeFactory.getMode("System_queries", mode);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("aid", action.getId());
         params.put("user_id", user.getId());
@@ -1354,9 +1352,9 @@ public class ActionManager extends BaseManager {
     // Check if we want to delete the old package when installing  a
     // new rev of one.
     private static boolean isPackageRemovable(String name) {
-        for (int i = 0; i < PACKAGES_NOT_REMOVABLE.length; i++) {
-            log.debug("Checking: " + name + " for: " + PACKAGES_NOT_REMOVABLE[i]);
-            if (name.equals(PACKAGES_NOT_REMOVABLE[i])) {
+        for (String sIn : PACKAGES_NOT_REMOVABLE) {
+            log.debug("Checking: " + name + " for: " + sIn);
+            if (name.equals(sIn)) {
                 return false;
             }
         }
@@ -1441,9 +1439,9 @@ public class ActionManager extends BaseManager {
     public static Action schedulePackageLock(User scheduler,
             Set<Package> packages, Date earliest, Server...servers)
         throws TaskomaticApiException {
-        List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
+        List<Map<String, Long>> packagesList = new ArrayList<>();
         for (Package pkg : packages) {
-            Map<String, Long> pkgMeta = new HashMap<String, Long>();
+            Map<String, Long> pkgMeta = new HashMap<>();
             pkgMeta.put("name_id", pkg.getPackageName().getId());
             pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
             pkgMeta.put("arch_id", pkg.getPackageArch().getId());
@@ -1479,7 +1477,7 @@ public class ActionManager extends BaseManager {
 
         checkScriptingOnServers(sids);
 
-        Set<Long> sidSet = new HashSet<Long>();
+        Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
         ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
                 ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
@@ -1543,13 +1541,13 @@ public class ActionManager extends BaseManager {
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
         maintenanceManager.canActionBeScheduled(serverIds, action);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
         params.put("tries", REMAINING_TRIES);
         params.put("parent_id", action.getId());
 
         WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<Long>();
+        List<Long> sidList = new ArrayList<>();
         sidList.addAll(serverIds);
         m.executeUpdate(params, sidList);
     }
@@ -1692,7 +1690,7 @@ public class ActionManager extends BaseManager {
         kad.setParentAction(ksAction);
 
         kad.setDiskGb(pcmd.getLocalStorageSize());
-        kad.setMemMb(pcmd.getMemoryAllocation().longValue());
+        kad.setMemMb(pcmd.getMemoryAllocation());
         kad.setDiskPath(pcmd.getFilePath());
         kad.setVcpus(Long.valueOf(pcmd.getVirtualCpus()));
         kad.setGuestName(pcmd.getGuestName());
@@ -1830,7 +1828,7 @@ public class ActionManager extends BaseManager {
         // Do not elaborate, we need only the IDs in here
         DataResult<Errata> errata = SystemManager.unscheduledErrata(scheduler,
                 srvr.getId(), null);
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         for (Errata e : errata) {
             errataIds.add(e.getId());
         }
@@ -1884,7 +1882,7 @@ public class ActionManager extends BaseManager {
             row.put("arch_id", pkg.getPackageArch().getId());
             packages.add(row);
         }
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(server.getId());
 
         return schedulePackageAction(scheduler, packages,
@@ -1910,7 +1908,7 @@ public class ActionManager extends BaseManager {
             ActionType type,
             Date earliestAction,
             Server...servers) throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         for (Server s : servers) {
             serverIds.add(s.getId());
         }
@@ -2036,9 +2034,7 @@ public class ActionManager extends BaseManager {
         throws TaskomaticApiException {
 
         List packages = new LinkedList();
-        Iterator i = pkgs.getElements().iterator();
-        while (i.hasNext()) {
-            RhnSetElement rse = (RhnSetElement) i.next();
+        for (RhnSetElement rse : pkgs.getElements()) {
             Map row = new HashMap();
             row.put("name_id", rse.getElement());
             row.put("evr_id", rse.getElementTwo());
@@ -2080,7 +2076,7 @@ public class ActionManager extends BaseManager {
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
             String parameters, String ovalFiles, Date earliestAction) throws TaskomaticApiException {
-        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
         serverIds.add(srvr.getId());
         return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction);
     }
@@ -2224,7 +2220,7 @@ public class ActionManager extends BaseManager {
     public static Action scheduleChannelState(User user, List<MinionServer> minionServers)
             throws TaskomaticApiException {
         List<String> states = Collections.singletonList("channels");
-        List<Long> sids = minionServers.stream().map(ms->ms.getId()).collect(toList());
+        List<Long> sids = minionServers.stream().map(Server::getId).collect(toList());
         Action action = scheduleApplyStates(user, sids, states, new Date());
         taskomaticApi.scheduleActionExecution(action);
         return action;
@@ -2299,7 +2295,7 @@ public class ActionManager extends BaseManager {
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
         actionDetails.setPillarsMap(pillar);
-        test.ifPresent(t -> actionDetails.setTest(t));
+        test.ifPresent(actionDetails::setTest);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
@@ -2359,7 +2355,7 @@ public class ActionManager extends BaseManager {
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
-        buildActionId.ifPresent(aid -> actionDetails.setBuildActionId(aid));
+        buildActionId.ifPresent(actionDetails::setBuildActionId);
         actionDetails.setVersion(version);
         actionDetails.setImageStoreId(store.getId());
         action.setDetails(actionDetails);
@@ -2382,7 +2378,7 @@ public class ActionManager extends BaseManager {
     public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
         throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(m -> m.getId()).collect(toList());
+                    .map(Server::getId).collect(toList());
         if (!visible.containsAll(sysids)) {
             sysids.removeAll(visible);
             throw new UnsupportedOperationException("Some System not available or not managed with Salt: " + sysids);
@@ -2391,7 +2387,7 @@ public class ActionManager extends BaseManager {
         List<MinionServer> minions = sysids.stream().map(
             id -> SystemManager.lookupByIdAndUser(id, loggedInUser).asMinionServer().get()).collect(toList());
 
-        List<Long> proxies = minions.stream().filter(m -> m.isProxy()).map(m -> m.getId()).collect(toList());
+        List<Long> proxies = minions.stream().filter(Server::isProxy).map(Server::getId).collect(toList());
         if (!proxies.isEmpty()) {
             throw new UnsupportedOperationException("Some of the minions are proxies: " + proxies);
         }
@@ -2406,7 +2402,7 @@ public class ActionManager extends BaseManager {
                 }
             });
         }
-        Optional<Long> proxyIdOpt = proxy.map(p -> p.getId());
+        Optional<Long> proxyIdOpt = proxy.map(Server::getId);
 
         List<Long> sshIds = minions.stream()
                             .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
@@ -2422,10 +2418,10 @@ public class ActionManager extends BaseManager {
 
         List<Long> normalIds = minions.stream()
                                .filter(minion -> !ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
-                               .map(minion -> minion.getId())
+                               .map(Server::getId)
                                .collect(toList());
 
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         if (!sshIds.isEmpty()) {
             // action for SSH minions - update channel configuration
             Action a = scheduleApplyStates(loggedInUser, sshIds,
@@ -2439,7 +2435,7 @@ public class ActionManager extends BaseManager {
         if (!normalIds.isEmpty()) {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_server", proxy.map(p -> p.getHostname()).orElse(ConfigDefaults.get().getCobblerHost()));
+            pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getCobblerHost()));
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
                        Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),

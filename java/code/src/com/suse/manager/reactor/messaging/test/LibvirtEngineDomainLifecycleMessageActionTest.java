@@ -71,7 +71,8 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
-            new JsonParser<>(new TypeToken<Event>() { });
+            new JsonParser<>(new TypeToken<>() {
+            });
 
     @Override
     public void setUp() throws Exception {

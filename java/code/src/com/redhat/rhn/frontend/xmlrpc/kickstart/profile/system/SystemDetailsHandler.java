@@ -68,8 +68,7 @@ public class SystemDetailsHandler extends BaseHandler {
     public boolean checkConfigManagement(User loggedInUser, String ksLabel) {
         ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
-        return command.getKickstartData().getKickstartDefaults().getCfgManagementFlag().
-            booleanValue();
+        return command.getKickstartData().getKickstartDefaults().getCfgManagementFlag();
     }
 
     /**
@@ -133,8 +132,7 @@ public class SystemDetailsHandler extends BaseHandler {
     public boolean checkRemoteCommands(User loggedInUser, String ksLabel) {
         ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
-        return command.getKickstartData().getKickstartDefaults().getRemoteCommandFlag().
-            booleanValue();
+        return command.getKickstartData().getKickstartDefaults().getRemoteCommandFlag();
     }
 
     /**
@@ -266,7 +264,7 @@ public class SystemDetailsHandler extends BaseHandler {
 
         KickstartLocaleCommand command  = getLocaleCommand(ksLabel, loggedInUser);
 
-        Map<String, Object> locale = new HashMap<String, Object>();
+        Map<String, Object> locale = new HashMap<>();
         locale.put("locale", command.getTimezone());
         locale.put("useUtc", command.isUsingUtc());
 
@@ -371,7 +369,7 @@ public class SystemDetailsHandler extends BaseHandler {
      */
     public List<String> getPartitioningScheme(User loggedInUser, String ksLabel) {
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (String str : ksdata.getPartitionData().split("\\r?\\n")) {
             if (!StringUtils.isBlank(str)) {
                 list.add(str);
@@ -598,7 +596,7 @@ public class SystemDetailsHandler extends BaseHandler {
         KickstartEditCommand command =
             new KickstartEditCommand(data.getId(), loggedInUser);
 
-        Set<FileList> fileLists = new HashSet<FileList>();
+        Set<FileList> fileLists = new HashSet<>();
         for (String name : filePreservations) {
             FileList fileList = CommonFactory.lookupFileList(name, loggedInUser.getOrg());
             if (fileList == null) {
@@ -658,7 +656,7 @@ public class SystemDetailsHandler extends BaseHandler {
         KickstartEditCommand command =
             new KickstartEditCommand(data.getId(), loggedInUser);
 
-        Set<FileList> fileLists = new HashSet<FileList>();
+        Set<FileList> fileLists = new HashSet<>();
         for (String name : filePreservations) {
             FileList fileList = CommonFactory.lookupFileList(name, loggedInUser.getOrg());
             if (fileList == null) {

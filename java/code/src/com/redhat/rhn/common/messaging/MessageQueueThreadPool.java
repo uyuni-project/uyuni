@@ -44,7 +44,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
      * @param size the number of threads to create, i.e. pool size
      */
     public MessageQueueThreadPool(int size) {
-        super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+        super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         setThreadFactory(new BasicThreadFactory.Builder().namingPattern("message-queue-thread-%d").build());
         log.info("Started message queue thread pool (size: " + size + ")");
     }

@@ -49,7 +49,7 @@ public class CveFactory extends HibernateFactory {
      * @return CVE object found
      */
     public static Cve lookupByName(String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return (Cve)singleton.lookupObjectByNamedQuery("Cve.lookupByName", params);
     }

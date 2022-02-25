@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
+import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
 import { FormContext } from "./Form";
 import { InputBase, InputBaseProps } from "./InputBase";
@@ -61,14 +62,33 @@ type AsyncSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
   /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
   defaultValueOption?: Object;
 
+  paginate?: boolean;
+
   /**
    * Function that returns a promise, which is the set of options to be used once the promise resolves.
    */
-  loadOptions: (inputValue: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
+  loadOptions: (searchString: string, callback: (options: Array<Object>) => undefined) => Promise<any> | undefined;
   cacheOptions?: boolean;
 };
+type AsyncPaginateSelectProps = Omit<CommonSelectProps, "value" | "defaultValue"> & {
+  /** Default value object if no value is set. This has to be an object corresponding to the rest of the schema. */
+  defaultValueOption?: Object;
 
-export function Select(props: SelectProps | AsyncSelectProps) {
+  paginate: true;
+  /**
+   * Function that returns a promise with pagination data and a set of options matching the search string
+   * See: https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-async-paginate#loadoptions
+   */
+  loadOptions: (
+    searchString: string,
+    previouslyLoaded: any[],
+    additional?: any
+  ) => Promise<{ options: any[]; hasMore: boolean; additional?: any }>;
+};
+
+type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
+
+export function Select(props: Props) {
   const {
     inputClass,
     getOptionLabel,
@@ -82,7 +102,7 @@ export function Select(props: SelectProps | AsyncSelectProps) {
   } = props;
 
   const formContext = React.useContext(FormContext);
-  const isAsync = (props: SelectProps | AsyncSelectProps): props is AsyncSelectProps => {
+  const isAsync = (props: Props): props is AsyncSelectProps | AsyncPaginateSelectProps => {
     return (props as AsyncSelectProps).loadOptions !== undefined;
   };
 
@@ -119,8 +139,11 @@ export function Select(props: SelectProps | AsyncSelectProps) {
     defaultValueOption = props.defaultValueOption;
   }
   useEffect(() => {
+    // Since defaultValueOption is not bound to the model, ensure sanity, but only if there is a model binding to begin with
+    if (!props.name) {
+      return;
+    }
     const value = (formContext.model || {})[props.name || ""];
-    // Since defaultValueOption is not bound to the model, ensure sanity
     if (isAsync(props) && typeof defaultValueOption !== "undefined" && getOptionValue(defaultValueOption) !== value) {
       console.error(
         `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(
@@ -159,11 +182,28 @@ export function Select(props: SelectProps | AsyncSelectProps) {
           isClearable: isClearable,
           styles: bootstrapStyles,
           isMulti: props.isMulti,
+          // TODO: Create a separate div in body so we don't invalidate the layout every time, see https://github.com/SUSE/spacewalk/issues/17076
           menuPortalTarget: document.body,
           classNamePrefix: `class-${props.name}`,
         };
 
         if (isAsync(props)) {
+          if (props.paginate) {
+            return (
+              <AsyncPaginateSelect
+                loadOptions={props.loadOptions}
+                defaultOptions
+                aria-label={props.title}
+                defaultValue={defaultValueOption}
+                shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
+                  // Load more items before we hit the complete bottom of the dropdown
+                  const threshold = 200; //px
+                  return scrollHeight - clientHeight - scrollTop < threshold;
+                }}
+                {...commonProps}
+              />
+            );
+          }
           return (
             <AsyncSelect
               loadOptions={props.loadOptions}

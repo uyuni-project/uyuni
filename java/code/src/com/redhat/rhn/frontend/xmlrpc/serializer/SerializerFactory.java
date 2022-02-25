@@ -32,7 +32,7 @@ public class SerializerFactory {
 
     /** private constructor */
     public SerializerFactory() {
-        serializers = new ArrayList<XmlRpcCustomSerializer>();
+        serializers = new ArrayList<>();
         initialize();
     }
 

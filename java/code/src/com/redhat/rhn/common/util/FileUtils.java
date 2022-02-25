@@ -169,14 +169,9 @@ public class FileUtils {
                 offset += numRead;
             }
         }
-        catch (FileNotFoundException fnf) {
+        catch (IOException fnf) {
             log.error("Could not read from: " + fileToRead.getAbsolutePath());
             throw new RuntimeException(fnf);
-        }
-        catch (IOException e) {
-            log.error("Could not read from: " + fileToRead.getAbsolutePath());
-            throw new RuntimeException(e);
-
         }
         finally {
             if (is != null) {

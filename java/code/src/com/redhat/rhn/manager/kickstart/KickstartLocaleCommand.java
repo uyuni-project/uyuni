@@ -99,12 +99,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
 
             if (args != null) {
                 tokens = (LinkedList) StringUtil.stringToList(args);
-                Iterator iter = tokens.iterator();
-                while (iter.hasNext()) {
-                    if (current.equals(iter.next())) {
-                        iter.remove();
-                    }
-                }
+                tokens.removeIf(current::equals);
             }
 
             tokens.add(timezoneIn);
@@ -151,9 +146,8 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         DataResult dr = KickstartLister.getInstance()
         .getValidTimezones(getKickstartData().getId());
 
-        Iterator iter = dr.iterator();
-        while (iter.hasNext()) {
-            TimezoneDto tz = (TimezoneDto) iter.next();
+        for (Object oIn : dr) {
+            TimezoneDto tz = (TimezoneDto) oIn;
             if (tz.getLabel().equals(timezone)) {
                 return Boolean.TRUE;
             }

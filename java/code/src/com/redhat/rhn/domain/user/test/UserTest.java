@@ -113,7 +113,7 @@ public class UserTest extends RhnBaseTestCase {
                 "testOrg" + this.getClass().getSimpleName());
         Address addr = UserTestUtils.createTestAddress(usr);
         UserFactory.save(usr);
-        assertTrue(addr.getId().longValue() != 0);
+        assertTrue(addr.getId() != 0);
     }
 
 

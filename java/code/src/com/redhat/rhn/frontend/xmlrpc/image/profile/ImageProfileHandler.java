@@ -357,7 +357,7 @@ public class ImageProfileHandler extends BaseHandler {
     public Map<String, String> getCustomValues(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
         return getValidImageProfile(loggedInUser, label).getCustomDataValues().stream()
-                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue()));
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), ProfileCustomDataValue::getValue));
     }
 
     /**

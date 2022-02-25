@@ -52,7 +52,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     public static final String PROTECTED = "protected";
     public static final String PRIVATE = "private";
 
-    private static List<String> archesToSkipRepodata = new ArrayList<String>(Arrays
+    private static List<String> archesToSkipRepodata = new ArrayList<>(Arrays
             .asList("channel-sparc-sun-solaris", "channel-i386-sun-solaris",
                     "channel-sparc"));
     private String baseDir;
@@ -79,19 +79,19 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private Modules modules;
     private MediaProducts mediaProducts;
     private String summary;
-    private Set<Errata> erratas = new HashSet<Errata>();
-    private Set<Package> packages = new HashSet<Package>();
-    private Set<ContentSource> sources =  new HashSet<ContentSource>();
-    private Set<ChannelFamily> channelFamilies = new HashSet<ChannelFamily>();
-    private Set<DistChannelMap> distChannelMaps = new HashSet<DistChannelMap>();
-    private Set<Org> trustedOrgs = new HashSet<Org>();
+    private Set<Errata> erratas = new HashSet<>();
+    private Set<Package> packages = new HashSet<>();
+    private Set<ContentSource> sources = new HashSet<>();
+    private Set<ChannelFamily> channelFamilies = new HashSet<>();
+    private Set<DistChannelMap> distChannelMaps = new HashSet<>();
+    private Set<Org> trustedOrgs = new HashSet<>();
     private String maintainerName;
     private String maintainerEmail;
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
     private boolean installerUpdates = false;
-    private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
+    private Set<ClonedChannel> clonedChannels = new HashSet<>();
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
@@ -535,7 +535,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packageIn The package to remove
      */
     public void removePackage(Package packageIn, User user) {
-            List<Long> list = new ArrayList<Long>();
+            List<Long> list = new ArrayList<>();
             list.add(packageIn.getId());
             ChannelManager.removePackages(this, list, user);
     }
@@ -772,7 +772,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         if (isBaseChannel()) {
             return ChannelFactory.getAccessibleChildChannels(this, user);
         }
-        return new ArrayList<Channel>();
+        return new ArrayList<>();
     }
 
     /**

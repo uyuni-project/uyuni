@@ -43,7 +43,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         CryptoKey key = createTestKey(user.getOrg());
         assertNotNull(key);
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < 5000; i++) {
             buffer.append("1");
         }

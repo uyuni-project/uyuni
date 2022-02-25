@@ -76,7 +76,7 @@ public class MigrationManager extends BaseManager {
      */
     public List<Long> migrateServers(User user, Org toOrg, List<Server> servers) {
 
-        List<Long> serversMigrated = new ArrayList<Long>();
+        List<Long> serversMigrated = new ArrayList<>();
 
         for (Server server : servers) {
 
@@ -148,7 +148,7 @@ public class MigrationManager extends BaseManager {
 
         // Remove from all system groups:
         for (ManagedServerGroup group : server.getManagedGroups()) {
-            List<Server> tempList = new LinkedList<Server>();
+            List<Server> tempList = new LinkedList<>();
             tempList.add(server);
             groupManager.removeServers(group, tempList);
         }

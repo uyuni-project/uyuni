@@ -79,7 +79,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
             }
         }
 
-        List<Long> newKidsToSubscribe = new LinkedList<Long>();
+        List<Long> newKidsToSubscribe = new LinkedList<>();
 
         if (oldChannel != null && newChannel != null) {
             Map<Channel, Channel> preservableChildren = ChannelManager.

@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,8 +97,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
             Channel baseChannel = s.getBaseChannel();
             List channels = baseChannel.getAccessibleChildrenFor(user);
 
-            Collections.sort(channels,
-                    new DynamicComparator("name", RequestContext.SORT_ASC));
+            channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
 
             ChildChannelDto[] childchannels = new ChildChannelDto[channels.size()];
             for (int i = 0; i < channels.size(); i++) {
@@ -124,8 +122,8 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
                 user, s);
 
-        List<EssentialChannelDto> rhnChannels = new LinkedList<EssentialChannelDto>();
-        List<EssentialChannelDto> customChannels = new LinkedList<EssentialChannelDto>();
+        List<EssentialChannelDto> rhnChannels = new LinkedList<>();
+        List<EssentialChannelDto> customChannels = new LinkedList<>();
 
         for (EssentialChannelDto bc : orgChannels) {
             if (bc.isCustom()) {
@@ -153,7 +151,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
     }
 
     private List<ChannelOverview> convertToChannelOverview(List<Channel> orgChannels) {
-        List<ChannelOverview> retval = new LinkedList<ChannelOverview>();
+        List<ChannelOverview> retval = new LinkedList<>();
         for (Channel c : orgChannels) {
             retval.add(new ChannelOverview(c.getName(), c.getId()));
         }
@@ -178,9 +176,9 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                 rctx.getRequiredParam(RequestContext.SID), user);
         request.setAttribute(RequestContext.SYSTEM, s);
         log.debug("existing child channels:");
-        List<Channel> currentChildChans = new LinkedList<Channel>();
-        List<Channel> currentPreservedChildChans = new LinkedList<Channel>();
-        List<Channel> currentUnpreservedChildChans = new LinkedList<Channel>();
+        List<Channel> currentChildChans = new LinkedList<>();
+        List<Channel> currentPreservedChildChans = new LinkedList<>();
+        List<Channel> currentUnpreservedChildChans = new LinkedList<>();
 
         if (s.getChildChannels() != null) {
             for (Channel childChan : s.getChildChannels()) {
@@ -193,7 +191,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         log.debug("newBaseChannelId = " + newBaseChannelId);
 
         Channel newChannel = null;
-        List<Channel> preservedChildChannels = new LinkedList<Channel>();
+        List<Channel> preservedChildChannels = new LinkedList<>();
 
         if (newBaseChannelId != null && newBaseChannelId != -1) {
             newChannel = ChannelManager.lookupByIdAndUser(
@@ -308,7 +306,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
 
         String[] childChannelIds = request.getParameterValues(CHILD_CHANNELS);
 
-        List<Long> channelIdsList = new LinkedList<Long>();
+        List<Long> channelIdsList = new LinkedList<>();
         if (childChannelIds != null) {
             for (int i = 0; i < childChannelIds.length; i++) {
                 channelIdsList.add(Long.valueOf(childChannelIds[i]));
@@ -342,7 +340,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
     }
 
     protected Map getKeyMethodMap() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("sdc.channels.edit.confirm_update_base", "confirmUpdateBaseChannel");
         map.put("sdc.channels.edit.update_sub", "updateChildChannels");
         map.put("sdc.channels.confirmNewBase.cancel", "unspecified");
