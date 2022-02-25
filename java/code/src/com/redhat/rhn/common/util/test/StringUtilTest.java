@@ -46,7 +46,7 @@ public class StringUtilTest extends TestCase {
     }
 
     public void testMapReplace() {
-        Map<String, String> replace = new HashMap<String, String>();
+        Map<String, String> replace = new HashMap<>();
         replace.put("k0", "v0");
         replace.put("k1", "v1");
 
@@ -160,16 +160,16 @@ public class StringUtilTest extends TestCase {
     public void testJoin() {
         String testString;
 
-        List<String> testEmpty = new LinkedList<String>();
+        List<String> testEmpty = new LinkedList<>();
         testString = StringUtil.join(", ", testEmpty);
         assertNull(testString);
 
-        List<String> testOne = new LinkedList<String>();
+        List<String> testOne = new LinkedList<>();
         testOne.add("One");
         testString = StringUtil.join(", ", testOne);
         assertEquals("One", testString);
 
-        List<String> testMany = new LinkedList<String>();
+        List<String> testMany = new LinkedList<>();
         testMany.add("One");
         testMany.add("Two");
         testMany.add("Three");

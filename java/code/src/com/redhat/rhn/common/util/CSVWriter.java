@@ -64,7 +64,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      * @param columnsIn List of Strings containing the names of the columns
      */
     public void setColumns(List<String> columnsIn) {
-        columns = new LinkedList<String>();
+        columns = new LinkedList<>();
         for (String column : columnsIn) {
             columns.add(column.trim());
         }

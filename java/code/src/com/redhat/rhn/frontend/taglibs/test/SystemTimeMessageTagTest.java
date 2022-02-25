@@ -63,7 +63,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         assertTrue(result.startsWith("<table border=\"0\" cellspacing=\"0\" " +
                 "cellpadding=\"6\">\n  <tr><td>" + ls.getMessage("timetag.lastcheckin") +
                 "</td><td>" + ls.formatDate(server.getServerInfo().getCheckin())));
-        assertFalse(result.indexOf(ls.getMessage("timetag.awol")) != -1);
+        assertFalse(result.contains(ls.getMessage("timetag.awol")));
     }
 
     private class CustomWriter extends MockJspWriter {

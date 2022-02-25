@@ -61,7 +61,7 @@ public class ConfigChannelJson {
         this.type = channelIn.getConfigChannelType().getLabel();
         this.position = null;
         this.assigned = false;
-    };
+    }
 
     /**
      * Instantiates a new channel object assigned in a specific position

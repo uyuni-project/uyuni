@@ -84,7 +84,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         var org = OrgFactory.createOrg();
         org.setName("org created by OrgFactory test: " + TestUtils.randomString());
         org = OrgFactory.save(org);
-        assertTrue(org.getId().longValue() > 0);
+        assertTrue(org.getId() > 0);
 
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);

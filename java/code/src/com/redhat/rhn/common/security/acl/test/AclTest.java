@@ -25,7 +25,6 @@ import com.mockobjects.Verifiable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -331,9 +330,8 @@ public class AclTest extends RhnBaseTestCase {
            // which we don't want because then we won't get our
            // assert exceptions
            Collection expectedValues = expected.values();
-           Iterator iter = expectedValues.iterator();
-           while (iter.hasNext()) {
-               ExpectationValue exp = (ExpectationValue)iter.next();
+           for (Object expectedValueIn : expectedValues) {
+               ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.setFailOnVerify();
            }
        }
@@ -380,9 +378,8 @@ public class AclTest extends RhnBaseTestCase {
         */
        public void verify() {
            Collection expectedValues = expected.values();
-           Iterator iter = expectedValues.iterator();
-           while (iter.hasNext()) {
-               ExpectationValue exp = (ExpectationValue)iter.next();
+           for (Object expectedValueIn : expectedValues) {
+               ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.verify();
            }
            reset();

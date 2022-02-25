@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.struts;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -105,8 +104,8 @@ public class Scrubber {
 
     private Object scrubList(List value) {
         List retval = new LinkedList();
-        for (Iterator iter = value.iterator(); iter.hasNext();) {
-            retval.add(scrub(iter.next()));
+        for (Object oIn : value) {
+            retval.add(scrub(oIn));
         }
         return retval;
     }
@@ -115,8 +114,7 @@ public class Scrubber {
         if (value == null || value.size() == 0) {
             return value;
         }
-        for (Iterator iter = value.keySet().iterator(); iter.hasNext();) {
-            Object k = iter.next();
+        for (Object k : value.keySet()) {
             Object v = scrub(value.get(k));
             value.put(k, v);
         }
@@ -134,8 +132,8 @@ public class Scrubber {
 
     private Object scrubString(String value) {
         value = value.trim();
-        for (int x = 0; x < prohibitedInput.length; x++) {
-            value = value.replaceAll(prohibitedInput[x], "");
+        for (String sIn : prohibitedInput) {
+            value = value.replaceAll(sIn, "");
         }
         return value;
     }

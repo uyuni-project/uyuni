@@ -125,7 +125,7 @@ public class Severity {
      * @return id to label map
      */
     public static Map<Integer, String> getIdToLabelMap() {
-        Map<Integer, String> severityMap = new HashMap<Integer, String>();
+        Map<Integer, String> severityMap = new HashMap<>();
         severityMap.put(0, CRITICAL_LABEL);
         severityMap.put(1, IMPORTANT_LABEL);
         severityMap.put(2, MODERATE_LABEL);

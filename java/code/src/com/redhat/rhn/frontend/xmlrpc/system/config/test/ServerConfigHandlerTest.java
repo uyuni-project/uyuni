@@ -108,7 +108,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         ServerFactory.save(srv1);
 
-        Set<ConfigRevision> revisions = new HashSet<ConfigRevision>();
+        Set<ConfigRevision> revisions = new HashSet<>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
@@ -133,7 +133,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
 
         // System 1 - both g1f1 and g1f2 should deploy here
-        List<Number> systems  = new ArrayList<Number>();
+        List<Number> systems  = new ArrayList<>();
         systems.add(srv1.getId());
         Date date = new Date();
 
@@ -160,7 +160,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
             if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(regular,
-                                                    action.getId().longValue());
+                        action.getId());
             }
         }
         assertNotNull(ca);
@@ -180,14 +180,14 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
-        List<Number> serverIds = new LinkedList<Number>();
+        List<Number> serverIds = new LinkedList<>();
         serverIds.add(srv1.getId());
 
-        List<ConfigChannel> channels = new LinkedList<ConfigChannel>();
+        List<ConfigChannel> channels = new LinkedList<>();
         channels.add(gcc1);
         channels.add(gcc2);
 
-        List<String> channelLabels = new LinkedList<String>();
+        List<String> channelLabels = new LinkedList<>();
         for (ConfigChannel cc : channels) {
             channelLabels.add(cc.getLabel());
         }
@@ -230,7 +230,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 String perms, boolean isDir,
                 Server server, boolean commitToLocal, String selinuxCtx)
                         throws ValidatorException {
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             data.put(ConfigRevisionSerializer.GROUP, group);
             data.put(ConfigRevisionSerializer.OWNER, owner);
             data.put(ConfigRevisionSerializer.PERMISSIONS, perms);
@@ -263,7 +263,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private ConfigRevision createSymlinkRevision(String path, String targetPath,
             Server server, boolean commitToLocal, String selinuxCtx)
                         throws ValidatorException {
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put(ConfigRevisionSerializer.TARGET_PATH, targetPath);
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
@@ -311,7 +311,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     private void assertRev(ConfigRevision rev, String path, Server server,
                                                         boolean lookLocal) {
-        List<String> paths = new ArrayList<String>(1);
+        List<String> paths = new ArrayList<>(1);
         paths.add(path);
         assertTrue(rev.matches(handler.lookupFileInfo(admin, server.getId().intValue(),
                 paths, lookLocal).get(0)));
@@ -319,7 +319,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     public void testLookupFileInfoNoData() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
-        List<String> paths = new LinkedList<String>();
+        List<String> paths = new LinkedList<>();
         paths.add("/no/such/file.txt");
 
         // Should not throw a NullPointerException (anymore):
@@ -385,8 +385,8 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         for (int j = 0; j < 2; j++) {
             boolean local = j % 2 == 0;
 
-            List<String> paths = new LinkedList<String>();
-            Map<String, ConfigRevision> revisions = new HashMap<String, ConfigRevision>();
+            List<String> paths = new LinkedList<>();
+            Map<String, ConfigRevision> revisions = new HashMap<>();
             setupPathsAndRevisions(srv1, paths, revisions, local);
 
             List<ConfigFileNameDto> files = handler.listFiles(admin,
@@ -430,8 +430,8 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         for (int i = 0; i < 2; i++) {
             boolean isLocal = i % 2 == 0;
-            List<String> paths = new LinkedList<String>();
-            Map<String, ConfigRevision> revisions = new HashMap<String, ConfigRevision>();
+            List<String> paths = new LinkedList<>();
+            Map<String, ConfigRevision> revisions = new HashMap<>();
 
             setupPathsAndRevisions(srv1, paths, revisions, isLocal);
             paths.remove(paths.size() - 1);

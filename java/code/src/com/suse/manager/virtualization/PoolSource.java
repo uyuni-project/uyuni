@@ -178,7 +178,7 @@ public class PoolSource {
             result.setAdapter(PoolSourceAdapter.parse(node.getChild("adapter")));
             result.setAuth(PoolSourceAuthentication.parse(node.getChild("auth")));
             result.setDevices(((List<Element>)node.getChildren("device")).stream()
-                .map(device -> PoolSourceDevice.parse(device))
+                .map(PoolSourceDevice::parse)
                 .collect(Collectors.toList()));
             result.setHosts(((List<Element>)node.getChildren("host")).stream()
                 .map(host -> {

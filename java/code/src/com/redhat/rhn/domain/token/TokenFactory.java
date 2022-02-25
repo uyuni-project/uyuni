@@ -115,7 +115,7 @@ public class TokenFactory extends HibernateFactory {
      */
     public static List<Token> listByServer(Server server) {
         if (server == null) {
-            return new ArrayList<Token>();
+            return new ArrayList<>();
         }
 
         Session session = null;

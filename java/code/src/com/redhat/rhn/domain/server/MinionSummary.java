@@ -103,7 +103,7 @@ public class MinionSummary {
      * @return true if the minion contact method is ssh-push
      */
     public boolean isSshPush() {
-        return Opt.fold(contactMethodLabel, () -> false, label-> ContactMethodUtil.isSSHPushContactMethod(label));
+        return Opt.fold(contactMethodLabel, () -> false, ContactMethodUtil::isSSHPushContactMethod);
     }
 
     @Override

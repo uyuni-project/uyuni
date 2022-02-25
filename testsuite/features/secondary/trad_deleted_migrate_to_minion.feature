@@ -112,3 +112,11 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
+
+  Scenario: Cleanup: unregister migrated minion in a deleted client context
+    Given I am on the Systems overview page of this "sle_client"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle_client" should not be registered

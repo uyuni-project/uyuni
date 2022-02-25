@@ -89,7 +89,7 @@ public class ListErrataAction extends RhnListAction implements Listable<ErrataOv
 
 
         if (requestContext.wasDispatched(CONFIRM) && decl.get(user).size() > 0) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(CID, cid);
             return getStrutsDelegate().forwardParams(mapping.findForward("submit"),
                     params);

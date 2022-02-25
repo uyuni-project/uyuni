@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -152,9 +151,7 @@ public class RhnSetHelper {
          * Loop through all items in the DataResult and make a new
          * RhnSet containing all of the items.
          */
-        Iterator itr = result.iterator();
-        while (itr.hasNext()) {
-            Object dataObject = itr.next();
+        for (Object dataObject : result) {
             if (dataObject instanceof BaseDto) {
                 BaseDto next = (BaseDto) dataObject;
                 if (next.isSelectable()) {

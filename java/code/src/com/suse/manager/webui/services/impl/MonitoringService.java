@@ -400,7 +400,7 @@ public class MonitoringService {
                     .orElseThrow(() -> new RuntimeException(key + " not found in salt result"));
         }
         return Optional.ofNullable(result.get(key))
-                .map(r -> r.isResult())
+                .map(ModuleRun::isResult)
                 .orElseThrow(() -> new RuntimeException(key + " not found in salt result"));
     }
 

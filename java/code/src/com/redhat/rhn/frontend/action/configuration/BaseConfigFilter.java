@@ -61,7 +61,7 @@ public abstract class BaseConfigFilter implements ListFilter {
         if (methodName != null) {
             String value = ListTagUtil.getBeanValue(object, methodName);
             if (value != null) {
-                retval = value.toLowerCase().indexOf(criteria) >= 0;
+                retval = value.toLowerCase().contains(criteria);
             }
         }
         return retval;
@@ -76,8 +76,8 @@ public abstract class BaseConfigFilter implements ListFilter {
         LocalizationService ls = LocalizationService.getInstance();
         fieldMap = new HashMap();
         List names = activeNames();
-        for (int i = 0; i < names.size(); i++) {
-            String aName = names.get(i).toString();
+        for (Object nameIn : names) {
+            String aName = nameIn.toString();
             fieldMap.put(ls.getMessage(getI18NPrefix() + "." + aName, aLoc), aName);
         }
     }

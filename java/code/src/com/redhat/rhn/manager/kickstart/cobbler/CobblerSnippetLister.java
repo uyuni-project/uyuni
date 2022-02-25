@@ -55,8 +55,8 @@ public class CobblerSnippetLister extends BaseManager {
                 if (path.isDirectory()) {
                     String[] children = path.list();
                     Arrays.sort(children);
-                    for (int i = 0; i < children.length; i++) {
-                        loadDefaultSnippets(new File(path, children[i]), snippetFiles);
+                    for (String childIn : children) {
+                        loadDefaultSnippets(new File(path, childIn), snippetFiles);
                     }
                 }
                 else {
@@ -91,14 +91,14 @@ public class CobblerSnippetLister extends BaseManager {
         }
 
         if (common) {
-            List<CobblerSnippet> snippetFiles = new LinkedList<CobblerSnippet>();
+            List<CobblerSnippet> snippetFiles = new LinkedList<>();
             loadDefaultSnippets(CobblerSnippet.getCobblerSnippetsDir(),
                                                                 snippetFiles);
             loadSnippetsInSpacewalkDir(snippetFiles);
             return snippetFiles;
         }
 
-        List<CobblerSnippet> snippetFiles = new LinkedList<CobblerSnippet>();
+        List<CobblerSnippet> snippetFiles = new LinkedList<>();
         File spacewalkDir = new File(CobblerSnippet.getPrefixFor(user.getOrg()));
 
         if (spacewalkDir.exists() && spacewalkDir.isDirectory()) {
@@ -142,7 +142,7 @@ public class CobblerSnippetLister extends BaseManager {
      * @return the snippets accessible to the user.
      */
     public List<CobblerSnippet> list(User user) {
-        List<CobblerSnippet> snip = new LinkedList<CobblerSnippet>(listDefault(user));
+        List<CobblerSnippet> snip = new LinkedList<>(listDefault(user));
         snip.addAll(listCustom(user));
         return snip;
     }

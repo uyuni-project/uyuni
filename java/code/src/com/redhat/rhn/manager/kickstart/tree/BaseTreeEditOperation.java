@@ -32,7 +32,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import org.cobbler.Distro;
 import org.cobbler.XmlRpcException;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -230,10 +229,10 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      */
     private void replaceLegacyPackageNames(List packageListItems) {
         // munge the list of auto kickstarts
-        for (Iterator itr = packageListItems.iterator(); itr.hasNext();) {
-          PackageListItem pli = (PackageListItem)itr.next();
-          pli.setName(pli.getName().replaceFirst(
-                  KickstartData.LEGACY_KICKSTART_PACKAGE_NAME, EMPTY_STRING));
+        for (Object packageListItemIn : packageListItems) {
+            PackageListItem pli = (PackageListItem) packageListItemIn;
+            pli.setName(pli.getName().replaceFirst(
+                    KickstartData.LEGACY_KICKSTART_PACKAGE_NAME, EMPTY_STRING));
         }
     }
 

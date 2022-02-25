@@ -39,7 +39,6 @@ import org.hibernate.query.Query;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -196,13 +195,13 @@ public  class UserFactory extends HibernateFactory {
             return realLookupByIds(ids);
         }
 
-        List<User> results = new LinkedList<User>();
-        List<Long> blockOfIds = new LinkedList<Long>();
+        List<User> results = new LinkedList<>();
+        List<Long> blockOfIds = new LinkedList<>();
         for (Long uid : ids) {
             blockOfIds.add(uid);
             if (blockOfIds.size() == 999) {
                 results.addAll(realLookupByIds(blockOfIds));
-                blockOfIds = new LinkedList<Long>();
+                blockOfIds = new LinkedList<>();
             }
         }
         // Deal with the remainder:
@@ -227,7 +226,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the user found
      */
     public static User lookupById(User user, Long id) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("uid", id);
         params.put("orgId", user.getOrg().getId());
         User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
@@ -249,7 +248,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(String login) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(LOGIN_UC, login.toUpperCase());
         User user = (User)getInstance()
                 .lookupObjectByNamedQuery("User.findByLogin", params);
@@ -272,7 +271,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(User user, String login) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(LOGIN_UC, login.toUpperCase());
         params.put("orgId", user.getOrg().getId());
         User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
@@ -321,7 +320,7 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns true if the user is disabled
      */
     public static boolean isDisabled(User user) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user", user);
         List<StateChange>  changes =  getInstance().
                 listObjectsByNamedQuery("StateChanges.lookupByUserId", params);
@@ -353,8 +352,8 @@ public  class UserFactory extends HibernateFactory {
         }
         // save the user
         CallableMode m = ModeFactory.getCallableMode("User_queries", "create_new_user");
-        Map<String, Object> inParams = new HashMap<String, Object>();
-        Map<String, Integer> outParams = new HashMap<String, Integer>();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         // Can't add the orgId to the object until the User has been
         // successfully added to the DB. Doing so will mean that if
@@ -460,9 +459,9 @@ public  class UserFactory extends HibernateFactory {
     public void syncServerGroupPerms(User usr) {
         CallableMode m = ModeFactory.getCallableMode("User_queries",
                 "update_perms_for_user");
-        Map<String, Object> inParams = new HashMap<String, Object>();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put(USER_ID, usr.getId());
-        m.execute(inParams, new HashMap<String, Integer>());
+        m.execute(inParams, new HashMap<>());
     }
 
 
@@ -532,40 +531,37 @@ public  class UserFactory extends HibernateFactory {
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
-                Collections.sort(timeZones, new Comparator() {
-                    @Override
-                    public int compare(Object o1, Object o2) {
-                        RhnTimeZone t1 = (RhnTimeZone) o1;
-                        RhnTimeZone t2 = (RhnTimeZone) o2;
-                        Integer offSet1 = t1.getTimeZone().getRawOffset();
-                        Integer offSet2 = t2.getTimeZone().getRawOffset();
+                timeZones.sort((Comparator) (o1, o2) -> {
+                    RhnTimeZone t1 = (RhnTimeZone) o1;
+                    RhnTimeZone t2 = (RhnTimeZone) o2;
+                    Integer offSet1 = t1.getTimeZone().getRawOffset();
+                    Integer offSet2 = t2.getTimeZone().getRawOffset();
 
-                        // Make sure GMT+0000 is first
-                        if (offSet1 == 0 && offSet2 != 0) {
-                            // first one GMT
-                            return -1;
-                        }
-
-                        if (offSet1 != 0 && offSet2 == 0) {
-                            // second one GMT
-                            return 1;
-                        }
-
-                        // Make sure negative offsets 'win' over positive
-                        if (offSet1 < 0 && offSet2 > 0) {
-                            return -1;
-                        }
-
-                        if (offSet1 > 0 && offSet2 < 0) {
-                            return 1;
-                        }
-
-                        if (offSet2.equals(offSet1)) {
-                            return t2.getOlsonName().compareTo(t1.getOlsonName());
-                        }
-
-                        return offSet2.compareTo(offSet1);
+                    // Make sure GMT+0000 is first
+                    if (offSet1 == 0 && offSet2 != 0) {
+                        // first one GMT
+                        return -1;
                     }
+
+                    if (offSet1 != 0 && offSet2 == 0) {
+                        // second one GMT
+                        return 1;
+                    }
+
+                    // Make sure negative offsets 'win' over positive
+                    if (offSet1 < 0 && offSet2 > 0) {
+                        return -1;
+                    }
+
+                    if (offSet1 > 0 && offSet2 < 0) {
+                        return 1;
+                    }
+
+                    if (offSet2.equals(offSet1)) {
+                        return t2.getOlsonName().compareTo(t1.getOlsonName());
+                    }
+
+                    return offSet2.compareTo(offSet1);
                 });
             }
 
@@ -618,7 +614,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static boolean satelliteHasUsers() {
         SelectMode m = ModeFactory.getMode("User_queries", "user_count");
-        DataResult dr = m.execute(new HashMap<String, Object>());
+        DataResult dr = m.execute(new HashMap<>());
         Map row = (Map) dr.get(0);
         Long count = (Long) row.get("user_count");
         return (count > 0);
@@ -724,7 +720,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public List<User> findAllOrgAdmins(Org inOrg) {
         Session session = HibernateFactory.getSession();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", inOrg.getId());
         return listObjectsByNamedQuery("User.findAllOrgAdmins", params);
     }
@@ -735,8 +731,8 @@ public  class UserFactory extends HibernateFactory {
     public static void deleteUser(Long userId) {
         CallableMode m = ModeFactory.getCallableMode("User_queries",
                 "delete_user");
-        Map<String, Object> inParams = new HashMap<String, Object>();
-        Map<String, Integer> outParams = new HashMap<String, Integer>();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         inParams.put(USER_ID, userId);
         m.execute(inParams, outParams);
     }

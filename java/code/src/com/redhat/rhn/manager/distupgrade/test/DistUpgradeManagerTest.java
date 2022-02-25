@@ -634,7 +634,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
 
         // Try to upgrade with 2 base channels
-        List<String> channels = new ArrayList<String>();
+        List<String> channels = new ArrayList<>();
         channels.add(channel1.getLabel());
         channels.add(channel2.getLabel());
         try {
@@ -659,7 +659,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Make child channels and try to upgrade with no base channel
         channel2.setParentChannel(channel1);
         channel3.setParentChannel(channel1);
-        List<String> channels = new ArrayList<String>();
+        List<String> channels = new ArrayList<>();
         channels.add(channel2.getLabel());
         channels.add(channel3.getLabel());
         try {
@@ -684,7 +684,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Upgrade with child channels having different parents
         channel2.setParentChannel(channel1);
         channel4.setParentChannel(channel3);
-        List<String> channels = new ArrayList<String>();
+        List<String> channels = new ArrayList<>();
         channels.add(channel1.getLabel());
         channels.add(channel2.getLabel());
         channels.add(channel4.getLabel());
@@ -704,7 +704,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     public void testScheduleDistUpgrade() throws Exception {
         Channel subscribedChannel = ChannelFactoryTest.createTestChannel(user);
-        List<Channel> subscribedChannels = new ArrayList<Channel>(
+        List<Channel> subscribedChannels = new ArrayList<>(
                 Arrays.asList(subscribedChannel));
         Server server = ErrataTestUtils.createTestServer(user, subscribedChannels);
 
@@ -728,7 +728,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup channel tasks
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        List<Long> channelIDs = new ArrayList<Long>();
+        List<Long> channelIDs = new ArrayList<>();
         channelIDs.add(channel1.getId());
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
@@ -844,7 +844,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<SUSEProductSet> targetProductSets =
                 DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
 
-        Set<String> msg = new HashSet<String>();
+        Set<String> msg = new HashSet<>();
         targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
                 Optional.of(sourceProducts), targetProductSets, Optional.of(msg));
 

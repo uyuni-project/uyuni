@@ -120,9 +120,9 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
 
         if (actionChain == null) {
             Action update = ActionManager.createErrataAction(user, currentErrata);
-            for (int i = 0; i < systems.size(); i++) {
+            for (Object systemIn : systems) {
                 ActionManager.addServerToAction(
-                        ((SystemOverview) systems.get(i)).getId(),
+                        ((SystemOverview) systemIn).getId(),
                         update);
             }
 
@@ -152,11 +152,11 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-            for (int i = 0; i < systems.size(); i++) {
+            for (Object systemIn : systems) {
                 Action update = ActionManager.createErrataAction(user, currentErrata);
                 ActionManager.storeAction(update);
                 ActionChainFactory.queueActionChainEntry(update, actionChain,
-                        ((SystemOverview) systems.get(i)).getId(), sortOrder);
+                        ((SystemOverview) systemIn).getId(), sortOrder);
             }
 
             messageKey = "message.addedtoactionchain";

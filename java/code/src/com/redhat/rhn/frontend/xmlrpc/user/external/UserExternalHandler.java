@@ -242,7 +242,7 @@ public class UserExternalHandler extends BaseHandler {
             throw new ExternalGroupAlreadyExistsException(name);
         }
 
-        Set<Role> myRoles = new HashSet<Role>();
+        Set<Role> myRoles = new HashSet<>();
         for (String role : roles) {
             Role myRole = RoleFactory.lookupByLabel(role);
             if (myRole == null) {
@@ -312,7 +312,7 @@ public class UserExternalHandler extends BaseHandler {
             throw new NoSuchExternalGroupToRoleMapException(name);
         }
 
-        Set<Role> myRoles = new HashSet<Role>();
+        Set<Role> myRoles = new HashSet<>();
         for (String role : roles) {
             Role myRole = RoleFactory.lookupByLabel(role);
             if (myRole == null) {
@@ -423,7 +423,7 @@ public class UserExternalHandler extends BaseHandler {
             throw new ExternalGroupAlreadyExistsException(name);
         }
 
-        Set<ServerGroup> sgs = new HashSet<ServerGroup>();
+        Set<ServerGroup> sgs = new HashSet<>();
         for (String sg : groupNames) {
             ServerGroup myGroup = ServerGroupFactory.lookupByNameAndOrg(sg, org);
             if (myGroup == null) {
@@ -483,7 +483,7 @@ public class UserExternalHandler extends BaseHandler {
             throw new NoSuchExternalGroupToServerGroupMapException(name);
         }
 
-        Set<ServerGroup> sgs = new HashSet<ServerGroup>();
+        Set<ServerGroup> sgs = new HashSet<>();
         for (String sg : groupNames) {
             ServerGroup myGroup = ServerGroupFactory.lookupByNameAndOrg(sg, org);
             if (myGroup == null) {

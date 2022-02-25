@@ -33,7 +33,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -82,9 +81,9 @@ public class EditMasterSetupAction extends RhnAction {
 
     private void setupOrgList(HttpServletRequest request, Long mid, IssMaster master) {
         // Get all the known-orgs from the selected Master
-        List<IssMasterOrg> result = new ArrayList<IssMasterOrg>(
-                        master.getMasterOrgs());
-        Collections.sort(result, new IssSyncOrgComparator());
+        List<IssMasterOrg> result = new ArrayList<>(
+                master.getMasterOrgs());
+        result.sort(new IssSyncOrgComparator());
 
         // Get all of our orgs and turn into OrgDtos
         List<OrgDto> locals = fromOrgs(OrgFactory.lookupAllOrgs());
@@ -114,11 +113,11 @@ public class EditMasterSetupAction extends RhnAction {
     }
 
     protected List<OrgDto> fromOrgs(List<Org> orgs) {
-        List<OrgDto> outList = new ArrayList<OrgDto>();
+        List<OrgDto> outList = new ArrayList<>();
         for (Org o : orgs) {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
-        Collections.sort(outList, new OrgComparator());
+        outList.sort(new OrgComparator());
 
         LocalizationService ls = LocalizationService.getInstance();
         OrgDto noMap = createOrgDto(IssMasterOrg.NO_MAP_ID,

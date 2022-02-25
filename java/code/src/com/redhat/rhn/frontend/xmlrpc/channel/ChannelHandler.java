@@ -69,11 +69,11 @@ public class ChannelHandler extends BaseHandler {
         // Just because it is ONE line it doesn't make it efficient.
 
         List<Map<String, Object>> returnList =
-                new ArrayList<Map<String, Object>>(items.size());
+                new ArrayList<>(items.size());
         for (Map<String, Object> item : items) {
             // Deprecated stupid code
             // this is some really stupid code, but oh well, c'est la vie
-            Map<String, Object> newItem = new HashMap<String, Object>();
+            Map<String, Object> newItem = new HashMap<>();
             newItem.put("label", item.get("label"));
             newItem.put("parent_label", StringUtils.defaultString(
                     (String) item.get("parent_channel")));

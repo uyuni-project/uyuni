@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class DynamicComparatorTest extends RhnJmockBaseTestCase {
         List list = generateRandomList();
         DynamicComparator comp = new DynamicComparator("stringField",
                 RequestContext.SORT_ASC);
-        Collections.sort(list, comp);
+        list.sort(comp);
         assertTrue(((TestObject) list.get(0)).getStringField().equals("A"));
         assertTrue(((TestObject) list.get(list.size() - 1)).getStringField().equals("Z"));
     }
@@ -40,10 +39,9 @@ public class DynamicComparatorTest extends RhnJmockBaseTestCase {
         List retval = new LinkedList();
         List letters = LocalizationService.getInstance().getAlphabet();
         Collections.shuffle(letters);
-        Iterator i = letters.iterator();
-        while (i.hasNext()) {
+        for (Object letterIn : letters) {
             TestObject to = new TestObject();
-            to.setStringField((String) i.next());
+            to.setStringField((String) letterIn);
             retval.add(to);
         }
         return retval;

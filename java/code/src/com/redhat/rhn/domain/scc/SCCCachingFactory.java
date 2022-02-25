@@ -372,7 +372,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param sccSubId id to delete
      */
     public static void deleteSubscriptionBySccId(Long sccSubId) {
-        SCCSubscription sub = SCCCachingFactory.lookupSubscriptionBySccId(sccSubId.longValue());
+        SCCSubscription sub = SCCCachingFactory.lookupSubscriptionBySccId(sccSubId);
         if (sub != null) {
             singleton.removeObject(sub);
         }

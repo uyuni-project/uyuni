@@ -53,7 +53,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         servers = PowerManagementConfigurationActionTest
             .setUpTestProvisionableSsmServers(user);
-        systemOverviews = new LinkedList<SystemOverview>();
+        systemOverviews = new LinkedList<>();
         for (Server server : servers) {
             SystemOverview systemOverview = new SystemOverview();
             systemOverview.setId(server.getId());

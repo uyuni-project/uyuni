@@ -31,7 +31,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,10 +116,10 @@ public class KickstartOverviewAction extends RhnAction {
         if (!dr.isEmpty()) {
             LocalizationService ls = LocalizationService.getInstance();
             KickstartOverviewSummaryDto kdto = new KickstartOverviewSummaryDto();
-            for (Iterator i = dr.iterator(); i.hasNext();) {
-                 kdto = (KickstartOverviewSummaryDto)i.next();
-                 kdto.setName(kdto.getName() +
-                                 ls.getMessage("filter-form.jsp.ksoverviewprofiles"));
+            for (Object oIn : dr) {
+                kdto = (KickstartOverviewSummaryDto) oIn;
+                kdto.setName(kdto.getName() +
+                        ls.getMessage("filter-form.jsp.ksoverviewprofiles"));
             }
         }
     }
@@ -131,13 +130,13 @@ public class KickstartOverviewAction extends RhnAction {
      */
     public void formatKSSystemInfo(DataResult dr) {
        if (!dr.isEmpty()) {
-         for (Iterator i = dr.iterator(); i.hasNext();) {
-            KickstartOverviewSystemsDto ksdto = (KickstartOverviewSystemsDto)i.next();
-            Date modified = ksdto.getLastModified();
-            String timeStr = StringUtil.categorizeTime(modified.getTime(),
-                StringUtil.DAYS_UNITS);
-            ksdto.setElapsedTimeAfterModify(timeStr);
-          }
+           for (Object oIn : dr) {
+               KickstartOverviewSystemsDto ksdto = (KickstartOverviewSystemsDto) oIn;
+               Date modified = ksdto.getLastModified();
+               String timeStr = StringUtil.categorizeTime(modified.getTime(),
+                       StringUtil.DAYS_UNITS);
+               ksdto.setElapsedTimeAfterModify(timeStr);
+           }
        }
     }
 

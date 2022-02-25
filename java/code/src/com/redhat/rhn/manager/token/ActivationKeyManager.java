@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -85,9 +84,7 @@ public class ActivationKeyManager {
      */
     public List<ActivationKey> findByServer(Server server, User user) {
         List<ActivationKey> keys = ActivationKeyFactory.lookupByServer(server);
-        Iterator i = keys.iterator();
-        while (i.hasNext()) {
-            ActivationKey key = (ActivationKey) i.next();
+        for (ActivationKey key : keys) {
             validateCredentials(user, null, key);
         }
         return keys;
@@ -228,10 +225,9 @@ public class ActivationKeyManager {
      */
     public void addEntitlements(ActivationKey key, List<String> entitlementLabels) {
         validateAddOnEntitlements(entitlementLabels, true);
-        for (Iterator it = entitlementLabels.iterator(); it.hasNext();) {
-            String label = (String)it.next();
+        for (String label : entitlementLabels) {
             ServerGroupType entitlement =
-                ServerFactory.lookupServerGroupTypeByLabel(label);
+                    ServerFactory.lookupServerGroupTypeByLabel(label);
             key.addEntitlement(entitlement);
         }
     }
@@ -428,7 +424,7 @@ public class ActivationKeyManager {
             ActivationKeyFactory.validateKeyName(newKey);
             WriteMode m = ModeFactory.getWriteMode("General_queries",
                                     "update_activation_key");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("old_key", key.getKey());
             params.put("new_key", newKey);
             m.executeUpdate(params);
@@ -484,7 +480,7 @@ public class ActivationKeyManager {
          * so we have to subscribe all the child channels
          * with the package name
          */
-        List<Channel> channels = new ArrayList<Channel>();
+        List<Channel> channels = new ArrayList<>();
         if (key.getBaseChannel() == null) {
             List<Long> cids = ChannelManager.findChildChannelsWithPackage(packageName,
                     key.getOrg());
@@ -509,12 +505,12 @@ public class ActivationKeyManager {
                 }
                 else if (cids.size() > 1) {
                     // if there're more channels, just do some harakiri to pick one
-                    List<Channel> chs = new ArrayList<Channel>();
+                    List<Channel> chs = new ArrayList<>();
                     for (Long cid : cids) {
                         chs.add(ChannelFactory.lookupById(cid));
                     }
                     Class[] args = {List.class};
-                    List<Method> removeMethods = new ArrayList<Method>();
+                    List<Method> removeMethods = new ArrayList<>();
                     try {
                         removeMethods.add(this.getClass().getDeclaredMethod("removeCloned",
                                 args));

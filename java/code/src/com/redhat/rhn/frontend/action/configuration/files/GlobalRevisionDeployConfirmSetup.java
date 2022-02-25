@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
@@ -79,7 +80,7 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
 
     private Set<Long> getSystemIds(RequestContext ctxt) {
         return RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS.get(ctxt.getCurrentUser()).getElements().stream()
-                .map(el -> el.getElement())
+                .map(RhnSetElement::getElement)
                 .collect(Collectors.toSet());
     }
 

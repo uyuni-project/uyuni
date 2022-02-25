@@ -77,14 +77,14 @@ public class ServerSnapshotSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("created", snap.getCreated());
 
 
-        Set<String> channels = new HashSet<String>();
+        Set<String> channels = new HashSet<>();
         for (Channel chan : snap.getChannels()) {
             channels.add(chan.getLabel());
         }
         helper.add("channels", channels);
 
-        Set<String> entGroups = new HashSet<String>();
-        Set<String> mgmtGroups = new HashSet<String>();
+        Set<String> entGroups = new HashSet<>();
+        Set<String> mgmtGroups = new HashSet<>();
         for (ServerGroup grp : snap.getGroups()) {
             if (grp instanceof EntitlementServerGroup) {
                 entGroups.add(grp.getName());
@@ -96,7 +96,7 @@ public class ServerSnapshotSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("groups", mgmtGroups);
         helper.add("entitlements", entGroups);
 
-        Set<String> cfgChans = new HashSet<String>();
+        Set<String> cfgChans = new HashSet<>();
         for (ConfigChannel grp : snap.getConfigChannels()) {
             cfgChans.add(grp.getLabel());
         }

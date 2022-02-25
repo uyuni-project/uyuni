@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -180,8 +179,8 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
         return (KickstartData)  HibernateFactory.getSession()
                 .getNamedQuery("KickstartData.findByIdAndOrg")
-                .setLong("id", ksid.longValue())
-                .setLong("org_id", orgIn.getId().longValue())
+                .setLong("id", ksid)
+                .setLong("org_id", orgIn.getId())
                 .uniqueResult();
     }
 
@@ -213,7 +212,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData) HibernateFactory.getSession().
                 getNamedQuery("KickstartData.findByLabelAndOrg")
                 .setString("label", label)
-                .setLong("org_id", orgId.longValue())
+                .setLong("org_id", orgId)
                 .uniqueResult();
     }
 
@@ -232,7 +231,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData) HibernateFactory.getSession().
                 getNamedQuery("KickstartData.findByCILabelAndOrg")
                 .setString("label", label)
-                .setLong("org_id", orgId.longValue())
+                .setLong("org_id", orgId)
                 .uniqueResult();
     }
 
@@ -293,10 +292,9 @@ public class KickstartFactory extends HibernateFactory {
         names = session.getNamedQuery(query).setCacheable(true).list();
 
         // Filter out the unsupported Commands for the passed in profile
-        List<KickstartCommandName> retval = new LinkedList<KickstartCommandName>();
-        Iterator i = names.iterator();
-        while (i.hasNext()) {
-            KickstartCommandName cn = (KickstartCommandName) i.next();
+        List<KickstartCommandName> retval = new LinkedList<>();
+        for (Object nameIn : names) {
+            KickstartCommandName cn = (KickstartCommandName) nameIn;
             if (cn.getName().equals("selinux") && ksdata.isLegacyKickstart()) {
                 continue;
             }
@@ -451,9 +449,8 @@ public class KickstartFactory extends HibernateFactory {
                 ksdataIn.getCobblerId());
         if (p != null && p.getKsMeta() != null) {
             Map ksmeta = p.getKsMeta();
-            Iterator i = ksmeta.keySet().iterator();
-            while (i.hasNext()) {
-                String name = (String) i.next();
+            for (Object oIn : ksmeta.keySet()) {
+                String name = (String) oIn;
                 log.debug("fixing ksmeta: " + name);
                 fileData = StringUtils.replace(fileData, "\\$" + name, "$" + name);
             }
@@ -520,7 +517,7 @@ public class KickstartFactory extends HibernateFactory {
         if (org != null) {
             query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
                            .setString("description", description)
-                           .setLong("org_id", org.getId().longValue());
+                           .setLong("org_id", org.getId());
         }
         else {
             query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
@@ -540,7 +537,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery("CryptoKey.findByOrg")
-                .setLong("org_id", org.getId().longValue())
+                .setLong("org_id", org.getId())
                 .list();
         return retval;
     }
@@ -556,7 +553,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery("SslCryptoKey.findByOrg")
-                .setLong("org_id", org.getId().longValue())
+                .setLong("org_id", org.getId())
                 .list();
         return retval;
     }
@@ -573,8 +570,8 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
         retval = (CryptoKey) session.getNamedQuery("CryptoKey.findByIdAndOrg")
-                .setLong("key_id", keyId.longValue())
-                .setLong("org_id", org.getId().longValue())
+                .setLong("key_id", keyId)
+                .setLong("org_id", org.getId())
                 .uniqueResult();
         return retval;
     }
@@ -591,8 +588,8 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
         retval = (SslCryptoKey) session.getNamedQuery("SslCryptoKey.findByIdAndOrg")
-                .setLong("key_id", keyId.longValue())
-                .setLong("org_id", org.getId().longValue())
+                .setLong("key_id", keyId)
+                .setLong("org_id", org.getId())
                 .uniqueResult();
         return retval;
     }
@@ -626,7 +623,7 @@ public class KickstartFactory extends HibernateFactory {
         retval = (KickstartableTree)
                 session.getNamedQuery("KickstartableTree.findByLabelAndOrg")
                 .setString("label", label)
-                .setLong("org_id", org.getId().longValue())
+                .setLong("org_id", org.getId())
                 .uniqueResult();
         // If we don't find by label + org then
         // we try by label and NULL org (RHN owned channel)
@@ -672,8 +669,8 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartableTree.findByChannelAndOrg";
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery(query).
-                setLong("channel_id", channelId.longValue()).
-                setLong("org_id", org.getId().longValue())
+                setLong("channel_id", channelId).
+                setLong("org_id", org.getId())
                 //Retrieve from cache if there
                 .setCacheable(true).list();
         return retval;
@@ -691,7 +688,7 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartableTree.findByChannelAndNullOrg";
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery(query)
-                .setLong("channel_id", channelId.longValue())
+                .setLong("channel_id", channelId)
                 // Retrieve from cache if there
                 .setCacheable(true).list();
         return retval;
@@ -713,8 +710,8 @@ public class KickstartFactory extends HibernateFactory {
         query = "KickstartableTree.findByChannel";
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery(query).
-                setLong("channel_id", channelId.longValue()).
-                setLong("org_id", org.getId().longValue()).
+                setLong("channel_id", channelId).
+                setLong("org_id", org.getId()).
                 list();
         return retval;
     }
@@ -727,7 +724,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of KickstartableTrees
      */
     public static List<KickstartableTree> lookupAccessibleTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "KickstartableTree.findAccessibleToOrg", params, false);
@@ -739,7 +736,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartableTree objects if found
      */
     public static List<KickstartableTree> listTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
                 "KickstartableTree.findByOrg", params, false);
@@ -752,7 +749,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartData> listKickstartDataByCKeyDescription(
             String ckDescription) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("ck_description", ckDescription);
         return singleton.listObjectsByNamedQuery(
                 "KickstartData.findByCKeyDescription", params, true);
@@ -780,8 +777,8 @@ public class KickstartFactory extends HibernateFactory {
         if (treeId != null && org != null) {
             session = HibernateFactory.getSession();
             Query query = session.getNamedQuery(queryName);
-            query.setLong("org_id", org.getId().longValue());
-            query.setLong("tree_id", treeId.longValue());
+            query.setLong("org_id", org.getId());
+            query.setLong("tree_id", treeId);
             //Retrieve from cache if there
             retval = (KickstartableTree)
                     query.setCacheable(true).uniqueResult();
@@ -804,7 +801,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = null;
         session = HibernateFactory.getSession();
         List ksessions = session.getNamedQuery("KickstartSession.findByServer")
-                .setLong("server", sidIn.longValue())
+                .setLong("server", sidIn)
                 .list();
         if (ksessions.size() > 0) {
             return (KickstartSession) ksessions.iterator().next();
@@ -862,7 +859,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List lookupAllKickstartSessionsByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("KickstartSession.findByServer")
-                .setLong("server", sidIn.longValue())
+                .setLong("server", sidIn)
                 .list();
     }
 
@@ -898,9 +895,9 @@ public class KickstartFactory extends HibernateFactory {
             session = HibernateFactory.getSession();
             Query query = session.
                     getNamedQuery("KickstartableTree.verifyTreeAssignment");
-            query.setLong("channel_id", channelId.longValue());
-            query.setLong("org_id", orgId.longValue());
-            query.setLong("tree_id", treeId.longValue());
+            query.setLong("channel_id", channelId);
+            query.setLong("org_id", orgId);
+            query.setLong("tree_id", treeId);
             Object tree = query.uniqueResult();
             retval = (tree != null);
         }
@@ -982,7 +979,7 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartData.lookupByTreeId";
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(query)
-                .setLong("kstree_id", tree.getId().longValue())
+                .setLong("kstree_id", tree.getId())
                 .list();
     }
 
@@ -1103,9 +1100,8 @@ public class KickstartFactory extends HibernateFactory {
         q.setParameter("state", state);
         q.setParameter("kickstartSession", ksSession);
         List results = q.list();
-        Iterator iter = results.iterator();
-        while (iter.hasNext()) {
-            KickstartSessionHistory history = (KickstartSessionHistory)iter.next();
+        for (Object resultIn : results) {
+            KickstartSessionHistory history = (KickstartSessionHistory) resultIn;
             history.setMessage(message);
         }
 

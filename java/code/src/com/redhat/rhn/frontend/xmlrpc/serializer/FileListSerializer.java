@@ -56,7 +56,7 @@ public class FileListSerializer extends RhnXmlRpcCustomSerializer {
 
         helper.add("name", fl.getLabel());
 
-        List<String> fileNames = new LinkedList<String>();
+        List<String> fileNames = new LinkedList<>();
         for (ConfigFileName cfn : fl.getFileNames()) {
             fileNames.add(cfn.getPath());
         }

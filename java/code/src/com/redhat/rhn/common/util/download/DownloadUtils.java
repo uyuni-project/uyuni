@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -55,11 +54,8 @@ public class DownloadUtils {
            }
            toReturn.append(toString(conn.getInputStream()));
         }
-        catch (MalformedURLException mue) {
+        catch (IOException mue) {
             toReturn.append(mue.getLocalizedMessage());
-        }
-        catch (IOException ioe) {
-            toReturn.append(ioe.getLocalizedMessage());
         }
         return toReturn.toString();
     }

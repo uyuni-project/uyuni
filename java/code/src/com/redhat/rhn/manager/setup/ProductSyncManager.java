@@ -78,7 +78,7 @@ public class ProductSyncManager {
         List<SetupWizardProductDto> result = convertProducts(products);
 
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = ChannelFactory.listVendorChannels()
-                .stream().collect(Collectors.toMap(c -> c.getLabel(), c -> c));
+                .stream().collect(Collectors.toMap(com.redhat.rhn.domain.channel.Channel::getLabel, c -> c));
 
         // Determine their product sync status separately
         for (SetupWizardProductDto p : result) {
@@ -396,7 +396,7 @@ public class ProductSyncManager {
         // Check for queued items (merge this with the above method?)
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
         if (selector.execute(params).size() > 0) {
             return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
@@ -435,7 +435,7 @@ public class ProductSyncManager {
     private List<SetupWizardProductDto> convertProducts(
             Collection<MgrSyncProductDto> products) {
         List<SetupWizardProductDto> displayProducts =
-                new ArrayList<SetupWizardProductDto>();
+                new ArrayList<>();
         for (MgrSyncProductDto p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 SetupWizardProductDto displayProduct = convertProduct(p);
@@ -456,7 +456,7 @@ public class ProductSyncManager {
         // Sort product channels (mandatory/optional)
 
         Map<Boolean, List<MgrSyncChannelDto>> collect = productIn.getChannels().stream()
-                .collect(Collectors.partitioningBy(c -> c.isMandatory()));
+                .collect(Collectors.partitioningBy(MgrSyncChannelDto::isMandatory));
 
         Function<MgrSyncChannelDto, Channel> mapping = channelIn -> {
             MgrSyncStatus statusIn = channelIn.getStatus();
@@ -467,10 +467,8 @@ public class ProductSyncManager {
 
         List<Channel> mandatoryChannelsOut = collect.get(true).stream()
         // Add base channel on top of everything else so it can be added first.
-        .sorted((a, b) -> {
-            return StringUtils.isBlank(a.getParentLabel()) ? -1 :
-                    StringUtils.isBlank(b.getParentLabel()) ? 1 : 0;
-        }).map(mapping).collect(Collectors.toList());
+        .sorted((a, b) -> StringUtils.isBlank(a.getParentLabel()) ? -1 :
+                StringUtils.isBlank(b.getParentLabel()) ? 1 : 0).map(mapping).collect(Collectors.toList());
 
         List<Channel> optionalChannelsOut = collect.get(false).stream()
                 .map(mapping).collect(Collectors.toList());

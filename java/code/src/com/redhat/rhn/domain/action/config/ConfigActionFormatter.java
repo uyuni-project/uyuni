@@ -94,7 +94,7 @@ public class ConfigActionFormatter extends ActionFormatter {
     public String getRelatedObjectDescription() {
         Set<ConfigRevisionAction> revisionActions = ((ConfigAction) getAction())
             .getConfigRevisionActions();
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         if (revisionActions != null) {
             for (ConfigRevisionAction revisionAction : revisionActions) {
                 ConfigRevision revision = revisionAction.getConfigRevision();

@@ -190,13 +190,11 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             will(returnValue(new Cookie[] {getPxtCookie()}));
         } });
 
-        pxtSessionDelegate.setFindPxtSessionByIdCallback(new Transformer() {
-            public Object transform(Object arg) {
-                if (PXT_SESSION_ID.equals(arg)) {
-                    return getPxtSession();
-                }
-                return null;
+        pxtSessionDelegate.setFindPxtSessionByIdCallback(arg -> {
+            if (PXT_SESSION_ID.equals(arg)) {
+                return getPxtSession();
             }
+            return null;
         });
 
         pxtSessionDelegate.loadPxtSession(getRequest());

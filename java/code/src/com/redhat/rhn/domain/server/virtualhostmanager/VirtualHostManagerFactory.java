@@ -393,7 +393,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                         String... ignoreParams) {
         Optional<GathererModule> details = modules.entrySet().stream()
                 .filter(entry -> moduleName.equalsIgnoreCase(entry.getKey()))
-                .map(entry -> entry.getValue())
+                .map(Map.Entry::getValue)
                 .findFirst();
         if (!details.isPresent()) {
             return false;

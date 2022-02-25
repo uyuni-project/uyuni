@@ -276,7 +276,7 @@ public class ProductsController {
                     channelId -> channelId,
                     channelId -> SUSEProductFactory.findSyncedMandatoryChannels(
                             ChannelFactory.lookupById(channelId).getLabel())
-                            .map(channel -> channel.getId())
+                            .map(Channel::getId)
                             .collect(Collectors.toList())
             ));
             return json(response, ResultJson.success(result));
@@ -299,7 +299,7 @@ public class ProductsController {
             Collection<MgrSyncProductDto> products = csm.listProducts();
 
             Map<String, Channel> channelByLabel = ChannelFactory.listVendorChannels()
-                    .stream().collect(Collectors.toMap(c -> c.getLabel(), c -> c));
+                    .stream().collect(Collectors.toMap(Channel::getLabel, c -> c));
 
 
             List<Product> jsonProducts = TimeUtils.logTime(log, "build ui tree",
@@ -320,7 +320,7 @@ public class ProductsController {
                                             s.getChannels().stream().map(c ->
                                                     new ChannelJson(
                                                             Optional.ofNullable(channelByLabel.get(c.getLabel()))
-                                                                    .map(x -> x.getId()).orElse(-1L),
+                                                                    .map(Channel::getId).orElse(-1L),
                                                             c.getName(),
                                                             c.getLabel(),
                                                             c.getSummary(),
@@ -350,9 +350,7 @@ public class ProductsController {
                                 }
                                 else {
                                     Optional.ofNullable(extensionByProductId.get(baseProduct.getProductId()))
-                                            .ifPresent(e -> {
-                                        e.getExtensions().add(extensionByProductId.get(extProductId));
-                                    });
+                                        .ifPresent(e -> e.getExtensions().add(extensionByProductId.get(extProductId)));
                                 }
                             }
                     }
@@ -368,7 +366,7 @@ public class ProductsController {
                         syncProduct.getChannels().stream().map(c ->
                                 new ChannelJson(
                                         Optional.ofNullable(channelByLabel.get(c.getLabel()))
-                                                .map(x -> x.getId()).orElse(-1L),
+                                                .map(Channel::getId).orElse(-1L),
                                         c.getName(),
                                         c.getLabel(),
                                         c.getSummary(),

@@ -21,6 +21,7 @@ import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import com.suse.manager.webui.utils.TaskoTopJob;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +45,7 @@ public class TaskoTopCollector {
         // collect unfinished tasks
         List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
                 .map(t -> new TaskoTopJob(t, userIn))
-                .sorted((j1, j2) -> j1.getId().compareTo(j2.getId()))
+                .sorted(Comparator.comparing(TaskoTopJob::getId))
                 .collect(toList());
 
         // collect tasks ended in the latest SLICE_TIME
@@ -52,7 +53,7 @@ public class TaskoTopCollector {
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
                 .filter(j -> j.getEndTime() != null)
                 .map(t -> new TaskoTopJob(t, userIn))
-                .sorted((j1, j2) -> j1.getId().compareTo(j2.getId()))
+                .sorted(Comparator.comparing(TaskoTopJob::getId))
                 .collect(toList()));
 
         return jobs;

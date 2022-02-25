@@ -92,11 +92,11 @@ public class SSMGroupConfirmAction extends RhnAction
         removedHelper.ignoreEmptySelection();
         removedHelper.execute();
 
-        List<SystemGroupOverview> addList = new ArrayList<SystemGroupOverview>();
-        List<SystemGroupOverview> removeList = new ArrayList<SystemGroupOverview>();
+        List<SystemGroupOverview> addList = new ArrayList<>();
+        List<SystemGroupOverview> removeList = new ArrayList<>();
 
         List<SystemGroupOverview> groups = SystemManager.groupList(user, null);
-        Map<Long, SystemGroupOverview> groupMap = new HashMap<Long, SystemGroupOverview>();
+        Map<Long, SystemGroupOverview> groupMap = new HashMap<>();
         for (SystemGroupOverview group : groups) {
             groupMap.put(group.getId(), group);
         }
@@ -118,19 +118,19 @@ public class SSMGroupConfirmAction extends RhnAction
 
         // If submitted, actually do the add / remove
         if (addedHelper.isDispatched()) {
-            Set<Server> servers = new HashSet<Server>();
+            Set<Server> servers = new HashSet<>();
             for (SystemOverview system : systems) {
                 servers.add(ServerFactory.lookupById(system.getId()));
             }
             for (SystemGroupOverview group : addList) {
                 ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
-                Set<Server> difference = new HashSet<Server>(servers);
+                Set<Server> difference = new HashSet<>(servers);
                 difference.removeAll(msg.getServers());
                 serverGroupManager.addServers(msg, difference, user);
             }
             for (SystemGroupOverview group : removeList) {
                 ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
-                Set<Server> intersection = new HashSet<Server>(msg.getServers());
+                Set<Server> intersection = new HashSet<>(msg.getServers());
                 intersection.retainAll(servers);
                 serverGroupManager.removeServers(msg, intersection, user);
             }

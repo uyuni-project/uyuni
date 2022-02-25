@@ -25,6 +25,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -151,7 +152,7 @@ public class VirtualHostManagerController {
      */
     public static Object getSingle(Request req, Response res, User user) {
         return withVirtualHostManager(req, res, user,
-                (vhm) -> getJsonDetails(vhm));
+                VirtualHostManagerController::getJsonDetails);
     }
 
     /**
@@ -165,7 +166,7 @@ public class VirtualHostManagerController {
     public static Object getModules(Request request, Response response, User user) {
         List<String> gathererModuleNames = getGathererModules()
                 .entrySet().stream()
-                .map(e -> e.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
         return json(response, gathererModuleNames);
     }
@@ -183,11 +184,11 @@ public class VirtualHostManagerController {
         Optional<GathererModule> gathererModule = getGathererModules()
                 .entrySet().stream()
                 .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
-                .map(e -> e.getValue())
+                .map(Map.Entry::getValue)
                 .findFirst();
         return json(response,
                 ResultJson.success(
-                        gathererModule.map(m -> m.getParameters())
+                        gathererModule.map(GathererModule::getParameters)
                                 .orElse(Collections.emptyMap())));
     }
 
@@ -208,7 +209,7 @@ public class VirtualHostManagerController {
      */
     public static String getNodes(Request request, Response response, User user) {
         return withVirtualHostManager(request, response, user,
-                (vhm) -> getJsonNodes(vhm));
+                VirtualHostManagerController::getJsonNodes);
     }
 
     /**
@@ -375,7 +376,7 @@ public class VirtualHostManagerController {
         return withVirtualHostManager(request, response, user, (vhm) -> {
             String kubeconfigPath = vhm.getConfigs().stream()
                     .filter(cfg -> CONFIG_KUBECONFIG.equals(cfg.getParameter()))
-                    .map(kubeconfig -> kubeconfig.getValue())
+                    .map(VirtualHostManagerConfig::getValue)
                     .findFirst()
                     .orElseThrow(() ->
                             new IllegalArgumentException("kubeconfig param not present"));
@@ -573,12 +574,12 @@ public class VirtualHostManagerController {
 
     private static Optional<String> findStringParam(List<FileItem> items, String name) {
         return findParamItem(items, name)
-                .map(item -> item.getString());
+                .map(FileItem::getString);
     }
 
     private static Optional<FileItem> findParamItem(List<FileItem> items, String name) {
         return items.stream()
-                .filter(item -> item.isFormField())
+                .filter(FileItem::isFormField)
                 .filter(item -> name.equals(item.getFieldName()))
                 .findFirst();
     }
@@ -733,7 +734,7 @@ public class VirtualHostManagerController {
             obj.addProperty("arch", srv.getServerArch().getName());
             return obj;
         })
-                .forEach(json -> list.add(json));
+                .forEach(list::add);
 
         vhm.getNodes().stream().map(node -> {
             JsonObject obj = new JsonObject();
@@ -746,7 +747,7 @@ public class VirtualHostManagerController {
             obj.addProperty("arch", node.getNodeArch().getName());
             return obj;
         })
-                .forEach(json -> list.add(json));
+                .forEach(list::add);
 
         return ResultJson.success(list);
     }

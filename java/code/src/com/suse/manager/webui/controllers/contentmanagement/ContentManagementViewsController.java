@@ -161,7 +161,7 @@ public class ContentManagementViewsController {
 
         Map<ContentFilter, List<ContentProject>> filtersWithProjects = ContentManager.listFilters(user)
                 .stream()
-                .collect(Collectors.toMap(p -> p, p -> ContentProjectFactory.listFilterProjects(p)));
+                .collect(Collectors.toMap(p -> p, ContentProjectFactory::listFilterProjects));
 
 
         List<FilterResponse> filterResponse = ResponseMappers.mapFilterListingFromDB(filtersWithProjects);

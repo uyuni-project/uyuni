@@ -135,7 +135,7 @@ public class FileDetailsAction extends RhnAction {
             request.setAttribute(REV_TOTAL_SIZE, StringUtil.displayFileSize(totalBytes));
             request.setAttribute(REV_SIZE,
                     StringUtil.displayFileSize(
-                            cr.getConfigContent().getFileSize().longValue()));
+                            cr.getConfigContent().getFileSize()));
         }
         request.setAttribute(REV_CREATED, cr.getConfigFile().getCreated());
 

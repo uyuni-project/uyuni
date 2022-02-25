@@ -33,8 +33,8 @@ public class CVEAuditSystemBuilder {
 
     // LinkedHashSet is used to preserve insertion order when iterating
     private Set<ChannelIdNameLabelTriple> channels =
-            new LinkedHashSet<ChannelIdNameLabelTriple>();
-    private Set<ErrataIdAdvisoryPair> erratas = new LinkedHashSet<ErrataIdAdvisoryPair>();
+            new LinkedHashSet<>();
+    private Set<ErrataIdAdvisoryPair> erratas = new LinkedHashSet<>();
 
     /**
      * Constructor expecting a system ID.

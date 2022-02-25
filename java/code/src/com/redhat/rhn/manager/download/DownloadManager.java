@@ -159,7 +159,7 @@ public class DownloadManager extends BaseManager {
     public static String getFileSHA1Token(Long fileId, String filename,
             User user, Long expire, String type) {
 
-        List<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
         data.add(expire.toString());
         data.add(user.getId().toString());
         data.add(fileId.toString());

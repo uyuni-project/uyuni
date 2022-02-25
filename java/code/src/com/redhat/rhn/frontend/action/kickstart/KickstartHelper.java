@@ -96,9 +96,9 @@ public class KickstartHelper {
      * @return Map of options.  Usually containing host, ksdata, label and org_id
      */
     public Map<String, Object> parseKickstartUrl(String url) {
-        Map<String, Object> retval = new HashMap<String, Object>();
+        Map<String, Object> retval = new HashMap<>();
         KickstartData ksdata = null;
-        Map<String, String> options = new HashMap<String, String>();
+        Map<String, String> options = new HashMap<>();
         log.debug("url: " + url);
         List<String> rawopts = Arrays.asList(
                 StringUtils.split(url, '/'));
@@ -401,9 +401,9 @@ public class KickstartHelper {
     private boolean hasPackages(Channel c, String[] packageNames) {
         log.debug("HasPackages: " + c.getId());
         //Go through every package name.
-        for (int i = 0; i < packageNames.length; i++) {
-            log.debug("hasPackages : Checking for package: " + packageNames[i]);
-            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNames[i]);
+        for (String packageNameIn : packageNames) {
+            log.debug("hasPackages : Checking for package: " + packageNameIn);
+            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNameIn);
             //No package by this name exists in this package.
             if (pid == null) {
                 log.debug("hasPackages : not found");
@@ -429,7 +429,7 @@ public class KickstartHelper {
         // does a child channel contain needed packages?
         Channel channel = ksdata.getChannel();
         // copy child channel set otherwise you'd modify it as an unwanted side effect
-        Set<Channel> channelsToCheck = new HashSet<Channel>(ksdata.getChildChannels());
+        Set<Channel> channelsToCheck = new HashSet<>(ksdata.getChildChannels());
         channelsToCheck.add(channel);
         String[] packagesToLook = KickstartFormatter.FRESH_PKG_NAMES_RHEL8;
         if (ksdata.isUserSelectedSaltInstallType()) {
@@ -437,9 +437,7 @@ public class KickstartHelper {
         }
         for (String pkgName : packagesToLook) {
             boolean found = false;
-            Iterator<Channel> i = channelsToCheck.iterator();
-            while (i.hasNext()) {
-                Channel current = i.next();
+            for (Channel current : channelsToCheck) {
                 Long pid = ChannelManager.getLatestPackageEqual(current.getId(), pkgName);
                 if (pid != null) {
                     found = true;
@@ -463,15 +461,13 @@ public class KickstartHelper {
                 user.getOrg().getId(), channel.getId());
         channelsToCheck.add(channel);
 
-        Iterator<Channel> i = channelsToCheck.iterator();
-        while (i.hasNext()) {
-            Channel current = i.next();
+        for (Channel current : channelsToCheck) {
             log.debug("Current.channel : " + current.getId());
             //Look for the auto-kickstart package.
             List<Map<String, Object>> kspackages =
                     ChannelManager.listLatestPackagesLike(
-                    current.getId(),
-                    ksdata.getKickstartPackageNames());
+                            current.getId(),
+                            ksdata.getKickstartPackageNames());
             //found it, this channel is good.
             if (kspackages.size() > 0) {
                 return true;
@@ -510,7 +506,7 @@ public class KickstartHelper {
 
     private String createPackageNameList(KickstartData ksdata) {
         //First create a list of all the packages needed
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         if (ksdata.isRhel8()) {
             if (ksdata.isUserSelectedSaltInstallType()) {
                 packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT));

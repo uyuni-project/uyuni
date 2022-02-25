@@ -123,7 +123,7 @@ public class AlphaBarHelper {
     private String renderEnabledAlpha(char alpha,
                                         String listName,
                                         ServletRequest request) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(makeAlphaKey(listName), String.valueOf(alpha));
 
         StringBuilder enabled = new StringBuilder("<li><a href=\"");

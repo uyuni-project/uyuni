@@ -276,7 +276,7 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return default kernel paths
      */
     public String[] getDefaultKernelPaths() {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
             String archName = this.getChannel().getChannelArch().getName().toLowerCase();
@@ -323,8 +323,8 @@ public class KickstartableTree extends BaseDomainHelper {
     public String getKernelPath() {
         String lastKnownPath = null;
         String[] defaultKernelPaths = this.getDefaultKernelPaths();
-        for (int i = 0; i < defaultKernelPaths.length; i++) {
-            lastKnownPath = defaultKernelPaths[i];
+        for (String defaultKernelPathIn : defaultKernelPaths) {
+            lastKnownPath = defaultKernelPathIn;
             if (pathExists(lastKnownPath)) {
                 return lastKnownPath;
             }
@@ -340,7 +340,7 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return default initrd paths
      */
     public String[] getDefaultInitrdPaths() {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
             String archName = this.getChannel().getChannelArch().getName().toLowerCase();

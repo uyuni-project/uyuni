@@ -87,7 +87,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         helper.setDataSetName(RequestContext.PAGE_LIST);
         helper.execute();
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.MODE,
                 requestContext.getRequiredParamAsString(RequestContext.MODE));
 

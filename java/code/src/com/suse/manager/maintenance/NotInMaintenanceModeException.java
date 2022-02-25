@@ -43,6 +43,6 @@ public class NotInMaintenanceModeException extends RuntimeException {
     }
 
     private static String scheduleNames(Set<MaintenanceSchedule> schedulesIn) {
-        return schedulesIn.stream().map(s -> s.getName()).collect(Collectors.joining(","));
+        return schedulesIn.stream().map(MaintenanceSchedule::getName).collect(Collectors.joining(","));
     }
 }

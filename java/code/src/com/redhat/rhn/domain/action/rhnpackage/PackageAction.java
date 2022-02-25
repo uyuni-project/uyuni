@@ -33,7 +33,7 @@ import java.util.Set;
 public class PackageAction extends Action {
 
     private static final long serialVersionUID = -6964115307447205711L;
-    private Set<PackageActionDetails> details = new HashSet<PackageActionDetails>();
+    private Set<PackageActionDetails> details = new HashSet<>();
 
     /**
      * Add a PackageActionDetails to the set of details

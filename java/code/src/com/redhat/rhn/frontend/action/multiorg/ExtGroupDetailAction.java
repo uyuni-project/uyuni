@@ -84,7 +84,7 @@ public class ExtGroupDetailAction extends RhnAction {
             Boolean orgAdm = (Boolean) form.get("role_org_admin");
             String selectedRoles = (String) form.get("selected_regular_roles");
 
-            Set<Role> roles = new HashSet<Role>();
+            Set<Role> roles = new HashSet<>();
             if (BooleanUtils.isTrue(satAdm)) {
                 roles.add(RoleFactory.SAT_ADMIN);
             }
@@ -131,7 +131,7 @@ public class ExtGroupDetailAction extends RhnAction {
     }
 
     private Map makeValidationMap(DynaActionForm form) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("label", (String) form.get("extGroupLabel"));
         return map;
     }
@@ -145,9 +145,9 @@ public class ExtGroupDetailAction extends RhnAction {
     public void setupRoles(HttpServletRequest request, User user,
             UserExtGroup extGroup) {
         List<SelectableLabelValueBean> adminRoles =
-                new ArrayList<SelectableLabelValueBean>();
+                new ArrayList<>();
         List<SelectableLabelValueBean> regularRoles =
-                new ArrayList<SelectableLabelValueBean>();
+                new ArrayList<>();
 
         for (Role role : user.getOrg().getRoles()) {
             String label = role.getLabel();

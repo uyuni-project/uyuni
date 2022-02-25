@@ -103,8 +103,8 @@ public class TaskScheduler {
          * all of the Task objects. As of now, this isn't a big deal since we will
          * realistically only have a few channels per org.
          */
-        for (Iterator itr = tasks.iterator(); itr.hasNext();) {
-            Task task = (Task) itr.next(); //Get the task
+        for (Object taskIn : tasks) {
+            Task task = (Task) taskIn; //Get the task
             task.setEarliest(now); //set to run asap
             TaskFactory.save(task); //save
         }

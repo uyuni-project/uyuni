@@ -22,7 +22,7 @@ import java.util.Optional;
 public class Maps {
 
     private Maps() {
-    };
+    }
 
     /**
      * Get the value from a nested map structure by a colon separated path.
