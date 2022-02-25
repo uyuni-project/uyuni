@@ -107,7 +107,7 @@ Feature: Add the CentOS 8 distribution custom repositories
     And I enter "Filtered channels without AppStream channels" as "description"
     And I click on "Save"
     Then I should see a "not built" text
-    When I click on "Build (9)"
+    When I click on "Build"
     And I enter "Initial build" as "message"
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text
