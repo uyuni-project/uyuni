@@ -201,7 +201,7 @@ public class UbuntuErrataManager {
      */
     public static void processUbuntuErrataByIds(Set<Long> channelIds, List<Entry> ubuntuErrataInfo) {
         processUbuntuErrata(channelIds.stream()
-                .map(cid -> ChannelFactory.lookupById(cid))
+                .map(ChannelFactory::lookupById)
                 .collect(Collectors.toSet()), ubuntuErrataInfo);
     }
 
@@ -214,7 +214,7 @@ public class UbuntuErrataManager {
 
         Map<Channel, Set<Package>> ubuntuChannels = channels.stream()
                 .filter(c -> c.isTypeDeb() && !c.isCloned())
-                .collect(Collectors.toMap(c -> c, c -> c.getPackages()));
+                .collect(Collectors.toMap(c -> c, Channel::getPackages));
 
         List<String> uniqueCVEs = ubuntuErrataInfo.stream()
                 .flatMap(e -> e.getCves().stream().filter(c -> c.startsWith("CVE-")))
@@ -223,88 +223,81 @@ public class UbuntuErrataManager {
 
         Map<String, Cve> cveByName = TimeUtils.logTime(LOG, "looking up " +  uniqueCVEs.size() + " CVEs",
                 () -> uniqueCVEs.stream()
-                        .map(e -> CveFactory.lookupOrInsertByName(e))
-                        .collect(Collectors.toMap(e -> e.getName(), e -> e)));
+                        .map(CveFactory::lookupOrInsertByName)
+                        .collect(Collectors.toMap(Cve::getName, e -> e)));
 
-        TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> {
-            ubuntuErrataInfo.stream().flatMap(entry -> {
+        TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> ubuntuErrataInfo.stream()
+                .flatMap(entry -> {
 
 
-                Map<Channel, Set<Package>> matchingPackagesByChannel =
-                        TimeUtils.logTime(LOG, "matching packages for " + entry.getId(), () -> {
-                            return ubuntuChannels.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), c -> {
+            Map<Channel, Set<Package>> matchingPackagesByChannel =
+                    TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
+                            () -> ubuntuChannels.entrySet().stream()
+                                    .collect(Collectors.toMap(Map.Entry::getKey,
+                                            c -> c.getValue().stream().filter(p -> entry.getPackages().stream()
+                                                    .anyMatch(e -> {
 
-                                return c.getValue().stream().filter(p -> {
+                                    PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
+                                    return e.getC().stream()
+                                            .anyMatch(arch -> p.getPackageName().getName().equals(e.getA()) &&
+                                                archToPackageArchLabel(arch)
+                                                        .map(a -> p.getPackageArch().getLabel().equals(a))
+                                                        .orElse(false) &&
+                                                p.getPackageEvr().getVersion().equals(packageEvr.getVersion()) &&
+                                                p.getPackageEvr().getRelease().equals(packageEvr.getRelease()) &&
+                                                Optional.ofNullable(p.getPackageEvr().getEpoch())
+                                                        .equals(Optional.ofNullable(packageEvr.getEpoch())) &&
+                                                p.getPackageEvr().getPackageType()
+                                                        .equals(packageEvr.getPackageType()));
 
-                                    return entry.getPackages().stream().anyMatch(e -> {
+                                })).collect(Collectors.toSet()))));
 
-                                        PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
-                                        return e.getC().stream().anyMatch(arch -> {
-                                            return p.getPackageName().getName().equals(e.getA()) &&
-                                                    archToPackageArchLabel(arch)
-                                                            .map(a -> p.getPackageArch().getLabel().equals(a))
-                                                            .orElse(false) &&
-                                                    p.getPackageEvr().getVersion().equals(packageEvr.getVersion()) &&
-                                                    p.getPackageEvr().getRelease().equals(packageEvr.getRelease()) &&
-                                                    Optional.ofNullable(p.getPackageEvr().getEpoch())
-                                                            .equals(Optional.ofNullable(packageEvr.getEpoch())) &&
-                                                    p.getPackageEvr().getPackageType()
-                                                            .equals(packageEvr.getPackageType());
-                                        });
+            Map<Optional<Org>, Map<Channel, Set<Package>>> collect = matchingPackagesByChannel.entrySet().stream()
+                    .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
+                            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-                                    });
-
-                                }).collect(Collectors.toSet());
-                            }));
+            return collect.entrySet().stream().map(e -> {
+                Optional<Org> org = e.getKey();
+                Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(
+                            entry.getId(), org.orElse(null)
+                        )).orElseGet(() -> {
+                            Errata newErrata = new Errata();
+                            newErrata.setOrg(org.orElse(null));
+                            return newErrata;
                         });
 
-                Map<Optional<Org>, Map<Channel, Set<Package>>> collect = matchingPackagesByChannel.entrySet().stream()
-                        .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
-                                Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
+                errata.setAdvisory(entry.getId());
+                errata.setAdvisoryName(entry.getId());
+                errata.setAdvisoryStatus(AdvisoryStatus.STABLE);
+                errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
+                errata.setIssueDate(Date.from(entry.getDate()));
+                errata.setUpdateDate(Date.from(entry.getDate()));
+                String[] split = entry.getId().split("-", 2);
+                errata.setAdvisoryRel(Long.parseLong(split[1]));
+                errata.setProduct("Ubuntu");
+                errata.setSolution("-");
+                errata.setSynopsis(entry.getIsummary());
+                Set<Cve> cves = entry.getCves().stream()
+                        .filter(c -> c.startsWith("CVE-"))
+                        .map(cveByName::get)
+                        .collect(Collectors.toSet());
+                errata.setCves(cves);
+                errata.setDescription(entry.getDescription());
 
-                return collect.entrySet().stream().map(e -> {
-                    Optional<Org> org = e.getKey();
-                    Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(
-                                entry.getId(), org.orElse(null)
-                            )).orElseGet(() -> {
-                                Errata newErrata = new Errata();
-                                newErrata.setOrg(org.orElse(null));
-                                return newErrata;
-                            });
+                Set<Package> packages = e.getValue().entrySet().stream()
+                        .flatMap(x -> x.getValue().stream())
+                        .collect(Collectors.toSet());
+                errata.getPackages().addAll(packages);
 
-                    errata.setAdvisory(entry.getId());
-                    errata.setAdvisoryName(entry.getId());
-                    errata.setAdvisoryStatus(AdvisoryStatus.STABLE);
-                    errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
-                    errata.setIssueDate(Date.from(entry.getDate()));
-                    errata.setUpdateDate(Date.from(entry.getDate()));
-                    String[] split = entry.getId().split("-", 2);
-                    errata.setAdvisoryRel(Long.parseLong(split[1]));
-                    errata.setProduct("Ubuntu");
-                    errata.setSolution("-");
-                    errata.setSynopsis(entry.getIsummary());
-                    Set<Cve> cves = entry.getCves().stream()
-                            .filter(c -> c.startsWith("CVE-"))
-                            .map(cveByName::get)
-                            .collect(Collectors.toSet());
-                    errata.setCves(cves);
-                    errata.setDescription(entry.getDescription());
+                Set<Channel> matchingChannels = e.getValue().entrySet().stream()
+                        .filter(c -> !c.getValue().isEmpty())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toSet());
 
-                    Set<Package> packages = e.getValue().entrySet().stream()
-                            .flatMap(x -> x.getValue().stream())
-                            .collect(Collectors.toSet());
-                    errata.getPackages().addAll(packages);
+                errata.getChannels().addAll(matchingChannels);
 
-                    Set<Channel> matchingChannels = e.getValue().entrySet().stream()
-                            .filter(c -> !c.getValue().isEmpty())
-                            .map(c -> c.getKey())
-                            .collect(Collectors.toSet());
-
-                    errata.getChannels().addAll(matchingChannels);
-
-                    return errata;
-                });
-            }).forEach(ErrataFactory::save);
-        });
+                return errata;
+            });
+        }).forEach(ErrataFactory::save));
     }
 }

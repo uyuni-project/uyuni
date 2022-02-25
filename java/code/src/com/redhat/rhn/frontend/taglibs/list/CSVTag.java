@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.taglibs.IconTag;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -195,12 +194,10 @@ public class CSVTag extends BodyTagSupport {
      * @throws JspException
      */
     private void renderExport() throws JspException {
-        StringBuffer page = new StringBuffer(CSV_DOWNLOAD_URI);
-        page.append("?" + makeCSVRequestParams());
         IconTag i = new IconTag("item-download-csv");
         String exportLink = new String("<div class=\"spacewalk-csv-download\">" +
-                "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + page + "\">" + i.render() +
-                LocalizationService.getInstance().getMessage(
+                "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
+                makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
                 "listdisplay.csv") + "</a></div>");
         ListTagUtil.write(pageContext, exportLink);
     }
@@ -272,8 +269,8 @@ public class CSVTag extends BodyTagSupport {
 
     private Map makePartialResult(List result) {
         Map output = new HashMap();
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-            SystemSearchResult r = (SystemSearchResult) iter.next();
+        for (Object oIn : result) {
+            SystemSearchResult r = (SystemSearchResult) oIn;
             SystemSearchPartialResult partial = new SystemSearchPartialResult(r);
             output.put(r.getId(), partial);
         }

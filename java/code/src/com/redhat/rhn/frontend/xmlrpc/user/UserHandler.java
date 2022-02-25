@@ -51,7 +51,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +77,7 @@ public class UserHandler extends BaseHandler {
      * bugzilla 469957.
      */
     private static final Map<String, String> USER_EDITABLE_DETAILS =
-        new HashMap<String, String>();
+            new HashMap<>();
     static {
         USER_EDITABLE_DETAILS.put("first_name", "first_names");
         USER_EDITABLE_DETAILS.put("first_names", "first_names");
@@ -141,8 +140,8 @@ public class UserHandler extends BaseHandler {
 
         //Loop through the target users roles and stick the labels into the ArrayList
         Set roleObjects = target.getPermanentRoles();
-        for (Iterator itr = roleObjects.iterator(); itr.hasNext();) {
-            Role r = (Role) itr.next();
+        for (Object roleObjectIn : roleObjects) {
+            Role r = (Role) roleObjectIn;
             roles.add(r.getLabel());
         }
 
@@ -318,7 +317,7 @@ public class UserHandler extends BaseHandler {
      * @return all the role labels that are assignable to a user.
      */
     private Set<String> getAssignableRoles(User user) {
-        Set<String> assignableRoles = new LinkedHashSet<String>();
+        Set<String> assignableRoles = new LinkedHashSet<>();
         for (Role r : UserManager.listRolesAssignableBy(user)) {
             assignableRoles.add(r.getLabel());
         }
@@ -678,7 +677,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int addDefaultSystemGroup(User loggedInUser, String login, String name) {
-        List<String> ids = new LinkedList<String>();
+        List<String> ids = new LinkedList<>();
         ids.add(name);
         return addDefaultSystemGroups(loggedInUser, login, ids);
     }
@@ -717,15 +716,15 @@ public class UserHandler extends BaseHandler {
         // I couldn't find anything that would create a map from a list using
         // a property from the object in the list as the key. This is where
         // python would be useful.
-        for (Iterator itr = groups.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) itr.next();
+        for (Object groupIn : groups) {
+            ServerGroup sg = (ServerGroup) groupIn;
             groupMap.put(sg.getName(), sg);
         }
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            String name = (String)itr.next();
+        for (Object nameIn : sgNames) {
+            String name = (String) nameIn;
             ServerGroup sg = (ServerGroup) groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
@@ -734,8 +733,8 @@ public class UserHandler extends BaseHandler {
 
         // now for the real reason we're in this method.
         Set defaults = target.getDefaultSystemGroupIds();
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) groupMap.get(itr.next());
+        for (Object sgNameIn : sgNames) {
+            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
             if (sg != null) {
                 // not a simple add to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -767,7 +766,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeDefaultSystemGroup(User loggedInUser, String login, String sgName) {
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(sgName);
         return removeDefaultSystemGroups(loggedInUser, login, names);
     }
@@ -805,15 +804,15 @@ public class UserHandler extends BaseHandler {
         // I couldn't find anything that would create a map from a list using
         // a property from the object in the list as the key. This is where
         // python would be useful.
-        for (Iterator itr = groups.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) itr.next();
+        for (Object groupIn : groups) {
+            ServerGroup sg = (ServerGroup) groupIn;
             groupMap.put(sg.getName(), sg);
         }
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            String name = (String)itr.next();
+        for (Object nameIn : sgNames) {
+            String name = (String) nameIn;
             ServerGroup sg = (ServerGroup) groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
@@ -822,8 +821,8 @@ public class UserHandler extends BaseHandler {
 
         // now for the real reason we're in this method.
         Set defaults = target.getDefaultSystemGroupIds();
-        for (Iterator itr = sgNames.iterator(); itr.hasNext();) {
-            ServerGroup sg = (ServerGroup) groupMap.get(itr.next());
+        for (Object sgNameIn : sgNames) {
+            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
             if (sg != null) {
                 // not a simple remove to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -933,7 +932,7 @@ public class UserHandler extends BaseHandler {
 
         // Iterate once to lookup the server groups and avoid removing some when
         // an exception will only be thrown later:
-        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> groups = new LinkedList<>();
         for (String name : systemGroupNames) {
             ManagedServerGroup sg = null;
             try {
@@ -946,7 +945,7 @@ public class UserHandler extends BaseHandler {
         }
 
         for (ManagedServerGroup sg : groups) {
-            UserManager.revokeServerGroupPermission(user, sg.getId().longValue());
+            UserManager.revokeServerGroupPermission(user, sg.getId());
         }
 
         return 1;
@@ -997,7 +996,7 @@ public class UserHandler extends BaseHandler {
      */
     public int addAssignedSystemGroup(User loggedInUser, String login, String sgName,
             Boolean setDefault) {
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(sgName);
         return addAssignedSystemGroups(loggedInUser, login, names, setDefault);
     }
@@ -1033,9 +1032,9 @@ public class UserHandler extends BaseHandler {
         // Iterate once just to make sure all the server groups exist. Done to
         // prevent adding a bunch of valid groups and then throwing an exception
         // when coming across one that doesn't exist.
-        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
-        for (Iterator it = sgNames.iterator(); it.hasNext();) {
-            String serverGroupName =  (String)it.next();
+        List<ManagedServerGroup> groups = new LinkedList<>();
+        for (Object sgNameIn : sgNames) {
+            String serverGroupName = (String) sgNameIn;
 
             // Make sure the server group exists:
             ManagedServerGroup group;
@@ -1052,7 +1051,7 @@ public class UserHandler extends BaseHandler {
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:
-        if (setDefault.booleanValue()) {
+        if (setDefault) {
             addDefaultSystemGroups(loggedInUser, login, sgNames);
         }
 

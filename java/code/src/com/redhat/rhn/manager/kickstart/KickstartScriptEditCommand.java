@@ -17,8 +17,6 @@ package com.redhat.rhn.manager.kickstart;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.user.User;
 
-import java.util.Iterator;
-
 /**
  * KickstartScriptEditCommand
  */
@@ -47,10 +45,8 @@ public class KickstartScriptEditCommand extends BaseKickstartScriptCommand {
      */
     public KickstartScriptEditCommand(Long ksidIn, Long scriptId, User userIn) {
         super(ksidIn, userIn);
-        Iterator i = this.ksdata.getScripts().iterator();
 
-        while (i.hasNext()) {
-            KickstartScript s = (KickstartScript) i.next();
+        for (KickstartScript s : this.ksdata.getScripts()) {
             if (s.getId().equals(scriptId)) {
                 this.script = s;
             }

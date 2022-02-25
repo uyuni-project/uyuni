@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -443,7 +444,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         ContentSyncManager csm = new ContentSyncManager();
         product.getRepositories()
         .stream()
-        .filter(pr -> pr.isMandatory())
+        .filter(SUSEProductSCCRepository::isMandatory)
         .forEach(pr -> {
             try {
                 if (pr.getParentChannelLabel() != null &&

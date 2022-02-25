@@ -75,31 +75,28 @@ public class Lists {
      */
     public static <T> Comparator<List<T>> listOfListComparator(
             Comparator<T> elementComparator) {
-        return new Comparator<List<T>>() {
-            @Override
-            public int compare(List<T> o1, List<T> o2) {
-                if (o1 == o2) {
-                    return 0;
-                }
-                else {
-                    for (int i = 0; i < o1.size(); i++) {
-                        T t1 = o1.get(i);
-                        T t2 = o2.get(i);
-                        if (t1 == null && t2 != null) {
-                            return 1;
-                        }
-                        else if (t2 == null && t1 != null) {
-                            return -1;
-                        }
-                        else {
-                            int compare = elementComparator.compare(t1, t2);
-                            if (compare != 0) {
-                                return compare;
-                            }
+        return (o1, o2) -> {
+            if (o1 == o2) {
+                return 0;
+            }
+            else {
+                for (int i = 0; i < o1.size(); i++) {
+                    T t1 = o1.get(i);
+                    T t2 = o2.get(i);
+                    if (t1 == null && t2 != null) {
+                        return 1;
+                    }
+                    else if (t2 == null && t1 != null) {
+                        return -1;
+                    }
+                    else {
+                        int compare = elementComparator.compare(t1, t2);
+                        if (compare != 0) {
+                            return compare;
                         }
                     }
-                    return 0;
                 }
+                return 0;
             }
         };
     }

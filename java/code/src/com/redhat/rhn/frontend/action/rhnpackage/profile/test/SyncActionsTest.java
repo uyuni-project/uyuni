@@ -82,11 +82,10 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         Set<String> sessionSet = SessionSetHelper.lookupAndBind(getRequest(),
                 action.getDecl(s1.getId()));
 
-        StringBuilder idCombo = new StringBuilder();
-        idCombo.append(p3.getPackageName().getId()).append("|");
-        idCombo.append(p3.getPackageEvr().getId()).append("|");
-        idCombo.append(p3.getPackageArch().getId());
-        sessionSet.add(idCombo.toString());
+        String idCombo = p3.getPackageName().getId() + "|" +
+                p3.getPackageEvr().getId() + "|" +
+                p3.getPackageArch().getId();
+        sessionSet.add(idCombo);
 
         addRequestParameter(RequestContext.SID, s1.getId().toString());
         addRequestParameter(RequestContext.SID + "_1", s2.getId().toString());

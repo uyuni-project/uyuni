@@ -63,7 +63,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
      */
     public void testCheckinSimulation() {
         // Data structure to hold the results
-        HashMap<Integer, List<Integer>> results = new HashMap<Integer, List<Integer>>();
+        HashMap<Integer, List<Integer>> results = new HashMap<>();
 
         // Run the simulation for every system
         for (int s = 1; s <= numberOfSystems; s++) {
@@ -128,11 +128,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
      */
     private void addResult(HashMap<Integer, List<Integer>> results, Integer hour,
             Integer minutes) {
-        List<Integer> list = results.get(hour);
-        if (list == null) {
-            list = new ArrayList<Integer>();
-            results.put(hour, list);
-        }
+        List<Integer> list = results.computeIfAbsent(hour, k -> new ArrayList<>());
         list.add(minutes);
     }
 

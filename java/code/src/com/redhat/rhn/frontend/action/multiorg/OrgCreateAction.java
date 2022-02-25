@@ -86,7 +86,7 @@ public class OrgCreateAction extends RhnAction {
          * password and allow it.
          */
             if (dynaForm.get("usepam") != null &&
-                    ((Boolean) dynaForm.get("usepam")).booleanValue()) {
+                    (Boolean) dynaForm.get("usepam")) {
                 String fakePassword = MD5Crypt.crypt("" + System.currentTimeMillis()).
                     substring(0, UserDefaults.get().getMaxPasswordLength());
                 if (StringUtils.isEmpty(
@@ -128,7 +128,7 @@ public class OrgCreateAction extends RhnAction {
 
                     //Should this user use pam authentication?
                     if (dynaForm.get("usepam") != null &&
-                            ((Boolean)dynaForm.get("usepam")).booleanValue()) {
+                            (Boolean) dynaForm.get("usepam")) {
                         cmd.setUsePam(true);
                     }
                     else {

@@ -77,7 +77,7 @@ public class Distro extends CobblerObject {
      * @return a list of Distros.
      */
     public static List<Distro> list(CobblerConnection connection) {
-        List<Distro> distros = new LinkedList<Distro>();
+        List<Distro> distros = new LinkedList<>();
         List<Map<String, Object>> cDistros = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_distros");
 

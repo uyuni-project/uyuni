@@ -169,14 +169,14 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
         Map<Long, PackageOverview> pkgsOriginalMap = pkgsOriginal.stream()
-                .collect(Collectors.toMap(p -> p.getId(), p -> p));
+                .collect(Collectors.toMap(PackageOverview::getId, p -> p));
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
         assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
 
         // no package retracted in the cloned channel
         pkgsOriginal = PackageManager.listPackagesInChannelForList(clonedChannel.getId());
-        pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(PackageOverview::getId, p -> p));
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
         assertFalse(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
@@ -200,7 +200,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
 
         Map<Long, PackageDto> pkgsOriginalMap = ChannelManager.listAllPackages(channel).stream()
-                .collect(Collectors.toMap(p -> p.getId(), p -> p));
+                .collect(Collectors.toMap(PackageDto::getId, p -> p));
         assertEquals(3, pkgsOriginalMap.size());
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
         assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
@@ -208,7 +208,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
 
         Map<Long, PackageDto> pkgsCloneMap = ChannelManager.listAllPackages(clonedChannel).stream()
-                .collect(Collectors.toMap(p -> p.getId(), p -> p));
+                .collect(Collectors.toMap(PackageDto::getId, p -> p));
         assertEquals(3, pkgsCloneMap.size());
         assertFalse(pkgsCloneMap.get(oldPkg.getId()).getRetracted());
         assertFalse(pkgsCloneMap.get(newerPkg.getId()).getRetracted());

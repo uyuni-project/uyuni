@@ -142,9 +142,8 @@ public class GeneralConfigAction extends BaseConfigAction {
             }
         }
         else {
-            Iterator i = ALLOWED_CONFIGS.iterator();
-            while (i.hasNext()) {
-                String configKey = (String) i.next();
+            for (Object allowedConfigIn : ALLOWED_CONFIGS) {
+                String configKey = (String) allowedConfigIn;
 
                 if (BOOLEAN_CONFIGS.contains(configKey)) {
                     Boolean configValue = Config.get().getBoolean(configKey);
@@ -157,13 +156,13 @@ public class GeneralConfigAction extends BaseConfigAction {
 
                     if (configKey.equals("server.satellite.http_proxy_password")) {
                         form.set(
-              translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
-              configValue);
+                                translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
+                                configValue);
                     }
                     else if (configKey.equals("server.jabber_server")) {
                         form.set(
-                          translateFormPropertyName("server.jabber_server"),
-                          IDN.toUnicode(configValue));
+                                translateFormPropertyName("server.jabber_server"),
+                                IDN.toUnicode(configValue));
                     }
                 }
             }

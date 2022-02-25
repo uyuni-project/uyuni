@@ -51,11 +51,8 @@ public class RequireTagTest extends RhnBaseTestCase {
 
             tth.assertDoStartTag(Tag.SKIP_BODY);
         }
-        catch (JspException e) {
+        catch (Exception e) {
             fail(e.toString());
-        }
-        catch (Exception e1) {
-            fail(e1.toString());
         }
     }
 
@@ -126,11 +123,8 @@ public class RequireTagTest extends RhnBaseTestCase {
 
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
         }
-        catch (JspException je) {
+        catch (Exception je) {
             fail(je.toString());
-        }
-        catch (Exception e) {
-            fail(e.toString());
         }
     }
 
@@ -141,11 +135,8 @@ public class RequireTagTest extends RhnBaseTestCase {
 
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
         }
-        catch (JspException je) {
+        catch (Exception je) {
             fail(je.toString());
-        }
-        catch (Exception e) {
-            fail(e.toString());
         }
     }
 

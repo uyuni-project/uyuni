@@ -48,7 +48,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -215,9 +214,8 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         //We currently have a set of RhnSetElements, but we need a set
         //of Longs, this does that conversion.
         Set cfnids = new HashSet();
-        Iterator i = rhnSet.getElements().iterator();
-        while (i.hasNext()) {
-            cfnids.add(((RhnSetElement)i.next()).getElement());
+        for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {
+            cfnids.add(rhnSetElementIn.getElement());
         }
         return cfnids;
     }
@@ -244,9 +242,8 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         Set revisions = new HashSet();
 
         //go through all of the selected file names
-        Iterator nameItty = rhnSet.getElements().iterator();
-        while (nameItty.hasNext()) {
-            Long cfnid = ((RhnSetElement)nameItty.next()).getElement();
+        for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {
+            Long cfnid = rhnSetElementIn.getElement();
             Long crid = ConfigurationManager.getInstance()
                     .getDeployableRevisionForFileName(cfnid, sid);
 

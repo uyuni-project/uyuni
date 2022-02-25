@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import com.suse.mgrsync.MgrSyncStatus;
 
@@ -179,7 +180,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * @return the arch
      */
     public Optional<String> getArch() {
-        return getBaseChannel().getArch().map(a -> a.getLabel());
+        return getBaseChannel().getArch().map(PackageArch::getLabel);
     }
 
     /**

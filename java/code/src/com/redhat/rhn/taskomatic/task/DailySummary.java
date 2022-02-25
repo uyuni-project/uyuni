@@ -36,7 +36,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +71,9 @@ public class DailySummary extends RhnJavaJob {
 
 
         OrgIdWrapper oiw = null;
-        for (Iterator itr = results.iterator(); itr.hasNext();) {
+        for (Object resultIn : results) {
             try {
-                oiw = (OrgIdWrapper) itr.next();
+                oiw = (OrgIdWrapper) resultIn;
                 if (log.isDebugEnabled()) {
                     log.debug("dealing with org: " + oiw.toLong());
                 }
@@ -107,7 +106,7 @@ public class DailySummary extends RhnJavaJob {
     public int dequeueOrg(Long orgId) {
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_DEQUEUE_DAILY_SUMMARY);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         return m.executeUpdate(params);
     }
@@ -120,14 +119,14 @@ public class DailySummary extends RhnJavaJob {
     public void queueOrgEmails(Long orgId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_USERS_WANTING_REPORTS);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
 
         StopWatch watch = new StopWatch();
         watch.start();
         List users = m.execute(params);
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
-            ReportingUser ru = (ReportingUser) itr.next();
+        for (Object userIn : users) {
+            ReportingUser ru = (ReportingUser) userIn;
             // run_user
             List awol = getAwolServers(ru.idAsLong());
             // send email
@@ -165,7 +164,7 @@ public class DailySummary extends RhnJavaJob {
     public List getAwolServers(Long uid) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_USERS_AWOL_SERVERS);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
         params.put("checkin_threshold",
                 Config.get().getInteger(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
@@ -181,7 +180,7 @@ public class DailySummary extends RhnJavaJob {
     public List getActionInfo(Long uid) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_GET_ACTION_INFO);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
 
         return m.execute(params);
@@ -219,8 +218,8 @@ public class DailySummary extends RhnJavaJob {
         int snameLength = sid.length() + minDiff;
 
         //Find the longest entry in the table for both sid and sname.
-        for (Iterator itr = servers.iterator(); itr.hasNext();) {
-            AwolServer as = (AwolServer) itr.next();
+        for (Object oIn : servers) {
+            AwolServer as = (AwolServer) oIn;
             String currentId = as.getId().toString();
             if (currentId.length() >= sidLength) {
                 //extra space so the longest entry doesn't connect to the next column
@@ -243,8 +242,8 @@ public class DailySummary extends RhnJavaJob {
         buf.append("\n");
 
         //Now render the data in the table
-        for (Iterator itr = servers.iterator(); itr.hasNext();) {
-            AwolServer as = (AwolServer) itr.next();
+        for (Object serverIn : servers) {
+            AwolServer as = (AwolServer) serverIn;
             String currentId = as.getId().toString();
             buf.append(currentId);
             buf.append(StringUtils.repeat(" ", sidLength - currentId.length()));
@@ -375,12 +374,7 @@ public class DailySummary extends RhnJavaJob {
             for (String status : statusSet) {
                 Map<String, Integer> counts = actionTree.get(actionName);
                 Integer theCount = counts.get(status);
-                if (counts.containsKey(status)) {
-                    theCount = counts.get(status);
-                }
-                else {
-                    theCount = 0;
-                }
+                theCount = counts.getOrDefault(status, 0);
                 formattedActions.append(theCount);
                 formattedActions.append(StringUtils.repeat(" ", longestStatusLength +
                         ERRATA_SPACER - theCount.toString().length()));

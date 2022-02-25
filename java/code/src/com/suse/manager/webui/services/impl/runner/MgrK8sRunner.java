@@ -159,7 +159,8 @@ public class MgrK8sRunner {
         args.put("context", context);
         RunnerCall<ContainersList> call =
                 new RunnerCall<>("mgrk8s.get_all_containers", Optional.of(args),
-                        new TypeToken<ContainersList>() { });
+                        new TypeToken<>() {
+                        });
         return call;
     }
 

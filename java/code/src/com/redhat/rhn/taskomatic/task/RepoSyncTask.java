@@ -64,7 +64,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
         String[] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
         List<String> ltrue = Arrays.asList("true", "1");
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         for (String p : lparams) {
             if (context.getJobDetail().getJobDataMap().containsKey(p)) {
                 if (ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString()
@@ -158,7 +158,7 @@ public class RepoSyncTask extends RhnJavaJob {
     }
 
     private static List<String> getSyncCommand(Channel c, List<String> params) {
-        List<String> cmd = new ArrayList<String>();
+        List<String> cmd = new ArrayList<>();
         cmd.add(Config.get().getString(ConfigDefaults.SPACEWALK_REPOSYNC_PATH,
                 "/usr/bin/spacewalk-repo-sync"));
         cmd.add("--channel");

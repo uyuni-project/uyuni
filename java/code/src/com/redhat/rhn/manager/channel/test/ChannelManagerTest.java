@@ -341,7 +341,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testListErrata() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        List<Errata> errataList = new ArrayList<Errata>();
+        List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
         ErrataFactory.addToChannel(errataList, c, user, false);
 
@@ -486,7 +486,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
             listBaseEusChannelsByVersionReleaseAndChannelArch(user, rcm51);
         assertTrue(channels.size() >= 2);
 
-        Set<Long> returnedIds = new HashSet<Long>();
+        Set<Long> returnedIds = new HashSet<>();
         for (EssentialChannelDto c : channels) {
             returnedIds.add(c.getId());
         }
@@ -745,8 +745,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         boolean foundCustom = false;
 
         for (EssentialChannelDto ecd : compatibles) {
-            foundBase |= c.getId().equals(ecd.getId().longValue());
-            foundCustom |= custom.getId().equals(ecd.getId().longValue());
+            foundBase |= c.getId().equals(ecd.getId());
+            foundCustom |= custom.getId().equals(ecd.getId());
         }
         assertFalse(foundBase);
         assertTrue(foundCustom);
@@ -864,7 +864,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     public void testRemoveErrata() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        List<Errata> errataList = new ArrayList<Errata>();
+        List<Errata> errataList = new ArrayList<>();
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errataList.add(e);
         ErrataFactory.addToChannel(errataList, c, user, false);
@@ -873,7 +873,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(e.getChannels().contains(c));
 
-        Set<Long> eids = new HashSet<Long>();
+        Set<Long> eids = new HashSet<>();
         eids.add(e.getId());
 
         ChannelManager.removeErrata(c, eids, user);
@@ -925,7 +925,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
 
-        List<Long> list = new ArrayList<Long>();
+        List<Long> list = new ArrayList<>();
         list.add(cchan.getId());
 
         Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
@@ -982,7 +982,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
 
-        List<Long> list = new ArrayList<Long>();
+        List<Long> list = new ArrayList<>();
         list.add(cchan.getId());
 
         Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());

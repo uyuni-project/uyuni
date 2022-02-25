@@ -203,7 +203,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
         Server server = ServerTestUtils.createTestSystem(admin);
         assertNotNull(server.getOrg());
-        List<Integer> servers = new LinkedList<Integer>();
+        List<Integer> servers = new LinkedList<>();
         servers.add(server.getId().intValue());
         // Actual migration is tested internally, just make sure the API call doesn't
         // error out:
@@ -218,7 +218,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         User orgAdmin2 = UserTestUtils.findNewUser("orgAdmin2", "org2", true);
 
         Server server = ServerTestUtils.createTestSystem(admin);
-        List<Integer> servers = new LinkedList<Integer>();
+        List<Integer> servers = new LinkedList<>();
         servers.add(server.getId().intValue());
 
         // attempt migration where user is not a satellite admin and orginating
@@ -261,7 +261,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
 
         // attempt to migrate systems that do not exist
-        List<Integer> invalidServers = new LinkedList<Integer>();
+        List<Integer> invalidServers = new LinkedList<>();
         invalidServers.add(-1);
         try {
             handler.migrateSystems(admin, orgAdmin1.getOrg().getId().intValue(),

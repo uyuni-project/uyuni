@@ -63,7 +63,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
 
             //We want the orphans to be at the end of the list, so lets add them here
             //   and then add them to the whole list later
-            List<ChannelTreeNode> orphans = new ArrayList<ChannelTreeNode>();
+            List<ChannelTreeNode> orphans = new ArrayList<>();
 
 
             ChannelTreeNode lastParent = null;
@@ -363,7 +363,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      * {@inheritDoc}
      */
     public long depth() {
-        return getDepth().longValue();
+        return getDepth();
     }
 
 

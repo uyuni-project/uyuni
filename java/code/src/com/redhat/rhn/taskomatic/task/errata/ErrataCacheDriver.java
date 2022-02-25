@@ -97,8 +97,8 @@ public class ErrataCacheDriver implements QueueDriver {
      * @return consolidated list of tasks
      */
     private List<Task> consolidateTasks(List<Task> tasks) {
-        Set<Long> uniqueTaskData = new HashSet<Long>();
-        List<Task> consolidated = new ArrayList<Task>();
+        Set<Long> uniqueTaskData = new HashSet<>();
+        List<Task> consolidated = new ArrayList<>();
         for (Task task : tasks) {
             if (uniqueTaskData.add(task.getData())) {
                 consolidated.add(task);

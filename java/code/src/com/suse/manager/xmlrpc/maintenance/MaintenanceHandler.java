@@ -180,7 +180,7 @@ public class MaintenanceHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("type");
         validKeys.add("calendar");
         validateMap(validKeys, details);
@@ -340,7 +340,7 @@ public class MaintenanceHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("url");
         validKeys.add("ical");
         validateMap(validKeys, details);
@@ -452,7 +452,7 @@ public class MaintenanceHandler extends BaseHandler {
                 .lookupScheduleByUserAndName(loggedInUser, scheduleName)
                 .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
 
-        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        Set<Long> longIds = systemIds.stream().map(Integer::longValue).collect(Collectors.toSet());
         try {
             return mm.assignScheduleToSystems(loggedInUser, schedule, longIds,
                     createStrategiesFromStrings(rescheduleStrategy));
@@ -481,7 +481,7 @@ public class MaintenanceHandler extends BaseHandler {
     public Integer retractScheduleFromSystems(User loggedInUser, List<Integer> systemIds) {
         ensureOrgAdmin(loggedInUser);
 
-        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        Set<Long> longIds = systemIds.stream().map(Integer::longValue).collect(Collectors.toSet());
         try {
             return mm.retractScheduleFromSystems(loggedInUser, longIds);
         }

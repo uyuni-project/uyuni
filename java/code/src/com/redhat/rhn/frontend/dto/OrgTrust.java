@@ -25,7 +25,7 @@ import java.util.List;
 public class OrgTrust extends BaseDto {
 
     private final Org org;
-    private List<Long> subscribed = new ArrayList<Long>();
+    private List<Long> subscribed = new ArrayList<>();
 
     /**
      * @param orgIn An org.

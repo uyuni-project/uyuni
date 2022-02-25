@@ -106,9 +106,9 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     private void assertPaginationControls(String htmlOut) {
         for (RequestContext.Pagination pagination : RequestContext.Pagination.values()) {
             String att = pagination.getLowerAttributeName();
-            assertTrue(htmlOut.indexOf("name=\"" + att) > -1);
+            assertTrue(htmlOut.contains("name=\"" + att));
         }
-        assertTrue(htmlOut.indexOf("name=\"lower") > -1);
+        assertTrue(htmlOut.contains("name=\"lower"));
     }
 
     /**
@@ -150,7 +150,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         writer.verify();
         String htmlOut = writer.toString();
         assertPaginationControls(htmlOut);
-        assertTrue(htmlOut.indexOf("Download CSV") > -1);
+        assertTrue(htmlOut.contains("Download CSV"));
     }
 
     public void testExport() throws Exception {

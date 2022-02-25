@@ -39,8 +39,6 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,15 +92,10 @@ public class SubscribeConfirm extends RhnAction {
         List systems = cm.ssmSystemsForSubscribe(user);
 
         //Create the parent url. Copy the one important parameter.
-        StringBuilder parentUrl = new StringBuilder();
-        parentUrl.append(request.getRequestURI());
-        parentUrl.append("?");
-        parentUrl.append(POSITION);
-        parentUrl.append("=");
-        parentUrl.append(request.getParameter(POSITION));
 
         //store the data so the list tag can see it
-        request.setAttribute(ListTagHelper.PARENT_URL, parentUrl.toString());
+        String parentUrl = request.getRequestURI() + "?" + POSITION + "=" + request.getParameter(POSITION);
+        request.setAttribute(ListTagHelper.PARENT_URL, parentUrl);
         request.setAttribute("channelList", channels);
         request.setAttribute("systemList", systems);
 
@@ -129,9 +122,8 @@ public class SubscribeConfirm extends RhnAction {
         //visit every server and change their subscriptions
         //keep track of how many servers we have changed
         int successes = 0;
-        Iterator i = systems.iterator();
-        while (i.hasNext()) {
-            Long sid = ((ConfigSystemDto)i.next()).getId();
+        for (Object systemIn : systems) {
+            Long sid = ((ConfigSystemDto) systemIn).getId();
             try {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
 
@@ -171,7 +163,7 @@ public class SubscribeConfirm extends RhnAction {
         // Order the new channels in the order requested by user
         List rankElements = new ArrayList(
                 RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
-        Collections.sort(rankElements, new ConfigChannelSetComparator());
+        rankElements.sort(new ConfigChannelSetComparator());
 
         RhnSet selectedChannels = RhnSetDecl.CONFIG_CHANNELS.get(user);
 

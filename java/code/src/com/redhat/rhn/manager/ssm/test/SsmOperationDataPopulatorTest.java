@@ -84,7 +84,7 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
     }
 
     private List<Server> createServersForUser(User user, int count) throws Exception {
-        List<Server> servers = new ArrayList<Server>(count);
+        List<Server> servers = new ArrayList<>(count);
 
         for (int ii = 0; ii < count; ii++) {
             Server server = ServerFactoryTest.createTestServer(user, true);

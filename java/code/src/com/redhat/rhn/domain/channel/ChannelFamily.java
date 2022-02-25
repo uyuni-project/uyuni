@@ -35,10 +35,10 @@ public class ChannelFamily extends BaseDomainHelper {
     private String name;
     private String label;
     private Org org;
-    private Set<Channel> channels = new HashSet<Channel>();
+    private Set<Channel> channels = new HashSet<>();
 
     private Set<PrivateChannelFamily> privateChannelFamilies =
-                                    new HashSet<PrivateChannelFamily>();
+            new HashSet<>();
 
     private PublicChannelFamily publicChannelFamily;
 
@@ -171,7 +171,7 @@ public class ChannelFamily extends BaseDomainHelper {
      */
     public void addPrivateChannelFamily(PrivateChannelFamily pcfIn) {
         if (this.privateChannelFamilies == null) {
-            this.privateChannelFamilies = new HashSet<PrivateChannelFamily>();
+            this.privateChannelFamilies = new HashSet<>();
         }
         this.privateChannelFamilies.add(pcfIn);
     }

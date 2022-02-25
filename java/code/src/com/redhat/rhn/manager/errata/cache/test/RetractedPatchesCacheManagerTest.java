@@ -184,7 +184,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, result.size()); // both should be in the cache
         assertEquals(
                 Set.of(newerPkg.getId(), newestPkg.getId()),
-                result.stream().map(p -> p.getPackageId()).collect(Collectors.toSet()));
+                result.stream().map(ErrataCacheDto::getPackageId).collect(Collectors.toSet()));
     }
 
     private <T> T assertSingleAndGet(Collection<T> items) {

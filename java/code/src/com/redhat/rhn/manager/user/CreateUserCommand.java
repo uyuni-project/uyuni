@@ -56,8 +56,8 @@ public class CreateUserCommand {
     private Address addr;
     private boolean makeOrgAdmin;
     private boolean makeSatAdmin;
-    private Set<Role> temporaryRoles = new HashSet<Role>();
-    private Set<ServerGroup> serverGroups = new HashSet<ServerGroup>();
+    private Set<Role> temporaryRoles = new HashSet<>();
+    private Set<ServerGroup> serverGroups = new HashSet<>();
 
     private List<ValidatorError> errors;
     private List<ValidatorError> passwordErrors;
@@ -158,7 +158,7 @@ public class CreateUserCommand {
                         user.getLogin() + " default system group", user.getOrg());
             }
             UserManager.grantServerGroupPermission(user, sg.getId());
-            user.setDefaultSystemGroupIds(new HashSet<Long>(Arrays.asList(sg.getId())));
+            user.setDefaultSystemGroupIds(new HashSet<>(Arrays.asList(sg.getId())));
         }
         // assign server groups permissions
         for (ServerGroup sg : serverGroups) {

@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -141,8 +140,8 @@ public abstract class HibernateFactory {
         }
 
         Set entrySet = parameters.entrySet();
-        for (Iterator itr = entrySet.iterator(); itr.hasNext();) {
-            Map.Entry entry = (Map.Entry) itr.next();
+        for (Object oIn : entrySet) {
+            Map.Entry entry = (Map.Entry) oIn;
             if (entry.getValue() instanceof Collection) {
                 Collection c = (Collection) entry.getValue();
                 if (c.size() > 1000) {
@@ -238,8 +237,8 @@ public abstract class HibernateFactory {
             return Collections.EMPTY_LIST;
         }
 
-        ArrayList<Long> tmpList = new ArrayList<Long>();
-        List<Long> toRet = new ArrayList<Long>();
+        ArrayList<Long> tmpList = new ArrayList<>();
+        List<Long> toRet = new ArrayList<>();
         tmpList.addAll(col);
 
         for (int i = 0; i < col.size();) {
@@ -784,7 +783,7 @@ public abstract class HibernateFactory {
      * @return a list of the objects found
      */
     protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<String, Object>());
+        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
     }
 
     /**
@@ -801,9 +800,7 @@ public abstract class HibernateFactory {
             Map<String, Object> parameters) {
         Query<Integer> query = HibernateFactory.getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
     }
@@ -824,9 +821,7 @@ public abstract class HibernateFactory {
             String idsParameterName, Map<String, Object> parameters) {
         Query<T> query = HibernateFactory.getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
                 new ArrayList<T>(), ListUtils::union);

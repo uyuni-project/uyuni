@@ -58,16 +58,16 @@ public class LongConstraint extends RequiredIfConstraint {
 
         // Validate against range specifications
         try {
-            long longValue = Long.valueOf(value.toString()).longValue();
+            long longValue = Long.valueOf(value.toString());
             // Now we know its a valid number
-            if (longValue < getMinInclusive().longValue()) {
+            if (longValue < getMinInclusive()) {
                 log.debug("Number too small ...");
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
                 args[1] = getMinInclusive();
                 return new ValidatorError("errors.minsize", args);
             }
-            if (longValue > getMaxInclusive().longValue()) {
+            if (longValue > getMaxInclusive()) {
                 log.debug("Number too big ...");
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;

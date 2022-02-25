@@ -30,7 +30,7 @@ public class PackageProvider extends BaseDomainHelper implements
 
     private Long id;
     private String name;
-    private Set<PackageKey> keys = new HashSet<PackageKey>();
+    private Set<PackageKey> keys = new HashSet<>();
 
     /**
      * @return Returns the keys.

@@ -46,11 +46,11 @@ public class RequiredFieldTagTest extends RhnBaseTestCase {
         tth.assertDoEndTag(Tag.SKIP_BODY);
 
         RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
-        assertTrue(rout.toString().indexOf("<span class") > -1);
-        assertTrue(rout.toString().indexOf("</span>") > -1);
-        assertTrue(rout.toString().indexOf("*") > -1);
-        assertTrue(rout.toString().indexOf("\"" +
-                    RequiredFieldTag.REQUIRED_FIELD_CSS + "\"") > -1);
+        assertTrue(rout.toString().contains("<span class"));
+        assertTrue(rout.toString().contains("</span>"));
+        assertTrue(rout.toString().contains("*"));
+        assertTrue(rout.toString().contains("\"" +
+                RequiredFieldTag.REQUIRED_FIELD_CSS + "\""));
         LocalizationService ls = LocalizationService.getInstance();
         assertTrue(rout.toString().startsWith(ls.getMessage(key)));
     }

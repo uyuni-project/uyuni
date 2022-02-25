@@ -84,7 +84,7 @@ public class FileList extends BaseDomainHelper implements Identifiable {
      */
     public void addFileName(String fileIn) {
         if (this.fileNames == null) {
-            this.fileNames = new LinkedList<ConfigFileName>();
+            this.fileNames = new LinkedList<>();
         }
         ConfigFileName cfn = ConfigurationFactory.lookupOrInsertConfigFileName(fileIn);
         if (!this.fileNames.contains(cfn)) {
@@ -100,7 +100,7 @@ public class FileList extends BaseDomainHelper implements Identifiable {
      */
     public Collection<ConfigFileName> getFileNames() {
         if (this.fileNames == null) {
-            this.fileNames = new LinkedList<ConfigFileName>();
+            this.fileNames = new LinkedList<>();
         }
         return fileNames;
     }

@@ -57,7 +57,7 @@ public class OrgUserExtGroupSerializer extends RhnXmlRpcCustomSerializer {
 
         helper.add("name", g.getLabel());
 
-        List<String> groupList = new ArrayList<String>();
+        List<String> groupList = new ArrayList<>();
         Set<ServerGroup> groups = g.getServerGroups();
         for (ServerGroup group : groups) {
             groupList.add(group.getName());

@@ -93,7 +93,7 @@ public class OrgChannelListAction extends RhnAction implements Listable<OrgChann
                             new String [] {String.valueOf(selectedItems.size())}, request);
 
             request.setAttribute("channel_name", channel.getName());
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put(RequestContext.CID, channel.getId().toString());
             StrutsDelegate strutsDelegate = getStrutsDelegate();
             return strutsDelegate.forwardParams

@@ -166,7 +166,7 @@ public class MinionPendingRegistrationService {
      */
     public static Optional<User> getCreator(String minionId) {
         return Optional.ofNullable(minionIds.get(minionId))
-                .map(minion -> minion.getCreator());
+                .map(PendingMinion::getCreator);
     }
 
     /**
@@ -177,7 +177,7 @@ public class MinionPendingRegistrationService {
         return Collections.unmodifiableMap(minionIds.entrySet().stream()
                 .filter(e -> ContactMethodUtil.isSSHPushContactMethod(
                         e.getValue().contactMethod))
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
 }

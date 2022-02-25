@@ -135,7 +135,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * @return User of logged-in-user at change time, or "null" if unknown
      */
     public User getChangedBy() {
-        if (getChangedById() != null && getChangedById().longValue() > 0) {
+        if (getChangedById() != null && getChangedById() > 0) {
             return UserFactory.lookupById(getChangedById());
         }
         return null;

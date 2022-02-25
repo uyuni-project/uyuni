@@ -86,8 +86,8 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     }
 
     private void clearDb() {
-        CloudRmtHostFactory.lookupCloudRmtHosts().forEach(rmt -> CloudRmtHostFactory.deleteCloudRmtHost(rmt));
-        PaygSshDataFactory.lookupPaygSshData().forEach(p -> PaygSshDataFactory.deletePaygSshData(p));
+        CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
+        PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         HibernateFactory.commitTransaction();
     }

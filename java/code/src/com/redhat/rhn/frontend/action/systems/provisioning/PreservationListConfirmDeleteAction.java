@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +44,9 @@ public class PreservationListConfirmDeleteAction extends BaseSetListAction {
         RhnSet set = getSetDecl().get(rctx.getCurrentUser());
         User user = rctx.getCurrentUser();
         List selectedFileList = new LinkedList();
-        Iterator i = set.getElements().iterator();
-        while (i.hasNext()) {
-            RhnSetElement elem = (RhnSetElement) i.next();
+        for (RhnSetElement elem : set.getElements()) {
             FileList fl = CommonFactory.lookupFileList(elem.getElement(),
-                                                            user.getOrg());
+                    user.getOrg());
             Map flRow = new HashMap();
             flRow.put("label", fl.getLabel());
             flRow.put("id", fl.getId());

@@ -37,7 +37,7 @@ public class PageSizeDecorator extends BaseListDecorator {
 
     private static Logger logger = Logger.getLogger(PageSizeDecorator.class);
     private static final int DEFAULT_PAGE_SIZE = 25;
-    private static final List<Integer> PAGE_SIZE = new LinkedList<Integer>();
+    private static final List<Integer> PAGE_SIZE = new LinkedList<>();
     /** static value for max results per page. */
     public static final int MAX_PER_PAGE = 500;
     private static final String PAGE_SIZE_LABEL = "PAGE_SIZE_LABEL";
@@ -89,7 +89,7 @@ public class PageSizeDecorator extends BaseListDecorator {
      */
     public static int getSelectedPageSize(ServletRequest request, String listName) {
         if (pageWidgetSelected(request, listName)) {
-            return Integer.valueOf(request.getParameter(makePageSizeLabel(listName)));
+            return Integer.parseInt(request.getParameter(makePageSizeLabel(listName)));
         }
         return -1;
     }
@@ -154,7 +154,7 @@ public class PageSizeDecorator extends BaseListDecorator {
         int size = DEFAULT_PAGE_SIZE;
         try {
             if (!StringUtils.isBlank(sizeStr)) {
-                size = Integer.valueOf(sizeStr);
+                size = Integer.parseInt(sizeStr);
             }
         }
         catch (NumberFormatException nfe) {
@@ -196,7 +196,7 @@ public class PageSizeDecorator extends BaseListDecorator {
         }
 
         try {
-            List<Integer> ret = new LinkedList<Integer>();
+            List<Integer> ret = new LinkedList<>();
             for (String size : sizes) {
                 ret.add(Integer.valueOf(size.trim()));
             }

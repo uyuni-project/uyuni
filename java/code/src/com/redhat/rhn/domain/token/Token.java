@@ -32,9 +32,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -51,12 +51,12 @@ public class Token implements Identifiable {
     private User creator;
     private Server server;
     private ContactMethod contactMethod;
-    private Set<Server> activatedSystems = new HashSet<Server>();
-    private List<ConfigChannel> configChannels = new LinkedList<ConfigChannel>();
-    private Set<ServerGroupType> entitlements = new HashSet<ServerGroupType>();
-    private Set<Channel> channels = new HashSet<Channel>();
-    private Set<ServerGroup> serverGroups = new HashSet<ServerGroup>();
-    private Set<TokenPackage> packages = new HashSet<TokenPackage>();
+    private Set<Server> activatedSystems = new HashSet<>();
+    private List<ConfigChannel> configChannels = new LinkedList<>();
+    private Set<ServerGroupType> entitlements = new HashSet<>();
+    private Set<Channel> channels = new HashSet<>();
+    private Set<ServerGroup> serverGroups = new HashSet<>();
+    private Set<TokenPackage> packages = new HashSet<>();
 
     /**
      * @return Returns the entitlements.
@@ -473,11 +473,7 @@ public class Token implements Identifiable {
      */
     protected void setConfigChannels(List cfgChannels) {
         this.configChannels = cfgChannels;
-        for (Iterator itr = configChannels.iterator(); itr.hasNext();) {
-            if (itr.next() == null) {
-                itr.remove();
-            }
-        }
+        configChannels.removeIf(Objects::isNull);
     }
 
     /**

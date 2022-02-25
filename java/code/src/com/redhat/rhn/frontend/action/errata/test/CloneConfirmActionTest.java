@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -82,10 +81,8 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
         set = RhnSetDecl.ERRATA_CLONE.get(user);
         assertEquals(0, set.size());
 
-        Iterator i = list.iterator();
-
-        while (i.hasNext()) {
-            Errata e = (Errata) i.next();
+        for (Object oIn : list) {
+            Errata e = (Errata) oIn;
             List clones = ErrataManager.lookupByOriginal(user, e);
 
             assertEquals(1, clones.size());

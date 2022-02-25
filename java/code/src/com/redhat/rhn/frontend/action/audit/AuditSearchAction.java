@@ -140,7 +140,7 @@ public class AuditSearchAction extends RhnAction {
             log.warn("failed to get ausearch types", ioex);
         }
 
-        typelist = new LinkedList<String>();
+        typelist = new LinkedList<>();
 
         for (String type : str.split(" ")) {
             if (!type.equals("ALL")) {

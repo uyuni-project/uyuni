@@ -35,8 +35,8 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         rl.contextInitialized(null);
         String[] names = MessageQueue.getRegisteredEventNames();
         boolean found = false;
-        for (int i = 0; i < names.length; i++) {
-            if (names[i].equals("com.redhat.rhn.frontend.events.NewUserEvent")) {
+        for (String nameIn : names) {
+            if (nameIn.equals("com.redhat.rhn.frontend.events.NewUserEvent")) {
                 found = true;
             }
         }

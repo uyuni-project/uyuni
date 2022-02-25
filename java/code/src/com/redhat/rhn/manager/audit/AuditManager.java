@@ -138,7 +138,7 @@ public class AuditManager /* extends BaseManager */ {
      * @return A mapping between the set name and the audit types
      */
     public static Map<String, String[]> getAuditTypeMap() {
-        Map<String, String[]> types = new HashMap<String, String[]>();
+        Map<String, String[]> types = new HashMap<>();
 
         types.put("default", new String[]{
             "USER",
@@ -260,10 +260,10 @@ public class AuditManager /* extends BaseManager */ {
         AuditReviewDto aurev;
         DataResult<AuditMachineDto> dr;
         Date lastReview, firstUnreviewed;
-        LinkedList<AuditMachineDto> hosts = new LinkedList<AuditMachineDto>();
+        LinkedList<AuditMachineDto> hosts = new LinkedList<>();
 
         if (logDir == null || !logDir.canRead()) {
-            return new DataResult<AuditMachineDto>(hosts);
+            return new DataResult<>(hosts);
         }
 
         for (File host : logDir.listFiles()) {
@@ -292,7 +292,7 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         Collections.sort(hosts);
-        dr = new DataResult<AuditMachineDto>(hosts);
+        dr = new DataResult<>(hosts);
 
         return dr;
     }
@@ -307,7 +307,7 @@ public class AuditManager /* extends BaseManager */ {
         long start, end;
         DataResult<AuditReviewDto> dr, rec;
         File hostDir;
-        LinkedList<AuditReviewDto> aurevs = new LinkedList<AuditReviewDto>();
+        LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
         Matcher fnmatch;
         Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
@@ -356,7 +356,7 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         Collections.sort(aurevs);
-        dr = new DataResult<AuditReviewDto>(aurevs);
+        dr = new DataResult<>(aurevs);
 
         return dr;
     }
@@ -405,8 +405,8 @@ public class AuditManager /* extends BaseManager */ {
         String node = null, str, strtime = null;
 
         brdr = new BufferedReader(new FileReader(aufile));
-        events = new LinkedList<AuditDto>();
-        hmap = new LinkedHashMap<String, String>();
+        events = new LinkedList<>();
+        hmap = new LinkedHashMap<>();
 
         for (str = brdr.readLine(); str != null; str = brdr.readLine()) {
             if (str.equals("")) {

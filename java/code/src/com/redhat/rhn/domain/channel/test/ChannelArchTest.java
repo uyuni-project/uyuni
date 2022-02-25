@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -49,8 +48,7 @@ public class ChannelArchTest extends RhnBaseTestCase {
         ChannelArch ca = ChannelFactory.lookupArchByName("IA-32");
         Set arches = ca.getCompatibleServerArches();
         assertNotNull(arches);
-        for (Iterator itr = arches.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : arches) {
             assertNotNull(o);
             assertEquals(ServerArch.class, o.getClass());
         }

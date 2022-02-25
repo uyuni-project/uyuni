@@ -47,7 +47,7 @@ public class AuditDto extends BaseDto {
         this.milli = milliIn;
         this.node = nodeIn;
 
-        this.kvmap = new LinkedHashMap<String, String>(kvmapIn);
+        this.kvmap = new LinkedHashMap<>(kvmapIn);
 
         this.type = kvmap.remove("type");
     }

@@ -114,7 +114,7 @@ public class XccdfRuleResultDto extends BaseDto {
      * @return list of idents without the idref
      */
     public List<XccdfIdentDto> getIdentsWithoutIdref() {
-        List<XccdfIdentDto> result = new ArrayList<XccdfIdentDto>();
+        List<XccdfIdentDto> result = new ArrayList<>();
         for (XccdfIdentDto i : getIdents()) {
             if (!i.isDocumentIdref()) {
                 result.add(i);

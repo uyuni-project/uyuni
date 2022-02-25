@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -129,11 +128,11 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            Collections.sort(dataset, new DynamicComparator(sortAttr, sortDir));
+            dataset.sort(new DynamicComparator(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: " + sortAttr);
-            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
         }
     }
 
@@ -373,7 +372,7 @@ public class DataSetManipulator {
      * @return the set of characters that are active
      */
     public Set<Character> getAlphaBarIndex() {
-        Set<Character> chars = new HashSet<Character>();
+        Set<Character> chars = new HashSet<>();
         int i = 0;
         for (Object inputRow : dataset) {
             String value = getAlphaValue(inputRow);
@@ -484,11 +483,11 @@ public class DataSetManipulator {
      */
     static String getPaginationParam(ServletRequest request, String uniqueName) {
 
-        for (int x = 0; x < LINK_PREFIXES.length; x++) {
-            String imgLink = "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+        for (String linkPrefixIn : LINK_PREFIXES) {
+            String imgLink = "list_" + uniqueName + "_page" + linkPrefixIn;
 
             if (request.getParameter(imgLink) != null) {
-                return "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+                return "list_" + uniqueName + "_page" + linkPrefixIn;
 
             }
         }

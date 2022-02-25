@@ -516,7 +516,7 @@ public class ReportDbHibernateFactory {
                 baos.close();
             }
             catch (IOException ex) {
-                throw new DatabaseException(ex.toString());
+                LOG.error(ex);
             }
         }
     }
@@ -547,7 +547,7 @@ public class ReportDbHibernateFactory {
                     is.close();
                 }
                 catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    LOG.error(ex);
                 }
             }
         }
@@ -793,7 +793,7 @@ public class ReportDbHibernateFactory {
      * @return a list of the objects found
      */
     protected <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<String, Object>());
+        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
     }
 
     /**
@@ -810,9 +810,7 @@ public class ReportDbHibernateFactory {
             Map<String, Object> parameters) {
         Query<Integer> query = getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
     }
@@ -833,9 +831,7 @@ public class ReportDbHibernateFactory {
             String idsParameterName, Map<String, Object> parameters) {
         Query<T> query = getSession().getNamedQuery(queryName);
 
-        parameters.entrySet().stream().forEach(entry -> {
-            query.setParameter(entry.getKey(), entry.getValue());
-        });
+        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
 
         return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
                 new ArrayList<T>(), ListUtils::union);

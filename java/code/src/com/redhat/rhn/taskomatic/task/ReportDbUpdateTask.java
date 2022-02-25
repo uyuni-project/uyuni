@@ -42,12 +42,10 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
     private <T> Stream<DataResult<T>> batchStream(SelectMode m, int batchSize, int initialOffset) {
         return Stream.iterate(initialOffset, i -> i + batchSize)
-                .map(offset -> {
-                    return (DataResult<T>)m.execute(Map.of(
-                            "offset", offset,
-                            "limit", batchSize
-                    ));
-                })
+                .map(offset -> (DataResult<T>)m.execute(Map.of(
+                        "offset", offset,
+                        "limit", batchSize
+                )))
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
@@ -181,7 +179,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         delete.executeUpdate(Map.of("mgm_id", 1));
         WriteMode insert = generateInsert(mgmId, tableName, columns, session);
         this.<Map<String, Object>>batchStream(query, BATCH_SIZE, 0)
-                .forEach(batch -> insert.executeUpdates(batch));
+                .forEach(insert::executeUpdates);
     }
 
     @Override

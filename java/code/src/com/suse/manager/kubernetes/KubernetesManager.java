@@ -154,7 +154,7 @@ public class KubernetesManager {
                             usage = imgByRepoNameTag
                                     .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
                                     .map(Optional::of).orElseGet(() -> imgByRepoNameTag
-                                            .map(imgInfo -> new ImageUsage(imgInfo))
+                                            .map(ImageUsage::new)
                                             .map(usg -> {
                                                 imgToUsage
                                                         .put(usg.getImageInfo().getId(),

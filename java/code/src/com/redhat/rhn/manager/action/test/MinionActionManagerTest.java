@@ -439,10 +439,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), e1.getId(), package1.getId());
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(e1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -496,10 +496,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), e1.getId(), package1.getId());
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(e1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -558,10 +558,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), e1.getId(), package1.getId());
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(e1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -625,10 +625,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), e1.getId(), package1.getId());
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(e1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -682,10 +682,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), e1.getId(), package1.getId());
 
-        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> errataIds = new ArrayList<>();
         errataIds.add(e1.getId());
 
-        List<Long> serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
@@ -734,7 +734,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(executionTime.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -786,7 +786,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(executionTime.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -838,7 +838,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -890,7 +890,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -943,7 +943,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -995,7 +995,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
+                new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -1047,7 +1047,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(s1.getId(), s2.getId())));
+                new HashSet<>(Arrays.asList(s1.getId(), s2.getId())));
         ActionFactory.save(action);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);

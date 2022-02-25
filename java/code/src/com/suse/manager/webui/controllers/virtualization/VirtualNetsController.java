@@ -349,7 +349,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                     action.setNetworkName(key);
                     return action;
                 },
-                data -> data.getNames(),
+                VirtualNetworkBaseActionJson::getNames,
                 jsonClass
         );
     }

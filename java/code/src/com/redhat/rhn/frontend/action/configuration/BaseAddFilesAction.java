@@ -96,7 +96,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
 
         RhnValidationHelper.setFailedValidation(req);
         // File-upload errors? Bug out if so
-        if (mapping.getPath().indexOf("Upload") >= 0) {
+        if (mapping.getPath().contains("Upload")) {
             ValidatorResult result = cff.validateUpload(req);
             // If we have any errors, report and bolt
             if (!result.isEmpty()) {

@@ -64,16 +64,13 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
     public void testParseAndUpdate() throws Exception {
 
         // setup
-        StringBuilder pkgs = new StringBuilder();
-        pkgs.append("pkg1.i386").append("\n");
-        pkgs.append("pkg2").append("\n");
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         ActivationKeyPackagesCommand command = new ActivationKeyPackagesCommand(key);
         int numPkgsBefore = key.getPackages().size();
 
         // execute
-        ValidatorError result = command.parseAndUpdatePackages(pkgs.toString());
+        ValidatorError result = command.parseAndUpdatePackages("pkg1.i386" + "\n" + "pkg2" + "\n");
         command.store();
 
         // verify

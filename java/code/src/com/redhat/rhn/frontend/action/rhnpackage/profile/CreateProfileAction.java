@@ -80,7 +80,7 @@ public class CreateProfileAction extends RhnAction {
                 if (!msgs.isEmpty()) {
                     strutsDelegate.saveMessages(request, msgs);
 
-                    Map<String, Object> params = new HashMap<String, Object>();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("sid", request.getParameter("sid"));
                     forward = strutsDelegate.forwardParams(mapping.findForward("created"),
                             params);
