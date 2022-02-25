@@ -19,7 +19,7 @@ def get_all_files_from_pr(pr_file, schema_path):
         changed_files = []
         for file in files:
             filename = str(file['filename'])
-            if not re.search(r'^schema\/spacewalk\/upgrade\/uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*\/[^\/]+$', filename):
+            if not re.search(r'^schema\/reportdb\/upgrade\/uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*\/[^\/]+$', filename):
                 continue
             if not file['status'] in ['modified', 'added']:
                 continue
