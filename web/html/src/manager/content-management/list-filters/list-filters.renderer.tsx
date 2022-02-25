@@ -15,7 +15,7 @@ export const renderer = (id, { filters, flashMessage }) => {
   try {
     filtersJson = JSON.parse(filters);
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

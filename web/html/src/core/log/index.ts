@@ -1,6 +1,7 @@
-Loggerhead.set({ url: "/rhn/manager/frontend-log" });
+// This import is renamed to avoid a conflict with the global name
+import LoggerheadInstance from "./loggerhead";
 
-Loggerhead.setHeaders = function (headers) {
+const setHeaders = function (headers) {
   const csrf_token = document.getElementsByName("csrf_token") as NodeListOf<HTMLInputElement>;
   if (csrf_token?.[0]) {
     headers["X-CSRF-Token"] = csrf_token[0].value;
@@ -8,17 +9,16 @@ Loggerhead.setHeaders = function (headers) {
   return headers;
 };
 
-// store a log message about the page has been loaded
+const loggerhead = new LoggerheadInstance("/rhn/manager/frontend-log", setHeaders);
+
+// Store a log message about visiting and leaving pages
 window.addEventListener("load", () => {
-  // eslint-disable-next-line local-rules/no-raw-date
-  Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
+  loggerhead.info("Loading `" + window.location + "`");
 });
-// store a log message about a page has been left
 window.addEventListener("unload", () => {
-  // eslint-disable-next-line local-rules/no-raw-date
-  Loggerhead.info("[" + new Date().toUTCString() + "] - Leaving `" + window.location + "`");
+  loggerhead.info("Leaving `" + window.location + "`");
 });
-// store a log message about the error that just happened
+// Store a log message for uncaught errors
 window.addEventListener("error", (event) => {
   // Note that col & error are new to the HTML 5 and may not be supported in every browser.
   const extra = `${!event.colno ? "" : "\ncolumn: " + event.colno}${!event.error ? "" : "\nerror: " + event.error}`;
@@ -32,7 +32,17 @@ window.addEventListener("error", (event) => {
     return;
   }
 
-  Loggerhead.error(errorMessage);
+  loggerhead.error(errorMessage);
 });
 
-export {};
+declare global {
+  var Loggerhead: LoggerheadInstance;
+
+  namespace NodeJS {
+    interface Global {
+      Loggerhead: LoggerheadInstance;
+    }
+  }
+}
+
+window.Loggerhead = loggerhead;
