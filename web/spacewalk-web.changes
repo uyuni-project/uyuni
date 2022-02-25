@@ -1,3 +1,4 @@
+- Improved large data support in channel selection
 - Provide link for CVEs
 - Improved error handling in the product setup page
 - Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)

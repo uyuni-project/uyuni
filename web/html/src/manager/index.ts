@@ -7,6 +7,7 @@ Check the file content-management/index.js for an example
 import "./polyfills";
 import "react-hot-loader";
 import "core/spa/spa-engine";
+import "core/log";
 import "./legacy";
 
 import SpaRenderer from "core/spa/spa-renderer";
