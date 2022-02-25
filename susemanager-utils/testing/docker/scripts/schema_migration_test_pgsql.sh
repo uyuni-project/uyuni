@@ -34,7 +34,7 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-smdba system-check autotuning
+smdba system-check autotuning --max_connections=50
 
 # this command will fail with certificate error. This is ok, so ignore the error
 spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
