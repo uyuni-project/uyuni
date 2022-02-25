@@ -1,7 +1,3 @@
-import _union from "lodash/union";
-
-import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
-
 export type ChannelsDependencies = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
@@ -10,9 +6,9 @@ export type ChannelsDependencies = {
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
 // return null if the channel is not involved in any dependencies
-function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | null {
+function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | undefined {
   if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
-    return null;
+    return undefined;
   }
 
   const channelLines = (channelNames: string[]) => {
@@ -69,26 +65,4 @@ function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
   };
 }
 
-function getChannelsToToggleWithDependencies(
-  channelsId: Array<number>,
-  requiredChannelsResult: RequiredChannelsResultType,
-  isSelection: boolean
-): Array<number> {
-  let channelsToToggle: Array<number> = [...channelsId];
-  channelsId.forEach((channelId) => {
-    if (isSelection) {
-      channelsToToggle = _union(
-        channelsToToggle,
-        Array.from(requiredChannelsResult.requiredChannels.get(channelId) || [])
-      );
-    } else {
-      channelsToToggle = _union(
-        channelsToToggle,
-        Array.from(requiredChannelsResult.requiredByChannels.get(channelId) || [])
-      );
-    }
-  });
-  return channelsToToggle;
-}
-
-export { dependenciesTooltip, processChannelDependencies, getChannelsToToggleWithDependencies };
+export { dependenciesTooltip, processChannelDependencies };
