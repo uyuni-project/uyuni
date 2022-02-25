@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-import { ChannelType } from "core/channels/type/channels.type";
+import { Channel } from "manager/systems/activation-key/activation-key-channels-api";
+
+import { MandatoryChannel } from "core/channels/type/channels.type";
 import { ChannelsDependencies } from "core/channels/utils/channels-dependencies.utils";
 import {
   dependenciesTooltip as dependenciesTooltipInternal,
@@ -19,20 +21,20 @@ const msgMap = {
 };
 
 type FetchMandatoryChannelsProps = {
-  base: any;
-  channels: Array<ChannelType>;
+  base?: { id: number };
+  channels: Array<MandatoryChannel>;
 };
 
 export type RequiredChannelsResultType = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
-  dependenciesTooltip: Function;
+  dependenciesTooltip: (channelId: number, channels: (MandatoryChannel | Channel)[]) => string | undefined;
 };
 
 export type UseMandatoryChannelsApiReturnType = {
   requiredChannelsResult: RequiredChannelsResultType;
   isDependencyDataLoaded: boolean;
-  fetchMandatoryChannelsByChannelIds: Function;
+  fetchMandatoryChannelsByChannelIds: (props: FetchMandatoryChannelsProps) => void;
 };
 
 const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
@@ -70,12 +72,12 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
     }
   };
 
-  const dependenciesTooltip = (channelId: number, channels: Array<ChannelType>) => {
+  const dependenciesTooltip = (channelId: number, channels: (MandatoryChannel | Channel)[]) => {
     const resolveChannelNames: Function = (channelIds: Array<number>): Array<string | null | undefined> => {
       return Array.from(channelIds || new Set())
-        .map((channelId: number): ChannelType | null | undefined => channels.find((c) => c.id === channelId))
-        .filter((channel: ChannelType | null | undefined): boolean => channel != null)
-        .map((channel: ChannelType | null | undefined): string | null | undefined => channel && channel.name);
+        .map((channelId: number) => channels.find((c) => c.id === channelId))
+        .filter((channel): boolean => channel != null)
+        .map((channel): string | null | undefined => channel && channel.name);
     };
     return dependenciesTooltipInternal(
       resolveChannelNames(requiredChannels.get(channelId)),
