@@ -17,6 +17,8 @@ package com.suse.manager.api.test;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -34,6 +36,7 @@ public class TestHandler extends BaseHandler {
      * @param user the logged-in user
      * @return the user ID
      */
+    @ReadOnly
     public Long withUser(User user) {
         return user.getId();
     }
@@ -45,6 +48,7 @@ public class TestHandler extends BaseHandler {
      * @param myBoolean the boolean parameter
      * @return the map of the input parameters
      */
+    @ReadOnly
     public Map<String, Object> basicTypes(Integer myInteger, String myString, Boolean myBoolean) {
         return Map.of(
                 "myInteger", myInteger,
@@ -57,6 +61,7 @@ public class TestHandler extends BaseHandler {
      * @param myDate the date parameter
      * @return the date
      */
+    @ReadOnly
     public Date basicDate(Date myDate) {
         return myDate;
     }
@@ -93,6 +98,7 @@ public class TestHandler extends BaseHandler {
      * @param myInteger1 the input parameter
      * @return 1, the number of parameters that the method accepts
      */
+    @ReadOnly
     public int overloadedEndpoint(Integer myInteger1) {
         // Report parameter count
         return 1;
@@ -104,6 +110,7 @@ public class TestHandler extends BaseHandler {
      * @param myInteger2 the second input parameter
      * @return 2, the number of parameters that the method accepts
      */
+    @ReadOnly
     public int overloadedEndpoint(Integer myInteger1, Integer myInteger2) {
         // Report parameter count
         return 2;
@@ -127,6 +134,7 @@ public class TestHandler extends BaseHandler {
      * @param myList the list of maps
      * @return the list of all values
      */
+    @ReadOnly
     public List<Object> listOfMaps(List<Map<String, Object>> myList) {
         return myList.stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
     }
@@ -137,6 +145,7 @@ public class TestHandler extends BaseHandler {
      * @param myString the input parameter
      * @return the custom response object
      */
+    @ReadOnly
     public TestResponse customResponse(Integer myInteger, String myString) {
         return new TestResponse(myInteger, myString);
     }
@@ -147,6 +156,7 @@ public class TestHandler extends BaseHandler {
      * @param myString the input parameter
      * @return the custom response object
      */
+    @ReadOnly
     public TestResponse customResponseSubclass(Integer myInteger, String myString) {
         return new TestResponseSubclass(myInteger, myString);
     }
@@ -157,6 +167,7 @@ public class TestHandler extends BaseHandler {
      * @param nestedObjProps the map that contains the properties of the nested {@link TestResponse} object
      * @return the complex response object
      */
+    @ReadOnly
     public TestComplexResponse complexResponse(String myString, Map<String, Object> nestedObjProps) {
         return new TestComplexResponse(myString, new TestResponse(((Long) nestedObjProps.get("myInteger")).intValue(),
                 (String) nestedObjProps.get("myString")));
@@ -166,6 +177,7 @@ public class TestHandler extends BaseHandler {
      * Fails unconditionally with a {@link TestApiException}
      * @return nothing
      */
+    @ReadOnly
     public int failing() {
         throw new TestApiException();
     }
@@ -179,6 +191,7 @@ public class TestHandler extends BaseHandler {
      * Returns an object of a type that is unregistered for serialization in the APIs
      * @return the object of an unregistered type
      */
+    @ReadOnly
     public Object invalidReturnType() {
         return new WeirdReturnType();
     }
