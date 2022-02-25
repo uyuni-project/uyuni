@@ -31,7 +31,7 @@ public class ClassBuilderTest extends TestCase {
         builder = new ClassBuilder(null, "testclass-manifest.xml");
     }
     public void testCreateObject() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("classname", "java.lang.String");
         Object s = builder.createObject(params);
         assertNotNull(s);
@@ -39,7 +39,7 @@ public class ClassBuilderTest extends TestCase {
     }
 
     public void testNullClassname() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("classname", null);
         try {
             builder.createObject(params);
@@ -51,7 +51,7 @@ public class ClassBuilderTest extends TestCase {
     }
 
     public void testCreationException() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("classname", "bet.you.cant.find.Me");
         try {
             builder.createObject(params);

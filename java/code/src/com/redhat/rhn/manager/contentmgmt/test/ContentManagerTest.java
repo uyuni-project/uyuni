@@ -1497,7 +1497,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     private Set<Channel> getEnvChannels(ContentEnvironment testEnv) {
         return testEnv.getTargets().stream()
                 .flatMap(tgt -> tgt.asSoftwareTarget().stream())
-                .map(tgt -> tgt.getChannel())
+                .map(SoftwareEnvironmentTarget::getChannel)
                 .collect(toSet());
     }
 

@@ -39,7 +39,7 @@ public class ServerSnapshotTest extends BaseTestCaseWithUser {
         snapshot.setOrg(server.getOrg());
         snapshot.setReason("snapshotReason");
 
-        Set<ServerGroup> serverGroupsForSnapshot = new HashSet<ServerGroup>();
+        Set<ServerGroup> serverGroupsForSnapshot = new HashSet<>();
         serverGroupsForSnapshot.add(ServerGroupFactory.create("serverGroupName1", "serverGroupDescription1",
                 server.getOrg()));
         serverGroupsForSnapshot.add(ServerGroupFactory.create("serverGroupName2", "serverGroupDescription2",

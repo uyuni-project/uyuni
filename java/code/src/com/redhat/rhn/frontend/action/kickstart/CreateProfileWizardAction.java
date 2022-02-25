@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +109,8 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     @Override
     protected void generateWizardSteps(Map steps) {
         List methods = findMethods("run");
-        for (Iterator iter = methods.iterator(); iter.hasNext();) {
-            Method m = (Method) iter.next();
+        for (Object methodIn : methods) {
+            Method m = (Method) methodIn;
             if (m.getName().startsWith("run")) {
                 String stepName = m.getName().substring(3).toLowerCase();
                 WizardStep wizStep = new WizardStep();
@@ -160,7 +159,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     private ActionForward runSecond(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
             WizardStep step) throws Exception {
-        List<String> fields = new LinkedList<String>();
+        List<String> fields = new LinkedList<>();
         KickstartTreeUpdateType updateType = null;
         fields.add(KICKSTART_LABEL_PARAM);
         if (form.get(USE_NEWEST_KSTREE_PARAM) != null) {
@@ -233,7 +232,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     private ActionForward runThird(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
             WizardStep step) throws Exception {
-        List<String> fields = new LinkedList<String>();
+        List<String> fields = new LinkedList<>();
         fields.add(DEFAULT_DOWNLOAD_PARAM);
         if (!validateInput(form, fields, ctx)) {
             return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
@@ -269,7 +268,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
             WizardStep step) throws Exception {
         log.debug("CreateProfileWizard.runComplete()");
         KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
-        List<String> fields = new LinkedList<String>();
+        List<String> fields = new LinkedList<>();
         fields.add(ROOT_PASSWORD_PARAM);
         fields.add(ROOT_PASSWORD_CONFIRM_PARAM);
         if (!validateInput(form, fields, ctx) ||

@@ -15,7 +15,6 @@
 package com.redhat.rhn.common.filediff;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,9 +91,8 @@ public class Diff {
     }
 
     private void writeHunks(List<Hunk> hunks, DiffWriter writer) {
-        Iterator<Hunk> i = hunks.iterator();
-        while (i.hasNext()) {
-            writer.writeHunk(i.next());
+        for (Hunk hunkIn : hunks) {
+            writer.writeHunk(hunkIn);
         }
     }
 

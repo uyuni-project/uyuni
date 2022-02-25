@@ -50,7 +50,7 @@ public class ProfileOverviewDtoSerializer extends RhnXmlRpcCustomSerializer {
         throws XmlRpcException, IOException {
         ProfileOverviewDto dto = (ProfileOverviewDto) value;
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", dto.getId().longValue());
+        helper.add("id", dto.getId());
         helper.add("name", dto.getName());
         helper.add("channel", dto.getChannelName());
         helper.writeTo(output);

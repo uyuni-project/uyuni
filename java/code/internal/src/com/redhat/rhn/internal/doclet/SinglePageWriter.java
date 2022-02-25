@@ -46,7 +46,7 @@ public class SinglePageWriter extends DocWriter {
         renderSerializers(templates, serializers);
 
         //Lets do the index first
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         buffer.append(generateIndex(handlers, templates));
 

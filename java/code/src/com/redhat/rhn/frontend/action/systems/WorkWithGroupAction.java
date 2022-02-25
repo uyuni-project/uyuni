@@ -29,8 +29,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -52,10 +50,9 @@ public class WorkWithGroupAction extends RhnAction {
 
         RhnSet systemSet = RhnSetDecl.SYSTEMS.create(user);
 
-        Iterator systems = SystemManager.systemsInGroup(serverGroup.getId(), null)
-                                .iterator();
-        while (systems.hasNext()) { //for every system in a group
-            Long id = ((SystemOverview)systems.next()).getId();
+        //for every system in a group
+        for (SystemOverview systemOverviewIn : SystemManager.systemsInGroup(serverGroup.getId(), null)) {
+            Long id = systemOverviewIn.getId();
             systemSet.addElement(id);
         }
 

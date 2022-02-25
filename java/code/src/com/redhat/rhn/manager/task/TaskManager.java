@@ -49,7 +49,7 @@ public class TaskManager {
     public static DataResult<PackageDto> getChannelPackageDtos(Channel channel) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CHANNEL_PACKAGES);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", channel.getId());
         return m.execute(params);
     }
@@ -64,7 +64,7 @@ public class TaskManager {
     public static DataResult<PackageDto> getChannelPackageDtos(Channel channel, long start, int pageSize) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CHANNEL_PACKAGES_BATCH);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", channel.getId());
         params.put("offset", start);
         params.put("limit", pageSize);
@@ -80,7 +80,7 @@ public class TaskManager {
     public static Collection<PackageCapabilityDto> getPackageCapabilityDtos(
             Long packageId, String query) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME, query);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("package_id", packageId);
         return m.execute(params);
     }
@@ -94,7 +94,7 @@ public class TaskManager {
             Long packageId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_PACKAGE_CHANGELOG);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("package_id", packageId);
         return m.execute(params);
     }
@@ -109,7 +109,7 @@ public class TaskManager {
             Long channelId, Long packageId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_PACKAGE_KEYWORDS);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", channelId);
         params.put("package_id", packageId);
         DataResult<Map<String, Object>> dataResult = m.execute(params);

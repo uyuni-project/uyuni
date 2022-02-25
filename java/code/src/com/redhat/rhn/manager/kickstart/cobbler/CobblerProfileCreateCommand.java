@@ -91,7 +91,7 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
         Profile prof = Profile.create(con, CobblerCommand.makeCobblerName(this.ksData),
                 distro);
 
-        Map<String, String> meta = new HashMap<String, String>();
+        Map<String, String> meta = new HashMap<>();
         meta.put("org", ksData.getOrg().getId().toString());
         prof.setKsMeta(meta);
         KickstartFactory.saveKickstartData(this.ksData);

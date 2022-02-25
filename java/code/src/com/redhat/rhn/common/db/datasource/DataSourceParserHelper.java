@@ -77,8 +77,8 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
                 throw new RuntimeException(
                         "'datasource_modes' element only valid at start of mode file.");
             }
-            modes = new HashMap<String, ParsedMode>();
-            internalQueries = new HashMap<String, ParsedQueryImpl>();
+            modes = new HashMap<>();
+            internalQueries = new HashMap<>();
         }
         else if (localName.equals("mode")) {
             if (q != null) {
@@ -192,7 +192,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     public void endDocument() {
         // Implement sanity check? Look for queries with names but no sql
         // statement.
-        ArrayList<String> errors = new ArrayList<String>();
+        ArrayList<String> errors = new ArrayList<>();
         String errmsg;
         for (String modeKey : modes.keySet()) {
             logger.debug("Sanity check for mode " + modeKey);
@@ -306,7 +306,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
             String mult = parsedAttributes.getValue("multiple");
             multiple = (mult != null && mult.equals("t"));
 
-            parameterList = new ArrayList<String>();
+            parameterList = new ArrayList<>();
             String parameters = parsedAttributes.getValue("params");
             if (parameters != null && !parameters.isEmpty()) {
                 StringTokenizer st = new StringTokenizer(parameters, ",");
@@ -376,7 +376,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
         // SELECT modes only
         private String classname;
-        private List<ParsedQuery> elaborators = new ArrayList<ParsedQuery>();
+        private List<ParsedQuery> elaborators = new ArrayList<>();
 
         private ParsedModeImpl(Attributes parsedAttributes, ModeType newModeType) {
             name = parsedAttributes.getValue("name");

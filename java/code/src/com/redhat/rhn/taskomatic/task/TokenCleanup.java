@@ -73,7 +73,7 @@ public class TokenCleanup extends RhnJavaJob {
                 }
             });
 
-            List<String> changedMinionIds = changedMinions.map(m -> m.getMinionId()).collect(Collectors.toList());
+            List<String> changedMinionIds = changedMinions.map(MinionServer::getMinionId).collect(Collectors.toList());
             if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
                 saltApi.deployChannels(changedMinionIds);
             }

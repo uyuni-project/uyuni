@@ -921,7 +921,7 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     private static Map getMaxRevisionForFile(ConfigFile file) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cfid", file.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "max_revision_for_file");
         DataResult dr = m.execute(params);
@@ -932,7 +932,7 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     private static Long getCountRevisionForFile(ConfigFile file) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cfid", file.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "count_revision_for_file");
         DataResult dr = m.execute(params);

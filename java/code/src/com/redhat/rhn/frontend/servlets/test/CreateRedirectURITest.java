@@ -102,7 +102,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
 
         String expected = "/YourRhn.do?foo=" + URLEncoder.encode(paramValue, "UTF-8") + "&";
 
-        final Vector<String> paramNames = new Vector<String>();
+        final Vector<String> paramNames = new Vector<>();
         paramNames.add(paramName);
 
         context().checking(new Expectations() { {

@@ -62,7 +62,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
                     ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                     ctx.getCurrentUser());
 
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Long> ids = new ArrayList<>();
 
         for (RhnSetElement element : elements) {
             ids.add(element.getElement());
@@ -85,7 +85,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
                     ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                     ctx.getCurrentUser());
 
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Long> ids = new ArrayList<>();
 
         for (RhnSetElement element : elements) {
             ids.add(element.getElement());

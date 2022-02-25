@@ -76,10 +76,10 @@ public class ScheduleImageDeploymentAction extends RhnAction {
 
             // Put defaults for deployment parameters
             if (vcpus <= 0) {
-                vcpus = Long.valueOf(1);
+                vcpus = 1L;
             }
             if (memkb <= 0) {
-                memkb = Long.valueOf(524288);
+                memkb = 524288L;
             }
 
             // Create the action and store it

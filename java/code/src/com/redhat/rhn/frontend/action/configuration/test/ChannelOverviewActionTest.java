@@ -38,7 +38,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         ConfigFile cf = ConfigTestUtils.createConfigFile(cc);
 
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelOverview");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();

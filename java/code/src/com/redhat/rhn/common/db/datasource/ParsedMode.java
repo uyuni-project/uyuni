@@ -29,7 +29,7 @@ public interface ParsedMode {
      */
     enum ModeType {
         SELECT, WRITE, CALLABLE
-    };
+    }
 
     /**
      * Get the name of this mode.

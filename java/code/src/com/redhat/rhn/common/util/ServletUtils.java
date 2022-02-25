@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,14 +75,13 @@ public class ServletUtils {
             return ret.toString();
         }
 
-        Iterator i = params.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry me = (Map.Entry)i.next();
+        for (Object oIn : params.entrySet()) {
+            Map.Entry me = (Map.Entry) oIn;
             Object[] values;
 
             // No guarantee of receiving strings here, use toString() instead of casts:
             if (me.getValue() == null) {
-                values = new Object[] { me.getValue() };
+                values = new Object[]{me.getValue()};
             }
             else if (me.getValue() instanceof Object[]) {
                 Object[] paramValues = (Object[]) me.getValue();
@@ -108,11 +106,11 @@ public class ServletUtils {
             else {
                 String paramValue = me.getValue().toString();
                 paramValue = StringUtil.urlEncode(paramValue);
-                values = new Object[] { paramValue };
+                values = new Object[]{paramValue};
             }
 
-            for (int idx = 0; idx < values.length; idx++) {
-                if (values[idx] != null) {
+            for (Object valueIn : values) {
+                if (valueIn != null) {
                     if (firstPass) {
                         ret.append("?");
                     }
@@ -121,12 +119,12 @@ public class ServletUtils {
                     }
                     firstPass = false;
 
-                    String key = (String)me.getKey();
+                    String key = (String) me.getKey();
                     key = StringUtil.urlEncode(key);
 
                     ret.append(key);
                     ret.append("=");
-                    ret.append(values[idx].toString());
+                    ret.append(valueIn.toString());
                 } //if
             } //for
         } //while

@@ -63,7 +63,7 @@ public class ChannelSubscribedAction extends RhnAction {
 
         DataResult<Map<String, Object>> result =
                 SystemManager.systemsSubscribedToChannelDto(chan, user);
-        result.setElaborationParams(new HashMap<String, Object>());
+        result.setElaborationParams(new HashMap<>());
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set =  RhnSetDecl.SYSTEMS.get(user);

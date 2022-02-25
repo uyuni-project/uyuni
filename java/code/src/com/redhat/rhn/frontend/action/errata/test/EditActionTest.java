@@ -111,7 +111,7 @@ public class EditActionTest extends RhnBaseTestCase {
         form.set("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         //edit the keywords
         form.set("keywords", "yankee, hotel, foxtrot");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("eid", errata.getId().toString());
         params.put("buglistIdNew", "123");
         params.put("buglistSummaryNew", "test bug for a test errata");

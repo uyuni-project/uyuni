@@ -79,7 +79,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      * @param pkgDto pkg info to add to xml
      */
     public void addPackage(PackageDto pkgDto) {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
         List<String> eulas = new EulaManager().getEulasForPackage(pkgId);
 
         Collection<String> keywords = TaskManager

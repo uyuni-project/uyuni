@@ -179,7 +179,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsAdvRelAboveMax() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
         details.put("advisory_release", 10000);
         try {
             handler.setDetails(admin, errata.getAdvisory(), details);
@@ -196,7 +196,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         // execute
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
         details.put("synopsis", "synopsis-1");
         details.put("advisory_name", "advisory-1");
         details.put("advisory_release", 123);
@@ -208,21 +208,21 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         details.put("notes", "notes text");
         details.put("solution", "solution text");
 
-        List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> bugs = new ArrayList<>();
 
-        Map<String, Object> bug1 = new HashMap<String, Object>();
+        Map<String, Object> bug1 = new HashMap<>();
         bug1.put("id", 1);
         bug1.put("summary", "bug1 summary");
         bugs.add(bug1);
 
-        Map<String, Object> bug2 = new HashMap<String, Object>();
+        Map<String, Object> bug2 = new HashMap<>();
         bug2.put("id", 2);
         bug2.put("summary", "bug2 summary");
         bugs.add(bug2);
 
         details.put("bugs", bugs);
 
-        List<String> keywords = new ArrayList<String>();
+        List<String> keywords = new ArrayList<>();
         keywords.add("keyword1");
         keywords.add("keyword2");
         details.put("keywords", keywords);
@@ -416,7 +416,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Set<String> vendorKeywords = vendorErrata.getKeywords().stream()
                 .map(Keyword::getKeyword).collect(Collectors.toSet());
 
-        Set<String> allKeywords = new HashSet<String>();
+        Set<String> allKeywords = new HashSet<>();
         allKeywords.addAll(vendorKeywords);
         allKeywords.addAll(userKeywords);
 
@@ -596,7 +596,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
 
         // execute
-        List<Integer> pkgIds = new ArrayList<Integer>();
+        List<Integer> pkgIds = new ArrayList<>();
         pkgIds.add(pkg1.getId().intValue());
         pkgIds.add(pkg2.getId().intValue());
         int numPkgsAdded = handler.addPackages(admin, errata.getAdvisory(), pkgIds);
@@ -632,7 +632,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         int initialNumPkgs = handler.listPackages(admin, errata.getAdvisory()).size();
 
         // execute
-        List<Integer> pkgIds = new ArrayList<Integer>();
+        List<Integer> pkgIds = new ArrayList<>();
         pkgIds.add(pkg2.getId().intValue());
         int numPkgsRemoved = handler.removePackages(admin, errata.getAdvisory(), pkgIds);
 

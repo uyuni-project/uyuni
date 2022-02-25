@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSoftwareSourceRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourcesRequest;
 
 import java.util.Collections;
@@ -77,7 +78,7 @@ public class ProjectSourcesApiController {
 
         List<String> sourceLabelsToAttach = createSourceRequest.getSoftwareSources()
                 .stream()
-                .map(source -> source.getLabel())
+                .map(ProjectSoftwareSourceRequest::getLabel)
                 .collect(Collectors.toList());
         Collections.reverse(sourceLabelsToAttach);
         sourceLabelsToAttach.forEach(sourceLabel -> CONTENT_MGR.attachSource(

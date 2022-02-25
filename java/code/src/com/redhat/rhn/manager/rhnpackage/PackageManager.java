@@ -100,7 +100,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageObsoletes(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_obsoletes",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -114,7 +114,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageConflicts(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_conflicts",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -128,7 +128,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageProvides(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_provides",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -142,7 +142,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageRequires(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_requires",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -156,7 +156,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageRecommends(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_recommends",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -170,7 +170,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageSuggests(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_suggests",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -184,7 +184,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageSupplements(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_supplements",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -198,7 +198,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageEnhances(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_enhances",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -212,7 +212,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packagePreDepends(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_predepends",
                 Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -226,7 +226,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packageBreaks(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_breaks",
                 Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -238,7 +238,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult listPackagesInChannelForList(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         return m.execute(params);
     }
@@ -253,7 +253,7 @@ public class PackageManager extends BaseManager {
     public static DataResult orgPackageChannels(Long orgId, Long pid) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "org_pkg_channels",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         params.put("org_id", orgId);
         return m.execute(params);
@@ -267,7 +267,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult providingErrata(Long orgId, Long pid) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "org_pkg_errata", Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         params.put("org_id", orgId);
         return m.execute(params);
@@ -280,7 +280,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult<PackageFileDto> packageFiles(Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_files");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         return m.execute(params);
     }
@@ -293,7 +293,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult<Map<String, Object>> obsoletingPackages(User user, Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "obsoleting_packages");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         params.put("org_id", user.getOrg().getId());
         return m.execute(params);
@@ -308,7 +308,7 @@ public class PackageManager extends BaseManager {
     public static DataResult providingChannels(User user, Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "providing_channels",
                                            Map.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         params.put("org_id", user.getOrg().getId());
         return m.execute(params);
@@ -369,7 +369,7 @@ public class PackageManager extends BaseManager {
                                                      String template,
                                                      PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", template);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         return makeDataResult(params, params, pc, m, PackageListItem.class);
     }
@@ -386,7 +386,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "system_upgradable_package_list");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
 
         return makeDataResult(params, params, pc, m);
@@ -401,7 +401,7 @@ public class PackageManager extends BaseManager {
     public static int countUpgradable(Long sid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "count_system_upgradable_package_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
 
         DataResult dr = makeDataResult(params, null, null, m);
@@ -438,7 +438,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult packagesAvailableToErrata(Errata errata) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", errata.getOrg().getId());
         params.put("eid", errata.getId());
 
@@ -458,11 +458,11 @@ public class PackageManager extends BaseManager {
                                                                 Long cid,
                                                                 User user) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata_in_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("target_eid", errata.getId());
         params.put("source_cid", cid);
 
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("org_id", user.getOrg().getId());
         return makeDataResult(params, elabParams, null, m);
     }
@@ -471,7 +471,7 @@ public class PackageManager extends BaseManager {
                                                  PageControl pc, String query) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 query);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
@@ -527,11 +527,11 @@ public class PackageManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "package_ids_in_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
-        Map<String, Long> elabs = new HashMap<String, Long>();
+        Map<String, Long> elabs = new HashMap<>();
         elabs.put("org_id", user.getOrg().getId());
 
         DataResult dr;
@@ -549,7 +549,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult packagesInErrata(Errata errata, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_errata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("eid", errata.getId());
         params.put("org_id", errata.getOrg().getId());
         if (pc != null) {
@@ -584,7 +584,7 @@ public class PackageManager extends BaseManager {
      * @return Long id of package if found.  null if not.
      */
     public static Long getServerNeededUpdatePackageByName(Long sid, String packageName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("name", packageName);
         SelectMode m = ModeFactory.getMode("Package_queries",
@@ -606,7 +606,7 @@ public class PackageManager extends BaseManager {
      *         Null if nothing found.
      */
     public static Map lookupEvrIdByPackageName(Long sid, String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("name", name);
         SelectMode m = ModeFactory.getMode("Package_queries",
@@ -823,8 +823,8 @@ public class PackageManager extends BaseManager {
 
         // For every channel the package is in, mark the channel as "changed" in case its
         // metadata needs tto be updated (RHEL5+, mostly)
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
-            Map m = (Map)itr.next();
+        for (Object channelIn : channels) {
+            Map m = (Map) channelIn;
             String channelLabel = m.get("label").toString();
             Channel channel = ChannelFactory.lookupByLabel(user.getOrg(), channelLabel);
             // force channel save to change last_modified
@@ -858,17 +858,17 @@ public class PackageManager extends BaseManager {
     }
 
     private static void cleanupFileEntries(Long pid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
-        for (int x = 0; x < CLEANUP_QUERIES.length; x++) {
+        for (String cleanupQueryIn : CLEANUP_QUERIES) {
             WriteMode writeMode = ModeFactory.getWriteMode("Package_queries",
-                    "cleanup_package_" + CLEANUP_QUERIES[x]);
+                    "cleanup_package_" + cleanupQueryIn);
             writeMode.executeUpdate(params);
         }
     }
 
     private static void schedulePackageFileForDeletion(String fileName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("path", fileName);
         WriteMode wm = ModeFactory.getWriteMode("Package_queries",
                 "schedule_pkg_for_delete");
@@ -886,7 +886,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult possiblePackagesForPushingIntoChannel(Long cid, Long eid,
                                                             PageControl pc) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         params.put("eid", eid);
 
@@ -904,8 +904,8 @@ public class PackageManager extends BaseManager {
         // Remove packages that are in both queries
         while (i.hasNext()) {
             PackageComparison po = (PackageComparison) i.next();
-            for (int x = 0; x < possiblePackages.size(); x++) {
-                PackageComparison pinner = (PackageComparison) possiblePackages.get(x);
+            for (Object possiblePackageIn : possiblePackages) {
+                PackageComparison pinner = (PackageComparison) possiblePackageIn;
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: " +
                             pinner.getId());
@@ -930,7 +930,7 @@ public class PackageManager extends BaseManager {
      * @return the redhat release package evr or null if the package can't be found..
      */
     public static PackageEvr lookupReleasePackageEvrFor(Server server) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         SelectMode m = ModeFactory.getMode("Package_queries",
                                 "lookup_release_package_evr_id");
@@ -967,7 +967,7 @@ public class PackageManager extends BaseManager {
      * @return system-release(releasever) of the redhat-release-% on this system
      */
     public static String lookupSystemReleaseReleaseVersionFor(Server s) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", s.getId());
         SelectMode m = ModeFactory.getMode("Package_queries",
                         "lookup_system_release_releasever");
@@ -1004,7 +1004,7 @@ public class PackageManager extends BaseManager {
     public static DataResult lookupPackageNameOverview(
             Org org, String packageName, String[] channelarches) {
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("package_name", packageName);
 
@@ -1023,7 +1023,7 @@ public class PackageManager extends BaseManager {
      * in the channels which which the orgId is subscribed.
      */
     public static DataResult lookupPackageNameOverview(Org org, String packageName) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("package_name", packageName);
 
@@ -1049,7 +1049,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult lookupPackageNameOverviewInChannel(Org org, String packageName,
             Long channelID) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("package_name", packageName);
         params.put("channel_id", channelID);
@@ -1068,7 +1068,7 @@ public class PackageManager extends BaseManager {
      * @return DataResult of PackageOverview objects
      */
     public static DataResult lookupPackageForChannelFromChannel(Long fromCid, Long toCid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", toCid);
         params.put("scid", fromCid);
 
@@ -1090,7 +1090,7 @@ public class PackageManager extends BaseManager {
      * @return DataResult of PackageOverview objects
      */
     public static DataResult lookupCustomPackagesForChannel(Long cid, Long orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         params.put("org_id", orgId);
 
@@ -1109,7 +1109,7 @@ public class PackageManager extends BaseManager {
      * @return DataResult of PackageOverview objects
      */
     public static DataResult comparePackagesBetweenChannels(Long thisCid, Long otherCid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("this_cid", thisCid);
         params.put("other_cid", otherCid);
 
@@ -1130,7 +1130,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult comparePackagesBetweenChannelsPreview(Long thisCid,
                          Long otherCid, String cmpType) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("this_cid", thisCid);
         params.put("other_cid", otherCid);
         params.put("cmp_type", cmpType);
@@ -1153,11 +1153,11 @@ public class PackageManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "managed_channel_merge_confirm");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
-        Map<String, Long> elabs = new HashMap<String, Long>();
+        Map<String, Long> elabs = new HashMap<>();
         elabs.put("org_id", user.getOrg().getId());
 
         DataResult dr;
@@ -1172,7 +1172,7 @@ public class PackageManager extends BaseManager {
      * @param set the set of packages
      */
     public static void mergeChannelPackagesFromSet(User user, Long cid, RhnSet set) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("uid", user.getId());
         params.put("cid", cid);
         params.put("set_label", set.getLabel());
@@ -1192,7 +1192,7 @@ public class PackageManager extends BaseManager {
      * @param set the set of packages
      */
     public static void addChannelPackagesFromSet(User user, Long cid, RhnSet set) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("cid", cid);
         params.put("set_label", set.getLabel());
@@ -1209,7 +1209,7 @@ public class PackageManager extends BaseManager {
      * @return list of package overview objects
      */
     public static DataResult listOrphanPackages(Long orgId, boolean source) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
 
         SelectMode m;
@@ -1234,7 +1234,7 @@ public class PackageManager extends BaseManager {
      * @return List of custom package (PackageOverview)
      */
     public static DataResult listCustomPackages(Long orgId, boolean source) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
 
         SelectMode m;
@@ -1263,7 +1263,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult listCustomPackageForChannel(Long cid, Long orgId,
                                                          boolean source) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         params.put("cid", cid);
 
@@ -1310,7 +1310,7 @@ public class PackageManager extends BaseManager {
 
         // Needed for subsequent queries
         WriteMode mode;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("set_label", set.getLabel());
         params.put("uid", user.getId());
 
@@ -1365,7 +1365,7 @@ public class PackageManager extends BaseManager {
 
         // For now, continue to use repeated calls to the managers rather than having the
         // calls take place using the data in the package IDs RhnSet
-        List<Long> pList = new ArrayList<Long>(ids);
+        List<Long> pList = new ArrayList<>(ids);
         for (Map channelIdData : channelIds) {
             Long channelId = (Long) channelIdData.get("channel_id");
             ChannelManager.refreshWithNewestPackages(channelId, "web.package_delete");
@@ -1402,7 +1402,7 @@ public class PackageManager extends BaseManager {
 
         // Needed for subsequent queries
         WriteMode mode;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("set_label", set.getLabel());
         params.put("uid", user.getId());
 
@@ -1430,7 +1430,7 @@ public class PackageManager extends BaseManager {
      */
     public static Package guestimatePackageByChannel(Long channelId, Long nameId,
             Long evrId, Org org) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channelId);
         params.put("nameId", nameId);
         params.put("evrId", evrId);
@@ -1458,7 +1458,7 @@ public class PackageManager extends BaseManager {
     public static Package guestimatePackageBySystem(Long systemId, Long nameId,
             Long evrId, Long archId, Org org) {
         SelectMode m;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", systemId);
         params.put("nameId", nameId);
         params.put("evrId", evrId);
@@ -1492,7 +1492,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packagesFromServerSet(User user) {
 
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_from_server_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", RhnSetDecl.SYSTEMS.getLabel());
 
@@ -1509,7 +1509,7 @@ public class PackageManager extends BaseManager {
     public static DataResult upgradablePackagesFromServerSet(User user) {
 
         SelectMode m = ModeFactory.getMode("Package_queries", "ssm_packages_for_upgrade");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
 
         return m.execute(params);
@@ -1520,7 +1520,7 @@ public class PackageManager extends BaseManager {
      * @param cid the channel id
      */
     public static synchronized void createRepoEntrys(Long cid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         WriteMode writeMode = ModeFactory.getWriteMode("Package_queries",
             "create_repo_entrys");
@@ -1532,7 +1532,7 @@ public class PackageManager extends BaseManager {
             return;
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);
         byte[] bytes = CompressionUtil.gzipCompress(xml);
 
@@ -1577,7 +1577,7 @@ public class PackageManager extends BaseManager {
      */
     public static DataResult getRepoData(Long packageId) {
         SelectMode m = ModeFactory.getMode("Package_queries", "lookup_repodata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);
 
         return m.execute(params);
@@ -1669,7 +1669,7 @@ public class PackageManager extends BaseManager {
             return null;
         }
 
-        List<String> cmd = new ArrayList<String>();
+        List<String> cmd = new ArrayList<>();
         cmd.add(Config.get().getString("rpm.path", "/bin/rpm"));
         cmd.add("-qp");
         cmd.add("--changelog");
@@ -1695,32 +1695,31 @@ public class PackageManager extends BaseManager {
         Long orgId = user.getOrg().getId();
         DataResult dr = PackageFactory.getPackagesChannelArchCompatAndOrgAccess(
                 orgId, channel.getId(), packageIds);
-        List<Long> found = new ArrayList<Long>();
-        List<Long> archNonCompat = new ArrayList<Long>();
-        List<Long> orgNoAccess = new ArrayList<Long>();
-        for (Iterator i = dr.iterator(); i.hasNext();) {
-            Map m = (Map) i.next();
-            found.add((Long)m.get("id"));
+        List<Long> found = new ArrayList<>();
+        List<Long> archNonCompat = new ArrayList<>();
+        List<Long> orgNoAccess = new ArrayList<>();
+        for (Object oIn : dr) {
+            Map m = (Map) oIn;
+            found.add((Long) m.get("id"));
             if (m.get("package_arch_id") == null) {
-                archNonCompat.add((Long)m.get("id"));
+                archNonCompat.add((Long) m.get("id"));
             }
             if ((m.get("org_package") == null ||
-                    orgId.compareTo((Long)m.get("org_package")) != 0) &&
-                m.get("org_access") == null &&
-                m.get("shared_access") == null) {
-                orgNoAccess.add((Long)m.get("id"));
+                    orgId.compareTo((Long) m.get("org_package")) != 0) &&
+                    m.get("org_access") == null &&
+                    m.get("shared_access") == null) {
+                orgNoAccess.add((Long) m.get("id"));
             }
         }
-        List<Long> missing = new ArrayList<Long>(packageIds);
+        List<Long> missing = new ArrayList<>(packageIds);
         missing.removeAll(found);
         orgNoAccess.addAll(missing);
         if (!orgNoAccess.isEmpty()) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have access to packages: ");
-            msg.append(orgNoAccess);
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
+            String msg = "User: " + user.getLogin() +
+                    " does not have access to packages: " +
+                    orgNoAccess;
+            PermissionException pex = new PermissionException(msg);
             pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.package"));
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.package"));
             throw pex;

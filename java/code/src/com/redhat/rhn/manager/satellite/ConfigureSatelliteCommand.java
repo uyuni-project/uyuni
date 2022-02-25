@@ -48,7 +48,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public ConfigureSatelliteCommand(User userIn) {
         super(userIn);
-        this.keysToBeUpdated = new LinkedList<String>();
+        this.keysToBeUpdated = new LinkedList<>();
     }
 
     /**
@@ -70,7 +70,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
                     ") - start");
         }
 
-        List<String> argList = new LinkedList<String>();
+        List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
         argList.add("/usr/bin/rhn-config-satellite.pl");
         argList.add("--target=" + configFilePath);
@@ -94,10 +94,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         }
 
         for (String key : removals) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("--remove=");
-            sb.append(key);
-            argList.add(sb.toString());
+            argList.add("--remove=" + key);
             anythingChanged = true;
         }
 
@@ -118,8 +115,8 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * @return String[] array of arguments.
      */
     public String[] getCommandArguments() {
-        Map<String, String> optionMap = new HashMap<String, String>();
-        List<String> removals = new LinkedList<String>();
+        Map<String, String> optionMap = new HashMap<>();
+        List<String> removals = new LinkedList<>();
 
         for (String key : getKeysToBeUpdated()) {
             if (Config.get().containsKey(key)) {
@@ -213,7 +210,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             }
         }
         else {
-            if (Config.get().getBoolean(configKey) != newValue.booleanValue()) {
+            if (Config.get().getBoolean(configKey) != newValue) {
                 Config.get().setBoolean(configKey, newValue.toString());
                 keysToBeUpdated.add(configKey);
             }

@@ -83,7 +83,7 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     }
 
     protected Enumeration<String> getParameterNames() {
-        Vector<String> vector = new Vector<String>();
+        Vector<String> vector = new Vector<>();
         vector.add(requestParamNames[0]);
         vector.add(requestParamNames[1]);
 

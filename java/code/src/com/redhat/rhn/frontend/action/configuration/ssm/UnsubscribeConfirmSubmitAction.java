@@ -37,7 +37,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -79,10 +78,9 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         DataResult systemSet = cm.ssmSystemListForChannels(user, null);
 
-        Iterator systems = systemSet.iterator();
         //go through each system in the set
-        while (systems.hasNext()) {
-            Long sid = ((ConfigSystemDto)systems.next()).getId();
+        for (Object oIn : systemSet) {
+            Long sid = ((ConfigSystemDto) oIn).getId();
             Server server;
             try {
                 server = SystemManager.lookupByIdAndUser(sid, user);

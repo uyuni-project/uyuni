@@ -32,9 +32,8 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         String monitoringRestartFile =
                 "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass().getResourceAsStream(monitoringRestartFile));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(
+                        this.getClass().getResourceAsStream(monitoringRestartFile));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -53,10 +52,8 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
 
     public void testEnable() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -75,10 +72,8 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
 
     public void testDisable() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);

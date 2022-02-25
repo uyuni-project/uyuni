@@ -88,12 +88,12 @@ public class SparkTestUtils {
                 (name, val) -> mockRequest.setupAddParameter(name, new String[]{val}));
         // we must convert to a "multi-value map"
         mockRequest.setupGetParameterMap(queryParams.entrySet().stream().collect(
-                Collectors.toMap(v -> v.getKey(), v -> new String[]{v.getValue()})));
+                Collectors.toMap(Map.Entry::getKey, v -> new String[]{v.getValue()})));
 
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
-                (name, val) -> mockRequest.setupGetHeader(name, val));
+                mockRequest::setupGetHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
     }
@@ -185,7 +185,7 @@ public class SparkTestUtils {
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
-                (name, val) -> mockRequest.setupGetHeader(name, val));
+                mockRequest::setupGetHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
     }

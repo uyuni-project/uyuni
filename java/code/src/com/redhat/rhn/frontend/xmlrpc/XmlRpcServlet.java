@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -92,9 +91,9 @@ public class XmlRpcServlet extends HttpServlet {
             serializers = new SerializerFactory();
         }
         // find the configured serializers...
-        for (Iterator i = serializers.getSerializers().iterator(); i.hasNext();) {
+        for (Object oIn : serializers.getSerializers()) {
             srvr.getSerializer().addCustomSerializer(
-                    (XmlRpcCustomSerializer) i.next());
+                    (XmlRpcCustomSerializer) oIn);
         }
     }
 
@@ -104,13 +103,10 @@ public class XmlRpcServlet extends HttpServlet {
         }
 
         // find the configured handlers...
-        Iterator i = handlers.getKeys().iterator();
-        while (i.hasNext()) {
-            String namespace = (String)i.next();
-
+        for (String namespace : handlers.getKeys()) {
             if (log.isDebugEnabled()) {
                 log.debug("registerInvocationHandler: namespace [" + namespace +
-                          "] handler [" + handlers.getHandler(namespace).get() + "]");
+                        "] handler [" + handlers.getHandler(namespace).get() + "]");
             }
             srvr.addInvocationHandler(
                     namespace,

@@ -79,7 +79,7 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
     */
    static  void populateTokenInfo(Token token,  SerializerHelper helper) {
        // Locate the base channel, and store the others in a list of child channels:
-       List<String> childChannelLabels = new LinkedList<String>();
+       List<String> childChannelLabels = new LinkedList<>();
        String baseChannelLabel = null;
        for (Channel c : token.getChannels()) {
            if (c.isBaseChannel()) {
@@ -95,24 +95,24 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
 
        // Prepare a list of relevant entitlement labels, make sure to filter the
        // non-addon entitlements:
-       List<String> entitlementLabels = new LinkedList<String>();
+       List<String> entitlementLabels = new LinkedList<>();
        for (ServerGroupType sgt : token.getEntitlements()) {
            if (!sgt.isBase()) {
                entitlementLabels.add(sgt.getLabel());
            }
        }
 
-       List<Integer> serverGroupIds = new LinkedList<Integer>();
+       List<Integer> serverGroupIds = new LinkedList<>();
        for (ServerGroup group : token.getServerGroups()) {
            serverGroupIds.add(group.getId().intValue());
        }
 
-       List<String> packageNames = new LinkedList<String>();
-       List<Map<String, String>> packages = new LinkedList<Map<String, String>>();
+       List<String> packageNames = new LinkedList<>();
+       List<Map<String, String>> packages = new LinkedList<>();
        for (TokenPackage pkg : token.getPackages()) {
            packageNames.add(pkg.getPackageName().getName());
 
-           Map<String, String> pkgMap = new HashMap<String, String>();
+           Map<String, String> pkgMap = new HashMap<>();
            pkgMap.put("name", pkg.getPackageName().getName());
 
            if (pkg.getPackageArch() != null) {

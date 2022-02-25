@@ -130,7 +130,7 @@ public abstract class UserEditActionHelper extends RhnAction {
         if (pamAuthService != null && pamAuthService.trim().length() > 0 &&
                 loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
             if (form.get("usepam") != null &&
-                    ((Boolean) form.get("usepam")).booleanValue()) {
+                    (Boolean) form.get("usepam")) {
                 targetUser.setUsePamAuthentication(true);
             }
             else {

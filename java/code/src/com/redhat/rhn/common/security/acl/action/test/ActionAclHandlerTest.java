@@ -37,7 +37,7 @@ public class ActionAclHandlerTest extends RhnBaseTestCase {
                 ActionFactory.TYPE_PACKAGES_REMOVE);
 
         String[] foo = {"remove"};
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", newA.getId().toString());
         boolean rc = access.aclGenericActionType(params, foo);
         assertTrue(rc);

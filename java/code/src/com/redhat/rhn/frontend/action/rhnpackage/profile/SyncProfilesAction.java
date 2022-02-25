@@ -102,7 +102,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
                 log.debug("Returned from syncToProfile");
             }
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
             params.put("time", time.getTime());
@@ -110,7 +110,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
                     params);
         }
         catch (MissingPackagesException mpe) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
             params.put("sync", "profile");
@@ -124,7 +124,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.PRID, prid);
             params.put("sync", "profile");

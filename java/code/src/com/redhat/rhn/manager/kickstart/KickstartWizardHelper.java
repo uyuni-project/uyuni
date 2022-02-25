@@ -71,7 +71,7 @@ public class KickstartWizardHelper {
      */
     public List<KickstartVirtualizationType> getVirtualizationTypes() {
         List<KickstartVirtualizationType> types =
-                new LinkedList<KickstartVirtualizationType>();
+                new LinkedList<>();
         types.add(KickstartVirtualizationType.none());
         types.add(KickstartVirtualizationType.kvmGuest());
         types.add(KickstartVirtualizationType.paraHost());

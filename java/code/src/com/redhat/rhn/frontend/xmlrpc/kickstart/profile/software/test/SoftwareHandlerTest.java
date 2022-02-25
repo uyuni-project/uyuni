@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -46,19 +45,17 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         KickstartData ksProfile  = KickstartDataTest.createKickstartWithProfile(admin);
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("gcc");
 
         int result = handler.setSoftwareList(admin, ksProfile.getLabel(), packages);
 
         boolean pkgFound = false;
-        for (Iterator<KickstartPackage> itr = ksProfile.getKsPackages().iterator();
-             itr.hasNext();) {
-              KickstartPackage pkg = itr.next();
-              if (pkg.getPackageName().getName().equals("gcc")) {
-                  pkgFound = true;
+        for (KickstartPackage pkg : ksProfile.getKsPackages()) {
+            if (pkg.getPackageName().getName().equals("gcc")) {
+                pkgFound = true;
 
-              }
+            }
         }
         assertEquals(1, result);
         assertEquals(ksProfile.getKsPackages().size(), 1);
@@ -70,19 +67,17 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         KickstartData ksProfile = KickstartDataTest.createKickstartWithProfile(admin);
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("gcc");
 
         int result = handler.setSoftwareList(admin, ksProfile.getLabel(), packages,
                 true, true);
 
         boolean pkgFound = false;
-        for (Iterator<KickstartPackage> itr = ksProfile.getKsPackages().iterator();
-             itr.hasNext();) {
-              KickstartPackage pkg = itr.next();
-              if (pkg.getPackageName().getName().equals("gcc")) {
-                  pkgFound = true;
-              }
+        for (KickstartPackage pkg : ksProfile.getKsPackages()) {
+            if (pkg.getPackageName().getName().equals("gcc")) {
+                pkgFound = true;
+            }
         }
         assertEquals(1, result);
         assertEquals(ksProfile.getKsPackages().size(), 1);
@@ -97,7 +92,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
         int numPackagesInitial = ksProfile.getKsPackages().size();
 
-        List<String> packages = new ArrayList<String>();
+        List<String> packages = new ArrayList<>();
         packages.add("bash");
         packages.add("gcc");
 

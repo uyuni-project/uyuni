@@ -111,11 +111,8 @@ public class KickstartUrlHelper {
      */
     public String getKickstartFileUrl() {
 
-        StringBuilder urlBuf = new StringBuilder();
-        urlBuf.append("/label/");
-        urlBuf.append(StringEscapeUtils.escapeHtml4(ksData.getLabel()));
-
-        return getKickstartFileUrlBase() + urlBuf.toString();
+        String urlBuf = "/label/" + StringEscapeUtils.escapeHtml4(ksData.getLabel());
+        return getKickstartFileUrlBase() + urlBuf;
     }
 
     /**
@@ -212,11 +209,7 @@ public class KickstartUrlHelper {
      * @return string that represents the repo url
      */
     public String getKickstartChildRepoUrl(Channel child) {
-        StringBuilder url = new StringBuilder();
-        url.append(protocol + host + "/ks/dist/");
-        url.append("child/" + child.getLabel() + "/");
-        url.append(ksData.getTree().getLabel());
-        return url.toString();
+        return protocol + host + "/ks/dist/" + "child/" + child.getLabel() + "/" + ksData.getTree().getLabel();
     }
 
 
@@ -314,12 +307,7 @@ public class KickstartUrlHelper {
     }
 
     private String getLongMediaPath(KickstartSession session) {
-        StringBuilder file = new StringBuilder();
-        file.append(KS_DIST + "/session/");
-        file.append(SessionSwap.encodeData(session.getId().toString()));
-        file.append("/");
-        file.append(this.ksTree.getLabel());
-        return file.toString();
+        return KS_DIST + "/session/" + SessionSwap.encodeData(session.getId().toString()) + "/" + ksTree.getLabel();
     }
 
     /**

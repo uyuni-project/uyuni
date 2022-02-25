@@ -64,9 +64,7 @@ public class CloneConfirmAction extends RhnSetAction {
 
         DataResult<ErrataOverview> dr = ErrataManager.selectedForCloning(user, null);
 
-        channelSet.getElements().forEach(c -> {
-            ErrataManager.cloneChannelErrata(dr, c.getElement(), user);
-        });
+        channelSet.getElements().forEach(c -> ErrataManager.cloneChannelErrata(dr, c.getElement(), user));
 
         RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
         set.clear();

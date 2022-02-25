@@ -69,7 +69,7 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
             new SsmDeleteServersEvent(context.getCurrentUser(),
-                            new ArrayList<Long>(set.getElementValues()),
+                    new ArrayList<>(set.getElementValues()),
                     SystemManager.ServerCleanupType
                             .fromString(saltCleanup)
                             .orElseThrow(() ->

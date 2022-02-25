@@ -237,7 +237,7 @@ public class PowerManagementAction extends RhnAction {
      */
     public static SortedMap<String, String> setUpPowerTypes(HttpServletRequest request,
             StrutsDelegate strutsDelegate, ActionErrors errors) {
-        SortedMap<String, String> types = new TreeMap<String, String>();
+        SortedMap<String, String> types = new TreeMap<>();
         String typeString = ConfigDefaults.get().getCobblerPowerTypes();
         if (typeString != null) {
             List<String> typeNames = Arrays.asList(typeString.split(" *, *"));

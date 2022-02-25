@@ -359,7 +359,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private TaskoSchedule insertTaskoSchedule(List<String> channelIds) {
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_ids", channelIds);
         TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
         String jobLabel = "channels-job-" + TestUtils.randomString();

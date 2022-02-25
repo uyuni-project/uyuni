@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import org.hibernate.Session;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,9 +66,9 @@ public class HostBuilder {
        session.flush();
        session.evict(host);
 
-       for (Iterator iterator = host.getGuests().iterator(); iterator.hasNext();) {
-           session.evict(iterator.next());
-       }
+        for (VirtualInstance virtualInstanceIn : host.getGuests()) {
+            session.evict(virtualInstanceIn);
+        }
 
        compiledHost = host;
        host = null;
@@ -154,7 +153,7 @@ public class HostBuilder {
 
     private  List<VirtualInstance> createGuests(User user, int numberOfGuests,
                                                 boolean register) throws Exception {
-        List<VirtualInstance> guests = new LinkedList<VirtualInstance>();
+        List<VirtualInstance> guests = new LinkedList<>();
         for (int i = 0; i < numberOfGuests; i++) {
             VirtualInstanceManufacturer vim = new VirtualInstanceManufacturer(user);
 

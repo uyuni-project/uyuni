@@ -89,7 +89,7 @@ public class IcalUtils {
         Optional<String> multiScheduleName = getScheduleNameForMulti(schedule);
 
         Stream<Pair<Instant, Instant>> periodStream = schedule.getCalendarOpt()
-                .flatMap(c -> parseCalendar(c))
+                .flatMap(this::parseCalendar)
                 .map(c -> calculateUpcomingPeriods(c, multiScheduleName, Instant.now(), 10))
                 .orElseGet(Stream::empty);
 
@@ -142,7 +142,7 @@ public class IcalUtils {
                 .collect(toList());
 
         Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
-                .map(pl -> pl.stream())
+                .map(Collection::stream)
                 .reduce(Stream.empty(), Stream::concat)
                 .sorted()
                 .limit(limit)

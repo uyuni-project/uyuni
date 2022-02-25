@@ -65,22 +65,38 @@ check_db_version() {
     return 1
 }
 
-check_database() {
-    if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
-        REPORTDB_EXISTS='y'
-    else
-        # check if we should setup a reporting DB
-	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
-            # if the main database is local, we setup the report DB automatically
-            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
-                                          --address '*' --remote '0.0.0.0/0,::/0' && {
-                REPORTDB_EXISTS='y'
-            }
-        else
-            logger -p user.notice "Database not local - skipping setup of report database"
-        fi
-    fi
+parse_rhn_property() {
+    ATTRIBUTE="$1"
+    VAR="$2"
+    VALUE=$(grep "^$ATTRIBUTE" /etc/rhn/rhn.conf |cut -d'=' -f2 | tail -n1 | tr -d '\n ')
+    eval "$(printf "%q=%q" "$VAR" "$VALUE")"
+}
 
+
+db_migrate_md5_to_scram() {
+    if ! grep "md5" /var/lib/pgsql/data/pg_hba.conf >/dev/null; then
+        return
+    fi
+    logger -p user.notice "Migrate database password encryption from md5 to scram-sha256"
+    if ! grep -E "^password_encryption[[:space:]]*=[[:space:]]*scram-sha-256" /var/lib/pgsql/data/postgresql.conf >/dev/null; then
+        logger -p user.notice "Set database password encryption default to scram-sha256"
+        echo "password_encryption = scram-sha-256" >> /var/lib/pgsql/data/postgresql.conf
+        systemctl reload postgresql
+    fi
+    parse_rhn_property "db_name" DBNAME
+    parse_rhn_property "db_user" DBUSER
+    parse_rhn_property "db_password" DBPASSWD
+
+    logger -p user.notice "Reset database password for user: $DBUSER"
+    runuser - postgres -c "echo \"ALTER USER $DBUSER WITH PASSWORD '$DBPASSWD';\" | psql"
+
+    logger -p user.notice "Change encryption in pg_hba.conf to scram-sha-256"
+    sed -i 's|md5|scram-sha-256|g' /var/lib/pgsql/data/pg_hba.conf
+}
+
+check_database() {
+
+    # Check, if we use the correct database version
     source /etc/os-release
     DB_VERSION=$(check_db_version)
     if [ $? -ne 0 ]; then
@@ -92,6 +108,25 @@ check_database() {
     elif [ $VERSION_ID == "15.4" -a "$DB_VERSION" != "14" ]; then
         echo "Database version '$DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
         exit 1
+    fi
+
+    # Check, if the report DB was already setup
+    if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
+        REPORTDB_EXISTS='y'
+    else
+        # Check, if the DB is local and we should setup the reporting DB automated
+	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
+            # Do not use 'md5' auth anymore, migrate to 'scram-sha-256' if needed
+            db_migrate_md5_to_scram
+
+            # if the main database is local, we setup the report DB automatically
+            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
+                                          --address '*' --remote '0.0.0.0/0,::/0' && {
+                REPORTDB_EXISTS='y'
+            }
+        else
+            logger -p user.notice "Database not local - skipping setup of report database"
+        fi
     fi
 
     if [ $REPORTDB_EXISTS == 'y' ]; then

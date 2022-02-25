@@ -130,12 +130,12 @@ public class UpgradeCommand extends BaseTransactionCommand {
     public void upgrade() {
         List upgradeTasks = TaskFactory.getTaskListByNameLike(UPGRADE_TASK_NAME);
         // Loop over upgrade tasks and execute the steps.
-        for (int i = 0; i < upgradeTasks.size(); i++) {
-            Task t = (Task) upgradeTasks.get(i);
+        for (Object upgradeTaskIn : upgradeTasks) {
+            Task t = (Task) upgradeTaskIn;
             // Use WARN because we want this logged.
             if (t != null) {
                 log.warn("got upgrade task: " + t.getName());
-                switch(t.getName()) {
+                switch (t.getName()) {
                     case UPGRADE_KS_PROFILES:
                         processKickstartProfiles();
                         break;
@@ -163,10 +163,10 @@ public class UpgradeCommand extends BaseTransactionCommand {
         // Use WARN here because we want this operation logged.
         log.warn("Processing ks profiles.");
         List allKickstarts = KickstartFactory.listAllKickstartData();
-        for (int i = 0; i < allKickstarts.size(); i++) {
-            KickstartData ksdata = (KickstartData) allKickstarts.get(i);
+        for (Object allKickstartIn : allKickstarts) {
+            KickstartData ksdata = (KickstartData) allKickstartIn;
             KickstartSession ksession =
-                KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
+                    KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
             if (ksession == null) {
                 log.warn("Kickstart does not have a session: id: " + ksdata.getId() +
                         " label: " + ksdata.getLabel());
@@ -374,9 +374,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
         });
 
         // Convert group formulas
-        OrgFactory.lookupAllOrgs().forEach(org -> {
-            ServerGroupFactory.listManagedGroups(org).forEach(FormulaFactory::convertGroupFormulasFromFiles);
-        });
+        OrgFactory.lookupAllOrgs().forEach(org -> ServerGroupFactory.listManagedGroups(org)
+                .forEach(FormulaFactory::convertGroupFormulasFromFiles));
         log.warn("Migrated pillars and formula pillars to database");
     }
 }

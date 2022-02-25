@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -133,11 +132,11 @@ public abstract class BaseCopyToAction extends RhnAction {
         //   for each file
         //      cm.copyConfigFile(file.latest.revision, dest-chan, usr);
         //
-        for (Iterator destItr = destSet.iterator(); destItr.hasNext();) {
-            Long destid = ((RhnSetElement)destItr.next()).getElement();
+        for (Object oIn : destSet) {
+            Long destid = ((RhnSetElement) oIn).getElement();
             ConfigChannel cc = getDestinationFromId(destid);
-            for (Iterator fileItr = files.iterator(); fileItr.hasNext();) {
-                Long fileId = ((RhnSetElement)fileItr.next()).getElement();
+            for (Object fileIn : files) {
+                Long fileId = ((RhnSetElement) fileIn).getElement();
                 ConfigFile cf = cm.lookupConfigFile(user, fileId);
                 ConfigRevision cr = cf.getLatestConfigRevision();
                 cm.copyConfigFile(cr, cc, user);

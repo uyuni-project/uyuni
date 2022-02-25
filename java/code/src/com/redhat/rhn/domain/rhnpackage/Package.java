@@ -58,9 +58,9 @@ public class Package extends BaseDomainHelper {
     private String cookie;
     private Date lastModified;
     private Boolean lockPending = Boolean.FALSE;
-    private Set<Errata> errata = new HashSet<Errata>();
-    private Set<Channel> channels = new HashSet<Channel>();
-    private Set<PackageFile> packageFiles = new HashSet<PackageFile>();
+    private Set<Errata> errata = new HashSet<>();
+    private Set<Channel> channels = new HashSet<>();
+    private Set<PackageFile> packageFiles = new HashSet<>();
 
     private Org org;
     private PackageName packageName;

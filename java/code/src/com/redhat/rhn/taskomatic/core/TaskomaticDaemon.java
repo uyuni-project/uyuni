@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -148,15 +147,13 @@ public class TaskomaticDaemon {
         }
         try {
             this.kernel = new SchedulerKernel();
-            Runnable r = new Runnable() {
-                public void run() {
-                    try {
-                        kernel.startup();
-                    }
-                    catch (Throwable e) {
-                        LOG.fatal(e.getMessage());
-                        System.exit(-1);
-                    }
+            Runnable r = () -> {
+                try {
+                    kernel.startup();
+                }
+                catch (Throwable e) {
+                    LOG.fatal(e.getMessage());
+                    System.exit(-1);
                 }
             };
             Thread t = new Thread(r);
@@ -177,9 +174,9 @@ public class TaskomaticDaemon {
     private Map parseOverrides(CommandLine commandLine) {
         Map configOverrides = new HashMap();
         // Loop thru all possible options and let's see what we get
-        for (Iterator iter = this.masterOptionsMap.keySet().iterator(); iter.hasNext();) {
+        for (Object oIn : this.masterOptionsMap.keySet()) {
 
-            String optionName = (String) iter.next();
+            String optionName = (String) oIn;
 
             if (commandLine.hasOption(optionName)) {
 
@@ -221,9 +218,7 @@ public class TaskomaticDaemon {
         OptionBuilder.withDescription(description);
         Option option = OptionBuilder.create(longopt);
         accum.addOption(option);
-        if (this.masterOptionsMap.get(longopt) == null) {
-            this.masterOptionsMap.put(longopt, option);
-        }
+        this.masterOptionsMap.putIfAbsent(longopt, option);
     }
 
     /**

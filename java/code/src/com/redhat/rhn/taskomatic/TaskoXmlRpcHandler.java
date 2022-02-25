@@ -596,7 +596,7 @@ public class TaskoXmlRpcHandler {
      * @return list of successfully reinitialized schedules
      */
     public List<TaskoSchedule> reinitializeAllSchedulesFromNow() {
-        List<TaskoSchedule> schedules = new ArrayList<TaskoSchedule>();
+        List<TaskoSchedule> schedules = new ArrayList<>();
         Date now = new Date();
         for (TaskoSchedule schedule : TaskoFactory.listFuture()) {
             TaskoSchedule reinited =

@@ -102,11 +102,11 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
         contents = FileUtils.readStringFromFile(rhel5data.getCobblerFileName());
         System.out.println("Contents: " + contents);
-        assertTrue(contents.indexOf("langsupport") < 0);
-        assertTrue(contents.indexOf("mouse") < 0);
-        assertTrue(contents.indexOf("zerombr yes") < 0);
+        assertTrue(!contents.contains("langsupport"));
+        assertTrue(!contents.contains("mouse"));
+        assertTrue(!contents.contains("zerombr yes"));
         assertTrue(contents.indexOf("zerombr") > 0);
-        assertTrue(contents.indexOf("resolvedeps") < 0);
+        assertTrue(!contents.contains("resolvedeps"));
 
     }
 
@@ -132,7 +132,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildCommands(ksData, lines, tree);
 
         KickstartCommand rootpw = ksData.getCommand("rootpw");
-        assertTrue(rootpw.getArguments().indexOf("--iscrypted") < 0);
+        assertTrue(!rootpw.getArguments().contains("--iscrypted"));
         assertTrue(rootpw.getArguments().startsWith("$1$"));
     }
 
@@ -173,7 +173,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         KickstartBuilder builder = new KickstartBuilder(user);
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("rootpw blahblah");
 
         KickstartData ksData = createBareKickstartData();
@@ -185,7 +185,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildPackages() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
 
         lines.add("%packages");
         lines.add("@office");
@@ -204,7 +204,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         // No idea if this is valid or not but I see no reason why the builder shouldn't
         // be ready for it:
         KickstartBuilder builder = new KickstartBuilder(user);
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         KickstartData ksData = createBareKickstartData();
         builder.buildPackages(ksData, lines);
         assertEquals(0, ksData.getKsPackages().size());
@@ -228,7 +228,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildPreScriptWithInterpreter() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter /usr/bin/python");
 
         KickstartData ksData = createBareKickstartData();
@@ -241,7 +241,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildPreScriptNewlines() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter /usr/bin/python");
         lines.add("a");
         lines.add("b");
@@ -256,7 +256,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildPreScriptWithMissingInterpreter() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter");
 
         KickstartData ksData = createBareKickstartData();
@@ -272,7 +272,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildMultiplePreScripts() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%pre");
         lines.add("echo hello");
         lines.add("");
@@ -288,7 +288,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         KickstartBuilder builder = new KickstartBuilder(user);
 
         // Should not parse:
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%pre --nochroot");
 
         KickstartData ksData = createBareKickstartData();
@@ -304,7 +304,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildPostScriptWithNochroot() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         lines.add("%post --interpreter blah --nochroot");
         lines.add("echo hello");
 
@@ -319,7 +319,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuildScriptWithEmptyLines() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
 
         KickstartData ksData = createBareKickstartData();
         builder.buildPostScripts(ksData, lines);

@@ -133,7 +133,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         request.setSession(new MockHttpSession());
         request.setupGetRequestURI("http://localhost:8080");
         request.setupGetMethod("POST");
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add("someparam");
         request.setupAddParameter("someparam", "somevalue");
         request.setupGetParameterNames(v.elements());
@@ -158,7 +158,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         request.setSession(new MockHttpSession());
         request.setupGetRequestURI("http://localhost:8080");
         request.setupGetMethod("POST");
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(paramIn);
         request.setupAddParameter(paramIn, valueIn);
         request.setupGetParameterNames(v.elements());

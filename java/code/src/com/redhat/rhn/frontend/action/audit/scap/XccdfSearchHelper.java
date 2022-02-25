@@ -68,7 +68,7 @@ public class XccdfSearchHelper extends RhnAction {
         List searchResult = invokeSearchServer(INDEX_SEARCH, args);
         // searchResult contains id to rhnXccdfIdent relation,
         // while we want to return RuleResults
-        List<Long> identIds = new ArrayList<Long>();
+        List<Long> identIds = new ArrayList<>();
         for (int x = searchResult.size() - 1; x >= 0; x--) {
             Map item = (Map) searchResult.get(x);
             Long id = Long.valueOf((String)item.get("id"));

@@ -31,6 +31,6 @@ public class MultiOrgTest extends RhnBaseTestCase {
         UserTestUtils.addManagement(o);
         UserTestUtils.addVirtualization(o);
         // Check to make sure we get an org greater than 1.
-        assertTrue(o.getId().longValue() > 1);
+        assertTrue(o.getId() > 1);
     }
 }

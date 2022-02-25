@@ -44,7 +44,7 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
 
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
-        List<Long> sids = new ArrayList<Long>();
+        List<Long> sids = new ArrayList<>();
         List<Map<String, Object>> result = srpe.getResult();
         for (Map<String, Object> data : result) {
             Long sid = (Long) data.get("id");
@@ -77,9 +77,9 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
 
         // The package collection is a set to prevent duplicates when keeping a running
         // total of all packages selected
-        Set<PackageListItem> allPackages = new HashSet<PackageListItem>();
+        Set<PackageListItem> allPackages = new HashSet<>();
 
-        Set<Long> allServerIds = new HashSet<Long>();
+        Set<Long> allServerIds = new HashSet<>();
 
         // Iterate the data, which is essentially each unique package/server combination
         // to remove. Note that this is only for servers that we have marked as having the
@@ -104,7 +104,7 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
         }
 
         log.debug("Converting data to maps.");
-        List<PackageListItem> allPackagesList = new ArrayList<PackageListItem>(allPackages);
+        List<PackageListItem> allPackagesList = new ArrayList<>(allPackages);
         List<Map<String, Long>> packageListData = PackageListItem
                 .toKeyMaps(allPackagesList);
 

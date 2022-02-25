@@ -150,7 +150,7 @@ public class ActivationKeyFactory extends HibernateFactory {
         // If the server has the bootstrap entitlement use enterprise entitlement
         if (server != null && !server.isBootstrap()) {
             List<ServerGroupType> serverEntitlements = server.getEntitledGroupTypes();
-            serverEntitlements.stream().forEach(gt -> newKey.addEntitlement(gt));
+            serverEntitlements.stream().forEach(newKey::addEntitlement);
         }
         else {
             newKey.addEntitlement(
@@ -273,7 +273,7 @@ public class ActivationKeyFactory extends HibernateFactory {
     public static int removeKeysForServer(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "remove_activation_keys");
         Map params = new HashMap();
-        params.put("sid", sid.longValue());
+        params.put("sid", sid);
         return m.executeUpdate(params);
     }
 
@@ -297,7 +297,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return list of kickstartData objects
      */
     public static List<KickstartData> listAssociatedKickstarts(ActivationKey key) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("token", key.getToken());
         return singleton.listObjectsByNamedQuery("ActivationKey.listAssociatedKickstarts",
                                                                                     params);

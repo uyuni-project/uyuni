@@ -47,7 +47,7 @@ public class RhnSetImpl implements RhnSet {
         super();
         uid = id;
         label = lbl;
-        elements = new HashSet<RhnSetElement>();
+        elements = new HashSet<>();
         cleanup = cleanup0;
     }
 
@@ -129,8 +129,8 @@ public class RhnSetImpl implements RhnSet {
             return;
         }
 
-        for (int i = 0; i < elems.length; i++) {
-            addElement(elems[i]);
+        for (String elemIn : elems) {
+            addElement(elemIn);
         } // for
     }
 
@@ -143,10 +143,10 @@ public class RhnSetImpl implements RhnSet {
             return;
         }
 
-        for (int i = 0; i < elems.length; i++) {
-            if (elems[i] != null && elems[i].length() > 0) {
+        for (String elemIn : elems) {
+            if (elemIn != null && elemIn.length() > 0) {
                 RhnSetElement elem = new RhnSetElement(getUserId(),
-                                                        getLabel(), elems[i]);
+                        getLabel(), elemIn);
                 removeElement(elem);
             } // if
         } // for
@@ -177,7 +177,7 @@ public class RhnSetImpl implements RhnSet {
      * {@inheritDoc}
      */
     public void clear() {
-        elements = new HashSet<RhnSetElement>();
+        elements = new HashSet<>();
     }
 
     /**
@@ -191,9 +191,8 @@ public class RhnSetImpl implements RhnSet {
      * {@inheritDoc}
      */
     public Set<Long> getElementValues() {
-        Set<Long> values = new HashSet<Long>();
-        for (Iterator<RhnSetElement> it = elements.iterator(); it.hasNext();) {
-            RhnSetElement element = it.next();
+        Set<Long> values = new HashSet<>();
+        for (RhnSetElement element : elements) {
             values.add(element.getElement());
         }
         return values;
@@ -241,7 +240,7 @@ public class RhnSetImpl implements RhnSet {
      * of the set at the last call to this method
      */
     public void sync() {
-        synced = new HashSet<RhnSetElement>(elements);
+        synced = new HashSet<>(elements);
     }
 
     /**
@@ -261,7 +260,7 @@ public class RhnSetImpl implements RhnSet {
         if (synced == null) {
             throw new IllegalStateException("The set must be marked first");
         }
-        HashSet<RhnSetElement> result = new HashSet<RhnSetElement>(elements);
+        HashSet<RhnSetElement> result = new HashSet<>(elements);
         result.removeAll(synced);
         return Collections.unmodifiableSet(result);
     }
@@ -275,7 +274,7 @@ public class RhnSetImpl implements RhnSet {
         if (synced == null) {
             throw new IllegalStateException("The set must be marked first");
         }
-        HashSet<RhnSetElement> result = new HashSet<RhnSetElement>(synced);
+        HashSet<RhnSetElement> result = new HashSet<>(synced);
         result.removeAll(elements);
         return Collections.unmodifiableSet(result);
     }

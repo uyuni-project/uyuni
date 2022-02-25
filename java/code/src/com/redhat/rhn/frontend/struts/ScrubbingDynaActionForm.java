@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -46,8 +45,8 @@ public class ScrubbingDynaActionForm extends DynaActionForm {
     public void scrub() {
         List keys = new LinkedList(dynaValues.keySet());
 
-        Set<String> noScrub = new HashSet<String>();
-        Set<String> noParenScrub = new HashSet<String>();
+        Set<String> noScrub = new HashSet<>();
+        Set<String> noParenScrub = new HashSet<>();
 
         if (dynaValues.containsKey(NO_SCRUB)) {
             for (String item : StringUtils.split(
@@ -63,8 +62,8 @@ public class ScrubbingDynaActionForm extends DynaActionForm {
             }
         }
 
-        for (Iterator iter = keys.iterator(); iter.hasNext();) {
-            String name = (String) iter.next();
+        for (Object keyIn : keys) {
+            String name = (String) keyIn;
             Object value = dynaValues.get(name);
             if (isScrubbable(name, value, noScrub)) {
                 if (noParenScrub.contains(name)) {

@@ -85,7 +85,7 @@ public class CustomPackageListAction extends RhnAction {
 
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
             set.size() > 0) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             // Forward type of the list
             params.put("source_checked", sourcePackagesChecked);
             return getStrutsDelegate().forwardParams(
@@ -172,7 +172,7 @@ public class CustomPackageListAction extends RhnAction {
 
     private List<ChannelTreeNode> findChannels(User user, Long selectedChan) {
         //Add Red Hat Base Channels, and custom base channels
-        List<ChannelTreeNode> chanList = new ArrayList<ChannelTreeNode>();
+        List<ChannelTreeNode> chanList = new ArrayList<>();
         for (ChannelTreeNode node : ChannelManager.ownedChannelsTree(user)) {
             node.setSelected(node.getId().equals(selectedChan));
             chanList.add(node);

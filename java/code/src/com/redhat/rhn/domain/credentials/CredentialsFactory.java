@@ -75,7 +75,7 @@ public class CredentialsFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (CredentialsType) singleton.lookupObjectByNamedQuery(
                 "CredentialsType.findByLabel", params);

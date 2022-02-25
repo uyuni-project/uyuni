@@ -91,7 +91,7 @@ public class TaskFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (Task) session.getNamedQuery("Task.lookup")
                                  .setString("name", name)
-                                   .setLong("data", data.longValue())
+                                   .setLong("data", data)
                                  .setParameter("org", org)
                                  .uniqueResult();
     }

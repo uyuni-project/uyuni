@@ -52,7 +52,7 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private <A> TypeAdapter<Optional<A>> optionalAdapter(TypeAdapter<A> innerAdapter) {
-        return new TypeAdapter<Optional<A>>() {
+        return new TypeAdapter<>() {
             @Override
             public Optional<A> read(JsonReader in) throws IOException {
                 if (in.peek() == JsonToken.NULL) {

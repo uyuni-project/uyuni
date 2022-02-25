@@ -33,7 +33,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +63,10 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
         User user = context.getCurrentUser();
         LinkedHashSet labelValues = new LinkedHashSet();
         populateWidgetLabels(labelValues, context);
-        for (Iterator itr = set.getElements().iterator(); itr.hasNext();) {
-            Long ccid = ((RhnSetElement) itr.next()).getElement();
+        for (RhnSetElement rhnSetElementIn : set.getElements()) {
+            Long ccid = rhnSetElementIn.getElement();
             ConfigChannel channel = ConfigurationManager.getInstance()
-                                        .lookupConfigChannel(user, ccid);
+                    .lookupConfigChannel(user, ccid);
             String optionstr = channel.getName() + " (" + channel.getLabel() + ")";
             labelValues.add(lv(optionstr, channel.getId().toString()));
         }

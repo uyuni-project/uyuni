@@ -77,7 +77,7 @@ public class RemovePackagesAction extends RhnAction implements Listable {
             helper.destroy();
 
             Long eid = ctxt.getRequiredParam(ListPackagesAction.EID_PARAM);
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(ListPackagesAction.EID_PARAM, eid);
             return delegate.forwardParams(
                             mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
@@ -95,7 +95,7 @@ public class RemovePackagesAction extends RhnAction implements Listable {
          * We now need to loop through the set and get the corresponding packages.
          * If the package exists, remove it from the erratum.
          */
-        List<Long> pids = new ArrayList<Long>();
+        List<Long> pids = new ArrayList<>();
         for (Long pid : packageIdsToRemove.getElementValues()) {
             Package pkg = PackageManager.lookupByIdAndUser(pid, user); //package
             if (pkg != null) {
@@ -116,7 +116,7 @@ public class RemovePackagesAction extends RhnAction implements Listable {
         // for the packages that may still be in any channels associated w/the erratum
         // (2016-04-04: Inexplicable magic! but it's the way the code has worked for
         //  at least 6 years...)
-        List<Long> cList = new ArrayList<Long>();
+        List<Long> cList = new ArrayList<>();
         for (Channel chan : errata.getChannels()) {
             cList.add(chan.getId());
         }

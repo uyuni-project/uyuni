@@ -323,7 +323,7 @@ public class SystemDetailsEditAction extends RhnAction {
         }
         else {
             // just regenerate the pillar data when nothing has changed
-            s.asMinionServer().ifPresent(m -> MinionPillarManager.INSTANCE.generatePillar(m));
+            s.asMinionServer().ifPresent(MinionPillarManager.INSTANCE::generatePillar);
         }
 
         return success;
@@ -348,16 +348,13 @@ public class SystemDetailsEditAction extends RhnAction {
         if (s.getBaseEntitlement() != null) {
             request.setAttribute(BASE_ENTITLEMENT, s.getBaseEntitlement().getLabel());
             request.setAttribute(BASE_ENTITLEMENT_PERMANENT,
-                                 Boolean.valueOf(s.getBaseEntitlement().isPermanent()));
+                    s.getBaseEntitlement().isPermanent());
         }
         else {
             request.setAttribute(BASE_ENTITLEMENT, "none");
         }
 
-        Iterator i = s.getAddOnEntitlements().iterator();
-
-        while (i.hasNext()) {
-            Entitlement e = (Entitlement) i.next();
+        for (Entitlement e : s.getAddOnEntitlements()) {
             if (log.isDebugEnabled()) {
                 log.debug("Adding Entitlement to form: " + e.getLabel() +
                         " hrl: " + e.getHumanReadableLabel());
@@ -366,12 +363,12 @@ public class SystemDetailsEditAction extends RhnAction {
         }
 
         daForm.set(UserServerPreferenceId.RECEIVE_NOTIFICATIONS,
-                Boolean.valueOf(UserManager.lookupUserServerPreferenceValue(
-                        user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS)));
+                UserManager.lookupUserServerPreferenceValue(
+                        user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS));
 
         daForm.set(UserServerPreferenceId.INCLUDE_IN_DAILY_SUMMARY,
-                Boolean.valueOf(UserManager.lookupUserServerPreferenceValue(
-                        user, s, UserServerPreferenceId.INCLUDE_IN_DAILY_SUMMARY)));
+                UserManager.lookupUserServerPreferenceValue(
+                        user, s, UserServerPreferenceId.INCLUDE_IN_DAILY_SUMMARY));
 
         daForm.set(AUTO_UPDATE,
                    s.getAutoUpdate().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
@@ -413,19 +410,15 @@ public class SystemDetailsEditAction extends RhnAction {
                        ls.getMessage("sdc.details.edit.unentitle"), UNENTITLE));
            }
 
-           Iterator i = user.getOrg().getValidBaseEntitlementsForOrg().iterator();
+            for (Entitlement e : user.getOrg().getValidBaseEntitlementsForOrg()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Adding Entitlement to list of valid ents: " +
+                            e.getLabel());
+                }
 
-           while (i.hasNext()) {
-              Entitlement e = (Entitlement) i.next();
-
-              if (log.isDebugEnabled()) {
-                  log.debug("Adding Entitlement to list of valid ents: " +
-                          e.getLabel());
-              }
-
-              entitlements.add(new LabelValueBean(
-                      e.getHumanReadableLabel(), e.getLabel()));
-           }
+                entitlements.add(new LabelValueBean(
+                        e.getHumanReadableLabel(), e.getLabel()));
+            }
         }
 
         return entitlements;

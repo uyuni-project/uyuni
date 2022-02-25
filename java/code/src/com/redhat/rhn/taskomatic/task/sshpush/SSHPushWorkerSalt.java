@@ -166,7 +166,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     saltSSHService.cleanPendingActionChainAsync(minion);
                     return Optional.empty();
                 },
-                res -> Optional.of(res));
+                Optional::of);
 
         if (!confValues.isPresent() || confValues.get().isEmpty()) {
             log.debug("No action chain execution pending on minion " + minion.getMinionId());

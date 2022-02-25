@@ -41,7 +41,6 @@ public class TestDaemon extends TaskomaticDaemon {
                 Thread.sleep(10000);
             }
             catch (InterruptedException e) {
-                return;
             }
         }
     }

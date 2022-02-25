@@ -25,7 +25,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,8 +45,8 @@ public class TaskStatusAction extends RhnAction {
 
         DataResult taskInfo = TaskManager.getTaskStatusInfo();
         // make some corrections
-        for (Iterator iter = taskInfo.iterator(); iter.hasNext();) {
-            Map info = (Map) iter.next();
+        for (Object oIn : taskInfo) {
+            Map info = (Map) oIn;
             String name = "task.status." + info.get("name");
             info.put("name", name);
             Date startTime = (Date) info.get("start_time");

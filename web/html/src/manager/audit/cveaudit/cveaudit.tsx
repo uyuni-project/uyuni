@@ -3,6 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { AsyncButton, LinkButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -80,6 +81,7 @@ type State = {
   messages: any[];
   selectedItems: any[];
   target?: any;
+  auditExecuted?: boolean;
 };
 
 class CVEAudit extends React.Component<Props, State> {
@@ -94,6 +96,7 @@ class CVEAudit extends React.Component<Props, State> {
       results: [],
       messages: [],
       selectedItems: [],
+      auditExecuted: false,
     };
   }
 
@@ -163,12 +166,14 @@ class CVEAudit extends React.Component<Props, State> {
           selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
           resultType: target,
           messages: [],
+          auditExecuted: true,
         });
       } else {
         this.setState({
           results: [],
           selectedItems: [],
           messages: data.messages,
+          auditExecuted: true,
         });
       }
     });
@@ -251,6 +256,36 @@ class CVEAudit extends React.Component<Props, State> {
               />
             </div>
           </p>
+          {this.state.auditExecuted && (
+            <div>
+              <p>
+                <a
+                  className="btn btn-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={
+                    "https://cve.mitre.org/cgi-bin/cvename.cgi?name=" + this.state.cveYear + "-" + this.state.cveNumber
+                  }
+                  data-senna-off="true"
+                >
+                  <IconTag type="external-link" />
+                  {t("MITRE CVE link")}
+                </a>
+                <a
+                  className="btn btn-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={
+                    "https://www.suse.com/security/cve/CVE-" + this.state.cveYear + "-" + this.state.cveNumber + ".html"
+                  }
+                  data-senna-off="true"
+                >
+                  <IconTag type="external-link" />
+                  {t("SUSE Security CVE link")}
+                </a>
+              </p>
+            </div>
+          )}
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
@@ -390,6 +425,7 @@ class CVEAudit extends React.Component<Props, State> {
             }
             data-senna-off="true"
           >
+            <IconTag type="item-download-csv" />
             {t("Download CSV")}
           </a>
         </TopPanel>

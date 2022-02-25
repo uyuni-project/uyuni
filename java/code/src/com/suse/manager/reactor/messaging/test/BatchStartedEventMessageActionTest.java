@@ -56,7 +56,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();
-        this.eventParser = new JsonParser<>(new TypeToken<Event>() { });
+        this.eventParser = new JsonParser<>(new TypeToken<>() {
+        });
     }
 
     public void testExecute() throws Exception {
@@ -86,7 +87,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         assertTrue(foundAction.getServerActions().stream().noneMatch(ServerAction::isFailed));
 
         BatchStartedEvent batchStartedEvent = getBatchStartedEvent(action.getId(),
-                asList(minion1, minion2), new ArrayList<MinionServer>());
+                asList(minion1, minion2), new ArrayList<>());
 
         BatchStartedEventMessage msg = new BatchStartedEventMessage(batchStartedEvent);
         messageAction.execute(msg);
@@ -120,7 +121,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         assertTrue(foundAction.getServerActions().stream().noneMatch(ServerAction::isFailed));
 
         batchStartedEvent = getBatchStartedEvent(action.getId(),
-                new ArrayList<MinionServer>(), asList(minion1, minion2));
+                new ArrayList<>(), asList(minion1, minion2));
 
         msg = new BatchStartedEventMessage(batchStartedEvent);
         messageAction.execute(msg);
@@ -172,7 +173,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
 
     private BatchStartedEvent getBatchStartedEvent(Long actionId, List<MinionServer> availableMinions,
             List<MinionServer> downMinions) throws Exception {
-        Map<String, String> placeholders = new HashMap<String, String>();
+        Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("$SUMA_ACTION_ID$", actionId.toString());
         placeholders.put("$AVAILABLE_MINIONS$", availableMinions.stream()

@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
@@ -206,7 +207,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
         if (this.lastBoot == null) {
           return null;
         }
-        return new Date(this.lastBoot.longValue() * 1000);
+        return new Date(this.lastBoot * 1000);
     }
 
     /**
@@ -404,10 +405,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the configFilesWithDifferences.
      */
     public Long getConfigFilesWithDifferences() {
-        if (configFilesWithDifferences == null) {
-            return 0L;
-        }
-        return configFilesWithDifferences;
+        return Objects.requireNonNullElse(configFilesWithDifferences, 0L);
     }
     /**
      * @param configFilesWithDifferencesIn The configFilesWithDifferences to set.
@@ -725,7 +723,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
             ls.getMessage("filter-form.jspf.days");
         }
         else if (lastCheckinDaysAgo.compareTo(7L) >= 0) {
-            buffer.append(lastCheckinDaysAgo.longValue() / 7);
+            buffer.append(lastCheckinDaysAgo / 7);
             ls.getMessage("filter-form.jspf.weeks");
         }
 

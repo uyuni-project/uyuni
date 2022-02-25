@@ -208,7 +208,7 @@ public class ConfigFileBuilder {
         try {
             if (!StringUtils.isBlank(form.getRevNumber())) {
                 Long l = Long.parseLong(form.getRevNumber());
-                if (l.longValue() <= latestRevision.getRevision()) {
+                if (l <= latestRevision.getRevision()) {
                     result = new ValidatorResult();
                     result.addError(new ValidatorError("error.config.revnum.too-old",
                             form.getPath()));
