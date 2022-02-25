@@ -9019,6 +9019,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>
+      <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+      </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
         <source>IPMI</source>
       </trans-unit>

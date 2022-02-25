@@ -17,6 +17,8 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
@@ -53,6 +55,7 @@ import static spark.Spark.post;
  * Spark controller class the CVE Audit page.
  */
 public class CVEAuditController {
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private static final Gson GSON = new GsonBuilder().create();
 
@@ -151,9 +154,7 @@ public class CVEAuditController {
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, ResultJson.error("The specified CVE number was not" +
-                    " found. This can happen for very old or yet-unknown numbers, please" +
-                    " also check it for possible typing errors."));
+            return json(res, ResultJson.error(LOC.getMessage("cveaudit.notfound")));
         }
     }
 
