@@ -1,3 +1,4 @@
+- Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
 - Provide link for CVEs
 
 -------------------------------------------------------------------
