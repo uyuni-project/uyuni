@@ -1,3 +1,4 @@
+- introduce local option for test usage
 - Use alternative certificate directory for RHEL.
 - remove possibility to change admin user
 
