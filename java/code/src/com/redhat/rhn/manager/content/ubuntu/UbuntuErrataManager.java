@@ -287,7 +287,12 @@ public class UbuntuErrataManager {
                 Set<Package> packages = e.getValue().entrySet().stream()
                         .flatMap(x -> x.getValue().stream())
                         .collect(Collectors.toSet());
-                errata.getPackages().addAll(packages);
+                if (errata.getPackages() == null) {
+                    errata.setPackages(packages);
+                }
+                else {
+                    errata.getPackages().addAll(packages);
+                }
 
                 Set<Channel> matchingChannels = e.getValue().entrySet().stream()
                         .filter(c -> !c.getValue().isEmpty())
