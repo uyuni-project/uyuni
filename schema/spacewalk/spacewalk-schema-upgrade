@@ -469,9 +469,14 @@ EOF
     print $log "SQL> ";
     print $log "$sql\n";
 
+    my @params = ('--select-mode-direct');
+    push @params, '--reportdb' if $reportdb;
+    push @params, '-';
+
+
     my $rfh;
     my $pid = IPC::Open3::open3(my $wfh, $rfh, $rfh,
-              'spacewalk-sql', '--select-mode-direct', '-') or die "Cannot execute spacewalk-sql: $!";
+              'spacewalk-sql', @params) or die "Cannot execute spacewalk-sql: $!";
     print $wfh $sql;
     print $wfh "\n";
     close $wfh;
