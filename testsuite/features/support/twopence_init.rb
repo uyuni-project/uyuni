@@ -319,7 +319,7 @@ def client_public_ip(host)
     return 'NOT_IMPLEMENTED' if node == it
   end
  # Select eth0 interface for ubuntu when deploying on AWS
-  ubuntu_interface = 'eth0' if  ENV['PROVIDER'] == 'aws' else 'ens3'
+  ubuntu_interface = ENV['PROVIDER'] == 'aws' ? 'eth0' : 'ens3'
   interface = case host
               when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
                 'eth0'
