@@ -7,17 +7,18 @@ if (codeBuild !== 0) {
   shell.exit(codeBuild);
 }
 
+// These are relative to the web folder
 const editedLicenseFilesByBuild = [
   "spacewalk-web.spec",
-  "vendors/npm.licenses.structured.js",
-  "vendors/npm.licenses.txt",
+  "html/src/vendors/npm.licenses.structured.js",
+  "html/src/vendors/npm.licenses.txt",
 ];
 
 const shouldValidateBuild = process.env.BUILD_VALIDATION !== "false";
 
 fillSpecFile().then(() => {
   if (shouldValidateBuild) {
-    // let's make a sanity check if the generated specfile with the right  licenses is commited on git
+    // Check whether the updated specfile and licenses are committed on git
     const webDir = path.resolve(__dirname, "../../");
     const { code: gitCheckCode, stdout } = shell.exec("git ls-files -m", {
       cwd: webDir,
@@ -29,7 +30,7 @@ fillSpecFile().then(() => {
     if (stdout && editedLicenseFilesByBuild.some((fileName) => stdout.includes(fileName))) {
       shell.echo(`
                 It seems the most recent ${editedLicenseFilesByBuild} files aren't on git.
-                Run "yarn build" again and commit the generated ${editedLicenseFilesByBuild} files `);
+                Run "yarn build" again and commit the following files: ${editedLicenseFilesByBuild.join(", ")}`);
       shell.exit(1);
     }
 
