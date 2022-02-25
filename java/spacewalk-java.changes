@@ -2,6 +2,12 @@
 - Provide link for CVEs
 
 -------------------------------------------------------------------
+Fri Feb 25 15:31:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * handle npe when syncing ubuntu errata
+
+-------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1
