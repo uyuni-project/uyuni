@@ -32,7 +32,8 @@ end
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
   node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
-  $server.run_until_fail("ping -c 1 #{node.private_ip}")
+  # commented out as a machine with the same IP address might exist somewhere in our engineering network
+  # $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
