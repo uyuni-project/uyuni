@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@babel/runtime v7.16.3 - The Babel Team (https://babel.dev/team)
+@babel/runtime v7.7.7 - Sebastian McKenzie <sebmck@gmail.com>
 https://github.com/babel/babel.git
 --------------------------------------------------------------------------------
 
