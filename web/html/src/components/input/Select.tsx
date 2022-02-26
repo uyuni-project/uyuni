@@ -145,7 +145,7 @@ export function Select(props: Props) {
     }
     const value = (formContext.model || {})[props.name || ""];
     if (isAsync(props) && typeof defaultValueOption !== "undefined" && getOptionValue(defaultValueOption) !== value) {
-      console.error(
+      Loggerhead.error(
         `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(
           defaultValueOption
         )}, got ${value}`

@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.11
+Version:        4.3.12
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -190,6 +190,9 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
+%if 0%{?rhel} == 8
+Recommends:       rng-tools
+%endif
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
@@ -662,6 +665,12 @@ echo "#### SYMLINKS END ####"
 %pre -n spacewalk-taskomatic
 %if !0%{?rhel}
 %service_add_pre taskomatic.service
+%endif
+
+%post
+%if 0%{?rhel} == 8
+echo "Trying to start optional rngd service..."
+systemctl start rngd ||:
 %endif
 
 %post -n spacewalk-taskomatic
