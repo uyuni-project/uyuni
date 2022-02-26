@@ -69,12 +69,12 @@ public class CVEAuditImageSerializer extends RhnXmlRpcCustomSerializer {
         // FIXME: change to new class
         CVEAuditImage image = (CVEAuditImage) value;
         Collection<ChannelIdNameLabelTriple> channels = image.getChannels();
-        List<String> channelLabels = new ArrayList<String>(channels.size());
+        List<String> channelLabels = new ArrayList<>(channels.size());
         for (ChannelIdNameLabelTriple channel : channels) {
             channelLabels.add(channel.getLabel());
         }
         Collection<ErrataIdAdvisoryPair> erratas = image.getErratas();
-        List<String> errataAdvisories = new ArrayList<String>(erratas.size());
+        List<String> errataAdvisories = new ArrayList<>(erratas.size());
         for (ErrataIdAdvisoryPair errata : erratas) {
             errataAdvisories.add(errata.getAdvisory());
         }

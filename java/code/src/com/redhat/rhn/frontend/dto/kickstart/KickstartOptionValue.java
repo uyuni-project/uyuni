@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.dto.kickstart;
 
 
+import java.util.Objects;
+
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickstartOptionValue
  * @version $Rev: 50942 $
@@ -147,13 +149,13 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
 
         KickstartOptionValue that = (KickstartOptionValue) o;
 
-        if (arg != null ? !arg.equals(that.arg) : that.arg != null) {
+        if (!Objects.equals(arg, that.arg)) {
             return false;
         }
-        if (enabled != null ? !enabled.equals(that.enabled) : that.enabled != null) {
+        if (!Objects.equals(enabled, that.enabled)) {
             return false;
         }
-        return name != null ? name.equals(that.name) : that.name == null;
+        return Objects.equals(name, that.name);
     }
 
     /** {@inheritDoc} */

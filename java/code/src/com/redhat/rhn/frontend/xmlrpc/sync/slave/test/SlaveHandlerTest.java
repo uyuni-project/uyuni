@@ -213,7 +213,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         IssSlave m4 = handler.getSlave(admin, slave.getId().intValue());
         rc = handler.setAllowedOrgs(admin,
                 m4.getId().intValue(),
-                new ArrayList<Integer>());
+                new ArrayList<>());
         assertEquals(1, rc);
         orgs = handler.getAllowedOrgs(admin, slave.getId().intValue());
         assertNotNull(orgs);

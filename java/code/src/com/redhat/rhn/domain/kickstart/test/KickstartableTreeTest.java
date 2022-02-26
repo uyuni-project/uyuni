@@ -154,7 +154,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     private KickstartableTree lookupById(Long id) throws Exception {
         Session session = HibernateFactory.getSession();
         return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
-                          .setLong("id", id.longValue())
+                          .setLong("id", id)
                           .uniqueResult();
     }
 
@@ -213,7 +213,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         Distro d = builder.setName(k.getLabel())
                 .setKernel(k.getDefaultKernelPaths()[0])
                 .setInitrd(k.getDefaultInitrdPaths()[0])
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .setBreed(k.getInstallType().getCobblerBreed())
                 .setOsVersion(k.getInstallType().getCobblerOsVersion())
                 .setArch(k.getChannel().getChannelArch().cobblerArch())
@@ -221,7 +221,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
                 .setKernelOptionsPost(k.getKernelOptionsPost())
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
-        Distro xend = builder.setKsmeta(new HashMap<String, Object>())
+        Distro xend = builder.setKsmeta(new HashMap<>())
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
         k.setCobblerId(d.getUid());
@@ -281,7 +281,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     public void testSUSEStartupPaths() throws Exception {
         File ksRoot = new File("/media");
 
-        Map<Long, String[]> archMap = new LinkedHashMap<Long, String[]>();
+        Map<Long, String[]> archMap = new LinkedHashMap<>();
         archMap.put(500L, new String[]{"i386", "/media/boot/%s/loader/linux",
                                                "/media/boot/%s/loader/initrd"});
         archMap.put(502L, new String[]{"ia64", "/media/boot/%s/image",

@@ -32,7 +32,7 @@ public class SecurityErrataOverview extends ErrataOverview
      * {@inheritDoc}
      */
     public List<String> getCallBackColumns() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("cve");
         return list;
     }
@@ -61,7 +61,6 @@ public class SecurityErrataOverview extends ErrataOverview
                 }
             }
             catch (SQLException e) {
-                return;
             }
         }
     }

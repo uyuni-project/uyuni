@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -66,8 +65,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         List<Profile> list = ProfileFactory.compatibleWithServer(server, user.getOrg());
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("List contains something other than Profiles",
                     Profile.class, o.getClass());
         }

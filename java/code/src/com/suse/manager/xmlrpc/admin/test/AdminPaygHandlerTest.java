@@ -60,7 +60,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        PaygSshDataFactory.lookupPaygSshData().forEach(data -> PaygSshDataFactory.deletePaygSshData(data));
+        PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         HibernateFactory.commitTransaction();
     }
 
@@ -199,13 +199,13 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
 
         Map<String, Object> data = new HashMap<>();
         data.put("description", "My new special instance");
-        data.put("port", Integer.valueOf(123));
+        data.put("port", 123);
         data.put("username", "username_");
         data.put("password", "password_");
         data.put("key", "key_");
         data.put("key_password", "key_password_");
         data.put("bastion_host", "bastion_host_");
-        data.put("bastion_port", Integer.valueOf(321));
+        data.put("bastion_port", 321);
         data.put("bastion_username", "bastion_username_");
         data.put("bastion_password", "bastion_password_");
         data.put("bastion_key", "bastion_key_");

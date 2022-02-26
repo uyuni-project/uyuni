@@ -50,7 +50,7 @@ public class SelectInstallationPackagesAction extends RhnAction implements
                                  HttpServletResponse response) throws Exception {
 
         RequestContext context = new RequestContext(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.CID, context.getRequiredParam(RequestContext.CID));
         params.put("mode", "install");
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);

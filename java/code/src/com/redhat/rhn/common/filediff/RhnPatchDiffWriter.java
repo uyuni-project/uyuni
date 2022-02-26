@@ -119,9 +119,8 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
 
     private void addEditLines(List<String> lines, char edit) {
         //adding lines to the edit.
-        Iterator<String> i = lines.iterator();
-        while (i.hasNext()) {
-            currentEdit.addLine(i.next(), edit);
+        for (String lineIn : lines) {
+            currentEdit.addLine(lineIn, edit);
         }
     }
 

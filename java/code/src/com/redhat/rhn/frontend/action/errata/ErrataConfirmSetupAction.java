@@ -80,7 +80,7 @@ public class ErrataConfirmSetupAction extends RhnListAction implements Maintenan
 
     private Set<Long> getSystemIds(DataResult<SystemOverview> dr) {
         return dr.stream()
-                .map(dto -> dto.getId())
+                .map(SystemOverview::getId)
                 .collect(Collectors.toSet());
     }
 

@@ -34,7 +34,7 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
-    private static ThreadLocal<User> caller = new ThreadLocal<User>();
+    private static ThreadLocal<User> caller = new ThreadLocal<>();
 
     private static ThreadLocal timer = new ThreadLocal() {
         protected synchronized Object initialValue() {
@@ -81,18 +81,13 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         StringBuffer buf = new StringBuffer();
         try {
             // Create the call in a separate buffer for reuse
-            StringBuffer call = new StringBuffer();
-            call.append(invocation.getHandlerName());
-            call.append(".");
-            call.append(invocation.getMethodName());
-            call.append("(");
-            call.append(processArguments(invocation.getHandlerName(),
-                    invocation.getMethodName(), invocation.getArguments()));
-            call.append(")");
 
             buf.append("REQUESTED FROM: ");
             buf.append(RhnXmlRpcServer.getCallerIp());
             buf.append(" CALL: ");
+            String call = invocation.getHandlerName() + "." + invocation.getMethodName() + "(" +
+                    processArguments(invocation.getHandlerName(), invocation.getMethodName(),
+                            invocation.getArguments()) + ")";
             buf.append(call);
             buf.append(" CALLER: (");
             buf.append(getCallerLogin());

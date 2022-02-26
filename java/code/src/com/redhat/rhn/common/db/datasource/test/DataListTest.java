@@ -155,14 +155,14 @@ public class DataListTest extends RhnBaseTestCase {
         }
 
         private DataResult buildBase(Map parms) {
-            ArrayList<Map<String, String>> rslts = new ArrayList<Map<String, String>>();
+            ArrayList<Map<String, String>> rslts = new ArrayList<>();
             String[] names = {
                     "RHN", "RHNDEBUG", "WEB"
             };
 
             int uid = 101;
             for (String name : names) {
-                Map<String, String> rsltRow = new HashMap<String, String>();
+                Map<String, String> rsltRow = new HashMap<>();
                 rsltRow.put("username", name);
                 rsltRow.put("user_id", "" + uid++);
                 rsltRow.put("created", "01-APR-2013 00:00");

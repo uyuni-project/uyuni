@@ -268,7 +268,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, null);
 
-        Long actionid = parent.getId().longValue();
+        Long actionid = parent.getId();
         TestUtils.arraySearch(dr.toArray(), "getId", actionid);
         assertNotEmpty(dr);
     }
@@ -331,8 +331,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private List<Action> createActionList(User user, Action... actions) {
         List<Action> returnList = new LinkedList<>();
 
-        for (int i = 0; i < actions.length; i++) {
-            returnList.add(actions[i]);
+        for (Action actionIn : actions) {
+            returnList.add(actionIn);
         }
 
         return returnList;
@@ -554,7 +554,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .map(a -> new ImmutablePair<>(
                                 a,
                                 a.getServerActions().stream()
-                                        .map(sa -> sa.getServer())
+                                        .map(ServerAction::getServer)
                                         .collect(toSet())
                         )
                 )
@@ -713,7 +713,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.rescheduleAction(a1);
         sa = (ServerAction) ActionFactory.reload(sa);
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
-        assertTrue(sa.getRemainingTries().longValue() > 0);
+        assertTrue(sa.getRemainingTries() > 0);
     }
 
     public void testInProgressSystems() throws Exception {
@@ -940,15 +940,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
 
-        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(profileList),
-                new DataResult<PackageListItem>(systemList), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<>(profileList),
+                new DataResult<>(systemList), "foo");
 
         Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
                 new Date());
         assertTrue(action instanceof PackageAction);
         PackageAction pa = (PackageAction) action;
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("action_id", pa.getId());
         DataResult dr = TestUtils.runTestQuery("package_install_list", params);
         assertEquals(2, dr.size());
@@ -985,7 +985,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("details_id", sca.getDetails().getId());
         DataResult dr = TestUtils.runTestQuery("action_subscribe_channels_list", params);
         assertEquals(2, dr.size());
@@ -1103,15 +1103,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pli.setEpoch(null);
         b.add(pli);
 
-        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
-                new DataResult<PackageListItem>(b), "foo");
+        List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<>(a),
+                new DataResult<>(b), "foo");
 
-        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = itr.next();
+        for (PackageMetadata pm : pkgs) {
             log.warn("pm [" + pm.toString() + "] compare [" +
                     pm.getComparison() + "] release [" +
                     (pm.getSystem() != null ? pm.getSystem().getRelease() :
-                        pm.getOther().getRelease()) + "]");
+                            pm.getOther().getRelease()) + "]");
         }
 //        assertEquals(1, diff.size());
 //        PackageMetadata pm = (PackageMetadata) diff.get(0);

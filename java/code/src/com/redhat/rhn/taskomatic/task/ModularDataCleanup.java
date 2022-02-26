@@ -68,7 +68,7 @@ public class ModularDataCleanup extends RhnJavaJob {
 
         List<Path> unusedModularPaths = modularDataFiles
                 .stream()
-                .map(file -> file.toPath())
+                .map(File::toPath)
                 .filter(path -> !usedModularDataAbsolutePaths.contains(path))
                 .collect(Collectors.toList());
 
@@ -81,7 +81,7 @@ public class ModularDataCleanup extends RhnJavaJob {
             log.info(String.format("Cleaning %d unused modular data files", unusedModularPaths.size()));
             if (log.isDebugEnabled()) {
                 log.debug("Cleaning: " +
-                        unusedModularPaths.stream().map(p -> p.toString()).collect(Collectors.joining(", ")));
+                        unusedModularPaths.stream().map(Path::toString).collect(Collectors.joining(", ")));
             }
         }
     }

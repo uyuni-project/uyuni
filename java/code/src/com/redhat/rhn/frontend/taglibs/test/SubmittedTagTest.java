@@ -47,8 +47,8 @@ public class SubmittedTagTest extends RhnBaseTestCase {
 
         RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
 
-        assertTrue(rout.toString().indexOf(RhnAction.SUBMITTED) > -1);
-        assertTrue(rout.toString().indexOf(SubmittedTag.HIDDEN) > -1);
-        assertTrue(rout.toString().indexOf(SubmittedTag.TRUE) > -1);
+        assertTrue(rout.toString().contains(RhnAction.SUBMITTED));
+        assertTrue(rout.toString().contains(SubmittedTag.HIDDEN));
+        assertTrue(rout.toString().contains(SubmittedTag.TRUE));
     }
 }

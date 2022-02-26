@@ -215,9 +215,9 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         PackageTest.populateTestPackage(dpkg, user.getOrg(), pname, pevr, parch);
         TestUtils.saveAndFlush(dpkg);
 
-        List<Long> list = new ArrayList<Long>(1);
+        List<Long> list = new ArrayList<>(1);
         list.add(dpkg.getId());
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("cid", debChannel.getId());
         WriteMode m = ModeFactory.getWriteMode("Channel_queries", "add_channel_packages");
         m.executeUpdate(params, list);

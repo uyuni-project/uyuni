@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,11 +88,7 @@ public class ApplyStatesAction extends Action {
         }
         resultList.get().stream()
         .sorted(
-                new Comparator<StateResult>() {
-                    public int compare(StateResult r1, StateResult r2) {
-                        return (r2.getRunNum() < r1.getRunNum()) ? 1 : -1;
-                    }
-                })
+                (r1, r2) -> (r2.getRunNum() < r1.getRunNum()) ? 1 : -1)
         .forEach(entry -> {
             if (!entry.isResult()) {
                 retval.append("<strong><span class='text-danger'>");

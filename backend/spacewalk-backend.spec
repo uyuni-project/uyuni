@@ -34,6 +34,7 @@
 %global apache_pkg httpd
 %global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
+%global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
 %endif
 
 %if 0%{?suse_version}
@@ -43,13 +44,14 @@
 %global apache_pkg apache2
 %global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
+%global sslrootcert %{_sysconfdir}/pki/trust/anchors/
 %endif
 
 Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.7
+Version:        4.3.8
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -328,6 +330,7 @@ sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefau
 
 sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*

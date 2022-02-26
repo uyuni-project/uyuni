@@ -57,8 +57,8 @@ import java.util.Set;
  */
 public class MigrationManagerTest extends BaseTestCaseWithUser {
 
-    private Set<User> origOrgAdmins = new HashSet<User>();
-    private Set<User> destOrgAdmins = new HashSet<User>();
+    private Set<User> origOrgAdmins = new HashSet<>();
+    private Set<User> destOrgAdmins = new HashSet<>();
     private Org origOrg;
     private Org destOrg;
     private Server server;  // virt host w/guests
@@ -195,15 +195,11 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         List<EntitlementServerGroup> entGroups2 = server2.getEntitledGroups();
 
         assertNotNull(entGroups);
-        entGroups.forEach(ent -> {
-            assertEquals(origOrg.getId(), ent.getOrg().getId());
-        });
+        entGroups.forEach(ent -> assertEquals(origOrg.getId(), ent.getOrg().getId()));
         assertNotNull(entGroups2);
-        entGroups2.forEach(ent -> {
-            assertEquals(origOrg.getId(), ent.getOrg().getId());
-        });
+        entGroups2.forEach(ent -> assertEquals(origOrg.getId(), ent.getOrg().getId()));
 
-        List<Server> servers = new ArrayList<Server>();
+        List<Server> servers = new ArrayList<>();
         servers.add(server);
         servers.add(server2);
         User origOrgAdmin = origOrgAdmins.iterator().next();
@@ -213,13 +209,9 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(server2.getOrg(), destOrg);
 
         assertEquals(server.getEntitledGroups().size(), entGroups.size());
-        server.getEntitledGroups().forEach(ent -> {
-            assertEquals(destOrg.getId(), ent.getOrg().getId());
-        });
+        server.getEntitledGroups().forEach(ent -> assertEquals(destOrg.getId(), ent.getOrg().getId()));
         assertEquals(server2.getEntitledGroups().size(), entGroups2.size());
-        server2.getEntitledGroups().forEach(ent -> {
-            assertEquals(destOrg.getId(), ent.getOrg().getId());
-        });
+        server2.getEntitledGroups().forEach(ent -> assertEquals(destOrg.getId(), ent.getOrg().getId()));
 
         assertNotNull(server.getHistory());
         assertTrue(server.getHistory().size() > 0);
@@ -253,7 +245,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(bootstrapServer.getOrg(), origOrg);
 
-        List<Server> servers = new ArrayList<Server>();
+        List<Server> servers = new ArrayList<>();
         servers.add(bootstrapServer);
         migrationManager.migrateServers(origOrgAdmin, destOrg, servers);
 

@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -207,9 +208,7 @@ public abstract class AbstractMinionBootstrapper {
                         // Clean up the generated key pair in case of failure
                         boolean success = !errMessage.isPresent() &&
                                 result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> {
-                            LOG.error("States failed during bootstrap: " + msg);
-                        });
+                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: " + msg));
                         return new BootstrapResult(success, Optional.of(contactMethod),
                                 Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
                     }
@@ -292,8 +291,8 @@ public abstract class AbstractMinionBootstrapper {
                                                    String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
         String mgrServer = input.getProxyId()
-                .map(proxyId -> ServerFactory.lookupById(proxyId))
-                .map(proxy -> proxy.getHostname())
+                .map(ServerFactory::lookupById)
+                .map(Server::getHostname)
                 .orElse(ConfigDefaults.get().getCobblerHost());
 
         pillarData.put("mgr_server", mgrServer);

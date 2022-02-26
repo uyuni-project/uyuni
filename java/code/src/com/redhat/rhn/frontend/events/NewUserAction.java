@@ -27,7 +27,6 @@ import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -93,8 +92,8 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         List adminList = evt.getAdmins();
         String[] adminEmails = new String[adminList.size()];
         int index = 0;
-        for (Iterator iter = adminList.iterator(); iter.hasNext();) {
-            adminEmails[index] = ((User) iter.next()).getEmail();
+        for (Object oIn : adminList) {
+            adminEmails[index] = ((User) oIn).getEmail();
             index++;
         }
         return adminEmails;

@@ -38,8 +38,8 @@ public class TestHandler extends BaseHandler {
 
         int result = 0;
 
-        for (int i = 0; i < numbers.length; i++) {
-            result += numbers[i];
+        for (int numberIn : numbers) {
+            result += numberIn;
         }
 
         return result;
@@ -75,8 +75,8 @@ public class TestHandler extends BaseHandler {
         }
 
         int result = 1;
-        for (int i = 0; i < numbers.length; i++) {
-            result *= numbers[i];
+        for (int numberIn : numbers) {
+            result *= numberIn;
         }
         return result;
     }

@@ -77,7 +77,7 @@ public class SearchAction extends RhnAction {
 
     private ActionForward doErrataSearch(ActionMapping mapping, HttpServletRequest request,
                     String searchString) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ALL_FIELDS);
         params.put(BaseSearchAction.SEARCH_STR, searchString);
         params.put(BaseSearchAction.OPT_ISSUE_DATE, Boolean.FALSE);
@@ -91,7 +91,7 @@ public class SearchAction extends RhnAction {
 
     private ActionForward doSystemSearch(ActionMapping mapping, HttpServletRequest request,
                     String searchString) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(BaseSearchAction.WHERE_TO_SEARCH, BaseSearchAction.WHERE_ALL);
         params.put(BaseSearchAction.VIEW_MODE,
                         "systemsearch_name_and_description");
@@ -103,7 +103,7 @@ public class SearchAction extends RhnAction {
 
     private ActionForward doDocsSearch(ActionMapping mapping, HttpServletRequest request,
                     String searchString) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(BaseSearchAction.VIEW_MODE, "search_content_title");
         params.put(BaseSearchAction.SEARCH_STR, searchString);
         return StrutsDelegate.getInstance().forwardParams(
@@ -112,7 +112,7 @@ public class SearchAction extends RhnAction {
 
     private ActionForward doPackageSearch(ActionMapping mapping,
                     HttpServletRequest request, String searchString) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(BaseSearchAction.VIEW_MODE,
                         BaseSearchAction.OPT_NAME_AND_SUMMARY);
         params.put(BaseSearchAction.SEARCH_STR, searchString);

@@ -62,9 +62,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
         Optional<ImageDeployedEvent> parsed = ImageDeployedEvent.parse(event);
 
         assertTrue(parsed.isPresent());
-        parsed.ifPresent(evt -> {
-            assertEquals(of(machineId), evt.getMachineId());
-        });
+        parsed.ifPresent(evt -> assertEquals(of(machineId), evt.getMachineId()));
     }
 
     /**

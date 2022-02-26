@@ -141,21 +141,21 @@ public class DownloadFile extends DownloadAction {
         }
         else if (url.startsWith("/cblr/svc/op/ks/")) {
             url = url.replaceFirst("ks", "autoinstall");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
         }
         else if (url.startsWith("/cblr/svc/op/autoinstall/")) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
         }
         else if (url.startsWith("/cobbler_api")) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER_API);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
@@ -196,7 +196,7 @@ public class DownloadFile extends DownloadAction {
      *     child    (opt)
      */
     public static Map<String, String> parseDistUrl(String url) {
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
 
 
         if (url.charAt(0) == '/') {
@@ -297,7 +297,7 @@ public class DownloadFile extends DownloadAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return mapping.findForward("error");
             }
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(TYPE, DownloadManager.DOWNLOAD_TYPE_KICKSTART);
             params.put(TREE, tree);
             params.put(CHILD, child);
@@ -313,7 +313,7 @@ public class DownloadFile extends DownloadAction {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return mapping.findForward("error");
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(TYPE, DownloadManager.DOWNLOAD_TYPE_KICKSTART);
         params.put(TREE, tree);
         params.put(FILENAME, path);
@@ -329,7 +329,7 @@ public class DownloadFile extends DownloadAction {
             ActionMapping mapping) {
         List<String> split = Arrays.asList(url.split("/"));
         Iterator<String> it = split.iterator();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         String type = getNextValue(it);
         String hash = getNextValue(it);
@@ -500,9 +500,7 @@ public class DownloadFile extends DownloadAction {
 
                 String results = "";
                 if (details.getResults() != null) {
-                    for (Iterator<ScriptResult> it = details.getResults().iterator(); it
-                            .hasNext();) {
-                        ScriptResult r = it.next();
+                    for (ScriptResult r : details.getResults()) {
                         results += r.getOutputContents();
                     }
                 }
@@ -716,7 +714,7 @@ public class DownloadFile extends DownloadAction {
                     KickstartSessionState.IN_PROGRESS)) {
                 log.debug("Incrementing counter.");
                 ksession.setPackageFetchCount(
-                        ksession.getPackageFetchCount().longValue() + 1);
+                        ksession.getPackageFetchCount() + 1);
                 ksession.setLastFileRequest(path);
             }
             log.debug("Saving session.");
@@ -811,7 +809,7 @@ public class DownloadFile extends DownloadAction {
             start = 0;
         }
         else {
-            start = Long.valueOf(rangeMatcher.group(1));
+            start = Long.parseLong(rangeMatcher.group(1));
         }
         File actualFile = new File(diskPath);
         long totalSize = actualFile.length();
@@ -819,7 +817,7 @@ public class DownloadFile extends DownloadAction {
             end = totalSize;
         }
         else {
-            end = Long.valueOf(rangeMatcher.group(2));
+            end = Long.parseLong(rangeMatcher.group(2));
         }
         if (log.isDebugEnabled()) {
             log.debug("manualServeByteRange Start    : " + start);
@@ -848,7 +846,7 @@ public class DownloadFile extends DownloadAction {
         response.addHeader("Accept-Ranges", "bytes");
         if (log.isDebugEnabled()) {
             log.debug("Added header last-modified: " + fdate);
-            log.debug("Added header Content-Length: " + String.valueOf(size));
+            log.debug("Added header Content-Length: " + size);
             log.debug("Added header Content-Range: " + "bytes " + start +
                     "-" + end + "/" + totalSize);
             log.debug("Added header Accept-Ranges: bytes");

@@ -96,7 +96,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                 request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
         ActionErrors errorMessages = new ActionErrors();
-        Set<Package> pkgsAlreadyLocked = new HashSet<Package>();
+        Set<Package> pkgsAlreadyLocked = new HashSet<>();
 
         if (!context.isSubmitted()) {
             pkgsToSelect.clear();
@@ -199,7 +199,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
-        Set<Package> pkgsToUnlock = new HashSet<Package>();
+        Set<Package> pkgsToUnlock = new HashSet<>();
         String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
         if (selectedPkgs != null) {
@@ -233,7 +233,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
-        Set<Package> pkgsToLock = new HashSet<Package>();
+        Set<Package> pkgsToLock = new HashSet<>();
         String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
         // Lock all selected packages, if they are not already in the list

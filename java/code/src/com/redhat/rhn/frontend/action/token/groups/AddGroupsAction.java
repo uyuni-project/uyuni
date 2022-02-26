@@ -65,7 +65,7 @@ public class AddGroupsAction extends BaseListAction {
                     "activation-key.groups.jsp.added",
                         new String [] {String.valueOf(helper.getSet().size())}, request);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.TOKEN_ID, key.getToken().getId().toString());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         return strutsDelegate.forwardParams
@@ -78,7 +78,7 @@ public class AddGroupsAction extends BaseListAction {
         User user = context.getCurrentUser();
         List<ManagedServerGroup> mainList = ServerGroupFactory.
                                             listManagedGroups(user.getOrg());
-        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> groups = new LinkedList<>();
         for (ManagedServerGroup sg : mainList) {
             if (!key.getServerGroups().contains(sg)) {
                 groups.add(sg);
@@ -97,7 +97,7 @@ public class AddGroupsAction extends BaseListAction {
      */
     static void setupAccessMap(RequestContext context, List<ManagedServerGroup> groups) {
         ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
-        Map<Long, Long> accessMap = new HashMap<Long, Long>();
+        Map<Long, Long> accessMap = new HashMap<>();
         for (ServerGroup sg : groups) {
             if (sgm.canAccess(context.getCurrentUser(), sg)) {
                 accessMap.put(sg.getId(), sg.getId());

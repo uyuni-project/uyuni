@@ -159,10 +159,8 @@ public class AddressTag extends TagSupport {
             LocalizationService ls = LocalizationService.getInstance();
 
             StringBuilder result = new StringBuilder();
-            StringBuilder key = new StringBuilder("address type ");
-            key.append(type);
             result.append("<strong>");
-            result.append(ls.getMessage(key.toString()));
+            result.append(ls.getMessage("address type " + type));
             result.append("</strong>");
             if (user == null) {
                 throw new IllegalArgumentException("User is null");
@@ -213,7 +211,7 @@ public class AddressTag extends TagSupport {
                       .append("/EditAddress.do?type=")
                       .append(type)
                       .append("&amp;uid=")
-                      .append(String.valueOf(user.getId()))
+                      .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Edit this address"))
                       .append("</a>");
@@ -229,7 +227,7 @@ public class AddressTag extends TagSupport {
                       .append("/EditAddress.do?type=")
                       .append(type)
                       .append("&amp;uid=")
-                      .append(String.valueOf(user.getId()))
+                      .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Fill in this address"))
                       .append("</a>");

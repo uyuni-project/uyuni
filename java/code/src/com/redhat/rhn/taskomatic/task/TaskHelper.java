@@ -103,7 +103,7 @@ public class TaskHelper {
      */
     private static List<String> getActiveOrgAdminEmails(Integer orgId) {
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admin_emails");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         DataResult<Map> dr = m.execute(params);
         List toReturn = new ArrayList<String>();
@@ -134,7 +134,7 @@ public class TaskHelper {
         }
 
         try {
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("action_id", Long.toString(action.getId()));
             params.put("force_pkg_list_refresh", Boolean.toString(false));
             new TaskoXmlRpcHandler().scheduleSingleSatBunchRun(TaskomaticApi.MINION_ACTION_BUNCH_LABEL,

@@ -37,8 +37,8 @@ public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
         List types = helper.getVirtualizationTypes();
         assertNotNull(types);
         boolean found = false;
-        for (int i = 0; i < types.size(); i++) {
-            KickstartVirtualizationType type = (KickstartVirtualizationType) types.get(i);
+        for (Object typeIn : types) {
+            KickstartVirtualizationType type = (KickstartVirtualizationType) typeIn;
             if (type.getLabel().equals(KickstartVirtualizationType.KVM_FULLYVIRT)) {
                 found = true;
             }

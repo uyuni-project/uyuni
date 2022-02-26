@@ -4,7 +4,7 @@
 @scope_visualization
 Feature: Main landing page options and preferences
 
-  Background: Clear browser cookies
+  Scenario: Clear browser cookies for main landing page validation
     When I clear browser cookies
 
   Scenario: Access the Login page

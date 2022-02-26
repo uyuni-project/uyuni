@@ -25,7 +25,6 @@ import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +62,8 @@ public class PackageCleanup extends RhnJavaJob {
             }
 
             // Delete them from the filesystem
-            for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-                Map row = (Map) iter.next();
+            for (Object candidateIn : candidates) {
+                Map row = (Map) candidateIn;
                 String path = (String) row.get("path");
                 if (log.isDebugEnabled()) {
                     log.debug("Deleting package " + path);

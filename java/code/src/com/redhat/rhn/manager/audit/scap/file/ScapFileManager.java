@@ -36,7 +36,7 @@ public class ScapFileManager {
      */
     public static List<ScapResultFile> lookupFilesForTestResult(
             XccdfTestResult testResult) {
-        List<ScapResultFile> result = new ArrayList<ScapResultFile>();
+        List<ScapResultFile> result = new ArrayList<>();
         File folder = new File(getStoragePath(testResult));
 
         // Some results may not have any files - let's not blow up

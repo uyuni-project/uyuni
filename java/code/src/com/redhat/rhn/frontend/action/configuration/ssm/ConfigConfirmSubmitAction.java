@@ -132,7 +132,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
 
         DataResult<ConfigSystemDto> systems = cm.listSystemsForConfigAction(user, null,
                 type.getLabel());
-        List<Long> servers = new LinkedList<Long>();
+        List<Long> servers = new LinkedList<>();
 
         for (ConfigSystemDto system : systems) {
             servers.add(system.getId());
@@ -146,9 +146,9 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
             user);
 
         Map<Long, Collection<Long>> serverConfigMap =
-            new HashMap<Long, Collection<Long>>();
+                new HashMap<>();
         for (Long serverId : servers) {
-            Set<Long> revisions = new HashSet<Long>();
+            Set<Long> revisions = new HashSet<>();
             for (Long cfnid : fileNames.getElementValues()) {
                 Long crid = cm.getDeployableRevisionForFileName(cfnid, serverId);
                 //add to the set if this system has a deployable revision of this

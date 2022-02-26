@@ -104,7 +104,7 @@ public abstract class RepomdWriter {
      */
     protected static void addPackageBoilerplate(SimpleContentHandler handler,
             PackageDto pkgDto) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("pkgid", sanitize(pkgId, pkgDto.getChecksum()));
         attr.addAttribute("name", sanitize(pkgId, pkgDto.getName()));

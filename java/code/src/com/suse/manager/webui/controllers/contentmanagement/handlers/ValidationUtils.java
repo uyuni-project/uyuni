@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import com.redhat.rhn.common.validator.ValidationMessage;
 import com.redhat.rhn.common.validator.ValidatorException;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ValidationUtils {
      */
     public static List<String> convertValidationErrors(ValidatorException exc) {
         return exc.getResult().getErrors().stream()
-                .map(e -> e.getLocalizedMessage())
+                .map(ValidationMessage::getLocalizedMessage)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +47,7 @@ public class ValidationUtils {
     public static Map<String, List<String>> convertFieldValidationErrors(ValidatorException exc) {
         return exc.getResult().getFieldErrors().entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, m -> m.getValue().stream()
-                        .map(e -> e.getLocalizedMessage())
+                        .map(ValidationMessage::getLocalizedMessage)
                         .collect(Collectors.toList())));
     }
 }

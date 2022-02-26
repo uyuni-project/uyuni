@@ -38,7 +38,6 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
@@ -427,7 +426,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
     }
     private void doSort(String sortedColumn) {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        Collections.sort(getPageList(), new DynamicComparator(sortedColumn,
+        getPageList().sort(new DynamicComparator(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
         resetIterator();
     }
@@ -715,28 +714,26 @@ public class ListDisplayTag extends ListDisplayTagBase {
         String formvars = rq.getParameter("formvars");
         if (formvars != null) { //get vars from form submission
             String[] keys = formvars.split(",\\s?");
-            for (int j = 0; j < keys.length; j++) {
-                if (keys[j].equals("submitted")) {
+            for (String keyIn : keys) {
+                if (keyIn.equals("submitted")) {
                     continue;
                 }
-                if (!PAGINATION_WASH_SET.contains(keys[j])) {
-                    String encodedParam = StringUtil.urlEncode(rq.getParameter(keys[j]));
+                if (!PAGINATION_WASH_SET.contains(keyIn)) {
+                    String encodedParam = StringUtil.urlEncode(rq.getParameter(keyIn));
                     enabled.append("&amp;" +
-                                   StringUtil.urlEncode(keys[j]) + "=" + encodedParam);
+                            StringUtil.urlEncode(keyIn) + "=" + encodedParam);
                 }
             }
         }
         else { //get vars from url
-            Iterator iter = rq.getParameterMap().keySet().iterator();
-            while (iter.hasNext()) {
-                String key = (String) iter.next();
+            for (String key : rq.getParameterMap().keySet()) {
                 if (key.equals("submitted") || key.equals("lower")) {
                     continue;
                 }
                 if (!PAGINATION_WASH_SET.contains(key)) {
                     String encodedParam = StringUtil.urlEncode(rq.getParameter(key));
                     enabled.append("&amp;" +
-                                   StringUtil.urlEncode(key) + "=" + encodedParam);
+                            StringUtil.urlEncode(key) + "=" + encodedParam);
                 }
             }
         }

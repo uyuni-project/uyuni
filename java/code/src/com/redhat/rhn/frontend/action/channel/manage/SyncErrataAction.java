@@ -77,7 +77,7 @@ public class SyncErrataAction extends RhnAction implements Listable<ErrataOvervi
 
         helper.execute();
         if (helper.isDispatched()) {
-            Map<String, Long> params = new HashMap<String, Long>();
+            Map<String, Long> params = new HashMap<>();
             params.put(RequestContext.CID, chan.getId());
             return getStrutsDelegate().forwardParams(mapping.findForward("submit"),
                     params);

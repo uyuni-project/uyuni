@@ -283,8 +283,8 @@ public abstract class RhnAction extends Action {
     }
 
     protected void localize(Collection lvList) {
-        for (Iterator i = lvList.iterator(); i.hasNext();) {
-            LabelValueBean lv = (LabelValueBean) i.next();
+        for (Object oIn : lvList) {
+            LabelValueBean lv = (LabelValueBean) oIn;
             lv.setLabel(LocalizationService.getInstance().getMessage(lv.getLabel()));
         }
     }

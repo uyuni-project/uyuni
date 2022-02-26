@@ -286,7 +286,7 @@ public class GuestDefinition {
             def.graphics = GuestGraphicsDef.parse(devices.getChild("graphics"));
 
             def.interfaces = ((List<Element>)devices.getChildren("interface")).stream()
-                    .map(node -> GuestInterfaceDef.parse(node)).collect(Collectors.toList());
+                    .map(GuestInterfaceDef::parse).collect(Collectors.toList());
             def.disks = ((List<Element>)devices.getChildren("disk")).stream()
                     .map(node -> GuestDiskDef.parse(node, vmInfo)).collect(Collectors.toList());
         }

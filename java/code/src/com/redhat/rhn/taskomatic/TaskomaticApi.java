@@ -87,10 +87,7 @@ public class TaskomaticApi {
         try {
             return getClient().invoke(name, args);
         }
-        catch (XmlRpcException e) {
-            throw new TaskomaticApiException(e);
-        }
-        catch (XmlRpcFault e) {
+        catch (XmlRpcException | XmlRpcFault e) {
             throw new TaskomaticApiException(e);
         }
     }
@@ -185,7 +182,7 @@ public class TaskomaticApi {
     public void scheduleSingleRepoSync(Channel chan, User user, Map<String, String> params)
                                     throws TaskomaticApiException {
 
-        Map<String, String> scheduleParams = new HashMap<String, String>();
+        Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         scheduleParams.putAll(params);
 
@@ -236,7 +233,7 @@ public class TaskomaticApi {
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
-        Map<String, String> scheduleParams = new HashMap<String, String>();
+        Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         scheduleParams.putAll(params);
 
@@ -549,7 +546,7 @@ public class TaskomaticApi {
         }
         catch (NoSuchBunchTaskException e) {
             // no such schedules available
-            return new ArrayList<TaskoSchedule>();
+            return new ArrayList<>();
         }
     }
 
@@ -561,7 +558,7 @@ public class TaskomaticApi {
      */
     @SuppressWarnings("unchecked")
     public int unscheduleInvalidRepoSyncSchedules(Org orgIn) throws TaskomaticApiException {
-        Set<String> unscheduledLabels = new HashSet<String>();
+        Set<String> unscheduledLabels = new HashSet<>();
         for (TaskoSchedule schedule : listActiveRepoSyncSchedules(orgIn)) {
             List<Long> channelIds = RepoSyncTask.getChannelIds(schedule.getDataMap());
             for (Long channelId : channelIds) {
@@ -653,7 +650,7 @@ public class TaskomaticApi {
      */
     public void scheduleStagingJob(Long actionId, Long minionId, Date stagingDateTime)
         throws TaskomaticApiException {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("action_id", Long.toString(actionId));
         params.put("staging_job", "true");
         params.put("staging_job_minion_server_id", Long.toString(minionId));
@@ -738,7 +735,7 @@ public class TaskomaticApi {
             // (those that have any other minion should NOT be unscheduled!)
             .filter(e -> e.getKey().getServerActions().stream()
                     .map(ServerAction::getServer)
-                    .filter(s -> MinionServerUtils.isMinionServer(s))
+                    .filter(MinionServerUtils::isMinionServer)
                     .allMatch(s -> e.getValue().contains(s))
             )
             .map(Map.Entry::getKey);

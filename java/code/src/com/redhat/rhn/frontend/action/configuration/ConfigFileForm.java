@@ -187,8 +187,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
             if (!cr.getConfigContent().isBinary()) {
                 set(ConfigFileForm.REV_CONTENTS, cr.getConfigContent().getContentsString());
             }
-            Boolean toolarge = cr.getConfigContent().getFileSize().
-                                                longValue() > MAX_EDITABLE_SIZE;
+            Boolean toolarge = cr.getConfigContent().getFileSize() > MAX_EDITABLE_SIZE;
             request.setAttribute(REV_TOOLARGE, toolarge);
         }
         ConfigActionHelper.setupRequestAttributes(requestContext, cr.getConfigFile(), cr);
@@ -210,7 +209,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
     protected boolean canDisplayContent(ConfigRevision cr) {
         return (cr.isFile() || cr.isSls() &&
                 !cr.getConfigContent().isBinary() &&
-                cr.getConfigContent().getFileSize().longValue() < MAX_EDITABLE_SIZE);
+                cr.getConfigContent().getFileSize() < MAX_EDITABLE_SIZE);
     }
 
     /**
@@ -259,7 +258,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
      * @param isBinary true if this file is a binary
      */
     private void setBinary(boolean isBinary) {
-        set(REV_BINARY, Boolean.valueOf(isBinary));
+        set(REV_BINARY, isBinary);
     }
 
     /**

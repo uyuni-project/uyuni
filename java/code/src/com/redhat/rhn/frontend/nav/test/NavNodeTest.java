@@ -64,10 +64,10 @@ public class NavNodeTest extends RhnBaseTestCase {
         Class c = n2.getClass();
         Field[] fields = c.getDeclaredFields();
         String privateValue = null;
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].getName().equals("name")) {
-                fields[i].setAccessible(true);
-                privateValue = (String) fields[i].get(n1);
+        for (Field fieldIn : fields) {
+            if (fieldIn.getName().equals("name")) {
+                fieldIn.setAccessible(true);
+                privateValue = (String) fieldIn.get(n1);
             }
         }
         assertEquals(randName, privateValue);
@@ -122,8 +122,8 @@ public class NavNodeTest extends RhnBaseTestCase {
                 "PermFailRedirect", "OnClick",
                 "DynamicChildren" };
 
-        for (int i = 0; i < methods.length; i++) {
-            verifyStringSetterMethod(methods[i]);
+        for (String methodIn : methods) {
+            verifyStringSetterMethod(methodIn);
         }
     }
 
@@ -132,8 +132,8 @@ public class NavNodeTest extends RhnBaseTestCase {
         String[] methods = { "Dominant", "Invisible", "OverrideSidenav",
                 "ShowChildrenIfActive" };
 
-        for (int i = 0; i < methods.length; i++) {
-            verifyBooleanSetterMethod(methods[i]);
+        for (String methodIn : methods) {
+            verifyBooleanSetterMethod(methodIn);
         }
     }
 
@@ -152,7 +152,7 @@ public class NavNodeTest extends RhnBaseTestCase {
         MethodUtils.invokeMethod(node, "set" + methodname, args);
         Boolean rc = (Boolean) MethodUtils.invokeMethod(node, "get" +
                 methodname, null);
-        assertTrue(rc.booleanValue());
+        assertTrue(rc);
     }
 
     @Override

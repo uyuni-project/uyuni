@@ -9,6 +9,9 @@ type HighlightProps = {
 
   /** flag enabling highlighting */
   enabled?: boolean;
+
+  /** CSS class to add to wrapping element */
+  className?: string;
 };
 
 /** Search and highlight part of a text */
@@ -17,12 +20,20 @@ export function Highlight(props: HighlightProps) {
   let high = props.highlight;
 
   if (!props.enabled || !high) {
-    return <span key="hl">{text}</span>;
+    return (
+      <span key="hl" className={props.className}>
+        {text}
+      </span>
+    );
   }
 
   let pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
   if (pos < 0) {
-    return <span key="hl">{text}</span>;
+    return (
+      <span key="hl" className={props.className}>
+        {text}
+      </span>
+    );
   }
 
   let chunk1: React.ReactNode = text.substring(0, pos);
@@ -38,7 +49,7 @@ export function Highlight(props: HighlightProps) {
   chunk3 = chunk3 ? <span key="m3">{chunk3}</span> : null;
 
   return (
-    <span key="hl">
+    <span key="hl" className={props.className}>
       {chunk1}
       {chunk2}
       {chunk3}

@@ -75,10 +75,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
                 sccRegManager.deregister(deregister, false);
                 credentials.stream()
-                    .filter(c -> c.isPrimarySCCCredential())
-                    .findFirst().ifPresent(primaryCredentials -> {
-                        sccRegManager.register(forwardRegistration, primaryCredentials);
-                    });
+                    .filter(Credentials::isPrimarySCCCredential)
+                    .findFirst()
+                    .ifPresent(primaryCredentials -> sccRegManager.register(forwardRegistration, primaryCredentials));
             }
         }
         catch (URISyntaxException e) {

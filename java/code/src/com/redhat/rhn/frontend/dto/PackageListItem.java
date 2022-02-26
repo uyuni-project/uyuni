@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * PackageListItem
@@ -518,7 +519,7 @@ public class PackageListItem extends IdComboDto {
      * @return a map.
      */
     public Map<String, Long> getKeyMap() {
-        Map<String, Long> ret = new HashMap<String, Long>();
+        Map<String, Long> ret = new HashMap<>();
         ret.put("name_id", getIdOne());
         ret.put("evr_id", getIdTwo());
         ret.put("arch_id", getIdThree());
@@ -539,7 +540,7 @@ public class PackageListItem extends IdComboDto {
      * @return the list of key maps associated with the given items
      */
     public static  List<Map<String, Long>> toKeyMaps(List<PackageListItem> items) {
-        List<Map<String, Long>> ret = new LinkedList<Map<String, Long>>();
+        List<Map<String, Long>> ret = new LinkedList<>();
         for (PackageListItem item : items) {
             ret.add(item.getKeyMap());
         }
@@ -644,7 +645,7 @@ public class PackageListItem extends IdComboDto {
 
         PackageListItem that = (PackageListItem) o;
 
-        return idCombo != null ? !idCombo.equals(that.idCombo) : that.idCombo != null;
+        return !Objects.equals(idCombo, that.idCombo);
     }
 
     /** {@inheritDoc} */

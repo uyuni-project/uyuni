@@ -45,7 +45,6 @@ import org.apache.struts.upload.FormFile;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -184,13 +183,10 @@ public class ManageRevisionSubmit extends RhnSetAction {
             HttpServletRequest request, Long cfid) {
         ActionMessages msg = new ActionMessages();
         Object[] args = new Object[2];
-        StringBuilder buffy = new StringBuilder();
-        buffy.append("/rhn/configuration/file/FileDetails.do?" +
-                ConfigActionHelper.FILE_ID + "=");
-        buffy.append(cfid);
-        buffy.append("&amp;" + ConfigActionHelper.REVISION_ID + "=");
-        buffy.append(revision.getId());
-        args[0] = StringEscapeUtils.escapeHtml4(buffy.toString());
+        String buffy = "/rhn/configuration/file/FileDetails.do?" +
+                ConfigActionHelper.FILE_ID + "=" + cfid + "&amp;" +
+                ConfigActionHelper.REVISION_ID + "=" + revision.getId();
+        args[0] = StringEscapeUtils.escapeHtml4(buffy);
         args[1] = revision.getRevision().toString();
 
         msg.add(ActionMessages.GLOBAL_MESSAGE,
@@ -212,23 +208,22 @@ public class ManageRevisionSubmit extends RhnSetAction {
         int successCount = 0;
         int failureCount = 0;
         boolean fileDeleted = false;
-        for (Iterator i = set.getElements().iterator(); i.hasNext();) {
-            RhnSetElement element = (RhnSetElement) i.next();
+        for (RhnSetElement element : set.getElements()) {
             //Delete individual revisions
             int code = deleteRevision(element, user);
             switch (code) {
-            case SUCCESS:
-                successCount++;
-                break;
-            case FAILURE:
-                failureCount++;
-                break;
-            case FILE_DELETED:
-                fileDeleted = true;
-                break;
-            default:
-                //This should never happen
-                break;
+                case SUCCESS:
+                    successCount++;
+                    break;
+                case FAILURE:
+                    failureCount++;
+                    break;
+                case FILE_DELETED:
+                    fileDeleted = true;
+                    break;
+                default:
+                    //This should never happen
+                    break;
             }
         }
 

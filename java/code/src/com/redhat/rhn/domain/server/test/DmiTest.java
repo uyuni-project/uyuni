@@ -41,7 +41,7 @@ public class DmiTest extends RhnBaseTestCase {
     public void testServerDmi() throws Exception {
         Dmi dmi = createTestDmi();
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("vendor", VENDOR);
         params.put("system", SYSTEM);
         params.put("product", PRODUCT);

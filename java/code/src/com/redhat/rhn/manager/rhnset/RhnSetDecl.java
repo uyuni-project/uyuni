@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class RhnSetDecl {
 
-    private static final Map<String, RhnSetDecl> DECLS = new HashMap<String, RhnSetDecl>();
+    private static final Map<String, RhnSetDecl> DECLS = new HashMap<>();
 
     // set of actions by action_id
     public static final RhnSetDecl ACTIONS_COMPLETED = make(

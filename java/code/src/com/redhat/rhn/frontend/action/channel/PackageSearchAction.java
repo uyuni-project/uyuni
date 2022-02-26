@@ -156,8 +156,8 @@ public class PackageSearchAction extends BaseSearchAction {
      */
     private List<PackageOverview> removeDuplicateNames(List<PackageOverview> pkgs) {
 
-        List<PackageOverview> result = new ArrayList<PackageOverview>();
-        Set<String> addedNames = new HashSet<String>();
+        List<PackageOverview> result = new ArrayList<>();
+        Set<String> addedNames = new HashSet<>();
         for (PackageOverview pkgOver : pkgs) {
             if (!addedNames.contains(pkgOver.getPackageName())) {
                 addedNames.add(pkgOver.getPackageName());
@@ -205,7 +205,7 @@ public class PackageSearchAction extends BaseSearchAction {
      * @return For each arch, a Map of localized display-name and value
      */
     private List<Map<String, String>> buildChannelArches() {
-        List<Map<String, String>> channelArches = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> channelArches = new ArrayList<>();
         List<ChannelArch> arches = ChannelManager.getChannelArchitectures();
         List<String> syncdLabels = ChannelManager.getSyncdChannelArches();
         for (ChannelArch arch : arches) {
@@ -224,7 +224,7 @@ public class PackageSearchAction extends BaseSearchAction {
      * @return For each available option, a Map of localized display-name and value
      */
     private List<Map<String, String>> buildSearchOptions() {
-        List<Map<String, String>> searchOptions = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> searchOptions = new ArrayList<>();
         // setup the option list for select box (view_mode).
         addOption(searchOptions, "packages.search.free_form", OPT_FREE_FORM);
         addOption(searchOptions, "packages.search.name", OPT_NAME_ONLY);

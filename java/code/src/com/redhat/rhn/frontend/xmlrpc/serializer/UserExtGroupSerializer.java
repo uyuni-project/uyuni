@@ -56,7 +56,7 @@ public class UserExtGroupSerializer extends RhnXmlRpcCustomSerializer {
 
         helper.add("name", g.getLabel());
 
-        List<String> roleList = new ArrayList<String>();
+        List<String> roleList = new ArrayList<>();
         for (Role role : g.getRoles()) {
             roleList.add(role.getLabel());
         }

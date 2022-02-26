@@ -53,7 +53,7 @@ public class AdminMonitoringHandler extends BaseHandler {
 
     private Map<String, String> toResponse(MonitoringService.MonitoringStatus status) {
         return status.getExporters().entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey(),
+                .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> toString(e.getValue(), status.getMessages().get(e.getKey()))));
     }
 

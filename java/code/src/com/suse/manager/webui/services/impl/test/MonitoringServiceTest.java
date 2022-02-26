@@ -27,10 +27,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
     public void testGetStatusWithTaskomaticEnableNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status.json"));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status.json"));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -53,10 +51,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     public void testGetStatusWithSelfMonitoringRestartNeeded() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream(jsonFile));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream(jsonFile));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -78,10 +74,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     public void testGetStatusWithTaskomaticRestartNeeded() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream(jsonFile));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream(jsonFile));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -102,10 +96,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
     public void testGetStatusNoMessage() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream(jsonFile));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream(jsonFile));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
@@ -126,10 +118,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
     public void testEnableWithTomcatRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> false);
@@ -149,10 +139,8 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
     public void testDisableWithTaskomaticRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
-                (String cmd, Optional<String> pillar) -> {
-                    return Optional.of(this.getClass()
-                            .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
-                };
+                (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
 
         MonitoringService.setExecCtlFunction(execCtl);
         MonitoringService.setTomcatJmxStatusSupplier(() -> false);

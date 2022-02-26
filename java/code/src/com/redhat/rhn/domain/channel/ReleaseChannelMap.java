@@ -138,7 +138,7 @@ public class ReleaseChannelMap implements Serializable,
      * @return the compare return
      */
     public int compareTo(ReleaseChannelMap o) {
-        List<Comparator> compar = new ArrayList<Comparator>();
+        List<Comparator> compar = new ArrayList<>();
 
         compar.add(new DynamicComparator("channel", true));
         compar.add(new DynamicComparator("channelArch", true));

@@ -48,7 +48,7 @@ public class SelectRemovePackagesAction extends RhnAction implements Listable {
                                  HttpServletResponse response) throws Exception {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("mode", "remove");
 
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);

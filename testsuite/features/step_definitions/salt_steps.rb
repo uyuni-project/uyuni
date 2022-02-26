@@ -29,25 +29,37 @@ end
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} stop", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl stop #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} stop", check_errors: false)
+  else
+    node.run("systemctl stop #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} start", check_errors: false)
+  else
+    node.run("systemctl start #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} restart", check_errors: false)
+  else
+    node.run("systemctl restart #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
@@ -173,37 +185,17 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in 'command', with: cmd
+  fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
 When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in 'target', with: minion
+  fill_in('target', with: minion, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|

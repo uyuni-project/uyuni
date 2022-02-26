@@ -232,9 +232,7 @@ public class StringUtil {
      */
     public static String replaceTags(String source, Map<String, String> params) {
         String ret = source;
-        Iterator<Map.Entry<String, String>> i = params.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry<String, String> me = i.next();
+        for (Map.Entry<String, String> me : params.entrySet()) {
             ret = StringUtils.replace(ret, "<" + me.getKey() + " />", me.getValue()
                     .toString());
         }
@@ -260,7 +258,7 @@ public class StringUtil {
      */
     public static List<String> stringToList(String convertIn) {
         StringTokenizer st = new StringTokenizer(convertIn);
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         while (st.hasMoreTokens()) {
             retval.add(st.nextToken());
         }
@@ -327,7 +325,7 @@ public class StringUtil {
         Matcher next = startUrl.matcher(retval);
         boolean done = false;
         int previous = 0; // the starting index of the previously found url
-        List<String> pieces = new LinkedList<String>();
+        List<String> pieces = new LinkedList<>();
 
         /*
          * Separates the string into a list. Break points for different tokens
@@ -437,7 +435,7 @@ public class StringUtil {
         int end = -1;
 
         // end characters
-        Set<Character> endChars = new HashSet<Character>();
+        Set<Character> endChars = new HashSet<>();
         endChars.add('.');
         endChars.add(',');
 
@@ -770,7 +768,7 @@ public class StringUtil {
     public static Map<String, String> convertOptionsToMap(String options, String errorKey,
                                                                 String separator)
         throws ValidatorException {
-        Map<String, String> toReturn = new HashMap<String, String>();
+        Map<String, String> toReturn = new HashMap<>();
         StringTokenizer token = new StringTokenizer(options, separator);
         while (token.hasMoreElements()) {
             String option = token.nextToken();
@@ -821,8 +819,8 @@ public class StringUtil {
      */
     public static String getHexString(byte[] b) {
         String result = "";
-        for (int i = 0; i < b.length; i++) {
-            result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+        for (byte bIn : b) {
+            result += Integer.toString((bIn & 0xff) + 0x100, 16).substring(1);
         }
         return result;
     }
@@ -900,8 +898,8 @@ public class StringUtil {
             int codeLines = 0;
 
             String[] lines = script.split(System.getProperty("line.separator"));
-            for (int i = 0; i < lines.length; i++) {
-                String line = StringUtil.nullOrValue(lines[i]);
+            for (String lineIn : lines) {
+                String line = StringUtil.nullOrValue(lineIn);
                 if (line != null) {
                     line = line.trim();
                     if (line.startsWith("#!/") && !hasShellDeclaration) {
