@@ -1,3 +1,4 @@
+- Corrected source URLs in spec file.
 - RHEL certificate compatibility.
 - Reuse existing certificate file detection.
 - Require rng-tools for EL8 to generate more entropy faster.
