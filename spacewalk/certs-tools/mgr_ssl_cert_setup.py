@@ -479,10 +479,7 @@ def deployCAUyuni(certData):
             break
     # in case a systemd timer try to do the same
     time.sleep(3)
-    if os.path.exists("/usr/sbin/update-ca-certificates"):
-        os.system("/usr/sbin/update-ca-certificates")
-    else:
-        os.system("update-ca-trust extract")
+    os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
 
 
 def checks(server_key_content,server_cert_content, certData):

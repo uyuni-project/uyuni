@@ -111,6 +111,10 @@ FQDN=$(hostname -f)
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
 CA_CERT=/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+if [ ! -d /etc/pki/trust/anchors ]; then
+    CA_CERT=/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT
+fi
+
 
 create() {
     [ ! -s "$SSL_CERT" ] && {

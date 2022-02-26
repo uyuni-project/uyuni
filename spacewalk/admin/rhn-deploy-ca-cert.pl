@@ -96,11 +96,7 @@ if ($ret) {
 }
 # give systemd timer a bit time to finish
 sleep(3);
-if ( -e '/usr/sbin/update-ca-certificates' ) {
-    $ret = system('/usr/sbin/update-ca-certificates');
-} else {
-    $ret = system('update-ca-trust', 'extract');
-}
+$ret = system('/usr/share/rhn/certs/update-ca-cert-trust.sh');
 
 if ($ret) {
   die "Could not update CA trusts.";
