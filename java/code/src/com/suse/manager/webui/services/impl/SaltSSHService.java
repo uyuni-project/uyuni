@@ -582,14 +582,14 @@ public class SaltSSHService {
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         kv -> kv.getValue().fold(
-                                err -> new Result<>(Xor.left(err)),
+                                err -> new Result<T>(Xor.left(err)),
                                 succ -> {
                                     if (succ.getReturn().isPresent()) {
-                                        return new Result<>(Xor.right(
+                                        return new Result<T>(Xor.right(
                                                 succ.getReturn().get()));
                                     }
                                     else {
-                                        return new Result<>(Xor.left(
+                                        return new Result<T>(Xor.left(
                                                 succ.getStderr().map(stderr ->
                                                         new GenericError("Error unwrapping ssh return: " + stderr))
                                                         .orElse(new GenericError(
