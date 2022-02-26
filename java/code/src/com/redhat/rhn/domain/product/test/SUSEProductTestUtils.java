@@ -513,7 +513,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
         .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
         .forEach(pr -> {
             try {
-                if (pr.getParentChannelLabel() != null && ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
+                if (pr.getParentChannelLabel() != null &&
+                        ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
                     csm.addChannel(pr.getParentChannelLabel(), null);
                 }
                 csm.addChannel(pr.getChannelLabel(), null);
