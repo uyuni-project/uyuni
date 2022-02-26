@@ -2879,6 +2879,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testGetInstalledProducts() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        admin = TestUtils.reload(admin);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         assertNotNull(server);
