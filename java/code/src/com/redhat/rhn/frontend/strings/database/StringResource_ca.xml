@@ -8,7 +8,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target>S'ha ficat a la cua</target>
+        <target>A la cua</target>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
@@ -56,6 +56,7 @@
       <!--  Human Readable version of the entitlement labels -->
       <trans-unit id="bootstrap_entitled" xml:space="preserve">
           <source>Bootstrap</source>
+        <target>Bootstrap</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -3139,13 +3140,13 @@
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="Asia/Shanghai" xml:space="preserve">
+      <trans-unit id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
