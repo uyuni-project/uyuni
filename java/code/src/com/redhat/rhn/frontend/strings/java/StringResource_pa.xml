@@ -10537,6 +10537,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Unexpected error while adding the product.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
