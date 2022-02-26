@@ -47,7 +47,7 @@ if not os.path.exists(ROOT_CA_HTTP_DIR):
 CA_TRUST_DIR = os.path.join(PKI_DIR, "trust", "anchors")
 if not os.path.exists(CA_TRUST_DIR):
     # Red Hat
-    CA_TRUST_DIR = os.path.join(PKI_DIR, "ca-trust", "anchors")
+    CA_TRUST_DIR = os.path.join(PKI_DIR, "ca-trust", "source", "anchors")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,10 +479,7 @@ def deployCAUyuni(certData):
             break
     # in case a systemd timer try to do the same
     time.sleep(3)
-    if os.path.exists("/usr/sbin/update-ca-certificates"):
-        os.system("/usr/sbin/update-ca-certificates")
-    else:
-        os.system("update-ca-trust extract")
+    os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
 
 
 def checks(server_key_content,server_cert_content, certData):

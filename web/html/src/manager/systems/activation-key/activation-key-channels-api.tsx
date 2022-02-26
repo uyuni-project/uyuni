@@ -9,7 +9,7 @@ const msgMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-export type ChannelDto = {
+export type Channel = {
   id: number;
   name: string;
   custom: boolean;
@@ -17,13 +17,13 @@ export type ChannelDto = {
   recommended: boolean;
 };
 
-export type availableChannelsType = Array<{ base: ChannelDto | null | undefined; children: Array<ChannelDto> }>;
+export type availableChannelsType = Array<{ base: Channel | null | undefined; children: Array<Channel> }>;
 
 type ChildrenArgsProps = {
   messages: any[];
   loading: boolean;
   loadingChildren: boolean;
-  availableBaseChannels: ChannelDto[];
+  availableBaseChannels: Channel[];
   availableChannels: availableChannelsType;
   fetchChildChannels: (baseId: number) => Promise<any>;
 };
@@ -40,7 +40,7 @@ type ActivationKeyChannelsState = {
   messages: Array<any>;
   loading: boolean;
   loadingChildren: boolean;
-  availableBaseChannels: Array<ChannelDto>; //[base1, base2],
+  availableBaseChannels: Array<Channel>; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
   fetchedData: Map<number, Array<number>>;
 };
