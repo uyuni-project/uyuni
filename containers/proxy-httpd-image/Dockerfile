@@ -1,4 +1,4 @@
-#!BuildTag: proxy-httpd:latest proxy-httpd:%PKG_VERSION% proxy-httpd:%PKG_VERSION%.%RELEASE%
+#!BuildTag: proxy-httpd:latest proxy-httpd:%PKG_VERSION% proxy-httpd:%PKG_VERSION%.%RELEASE% proxy-httpd:beta
 
 FROM registry.suse.com/suse/sle15:15.3
 
@@ -13,9 +13,12 @@ RUN sh add_repos.sh ${PRODUCT_REPO}
 # labelprefix=org.opensuse.uyuni.proxy-httpd
 LABEL org.opencontainers.image.title="Proxy httpd container"
 LABEL org.opencontainers.image.description="Image contains a Proxy component to serve http requests"
-LABEL org.opensuse.reference="registry.opensuse.org/proxy-httpd:%PKG_VERSION%.%RELEASE%"
-LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="Uyuni project"
+LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
+LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.reference="registry.opensuse.org/proxy-httpd:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
 # http(s)

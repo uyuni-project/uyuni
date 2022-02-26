@@ -1,4 +1,4 @@
-#!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE%
+#!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE% proxy-salt-broker:beta
 
 FROM registry.suse.com/suse/sle15:15.3 AS fat
 
@@ -29,9 +29,12 @@ COPY --from=fat /target /
 # labelprefix=org.opensuse.uyuni.proxy-salt-broker
 LABEL org.opencontainers.image.title="Proxy salt-broker container"
 LABEL org.opencontainers.image.description="Image contains a Proxy component to forward Salt connections"
-LABEL org.opensuse.reference="registry.opensuse.org/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
-LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="Uyuni project"
+LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
+LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.reference="registry.opensuse.org/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
 # Salt
