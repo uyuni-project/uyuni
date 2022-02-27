@@ -74,6 +74,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -82,7 +83,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -184,8 +185,8 @@ public class ContentManager {
         return lookupProject(label, user)
                 .map(cp -> {
                     ContentPropertiesValidator.validateProjectProperties(label, newName.orElse(cp.getName()), user);
-                    newName.ifPresent(name -> cp.setName(name));
-                    newDesc.ifPresent(desc -> cp.setDescription(desc));
+                    newName.ifPresent(cp::setName);
+                    newDesc.ifPresent(cp::setDescription);
                     return cp;
                 })
                 .orElseThrow(() -> new EntityNotExistsException(label));
@@ -203,7 +204,7 @@ public class ContentManager {
     public int removeProject(String label, User user) {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
-                .map(cp -> ContentProjectFactory.remove(cp))
+                .map(ContentProjectFactory::remove)
                 .orElseThrow(() -> new EntityNotExistsException(label));
     }
 
@@ -259,7 +260,7 @@ public class ContentManager {
      */
     public static List<ContentEnvironment> listProjectEnvironments(String projectLabel, User user) {
         return lookupProject(projectLabel, user)
-                .map(cp -> ContentProjectFactory.listProjectEnvironments(cp))
+                .map(ContentProjectFactory::listProjectEnvironments)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
     }
 
@@ -300,8 +301,8 @@ public class ContentManager {
                             newName.orElse(env.getName()),
                             env.getLabel() // label can't be changed
                     );
-                    newName.ifPresent(name -> env.setName(name));
-                    newDescription.ifPresent(desc -> env.setDescription(desc));
+                    newName.ifPresent(env::setName);
+                    newDescription.ifPresent(env::setDescription);
                     return env;
                 })
                 .orElseThrow(() -> new EntityNotExistsException(envLabel));
@@ -606,7 +607,7 @@ public class ContentManager {
 
         Map<Boolean, List<Channel>> envChannels = env.getTargets().stream()
                 .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
-                .map(tgt -> tgt.getChannel())
+                .map(SoftwareEnvironmentTarget::getChannel)
                 .collect(partitioningBy(Channel::isBaseChannel));
         List<Channel> baseChannels = envChannels.get(true);
         List<Channel> childChannels = envChannels.get(false);
@@ -681,27 +682,27 @@ public class ContentManager {
     private void buildSoftwareSources(ContentEnvironment firstEnv, boolean async, User user) {
         ContentProject project = firstEnv.getContentProject();
         Channel leader = project.lookupSwSourceLeader()
-                .map(l -> l.getChannel())
+                .map(SoftwareProjectSource::getChannel)
                 .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + project.getLabel() +
                         " with no base channel associated with it."));
         Stream<Channel> otherChannels = project.getSources().stream()
                 .flatMap(s -> stream(s.asSoftwareSource()))
                 .filter(src -> !src.getChannel().equals(leader) && src.getState() != DETACHED)
-                .map(s -> s.getChannel());
+                .map(SoftwareProjectSource::getChannel);
 
         alignEnvironment(firstEnv, leader, otherChannels, project.getActiveFilters(), async, user);
 
         Map<ProjectSource.State, List<ProjectSource>> sourcesToHandle = project.getSources().stream()
-                .collect(groupingBy(src -> src.getState()));
+                .collect(groupingBy(ProjectSource::getState));
         // newly attached sources get built
         sourcesToHandle.getOrDefault(ATTACHED, emptyList()).stream()
                 .forEach(src -> src.setState(BUILT));
         // remove the detached sources
         sourcesToHandle.getOrDefault(DETACHED, emptyList()).stream()
-                .forEach(src -> removeSource(src));
+                .forEach(this::removeSource);
 
         Map<ContentProjectFilter.State, List<ContentProjectFilter>> filtersToHandle =
-                project.getProjectFilters().stream().collect(groupingBy(f -> f.getState()));
+                project.getProjectFilters().stream().collect(groupingBy(ContentProjectFilter::getState));
         // newly attached filters get built
         filtersToHandle.getOrDefault(ContentProjectFilter.State.ATTACHED, emptyList()).stream()
                 .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
@@ -709,7 +710,7 @@ public class ContentManager {
                 .forEach(f -> f.setState(ContentProjectFilter.State.BUILT));
         // remove the detached filters
         filtersToHandle.getOrDefault(ContentProjectFilter.State.DETACHED, emptyList()).stream()
-                .forEach(f -> removeFilter(f));
+                .forEach(this::removeFilter);
 
     }
 
@@ -741,13 +742,13 @@ public class ContentManager {
 
         // remove targets that are not needed anymore
         Set<SoftwareEnvironmentTarget> newTargets = newSrcTgtPairs.stream()
-                .map(pair -> pair.getRight())
+                .map(Pair::getRight)
                 .collect(toSet());
         env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
                 .filter(tgt -> !newTargets.contains(tgt))
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
-                .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
+                .forEach(ContentProjectFactory::purgeTarget);
 
 
         // Resolve filters for dependencies
@@ -756,9 +757,8 @@ public class ContentManager {
             DependencyResolutionResult result = resolver.resolveFilters(filters);
 
             // align the contents
-            newSrcTgtPairs.forEach(srcTgt -> {
-                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user);
-            });
+            newSrcTgtPairs.forEach(srcTgt -> alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(),
+                    result.getFilters(), async, user));
         }
         catch (DependencyResolutionException e) {
             // Build shouldn't be allowed if dependency resolution fails
@@ -1023,6 +1023,8 @@ public class ContentManager {
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         tgtChannel.getPackages().clear();
+        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+                srcChannel.getPackages().size(), filters.size()));
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
         ChannelFactory.save(tgtChannel);
@@ -1044,6 +1046,8 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+                src.getErratas().size(), errataFilters.size()));
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
@@ -1074,26 +1078,26 @@ public class ContentManager {
      * @return Pair containing (left side) a set of entities not filtered-out
      * and (right side) a set of entities filtered out
      */
-    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
-            Collection<? extends ContentFilter<T>> filters) {
+    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities, Collection<? extends ContentFilter<T>> filters) {
         Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
                 .collect(groupingBy(ContentFilter::getRule));
+        List<ContentFilter<T>> denyFilters = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList());
+        List<ContentFilter<T>> allowFilters = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList());
 
-        Predicate<T> denyPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList()).stream()
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+        // First add the denied packages by testing all DENY filters against a package, and then filter out any package
+        // that is explicitly allowed by testing all ALLOW filters against the same package and negating the result.
+        Set<T> denied = entities.stream()
+                .filter(e -> denyFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
+                .filter(e -> !allowFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
+                .collect(Collectors.toUnmodifiableSet());
 
-        Predicate<T> allowPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList()).stream()
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
-
-        Predicate<T> compositePredicate = denyPredicate.negate().or(allowPredicate);
-        Map<Boolean, Set<T>> filteredEntities = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
-        return Pair.of(filteredEntities.get(true), filteredEntities.get(false));
+        Set<T> allowed = new HashSet<>(entities);
+        allowed.removeAll(denied);
+        return Pair.of(allowed, denied);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {
-        return packages.stream().map(p -> p.getId()).collect(toList());
+        return packages.stream().map(Package::getId).collect(toList());
     }
 
     /**

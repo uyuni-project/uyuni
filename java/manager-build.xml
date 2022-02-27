@@ -35,7 +35,6 @@
   <property name="branding.css.dir" value="${branding.dir}/css"/>
   <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
   <property name="js.dir" value="${basedir}/../web/html/src/dist/javascript"/>
-  <property name="js.vendors.dir" value="${basedir}/../web/html/src/dist/vendors"/>
   <property name="js.components.dir" value="${basedir}/../web/html/src"/>
 
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
@@ -113,7 +112,6 @@
     >
       <src>
         <path location="code/src" />
-        <path location="code/scripts/src" />
         <path location="code/internal/src" />
       </src>
     </javac>
@@ -249,9 +247,6 @@
     </exec>
     <exec failonerror="true" executable="rsync">
       <arg line="-a --rsh '${rsync.arg.rsh}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
-    </exec>
-    <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
     </exec>
   </target>
 

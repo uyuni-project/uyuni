@@ -87,6 +87,7 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
@@ -147,6 +148,7 @@ public class HandlerFactory {
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
+        factory.addHandler("admin.payg", new AdminPaygHandler(taskomaticApi));
         factory.addHandler("ansible", new AnsibleHandler(new AnsibleManager(GlobalInstanceHolder.SALT_API)));
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());

@@ -185,7 +185,7 @@ Serializable {
         if (ad6 == null) {
             return null;
         }
-        ArrayList<String> addresses = new ArrayList<String>();
+        ArrayList<String> addresses = new ArrayList<>();
 
         for (ServerNetAddress6 a : ad6) {
             addresses.add(a.getAddress());

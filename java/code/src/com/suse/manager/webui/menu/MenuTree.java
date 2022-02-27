@@ -251,14 +251,14 @@ public class MenuTree {
     private MenuItem getPatchesNode(User user) {
         return new MenuItem("Patches").withIcon("spacewalk-icon-patches")
             .addChild(new MenuItem("Patch List").withDir("/rhn/errata")
-                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/errata/AllErrata.do")
-                            .withAltUrl("/rhn/errata/AllBugErrata.do")
-                            .withAltUrl("/rhn/errata/AllEnhancementErrata.do")
-                            .withAltUrl("/rhn/errata/AllSecurityErrata.do"))
                     .addChild(new MenuItem("Relevant").withPrimaryUrl("/rhn/errata/RelevantErrata.do")
                             .withAltUrl("/rhn/errata/RelevantBugErrata.do")
                             .withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
-                            .withAltUrl("/rhn/errata/RelevantSecurityErrata.do")))
+                            .withAltUrl("/rhn/errata/RelevantSecurityErrata.do"))
+                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/errata/AllErrata.do")
+                            .withAltUrl("/rhn/errata/AllBugErrata.do")
+                            .withAltUrl("/rhn/errata/AllEnhancementErrata.do")
+                            .withAltUrl("/rhn/errata/AllSecurityErrata.do")))
             .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/errata/Search.do"))
             .addChild(new MenuItem("Manage Errata").withPrimaryUrl("/rhn/errata/manage/Errata.do")
                     .withAltUrl("/rhn/errata/manage/Create.do").withAltUrl("/rhn/errata/manage/CreateSubmit.do")
@@ -410,7 +410,11 @@ public class MenuTree {
                     .addChild(new MenuItem("Mirror Credentials")
                             .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
                     .addChild(new MenuItem("Products")
-                            .withPrimaryUrl("/rhn/manager/admin/setup/products")))
+                            .withPrimaryUrl("/rhn/manager/admin/setup/products"))
+                    .addChild(new MenuItem("Pay-as-you-go")
+                        .withPrimaryUrl("/rhn/manager/admin/setup/payg")
+                        .withDir("/rhn/manager/admin/setup/payg")
+                        .withDir("/rhn/manager/admin/setup/payg/create")))
             .addChild(new MenuItem("Organizations")
                     .withPrimaryUrl("/rhn/admin/multiorg/Organizations.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgDetails.do")
@@ -633,13 +637,13 @@ public class MenuTree {
     public String getTitlePage(PageContext pageContext) {
         String title = "";
         Optional<MenuItem> activeItem = getMenuTree(pageContext).stream()
-                .filter(node -> node.getActive()).findFirst();
+                .filter(MenuItem::getActive).findFirst();
         while (activeItem.isPresent()) {
           title += " - " + activeItem.get().getLabel();
           activeItem = activeItem.get().getSubmenu() == null ?
                   Optional.empty() :
                   activeItem.get().getSubmenu().stream()
-                      .filter(node -> node.getActive()).findFirst();
+                      .filter(MenuItem::getActive).findFirst();
         }
         return title;
     }

@@ -26,9 +26,9 @@ import java.util.Set;
 
 public class HtmlTag extends BaseTag {
 
-    private static final Set<String> VOID_ELEMENTS = new HashSet<String>(Arrays.asList(
-        "area", "base", "br", "col", "command", "embed", "hr", "img",
-        "input", "keygen", "link", "meta", "param", "source", "track", "wbr"));
+    private static final Set<String> VOID_ELEMENTS = new HashSet<>(Arrays.asList(
+            "area", "base", "br", "col", "command", "embed", "hr", "img",
+            "input", "keygen", "link", "meta", "param", "source", "track", "wbr"));
 
     /**
      * Public constructor

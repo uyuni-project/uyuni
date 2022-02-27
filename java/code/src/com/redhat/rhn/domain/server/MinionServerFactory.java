@@ -207,8 +207,13 @@ public class MinionServerFactory extends HibernateFactory {
                 .getNamedQuery("Action.findMinionSummaries")
                 .setParameter("id", actionId)
                 .getResultList()).stream()
-                .map(row -> new MinionSummary((Long)row[0], row[1].toString(), row[2].toString(), row[3].toString(),
-                        Optional.ofNullable(row[4].toString())))
+                .map(row -> new MinionSummary(
+                        (Long)row[0],
+                        row[1].toString(),
+                        row[2].toString(),
+                        row[3].toString(),
+                        Optional.ofNullable(row[4].toString()),
+                        row[5].toString()))
                 .collect(toList());
     }
 
@@ -232,7 +237,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static String getMinionId(Long serverId) throws UnsupportedOperationException {
         return ServerFactory.lookupById(serverId)
                 .asMinionServer()
-                .map(m -> m.getMinionId())
+                .map(MinionServer::getMinionId)
                 .orElseThrow(() -> new UnsupportedOperationException("Salt minion not found, id: " + serverId));
     }
 

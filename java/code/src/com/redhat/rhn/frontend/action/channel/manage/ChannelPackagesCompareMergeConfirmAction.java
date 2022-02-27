@@ -100,7 +100,7 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
             set.clear();
             RhnSetManager.store(set);
 
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.CID, cid);
             return getStrutsDelegate().forwardParams(mapping.findForward("complete"),
                     params);
@@ -113,8 +113,8 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
     private void mergePackages(User user, Channel chan, RhnSet set) {
         PackageManager.mergeChannelPackagesFromSet(user, chan.getId(), set);
         chan = (Channel) ChannelFactory.reload(chan);
-        List<Long> chanList = new ArrayList<Long>();
-        List<Long> packList = new ArrayList<Long>();
+        List<Long> chanList = new ArrayList<>();
+        List<Long> packList = new ArrayList<>();
         chanList.add(chan.getId());
         packList.addAll(set.getElementValues());
         ErrataCacheManager.insertCacheForChannelPackagesAsync(chanList, packList);

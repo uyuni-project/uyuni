@@ -1,3 +1,21 @@
+  * Added gettext build requirement for RHEL.
+  * Removed RHEL 5 references.
+
+-------------------------------------------------------------------
+Tue Feb 15 10:00:44 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Include group formulas configuration in spacecmd group_backup and
+    spacecmd group_restore. This changes backup format to json,
+    previously used plain text is still supported for reading (bsc#1190462)
+  * Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
+
+-------------------------------------------------------------------
+Mon Jan 24 11:16:36 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Update translation strings
+
 -------------------------------------------------------------------
 Tue Jan 18 13:37:17 CET 2022 - jgonzalez@suse.com
 

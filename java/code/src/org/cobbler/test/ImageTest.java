@@ -127,7 +127,7 @@ public class ImageTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings("unchecked")
     private void assertImageKeyEquals(String expected, String key) {
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        HashMap<String, Object> criteria = new HashMap<>();
         criteria.put("uid", image.getId());
         List<Map<String, Object>> result = (List<Map<String, Object>>) connection
             .invokeMethod("find_image", criteria);

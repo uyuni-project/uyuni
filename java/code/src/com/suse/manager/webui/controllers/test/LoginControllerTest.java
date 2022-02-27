@@ -117,7 +117,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials(user.getLogin(), "password")),
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -132,7 +132,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "wrong")),
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -148,7 +148,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "")),
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -164,7 +164,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "")),
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -180,7 +180,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("017324193274913741974",
                         "017324193274913741974")), params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -199,7 +199,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
-                new HashMap<String, String>(),
+                new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials(u.getLogin(),
                         "password")), params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());

@@ -1,3 +1,14 @@
+  * Define report_db_sslroot default during package build.
+
+-------------------------------------------------------------------
+Tue Feb 15 10:01:39 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * define rhn.conf template for reporting database configuration
+  * SLES PAYG client support on cloud
+  * Ignore local modules when querying repositories.
+  * Fixed mirror link usage for dnf.
+
 -------------------------------------------------------------------
 Tue Jan 18 13:49:59 CET 2022 - jgonzalez@suse.com
 

@@ -70,6 +70,7 @@ except ImportError:
     HAS_PSYCOPG2 = False
 
 # Import salt libs
+import salt.version
 import salt.ext.tornado
 import salt.utils.event
 import json
@@ -166,7 +167,11 @@ class Responder:
 
     @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
-        tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
+        # FIXME: Drop once we only use Salt >= 3004
+        if salt.version.SaltStackVersion(*salt.version.__version_info__).major < 3004:
+            tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
+        else:
+            tag, data = self.event_bus.unpack(raw)
         self._insert(tag, data)
 
     def db_keepalive(self):

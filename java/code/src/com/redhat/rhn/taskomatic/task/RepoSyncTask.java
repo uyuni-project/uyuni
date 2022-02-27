@@ -24,13 +24,16 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.content.ubuntu.UbuntuErrataManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +64,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
         String[] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
         List<String> ltrue = Arrays.asList("true", "1");
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         for (String p : lparams) {
             if (context.getJobDetail().getJobDataMap().containsKey(p)) {
                 if (ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString()
@@ -111,6 +114,12 @@ public class RepoSyncTask extends RhnJavaJob {
                 log.error("No such channel with channel_id " + channelId);
             }
         }
+        try {
+            UbuntuErrataManager.sync(new HashSet<>(channelIds));
+        }
+        catch (IOException e) {
+            log.error(e);
+        }
     }
 
     /**
@@ -149,7 +158,7 @@ public class RepoSyncTask extends RhnJavaJob {
     }
 
     private static List<String> getSyncCommand(Channel c, List<String> params) {
-        List<String> cmd = new ArrayList<String>();
+        List<String> cmd = new ArrayList<>();
         cmd.add(Config.get().getString(ConfigDefaults.SPACEWALK_REPOSYNC_PATH,
                 "/usr/bin/spacewalk-repo-sync"));
         cmd.add("--channel");

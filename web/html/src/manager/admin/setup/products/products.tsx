@@ -67,6 +67,12 @@ const _SETUP_WIZARD_STEPS = [
     url: window.location.href.split(/\?|#/)[0],
     active: true,
   },
+  {
+    id: "wizard-step-suse-payg",
+    label: "Pay-as-you-go",
+    url: "/rhn/manager/admin/setup/payg",
+    active: false,
+  },
 ];
 
 const _PRODUCT_STATUS = {
@@ -133,7 +139,7 @@ class ProductsPageWrapper extends React.Component {
   refreshServerData = () => {
     this.setState({ loading: true });
     var currentObject = this;
-    let resultMessages: MessageType[] = [];
+    let resultMessages: MessageType[] = currentObject.state.errors;
     if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
       resultMessages = MessagesUtils.warning(
         t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown.")
@@ -186,22 +192,30 @@ class ProductsPageWrapper extends React.Component {
 
   submit = () => {
     const currentObject = this;
-    currentObject.setState({ addingProducts: true });
+    currentObject.setState({ addingProducts: true, errors: [] });
     Network.post(
       "/rhn/manager/admin/setup/products",
       currentObject.state.selectedItems.map((i) => i.identifier)
     )
       .then((data) => {
-        // returned data format is { productId : isFailedFlag }
-        let failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier]);
+        // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
+        let failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
         let resultMessages: MessageType[] | null = null;
         if (failedProducts.length === 0) {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
         } else {
           resultMessages = MessagesUtils.warning(
-            "The following product installations failed: '" +
-              failedProducts.reduce((a, b) => a.label + ", " + b.label) +
-              "'. Please check log files."
+            <>
+              <p>The following product installations failed:</p>
+              <ul>
+                {failedProducts.map((a) => (
+                  <li>
+                    {a.label}: {data[a.identifier]}
+                  </li>
+                ))}
+              </ul>
+              <p className="margin-bottom-xs">Please check log files.</p>
+            </>
           );
         }
         currentObject.setState({
@@ -221,7 +235,8 @@ class ProductsPageWrapper extends React.Component {
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
     Network.post("/rhn/manager/admin/setup/products", [id])
       .then((data) => {
-        if (!data[id]) {
+        // if the id is not present in the response or it is null, the operation went fine.
+        if (data[id] == null) {
           currentObject.setState({
             errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
             scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
@@ -229,9 +244,7 @@ class ProductsPageWrapper extends React.Component {
           });
         } else {
           currentObject.setState({
-            errors: MessagesUtils.warning(
-              "The product '" + name + "' sync was not scheduled correctly. Please check server log files."
-            ),
+            errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
             scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
           });
         }

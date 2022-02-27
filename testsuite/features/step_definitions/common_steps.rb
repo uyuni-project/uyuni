@@ -7,6 +7,7 @@ require 'pathname'
 
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
+  attach File.open(filename, 'rb'), 'image/png'
 end
 
 When(/^I wait for "(\d+)" seconds?$/) do |arg1|
@@ -30,6 +31,7 @@ end
 Then(/^the kernel for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   kernel_version, _code = node.run('uname -r')
+  log 'I should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
 end
 
@@ -42,22 +44,25 @@ end
 
 Then(/^the IPv4 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  step %(I should see a "#{node.public_ip}" text)
+  ipv4_address = node.public_ip
+  log "IPv4 address: #{ipv4_address}"
+  step %(I should see a "#{ipv4_address}" text)
 end
 
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  # query and modify OS ID string.
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  os_family = os_family_raw.strip.split('=')[1]
-  os_family.delete! '"'
-  # ubuntu has a different default interface name
-  if os_family == 'ubuntu'
-    ipv6, _code = node.run('ip -6 addr show ens3 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  else
-    ipv6, _code = node.run('ip -6 addr show eth0 | sed -e"s/^.*inet6 \(2620[^ ]*\)\/64 scope global dynamic.*$/\1/;t;d"|tr -d "\n"')
-  end
-  step %(I should see a "#{ipv6}" text)
+  interface, code = node.run("ip -6 address show #{node.public_interface}")
+  raise unless code.zero?
+
+  lines = interface.lines
+  # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
+  ipv6_addresses_list = lines.grep(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/)
+  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/) }
+
+  # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
+  ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
+  log "IPv6 address: #{ipv6_address}"
+  raise unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -73,37 +78,53 @@ Then(/^the system name for "([^"]*)" should be correct$/) do |host|
   step %(I should see a "#{system_name}" text)
 end
 
+# rubocop:disable Metrics/BlockLength
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
+  # TODO remove extra logging information once debugged
   node = get_target(host)
   uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
-  uptime_days = (uptime_seconds / 86400.0) # 60 seconds * 60 minutes * 24 hours; the .0 forces a float division
-  uptime_hours = (uptime_seconds / 3600.0) # 60 seconds * 60 minutes
-  uptime_minutes = (uptime_seconds / 60.0) # 60 seconds
+  uptime_minutes = (uptime_seconds.to_f / 60.0) # 60 seconds; the .0 forces a float division
+  uptime_hours = (uptime_minutes / 60.0) # 60 minutes
+  uptime_days = (uptime_hours / 24.0) # 24 hours
+  log "Uptime in\nseconds: #{uptime_seconds}\nminutes: #{uptime_minutes}\nhours: #{uptime_hours}\ndays: #{uptime_days}"
 
   # rounded values to nearest integer number
   rounded_uptime_minutes = uptime_minutes.round
   rounded_uptime_hours = uptime_hours.round
-  rounded_uptime_days = uptime_days.round
+
+  # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
+  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime_seconds.to_f + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+  log "Rounded uptime in\nminutes: #{rounded_uptime_minutes}\nhours: #{rounded_uptime_hours}\ndays: #{rounded_uptime_days}"
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
+    log "Expecting 'a day ago'"
     step %(I should see a "a day ago" text)
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
+    log "Expecting '#{rounded_uptime_hours} hours ago'"
     step %(I should see a "#{rounded_uptime_hours} hours ago" text)
-  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1,5 hours
+  elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
+    log "Expecting 'an hour ago'"
     step %(I should see a "an hour ago" text)
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
+    log "Expecting '#{rounded_uptime_minutes} minutes ago'"
     step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
   elsif uptime_seconds >= 45 && rounded_uptime_minutes == 1
+    log "Expecting 'a minute ago'"
     step %(I should see a "a minute ago" text)
   elsif uptime_seconds < 45
+    log "Expecting 'a few seconds ago'"
     step %(I should see a "a few seconds ago" text)
   elsif rounded_uptime_days < 25
+    log "Expecting '#{rounded_uptime_days} days ago'"
     step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
   else
+    log "Expecting 'a month ago'"
     step %(I should see a "a month ago" text)
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
@@ -188,7 +209,8 @@ Then(/^the salt event log on server should contain no failures$/) do
   # print failures from salt event log
   output, _code = $server.run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output.join.to_s}\n" if count_failures.nonzero?
+  output = output.join.to_s if output.respond_to?(:join)
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero?
 end
 
 # action chains
@@ -538,6 +560,12 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
+When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
+  if $product == product_version
+    step %(I open the sub-list of the product "#{product}")
+  end
+end
+
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
@@ -573,7 +601,7 @@ And(/^I wait until I see "(.*?)" product has been added$/) do |product|
         break if product_class.include?('product-installed')
       end
     rescue Capybara::ElementNotFound => e
-      puts e
+      log e
     end
     sleep 1
   end
@@ -675,7 +703,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
   if target_type.include? 'server' or $proxy.nil?
-    puts 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
+    log 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
     target = $server
   end
 
@@ -693,7 +721,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
   unless output.include? key
-    STDOUT.puts output
+    log output
     raise "Key: #{key} not included"
   end
 
@@ -706,7 +734,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   system_name = get_system_name(host)
   output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
   unless output.include? '-bootstrap complete-'
-    STDOUT.puts output
+    log output
     raise "Bootstrap didn't finish properly"
   end
 end
@@ -723,11 +751,6 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^I ensure the "([^"]*)" resolves its own public address$/) do |host|
-  node = get_target(host)
-  node.run("sed -i 's/^127\.0\.1\.1/#{node.public_ip}/' /etc/hosts")
-end
-
 Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used$/) do |select_system, host|
   node = get_target(host)
   record = get_target(select_system)
@@ -736,7 +759,7 @@ Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used
     ip = output.split("\n")[2].split[1].split('/')[0]
     node.run("echo '#{record.public_ip} #{record.full_hostname} #{record.hostname}' >> /etc/hosts")
   else
-    puts 'Record not added - avahi domain is not detected'
+    log 'Record not added - avahi domain is not detected'
   end
 end
 
@@ -792,24 +815,24 @@ When(/^I enable repositories before installing Docker$/) do
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $build_host.run("zypper mr --enable #{repos}")
+  log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    puts $build_host.run("zypper mr --enable #{repos}")
+    log $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $build_host.run("zypper mr --enable #{repos}")
+    log $build_host.run("zypper mr --enable #{repos}")
   end
 
   $build_host.run('zypper -n --gpg-auto-import-keys ref')
@@ -820,24 +843,24 @@ When(/^I disable repositories after installing Docker$/) do
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $build_host.run("zypper mr --disable #{repos}")
+  log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    puts $build_host.run("zypper mr --disable #{repos}")
+    log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $build_host.run("zypper mr --disable #{repos}")
+    log $build_host.run("zypper mr --disable #{repos}")
   end
 end
 
@@ -868,18 +891,18 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
-  puts node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
+  log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  puts node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
+  log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
   )
-  if get_client_type(host) == 'traditional'
+  if get_client_type(host) == 'traditional' and is_salt.empty?
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
@@ -941,7 +964,7 @@ end
 def token(secret, claims = {})
   payload = {}
   payload.merge!(claims)
-  puts secret
+  log secret
   JWT.encode payload, [secret].pack('H*').bytes.to_a.pack('c*'), 'HS256'
 end
 
@@ -1075,10 +1098,10 @@ And(/^the notification badge and the table should count the same amount of messa
   badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
 
   if table_notifications_count == '0'
-    puts "All notification-messages are read, I expect no notification badge"
-    raise "xpath: #{badge_xpath} found" if all(:xpath, badge_xpath).any?
+    log "All notification-messages are read, I expect no notification badge"
+    raise "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
   else
-    puts "Unread notification-messages count = " + table_notifications_count
+    log "Unread notification-messages count = " + table_notifications_count
     raise "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
   end
 end
@@ -1100,7 +1123,7 @@ end
 
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
-    puts "There are no notification messages, nothing to do then"
+    log "There are no notification messages, nothing to do then"
   else
     within(:xpath, '//section') do
       row = find(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]", match: :first)
@@ -1132,7 +1155,7 @@ When(/^I remove package "([^"]*)" from highstate$/) do |package|
   rows = find(:xpath, event_table_xpath)
   rows.all('tr').each do |tr|
     next unless tr.text.include?(package)
-    puts tr.text
+    log tr.text
     tr.find("##{package}-pkg-state").select('Removed')
     next if has_css?('#save[disabled]')
     steps %(
@@ -1172,7 +1195,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     if repository_exist? unique_repo_name
-      puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
+      log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
       content_type = (client.include? 'ubuntu') || (client.include? 'debian') ? 'deb' : 'yum'
       steps %(
@@ -1284,7 +1307,7 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 #{dest}")
   url = "http://#{$server.full_hostname}/pub/" + file
-  puts "URL: #{url}"
+  log "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end
 
@@ -1320,6 +1343,6 @@ When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
   @system_api.login('admin', 'admin')
   react_key = @system_api.obtain_reactivation_key(node_id)
-  puts "Reactivation Key: #{react_key}"
+  log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end

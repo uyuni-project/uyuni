@@ -66,7 +66,6 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -85,7 +84,7 @@ public class MessageQueue {
     private static Logger logger = Logger.getLogger(MessageQueue.class);
 
     private static final Map<Class, List<MessageAction>> ACTIONS =
-            new HashMap<Class, List<MessageAction>>();
+            new HashMap<>();
     private static Channel messages = new LinkedQueue();
     private static Thread dispatcherThread = null;
     private static MessageDispatcher dispatcher = null;
@@ -205,11 +204,7 @@ public class MessageQueue {
                     " class: " + eventType.getName());
         }
         synchronized (ACTIONS) {
-            List<MessageAction> handlers = ACTIONS.get(eventType);
-            if (handlers == null) {
-                handlers = new ArrayList<MessageAction>();
-                ACTIONS.put(eventType, handlers);
-            }
+            List<MessageAction> handlers = ACTIONS.computeIfAbsent(eventType, k -> new ArrayList<>());
             handlers.add(act);
         }
     }
@@ -246,8 +241,7 @@ public class MessageQueue {
             if (ACTIONS.keySet().size() > 0) {
                 retval = new String[ACTIONS.keySet().size()];
                 int index = 0;
-                for (Iterator<Class> iter = ACTIONS.keySet().iterator(); iter.hasNext();) {
-                    Class klazz = iter.next();
+                for (Class klazz : ACTIONS.keySet()) {
                     retval[index] = klazz.getName();
                     index++;
                 }

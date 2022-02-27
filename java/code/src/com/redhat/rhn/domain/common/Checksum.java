@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.util.Objects;
+
 /**
  * Checksum
  * Class for checksums of files, packages and erratas.
@@ -79,7 +81,7 @@ public class Checksum extends BaseDomainHelper {
 
         Checksum other = (Checksum) o;
 
-        return id != null ? id.equals(other.id) : other.id == null;
+        return Objects.equals(id, other.id);
     }
 
     /** {@inheritDoc} */

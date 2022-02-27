@@ -25,7 +25,7 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.3
+Version:        4.3.4
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -203,6 +203,9 @@ do
 done
 
 %install
+install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/tls/certs
+install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/tls/private
+
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
 install -d -m 750 $RPM_BUILD_ROOT/%{_var}/cache/rhn/proxy-auth
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
@@ -468,6 +471,9 @@ fi
 %dir %{destdir}/broker
 %dir %{destdir}/__pycache__/
 %{destdir}/__pycache__/*
+%dir %{_sysconfdir}/pki/tls
+%dir %{_sysconfdir}/pki/tls/certs
+%dir %{_sysconfdir}/pki/tls/private
 
 %files package-manager
 %defattr(-,root,root)

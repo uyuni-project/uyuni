@@ -32,7 +32,8 @@ end
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
   node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
-  $server.run_until_fail("ping -c 1 #{node.private_ip}")
+  # commented out as a machine with the same IP address might exist somewhere in our engineering network
+  # $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -57,7 +58,7 @@ end
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+    log 'Sanity check not implemented, move resource to external network first'
   else
     url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
     $server.run("curl --insecure --location #{url} --output /dev/null")
@@ -193,7 +194,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
-    puts line
+    log line
   end
 end
 
@@ -204,7 +205,7 @@ When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
-    puts line
+    log line
   end
 end
 
@@ -291,11 +292,11 @@ end
 # This function waits for all the reposyncs to complete.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row.
+# 60 seconds in a row.
 When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -307,7 +308,7 @@ When(/^I wait until all spacewalk\-repo\-sync finished$/) do
 
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
-    STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+    log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
     reposync_left_running_streak += 1
     sleep 1
   end
@@ -317,12 +318,12 @@ end
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -335,7 +336,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
-      STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+      log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
       next
@@ -344,7 +345,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
-    STDOUT.puts "Reposync of channel #{channel} killed"
+    log "Reposync of channel #{channel} killed"
   end
 end
 
@@ -369,7 +370,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       sleep 10
     end
   rescue StandardError => e
-    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -448,7 +449,7 @@ Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
   uri = URI.parse(base_url)
-  puts 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
+  log 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
   parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
   if !parameters_matches
     raise 'Some parameters are not as expected'
@@ -669,7 +670,7 @@ end
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
-  puts "OUT: #{output}"
+  log "OUT: #{output}"
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
@@ -968,14 +969,14 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
         else
           "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
         end
-  STDOUT.puts 'Creating the boostrap repository on the server:'
-  STDOUT.puts '  ' + cmd
+  log 'Creating the boostrap repository on the server:'
+  log '  ' + cmd
   $server.run(cmd)
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
-  STDOUT.puts "Installed #{product} product: #{out}"
+  log "Installed #{product} product: #{out}"
 end
 
 When(/^I adapt zyppconfig$/) do
@@ -1029,7 +1030,7 @@ When(/^I configure the proxy$/) do
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
              "SSL_EMAIL=galaxy-noise@suse.de\n" \
-             "SSL_CNAME_ASK=''\n" \
+             "SSL_CNAME_ASK=proxy.example.org\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
@@ -1041,6 +1042,19 @@ When(/^I configure the proxy$/) do
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
   $proxy.run(cmd, timeout: proxy_timeout)
+end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
+end
+
+When(/^I restart squid service on the proxy$/) do
+  # We need to restart squid when we add a CNAME to the certificate
+  $proxy.run("systemctl restart squid.service")
 end
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
@@ -1407,6 +1421,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   $server.run(command)
 end
 
+When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  next unless host.include? 'ceos'
+
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
+end
+
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   round_minute = 60 # spacecmd uses timestamps with precision to minutes only
   long_wait_delay = 600
@@ -1548,12 +1570,4 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
-end
-
-When(/^I allow all SSL protocols on the proxy's apache$/) do
-  file = '/etc/apache2/ssl-global.conf'
-  key = 'SSLProtocol'
-  val = 'all -SSLv2 -SSLv3'
-  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  $proxy.run("systemctl reload apache2.service")
 end

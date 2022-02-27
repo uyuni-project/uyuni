@@ -60,6 +60,7 @@ import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
 
@@ -194,12 +195,12 @@ public class SaltSSHService {
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs)
             throws SaltException {
         // Using custom LocalCall timeout if included in the payload
-        Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
-                    Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
-                    getSshPushTimeout();
-        SaltRoster roster = prepareSaltRoster(target, sshTimeout);
+        // Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
+        //            Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
+        //            getSshPushTimeout();
+        // SaltRoster roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs));
+                callSyncSSHInternal(call, target, Optional.empty(), false, isSudoUser(getSSHUser()), extraFileRefs));
     }
 
     /**
@@ -298,7 +299,7 @@ public class SaltSSHService {
                 CompletableFuture.supplyAsync(() -> {
                     try {
                         return unwrapSSHReturn(
-                                callSyncSSHInternal(call, target, roster,
+                                callSyncSSHInternal(call, target, Optional.of(roster),
                                         false, isSudoUser(getSSHUser()),
                                         extraFilerefs));
                     }
@@ -435,56 +436,6 @@ public class SaltSSHService {
         return Optional.of(proxyCommand.toString());
     }
 
-    /**
-     * Synchronously executes a salt function on given glob using salt-ssh.
-     *
-     * Before the execution, this method creates an one-time roster corresponding all
-     * minions with the ssh contact method and minions being currently bootstrapped.
-     *
-     * @param call the salt call
-     * @param target the minion list target
-     * @param <R> result type of the salt function
-     * @return the result of the call
-     * @throws SaltException if something goes wrong during command execution or
-     * during manipulation the salt-ssh roster
-     */
-    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, Glob target)
-            throws SaltException {
-        SaltRoster roster = createAllServersRoster();
-        return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
-    }
-
-    /**
-     * Helper method for creating a salt roster containing all minions with ssh contact
-     * method and all minions being currently bootstrapped.
-     * @return roster
-     */
-    private SaltRoster createAllServersRoster() {
-        SaltRoster roster = new SaltRoster();
-
-        // Add temporary systems
-        MinionPendingRegistrationService.getSSHMinions().forEach((mid, minion) ->
-                        roster.addHost(mid,
-                                getSSHUser(),
-                                Optional.empty(),
-                                minion.getSSHPushPort(),
-                                remotePortForwarding(minion.getProxyPath(), minion.getContactMethod()),
-                                sshProxyCommandOption(minion.getProxyPath(),
-                                    minion.getContactMethod(),
-                                    mid,
-                                    minion.getSSHPushPort().orElse(SSH_PUSH_PORT)
-                                ),
-                                getSshPushTimeout(),
-                                minionOpts(mid, minion.getContactMethod()))
-                );
-
-        // Add systems from the database, possible duplicates in roster will be overwritten
-        addSaltSSHMinionsFromDb(roster);
-
-        return roster;
-    }
-
     private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         minions.forEach(minion -> {
@@ -553,7 +504,7 @@ public class SaltSSHService {
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
                     parameters.getPassword(),
-                    tmpKeyFileAbsolutePath.map(p -> p.toString()),
+                    tmpKeyFileAbsolutePath.map(Path::toString),
                     parameters.getPrivateKeyPassphrase(),
                     parameters.getPort(),
                     portForwarding,
@@ -567,13 +518,13 @@ public class SaltSSHService {
             Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
                     callSyncSSHInternal(call,
                             new MinionList(parameters.getHost()),
-                            roster,
+                            Optional.of(roster),
                             parameters.isIgnoreHostKeys(),
                             isSudoUser(parameters.getUser()));
             return result.get(parameters.getHost());
         }
         finally {
-            tmpKeyFileAbsolutePath.ifPresent(path -> cleanUpTempKeyFile(path));
+            tmpKeyFileAbsolutePath.ifPresent(this::cleanUpTempKeyFile);
         }
     }
 
@@ -629,16 +580,16 @@ public class SaltSSHService {
             Result<SSHResult<T>>> sshResults) {
          return sshResults.entrySet().stream()
                 .collect(Collectors.toMap(
-                        kv -> kv.getKey(),
+                        Map.Entry::getKey,
                         kv -> kv.getValue().fold(
-                                err -> new Result<T>(Xor.left(err)),
+                                err -> new Result<>(Xor.left(err)),
                                 succ -> {
                                     if (succ.getReturn().isPresent()) {
-                                        return new Result<T>(Xor.right(
+                                        return new Result<>(Xor.right(
                                                 succ.getReturn().get()));
                                     }
                                     else {
-                                        return new Result<T>(Xor.left(
+                                        return new Result<>(Xor.left(
                                                 succ.getStderr().map(stderr ->
                                                         new GenericError("Error unwrapping ssh return: " + stderr))
                                                         .orElse(new GenericError(
@@ -671,38 +622,51 @@ public class SaltSSHService {
      * @return result of the call
      */
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
         return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty());
     }
 
-
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo, Optional<String> extraFilerefs)
-            throws SaltException {
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo,
+            Optional<String> extraFilerefs) throws SaltException {
         if (!(target instanceof MinionList || target instanceof Glob)) {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");
         }
 
         try {
-            final Path rosterPath = roster.persistInTempFile();
+            final Path rosterPath;
+            if (roster.isPresent()) {
+                rosterPath = roster.get().persistInTempFile();
+            }
+            else {
+                rosterPath = null;
+            }
+
             SaltSSHConfig.Builder sshConfigBuilder = new SaltSSHConfig.Builder()
                     .ignoreHostKeys(ignoreHostKeys)
-                    .rosterFile(rosterPath.getFileName().toString())
                     .priv(SSH_KEY_PATH)
                     .sudo(sudo)
                     .refreshCache(true);
-            extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
+            roster.ifPresentOrElse(
+                    r -> sshConfigBuilder.rosterFile(rosterPath.getFileName().toString()),
+                    () -> {
+                        sshConfigBuilder.roster("uyuni");
+                        LOG.info("No roster file used, using Uyuni roster module!");
+                    });
+            extraFilerefs.ifPresent(sshConfigBuilder::extraFilerefs);
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
             LOG.debug("Local callSyncSSH: " + SaltService.localCallToString(call));
             return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
                     .whenComplete((r, e) -> {
-                        try {
-                            Files.deleteIfExists(rosterPath);
-                        }
-                        catch (IOException ex) {
-                            LOG.error("Can't delete roster file: " + ex.getMessage());
+                        if (roster.isPresent()) {
+                            try {
+                                Files.deleteIfExists(rosterPath);
+                            }
+                            catch (IOException ex) {
+                                LOG.error("Can't delete roster file: " + ex.getMessage());
+                            }
                         }
                     }));
         }
@@ -731,7 +695,7 @@ public class SaltSSHService {
                 return unwrapSSHReturn(
                         callSyncSSHInternal(Match.glob(target),
                                 new Glob(target),
-                                roster,
+                                Optional.empty(),
                                 false,
                                 isSudoUser(getSSHUser())));
             }
@@ -843,7 +807,7 @@ public class SaltSSHService {
                                         SaltUtils.decodeSaltErr(saltErr))),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
-                                    .map(value -> value.getComment())
+                                    .map(StateApplyResult::getComment)
                                     .collect(Collectors
                                             .collectingAndThen(Collectors.toList(),
                                                     (list) -> list.isEmpty() ?
@@ -959,12 +923,12 @@ public class SaltSSHService {
     public Map<MinionSummary, List<Long>> findApplyHighstateActionsPerMinion(Map<MinionSummary,
             List<SaltState>> statesPerMinion) {
         return statesPerMinion.entrySet().stream()
-                .filter(entry -> entry.getValue().stream().anyMatch(state -> isApplyHighstate(state)))
+                .filter(entry -> entry.getValue().stream().anyMatch(SaltSSHService::isApplyHighstate))
                 .collect(Collectors.toMap(
-                        entry -> entry.getKey(),
+                        Map.Entry::getKey,
                         entry -> entry.getValue()
                                 .stream()
-                                .filter(state -> isApplyHighstate(state))
+                                .filter(SaltSSHService::isApplyHighstate)
                                 .filter(state -> state instanceof ActionSaltState)
                                 .map(state -> ((ActionSaltState)state).getActionId())
                         .collect(Collectors.toList())

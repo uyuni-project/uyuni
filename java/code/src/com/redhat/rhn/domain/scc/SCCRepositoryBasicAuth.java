@@ -54,7 +54,7 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
         try {
             URI url = new URI(getRepo().getUrl());
 
-            List<String> sourceParams = new ArrayList<String>(Arrays.asList(
+            List<String> sourceParams = new ArrayList<>(Arrays.asList(
                     StringUtils.split(Optional.ofNullable(url.getQuery()).orElse(""), '&')));
             sourceParams.add(MIRRCRED_QUERY + getCredentials().getId());
             String newQuery = StringUtils.join(sourceParams, "&");
@@ -73,7 +73,8 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
     public <T> T fold(
             Function<SCCRepositoryBasicAuth, ? extends T> basicAuth,
             Function<SCCRepositoryNoAuth, ? extends T> noAuth,
-            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth) {
+            Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
+            Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return basicAuth.apply(this);
     }
 }

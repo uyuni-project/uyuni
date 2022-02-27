@@ -86,10 +86,10 @@ public class TagSystemsAction extends RhnAction implements Listable<SystemOvervi
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),
-            new LinkedList<String>() {
-                {
-                    add(EntitlementManager.ENTERPRISE_ENTITLED);
-                }
-            });
+                new LinkedList<>() {
+                    {
+                        add(EntitlementManager.ENTERPRISE_ENTITLED);
+                    }
+                });
     }
 }

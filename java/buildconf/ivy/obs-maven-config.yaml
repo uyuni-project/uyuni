@@ -175,6 +175,12 @@ artifacts:
   - artifact: netty-transport-native-unix-common
     package: netty
     repository: Uyuni_Other
+  - artifact: client
+    package: ongres-scram-client
+    repository: Leap
+  - artifact: common
+    package: ongres-scram
+    repository: Leap
   - artifact: oro
     repository: Leap
   - artifact: pgjdbc-ng

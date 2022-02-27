@@ -71,7 +71,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertEquals(numActions + 3, apiActions.length);
 
         // execute
-        List<Integer> actionIds = new ArrayList<Integer>();
+        List<Integer> actionIds = new ArrayList<>();
         actionIds.add(a1.getId().intValue());
         actionIds.add(a2.getId().intValue());
         actionIds.add(a3.getId().intValue());

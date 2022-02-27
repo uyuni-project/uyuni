@@ -83,7 +83,7 @@ public class ExtAuthSgDetailAction extends RhnAction {
             String label = (String) form.get("extGroupLabel");
             String[] selectedSgs = form.getStrings("selected_sgs");
 
-            Set<ServerGroup> sgs = new HashSet<ServerGroup>();
+            Set<ServerGroup> sgs = new HashSet<>();
             for (String sg : selectedSgs) {
                 sgs.add(ServerGroupFactory.lookupByNameAndOrg(sg, org));
             }
@@ -119,7 +119,7 @@ public class ExtAuthSgDetailAction extends RhnAction {
     }
 
     private Map makeValidationMap(DynaActionForm form) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("label", (String) form.get("extGroupLabel"));
         return map;
     }
@@ -135,14 +135,14 @@ public class ExtAuthSgDetailAction extends RhnAction {
             OrgUserExtGroup extGroupIn, DynaActionForm form) {
 
         List<LabelValueBean> systemGroupList =
-                new ArrayList<LabelValueBean>();
+                new ArrayList<>();
         for (ManagedServerGroup group : ServerGroupFactory.listManagedGroups(
                 user.getOrg())) {
              systemGroupList.add(new LabelValueBean(group.getName(),
                      group.getName()));
         }
 
-        Set<String> selectedSgs = new HashSet<String>();
+        Set<String> selectedSgs = new HashSet<>();
         if (extGroupIn != null) {
             for (ServerGroup group : extGroupIn.getServerGroups()) {
                 selectedSgs.add(group.getName());

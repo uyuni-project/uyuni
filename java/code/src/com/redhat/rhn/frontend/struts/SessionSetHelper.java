@@ -68,7 +68,7 @@ public class SessionSetHelper extends BaseSetHelper {
 
         Set<String> set = (Set<String>) request.getSession().getAttribute(lbl);
         if (set == null) {
-            set = new HashSet<String>();
+            set = new HashSet<>();
             request.getSession().setAttribute(lbl, set);
         }
 

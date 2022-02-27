@@ -1,0 +1,15 @@
+--
+-- this populates rhnVersionInfo.  It needs to be run through sed
+-- during build.  see Makefile.schema
+--
+
+DELETE
+  FROM VersionInfo
+ WHERE label = 'schema' and name = SCHEMA_NAME;
+
+INSERT
+  INTO VersionInfo ( name, label, version, release )
+VALUES (SCHEMA_NAME, 'schema', SCHEMA_VERSION, SCHEMA_RELEASE);
+
+COMMIT;
+

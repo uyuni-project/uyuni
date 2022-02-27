@@ -36,7 +36,7 @@ public class RendererTest extends RhnBaseTestCase {
     ////////////////////////////////////////////////////////////////
 
     public void testDialognavTrue() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
+        Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "<ul class=\"nav nav-tabs nav-tabs-pf\">");
         expectations.put("preNavNode", "");
         expectations.put("navNodeActive", "<li class=\"active\">" +
@@ -62,7 +62,7 @@ public class RendererTest extends RhnBaseTestCase {
     }
 
     public void testDialognavFalse() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
+        Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");
         expectations.put("preNavNode", "");
         expectations.put("navNodeActive", "");
@@ -79,7 +79,7 @@ public class RendererTest extends RhnBaseTestCase {
     ////////////////////////////////////////////////////////////////
 
     public void testTextTrue() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
+        Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");
         expectations.put("preNavNode", "        ");
 
@@ -99,7 +99,7 @@ public class RendererTest extends RhnBaseTestCase {
     }
 
     public void testTextFalse() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
+        Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");
         expectations.put("preNavNode", "");
         expectations.put("navNodeActive", "");

@@ -16,6 +16,7 @@ package com.suse.manager.xmlrpc.serializer;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
@@ -86,7 +87,7 @@ public class RescheduleResultSerializer extends RhnXmlRpcCustomSerializer {
                 a.put("prerequisite", action.getPrerequisite().getId());
             }
             a.put("affected_system_ids", result.getActionsServers().get(action).stream()
-                    .map(s -> s.getId()).collect(Collectors.toList()));
+                    .map(Server::getId).collect(Collectors.toList()));
             a.put("details", StringUtil.toPlainText(action.getFormatter().getNotes()));
             actions.add(a);
         }

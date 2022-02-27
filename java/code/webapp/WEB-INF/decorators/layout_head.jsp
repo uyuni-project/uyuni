@@ -65,9 +65,6 @@
         window.userTimeFormat='${userTimeFormat}'
     </script>
 
-    <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
-    <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
-
     <script src="/javascript/jquery.js?cb=${cb_version}"></script>
     <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
@@ -80,7 +77,5 @@
     <script src="/javascript/jquery.timepicker.js?cb=${cb_version}"></script>
     <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
 
-    <script src='/vendors/vendors.bundle.js?cb=${cb_version}'></script>
-    <script src='/javascript/manager/core.bundle.js?cb=${cb_version}'></script>
     <script src='/javascript/manager/main.bundle.js?cb=${cb_version}'></script>
     <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>

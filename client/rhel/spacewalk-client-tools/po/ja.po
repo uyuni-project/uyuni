@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-11 15:34+0000\n"
-"PO-Revision-Date: 2021-11-09 14:12+0000\n"
+"POT-Creation-Date: 2022-02-24 18:14+0000\n"
+"PO-Revision-Date: 2022-01-25 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/ja/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -494,8 +494,8 @@ msgid ""
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "このエラーは発生すべきエラーではありません。 このプログラムの改善にご助力頂け"
-"る場合には、 bugzilla.suse.com でバグ報告をお願いします。  '%s' の該当部分を"
-"バグ報告に入れて頂くと非常に助かります。ありがとうございます！"
+"る場合には、bugzilla.suse.com でバグ報告をお願いします。 '%s' の該当部分をバ"
+"グ報告に入れて頂くと非常に助かります。ありがとうございます！"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -1228,7 +1228,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"ヒント:  '*' の付いたマイナーリリースは現在 Red Hat のサポートがあります。\n"
+" ヒント:  '*' の付いたマイナーリリースは現在 Red Hat のサポートがあります。\n"
 "\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:291
@@ -1491,7 +1491,7 @@ msgid ""
 "You need to register this system by running `rhn_register` before using this "
 "option"
 msgstr ""
-"このオプションを使用する前に、  `rhn_register` を実行してこのシステムを登録す"
+"このオプションを使用する前に、 `rhn_register` を実行してこのシステムを登録す"
 "る必要があります"
 
 #: ../src/bin/rhn-profile-sync.py:45
@@ -2223,7 +2223,7 @@ msgstr "HTTP プロキシで認証を使用する(_T):"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
-msgstr "HTTP  プロキシによる認証を使用する"
+msgstr "HTTP プロキシによる認証を使用する"
 
 #: ../data/rh_register.glade.h:104
 msgid "Proxy _Username:"

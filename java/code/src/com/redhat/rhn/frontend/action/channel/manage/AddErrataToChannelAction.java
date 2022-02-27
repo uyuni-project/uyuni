@@ -67,7 +67,7 @@ public class AddErrataToChannelAction extends RhnListAction {
         User user =  requestContext.getCurrentUser();
         Long cid = Long.parseLong(request.getParameter(CID));
         Channel currentChan = ChannelFactory.lookupByIdAndUser(cid, user);
-        Map<String, Object> forwardParams = new HashMap<String, Object>();
+        Map<String, Object> forwardParams = new HashMap<>();
         forwardParams.put(CID, cid);
 
         ErrataHelper.checkPermissions(user, cid);
@@ -101,7 +101,7 @@ public class AddErrataToChannelAction extends RhnListAction {
 
         //update the errata info
         ChannelManager.refreshWithNewestPackages(currentChan, "web.errata_push");
-        List<Long> chanList = new ArrayList<Long>();
+        List<Long> chanList = new ArrayList<>();
         chanList.add(currentChan.getId());
         for (Long eid : eids) {
             ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, eid);

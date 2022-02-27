@@ -175,7 +175,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -376,10 +375,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             result = handler.setChildChannels(admin, sid, cids);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
-        catch (InvalidChannelException e) {
-            //success
-        }
-        catch (ChannelSubscriptionException e) {
+        catch (InvalidChannelException | ChannelSubscriptionException e) {
             //success
         }
 
@@ -469,10 +465,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             result = handler.setChildChannels(admin, sid, channelLabels);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
-        catch (InvalidChannelException e) {
-            //success
-        }
-        catch (ChannelSubscriptionException e) {
+        catch (InvalidChannelException | ChannelSubscriptionException e) {
             //success
         }
 
@@ -708,8 +701,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel
-        for (int i = 0; i < results.length; i++) {
-            Map map = (Map) results[i];
+        for (Object resultIn : results) {
+            Map map = (Map) resultIn;
             Number id = (Number) map.get("id");
             Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
@@ -749,8 +742,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel
-        for (int i = 0; i < results.length; i++) {
-            Map map = (Map) results[i];
+        for (Object resultIn : results) {
+            Map map = (Map) resultIn;
             Number id = (Number) map.get("id");
             Long cid = id.longValue();
             Channel c = ChannelManager.lookupByIdAndUser(cid, admin);
@@ -1100,7 +1093,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     private String getLongTestString() {
-        StringBuffer longString = new StringBuffer();
+        StringBuilder longString = new StringBuilder();
         //run 15 times for good measure
         for (int i = 0; i < 15; i++) {
             longString.append(TestUtils.randomString());
@@ -1175,7 +1168,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result.size());
 
         // try to delete custom values using undefined keys
-        List<String> valuesToDelete = new ArrayList<String>();
+        List<String> valuesToDelete = new ArrayList<>();
         valuesToDelete.add(fooKey);
         try {
             setResult = handler.deleteCustomValues(admin,
@@ -1389,9 +1382,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         boolean containsRegular = false;
         boolean containsNonGroupAdmin = false;  //we want this to be false to pass
 
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
+        for (Object userIn : users) {
 
-            User user = (User) itr.next();
+            User user = (User) userIn;
             if (user.getLogin().equals(admin.getLogin())) {
                 containsAdmin = true;
             }
@@ -2023,9 +2016,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
-        List<String> entitlements = new LinkedList<String>() { {
-            add(EntitlementManager.VIRTUALIZATION_ENTITLED);
-        } };
+        List<String> entitlements = new LinkedList<>() {
+            {
+                add(EntitlementManager.VIRTUALIZATION_ENTITLED);
+            }
+        };
 
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
@@ -2048,9 +2043,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
-        List<String> entitlements = new LinkedList<String>() { {
-            add(EntitlementManager.VIRTUALIZATION_ENTITLED);
-        } };
+        List<String> entitlements = new LinkedList<>() {
+            {
+                add(EntitlementManager.VIRTUALIZATION_ENTITLED);
+            }
+        };
 
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
@@ -2268,7 +2265,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListOutOfDateSystems() throws Exception {
         Server testServer = ServerFactoryTest.createTestServer(regular, true);
 
-        Long sid = testServer.getId().longValue();
+        Long sid = testServer.getId();
         Package pack = PackageTest.createTestPackage(admin.getOrg());
 
         ErrataCacheManager.insertNeededErrataCache(sid, null,
@@ -2278,9 +2275,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertTrue(array.length > 0);
         boolean sidExists  = false;
-        for (int i = 0; i < array.length; i++) {
-            SystemOverview s = (SystemOverview)array[i];
-            if (testServer.getId().equals(s.getId().longValue())) {
+        for (Object oIn : array) {
+            SystemOverview s = (SystemOverview) oIn;
+            if (testServer.getId().equals(s.getId())) {
                 sidExists = true;
                 break;
             }
@@ -2297,8 +2294,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List<SystemOverview> servers = handler.listUngroupedSystems(admin);
         assertTrue(servers.size() > 0);
         boolean sidExists  = false;
-        for (int i = 0; i < servers.size(); i++) {
-            SystemOverview s = servers.get(i);
+        for (SystemOverview s : servers) {
             if (testServer.getId().equals(s.getId())) {
                 sidExists = true;
                 break;
@@ -2499,7 +2495,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
         "insert_into_rhnServerPath");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", server.getId());
         params.put("proxy_server_id", proxy1.getId());
         params.put("proxy_hostname", proxy1.getName());
@@ -2847,7 +2843,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        List<String> stateNames = new LinkedList<String>();
+        List<String> stateNames = new LinkedList<>();
         stateNames.add("channels");
 
         Long actionId = getMockedHandler().scheduleApplyStates(

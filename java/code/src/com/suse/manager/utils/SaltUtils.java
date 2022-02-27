@@ -44,7 +44,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
@@ -129,8 +129,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -330,9 +328,7 @@ public class SaltUtils {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
         else {
-            HibernateFactory.doWithoutAutoFlushing(() -> {
-                applyDeltaPackageInfo(changes, server);
-            });
+            HibernateFactory.doWithoutAutoFlushing(() -> applyDeltaPackageInfo(changes, server));
             return PackageChangeOutcome.DONE;
         }
     }
@@ -350,7 +346,7 @@ public class SaltUtils {
         Map<String, Change<List<Pkg.Info>>> collect = changes.entrySet().stream()
                 .collect(
                 Collectors.toMap(
-                        e -> e.getKey(),
+                        Map.Entry::getKey,
                         e -> e.getValue().map(
                                 xor -> xor.getOrElse(Collections::emptyList))
                 )
@@ -373,9 +369,7 @@ public class SaltUtils {
                 String key = packageToKey(name, info);
                 if (!newPackages.containsKey(key)) {
                     Optional.ofNullable(currentPackages.get(key))
-                    .ifPresent(ip -> {
-                        server.getPackages().remove(ip);
-                    });
+                    .ifPresent(ip -> server.getPackages().remove(ip));
                 }
             });
 
@@ -402,35 +396,33 @@ public class SaltUtils {
     public static PackageChangeOutcome applyChangesFromStateApply(
             Map<String, JsonElement> apply, Server server) {
         List<StateApplyResult<JsonElement>> collect =
-                apply.entrySet().stream().flatMap(e -> {
-            return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
-                    map(fn -> {
-                if (fn.equals("mgrcompat.module_run")) {
-                    StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
-                            e.getValue(),
-                            new TypeToken<StateApplyResult<JsonElement>>() {
-                            }.getType()
-                    );
-                    if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
-                        return Stream.of(ap);
+                apply.entrySet().stream()
+                        .flatMap(e -> extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>map(fn -> {
+                    if (fn.equals("mgrcompat.module_run")) {
+                        StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
+                                e.getValue(),
+                                new TypeToken<StateApplyResult<JsonElement>>() {
+                                }.getType()
+                        );
+                        if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
+                            return Stream.of(ap);
+                        }
+                        else {
+                            return Stream.empty();
+                        }
+                    }
+                    else if (PKG_STATE_MODULES.contains(fn)) {
+                        return Stream.of(
+                                Json.GSON.<StateApplyResult<JsonElement>>fromJson(e.getValue(),
+                                        new TypeToken<StateApplyResult<JsonElement>>() {
+                                        }.getType()
+                                )
+                        );
                     }
                     else {
                         return Stream.empty();
                     }
-                }
-                else if (PKG_STATE_MODULES.contains(fn)) {
-                    return Stream.of(
-                            Json.GSON.<StateApplyResult<JsonElement>>fromJson(e.getValue(),
-                                    new TypeToken<StateApplyResult<JsonElement>>() {
-                                    }.getType()
-                            )
-                    );
-                }
-                else {
-                    return Stream.empty();
-                }
-            }).orElseGet(Stream::empty);
-        })
+                }).orElseGet(Stream::empty))
                 // we sort by run order process multiple package changing states right
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
                 .collect(Collectors.toList());
@@ -495,7 +487,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
-            if (output.startsWith("\"ERROR") && output.contains("Minion in blackout mode")) {
+            if (output.startsWith("\'ERROR") && output.contains("Minion in blackout mode")) {
                 serverAction.setResultMsg(output);
                 return;
             }
@@ -504,7 +496,7 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = serverAction.getParentAction();
+        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             handleStateApplyData(serverAction, jsonResult, retcode, success);
@@ -514,7 +506,7 @@ public class SaltUtils {
                     new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
             CmdResult result = stateApplyResult.entrySet().stream()
                     .findFirst().map(e -> e.getValue().getChanges())
-                    .orElseGet(() -> new CmdResult());
+                    .orElseGet(CmdResult::new);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -558,10 +550,9 @@ public class SaltUtils {
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        PkgProfileUpdateSlsResult.class));
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                    PkgProfileUpdateSlsResult.class)));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
@@ -573,10 +564,9 @@ public class SaltUtils {
             else {
                 serverAction.setResultMsg("Success");
             }
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        HwProfileUpdateSlsResult.class), serverAction);
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                    HwProfileUpdateSlsResult.class), serverAction));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
@@ -678,8 +668,7 @@ public class SaltUtils {
         statesResult.setReturnCode(retcode);
 
         // Set the output to the result
-        statesResult.setOutput(YamlHelper.INSTANCE
-                .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
+        statesResult.setOutput(getJsonResultWithPrettyPrint(jsonResult).getBytes());
 
         // Create the result message depending on the action status
         String states = applyStatesAction.getDetails().getMods().isEmpty() ?
@@ -722,9 +711,8 @@ public class SaltUtils {
                         }
                     },
                     () -> serverAction.setResultMsg(msg));
-            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                PackageManager.syncLockedPackages(minionServer.getId(), action.getId());
-            });
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minionServer -> PackageManager.syncLockedPackages(minionServer.getId(), action.getId()));
         }
         else {
             String msg = "Successfully changed lock status";
@@ -754,9 +742,7 @@ public class SaltUtils {
      * @param jsonResult json result with pretty print
      */
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        return gson.toJson(returnObject);
+        return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(jsonResult, Object.class));
     }
 
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -764,27 +750,23 @@ public class SaltUtils {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
-            // activate the new tokens
-            List<Long> newTokenIds = sca.getDetails().getAccessTokens()
-                    .stream()
-                    .filter(ac -> ac.getMinion() != null)
-                    .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
-                    .map(AccessToken::getId)
-                    .collect(Collectors.toList());
-
             // if successful update channels in db and trigger pillar refresh
             SystemManager.updateServerChannels(
                     action.getSchedulerUser(),
                     serverAction.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels(),
-                    newTokenIds);
+                    sca.getDetails().getChannels());
         }
         else {
-            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(returnObject);
-            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
+            //set the token as invalid
+            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+            sca.getDetails().getAccessTokens().forEach(token -> {
+                token.setValid(false);
+                AccessTokenFactory.save(token);
+            });
+
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
+                    getJsonResultWithPrettyPrint(jsonResult));
         }
     }
 
@@ -796,17 +778,15 @@ public class SaltUtils {
                     distUpgradeSlsResult.getSpmigration();
             String message = spmig.getComment();
             if (spmig.isResult()) {
-                message = spmig.getChanges().getRetOpt().map(ret -> {
-                    return ret.entrySet().stream().map(entry -> {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(entry.getKey());
-                        sb.append(":");
-                        sb.append(entry.getValue().getOldValue());
-                        sb.append("->");
-                        sb.append(entry.getValue().getNewValue());
-                        return sb.toString();
-                    }).collect(Collectors.joining(","));
-                }).orElse(spmig.getComment());
+                message = spmig.getChanges().getRetOpt().map(ret -> ret.entrySet().stream().map(entry -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(entry.getKey());
+                    sb.append(":");
+                    sb.append(entry.getValue().getOldValue());
+                    sb.append("->");
+                    sb.append(entry.getValue().getNewValue());
+                    return sb.toString();
+                }).collect(Collectors.joining(","))).orElse(spmig.getComment());
             }
             return message;
         }
@@ -814,25 +794,17 @@ public class SaltUtils {
             try {
                 DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeOldSlsResult.class);
-                String message = distUpgradeSlsResult.getSpmigration().getChanges()
+                return distUpgradeSlsResult.getSpmigration().getChanges()
                         .getRetOpt().map(ret -> {
                             if (ret.isResult()) {
                                 return ret.getChanges().entrySet().stream()
-                                        .map(entry -> {
-                                            StringBuilder sb = new StringBuilder();
-                                            sb.append(entry.getKey());
-                                            sb.append(":");
-                                            sb.append(entry.getValue().getOldValue());
-                                            sb.append("->");
-                                            sb.append(entry.getValue().getNewValue());
-                                            return sb.toString();
-                                        }).collect(Collectors.joining(","));
+                                        .map(entry -> entry.getKey() + ":" + entry.getValue().getOldValue() + "->" +
+                                                entry.getValue().getNewValue()).collect(Collectors.joining(","));
                             }
                             else {
                                 return ret.getComment();
                             }
                         }).orElse("");
-                return message;
             }
             catch (JsonSyntaxException ex) {
                 LOG.error("Unable to parse migration result", ex);
@@ -872,7 +844,8 @@ public class SaltUtils {
      * @param action main action
      */
     private void handleFilesDiff(JsonElement jsonResult, Action action) {
-        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };
+        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {
+        };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
         Map<String, FilesDiffResult> diffResults = new HashMap<>();
         // We are only interested in results where files are different/new.
@@ -895,7 +868,8 @@ public class SaltUtils {
                 }
                 else if (cr.isDirectory()) {
                     TypeToken<Map<String, DirectoryResult>> typeTokenD =
-                            new TypeToken<Map<String, DirectoryResult>>() { };
+                            new TypeToken<>() {
+                            };
                     DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
                     isNew = dirPchanges.getDirectory().isPresent();
                 }
@@ -922,7 +896,8 @@ public class SaltUtils {
         Openscap.OpenscapResult openscapResult;
         try {
             TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                    new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+                    new TypeToken<>() {
+                    };
             Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                     jsonResult, typeToken.getType());
             openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
@@ -989,40 +964,45 @@ public class SaltUtils {
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction) action;
-        Optional<ImageBuildActionDetails> details = Optional.ofNullable(ba.getDetails());
+        ImageBuildActionDetails details = ba.getDetails();
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
 
-        // Pretty-print the whole return map (or whatever fits into 1024 characters)
-        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(returnObject);
-        serverAction.setResultMsg(json);
+        serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            details.ifPresentOrElse(det -> {
-                Optional<ImageProfile> profileOpt =
-                        ImageProfileFactory.lookupById(det.getImageProfileId());
+            if (details == null) {
+                LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Long imageProfileId = details.getImageProfileId();
+            if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
+                LOG.warn("Image Profile ID not found while performing: "  +
+                        action.getName() + " in handleImageBuildData");
+                return;
+            }
+            Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
+            profileOpt.ifPresentOrElse(p -> {
+                p.asKiwiProfile()
+                        .ifPresent(kiwiProfile -> serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                // Download the built Kiwi image to SUSE Manager server
+                List<OSImageInspectSlsResult.Bundle> bundles =
+                        Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
+                                .getKiwiBuildInfo().getChanges().getRet().getBundles();
+                infoOpt.ifPresent(info -> info.setChecksum(
+                        ImageInfoFactory.convertChecksum(bundles.get(0).getChecksum())));
+                bundles.stream().forEach(bundleInfo -> {
+                    MgrUtilRunner.ExecResult collectResult = systemQuery
+                        .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
+                                OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
+                        .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                profileOpt.ifPresent(p -> p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                        // Download the built Kiwi image to SUSE Manager server
-                        OSImageInspectSlsResult.Bundle bundleInfo =
-                                Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
-                                        .getKiwiBuildInfo().getChanges().getRet().getBundle();
-                        infoOpt.ifPresent(info -> info.setChecksum(
-                                ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                        MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
-                                        OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
-                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
-
-                        if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            serverAction.setResultMsg(StringUtils
-                                    .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                            1024));
-                        }
-                    });
+                    if (collectResult.getReturnCode() != 0) {
+                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        serverAction.setResultMsg(StringUtils
+                            .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                    1024));
+                    }
+                });
                 }));
                 ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                         action.getSchedulerUser(),
@@ -1031,31 +1011,23 @@ public class SaltUtils {
                                 .map(ServerAction::getServerId)
                                 .collect(Collectors.toList()),
                         Optional.of(action.getId()),
-                        det.getVersion(),
-                        profileOpt.map(ImageProfile::getLabel).orElse(null),
-                        profileOpt.map(ImageProfile::getTargetStore).orElse(null),
+                        details.getVersion(),
+                        p.getLabel(),
+                        p.getTargetStore(),
                         Date.from(Instant.now())
                 );
                 try {
                     TASKOMATIC_API.scheduleActionExecution(iAction);
                 }
                 catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule image inspection");
-                    LOG.error(e);
+                    LOG.error("Could not schedule image inspection ", e);
                 }
-
                 infoOpt.ifPresent(info -> {
                     info.setRevisionNumber(info.getRevisionNumber() + 1);
                     info.setInspectAction(iAction);
                     ImageInfoFactory.save(info);
                 });
-            }, () -> {
-                LOG.error("Details not found in ImageBuildAction");
-                LOG.error("Name is: " + action.getName());
-                LOG.error("Action ID is: " + action.getId());
-                LOG.error("Earliest action was: " + action.getEarliestAction());
-                LOG.error("Scheduler User is: " + action.getSchedulerUser());
-            });
+        }, () -> LOG.warn("Could not find any profile for profile ID " + imageProfileId));
         }
     }
 
@@ -1064,14 +1036,23 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
+        if (details == null) {
+            LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
+        Long imageStoreId = details.getImageStoreId();
+        if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
+            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
+            return;
+        }
         ImageInfoFactory
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
-                        .ifPresent(minionServer -> handleImagePackageProfileUpdate(
-                                imageInfo, Json.GSON.fromJson(jsonResult,
-                                        ImagesProfileUpdateSlsResult.class),
-                                serverAction)));
+                        .ifPresent(minionServer ->
+                                handleImagePackageProfileUpdate(imageInfo, Json.GSON.fromJson(jsonResult,
+                                                ImagesProfileUpdateSlsResult.class),
+                                        serverAction)));
     }
 
     /**
@@ -1102,7 +1083,8 @@ public class SaltUtils {
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
     jsonEventToStateApplyResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-            new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+                new TypeToken<>() {
+                };
         Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
         results = Optional.empty();
         try {
@@ -1157,7 +1139,7 @@ public class SaltUtils {
                 Optional.of(ret.getInfoInstalled().getChanges().getRet())
                         .map(saltPkgs -> saltPkgs.entrySet().stream()
                                 .flatMap(entry -> Opt.stream(entry.getValue().right())
-                                        .flatMap(infoList -> infoList.stream())
+                                        .flatMap(Collection::stream)
                                         .map(info -> createImagePackageFromSalt(entry.getKey(), info, imageInfo)))
                                 .collect(Collectors.toSet()));
 
@@ -1233,7 +1215,7 @@ public class SaltUtils {
                 if ("pxe".equals(ret.getImage().getType())) {
                     Org org = serverAction.getParentAction().getOrg();
                     String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(org);
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
+                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundles().get(0),
                             ret.getBootImage(), storeDirectory, org);
                 }
             }
@@ -1258,9 +1240,7 @@ public class SaltUtils {
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
-        HibernateFactory.doWithoutAutoFlushing(() -> {
-            updatePackages(server, result);
-        });
+        HibernateFactory.doWithoutAutoFlushing(() -> updatePackages(server, result));
 
         Optional.ofNullable(result.getListProducts())
                 .map(products -> products.getChanges().getRet())
@@ -1410,7 +1390,7 @@ public class SaltUtils {
                 .collect(Collectors.toMap(
                         SaltUtils::packageToKey,
                         Function.identity(),
-                        (first, second) -> resolveDuplicatePackage(first, second)
+                        SaltUtils::resolveDuplicatePackage
                 ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
@@ -1512,17 +1492,16 @@ public class SaltUtils {
      * @return the key
      */
     public static String packageToKey(InstalledPackage p) {
-        StringBuilder sb = new StringBuilder();
 
         // name and EVR are never null due to DB constraints
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
-        sb.append(p.getName().getName());
-        sb.append("-");
-        sb.append(p.getEvr().toUniversalEvrString());
-        sb.append(".");
-        sb.append(Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown"));
 
-        return sb.toString();
+        String sb = p.getName().getName() +
+                "-" +
+                p.getEvr().toUniversalEvrString() +
+                "." +
+                Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown");
+        return sb;
     }
 
     /**
@@ -1833,9 +1812,7 @@ public class SaltUtils {
         ServerFactory.save(minion);
 
         if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
-            systemInfo.getMaster().ifPresent(master -> {
-                updateMinionConnectionPath(minion, master);
-            });
+            systemInfo.getMaster().ifPresent(master -> updateMinionConnectionPath(minion, master));
         }
 
         //Update the uptime
@@ -1879,23 +1856,35 @@ public class SaltUtils {
 
     private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
+        boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() != null) {
-                return bootTime.after(sa.getPickupTime());
+                result = bootTime.after(sa.getPickupTime());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) && sa.getPickupTime() == null) {
-                return bootTime.after(action.getEarliestAction());
+                result = bootTime.after(action.getEarliestAction());
             }
             else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                 if (action.getPrerequisite() != null) {
                     // queued reboot actions that do not complete in 12 hours will
                     // be cleaned up by MinionActionUtils.cleanupMinionActions()
-                    return false;
+                    result = false;
                 }
-                return bootTime.after(sa.getParentAction().getEarliestAction());
+                else {
+                    result = bootTime.after(sa.getParentAction().getEarliestAction());
+                }
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("shouldCleanupAction" +
+                        " Server:" + sa.getServer().getId() +
+                        " Action: " + sa.getParentAction().getId() +
+                        " BootTime: " + bootTime +
+                        " PickupTime: " + sa.getPickupTime() +
+                        " EarliestAction " + action.getEarliestAction() +
+                        " Result: " + result);
             }
         }
-        return false;
+        return result;
     }
 
     /**
@@ -2000,7 +1989,7 @@ public class SaltUtils {
                     .flatMap(Optional::stream)
                     .collect(Collectors.joining(" "))
                 ).filter(s -> !s.isEmpty());
-        return error.orElseGet(() -> saltErr.toString());
+        return error.orElseGet(saltErr::toString);
     }
 
     /**

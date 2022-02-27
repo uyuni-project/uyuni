@@ -8,9 +8,6 @@
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
-<div class="alert alert-info">
-    <bean:message key="sdc.channels.info.change" />
-</div>
   <div id="channels-div"></div>
   <script>
         var csrfToken = "<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";

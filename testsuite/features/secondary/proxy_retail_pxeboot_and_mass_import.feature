@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -12,7 +12,6 @@
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
 @buildhost
-@long_test
 @proxy
 @private_net
 @pxeboot_minion
@@ -59,26 +58,8 @@ Feature: PXE boot a Retail terminal
     And I enter "tftp" in second CNAME alias field of example.org zone
     And I enter "proxy" in second CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter the hostname of "proxy" in third CNAME name field of example.org zone
-
-  # Note: Avahi does not cross networks, so we need to cheat by serving tf.local
-  Scenario: Configure avahi info for PXE part of DNS on the branch server
-    And I scroll to the top of the page
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in file name field of tf.local zone
-    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
-    And I enter "admin@tf.local." in SOA contact field of tf.local zone
     And I enter "salt" in third CNAME alias field of example.org zone
-    And I press "Add Item" in A section of tf.local zone
-    And I enter the hostname of "proxy" in first A name field of tf.local zone
-    And I enter the IP address of "proxy" in first A address field of tf.local zone
-    And I press "Add Item" in NS section of tf.local zone
-    And I enter the hostname of "proxy" in first NS field of tf.local zone
-    And I scroll to the top of the page
-    And I should see a "Bind" text
+    And I enter "proxy" in third CNAME name field of example.org zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -158,6 +139,10 @@ Feature: PXE boot a Retail terminal
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
     Then I should see a "System group SERVERS created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to SERVERS server group." text
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
@@ -210,7 +195,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
@@ -310,26 +295,6 @@ Feature: PXE boot a Retail terminal
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
 
-  Scenario: Cheat with missing avahi domain
-    #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    And I press "Add Item" in configured zones section
-    And I enter "tf.local" in third configured zone name field
-    And I press "Add Item" in available zones section
-    And I enter "tf.local" in third available zone name field
-    And I enter "master/db.tf.local" in file name field of tf.local zone
-    And I enter the hostname of "proxy" in SOA name server field of tf.local zone
-    And I enter "admin@tf.local." in SOA contact field of tf.local zone
-    And I press "Add Item" in A section of tf.local zone
-    And I enter the hostname of "proxy" in first A name field of tf.local zone
-    And I enter the IP address of "proxy" in first A address field of tf.local zone
-    And I press "Add Item" in NS section of tf.local zone
-    And I enter the hostname of "proxy" in first NS field of tf.local zone
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
   Scenario: Apply the highstate to take into account the imported formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -339,8 +304,7 @@ Feature: PXE boot a Retail terminal
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    When I stop and disable avahi on the PXE boot minion
-    And I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
+    When I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
@@ -415,10 +379,6 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in ftp CNAME of example.org zone section
     And I press "Remove Item" in dhcp CNAME of example.org zone section
     And I press "Remove Item" in dns CNAME of example.org zone section
-    # direct zone tf.local:
-    And I scroll to the top of the page
-    And I press minus sign in tf.local configured zone section
-    And I press minus sign in tf.local available zone section
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 

@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-22 10:19+0100\n"
-"PO-Revision-Date: 2021-06-03 18:57+0000\n"
-"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"PO-Revision-Date: 2022-02-05 02:12+0000\n"
+"Last-Translator: Javier Llorente <javier@opensuse.org>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
 ">\n"
 "Language: es\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -51,7 +51,9 @@ msgstr "Petición no válida recibida (%s)"
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
-msgstr "SIGUE MENSAJE IMPORTANTE: %s"
+msgstr ""
+"A CONTINUACIÓN, UN MENSAJE IMPORTANTE:\n"
+"%s"
 
 #: ../server/apacheRequest.py:149
 #, python-format
@@ -1237,16 +1239,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:113 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:116
+#: ../satellite_tools/reposync.py:117
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 

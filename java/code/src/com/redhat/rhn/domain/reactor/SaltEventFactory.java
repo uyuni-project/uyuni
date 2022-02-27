@@ -54,13 +54,11 @@ public class SaltEventFactory extends HibernateFactory {
         List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents",
                     Collections.EMPTY_MAP);
 
-        return IntStream.range(0, queuesCount).mapToLong(i -> {
-            return countObjects.stream()
-                    .filter(c -> c[0].equals(i))
-                    .map(c -> (Long) c[1])
-                    .findFirst()
-                    .orElse(Long.valueOf(0L));
-        }).boxed().collect(Collectors.toList());
+        return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
+                .filter(c -> c[0].equals(i))
+                .map(c -> (Long) c[1])
+                .findFirst()
+                .orElse(0L)).boxed().collect(Collectors.toList());
     }
 
     /**

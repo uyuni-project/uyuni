@@ -273,6 +273,6 @@ public class VisualizationManager {
         }
 
         return Arrays.stream(streams)
-                .reduce(Stream.empty(), (v1, v2) -> Stream.concat(v1, v2));
+                .reduce(Stream.empty(), Stream::concat);
     }
 }

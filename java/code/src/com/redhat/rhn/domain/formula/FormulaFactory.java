@@ -206,7 +206,7 @@ public class FormulaFactory {
 
     private static List<File> getFormulasFiles(File formulasFolder) {
         return Optional.ofNullable(formulasFolder.listFiles())
-                .map(filesList -> Arrays.asList(filesList))
+                .map(Arrays::asList)
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
                             ". Check if it exists and have the correct permissions (755).");
@@ -273,13 +273,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
-                data.ifPresent(formData -> {
-                    server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
-                        server.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
+                    server.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
@@ -466,7 +464,7 @@ public class FormulaFactory {
      */
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroup(
             String name, ServerGroup group) {
-        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(pillar -> pillar.getPillar());
+        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
 
         // Load data from the legacy file if not converted yet
         File dataFile = new File(getGroupPillarDir() +
@@ -495,13 +493,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getGroupFormulaValuesByNameAndGroup(formula, group);
-                data.ifPresent(formData -> {
-                    group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
-                        group.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
+                    group.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getGroupPillarDir() +
                         group.getId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
@@ -570,7 +566,7 @@ public class FormulaFactory {
         List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
         return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
                 getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
-                        .map(data -> hasMonitoringDataEnabled(data))
+                        .map(FormulaFactory::hasMonitoringDataEnabled)
                         .orElse(false);
     }
 
@@ -696,10 +692,10 @@ public class FormulaFactory {
      * @return a list of formulas in correct order of execution
      */
     public static List<String> orderFormulas(List<String> formulasToOrder) {
-        LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
+        LinkedList<String> formulas = new LinkedList<>(formulasToOrder);
         formulas.sort(String.CASE_INSENSITIVE_ORDER);
 
-        Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
+        Map<String, List<String>> dependencyMap = new HashMap<>();
 
         for (String formula : formulas) {
             List<String> dependsOnList = (List<String>) getMetadata(formula, "after")
@@ -710,7 +706,7 @@ public class FormulaFactory {
 
         int index = 0;
         int minLength = formulas.size();
-        LinkedList<String> orderedList = new LinkedList<String>();
+        LinkedList<String> orderedList = new LinkedList<>();
 
         while (!formulas.isEmpty()) {
             String formula = formulas.removeFirst();
@@ -843,7 +839,7 @@ public class FormulaFactory {
      */
     public static boolean isMemberOfGroupHavingMonitoring(Server server) {
         return server.getManagedGroups().stream()
-                .map(grp -> FormulaFactory.hasMonitoringDataEnabled(grp))
+                .map(FormulaFactory::hasMonitoringDataEnabled)
                 .anyMatch(Boolean::booleanValue);
     }
 

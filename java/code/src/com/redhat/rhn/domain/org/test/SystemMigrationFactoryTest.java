@@ -37,7 +37,7 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
         // Setup
         // Create org1 with 3 servers
         User orgAdmin1 = UserTestUtils.findNewUser("testUser", "org1", true);
-        List<Server> servers = new LinkedList<Server>();
+        List<Server> servers = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
             Server server = ServerFactoryTest.createTestServer(orgAdmin1);
             assertNotNull(server);

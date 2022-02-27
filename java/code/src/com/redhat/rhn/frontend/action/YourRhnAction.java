@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,8 +57,8 @@ public class YourRhnAction extends RhnAction {
         Map renderers = new HashMap();
 
         List tasks = Arrays.asList(Pane.ALL_PANES);
-        for (Iterator iter = tasks.iterator(); iter.hasNext();) {
-            String key = (String) iter.next();
+        for (Object taskIn : tasks) {
+            String key = (String) taskIn;
             FragmentRenderer renderer = null;
             if (key.equals(Pane.TASKS)) {
                 renderer = new TasksRenderer();
@@ -105,13 +104,13 @@ public class YourRhnAction extends RhnAction {
 
         if (panes != null && panes.size() > 0) {
             anyListsSelected = true;
-            for (Iterator iter = panes.keySet().iterator(); iter.hasNext();) {
-                String key = (String) iter.next();
+            for (Object oIn : panes.keySet()) {
+                String key = (String) oIn;
                 key = formatKey(key);
                 request.setAttribute(key, "y");
             }
         }
-        request.setAttribute(ANY_LISTS_SELECTED, Boolean.valueOf(anyListsSelected));
+        request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
         request.setAttribute("legends", "yourrhn");
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -136,8 +135,8 @@ public class YourRhnAction extends RhnAction {
         Set hiddenPanes = user.getHiddenPanes();
         Map mergedPanes = new HashMap();
 
-        for (Iterator itr = panes.values().iterator(); itr.hasNext();) {
-            Pane pane = (Pane) itr.next();
+        for (Object oIn : panes.values()) {
+            Pane pane = (Pane) oIn;
             if (!hiddenPanes.contains(pane)) {
                 Pane actualPane = (Pane) panes.get(pane.getLabel());
                 if (actualPane.isValidFor(user)) {

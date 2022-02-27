@@ -1,0 +1,21 @@
+include /templates/common.jade
+
+#payg-ssh
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+div#init_data_payg(style="display: none")
+    | #{paygInstance}
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/payg')
+        .then(function(module) {
+            module.renderer(
+                'payg-ssh',
+                 {
+                    payg: document.getElementById('init_data_payg').textContent,
+                    wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
+                 }
+            );
+        });

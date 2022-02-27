@@ -79,7 +79,7 @@ public class PackageSearchHelper {
         // call search server
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
-        List<Object> args = new ArrayList<Object>();
+        List<Object> args = new ArrayList<>();
         args.add(sessionId);
         args.add("package");
         args.add(preprocessSearchString(searchString, mode, pkgArchLabels));
@@ -98,8 +98,8 @@ public class PackageSearchHelper {
         // so we can get the actual results we are to display to the user.
         // also save the names into a Set for later.
 
-        List<Long> pids = new ArrayList<Long>();
-        Set<String> names = new HashSet<String>();
+        List<Long> pids = new ArrayList<>();
+        Set<String> names = new HashSet<>();
         for (Object itemObject : results) {
             Map item = (Map) itemObject;
             names.add((String) item.get("name"));
@@ -121,12 +121,12 @@ public class PackageSearchHelper {
                 PackageFactory.packageSearch(pids, arList, relevantUserId, filterChannelId,
                         searchType);
 
-        List<PackageOverview> ordered = new ArrayList<PackageOverview>();
+        List<PackageOverview> ordered = new ArrayList<>();
 
         Map<Long, PackageOverview> pidToPackageMap =
-                new HashMap<Long, PackageOverview>();
+                new HashMap<>();
 
-        Set<String> namesSet = new HashSet<String>();
+        Set<String> namesSet = new HashSet<>();
 
         // Get a list of package names from PackageOverview, to verify against the
         // names returned by the search server.

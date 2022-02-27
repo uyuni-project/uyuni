@@ -67,8 +67,8 @@ public class SSMCreateRecordCommand {
      * @return the list
      */
     public List<ValidatorError> store() {
-        succeededServers = new LinkedList<Server>();
-        List<ValidatorError> errors = new LinkedList<ValidatorError>();
+        succeededServers = new LinkedList<>();
+        List<ValidatorError> errors = new LinkedList<>();
         List<SystemOverview> systemOverviews = KickstartManager.getInstance()
             .kickstartableSystemsInSsm(user);
 

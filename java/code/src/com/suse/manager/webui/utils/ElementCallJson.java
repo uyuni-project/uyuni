@@ -40,6 +40,7 @@ public class ElementCallJson extends LocalCall<JsonElement> {
         super((String) call.getPayload().get("fun"),
                 ofNullable((List<?>) call.getPayload().get("arg")),
                 ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
-                new TypeToken<JsonElement>() { });
+                new TypeToken<>() {
+                });
     }
 }

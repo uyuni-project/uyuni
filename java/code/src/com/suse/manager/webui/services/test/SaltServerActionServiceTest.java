@@ -22,6 +22,7 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -486,17 +487,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 long scriptActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
                                 ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
-                        .map(ace -> ace.getActionId())
+                        .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long rebootActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
                                 ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
-                        .map(ace -> ace.getActionId())
+                        .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long highstateActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
                                 ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
-                        .map(ace -> ace.getActionId())
+                        .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
                                 "_action_" + scriptActionId,
@@ -610,7 +611,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 .allMatch(token ->
                         token.getStart().toInstant().isAfter(now.toInstant()) &&
                         token.getStart().toInstant().isBefore(now.toInstant().plus(10, ChronoUnit.SECONDS))));
-        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> !token.getValid()));
+        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(AccessToken::getValid));
         assertTokenExists(base, action);
         assertTokenExists(ch1, action);
         assertTokenExists(ch2, action);

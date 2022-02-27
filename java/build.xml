@@ -331,7 +331,6 @@
           instrpath="${build.dir}/classes" mode="fullcopy"
           outfile="${rhn-home}/coverage.em" >
         <filter excludes="*.internal.*" />
-        <filter excludes="*.scripts.*" />
         <filter excludes="*Mock*" />
         <filter excludes="*Constants" />
         <filter excludes="*Exception" />
@@ -388,7 +387,6 @@
       <src>
         <path location="${build.dir}/src" />
         <path location="code/src" />
-        <path location="code/scripts/src" />
       </src>
     </javac>
 
@@ -432,7 +430,6 @@
       <src>
         <path location="${build.dir}/src" />
         <path location="code/src" />
-        <path location="code/scripts/src" />
       </src>
     </javac>
 
@@ -566,21 +563,6 @@
         <exclude name="**/jasper5-compiler*" />
       </lib>
     </war>
-  </target>
-
-  <target name="gen-explain-plan" depends="compile-internal,init-taskdefs"
-          description="Generate explain plans for the DataSource queries.">
-    <mkdir dir="${report.dir}/explainplan" />
-    <java fork="true"
-          classname="com.redhat.rhn.scripts.ExplainPlanGenerator"
-          failonerror="true" >
-          <classpath>
-              <pathelement path="${build.dir}/classes" />
-              <path refid="alljars"/>
-          </classpath>
-          <arg value="${rhn.checkout.dir}" />
-          <arg value="${report.dir}/explainplan/explain.txt" />
-    </java>
   </target>
 
   <target name="install-tomcat">

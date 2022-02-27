@@ -45,6 +45,10 @@ const _MESSAGE_TYPE = {
     id: "StateApplyFailed",
     text: t("State apply failed"),
   },
+  PaygAuthenticationUpdateFailed: {
+    id: "PaygAuthenticationUpdateFailed",
+    text: t("Pay-as-you-go refresh authentication data failed"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {

@@ -24,7 +24,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +68,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @throws IOException if the file can't be parsed/loaded
      */
     public XmlResourceBundle(String filelocation) throws IOException {
-        strings = new HashMap<String, String>();
+        strings = new HashMap<>();
         try {
             // These are namespace URLs, and don't actually
             // resolve to real documents that get downloaded on the
@@ -122,7 +121,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      *         Useful for searching for a partial match.
      */
     public Enumeration<String> getKeys() {
-        List<String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<>();
 
         if (parent != null) {
             Enumeration<String> e = parent.getKeys();
@@ -131,13 +130,12 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
             }
         }
 
-        Iterator<String> itr = strings.keySet().iterator();
-        while (itr.hasNext()) {
-            keys.add(itr.next());
+        for (String sIn : strings.keySet()) {
+            keys.add(sIn);
         }
         // Ugh, have to convert back to the old Enumeration interface
         // This isn't pretty but it works.
-        return new Vector<String>(keys).elements();
+        return new Vector<>(keys).elements();
     }
 
 }

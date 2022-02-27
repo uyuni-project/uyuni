@@ -105,7 +105,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
          * Hashtable of uploaded file elements.
          */
         private static Hashtable<String, FormFile> uploadedFileElements =
-                new Hashtable<String, FormFile>();
+                new Hashtable<>();
 
         /**
          * Adds an uploaded file.
@@ -142,7 +142,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
         @Override
         public Hashtable<String, Object> getAllElements() {
             Hashtable<String, Object> result =
-                    new Hashtable<String, Object>(uploadedFileElements);
+                    new Hashtable<>(uploadedFileElements);
             result.putAll(request.getParameterMap());
             return result;
         }

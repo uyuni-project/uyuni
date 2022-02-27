@@ -105,8 +105,8 @@ public class SystemCommandExecutor implements Executor {
             logger.error("execute(String[])", ioe);
 
             String message = "";
-            for (int i = 0; i < args.length; i++) {
-                message = message + args[i] + " ";
+            for (String argIn : args) {
+                message = message + argIn + " ";
             }
             logger.error("IOException while trying to exec: " + message, ioe);
             throw new RuntimeException(

@@ -108,7 +108,7 @@ public class CustomValueSetAction extends RhnAction {
     }
 
     private Object makeValidationMap(DynaActionForm formIn) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(VAL_PARAM, formIn.getString(VAL_PARAM));
         return map;
     }

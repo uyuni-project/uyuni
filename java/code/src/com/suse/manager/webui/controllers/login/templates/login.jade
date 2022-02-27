@@ -20,12 +20,8 @@ html(lang=window.preferredLocale.replace("_", "-"))
             script(src='/javascript/less.js')
         else
             link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}')
-        script(src='/javascript/loggerhead.js?cb=#{webBuildtimestamp}')
-        script(src='/javascript/frontend-log.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
-        script(src='/vendors/vendors.bundle.js?cb=#{webBuildtimestamp}')
-        script(src='/javascript/manager/core.bundle.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/main.bundle.js?cb=#{webBuildtimestamp}')
         noscript
             .alert.alert-danger

@@ -37,6 +37,7 @@ import sys
 import tempfile
 import types
 import urlgrabber
+import json
 
 try:
     from urllib import urlencode, unquote, quote
@@ -399,7 +400,7 @@ class ContentSource:
     def __init__(self, url, name, insecure=False, interactive=True,
                  yumsrc_conf=None, org="1", channel_label="",
                  no_mirrors=False, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None, channel_arch=""):
+                 client_key_file=None, channel_arch="", http_headers={}):
         """
         Plugin constructor.
         """
@@ -421,7 +422,7 @@ class ContentSource:
         self.sslcacert = ca_cert_file
         self.sslclientcert = client_cert_file
         self.sslclientkey = client_key_file
-        self.http_headers = {}
+        self.http_headers = http_headers
 
         # keep authtokens for mirroring
         (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
@@ -611,7 +612,10 @@ type=rpm-md
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
         elif self.http_headers:
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&repo_name={}&channel_label={}'.format(quote(zypp_repo_url), self.name, self.channel_label)
+           headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
+           with open(headers_location, "w") as repo_headers_file:
+               repo_headers_file.write(json.dumps(self.http_headers))
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(zypp_repo_url), quote(headers_location))
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 

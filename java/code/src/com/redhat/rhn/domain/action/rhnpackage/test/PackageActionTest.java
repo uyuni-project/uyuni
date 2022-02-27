@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -61,9 +60,8 @@ public class PackageActionTest extends RhnBaseTestCase {
          * Make sure PackageEvr was set & committed correctly
          */
         Set details = p.getDetails();
-        Iterator ditr = details.iterator();
-        while (ditr.hasNext()) {
-            PackageActionDetails detail = (PackageActionDetails) ditr.next();
+        for (Object detailIn : details) {
+            PackageActionDetails detail = (PackageActionDetails) detailIn;
             assertNotNull(detail.getEvr().getId());
         }
 

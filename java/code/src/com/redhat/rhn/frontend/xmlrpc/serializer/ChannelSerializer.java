@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import redstone.xmlrpc.XmlRpcException;
@@ -114,10 +113,9 @@ public class ChannelSerializer extends RhnXmlRpcCustomSerializer {
                 StringUtils.defaultString(c.getGPGKeyFp()));
         helper.add("gpg_check", c.isGPGCheck());
 
-        List<ContentSource> csList = new ArrayList<ContentSource>(c.getSources().size());
+        List<ContentSource> csList = new ArrayList<>(c.getSources().size());
         if (!c.getSources().isEmpty()) {
-            for (Iterator itr = c.getSources().iterator(); itr.hasNext();) {
-                ContentSource cs = (ContentSource) itr.next();
+            for (ContentSource cs : c.getSources()) {
                 csList.add(cs);
             }
             helper.add("yumrepo_last_sync", c.getLastSynced());

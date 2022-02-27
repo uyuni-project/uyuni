@@ -55,7 +55,7 @@ public class AffectedSystemsAction extends RhnSetAction {
                                       HttpServletRequest request,
                                       HttpServletResponse response) {
         RhnSet set = updateSet(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 

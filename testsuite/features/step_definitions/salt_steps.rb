@@ -14,7 +14,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     out, _code = $server.run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
-      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
       break
     end
     sleep 1
@@ -29,25 +29,37 @@ end
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} stop", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl stop #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} stop", check_errors: false)
+  else
+    node.run("systemctl stop #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} start", check_errors: false)
+  else
+    node.run("systemctl start #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $product == 'Uyuni' ? 'venv-salt-minion' : 'salt-minion'
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} restart", check_errors: false)
+  else
+    node.run("systemctl restart #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
@@ -173,37 +185,17 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in 'command', with: cmd
+  fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
 When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in 'target', with: minion
+  fill_in('target', with: minion, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
@@ -255,12 +247,12 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -270,10 +262,10 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if all(:xpath, xpath_query).any?
+  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
-  assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
+  assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
@@ -556,6 +548,6 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
   output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    puts output
+    log output
   end
 end

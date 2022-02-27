@@ -85,11 +85,10 @@ public class VirtualHostManagerProcessor {
         }
         serversToDelete.addAll(virtualHostManager.getServers());
         nodesToDelete.addAll(virtualHostManager.getNodes());
-        virtualHosts.entrySet().forEach(
-                virtualHost -> {
-                    log.debug("Processing host: " + virtualHost.getKey());
-                    processVirtualHost(virtualHost.getKey(), virtualHost.getValue());
-                });
+        virtualHosts.forEach((key, value) -> {
+            log.debug("Processing host: " + key);
+            processVirtualHost(key, value);
+        });
         serversToDelete.forEach(srv -> {
             log.debug("Removing link to virtual host: " + srv.getName());
             virtualHostManager.removeServer(srv);

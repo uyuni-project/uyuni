@@ -26,8 +26,7 @@ Feature: Smoke tests for <client>
     And the kernel for "<client>" should be correct
     And the OS version for "<client>" should be correct
     And the IPv4 address for "<client>" should be correct
-    # WORKAROUND: disabled for the moment due to a possible bug (#bsc1193858)
-    # And the IPv6 address for "<client>" should be correct
+    And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
     And the uptime for "<client>" should be correct

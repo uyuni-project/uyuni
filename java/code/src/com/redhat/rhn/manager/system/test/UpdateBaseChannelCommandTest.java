@@ -67,7 +67,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
 
         s = (Server) TestUtils.reload(s);
 
-        Set<Channel> channels = new HashSet<Channel>();
+        Set<Channel> channels = new HashSet<>();
         channels.add(parent);
         channels.add(child);
         assertEquals(channels, s.getChannels());

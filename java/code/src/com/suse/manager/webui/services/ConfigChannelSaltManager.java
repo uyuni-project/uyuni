@@ -422,7 +422,7 @@ public class ConfigChannelSaltManager {
         }
         Map<String, Object> stateParameters = new HashMap<>();
         stateParameters.put("type", revision.getConfigFileType().getLabel());
-        fileParams.stream().forEach(v -> stateParameters.putAll(v));
+        fileParams.stream().forEach(stateParameters::putAll);
         return stateParameters;
     }
 

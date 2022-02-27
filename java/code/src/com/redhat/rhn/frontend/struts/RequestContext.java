@@ -555,7 +555,7 @@ public class RequestContext {
      */
     // TODO Write unit tests for makeParamMapWithPagination()
     public Map<String, Object> makeParamMapWithPagination() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         String lower = processPagination();
 
         if (lower != null && lower.length() > 0 && StringUtils.isNumeric(lower)) {
@@ -583,7 +583,7 @@ public class RequestContext {
             // if we already have this param in the query string we have to
             // reset it to the new value
             if (index >= 0) {
-                Map<String, String> parammap = new TreeMap<String, String>();
+                Map<String, String> parammap = new TreeMap<>();
                 String[] params = StringUtils.split(request.getQueryString(),
                 '&');
                 // Convert the parameters into a map so we can

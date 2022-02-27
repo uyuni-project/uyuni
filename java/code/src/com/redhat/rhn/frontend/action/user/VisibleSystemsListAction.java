@@ -29,7 +29,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,9 +70,8 @@ public class VisibleSystemsListAction extends RhnSetAction {
          * Loop through all items in the DataResult and
          * add each item to the set.
          */
-        Iterator itr = dr.iterator();
-        while (itr.hasNext()) {
-            BaseDto dto = (BaseDto) itr.next();
+        for (Object oIn : dr) {
+            BaseDto dto = (BaseDto) oIn;
             if (dto.isSelectable()) {
                 dto.addToSet(rs);
             }

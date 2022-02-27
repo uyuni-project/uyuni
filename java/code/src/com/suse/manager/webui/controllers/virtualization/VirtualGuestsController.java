@@ -173,8 +173,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("hostInfo", server.hasVirtualizationEntitlement() && server.asMinionServer().isPresent() ?
-                GSON.toJson(virtManager.getHostInfo(server.getMinionId()).orElse(null)) :
-                null);
+                virtManager.getHostInfo(server.getMinionId()).map(GSON::toJson).orElse("{}") :
+                "{}");
 
         return renderPage("show", () -> data);
     }
@@ -762,13 +762,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         // Get the names of the VMs defined on the cluster if any
         host.asMinionServer()
                 .flatMap(minionServer -> virtManager.getVmInfos(minionServer.getMinionId()))
-                .ifPresent(data -> {
-                        names.putAll(data.entrySet().stream()
-                                .filter(entry -> entry.getValue().containsKey("uuid"))
-                                .collect(Collectors.toMap(
-                                        entry -> entry.getValue().get("uuid").getAsString().replaceAll("-", ""),
-                                        Map.Entry::getKey)));
-        });
+                .ifPresent(data -> names.putAll(data.entrySet().stream()
+                        .filter(entry -> entry.getValue().containsKey("uuid"))
+                        .collect(Collectors.toMap(
+                                entry -> entry.getValue().get("uuid").getAsString().replaceAll("-", ""),
+                                Map.Entry::getKey))));
 
         return names;
     }

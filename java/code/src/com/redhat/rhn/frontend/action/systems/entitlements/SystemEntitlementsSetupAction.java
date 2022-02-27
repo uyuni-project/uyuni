@@ -94,7 +94,7 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
             request.setAttribute(SHOW_COMMANDS, Boolean.TRUE);
         }
 
-        List<LabelValueBean> addOnEntitlements = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> addOnEntitlements = new ArrayList<>();
 
         for (Entitlement e : user.getOrg().getValidAddOnEntitlementsForOrg()) {
             log.debug("Adding " + e.getLabel() + " droplist entry");

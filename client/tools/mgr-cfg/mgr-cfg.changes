@@ -1,3 +1,11 @@
+- Corrected source URL in spec file.
+
+-------------------------------------------------------------------
+Wed Jan 26 11:48:40 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Fix installation problem for SLE15SP4 due missing python-selinux
+
 -------------------------------------------------------------------
 Tue Jan 18 13:30:50 CET 2022 - jgonzalez@suse.com
 

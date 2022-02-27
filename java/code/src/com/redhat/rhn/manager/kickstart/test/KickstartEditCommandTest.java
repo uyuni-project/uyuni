@@ -49,19 +49,19 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
     }
 
     public void testOrgDefault() throws Exception {
-        assertFalse(ksdata.isOrgDefault().booleanValue());
+        assertFalse(ksdata.isOrgDefault());
         KickstartData k1 = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         Long oldDefaultId = k1.getId();
         k1.setOrgDefault(Boolean.TRUE);
-        assertTrue(k1.isOrgDefault().booleanValue());
+        assertTrue(k1.isOrgDefault());
         KickstartFactory.saveKickstartData(k1);
         flushAndEvict(k1);
 
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setIsOrgDefault(Boolean.TRUE);
-        assertTrue(ksdata.isOrgDefault().booleanValue());
+        assertTrue(ksdata.isOrgDefault());
         k1 = KickstartFactory.lookupKickstartDataByIdAndOrg(user.getOrg(), oldDefaultId);
-        assertFalse(k1.isOrgDefault().booleanValue());
+        assertFalse(k1.isOrgDefault());
     }
 
 }

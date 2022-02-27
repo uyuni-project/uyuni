@@ -471,7 +471,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 regular, regular.getLogin());
         assertEquals(0, defGrps.length);
 
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(((ServerGroup)groups[0]).getName());
         names.add(((ServerGroup)groups[1]).getName());
         assertEquals(1, handler.addDefaultSystemGroups(regular,
@@ -722,7 +722,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
         // let's use the first systemgroup in the list, or if length == 1
         // the only one :)
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(((ServerGroup)defGrps[0]).getName());
         assertEquals(1, handler.removeDefaultSystemGroups(admin,
                 admin.getLogin(), names));
@@ -763,9 +763,9 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, defGrps.length);
 
 
-        List<String> names = new LinkedList<String>();
-        for (int i = 0; i < assocGrps.length; i++) {
-                names.add(((ServerGroup)assocGrps[i]).getName());
+        List<String> names = new LinkedList<>();
+        for (Object assocGrpIn : assocGrps) {
+            names.add(((ServerGroup) assocGrpIn).getName());
         }
 
         assertEquals(1, handler.removeAssignedSystemGroups(admin,
@@ -806,7 +806,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 regular.getLogin());
         assertEquals(0, groups.length);
 
-        List<String> names = new LinkedList<String>();
+        List<String> names = new LinkedList<>();
         names.add(sg1.getName());
         names.add(sg2.getName());
         handler.addAssignedSystemGroups(admin, regular.getLogin(), names,

@@ -65,7 +65,8 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * (based on its product) assigned.
      */
     public void testImageSyncedPillarCreated() throws Exception {
-        JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<Event>() { });
+        JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<>() {
+        });
         Event event = jsonParser.parse(
         "{                                                       " +
         "    'tag': 'suse/manager/image_synced',                 " +

@@ -1,45 +1,51 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Watch RPM or DPkg database via cookies and fire
 an event to the SUSE Manager if that has been changed.
 
 Author: Bo Maryniuk <bo@suse.de>
-'''
+"""
 
 from __future__ import absolute_import
-from salt.utils.odict import OrderedDict
 import os
-import logging
-log = logging.getLogger(__name__)
+
+import salt.cache
+import salt.config
 
 
-__virtualname__ = 'pkgset'
+__virtualname__ = "pkgset"
 
-PKG_PLUGINS = OrderedDict([
-        ("/usr/lib/zypp/plugins/commit/venv-zyppnotify", "/var/cache/venv-salt-minion/rpmdb.cookie"),
-        ("/usr/share/yum-plugins/venv-yumnotify.py",     "/var/cache/venv-salt-minion/rpmdb.cookie"),
-        ("/usr/bin/venv-dpkgnotify",                     "/var/cache/venv-salt-minion/dpkg.cookie"),
-        ("/usr/lib/zypp/plugins/commit/zyppnotify",      "/var/cache/salt/minion/rpmdb.cookie"),
-        ("/usr/share/yum-plugins/yumnotify.py",          "/var/cache/salt/minion/rpmdb.cookie"),
-        ("/usr/bin/dpkgnotify",                          "/var/cache/salt/minion/dpkg.cookie")
-    ])
-COOKIE_PATH = None
+SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR", "/etc/salt")
+
+__opts__ = salt.config.minion_config(
+    os.path.join(SALT_CONFIG_DIR, "minion")
+)
+
+CACHE = salt.cache.Cache(__opts__)
+
+PKGSET_COOKIES = (
+    os.path.join(__opts__["cachedir"], "rpmdb.cookie"),
+    os.path.join(__opts__["cachedir"], "dpkg.cookie"),
+)
 
 
 def __virtual__():
-    global COOKIE_PATH
+    return __virtualname__
 
-    for plug, cookie in PKG_PLUGINS.items():
-        if os.path.exists(plug):
-            COOKIE_PATH = cookie
-            break
 
-    return COOKIE_PATH and __virtualname__ or False
+def validate(config):
+    """
+    The absence of this function could cause noisy logging,
+    when logging level set to DEBUG or TRACE.
+    So we need to have it with no any validation inside.
+    """
+    return True, "There is nothing to validate"
 
 
 def beacon(config):
-    '''
-    Watch the cookie file from libzypp's plugin. If its content changes, fire an event to the Master.
+    """
+    Watch the cookie file from package manager plugin.
+    If its content changes, fire an event to the Master.
 
     Example Config
 
@@ -49,20 +55,30 @@ def beacon(config):
           pkgset:
             interval: 5
 
-    '''
-
-    global COOKIE_PATH
+    """
 
     ret = []
-    if os.path.exists(COOKIE_PATH):
-        with open(COOKIE_PATH) as ck_file:
+    for cookie_path in PKGSET_COOKIES:
+        if not os.path.exists(cookie_path):
+            continue
+        with open(cookie_path) as ck_file:
             ck_data = ck_file.read().strip()
             if __virtualname__ not in __context__:
-                __context__[__virtualname__] = ck_data
+                # After a minion restart, when this is running for first time, there is nothing in context yet
+                # So, if there is any data in the cache, we put it in the context, if not we put the new data.
+                # and update the data in the cache.
+                cache_data = CACHE.fetch("beacon/pkgset", "cookie").get("data", None)
+                if cache_data:
+                    __context__[__virtualname__] = cache_data
+                else:
+                    __context__[__virtualname__] = ck_data
+                    CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
             if __context__[__virtualname__] != ck_data:
-                ret.append({
-                    'tag': 'changed'
-                })
+                # Now it's time to fire beacon event only if the new data is not yet
+                # inside the context (meaning not proceesed), and then stop iterating
+                ret.append({"tag": "changed"})
+                CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
                 __context__[__virtualname__] = ck_data
+                break
 
     return ret

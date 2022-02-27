@@ -127,4 +127,16 @@ mgrchannels_yum_clean_all:
 {%- endif %}
 {%- endif %}
 
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3'%}
+mgrchannels_install_products:
+  product.all_installed:
+    - require:
+      - file: mgrchannels_*
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+    - saltutil: sync_states
+{%- else %}
+    - mgrcompat: sync_states
+{%- endif %}
+{%- endif %}
+
 {% include 'channels/gpg-keys.sls' %}

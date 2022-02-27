@@ -83,7 +83,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Arrays.asList(server.getId()),
-                new ArrayList<String>(),
+                new ArrayList<>(),
                 earliestAction);
 
         // Look it up and verify
@@ -112,7 +112,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Arrays.asList(server.getId()),
-                new ArrayList<String>(),
+                new ArrayList<>(),
                 earliestAction,
                 Optional.of(true));
 

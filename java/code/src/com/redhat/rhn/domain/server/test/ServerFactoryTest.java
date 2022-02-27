@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -113,7 +114,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -339,7 +339,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(serversToAdd, serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -350,7 +350,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(Arrays.asList(testServer1), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -365,7 +365,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(Arrays.asList(testServerDifferentOrg), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -373,7 +373,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.addServersToGroup(new ArrayList<>(), serverGroup);
 
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
-        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertTrue(serverGroup.getServers().stream().allMatch(serversToAdd::contains));
         assertEquals(serverGroup.getServers().size(), 2);
         assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
 
@@ -831,8 +831,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
         boolean found = false;
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("List contains something other than Profiles",
                     HashMap.class, o.getClass());
             Map s = (Map) o;
@@ -1139,13 +1138,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
 
         assertEquals(1, localCallListMap.size());
-        localCallListMap.entrySet().forEach(result -> {
-            assertEquals(2, result.getValue().size());
-            final LocalCall<?> call = result.getKey();
+        localCallListMap.forEach((call, value) -> {
+            assertEquals(2, value.size());
             assertEquals("state.apply", call.getPayload().get("fun"));
-            Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
+            Map<String, Object> kwarg = (Map<String, Object>) call.getPayload().get("kwarg");
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
-            Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
+            Map<String, Object> pillar = (Map<String, Object>) kwarg.get("pillar");
             Collection<String> regularPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
             assertEquals(1, regularPatches.size());
@@ -1250,15 +1248,16 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e4);
         TestUtils.saveAndFlush(e5);
 
-        Map<Long, Map<String, String>> out = ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
-        Map<String, String> packages = out.get(srv.getId());
+        Map<Long, Map<String, Tuple2<String, String>>> out =
+                ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
+        Map<String, Tuple2<String, String>> packages = out.get(srv.getId());
         assertEquals(1, packages.size());
-        assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()));
+        assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()).getB());
     }
 
     public void testListErrataNamesForServer() throws Exception {
-        Set<Long> serverIds = new HashSet<Long>();
-        Set<Long> errataIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
+        Set<Long> errataIds = new HashSet<>();
 
         Server srv = ServerFactoryTest.createTestServer(user, true);
         serverIds.add(srv.getId());
@@ -1290,8 +1289,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testListErrataNamesForServerSLE11() throws Exception {
-        Set<Long> serverIds = new HashSet<Long>();
-        Set<Long> errataIds = new HashSet<Long>();
+        Set<Long> serverIds = new HashSet<>();
+        Set<Long> errataIds = new HashSet<>();
 
         Server srv = ServerFactoryTest.createTestServer(user, true);
         serverIds.add(srv.getId());

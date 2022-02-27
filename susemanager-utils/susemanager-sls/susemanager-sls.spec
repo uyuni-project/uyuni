@@ -29,7 +29,7 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.6
+Version:        4.3.8
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -79,6 +79,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
 mkdir -p %{buildroot}/usr/share/susemanager/modules/engines
+mkdir -p %{buildroot}/usr/share/susemanager/modules/roster
 mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
@@ -90,6 +91,7 @@ cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
+cp -R modules/roster/* %{buildroot}/usr/share/susemanager/modules/roster
 cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
@@ -144,6 +146,7 @@ fi
 /usr/share/susemanager/modules/tops
 /usr/share/susemanager/modules/runners
 /usr/share/susemanager/modules/engines
+/usr/share/susemanager/modules/roster
 /usr/share/susemanager/formulas
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap

@@ -49,9 +49,27 @@ public class CveFactory extends HibernateFactory {
      * @return CVE object found
      */
     public static Cve lookupByName(String name) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return (Cve)singleton.lookupObjectByNamedQuery("Cve.lookupByName", params);
+    }
+
+    /**
+     *  Looks up a CVE or inserts it if it does not exist.
+     * @param name CVE
+     * @return the CVE
+     */
+    public static Cve lookupOrInsertByName(String name) {
+        Cve cve = lookupByName(name);
+        if (cve != null) {
+            return cve;
+        }
+        else {
+            Cve newCve = new Cve();
+            newCve.setName(name);
+            save(newCve);
+            return newCve;
+        }
     }
 
     /**

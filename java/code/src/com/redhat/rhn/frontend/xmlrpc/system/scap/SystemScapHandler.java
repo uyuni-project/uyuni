@@ -32,7 +32,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -187,9 +186,9 @@ public class SystemScapHandler extends BaseHandler {
             throw new InvalidSystemException();
         }
 
-        HashSet<Long> longServerIds = new HashSet<Long>();
-        for (Iterator it = serverIds.iterator(); it.hasNext();) {
-            longServerIds.add(Long.valueOf((Integer) it.next()));
+        HashSet<Long> longServerIds = new HashSet<>();
+        for (Object serverIdIn : serverIds) {
+            longServerIds.add(Long.valueOf((Integer) serverIdIn));
         }
 
         try {

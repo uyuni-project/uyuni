@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.listview;
 import com.redhat.rhn.common.localization.LocalizationService;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,11 +81,10 @@ public class AlphaBar {
         // and put them together in the collection
         List alist = LocalizationService.getInstance().getDigits();
         alist.addAll(LocalizationService.getInstance().getAlphabet());
-        Iterator it = alist.iterator();
         // Iterator over each character and determine if we need to
         // enable or disable the row.
-        while (it.hasNext()) {
-            String ch = (String) it.next();
+        for (Object oIn : alist) {
+            String ch = (String) oIn;
             // Format the message with current char as parameter
             MessageFormat form;
 

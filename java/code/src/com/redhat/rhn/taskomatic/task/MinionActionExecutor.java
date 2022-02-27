@@ -73,7 +73,7 @@ public class MinionActionExecutor extends RhnJavaJob {
                 .getJobDataMap().getLongValueFromString("action_id");
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
-                .map(userId -> UserFactory.lookupById(userId))
+                .map(UserFactory::lookupById)
                 .orElse(null);
 
         boolean isStagingJob =
@@ -149,7 +149,7 @@ public class MinionActionExecutor extends RhnJavaJob {
         serverActions.forEach(sa -> {
             SystemManager.updateServerChannels(user, sa.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels(), null);
+                    sca.getDetails().getChannels());
             sa.setStatus(ActionFactory.STATUS_COMPLETED);
             sa.setCompletionTime(new Date());
             sa.setResultCode(0L);

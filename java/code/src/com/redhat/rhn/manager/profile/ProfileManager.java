@@ -137,7 +137,7 @@ public class ProfileManager extends BaseManager {
     public static void copyFrom(Server server, Profile profile) {
         WriteMode m = ModeFactory.getWriteMode("profile_queries",
                 "delete_package_profile");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("prid", profile.getId());
         m.executeUpdate(params);
@@ -166,10 +166,10 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "profile_canonical_package_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("prid", prid);
         params.put("org_id", orgid);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
@@ -179,10 +179,10 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "system_canonical_package_list");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("org_id", orgid);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
     }
 
@@ -217,14 +217,13 @@ public class ProfileManager extends BaseManager {
         // or they have been identified as being valid difference.  This purpose
         // of having this set is to avoid processing the same package multiple times.
         Set<String> skipPkg = new HashSet<>();
-        for (Iterator<String> itr = systemsNameIdMap.keySet().iterator(); itr.hasNext();) {
-            Object key = itr.next();
+        for (Object key : systemsNameIdMap.keySet()) {
             List<PackageListItem> syslist = systemsNameIdMap.get(key);
             List<PackageListItem> plist = profilesNameIdMap.get(key);
             if (plist == null) {
                 // No packages in profile with same name.  We know its only in the System
-                for (int i = 0; i < syslist.size(); i++) {
-                    PackageListItem syspkgitem = (PackageListItem) syslist.get(i);
+                for (PackageListItem packageListItemIn : syslist) {
+                    PackageListItem syspkgitem = (PackageListItem) packageListItemIn;
                     PackageMetadata pm = createPackageMetadata(syspkgitem,
                             null, PackageMetadata.KEY_THIS_ONLY, param);
                     log.debug("plist is null - adding KEY_THIS_ONLY: " +
@@ -241,8 +240,8 @@ public class ProfileManager extends BaseManager {
                         " plist.size: " + plist.size());
                 if (syslist.size() > 1 || plist.size() > 1) {
                     Map<String, PackageMetadata> compareMap = new HashMap<>();
-                    for (int i = 0; i < syslist.size(); i++) {
-                        PackageListItem syspkgitem = (PackageListItem) syslist.get(i);
+                    for (PackageListItem packageListItemIn : syslist) {
+                        PackageListItem syspkgitem = (PackageListItem) packageListItemIn;
                         for (int j = 0; j < plist.size(); j++) {
 
                             PackageListItem profpkgitem = (PackageListItem) plist.get(j);
@@ -320,9 +319,7 @@ public class ProfileManager extends BaseManager {
                         }
                     }
                     // Copy into the result map
-                    Iterator<PackageMetadata> i = compareMap.values().iterator();
-                    while (i.hasNext()) {
-                        PackageMetadata pm = i.next();
+                    for (PackageMetadata pm : compareMap.values()) {
                         log.debug("*** adding a PM(2): " + pm.hashCode());
                         result.add(pm);
                     }
@@ -362,24 +359,23 @@ public class ProfileManager extends BaseManager {
         }
 
         // Reverse of above so we can check for pkgs that are *only* in the profile
-        for (Iterator<String> itr = profilesNameIdMap.keySet().iterator(); itr.hasNext();) {
-            String key = itr.next();
+        for (String key : profilesNameIdMap.keySet()) {
             List<PackageListItem> syslist = systemsNameIdMap.get(key);
             List<PackageListItem> plist = profilesNameIdMap.get(key);
 
             if (syslist == null) {
                 // No packages in system with same name.  We know its only in the Profile
-                for (int i = 0; i < plist.size(); i++) {
+                for (PackageListItem packageListItemIn : plist) {
                     PackageMetadata pm = createPackageMetadata(null,
-                            (PackageListItem) plist.get(i), PackageMetadata.KEY_OTHER_ONLY,
+                            (PackageListItem) packageListItemIn, PackageMetadata.KEY_OTHER_ONLY,
                             param);
 
                     result.add(pm);
                 }
             }
             else {
-                for (int i = 0; i < plist.size(); i++) {
-                    PackageListItem profpkgitem = (PackageListItem) plist.get(i);
+                for (PackageListItem packageListItemIn : plist) {
+                    PackageListItem profpkgitem = (PackageListItem) packageListItemIn;
 
                     if (!skipPkg.contains(profpkgitem.getNevra())) {
 
@@ -406,8 +402,7 @@ public class ProfileManager extends BaseManager {
     private static Map<String, List<PackageListItem>> buildPackagesMap(DataResult<PackageListItem> packageListItems) {
         Map<String, List<PackageListItem>> packages = new HashMap<>();
 
-        for (Iterator<PackageListItem> itr = packageListItems.iterator(); itr.hasNext();) {
-            PackageListItem item = itr.next();
+        for (PackageListItem item : packageListItems) {
             // We actually put *each* package in a sub-list in the map.
             // This is so we can have a List containing each package
             // by name.  Used for when we have multiple revs of the same
@@ -579,14 +574,12 @@ public class ProfileManager extends BaseManager {
         // in order to search the list by combo id (name_id|evr_id|arch_id),
         // it's easiest to create a map instead of looping through n times where n
         // is the size of the RhnSet.
-        for (Iterator<PackageMetadata> itr = profiles.iterator(); itr.hasNext();) {
-            PackageMetadata pm = itr.next();
+        for (PackageMetadata pm : profiles) {
             profilesMap.put(pm.getIdCombo(), pm);
         }
 
         // find all of the items in profiles which are in RhnSet
-        for (Iterator<String> itr = pkgIdCombos.iterator(); itr.hasNext();) {
-            String pkgIdCombo = itr.next();
+        for (String pkgIdCombo : pkgIdCombos) {
             PackageMetadata pm = profilesMap.get(pkgIdCombo);
             pm.updateActionStatus();
             packagesToSync.add(pm);
@@ -619,9 +612,8 @@ public class ProfileManager extends BaseManager {
         // in order to search the list by combo id (name_id|evr_id|arch_id),
         // it's easiest to create a map instead of looping through n times where n
         // is the size of the RhnSet.
-        for (Iterator<PackageMetadata> itr = profiles.iterator(); itr.hasNext();) {
+        for (PackageMetadata pm : profiles) {
 
-            PackageMetadata pm = itr.next();
             if (log.isDebugEnabled()) {
                 log.debug("  pm, putting: " + pm.getIdCombo());
             }
@@ -630,8 +622,7 @@ public class ProfileManager extends BaseManager {
         }
 
         // find all of the items in profiles which are in RhnSet
-        for (Iterator<String> itr = pkgIdCombos.iterator(); itr.hasNext();) {
-            String pkgIdCombo = itr.next();
+        for (String pkgIdCombo : pkgIdCombos) {
             if (log.isDebugEnabled()) {
                 log.debug("  rse, fetching: " + pkgIdCombo);
             }
@@ -710,8 +701,7 @@ public class ProfileManager extends BaseManager {
                         dr.size() + "]");
             }
 
-            for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
-                PackageMetadata pm = itr.next();
+            for (PackageMetadata pm : missingPackages) {
                 int compare = pm.getComparisonAsInt();
                 if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                         compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -745,8 +735,7 @@ public class ProfileManager extends BaseManager {
                     user.getOrg().getId(), baseChannel.getId());
             List<Channel> neededChannels = new ArrayList<>();
 
-            for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
-                Channel validChannel = itr.next();
+            for (Channel validChannel : validChannels) {
                 for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
                     PackageMetadata pm = innerItr.next();
                     if (PackageManager.isPackageInChannel(
@@ -772,8 +761,7 @@ public class ProfileManager extends BaseManager {
             // once subscribed, throw away any of the remaining missing
             // packages.
 
-            for (Iterator<Channel> itr = neededChannels.iterator(); itr.hasNext();) {
-                Channel needed = itr.next();
+            for (Channel needed : neededChannels) {
                 if (log.isDebugEnabled()) {
                     log.debug("Subscribing to [" + needed.getName() + "]");
                 }
@@ -782,8 +770,7 @@ public class ProfileManager extends BaseManager {
 
             // if we still have some missing packages, just remove them.
             if (!missingPackages.isEmpty()) {
-                for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
-                    PackageMetadata pm = itr.next();
+                for (PackageMetadata pm : missingPackages) {
                     int compare = pm.getComparisonAsInt();
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -824,12 +811,8 @@ public class ProfileManager extends BaseManager {
                     validChannels.size() + "]");
         }
 
-        for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
-            Channel validChannel = itr.next();
-
-            for (Iterator<PackageMetadata> innerItr = pkgs.iterator(); innerItr.hasNext();) {
-                PackageMetadata pm = innerItr.next();
-
+        for (Channel validChannel : validChannels) {
+            for (PackageMetadata pm : pkgs) {
                 if (PackageManager.isPackageInChannel(
                         validChannel.getId(), pm.getNameId(),
                         pm.getEvrId())) {
@@ -892,8 +875,7 @@ public class ProfileManager extends BaseManager {
                         dr.size() + "]");
             }
 
-            for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
-                PackageMetadata pm = itr.next();
+            for (PackageMetadata pm : missingPackages) {
                 int compare = pm.getComparisonAsInt();
                 if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                         compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -924,8 +906,7 @@ public class ProfileManager extends BaseManager {
                     user.getOrg().getId(), baseChannel.getId());
             List<Channel> neededChannels = new ArrayList<>();
 
-            for (Iterator<Channel> itr = validChannels.iterator(); itr.hasNext();) {
-                Channel validChannel = itr.next();
+            for (Channel validChannel : validChannels) {
                 for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
                     PackageMetadata pm = innerItr.next();
                     if (PackageManager.isPackageInChannel(
@@ -951,15 +932,13 @@ public class ProfileManager extends BaseManager {
             // once subscribed, throw away any of the remaining missing
             // packages.
 
-            for (Iterator<Channel> itr = neededChannels.iterator(); itr.hasNext();) {
-                Channel needed = itr.next();
+            for (Channel needed : neededChannels) {
                 SystemManager.subscribeServerToChannel(user, server, needed);
             }
 
             // if we still have some missing packages, just remove them.
             if (!missingPackages.isEmpty()) {
-                for (Iterator<PackageMetadata> itr = missingPackages.iterator(); itr.hasNext();) {
-                    PackageMetadata pm = itr.next();
+                for (PackageMetadata pm : missingPackages) {
                     int compare = pm.getComparisonAsInt();
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
@@ -1034,7 +1013,7 @@ public class ProfileManager extends BaseManager {
         Server server = ServerFactory.lookupById(sid);
         Set<Channel> channels = server.getChannels();
         List<PackageMetadata> missingpkgs = findMissingPackages(dr, channels);
-        DataResult<PackageMetadata> missing = new DataResult<PackageMetadata>(missingpkgs);
+        DataResult<PackageMetadata> missing = new DataResult<>(missingpkgs);
 
         // should have the subset we plan to work with.
         // NOW, we need to find the channels for each
@@ -1074,22 +1053,17 @@ public class ProfileManager extends BaseManager {
 
         Set<String> evrNameIds = new HashSet<>();
         // Create the Set of evr_id's
-        Iterator<PackageListItem> pi = profilePackages.iterator();
-        while (pi.hasNext()) {
-            PackageListItem pli = pi.next();
+        for (PackageListItem pli : profilePackages) {
             evrNameIds.add(pli.getNevr());
             log.debug("Added nevr: " + pli.getNevr());
         }
 
-        Iterator<Channel> i = ChannelManager.userAccessibleChildChannels(
-                user.getOrg().getId(), baseChannel.getId()).iterator();
-        while (i.hasNext()) {
-            Channel child = i.next();
+        for (Channel child : ChannelManager.userAccessibleChildChannels(
+                user.getOrg().getId(), baseChannel.getId())) {
             log.debug("working with child channel: " + child.getLabel());
             List<PackageListItem> packages = getPackagesInChannelByIdCombo(child.getId());
-            for (int x = 0; x < packages.size(); x++) {
+            for (PackageListItem row : packages) {
 
-                PackageListItem row = packages.get(x);
                 log.debug("Checking:  " + row.getNevr());
                 if (evrNameIds.contains(row.getNevr())) {
                     retval.add(child);
@@ -1107,8 +1081,8 @@ public class ProfileManager extends BaseManager {
     private static DataResult<PackageListItem> getPackagesInChannelByIdCombo(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_in_channel_by_id_combo");
-        Map<String, Object> params = new HashMap<String, Object>();
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> elabParams = new HashMap<>();
         params.put("cid", cid);
         return (DataResult<PackageListItem>)makeDataResult(params, elabParams, null, m);
     }
@@ -1117,9 +1091,8 @@ public class ProfileManager extends BaseManager {
 
         List<PackageMetadata> missingPkgs = new ArrayList<>();
 
-        DataResult<PackageListItem> pkgsInChannels = new DataResult<>(new ArrayList<PackageListItem>());
-        for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
-            Channel c = itr.next();
+        DataResult<PackageListItem> pkgsInChannels = new DataResult<>(new ArrayList<>());
+        for (Channel c : channels) {
             DataResult<PackageListItem> dr = getPackagesInChannelByIdCombo(c.getId());
             pkgsInChannels.addAll(dr);
         }
@@ -1131,8 +1104,7 @@ public class ProfileManager extends BaseManager {
         Map<String, List<PackageListItem>> pkgsInChannelsByNameId = buildPackagesMap(pkgsInChannels);
 
         // for each of the pkgs to be synced
-        for (Iterator<PackageMetadata> itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = itr.next();
+        for (PackageMetadata pm : pkgs) {
             // retrieve the packages with the same name that exist w/in channels
             List<PackageListItem> pkgsInChannel = pkgsInChannelsByNameId.get(pm.getMapHash());
 
@@ -1151,8 +1123,7 @@ public class ProfileManager extends BaseManager {
                         pm.getRelease(),
                         pm.getPackageType()
                 );
-                for (int i = 0; i < pkgsInChannel.size(); i++) {
-                    PackageListItem pkgInChannel = pkgsInChannel.get(i);
+                for (PackageListItem pkgInChannel : pkgsInChannel) {
                     PackageEvr evrInChannel = new PackageEvr(
                             pkgInChannel.getEpoch() == null ? "0" : pkgInChannel.getEpoch(),
                             pkgInChannel.getVersion(),
@@ -1173,7 +1144,7 @@ public class ProfileManager extends BaseManager {
     }
 
     private static DataResult<PackageMetadata> prepareList(List<PackageMetadata> result, PageControl pc) {
-        DataResult<PackageMetadata> dr = new DataResult<PackageMetadata>(result);
+        DataResult<PackageMetadata> dr = new DataResult<>(result);
         dr.setTotalSize(result.size());
 
         if (pc != null) {
@@ -1227,9 +1198,9 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_overview");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
 
         return makeDataResult(params, elabParams, null, m);
     }
@@ -1245,9 +1216,9 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_package_overview");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("prid", profileId);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
 
         return makeDataResult(params, elabParams, null, m);
     }
@@ -1287,7 +1258,7 @@ public class ProfileManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("profile_queries",
                 "compatible_with_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         params.put("cid", channelIn.getId());
         return  makeDataResult(params, new HashMap<String, Object>(), pc, m);

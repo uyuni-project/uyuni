@@ -19,9 +19,10 @@
 # is run.
 # Intended to run as post script in rhn-org-trusted-ssl-cert-*.rpm
 #
+# Optional argument: Certificate file name
 
 CERT_DIR=/usr/share/rhn
-CERT_FILE=RHN-ORG-TRUSTED-SSL-CERT
+CERT_FILE=${1:-RHN-ORG-TRUSTED-SSL-CERT}
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
 UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
 if [ -d /etc/pki/ca-trust/source/anchors -a -x /usr/bin/update-ca-trust ]; then

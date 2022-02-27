@@ -66,7 +66,7 @@ public class ListRemoveGroupsAction extends BaseListAction {
                     "activation-key.groups.jsp.removed",
                         new String [] {String.valueOf(set.size())}, request);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.TOKEN_ID, key.getToken().getId().toString());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         return strutsDelegate.forwardParams

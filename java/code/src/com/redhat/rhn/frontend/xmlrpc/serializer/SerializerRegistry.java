@@ -43,7 +43,7 @@ public class SerializerRegistry {
 
     private static final List<Class> SERIALIZER_CLASSES;
     static {
-        SERIALIZER_CLASSES = new LinkedList<Class>();
+        SERIALIZER_CLASSES = new LinkedList<>();
         SERIALIZER_CLASSES.add(ActivationKeySerializer.class);
         SERIALIZER_CLASSES.add(TokenSerializer.class);
         SERIALIZER_CLASSES.add(ChannelArchSerializer.class);
@@ -158,6 +158,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(AnsiblePlaybookSerializer.class);
         SERIALIZER_CLASSES.add(SystemEventDtoSerializer.class);
         SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
+        SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
     }
 
     /**

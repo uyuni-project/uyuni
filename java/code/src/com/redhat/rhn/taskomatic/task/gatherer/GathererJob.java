@@ -56,7 +56,7 @@ public class GathererJob extends RhnJavaJob {
             vhmLabel = jobExecutionContext.getJobDetail()
                     .getJobDataMap().getString(VHM_LABEL);
         }
-        List<VirtualHostManager> managers = new ArrayList<VirtualHostManager>();
+        List<VirtualHostManager> managers = new ArrayList<>();
         if (StringUtils.isEmpty(vhmLabel)) {
             managers.addAll(VirtualHostManagerFactory.getInstance()
                     .listVirtualHostManagers());

@@ -30,7 +30,7 @@ public class FileLines {
      * Can only be created in this package.
      */
     protected FileLines() {
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
     }
 
 

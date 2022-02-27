@@ -41,7 +41,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -376,8 +375,8 @@ public class OverviewAction extends RhnAction {
 
     private ServerAction  findServerAction(Set serverActions,
                                             Server server) {
-        for (Iterator itr = serverActions.iterator(); itr.hasNext();) {
-            ServerAction sa = (ServerAction) itr.next();
+        for (Object serverActionIn : serverActions) {
+            ServerAction sa = (ServerAction) serverActionIn;
             if (server.equals(sa.getServer())) {
                 return sa;
             }

@@ -155,7 +155,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         throws ServletException {
 
         try {
-            StringBuffer redirectURI = new StringBuffer(request.getRequestURI());
+            StringBuilder redirectURI = new StringBuilder(request.getRequestURI());
             String params = ServletUtils.requestParamsToQueryString(request);
             // don't want to put the ? in the url if there are no params
             if (!StringUtils.isEmpty(params)) {

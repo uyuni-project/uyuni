@@ -138,13 +138,13 @@ public class TreeFilterTest extends RhnBaseTestCase {
         input = input.substring(1, input.length() - 1);
         String[] contents =  input.split("\\)\\W*\\(");
 
-        for (int i = 0; i < contents.length; i++) {
+        for (String contentIn : contents) {
             //contents[i] = "(content,depth)"
-            String val = contents[i].trim();
-          //val = "content,depth"
-            String [] tuple = val.split(",");
+            String val = contentIn.trim();
+            //val = "content,depth"
+            String[] tuple = val.split(",");
             lst.add(DepthAwareBean.instance(tuple[0].trim(),
-                                Integer.parseInt(tuple[1].trim())));
+                    Integer.parseInt(tuple[1].trim())));
         }
         return new DataResult(lst);
     }

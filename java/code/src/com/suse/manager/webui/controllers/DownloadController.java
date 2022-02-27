@@ -517,10 +517,17 @@ public class DownloadController {
             Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
-            if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
-                log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
-                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-            }
+            Opt.consume(channelClaim,
+                    () -> log.info(String.format("Token %s does provide access to any channel", token)),
+                    channels -> {
+                if (!channels.contains(channel)) {
+                    log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
+                                           token, channel));
+                    log.info(String.format("Token allow access only to the following channels: %s",
+                                           String.join(",", channels)));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
+                }
+            });
 
             // enforce org claim
             Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));

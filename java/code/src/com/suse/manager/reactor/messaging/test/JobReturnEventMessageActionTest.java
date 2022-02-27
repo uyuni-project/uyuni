@@ -102,7 +102,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
@@ -130,7 +129,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
-            new JsonParser<>(new TypeToken<Event>() { });
+            new JsonParser<>(new TypeToken<>() {
+            });
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
@@ -756,7 +756,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(!server.getNetworkInterfaces().isEmpty());
 
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
 
@@ -855,7 +855,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(!server.getDevices().isEmpty());
 
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
 
@@ -910,7 +910,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileUpdatePrimaryIPv4Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
             assertEquals(null, ethNames.get("lo").getPrimary());
@@ -924,7 +924,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileUpdatePrimaryIPv4OnlyLocalhost()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4onlylocalhost.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
             assertEquals(null, ethNames.get("lo").getPrimary());
@@ -938,7 +938,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileUpdatetPrimaryIPv6Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv6only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
             assertEquals(null, ethNames.get("lo").getPrimary());
@@ -951,7 +951,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileUpdatetPrimaryIPV4IPv6()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
             assertEquals(null, ethNames.get("lo").getPrimary());
@@ -965,7 +965,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             (server) -> {
                 Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream()
                     .collect(Collectors.toMap(
-                        eth -> eth.getName(),
+                            NetworkInterface::getName,
                         Function.identity()));
                 assertEquals(null, ethNames.get("lo").getPrimary());
                 assertEquals(null, ethNames.get("eth0").getPrimary());
@@ -992,7 +992,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileMultiIP()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.multi-ipv4.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()));
             assertEquals(null, ethNames.get("lo").getPrimary());
             assertEquals(null, ethNames.get("eth0").getPrimary());
@@ -1011,7 +1011,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             (server) -> {
                 Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream()
                     .collect(Collectors.toMap(
-                        eth -> eth.getName(),
+                            NetworkInterface::getName,
                         Function.identity()));
                 assertEquals(null, ethNames.get("lo").getPrimary());
                 assertEquals(null, ethNames.get("eth0").getPrimary());
@@ -1052,7 +1052,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltUtils.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
 
         Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                eth -> eth.getName(),
+                NetworkInterface::getName,
                 Function.identity()
         ));
         assertEquals(null, ethNames.get("lo").getPrimary());
@@ -1102,7 +1102,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(!server.getNetworkInterfaces().isEmpty());
 
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
 
@@ -1163,7 +1163,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testHardwareProfileInfiniband()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.infiniband.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
-                    eth -> eth.getName(),
+                    NetworkInterface::getName,
                     Function.identity()
             ));
             assertEquals(59, ethNames.get("ib0.8001").getHwaddr().length());
@@ -1171,9 +1171,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testHardwareProfileXenHost()  throws Exception {
-        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json", (server) -> {
-            assertFalse("system should not be a virtual guest", server.isVirtualGuest());
-        });
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json",
+                (server) -> assertFalse("system should not be a virtual guest", server.isVirtualGuest()));
     }
 
     public void testHardwareProfilePublicCloud()  throws Exception {
@@ -1306,7 +1305,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
 
         TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
-                new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+                new TypeToken<>() {
+                };
         Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                 jsonElement, typeToken.getType());
         Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream()
@@ -1681,9 +1681,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("a64dbc025c748bde968b888db6b7b9e3",
                         images.get("POS_Image_JeOS6").get("6.0.0").get("hash"));
             }
-            catch (FileNotFoundException e) {
-                fail("Cannot find OS Image generated pillar");
-            }
             catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");
             }
@@ -1744,9 +1741,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("gzip", images.get("POS_Image_JeOS6").get("6.0.0").get("compressed"));
                 assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
                         images.get("POS_Image_JeOS6").get("6.0.0").get("compressed_hash"));
-            }
-            catch (FileNotFoundException e) {
-                fail("Cannot find OS Image generated pillar");
             }
             catch (IOException e) {
                 fail("Cannot find OS Image generated pillar");

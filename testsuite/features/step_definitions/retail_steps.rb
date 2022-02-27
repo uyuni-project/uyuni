@@ -28,7 +28,7 @@ end
 
 # determine image for PXE boot tests
 def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
@@ -46,7 +46,7 @@ def compute_image_filename
 end
 
 def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
@@ -68,12 +68,12 @@ When(/^I enable repositories before installing branch server$/) do
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  puts $proxy.run("zypper mr --enable #{repos}")
+  log $proxy.run("zypper mr --enable #{repos}")
 
   # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    puts $proxy.run("zypper mr --enable #{repos}")
+    log $proxy.run("zypper mr --enable #{repos}")
   end
 end
 
@@ -82,12 +82,12 @@ When(/^I disable repositories after installing branch server$/) do
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  puts $proxy.run("zypper mr --disable #{repos}")
+  log $proxy.run("zypper mr --disable #{repos}")
 
   # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    puts $proxy.run("zypper mr --disable #{repos}")
+    log $proxy.run("zypper mr --disable #{repos}")
   end
 end
 
@@ -165,14 +165,14 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   ['proxy.example.org', 'dns.google.com'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
+    log "#{output}"
   end
   # reverse name resolution
   client = net_prefix + '2'
   [client, '8.8.8.8'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
+    log "#{output}"
   end
 end
 
@@ -199,7 +199,7 @@ When(/^I reboot the PXE boot minion$/) do
   mac = $pxeboot_mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  STDOUT.puts "Rebooting #{ipv6}..."
+  log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
@@ -231,21 +231,6 @@ end
 
 When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run('salt-key -y --accept=pxeboot.example.org')
-end
-
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I stop salt-minion on the PXE boot minion$/) do
@@ -322,7 +307,7 @@ When(/^I delete all the imported terminals$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
-    puts "Deleting terminal with name: #{terminal}"
+    log "Deleting terminal with name: #{terminal}"
     steps %(
       When I follow "#{terminal}" terminal
       And I follow "Delete System"
@@ -358,7 +343,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
     'internal network address'        => 'tftpd#listen_ip',
     'vsftpd internal network address' => 'vsftpd_config#listen_address'
   }
-  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
+  fill_in(fieldids[field], with: net_prefix + ADDRESSES[host], fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
@@ -409,7 +394,7 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
     'third partition password'     => 'partitioning#0#partitions#2#luks_pass',
     'FTP server directory'         => 'vsftpd_config#anon_root'
   }
-  fill_in fieldids[field], with: value
+  fill_in(fieldids[field], with: value, fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
@@ -440,11 +425,6 @@ When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
   find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
 end
 
-When(/^I enter the hostname of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}." in #{field} field of #{zone} zone)
-end
-
 When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
   node = get_target(host)
   step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
@@ -466,8 +446,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run('ip link show dev eth1')
     mac = output.split("\n")[1].split[1]
   end
-
-  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
+  fill_in(FIELD_IDS[field], with: 'ethernet ' + mac, fill_options: { clear: :backspace })
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
@@ -493,7 +472,7 @@ end
 
 When(/^I enter the image name in (.*) field$/) do |field|
   name = compute_image_name
-  fill_in FIELD_IDS[field], with: name
+  fill_in(FIELD_IDS[field], with: name, fill_options: { clear: :backspace })
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|
@@ -533,13 +512,6 @@ When(/^I press "Remove" in the routers section$/) do
   find(:xpath, cname_xpath).click
 end
 
-When(/^I press minus sign in (.*) section$/) do |section|
-  section_xpath = '//input[@name="Name" and @value="%s"]/ancestor::div[starts-with(@id, "bind#%s_zones#")]'
-  sectionids = { 'tf.local configured zone' => format(section_xpath, 'tf.local', 'configured'),
-                 'tf.local available zone'  => format(section_xpath, 'tf.local', 'available') }
-  find(:xpath, "#{sectionids[section]}/div[1]/i[@class='fa fa-minus']").click
-end
-
 When(/^I check (.*) box$/) do |checkbox_name|
   check BOX_IDS[checkbox_name]
 end
@@ -574,7 +546,8 @@ end
 Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run('ls /srv/saltboot/image/')
-  raise "Image #{image} does not exist on #{host}" unless images.include? compute_image_name
+  image = compute_image_name
+  raise "Image #{image} does not exist on #{host}" unless images.include? image
 end
 
 ### TBD below: get rid of semi-xmlrpc-tester

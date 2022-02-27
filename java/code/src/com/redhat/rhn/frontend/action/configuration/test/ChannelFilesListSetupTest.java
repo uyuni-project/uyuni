@@ -28,7 +28,7 @@ public class ChannelFilesListSetupTest extends RhnMockStrutsTestCase {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelFiles");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();

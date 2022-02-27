@@ -48,7 +48,7 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
         try {
             for (Action action: actionsServers.keySet()) {
                 List<Long> serverIds = actionsServers.get(action).stream()
-                        .map(s -> s.getId())
+                        .map(Server::getId)
                         .collect(Collectors.toList());
                 ActionManager.cancelActions(user, Collections.singletonList(action), Optional.of(serverIds));
                 LOG.info(String.format("Cancel action '%s' for servers '%s'",

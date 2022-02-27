@@ -64,7 +64,7 @@ public class ResetPasswordFactory extends HibernateFactory {
     public static void save(ResetPassword rp) {
         WriteMode wm = ModeFactory.getWriteMode("ResetPassword_queries",
                                                 "insert_token");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", rp.getUserId());
         params.put("token", rp.getToken());
         wm.executeUpdate(params);
@@ -78,7 +78,7 @@ public class ResetPasswordFactory extends HibernateFactory {
     public static ResetPassword lookupByToken(String token) {
         SelectMode sm = ModeFactory.getMode("ResetPassword_queries",
                                             "find_by_token");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         DataResult<ResetPassword> dr = sm.execute(params);
         if (dr == null || dr.size() == 0) {
@@ -97,7 +97,7 @@ public class ResetPasswordFactory extends HibernateFactory {
     public static int invalidateUserTokens(Long uid) {
         WriteMode wm = ModeFactory.getWriteMode("ResetPassword_queries",
                                                 "invalidate_user_tokens");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
         return wm.executeUpdate(params);
     }
@@ -111,7 +111,7 @@ public class ResetPasswordFactory extends HibernateFactory {
     public static int deleteUserTokens(Long uid) {
         WriteMode wm = ModeFactory.getWriteMode("ResetPassword_queries",
                                                 "delete_user_tokens");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
         return wm.executeUpdate(params);
     }
@@ -159,7 +159,7 @@ public class ResetPasswordFactory extends HibernateFactory {
     public static void invalidateToken(String token) {
         WriteMode wm = ModeFactory.getWriteMode("ResetPassword_queries",
                         "invalidate_token");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         wm.executeUpdate(params);
     }
