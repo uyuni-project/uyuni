@@ -14,23 +14,25 @@
 # Scripts that adds/removes RHN-ORG-TRUSTED-SSL-CERT into/from system-wide
 # trusted certificates.
 # The script checks if RHN-ORG-TRUSTED-SSL-CERT is present
-# in /usr/share/rhn. If it's found then it's symlinked. If it's not found
-# then it's ensured the symlink does not exists. Finally the trust update
+# in /usr/share/rhn and HTTP dir. It checks, if they are the same.
+# If not both are copied, otherwise only the existing are copied. If it's not found
+# then it's ensured files do not exists. Finally the trust update
 # is run.
-# Intended to run as post script in rhn-org-trusted-ssl-cert-*.rpm
 #
 # Optional argument: Certificate file name
 
 CERT_DIR=/usr/share/rhn
 CERT_FILE=${1:-RHN-ORG-TRUSTED-SSL-CERT}
+CA_HTTP_DIR=/var/www/html/pub/
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
 UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
 if [ -d /etc/pki/ca-trust/source/anchors -a -x /usr/bin/update-ca-trust ]; then
     TRUST_DIR=/etc/pki/ca-trust/source/anchors
 elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
-    # SLE 12
+    # SLE 12+
     TRUST_DIR=/etc/pki/trust/anchors
     UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+    CA_HTTP_DIR=/srv/www/htdocs/pub/
 elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash ]; then
     # SLE 11
     TRUST_DIR=/etc/ssl/certs
@@ -52,11 +54,23 @@ if [ ! -d $TRUST_DIR ]; then
     exit 0
 fi
 
-if [ -f $CERT_DIR/$CERT_FILE ]; then
-    ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-else
-    rm -f $TRUST_DIR/$CERT_FILE
+# cleanup
+rm -f $TRUST_DIR/$CERT_FILE
+rm -f $TRUST_DIR/OWN-$CERT_FILE
+
+if [ -f $CERT_DIR/$CERT_FILE -a -f $CA_HTTP_DIR/$CERT_FILE ]; then
+    # we are registered and have an own CA
+    # compare the CAs. In case they are not the the same link both
+    if cmp $CERT_DIR/$CERT_FILE $CA_HTTP_DIR/$CERT_FILE; then
+        cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
+    else
+        cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/OWN-$CERT_FILE
+        cp $CERT_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
+    fi
+elif [ -f $CA_HTTP_DIR/$CERT_FILE ]; then
+    cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
+elif [ -f $CERT_DIR/$CERT_FILE ]; then
+    cp $CERT_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
 fi
 
 $UPDATE_TRUST_CMD
-
