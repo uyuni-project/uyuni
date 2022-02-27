@@ -199,6 +199,12 @@ public class ConfigDefaults {
     private static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS = "java.taskomatic_channel_repodata_workers";
 
     /**
+     * HTTP defauls
+     */
+    private static final String HTTP_DOCUMENT_ROOT = "documentroot";
+
+
+    /**
      * HTTP proxy defaults
      */
     private static final String HTTP_PROXY = "server.satellite.http_proxy";
@@ -824,6 +830,19 @@ public class ConfigDefaults {
      */
     public int getTaskoChannelRepodataWorkers() {
         return Config.get().getInt(TASKOMATIC_CHANNEL_REPODATA_WORKERS, 1);
+    }
+
+    /**
+     * Get the httpd document serving directory.
+     * @return document root directory
+     */
+    public String getDocumentRoot() {
+        String documentrootString = Config.get().getString(HTTP_DOCUMENT_ROOT);
+        if (documentrootString == null) {
+	    // Return SUSE default location if not set up.
+            return "/srv/www/htdocs";
+        }
+        return documentrootString;
     }
 
     /**

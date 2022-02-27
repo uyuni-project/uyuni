@@ -638,7 +638,7 @@ public class LocalizationService {
         List<String> tmp = new LinkedList<>();
 
         // Get locales of installed documentations
-        File f = new File(Config.get().getString("documentroot") + "/docs");
+        File f = new File(ConfigDefaults.get().getDocumentRoot() + "/docs");
         String[] locales = f.list();
         if (locales != null) {
             tmp.addAll(Arrays.asList(locales));
