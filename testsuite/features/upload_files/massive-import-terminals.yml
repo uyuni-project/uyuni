@@ -2,6 +2,8 @@ branches:
   <PROXY_HOSTNAME>:
     branch_ip: <NET_PREFIX><PROXY>
     branch_prefix: example.org
+    minion_id_naming: FQDN
+    disable_id_prefix: true
     configure_bind_options:
       include_forwarders: true
       options:
