@@ -109,9 +109,9 @@ public abstract class RhnWizardAction extends RhnAction {
         List retval = new LinkedList();
         Method[] methods = this.getClass().getDeclaredMethods();
         if (methods != null && methods.length > 0) {
-            for (int x = 0; x < methods.length; x++) {
-                if (methods[x].getName().startsWith(methodPrefix)) {
-                    retval.add(methods[x]);
+            for (Method methodIn : methods) {
+                if (methodIn.getName().startsWith(methodPrefix)) {
+                    retval.add(methodIn);
                 }
             }
         }

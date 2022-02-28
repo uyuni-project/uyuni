@@ -44,6 +44,7 @@ import com.redhat.rhn.manager.ssm.ChannelChangeDto;
 import com.redhat.rhn.manager.ssm.ScheduleChannelChangesResultDto;
 import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
 import com.redhat.rhn.manager.ssm.SsmManager;
+import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -412,13 +413,13 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                 base.isNewBaseDefault()).findFirst().isPresent());
 
         assertEquals(1, result.stream().filter(base -> !base.getNewBaseChannel().isPresent()).findFirst()
-                .map(acc -> acc.getIncompatibleServers())
+                .map(SsmAllowedChildChannelsDto::getIncompatibleServers)
                 .get().size()
         );
         assertEquals(server2.getId(),
                 result.stream().filter(base -> !base.getNewBaseChannel().isPresent()).findFirst()
                         .flatMap(acc -> acc.getIncompatibleServers()
-                                .stream().findFirst().map(s -> s.getId())
+                                .stream().findFirst().map(SsmServerDto::getId)
                         ).get()
         );
     }
@@ -605,7 +606,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                 results.stream().filter(r -> !r.getErrorMessage().isPresent() && r.getActionId().isPresent()).count());
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
-                .map(a -> a.getDetails())
+                .map(SubscribeChannelsAction::getDetails)
                 .collect(Collectors.toList());
         assertEquals(2, details.stream().filter(d -> d.getBaseChannel().getId() == baseChannel.getId()).count());
         assertTrue(details.stream()
@@ -677,7 +678,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                 results.stream().filter(r -> !r.getErrorMessage().isPresent() && r.getActionId().isPresent()).count());
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
-                .map(a -> a.getDetails())
+                .map(SubscribeChannelsAction::getDetails)
                 .collect(Collectors.toList());
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()
@@ -857,7 +858,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
-                .map(a -> a.getDetails())
+                .map(SubscribeChannelsAction::getDetails)
                 .collect(Collectors.toList());
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()
@@ -958,7 +959,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
-                .map(a -> a.getDetails())
+                .map(SubscribeChannelsAction::getDetails)
                 .collect(Collectors.toList());
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()

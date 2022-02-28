@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.security.auth.login.LoginException;
@@ -90,7 +91,7 @@ public class UserManager extends BaseManager {
      * @return the list of roles assignable by this user.
      */
     public static Set<Role> listRolesAssignableBy(User user) {
-        Set<Role> assignable = new LinkedHashSet<Role>();
+        Set<Role> assignable = new LinkedHashSet<>();
         if (user.hasRole(RoleFactory.SAT_ADMIN)) {
             assignable.add(RoleFactory.SAT_ADMIN);
         }
@@ -108,7 +109,7 @@ public class UserManager extends BaseManager {
      */
     public static boolean verifyPackageAccess(Org org, Long packageId) {
         SelectMode m = ModeFactory.getMode("Package_queries", "package_available_to_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);
         params.put("org_id", org.getId());
         DataResult dr = m.execute(params);
@@ -129,7 +130,7 @@ public class UserManager extends BaseManager {
      */
     public static boolean verifyPackagesAccess(Org org, List<Long> packageIds) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         DataResult dr = m.execute(params, packageIds);
         /*
@@ -310,7 +311,7 @@ public class UserManager extends BaseManager {
      */
     private static boolean executeUpdateServerGroupPermsQuery(Long userId, String updateServerGroupPermsQuery,
             List<Long> serverGroupIds) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);
 
         WriteMode writeMode = ModeFactory.getWriteMode("User_queries", updateServerGroupPermsQuery);
@@ -357,9 +358,9 @@ public class UserManager extends BaseManager {
     private static void updateServerPermsForUser(Long userId) {
         CallableMode m = ModeFactory.getCallableMode("User_queries",
                 "update_perms_for_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);
-        m.execute(params, new HashMap<String, Integer>());
+        m.execute(params, new HashMap<>());
     }
 
     /**
@@ -477,14 +478,13 @@ public class UserManager extends BaseManager {
         SelectMode prefixMode = ModeFactory.getMode("User_queries",
                                                     "default_system_groups");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", usr.getId());
         DataResult dr = prefixMode.execute(params);
 
         Set groupSet = new HashSet();
-        Iterator i = dr.iterator();
-        while (i.hasNext()) {
-            Map row = (Map)i.next();
+        for (Object oIn : dr) {
+            Map row = (Map) oIn;
             groupSet.add(row.get("system_group_id"));
         }
         return groupSet;
@@ -502,14 +502,13 @@ public class UserManager extends BaseManager {
     public static void setDefaultSystemGroupIds(final User usr, final Set groups) {
         WriteMode m = ModeFactory.getWriteMode("User_queries",
                 "delete_all_system_groups_for_user");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", usr.getId());
         m.executeUpdate(params);
 
         m = ModeFactory.getWriteMode("User_queries", "set_system_group");
-        Iterator i = groups.iterator();
-        while (i.hasNext()) {
-            Long sgid = (Long)i.next();
+        for (Object groupIn : groups) {
+            Long sgid = (Long) groupIn;
             params.put("sgid", sgid);
             m.executeUpdate(params);
         }
@@ -520,7 +519,7 @@ public class UserManager extends BaseManager {
         if (!SatConfigFactory.getSatConfigBooleanValue(
                 SatConfigFactory.EXT_AUTH_KEEP_ROLES)) {
             // delete all temporary roles
-            UserManager.resetTemporaryRoles(user, new HashSet<Role>());
+            UserManager.resetTemporaryRoles(user, new HashSet<>());
         }
         // need to disable OAI_SYNC during login
         storeUser(user);
@@ -775,7 +774,7 @@ public class UserManager extends BaseManager {
             pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
             throw pex;
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         return makeDataResult(params, new HashMap(), pc, m);
     }
@@ -798,7 +797,7 @@ public class UserManager extends BaseManager {
             throw pex;
         }
         SelectMode m = ModeFactory.getMode("User_queries", "active_in_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         return  makeDataResult(params, new HashMap(), pc, m);
     }
@@ -810,10 +809,10 @@ public class UserManager extends BaseManager {
      */
     public static DataResult<UserOverview> activeInOrg2(User user) {
         SelectMode m = ModeFactory.getMode("User_queries", "active_in_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         DataResult<UserOverview> dr = m.execute(params);
-        dr.elaborate(new HashMap<String, Object>());
+        dr.elaborate(new HashMap<>());
         return dr;
     }
 
@@ -835,7 +834,7 @@ public class UserManager extends BaseManager {
             throw pex;
         }
         SelectMode m = ModeFactory.getMode("User_queries", "disabled_in_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         return makeDataResult(params, new HashMap(), pc, m);
     }
@@ -849,7 +848,7 @@ public class UserManager extends BaseManager {
     public static DataResult channelSubscriptions(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                                            "user_subscribe_perms");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         return makeDataResult(params, new HashMap(), pc, m);
@@ -863,7 +862,7 @@ public class UserManager extends BaseManager {
      */
     public static DataResult channelManagement(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "user_manage_perms");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         return makeDataResult(params, new HashMap(), pc, m);
@@ -877,7 +876,7 @@ public class UserManager extends BaseManager {
      */
     public static DataResult visibleSystems(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("formvar_uid", user.getId());
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
@@ -912,7 +911,7 @@ public class UserManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries",
             "visible_to_user_from_sysid_list");
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
 
         DataResult<SystemSearchResult> dr = m.execute(params, ids);
@@ -929,7 +928,7 @@ public class UserManager extends BaseManager {
      */
     public static DataResult usersInSet(User user, String label, PageControl pc) {
         SelectMode m = ModeFactory.getMode("User_queries", "in_set");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
         return makeDataResult(params, new HashMap(), pc, m);
@@ -958,7 +957,7 @@ public class UserManager extends BaseManager {
     public static DataResult getSystemGroups(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                                            "user_permissions", SystemGroupOverview.class);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(params);
@@ -1144,9 +1143,6 @@ public class UserManager extends BaseManager {
             serverGroupsName = (serverGroupsName == null) ? sg.getName() :
                 serverGroupsName + ", " + sg.getName();
         }
-        if (serverGroupsName == null) {
-            return "(none)";
-        }
-        return serverGroupsName;
+        return Objects.requireNonNullElse(serverGroupsName, "(none)");
     }
 }

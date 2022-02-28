@@ -50,7 +50,7 @@ public class LocationTest extends RhnBaseTestCase {
 
         Session session = HibernateFactory.getSession();
         loc2 = (Location) session.getNamedQuery("Location.findById")
-                                      .setLong("id", loc1.getId().longValue())
+                                      .setLong("id", loc1.getId())
                                       .uniqueResult();
         assertEquals(loc1, loc2);
     }

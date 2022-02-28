@@ -88,8 +88,8 @@ public class MD5Sum {
 
             StringBuilder hexString = new StringBuilder();
 
-            for (int i = 0; i < digest.length; i++) {
-                hexString.append(hexDigit(digest[i]));
+            for (byte bIn : digest) {
+                hexString.append(hexDigit(bIn));
             }
 
             return hexString.toString();
@@ -168,8 +168,8 @@ public class MD5Sum {
 
         StringBuilder hexString = new StringBuilder();
 
-        for (int i = 0; i < digest.length; i++) {
-            hexString.append(hexDigit(digest[i]));
+        for (byte bIn : digest) {
+            hexString.append(hexDigit(bIn));
         }
 
         return hexString.toString();

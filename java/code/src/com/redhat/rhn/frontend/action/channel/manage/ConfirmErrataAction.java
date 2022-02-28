@@ -81,7 +81,7 @@ public class ConfirmErrataAction extends RhnListAction {
 
         request.setAttribute(CID, cid);
         if (requestContext.wasDispatched("frontend.actions.channels.manager.add.submit")) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(mapping.findForward("clone"), params);
         }
@@ -137,16 +137,16 @@ public class ConfirmErrataAction extends RhnListAction {
                 getSetDecl(currentChan).getLabel()), currentChan);
 
         Map<String, HashMap<String, Object>> archMap =
-                new HashMap<String, HashMap<String, Object>>();
+                new HashMap<>();
         for (PackageOverview pack : ErrataManager.lookupPacksFromErrataSet(srcChan, currentChan, user,
                 getSetDecl(currentChan).getLabel())) {
             if (archMap.get(pack.getPackageArch()) == null) {
-                archMap.put(pack.getPackageArch(), new HashMap<String, Object>());
+                archMap.put(pack.getPackageArch(), new HashMap<>());
                 archMap.get(pack.getPackageArch()).put("size", 0);
                 archMap.get(pack.getPackageArch()).put("name", pack.getPackageArch());
             }
             Map<String, Object> arch = archMap.get(pack.getPackageArch());
-            arch.put("size",  ((Integer) arch.get("size")).intValue() + 1);
+            arch.put("size", (Integer) arch.get("size") + 1);
         }
 
         request.setAttribute("packageList", ErrataManager.lookupPacksFromErrataSet(srcChan, currentChan, user,

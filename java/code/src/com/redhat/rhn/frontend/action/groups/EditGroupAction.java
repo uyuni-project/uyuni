@@ -130,7 +130,7 @@ public class EditGroupAction extends RhnAction {
             if (form.get("is_ssm") != null && (Boolean)form.get("is_ssm")) {
                 List<SystemOverview> systems = SystemManager.inSet(ctx.getCurrentUser(),
                         RhnSetDecl.SYSTEMS.getLabel());
-                List<Server> hibernateServers = new ArrayList<Server>();
+                List<Server> hibernateServers = new ArrayList<>();
                 for (SystemOverview system : systems) {
                     hibernateServers.add(ServerFactory.lookupById(system.getId()));
                 }

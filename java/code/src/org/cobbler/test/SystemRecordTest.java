@@ -51,7 +51,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
                 .setName("test-distro")
                 .setKernel("kernel")
                 .setInitrd("initrd")
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .setBreed("redhat")
                 .setOsVersion("rhel6")
                 .setArch("x86_64")
@@ -161,7 +161,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings("unchecked")
     private void assertSystemKeyEquals(String expected, String key) {
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        HashMap<String, Object> criteria = new HashMap<>();
         criteria.put("uid", system.getId());
         List<Map<String, Object>> result = (List<Map<String, Object>>) connection
             .invokeMethod("find_system", criteria);

@@ -55,7 +55,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
                                  HttpServletResponse response) {
         setup(request);
         RequestContext context = new RequestContext(request);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
                 params.put(RequestContext.SID,
                         context.getRequiredParam(RequestContext.SID));
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);
@@ -75,7 +75,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Server server = context.lookupAndBindServer();
-        List<Server> servers = new LinkedList<Server>();
+        List<Server> servers = new LinkedList<>();
         servers.add(server);
         Set<String> set = helper.getSet();
 
@@ -89,7 +89,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
                     "systems.groups.jsp.removed",
                         new String [] {String.valueOf(set.size())}, request);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, server.getId().toString());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         return strutsDelegate.forwardParams

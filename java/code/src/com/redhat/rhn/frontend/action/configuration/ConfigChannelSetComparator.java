@@ -47,7 +47,7 @@ public class ConfigChannelSetComparator implements Comparator {
         if (first.equals(second)) {
             return 0;
         }
-        else if (first.longValue() < second.longValue()) {
+        else if (first < second) {
             return -1;
         }
         else {

@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -67,9 +66,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertTrue(cmd.getKeysToBeUpdated().contains(TEST_CONFIG_NULL));
 
         Map optionMap = new TreeMap();
-        Iterator i = cmd.getKeysToBeUpdated().iterator();
-        while (i.hasNext()) {
-            String key = (String) i.next();
+        for (String key : cmd.getKeysToBeUpdated()) {
             optionMap.put(key, Config.get().getString(key));
         }
         String[] cmdargs = cmd.getCommandArguments(Config.getDefaultConfigFilePath(),

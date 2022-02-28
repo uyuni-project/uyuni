@@ -104,14 +104,14 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel(kernelPath)
                 .setInitrd(initrdPath)
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .setBreed(config.getCobblerBootstrapBreed())
                 .setArch(config.getCobblerBootstrapArch())
                 .build(connection);
         log.debug("Distro added");
 
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
-        Map<String, Object> kernelOptions = new HashMap<String, Object>();
+        Map<String, Object> kernelOptions = new HashMap<>();
         kernelOptions.put("spacewalk_hostname", config.getHostname());
         Long orgId = user.getOrg().getId();
         kernelOptions.put("spacewalk_activationkey", orgId +

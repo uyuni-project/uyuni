@@ -72,8 +72,8 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         assertEquals(2, children.length);
 
         boolean found = false;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].getSubscribed()) {
+        for (ChildChannelDto childIn : children) {
+            if (childIn.getSubscribed()) {
                 found = true;
             }
         }

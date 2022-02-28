@@ -59,17 +59,14 @@ public class HttpClientAdapterTest extends TestCase {
      * @throws Exception in case there is a problem
      */
     public void testGetRequestAuthenticated() throws Exception {
-        Callable<Integer> requester = new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
-                HttpClientAdapter client = new HttpClientAdapter();
-                return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
-                        .getStatusLine().getStatusCode();
-            }
+        Callable<Integer> requester = () -> {
+            HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
+            HttpClientAdapter client = new HttpClientAdapter();
+            return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+                    .getStatusLine().getStatusCode();
         };
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Host", SERVER_MOCK.getURI().getAuthority());
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         assertEquals((Integer) HttpStatus.SC_OK,
@@ -88,17 +85,14 @@ public class HttpClientAdapterTest extends TestCase {
         proxySettings.setPassword(PROXY_TEST_PASSWORD);
         ProxySettingsManagerTest.setProxySettings(proxySettings);
 
-        Callable<Integer> requester = new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
-                HttpClientAdapter client = new HttpClientAdapter();
-                return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
-                        .getStatusLine().getStatusCode();
-            }
+        Callable<Integer> requester = () -> {
+            HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
+            HttpClientAdapter client = new HttpClientAdapter();
+            return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+                    .getStatusLine().getStatusCode();
         };
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Host", TEST_AUTHORITY);
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         headers.put("Proxy-Authorization", EXPECTED_PROXY_AUTHORIZATION);

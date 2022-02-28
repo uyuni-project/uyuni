@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -135,7 +136,7 @@ public class SsmManager {
      */
     public static List<Long> listServerIds(User user) {
         RhnSet ssm = RhnSetDecl.SYSTEMS.lookup(user);
-        List<Long> sids = new ArrayList<Long>();
+        List<Long> sids = new ArrayList<>();
         if (ssm != null) {
             for (RhnSetElement rse : ssm.getElements()) {
                 sids.add(rse.getElement());
@@ -228,7 +229,7 @@ public class SsmManager {
 
         return systemsWithNoBaseChannel.stream()
                 .map(srv -> handleSingleSystemChannelAddition(srvChanges, srv, earliest, user))
-                .filter(c -> c != null);
+                .filter(Objects::nonNull);
     }
 
     private static ChannelSelectionResult handleSingleSystemChannelAddition(Set<ChannelChangeDto> srvChanges,
@@ -249,7 +250,7 @@ public class SsmManager {
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithBaseChannel(
             List<ChannelChangeDto> channelChanges, Date earliest, User user) {
         return ChannelManager.baseChannelsInSet(user).stream().flatMap(spc -> {
-            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel currentBase = ChannelFactory.lookupById(spc.getId());
             List<Server> oldBaseServers = SsmManager.findServersInSetByChannel(user, currentBase.getId());
 
             // find changes by old base
@@ -364,7 +365,7 @@ public class SsmManager {
                     childChannels,
                     earliest,
                     actionChain);
-            long actionId = actions.stream().findFirst().map(a -> a.getId())
+            long actionId = actions.stream().findFirst().map(Action::getId)
                     .orElseThrow(() -> new RuntimeException("No subscribe channels actions was scheduled"));
 
             return results.stream()
@@ -451,7 +452,7 @@ public class SsmManager {
         List<SsmAllowedChildChannelsDto> result = new ArrayList<>();
 
         for (SystemsPerChannelDto spc : ChannelManager.baseChannelsInSet(user)) {
-            Channel currentBase = ChannelFactory.lookupById(spc.getId().longValue());
+            Channel currentBase = ChannelFactory.lookupById(spc.getId());
 
             Optional<SsmBaseChannelChangesDto.Change> baseChange =
                 changes.getChanges().stream()
@@ -494,13 +495,10 @@ public class SsmManager {
                         }
                     }
 
-                    groupByBaseChange.forEach(defaultBase -> {
-                        defaultBase.getNewBaseChannel().ifPresent(newBaseChannel -> {
-                            fillChildChannels(user,
-                                    defaultBase,
-                                    newBaseChannel.getId());
-                        });
-                    });
+                    groupByBaseChange.forEach(defaultBase -> defaultBase.getNewBaseChannel()
+                            .ifPresent(newBaseChannel -> fillChildChannels(user,
+                                defaultBase,
+                                newBaseChannel.getId())));
                     result.addAll(groupByBaseChange);
 
                 }
@@ -596,13 +594,8 @@ public class SsmManager {
                 // else no base change. since system has no base there are no child channels to find
 
             }
-            allowedNoBase.forEach(allowed -> {
-                allowed.getNewBaseChannel().ifPresent(newBaseChannel -> {
-                    fillChildChannels(user,
-                            allowed,
-                            newBaseChannel.getId());
-                });
-            });
+            allowedNoBase.forEach(allowed -> allowed.getNewBaseChannel()
+                    .ifPresent(newBaseChannel -> fillChildChannels(user, allowed, newBaseChannel.getId())));
             result.addAll(allowedNoBase);
         });
         // else no change for systems without a base channel =>
@@ -616,7 +609,7 @@ public class SsmManager {
 
             Optional<Channel> newRootChannel = newBaseChannelDto
                     .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user))
-                    .map(channel -> ChannelManager.getOriginalChannel(channel));
+                    .map(ChannelManager::getOriginalChannel);
 
             newRootChannel.ifPresent(rootChannel -> {
                 Stream<Channel> childChannelStream = change.getChildChannels().stream()

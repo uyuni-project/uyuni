@@ -91,7 +91,7 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
         DataResult<ConfigSystemDto> sysDtos = ConfigurationManager.getInstance()
                 .listNonManagedSystemsInSetElaborate(user, SYSTEMS.getLabel());
         return sysDtos.stream()
-                .map(dto -> dto.getId())
+                .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
     }
 

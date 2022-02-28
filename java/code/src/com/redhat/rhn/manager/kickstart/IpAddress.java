@@ -49,7 +49,7 @@ public class IpAddress {
         if (soctets.length == 4) {
             try {
                 for (int i = 0; i < 4; i++) {
-                    setOctet(i, Long.valueOf(soctets[i]));
+                    setOctet(i, Long.parseLong(soctets[i]));
                 }
             }
             catch (NumberFormatException num) {
@@ -118,9 +118,9 @@ public class IpAddress {
      */
     public void setNumber() {
         this.number = 0;
-        for (int i = 0; i < this.octets.length; i++) {
+        for (long octetIn : this.octets) {
             this.number <<= 8;
-            this.number = this.number | this.octets[i];
+            this.number = this.number | octetIn;
         }
     }
 

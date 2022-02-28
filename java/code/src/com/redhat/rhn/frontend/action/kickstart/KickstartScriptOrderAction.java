@@ -79,8 +79,8 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID));
         DataResult<KickstartScript> dataSet = getDataResult(ksdata.getId(), org);
 
-        List<LabelValueBean> preScripts = new ArrayList<LabelValueBean>();
-        List<LabelValueBean> postScripts = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> preScripts = new ArrayList<>();
+        List<LabelValueBean> postScripts = new ArrayList<>();
         for (KickstartScript ks : dataSet) {
             if (ks.getScriptType().equals(KickstartScript.TYPE_PRE)) {
                 preScripts.add(lv(ks.getScriptName(), ks.getPosition().toString()));
@@ -121,7 +121,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
      * {@inheritDoc}
      */
     protected Map<String, String> getKeyMethodMap() {
-        Map<String, String> keys = new HashMap<String, String>();
+        Map<String, String> keys = new HashMap<>();
         keys.put("kickstartscript.order.update", "update");
         keys.put("ssm.config.rank.jsp.up", "handleNoScript");
         keys.put("ssm.config.rank.jsp.down", "handleNoScript");
@@ -152,7 +152,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
 
         List<String> orderedPrePriorities = getScriptPriority(form, RANKED_PRE);
         List<String> orderedPostPriorities = getScriptPriority(form, RANKED_POST);
-        Map<Long, Long> oldToNew = new HashMap<Long, Long>();
+        Map<Long, Long> oldToNew = new HashMap<>();
 
         Long nextPosition = 1L;
         Long nextNegativePosition = -1L;
@@ -183,7 +183,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
         // in order to avoid a db constraint error about two scripts having the same
         // position, first we'll set them to something huge and then set them to the
         // correct new value.
-        Map<Long, Long> fakeToOld = new HashMap<Long, Long>();
+        Map<Long, Long> fakeToOld = new HashMap<>();
         Long next = 10000L;
         for (KickstartScript script : scripts) {
             fakeToOld.put(next, script.getPosition());
@@ -215,7 +215,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
      *                   their new  rankings.
      */
     protected List<String> getScriptPriority(DynaActionForm form, String preOrPost) {
-        List<String> scripts = new ArrayList<String>();
+        List<String> scripts = new ArrayList<>();
         String rankedValues = (String) form.get(preOrPost);
         if (StringUtils.isNotBlank(rankedValues)) {
             String[] values = rankedValues.split(",");

@@ -116,16 +116,14 @@ public class JobReturnEventMessageAction implements MessageAction {
         // Check first if the received event was triggered by a single action execution
         Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).map(
                 ScheduleMetadata::getSumaActionId);
-        actionId.filter(id -> id > 0).ifPresent(id -> {
-                jobResult.ifPresent(result ->
-                    saltServerActionService.handleAction(id,
-                            jobReturnEvent.getMinionId(),
-                            jobReturnEvent.getData().getRetcode(),
-                            jobReturnEvent.getData().isSuccess(),
-                            jobReturnEvent.getJobId(),
-                            jobResult.get(),
-                            jobReturnEvent.getData().getFun()));
-        });
+        actionId.filter(id -> id > 0).ifPresent(id -> jobResult.ifPresent(result ->
+            saltServerActionService.handleAction(id,
+                    jobReturnEvent.getMinionId(),
+                    jobReturnEvent.getData().getRetcode(),
+                    jobReturnEvent.getData().isSuccess(),
+                    jobReturnEvent.getJobId(),
+                    jobResult.get(),
+                    jobReturnEvent.getData().getFun())));
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
@@ -189,7 +187,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             .orElse(false))
                     .collect(Collectors.toList())//This is needed to make sure we don't return early but execute
                     .stream()                    // handlePackageChange for all the results in actions chain result.
-                    .anyMatch(s->Boolean.TRUE.equals(s));
+                    .anyMatch(Boolean.TRUE::equals);
             if (packageRefreshNeeded) {
                 schedulePackageRefresh(jobReturnEvent.getMinionId());
             }
@@ -234,16 +232,15 @@ public class JobReturnEventMessageAction implements MessageAction {
              * If so, just remove it. (bsc#1188163)
              */
 
-            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minion -> {
-                ActionChainFactory.getAllActionChains().stream()
-                        .filter(ac -> ac.isDone())
-                        .filter(ac ->
-                                ac.getEntries().stream()
-                                        .flatMap(ace -> ace.getAction().getServerActions().stream())
-                                        .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
-                        )
-                        .forEach(ActionChainFactory::delete);
-            });
+            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+                    .ifPresent(minion -> ActionChainFactory.getAllActionChains().stream()
+                    .filter(ActionChain::isDone)
+                    .filter(ac ->
+                            ac.getEntries().stream()
+                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
+                                    .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
+                    )
+                    .forEach(ActionChainFactory::delete));
 
         }
       // For all jobs: update minion last checkin

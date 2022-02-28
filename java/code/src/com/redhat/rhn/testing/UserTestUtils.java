@@ -59,7 +59,7 @@ public class UserTestUtils extends Assert {
         Org org1 = OrgFactory.createOrg();
         org1.setName(orgName + TestUtils.randomString());
         org1 = OrgFactory.save(org1);
-        assertTrue(org1.getId().longValue() > 0);
+        assertTrue(org1.getId() > 0);
         return org1;
     }
 
@@ -76,7 +76,7 @@ public class UserTestUtils extends Assert {
         Long orgId = createOrg(orgName);
         Address addr1 = createTestAddress(usr);
         usr = UserFactory.saveNewUser(usr, addr1, orgId);
-        assertTrue(usr.getId().longValue() > 0);
+        assertTrue(usr.getId() > 0);
         return usr.getId();
     }
 
@@ -96,7 +96,7 @@ public class UserTestUtils extends Assert {
 
         usr = UserFactory.saveNewUser(usr, addr1, orgId);
 
-        assertTrue(usr.getId().longValue() > 0);
+        assertTrue(usr.getId() > 0);
         return usr;
     }
 
@@ -216,7 +216,7 @@ public class UserTestUtils extends Assert {
      */
     public static Long createAddress(User user) {
         Address addr = createTestAddress(user);
-        assertTrue(addr.getId().longValue() > 0);
+        assertTrue(addr.getId() > 0);
         return addr.getId();
     }
 

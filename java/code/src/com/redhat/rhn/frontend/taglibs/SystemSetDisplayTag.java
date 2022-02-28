@@ -57,7 +57,7 @@ public class SystemSetDisplayTag extends TagSupport {
             StringBuilder result = new StringBuilder();
             result.append("<span id=\"spacewalk-set-system_list-counter\" ")
                   .append("class=\"badge\">")
-                  .append(Integer.toString(size))
+                  .append(size)
                   .append("</span>")
                   .append(LocalizationService.getInstance()
                           .getMessage(size == 1 ?

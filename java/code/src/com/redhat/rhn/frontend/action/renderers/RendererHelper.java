@@ -62,7 +62,7 @@ public class RendererHelper {
         SystemOverview[] overviews = dr.toArray(new SystemOverview[dr.size()]);
         if (overviews != null && overviews.length > 0) {
             Arrays.sort(overviews, new SystemOverviewComparator());
-            return new DataResult<SystemOverview>(Arrays.asList(overviews));
+            return new DataResult<>(Arrays.asList(overviews));
         }
         return dr;
     }

@@ -66,7 +66,7 @@ public class ErrataAction extends Action {
      */
     public void addErrata(Errata e) {
         if (errata == null) {
-            errata = new HashSet<Errata>();
+            errata = new HashSet<>();
         }
         errata.add(e);
     }

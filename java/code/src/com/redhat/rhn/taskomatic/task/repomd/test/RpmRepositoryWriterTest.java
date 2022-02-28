@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,12 +28,17 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageCapabilityTest;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
+import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.RpmRepositoryWriter;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.hamcrest.Description;
+import org.jmock.Expectations;
+import org.jmock.api.Action;
+import org.jmock.api.Invocation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,22 +46,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
-public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
+public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
     private Path mountPointDir;
+    private Path metadataPath;
+    private Channel channel;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         mountPointDir = Files.createTempDirectory("rpmrepotest");
+
+        channel = ChannelFactoryTest.createTestChannel(user);
+        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
+
+        metadataPath = mountPointDir.resolve(Path.of("rhn", "repodata", channel.getLabel()));
     }
 
     public void testPagination() throws Exception {
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
-
         PackageManager.createRepoEntrys(channel.getId());
 
         for (int i = 0; i < 25; i++) {
@@ -71,12 +84,35 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
         assertEquals(25, pkgs.size());
     }
 
+    public void testMetadataKeyFiles() throws Exception {
+        // Mock an Executor instance to stub system calls to 'mgr-sign-metadata'
+        Executor cmdExecutor = mock(Executor.class);
+        context().checking(new Expectations() {{
+            oneOf(cmdExecutor).execute(with(any(String[].class)));
+            will(touchKeyFiles(metadataPath));
+        }});
+
+        RpmRepositoryWriter writer = new RpmRepositoryWriter("rhn/repodata",
+                mountPointDir.toAbsolutePath().toString(), cmdExecutor);
+
+        PackageManager.createRepoEntrys(channel.getId());
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        boolean cfgDefaultSignMetadata = Config.get().getBoolean(ConfigDefaults.SIGN_METADATA);
+        Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, "true");
+
+        writer.writeRepomdFiles(channel);
+
+        assertTrue(metadataPath.resolve("repomd.xml.asc").toFile().exists());
+        assertTrue(metadataPath.resolve("repomd.xml.key").toFile().exists());
+
+        Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, Boolean.toString(cfgDefaultSignMetadata));
+    }
 
     public void testWriteRepomdFiles() throws Exception {
         RpmRepositoryWriter writer = new RpmRepositoryWriter("rhn/repodata", mountPointDir.toAbsolutePath().toString());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         com.redhat.rhn.domain.rhnpackage.Package pkg1 = PackageManagerTest.addPackageToChannel("pkg1", channel);
         pkg1.setVendor(null);
 
@@ -133,10 +169,21 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
         // CHECKSTYLE:ON
 
         primaryXmlExpected = cleanupPrimaryXml(primaryXmlExpected);
-        Path channelDir = mountPointDir.resolve("rhn").resolve("repodata").resolve(channel.getLabel());
 
+        // Assert that all the necessary files are created
+        List<String> createdFiles = Files.list(metadataPath)
+                .map(Path::toFile)
+                .map(File::getName)
+                .collect(Collectors.toList());
 
-        File repomdXml = channelDir.resolve("repomd.xml").toFile();
+        assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-primary.xml.gz")));
+        assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-filelists.xml.gz")));
+        assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-other.xml.gz")));
+        assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-susedata.xml.gz")));
+        assertTrue(createdFiles.stream().anyMatch(f -> f.equals("repomd.xml")));
+        assertTrue(createdFiles.stream().anyMatch(f -> f.equals("products.xml")));
+
+        File repomdXml = metadataPath.resolve("repomd.xml").toFile();
 
         try (FileInputStream fin = new FileInputStream(repomdXml)) {
             String xml = TestUtils.readAll(fin);
@@ -148,7 +195,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
             fail(e.getMessage());
         }
 
-        File primaryXmlGz = Files.list(channelDir).map(Path::toFile)
+        File primaryXmlGz = Files.list(metadataPath).map(Path::toFile)
                 .filter(f -> f.getName().endsWith("-primary.xml.gz")).findFirst().get();
 
         try (FileInputStream fin = new FileInputStream(primaryXmlGz);
@@ -162,6 +209,39 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
         }
         catch (IOException e) {
             fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Factory method to provide a JMock action for touching metadata key files
+     * @param path the path to the repodata directory
+     * @return the mocked action
+     */
+    private static Action touchKeyFiles(Path path) {
+        return new SignMetadataCmdAction(path);
+    }
+
+    /**
+     * JMock {@link Action} implementation that touches metadata key files in the repository directory to simulate
+     * metadata key signing.
+     */
+    private static class SignMetadataCmdAction implements Action {
+        private final Path path;
+
+        SignMetadataCmdAction(Path pathIn) {
+            this.path = pathIn;
+        }
+
+        @Override
+        public void describeTo(Description descriptionIn) {
+            descriptionIn.appendText("touches metadata key files");
+        }
+
+        @Override
+        public Object invoke(Invocation invocation) throws Throwable {
+            FileUtils.touch(path.resolve("repomd.xml.asc").toFile());
+            FileUtils.touch(path.resolve("repomd.xml.key").toFile());
+            return 0;
         }
     }
 

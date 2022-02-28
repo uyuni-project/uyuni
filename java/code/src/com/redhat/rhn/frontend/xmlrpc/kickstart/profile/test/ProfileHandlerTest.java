@@ -130,7 +130,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
         assertFalse(c1.getLabel().equals(c2.getLabel()));
 
-        List<String> channelsToSubscribe = new ArrayList<String>();
+        List<String> channelsToSubscribe = new ArrayList<>();
         channelsToSubscribe.add(c1.getLabel());
         channelsToSubscribe.add(c2.getLabel());
 
@@ -208,9 +208,9 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(scripts.get(4).getId().intValue(), idPost1);
         assertEquals(scripts.get(5).getId().intValue(), idPost2);
 
-        List<Integer> orderedPre = new ArrayList<Integer>();
-        List<Integer> orderedPostBefore = new ArrayList<Integer>();
-        List<Integer> orderedPostAfter = new ArrayList<Integer>();
+        List<Integer> orderedPre = new ArrayList<>();
+        List<Integer> orderedPostBefore = new ArrayList<>();
+        List<Integer> orderedPostAfter = new ArrayList<>();
         orderedPre.add(idPre2);
         orderedPre.add(idPre1);
         orderedPostBefore.add(idPost1);
@@ -292,8 +292,8 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
         List<Map> l1 = new ArrayList();
 
-        for (int i = 0; i < s1.length; i++) {
-            l1.add((Map) s1[i]);
+        for (Object oIn : s1) {
+            l1.add((Map) oIn);
         }
 
         Map m1 = new HashMap();
@@ -353,8 +353,8 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
         List<Map> l1 = new ArrayList();
 
-        for (int i = 0; i < s1.length; i++) {
-            l1.add((Map) s1[i]);
+        for (Object oIn : s1) {
+            l1.add((Map) oIn);
         }
 
         Map m1 = new HashMap();
@@ -695,7 +695,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
     public void testCustomOptions() throws Exception {
 
         KickstartData newProfile = createProfile();
-        List<String> options = new ArrayList<String>();
+        List<String> options = new ArrayList<>();
 
         options.add("Java");
         options.add("is");

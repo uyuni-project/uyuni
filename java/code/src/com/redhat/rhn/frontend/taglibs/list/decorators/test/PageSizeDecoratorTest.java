@@ -36,7 +36,7 @@ public class PageSizeDecoratorTest extends RhnBaseTestCase {
     }
 
     public void testConfigPageSizes() {
-        List<Integer> custom = new LinkedList<Integer>();
+        List<Integer> custom = new LinkedList<>();
         custom.add(4);
         custom.add(6);
         custom.add(7);

@@ -237,7 +237,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static String getMinionId(Long serverId) throws UnsupportedOperationException {
         return ServerFactory.lookupById(serverId)
                 .asMinionServer()
-                .map(m -> m.getMinionId())
+                .map(MinionServer::getMinionId)
                 .orElseThrow(() -> new UnsupportedOperationException("Salt minion not found, id: " + serverId));
     }
 

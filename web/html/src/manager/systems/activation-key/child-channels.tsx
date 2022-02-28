@@ -6,10 +6,10 @@ import { ChannelAnchorLink } from "components/links";
 import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/Loading";
 
-import { ChannelDto } from "./activation-key-channels-api";
+import { Channel } from "./activation-key-channels-api";
 
 type ChildChannelsProps = {
-  channels: Array<ChannelDto>;
+  channels: Array<Channel>;
   base: any;
   showBase: boolean;
   selectedChannelsIds: Array<number>;

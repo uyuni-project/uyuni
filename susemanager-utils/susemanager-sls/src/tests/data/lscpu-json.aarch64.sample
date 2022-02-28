@@ -1,22 +1,18 @@
-{
-   "lscpu": [
-      {"field":"Architecture:", "data":"aarch64"},
-      {"field":"Byte Order:", "data":"Little Endian"},
-      {"field":"CPU(s):", "data":"64"},
-      {"field":"On-line CPU(s) list:", "data":"0-63"},
-      {"field":"Thread(s) per core:", "data":"1"},
-      {"field":"Core(s) per socket:", "data":"4"},
-      {"field":"Socket(s):", "data":"16"},
-      {"field":"NUMA node(s):", "data":"4"},
-      {"field":"Vendor ID:", "data":"ARM"},
-      {"field":"Model:", "data":"2"},
-      {"field":"Model name:", "data":"Cortex-A72"},
-      {"field":"Stepping:", "data":"r0p2"},
-      {"field":"BogoMIPS:", "data":"100.00"},
-      {"field":"NUMA node0 CPU(s):", "data":"0-15"},
-      {"field":"NUMA node1 CPU(s):", "data":"16-31"},
-      {"field":"NUMA node2 CPU(s):", "data":"32-47"},
-      {"field":"NUMA node3 CPU(s):", "data":"48-63"},
-      {"field":"Flags:", "data":"fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid"}
-   ]
-}
+Architecture:        aarch64
+Byte Order:          Little Endian
+CPU(s):              64
+On-line CPU(s) list: 0-63
+Thread(s) per core:  1
+Core(s) per socket:  4
+Socket(s):           16
+NUMA node(s):        4
+Vendor ID:           ARM
+Model:               2
+Model name:          Cortex-A72
+Stepping:            r0p2
+BogoMIPS:            100.00
+NUMA node0 CPU(s):   0-15
+NUMA node1 CPU(s):   16-31
+NUMA node2 CPU(s):   32-47
+NUMA node3 CPU(s):   48-63
+Flags:               fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid

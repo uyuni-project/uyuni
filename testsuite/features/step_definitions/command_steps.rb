@@ -32,7 +32,8 @@ end
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
   node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
-  $server.run_until_fail("ping -c 1 #{node.private_ip}")
+  # commented out as a machine with the same IP address might exist somewhere in our engineering network
+  # $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -1415,6 +1416,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
   $server.run(command)
+end
+
+When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  next unless host.include? 'ceos'
+
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
 end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|

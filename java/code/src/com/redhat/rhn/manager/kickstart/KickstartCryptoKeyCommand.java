@@ -103,7 +103,7 @@ public class KickstartCryptoKeyCommand extends BaseKickstartCommand {
         if (ksdata.getCryptoKeys() != null) {
             return ksdata.getCryptoKeys();
         }
-        return new HashSet<CryptoKey>();
+        return new HashSet<>();
     }
 
 }

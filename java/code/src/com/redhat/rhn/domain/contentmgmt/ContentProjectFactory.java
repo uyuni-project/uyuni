@@ -305,7 +305,7 @@ public class ContentProjectFactory extends HibernateFactory {
 
         // firstly fix the original/clone relations of channels
         target.asSoftwareTarget().ifPresent(swTgt -> {
-            Optional<Channel> prevChannel = swTgt.getChannel().asCloned().map(c -> c.getOriginal());
+            Optional<Channel> prevChannel = swTgt.getChannel().asCloned().map(ClonedChannel::getOriginal);
             List<ClonedChannel> nextChannels = lookupClonesInProject(swTgt.getChannel(),
                     swTgt.getContentEnvironment().getContentProject());
             // if both next and previous channel exist -> fix the original-clone relation
@@ -315,7 +315,7 @@ public class ContentProjectFactory extends HibernateFactory {
         // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
-        target.asSoftwareTarget().map(swTgt -> swTgt.getChannel()).ifPresent(channel -> {
+        target.asSoftwareTarget().map(SoftwareEnvironmentTarget::getChannel).ifPresent(channel -> {
             HibernateFactory.getSession().evict(channel);
             ChannelFactory.remove(channel);
         });
@@ -573,9 +573,9 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static ContentFilter updateFilter(ContentFilter filter, Optional<String> name,
             Optional<ContentFilter.Rule> rule, Optional<FilterCriteria> criteria) {
-        name.ifPresent(n -> filter.setName(n));
-        rule.ifPresent(r -> filter.setRule(r));
-        criteria.ifPresent(c -> filter.setCriteria(c));
+        name.ifPresent(filter::setName);
+        rule.ifPresent(filter::setRule);
+        criteria.ifPresent(filter::setCriteria);
         listFilterProjectsRelation(filter).stream()
                 .filter(projectFilter -> projectFilter.getState() == ContentProjectFilter.State.BUILT)
                 .forEach(projectFilter -> projectFilter.setState(ContentProjectFilter.State.EDITED));

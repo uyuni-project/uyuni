@@ -53,14 +53,16 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   interface, code = node.run("ip -6 address show #{node.public_interface}")
   raise unless code.zero?
+
   lines = interface.lines
-  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global temporary dynamic/).first
-  ipv6_line = lines.grep(/inet6 2620:[:0-9a-f]*\/64 scope global dynamic mngtmpaddr/).first if ipv6_line.nil?
-  ipv6_line = lines.grep(/inet6 fe80:[:0-9a-f]*\/64 scope link/).first if ipv6_line.nil?
-  next if ipv6_line.nil?
-  ipv6_address = ipv6_line.scan(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/).first
+  # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
+  ipv6_addresses_list = lines.grep(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/)
+  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/) }
+
+  # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
+  ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
   log "IPv6 address: #{ipv6_address}"
-  step %(I should see a "#{ipv6_address}" text)
+  raise unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -558,6 +560,12 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
+When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
+  if $product == product_version
+    step %(I open the sub-list of the product "#{product}")
+  end
+end
+
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
@@ -888,13 +896,13 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
   )
-  if get_client_type(host) == 'traditional'
+  if get_client_type(host) == 'traditional' and is_salt.empty?
     get_target(host).run('rhn_check -vvv')
   else
     steps %(

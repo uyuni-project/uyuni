@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,7 +72,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);
         helper.ignoreEmptySelection();
 
-        Set<String> preselected = new HashSet<String>();
+        Set<String> preselected = new HashSet<>();
         for (Long uid : ChannelManager.listChannelSubscriberIdsForChannel(
                                                 user.getOrg(), currentChan)) {
             preselected.add(uid.toString());
@@ -90,9 +89,8 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
 
             long updated = 0;
             // remove channel subscribers
-            for (Iterator<String> iter = helper.getRemovedKeys().iterator();
-                    iter.hasNext();) {
-                Long uid = Long.valueOf(iter.next());
+            for (String valueIn : (Iterable<String>) helper.getRemovedKeys()) {
+                Long uid = Long.valueOf(valueIn);
                 if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_SUBSCRIBE);
@@ -101,9 +99,8 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
             }
 
             // add channel subscribers
-            for (Iterator<String> iter = helper.getAddedKeys().iterator();
-                    iter.hasNext();) {
-                Long uid = Long.valueOf(iter.next());
+            for (String oIn : (Iterable<String>) helper.getAddedKeys()) {
+                Long uid = Long.valueOf(oIn);
                 if (!UserManager.hasRole(uid, RoleFactory.CHANNEL_ADMIN)) {
                     user.getOrg().removeChannelPermissions(uid, currentChan.getId(),
                             ChannelManager.QRY_ROLE_SUBSCRIBE);

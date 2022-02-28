@@ -102,7 +102,7 @@ public class SetupWizardSessionCache {
 
         // Create the map for caching if it doesn't exist
         if (subsMap == null) {
-            subsMap = new HashMap<String, List<SubscriptionDto>>();
+            subsMap = new HashMap<>();
             session.setAttribute(SUBSCRIPTIONS_KEY, subsMap);
         }
 

@@ -100,7 +100,7 @@ public class CheckinCandidatesResolver {
     @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> findCheckinCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME, this.findCheckinCandidatesQuery);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("checkin_threshold", this.thresholdMin);
         return select.execute(params);
     }

@@ -58,7 +58,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      * @return a list of cobbler profile names
      */
     private Map<String, Map> getModifiedProfileNames() {
-        Map<String, Map> toReturn = new HashMap<String, Map>();
+        Map<String, Map> toReturn = new HashMap<>();
         List<Map> profiles = (List<Map>)invokeXMLRPC("get_profiles", xmlRpcToken);
         for (Map profile : profiles) {
                 toReturn.put((String)profile.get("uid"), profile);

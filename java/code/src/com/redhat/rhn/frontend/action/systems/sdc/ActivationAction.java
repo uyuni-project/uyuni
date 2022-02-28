@@ -63,7 +63,7 @@ public class ActivationAction extends RhnAction {
             for (ActivationKey key : keys) {
                 ActivationKeyFactory.removeKey(key);
             }
-            keys = new ArrayList<ActivationKey>();
+            keys = new ArrayList<>();
         }
 
         ActivationKey key = null;

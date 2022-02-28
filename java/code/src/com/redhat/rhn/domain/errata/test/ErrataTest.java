@@ -232,9 +232,9 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertNull(err.getLastModified());
 
         err.setLocallyModified(Boolean.TRUE);
-        assertTrue(err.getLocallyModified().booleanValue());
+        assertTrue(err.getLocallyModified());
         err.setLocallyModified(Boolean.FALSE);
-        assertFalse(err.getLocallyModified().booleanValue());
+        assertFalse(err.getLocallyModified());
 
         err.setNotes(foo);
         assertTrue(err.getNotes().equals("foo"));

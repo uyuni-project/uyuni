@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -303,7 +304,7 @@ public class ContentEnvironment extends BaseDomainHelper {
                 .append("project", getContentProject().getName())
                 .append("label", getLabel())
                 .append("version", getVersion())
-                .append("next env id", ofNullable(getNextEnvironment()).map(e -> e.getId()).orElse(null))
+                .append("next env id", ofNullable(getNextEnvironment()).map(ContentEnvironment::getId).orElse(null))
                 .toString();
     }
 
@@ -320,7 +321,7 @@ public class ContentEnvironment extends BaseDomainHelper {
      */
     public Optional<Status> computeStatus() {
         Set<Status> statuses = getTargets().stream()
-                .map(t -> t.getStatus())
+                .map(EnvironmentTarget::getStatus)
                 .collect(Collectors.toSet());
 
         if (statuses.isEmpty() || statuses.stream().allMatch(s -> s == Status.NEW)) {
@@ -353,8 +354,8 @@ public class ContentEnvironment extends BaseDomainHelper {
         return computeStatus()
                 .filter(envStatus -> envStatus == Status.BUILT)
                 .map(envStatus -> getTargets().stream()
-                        .map(t -> t.getBuiltTime())
-                        .filter(value -> value != null)
+                        .map(EnvironmentTarget::getBuiltTime)
+                        .filter(Objects::nonNull)
                         .max(Date::compareTo))
                 .orElse(Optional.empty());
     }

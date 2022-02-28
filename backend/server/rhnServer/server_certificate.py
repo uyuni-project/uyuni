@@ -31,7 +31,6 @@ except ImportError:
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
-from uyuni.common.stringutils import to_string
 from .server_lib import getServerSecret
 from .server_lib import check_entitlement_by_machine_id
 
@@ -68,7 +67,7 @@ class Checksum:
         else:
             if type(arg) == type(0):
                 arg = str(arg)
-            self.sum.update(to_string(arg).encode())
+            self.sum.update(str(arg).encode())
 
     def __repr__(self):
         t = self.sum.hexdigest()
@@ -155,7 +154,7 @@ class Certificate:
             return -1
         # Now decode this certificate
         try:
-            sysid, junk = xmlrpclib.loads(to_string(text_id))
+            sysid, junk = xmlrpclib.loads(str(text_id))
         except:
             return -1
         else:

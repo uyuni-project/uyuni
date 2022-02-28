@@ -52,7 +52,7 @@ public class MandatoryChannels {
      */
     public List<Channel> getChannels() {
         if (channel == null) {
-            channel = new ArrayList<Channel>();
+            channel = new ArrayList<>();
         }
         return this.channel;
     }

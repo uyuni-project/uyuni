@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import java.util.Objects;
+
 /**
  * To carry proxy settings to the wizard UI.
  */
@@ -105,16 +107,13 @@ public class ProxySettingsDto {
             return false;
         }
         final ProxySettingsDto other = (ProxySettingsDto) obj;
-        if ((this.hostname == null) ? (other.hostname != null) : !this.hostname
-                .equals(other.hostname)) {
+        if (!Objects.equals(this.hostname, other.hostname)) {
             return false;
         }
-        if ((this.username == null) ? (other.username != null) : !this.username
-                .equals(other.username)) {
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
-        if ((this.password == null) ? (other.password != null) : !this.password
-                .equals(other.password)) {
+        if (!Objects.equals(this.password, other.password)) {
             return false;
         }
         return true;

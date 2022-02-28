@@ -146,7 +146,7 @@ export function generateFormulaComponentForId(
             title={t("Reset")}
             onClick={function (event) {
               event.preventDefault();
-              console.warn("Reseting color picker is not implemented!");
+              Loggerhead.warn("Reseting color picker is not implemented!");
               /* TODO: reset Value */
             }}
           >
@@ -247,7 +247,7 @@ export function generateFormulaComponentForId(
       element.$help
     );
   else {
-    console.error("Unknown $type: " + element.$type);
+    Loggerhead.error("Unknown $type: " + element.$type);
     return wrapper(element.$name, required, <div>{JSON.stringify(value)}</div>);
   }
 }
@@ -754,7 +754,7 @@ export class FormulaFormContextProvider extends React.Component<
               }
             }
           } catch (err) {
-            console.error("Error matching regex: '" + meta["match"] + "':" + err);
+            Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);
           }
         }
         return true;

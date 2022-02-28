@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.threaded;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -96,8 +95,8 @@ public class TaskQueueFactory {
 
     void closeAllQueues() {
         synchronized (queues) {
-            for (Iterator iter = queues.values().iterator(); iter.hasNext();) {
-                TaskQueue queue = (TaskQueue) iter.next();
+            for (Object oIn : queues.values()) {
+                TaskQueue queue = (TaskQueue) oIn;
                 queue.shutdown();
             }
         }

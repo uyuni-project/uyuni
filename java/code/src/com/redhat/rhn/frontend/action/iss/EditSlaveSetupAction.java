@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,7 +86,7 @@ public class EditSlaveSetupAction extends RhnAction {
 
          IssSlave theSlave = IssFactory.lookupSlaveById(sid);
         Set<Long> mappedOrgs = mappedLocalOrgs(
-                        new ArrayList<Org>(theSlave.getAllowedOrgs()));
+                new ArrayList<>(theSlave.getAllowedOrgs()));
         List<OrgDto> locals = fromOrgs(OrgFactory.lookupAllOrgs());
 
         Set sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
@@ -139,18 +138,18 @@ public class EditSlaveSetupAction extends RhnAction {
     }
 
     protected List<OrgDto> fromOrgs(List<Org> orgs) {
-        List<OrgDto> outList = new ArrayList<OrgDto>();
+        List<OrgDto> outList = new ArrayList<>();
         for (Org o : orgs) {
             outList.add(createOrgDto(o.getId(), o.getName()));
         }
 
-        Collections.sort(outList, new OrgComparator());
+        outList.sort(new OrgComparator());
 
         return outList;
     }
 
     protected Set<Long> mappedLocalOrgs(List<Org> orgs) {
-        Set<Long> outIds = new HashSet<Long>();
+        Set<Long> outIds = new HashSet<>();
         for (Org o : orgs) {
             outIds.add(o.getId());
         }

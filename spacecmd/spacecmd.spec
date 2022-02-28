@@ -18,7 +18,7 @@
 #
 
 
-%if ! (0%{?fedora} || 0%{?rhel} > 5)
+%if ! (0%{?fedora} || 0%{?rhel})
 %if "%{_vendor}" == "debbuild"
 %global __python /usr/bin/python3
 %endif
@@ -61,8 +61,10 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 
-%if "%{_vendor}" == "debbuild"
+%if "%{_vendor}" == "debbuild" || 0%{?rhel} 
 BuildRequires:  gettext
+%endif
+%if "%{_vendor}" == "debbuild"
 BuildRequires:  intltool
 %endif
 
@@ -102,13 +104,6 @@ Requires:       %{python2prefix}
 BuildRequires:  python-xml
 Requires:       python-xml
 %endif
-%endif
-%if 0%{?rhel} == 5
-BuildRequires:  python-json
-%endif
-
-%if 0%{?rhel} == 5
-Requires:       python-simplejson
 %endif
 Requires:       file
 

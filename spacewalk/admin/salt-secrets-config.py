@@ -117,8 +117,4 @@ if (not all([os.path.isfile(f) for f in ["/etc/salt/pki/api/salt-api.crt", "/etc
     os.chown("/etc/salt/pki/api/salt-api.key", pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
     os.chmod("/etc/salt/pki/api/salt-api.key", 0o600)
     shutil.copyfile("/etc/salt/pki/api/salt-api.crt", cert_location + "/salt-api.crt")
-    # Detect CA management tool.
-    if os.system("update-ca-certificates"):
-        print('Using "update-ca-trust" instead of "update-ca-certificates".')
-        os.system("update-ca-trust extract")
-
+    os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")

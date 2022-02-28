@@ -31,7 +31,7 @@ public enum SELinuxMode {
     PERMISSIVE("permissive"),
     DISABLED("disabled");
     private static final Map<String, SELinuxMode> MODE_MAP =
-                                    new HashMap<String, SELinuxMode>();
+            new HashMap<>();
 
     static {
         for (SELinuxMode m : EnumSet.allOf(SELinuxMode.class)) {

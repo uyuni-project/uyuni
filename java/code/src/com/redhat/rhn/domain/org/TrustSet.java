@@ -63,7 +63,7 @@ public class TrustSet implements Set<Org> {
      * {@inheritDoc}
      */
     public void clear() {
-        List<Org> list = new ArrayList<Org>(trusted);
+        List<Org> list = new ArrayList<>(trusted);
         for (Org o : list) {
             remove(o);
         }

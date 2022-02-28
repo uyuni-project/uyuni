@@ -61,7 +61,7 @@ public class RepositoriesAction extends RhnAction implements Listable {
         request.setAttribute("channel_name", chan.getName());
         request.setAttribute("cid", chan.getId());
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.CID, chan.getId().toString());
 
         ListSessionSetHelper helper =
@@ -69,9 +69,8 @@ public class RepositoriesAction extends RhnAction implements Listable {
 
         if (!context.isSubmitted()) {
             List<ContentSource> result = getResult(context);
-            Set<String> preSelect = new HashSet<String>();
-            for (int i = 0; i < result.size(); i++) {
-                ContentSource src = result.get(i);
+            Set<String> preSelect = new HashSet<>();
+            for (ContentSource src : result) {
                 if (src.getChannels().contains(chan)) {
                     preSelect.add(src.getId().toString());
                 }

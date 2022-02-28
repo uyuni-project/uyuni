@@ -36,7 +36,7 @@ public class SUSEProductSet {
     private SUSEProduct baseProduct;
 
     // List of add-on products
-    private List<SUSEProduct> addonProducts = new ArrayList<SUSEProduct>();
+    private List<SUSEProduct> addonProducts = new ArrayList<>();
 
     // A list of labels of missing channels
     private List<String> missingChannels = null;
@@ -136,7 +136,7 @@ public class SUSEProductSet {
      */
     public void addAddonProduct(SUSEProduct addonProduct) {
         if (addonProducts == null) {
-            addonProducts = new ArrayList<SUSEProduct>();
+            addonProducts = new ArrayList<>();
         }
         if (addonProduct != null) {
             if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName()) &&
@@ -161,7 +161,7 @@ public class SUSEProductSet {
      * @return list of product IDs
      */
     public List<Long> getProductIDs() {
-        List<Long> productIDs = new ArrayList<Long>();
+        List<Long> productIDs = new ArrayList<>();
         productIDs.add(baseProduct.getId());
         for (SUSEProduct p : addonProducts) {
             productIDs.add(p.getId());
@@ -183,7 +183,7 @@ public class SUSEProductSet {
      */
     public void addMissingChannel(String channelLabel) {
         if (missingChannels == null) {
-            missingChannels = new ArrayList<String>();
+            missingChannels = new ArrayList<>();
         }
         missingChannels.add(channelLabel);
         Collections.sort(missingChannels);
@@ -195,7 +195,7 @@ public class SUSEProductSet {
      */
     public void addMissingChannels(List<String> channelLabels) {
         if (missingChannels == null) {
-            missingChannels = new ArrayList<String>();
+            missingChannels = new ArrayList<>();
         }
         missingChannels.addAll(channelLabels);
         Collections.sort(missingChannels);

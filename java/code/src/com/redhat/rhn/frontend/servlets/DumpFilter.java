@@ -99,8 +99,8 @@ public class DumpFilter implements Filter {
             return;
         }
 
-        for (int i = 0; i < cookies.length; i++) {
-            log.debug(ReflectionToStringBuilder.toString(cookies[i]));
+        for (Cookie cookieIn : cookies) {
+            log.debug(ReflectionToStringBuilder.toString(cookieIn));
         }
     }
 
@@ -126,9 +126,9 @@ public class DumpFilter implements Filter {
         while (items.hasMoreElements()) {
             String name = (String) items.nextElement();
             String[] values = req.getParameterValues(name);
-            for (int i = 0; i < values.length; i++) {
+            for (String valueIn : values) {
                 log.debug("Parameter: name [" + name + "] value [" +
-                        values[i] + "]");
+                        valueIn + "]");
             }
         }
     }

@@ -73,10 +73,10 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartScript kss2 = createPre(ksdata);
         ksdata.addScript(kss1);
         ksdata.addScript(kss2);
-        assertTrue(kss1.getPosition().longValue() < kss2.getPosition().longValue());
+        assertTrue(kss1.getPosition() < kss2.getPosition());
         KickstartFactory.saveKickstartData(ksdata);
         ksdata = (KickstartData) reload(ksdata);
-        assertTrue(kss1.getPosition().longValue() < kss2.getPosition().longValue());
+        assertTrue(kss1.getPosition() < kss2.getPosition());
     }
 
     public void testLargeScript() throws Exception {

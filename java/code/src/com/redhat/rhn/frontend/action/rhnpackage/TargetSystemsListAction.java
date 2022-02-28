@@ -85,7 +85,7 @@ public class TargetSystemsListAction extends RhnAction {
             // if its one of the Dispatch actions handle it..
             helper.updateSet(set, LIST_NAME);
             if (!set.isEmpty()) {
-                Map<String, Object> params = new HashMap<String, Object>();
+                Map<String, Object> params = new HashMap<>();
                 params.put("pid", pid);
                 StrutsDelegate strutsDelegate = getStrutsDelegate();
                 return strutsDelegate.forwardParams(mapping
@@ -96,7 +96,7 @@ public class TargetSystemsListAction extends RhnAction {
 
         DataResult<SystemOverview> result = SystemManager.listPotentialSystemsForPackage(
                 user, pid);
-        result.setElaborationParams(new HashMap<String, Object>());
+        result.setElaborationParams(new HashMap<>());
 
         request.getParameter(AlphaBarHelper.makeAlphaKey(TagHelper
                 .generateUniqueName(LIST_NAME)));

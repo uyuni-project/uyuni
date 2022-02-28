@@ -100,11 +100,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
      * {@inheritDoc}
      */
     public String toString() {
-       StringBuilder sb = new StringBuilder();
-       sb.append(getClass().getName());
-       sb.append(" : id: ");
-       sb.append(getId());
-       return sb.toString();
+        return getClass().getName() + " : id: " + getId();
     }
 
  }

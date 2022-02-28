@@ -60,7 +60,7 @@ public class SoftwareHandler extends BaseHandler {
 
         checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (KickstartPackage p : ksdata.getKsPackages()) {
             list.add(p.getPackageName().getName());
         }
@@ -230,7 +230,7 @@ public class SoftwareHandler extends BaseHandler {
     public Map<String, Boolean> getSoftwareDetails(User loggedInUser, String ksLabel) {
         KickstartData ksData = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 ksLabel, loggedInUser.getOrg().getId());
-        Map<String, Boolean> returnValues = new HashMap<String, Boolean>();
+        Map<String, Boolean> returnValues = new HashMap<>();
         returnValues.put("noBase", ksData.getNoBase());
         returnValues.put("ignoreMissing", ksData.getIgnoreMissing());
         return returnValues;

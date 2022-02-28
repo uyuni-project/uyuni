@@ -92,7 +92,7 @@ public class EditAddressAction extends RhnAction {
         UserManager.storeUser(targetUser);
 
         ActionForward base = mapping.findForward("success");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("uid", String.valueOf(targetUser.getId()));
         params.put("type", addrType);
 

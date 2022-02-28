@@ -32,7 +32,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +56,7 @@ public class CobblerSnippetListSetupAction extends RhnAction {
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
-        List<CobblerSnippet> result = new ArrayList<CobblerSnippet>();
+        List<CobblerSnippet> result = new ArrayList<>();
         try {
             if (ALL.equals(mapping.getParameter())) {
                 result = CobblerSnippetLister.getInstance().list(user);
@@ -80,7 +79,7 @@ public class CobblerSnippetListSetupAction extends RhnAction {
             getStrutsDelegate().saveMessages(request, errors, ve.getResult().getWarnings());
             RhnValidationHelper.setFailedValidation(request);
         }
-        Collections.sort(result, NAME_COMPARATOR);
+        result.sort(NAME_COMPARATOR);
         request.setAttribute(RequestContext.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

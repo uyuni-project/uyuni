@@ -86,7 +86,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
         helper.setDataSetName(RequestContext.PAGE_LIST);
         helper.execute();
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.MODE,
                 requestContext.getRequiredParamAsString(RequestContext.MODE));
 
@@ -186,10 +186,10 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
 
 
         Map<Long, List<Map<String, Long>>> sysPackageSet =
-            new HashMap<Long, List<Map<String, Long>>>();
+                new HashMap<>();
         for (Map sys : result) {
             Long sysId = (Long) sys.get("id");
-            List<Map<String, Long>> pkgSet = new ArrayList<Map<String, Long>>();
+            List<Map<String, Long>> pkgSet = new ArrayList<>();
             sysPackageSet.put(sysId, pkgSet);
             for (Map pkg : (List<Map>) sys.get("elaborator0")) {
                 Map<String, Long> newPkg = new HashMap();

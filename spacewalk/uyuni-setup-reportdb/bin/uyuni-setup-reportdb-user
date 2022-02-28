@@ -24,11 +24,11 @@ options:
   --dbpassword=DBPASSWORD
             Report DB Password
   --add
-            Add the new user
+            Add the new user (case insensitive)
   --delete
-            Delete the user
+            Delete the user (case insensitive)
   --modify
-            Set a new password
+            Set a new password (case insensitive)
 
 HELP
     exit 1
@@ -71,7 +71,6 @@ default_or_input() {
     ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "$VARIABLE" "${INPUT:-$DEFAULT}")
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
 }
-
 
 parse_password() {
   for i in $(seq $INTERACTIVE_RETRIES) ; do
@@ -145,7 +144,7 @@ done
 if [ "$INTERACTIVE" = "1" ] ; then
   echo "Report DB Name is: $DBNAME"
   for i in $(seq $INTERACTIVE_RETRIES) ; do
-    default_or_input "[a]dd/[m]odify/[d]elete user. Default is " ACTION 'm'
+    default_or_input "[a]dd/[m]odify/[d]elete user (case insensitive). Default is " ACTION 'm'
       case "$ACTION" in
         a|m|d)
         break
@@ -163,7 +162,8 @@ if [ "$INTERACTIVE" = "1" ] ; then
   fi
 
   default_or_input "User:" DBUSER ''
-
+  DBUSER=$(echo $DBUSER | tr '[:upper:]' '[:lower:]')
+  
   if [ "$ACTION" != "d" ]; then
     parse_password
     if [ -z $DBPASSWORD ]; then
@@ -185,7 +185,7 @@ else ### INTERACTIVE=0
     exit 1
   fi
   
-  if [ -z $USER ]; then
+  if [ -z $DBUSER ]; then
     echo "User is missing. Exit"
     exit 1
   fi
@@ -196,6 +196,15 @@ else ### INTERACTIVE=0
   fi
 
 fi
+
+ADMIN_USERS=$(echo "SELECT usename FROM pg_catalog.pg_user WHERE usesuper='t' " | spacewalk-sql -select-mode - | tail -n +3 | head -n -2 | tr '[:upper:]' '[:lower:]')
+
+for USER in $ADMIN_USERS; do
+    if [ "$DBUSER" == "$USER" ]; then
+        echo "This script is not allowed to change $USER, because it's an admin (only read-only user allowed)"
+        exit 1
+    fi
+done
 
 QUERY=""
 case "$ACTION" in

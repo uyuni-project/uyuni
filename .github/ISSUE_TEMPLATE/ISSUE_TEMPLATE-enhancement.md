@@ -1,17 +1,16 @@
 ---
-name: Uyuni - Enhancement request
-about: Use this issue template for creating enhancement requests
-title: Uyuni Enhancement Request - Uyuni YYYY.MM
+name: Uyuni - Enhancement
+about: Use this issue template for creating enhancement requests.
+title: Enhancement - XXX
 labels: enhancement
-assignees:
-
+assignees: ''
 ---
 
 # Short description
 
-_Short description about the requested feature_
+_Short description about the requested feature._
 
-# Details 
-_Include as many details as you can..._
-_In general: all that can help to understand what you suggest_
+# Details
 
+_Please include as many details here as you can._
+_In general: all that can help to understand what you suggest._

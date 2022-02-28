@@ -76,7 +76,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
 
         // verify the correct ActionForward was returned
         assertTrue(rc.getName().equals("success"));
-        assertEquals("path?uid=" + String.valueOf(user.getId()), rc.getPath());
+        assertEquals("path?uid=" + user.getId(), rc.getPath());
         assertFalse(rc.getRedirect());
 
 

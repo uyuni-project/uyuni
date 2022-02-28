@@ -52,7 +52,7 @@ public class ErrataPackagesSetupAction extends RhnAction {
         User user = requestContext.getCurrentUser();
         Errata errata = requestContext.lookupErratum();
 
-        List<ChannelOverview> chans = new ArrayList<ChannelOverview>();
+        List<ChannelOverview> chans = new ArrayList<>();
 
         for (Channel chan : errata.getChannels()) {
             if (UserManager.verifyChannelSubscribable(user, chan)) {

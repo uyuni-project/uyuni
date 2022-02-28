@@ -175,13 +175,13 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         String contents = FileUtils.readStringFromFile(k.buildCobblerFileName());
         assertTrue(contents.indexOf("\\$") > 0);
-        assertTrue(contents.indexOf("\\$" +
-                KickstartUrlHelper.COBBLER_MEDIA_VARIABLE) < 0);
+        assertTrue(!contents.contains("\\$" +
+                KickstartUrlHelper.COBBLER_MEDIA_VARIABLE));
         assertTrue(contents.indexOf("$" +
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE) > 0);
 
         // Check for SNIPPETS
-        assertTrue(contents.indexOf("\\$SNIPPET") < 0);
+        assertTrue(!contents.contains("\\$SNIPPET"));
         assertTrue(contents.indexOf("$SNIPPET") > 0);
 
     }
@@ -212,7 +212,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.setKickstartDefaults(d1);
 
 
-        SortedSet<KickstartCommand> optionsSet = new TreeSet<KickstartCommand>();
+        SortedSet<KickstartCommand> optionsSet = new TreeSet<>();
         k.setCustomOptions(optionsSet);
 
         createCobblerObjects(k);
@@ -319,8 +319,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     private KickstartData lookupById(Org orgIn, Long id) throws Exception {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setLong("id", id.longValue())
-                          .setLong("org_id", orgIn.getId().longValue())
+                          .setLong("id", id)
+                          .setLong("org_id", orgIn.getId())
                           .uniqueResult();
     }
 
@@ -401,8 +401,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     private static void addPackages(Channel c, String[] names)
             throws Exception {
-        for (int i = 0; i < names.length; i++) {
-            PackageManagerTest.addPackageToChannel(names[i], c);
+        for (String nameIn : names) {
+            PackageManagerTest.addPackageToChannel(nameIn, c);
         }
     }
 

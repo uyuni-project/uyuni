@@ -702,13 +702,9 @@ public class MaintenanceManager {
             http.cleanup(response);
             return ical;
         }
-        catch (IOException e) {
+        catch (IOException | ParseException e) {
             log.error("Download failed.", e);
             throw new DownloadException(url, e.getMessage(), 500);
-        }
-        catch (ParseException p) {
-            log.error("Download failed.", p);
-            throw new DownloadException(url, p.getMessage(), 500);
         }
     }
 
@@ -846,9 +842,9 @@ public class MaintenanceManager {
 
         List<Long> minionsInMaintMode = minions.stream()
                 .filter(minion -> minion.getMaintenanceScheduleOpt()
-                .map(sched -> schedulesInMaintMode.contains(sched)) // keep minions that have maintenance mode
+                .map(schedulesInMaintMode::contains) // keep minions that have maintenance mode
                 .orElse(true)) // or that have no maintenance schedule whatsoever
-                .map(minion -> minion.getId())
+                .map(Server::getId)
                 .collect(toList());
 
          List<MinionServer> logList = minions.stream()

@@ -44,43 +44,32 @@ try:
 except AttributeError:
     _ = translation.gettext
 
-def help_org_create(self):
-    print(_('org_create: Create an organization'))
-    print(_('''usage: org_create [options])
-
-options:
-  -n ORG_NAME
-  -u USERNAME
-  -P PREFIX (%s)
-  -f FIRST_NAME
-  -l LAST_NAME
-  -e EMAIL
-  -p PASSWORD
-  --pam enable PAM authentication''' % ', '.join(_PREFIXES)))
-
-
-def do_org_create(self, args): # pylint: disable=too-many-return-statements
+def _org_create_handler(self, args, first):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-n', '--org-name')
     arg_parser.add_argument('-u', '--username')
-    arg_parser.add_argument('-P', '--prefix')
+    if not first:
+        arg_parser.add_argument('-P', '--prefix')
     arg_parser.add_argument('-f', '--first-name')
     arg_parser.add_argument('-l', '--last-name')
     arg_parser.add_argument('-e', '--email')
     arg_parser.add_argument('-p', '--password')
-    arg_parser.add_argument('--pam', action='store_true')
+    if not first:
+        arg_parser.add_argument('--pam', action='store_true')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.org_name = prompt_user(_('Organization Name:'), noblank=True)
         options.username = prompt_user(_('Username:'), noblank=True)
-        options.prefix = prompt_user(_('Prefix (%s):') % ', '.join(_PREFIXES),
-                                     noblank=True)
+        if not first:
+            options.prefix = prompt_user(_('Prefix (%s):') % ', '.join(_PREFIXES),
+                                        noblank=True)
         options.first_name = prompt_user(_('First Name:'), noblank=True)
         options.last_name = prompt_user(_('Last Name:'), noblank=True)
         options.email = prompt_user(_('Email:'), noblank=True)
-        options.pam = self.user_confirm(_('PAM Authentication [y/N]:'),
+        if not first:
+            options.pam = self.user_confirm(_('PAM Authentication [y/N]:'),
                                         nospacer=True,
                                         integer=False,
                                         ignore_yes=True)
@@ -120,15 +109,64 @@ def do_org_create(self, args): # pylint: disable=too-many-return-statements
         if not options.password:
             logging.error(_N('A password is required'))
             return 1
+        if not first:
+            if not options.pam:
+                options.pam = False
 
-        if not options.pam:
-            options.pam = False
+        if not first:
+            if not options.prefix:
+                options.prefix = _('Dr.')
 
-        if not options.prefix:
-            options.prefix = _('Dr.')
+    if not first:
+        if options.prefix[-1] != '.' and options.prefix != _('Miss'):
+            options.prefix = options.prefix + '.'
 
-    if options.prefix[-1] != '.' and options.prefix != _('Miss'):
-        options.prefix = options.prefix + '.'
+    return options
+
+
+def help_org_createfirst(self):
+    print(_('org_createfirst: Create first organization and user after server setup'))
+    print(_('''usage: org_createfirst [options])
+
+options:
+  -n ORG_NAME
+  -u USERNAME
+  -f FIRST_NAME
+  -l LAST_NAME
+  -e EMAIL
+  -p PASSWORD'''))
+
+
+def do_org_createfirst(self, args):
+    options = _org_create_handler(self, args, True)
+
+    self.client.org.createFirst(options.org_name,
+                           options.username,
+                           options.password,
+                           options.first_name,
+                           options.last_name,
+                           options.email)
+
+    return 0
+
+
+def help_org_create(self):
+    print(_('org_create: Create an organization'))
+    print(_('''usage: org_create [options])
+
+options:
+  -n ORG_NAME
+  -u USERNAME
+  -P PREFIX (%s)
+  -f FIRST_NAME
+  -l LAST_NAME
+  -e EMAIL
+  -p PASSWORD
+  --pam enable PAM authentication''' % ', '.join(_PREFIXES)))
+
+
+def do_org_create(self, args): # pylint: disable=too-many-return-statements
+    options = _org_create_handler(self, args, False)
 
     self.client.org.create(self.session,
                            options.org_name,

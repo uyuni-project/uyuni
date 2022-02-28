@@ -53,7 +53,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
   handleUpdate() {
     if (!this.node) {
-      console.error("Failed to find node");
+      Loggerhead.error("Failed to find node");
       return;
     }
 
@@ -76,7 +76,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
   componentDidMount() {
     if (!this.node) {
-      console.error("Failed to find node");
+      Loggerhead.error("Failed to find node");
       return;
     }
 
