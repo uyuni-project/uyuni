@@ -457,7 +457,11 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                           channel.getLabel() + "'");
             }
         }
-        catch (IOException | InterruptedException e) {
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
         log.info("Solv file successfully create for '" + channel.getLabel() + "'");
