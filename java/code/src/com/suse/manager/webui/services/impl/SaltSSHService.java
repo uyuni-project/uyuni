@@ -576,6 +576,7 @@ public class SaltSSHService {
      * Return the Map of Result objects that contain either the error from SSHResult or the
      * unwrapped return value from SSHResult.
      */
+    @SuppressWarnings("java:S2293")
     private <T> Map<String, Result<T>> unwrapSSHReturn(Map<String,
             Result<SSHResult<T>>> sshResults) {
          return sshResults.entrySet().stream()
