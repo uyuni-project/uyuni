@@ -187,7 +187,7 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
   if host == 'server'
     salt = 'salt'
   end
@@ -200,8 +200,8 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
+  changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
@@ -222,14 +222,11 @@ end
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
-    cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
-    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    cmd = 'mgr-salt-ssh'
   elsif host.include? 'minion' or host.include? 'build_host'
     cmd = 'salt'
-    extra_cmd = ''
   end
-  $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
+  $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
@@ -769,7 +766,7 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
   node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
@@ -1506,7 +1503,7 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   if host == 'server'
     salt_call = 'salt-call'
   end
