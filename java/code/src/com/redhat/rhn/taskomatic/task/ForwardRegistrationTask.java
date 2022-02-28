@@ -32,11 +32,16 @@ import org.quartz.JobExecutionException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ForwardRegistrationTask extends RhnJavaJob {
+
+    // initialize first run between 30 minutes and 3 hours from now
+    private static LocalDateTime nextLastSeenUpdateRun = LocalDateTime.now().plusMinutes(
+            ThreadLocalRandom.current().nextInt(30, 3 * 60));
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
@@ -46,6 +51,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         try {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
+
                 int waitTime = ThreadLocalRandom.current().nextInt(0, 15 * 60);
                 if (log.isDebugEnabled()) {
                     // no waiting when debug is on
@@ -74,6 +80,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                     .findFirst().ifPresent(primaryCredentials -> {
                         sccRegManager.register(forwardRegistration, primaryCredentials);
                     });
+                if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
+                    sccRegManager.updateLastSeen();
+                    // next run in 22 - 26 hours
+                    nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
+                            ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
+                }
             }
         }
         catch (URISyntaxException e) {

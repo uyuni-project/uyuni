@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -548,6 +549,33 @@ public class SCCCachingFactory extends HibernateFactory {
         return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")
                 .setParameter("creds", cred)
                 .getResultList();
+    }
+
+    /**
+     * Return list of data for last seen SCC update call
+     * @param cred SCC Org Crednetials
+     * @return a list of maps with the keys scc_login, scc_passwd, checkin
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Map<String, Object>> listUpdateLastSeenCandidates(Credentials cred) {
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Object[]> rows = getSession().createQuery(
+                "SELECT reg.sccLogin, reg.sccPasswd, si.checkin " +
+                "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS reg " +
+                "JOIN reg.server AS s " +
+                "JOIN s.serverInfo AS si " +
+                "WHERE reg.registrationErrorTime IS NULL " +
+                "AND reg.credentials = :cred")
+                .setParameter("cred", cred)
+                .list();
+        for (Object[] row : rows) {
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("scc_login", row[0].toString());
+            entry.put("scc_passwd", row[1].toString());
+            entry.put("checkin", row[2]);
+            result.add(entry);
+        }
+        return result;
     }
 
     /**
