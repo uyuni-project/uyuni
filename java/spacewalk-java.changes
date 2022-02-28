@@ -1,3 +1,4 @@
+- New endpoint 'createFirst' added to 'org' xmlrpc api to allow initial organization and user creation
 - Corrected source URLs in spec file.
 - RHEL certificate compatibility.
 - Reuse existing certificate file detection.
