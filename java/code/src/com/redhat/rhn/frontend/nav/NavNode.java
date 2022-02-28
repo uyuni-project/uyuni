@@ -53,9 +53,9 @@ public class NavNode {
      * Default constructor
      */
     public NavNode() {
-        children = new ArrayList<NavNode>();
-        urls = new ArrayList<String>();
-        dirs = new ArrayList<String>();
+        children = new ArrayList<>();
+        urls = new ArrayList<>();
+        dirs = new ArrayList<>();
         showChildrenIfActive = true;
     }
 

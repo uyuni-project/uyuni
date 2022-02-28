@@ -131,7 +131,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
         User user = requestContext.getCurrentUser();
         Long sid = requestContext.getRequiredParam("sid");
 
-        Map<String, Object> hparams = new HashMap<String, Object>();
+        Map<String, Object> hparams = new HashMap<>();
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         RhnSet set = ErrataSetupAction.getSetDecl(sid).get(user);
@@ -143,7 +143,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
             Date earliest = getStrutsDelegate().readScheduleDate(form, "date", YEAR_RANGE_POSITIVE);
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
             List<Long> serverIds = Arrays.asList(server.getId());
-            List<Long> errataIds = new ArrayList<Long>(errataList);
+            List<Long> errataIds = new ArrayList<>(errataList);
             try {
                 ErrataManager.applyErrata(user, errataIds, earliest, actionChain,
                         serverIds, true, allowVendorChange);

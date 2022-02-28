@@ -33,8 +33,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -67,9 +65,8 @@ public class SessionStatusAction extends RhnAction {
         // Add the history items as "TRUE" values
         // to the request so the display can render or not
         // if this status has occurred.
-        Iterator i = kss.getHistory().iterator();
-        while (i.hasNext()) {
-            KickstartSessionHistory hist = (KickstartSessionHistory) i.next();
+        for (Object oIn : kss.getHistory()) {
+            KickstartSessionHistory hist = (KickstartSessionHistory) oIn;
             request.setAttribute(hist.getState().getLabel(), Boolean.TRUE);
         }
 

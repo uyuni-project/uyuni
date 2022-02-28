@@ -56,9 +56,9 @@ public class RepoLister extends BaseManager {
     public DataResult<ContentSourceDto> sourcesInOrg(Org orgIn) {
 
         SelectMode m = ModeFactory.getMode("Channel_queries", "contentsrc_for_org");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         return (DataResult<ContentSourceDto>) makeDataResult(params, elabParams, null, m);
     }
 
@@ -68,7 +68,7 @@ public class RepoLister extends BaseManager {
      * @return list of content source dto's for users org
      */
     public List<ContentSourceDto> list(User user) {
-        List<ContentSourceDto> repos = new LinkedList<ContentSourceDto>();
+        List<ContentSourceDto> repos = new LinkedList<>();
         repos.addAll(sourcesInOrg(user.getOrg()));
         return repos;
     }

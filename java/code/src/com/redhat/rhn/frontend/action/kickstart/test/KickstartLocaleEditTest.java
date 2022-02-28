@@ -45,7 +45,7 @@ public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
         this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
 
         assertEquals("America/New_York", this.ksdata.getTimezone());
-        assertFalse(this.ksdata.isUsingUtc().booleanValue());
+        assertFalse(this.ksdata.isUsingUtc());
     }
 
     public void testSubmitAgain() throws Exception {
@@ -63,7 +63,7 @@ public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
         this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
 
         assertEquals("Asia/Qatar", this.ksdata.getTimezone());
-        assertTrue(this.ksdata.isUsingUtc().booleanValue());
+        assertTrue(this.ksdata.isUsingUtc());
     }
 
 }

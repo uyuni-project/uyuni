@@ -129,6 +129,5 @@ public class EnvironmentFilter implements Filter {
         String originalUrl = request.getRequestURL().toString();
         String secureUrl = "https://" + originalUrl.substring(7);
         response.sendRedirect(secureUrl);
-        return;
     }
 }

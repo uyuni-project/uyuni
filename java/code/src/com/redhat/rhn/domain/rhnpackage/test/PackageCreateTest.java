@@ -28,7 +28,7 @@ public class PackageCreateTest extends BaseTestCaseWithUser {
     public void testPackageCreate() throws Exception {
         String randomString = TestUtils.randomString();
         Thread[] threads = new Thread[10];
-        List<String> finishedList = new Vector<String>();
+        List<String> finishedList = new Vector<>();
         for (int i = 0; i < threads.length; i++) {
             Runnable r = new PackageCreateTestThread(randomString, finishedList);
             threads[i] = new Thread(r);

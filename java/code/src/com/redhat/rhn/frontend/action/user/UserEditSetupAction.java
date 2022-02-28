@@ -60,7 +60,7 @@ public class UserEditSetupAction extends RhnAction {
 
         //UserDetails under /rhn/users needs parameter, but /rhn/account does not
         Long uid = requestContext.getParamAsLong("uid");
-        if (request.getRequestURL().toString().indexOf("/rhn/users/") != -1 &&
+        if (request.getRequestURL().toString().contains("/rhn/users/") &&
                 uid == null) {
             throw new BadParameterException("Invalid uid for /rhn/users/");
         }
@@ -88,14 +88,14 @@ public class UserEditSetupAction extends RhnAction {
 
         // SETUP Prefix list
         request.setAttribute("availablePrefixes", UserActionHelper.getPrefixes());
-        request.setAttribute("self", Boolean.valueOf(loggedInUser.equals(targetUser)));
+        request.setAttribute("self", loggedInUser.equals(targetUser));
 
         //Should we display the pam checkbox?
         String pamAuthService = Config.get().getString(
                 ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         if (pamAuthService != null && pamAuthService.trim().length() > 0) {
             request.setAttribute("displaypam", "true");
-            form.set("usepam", Boolean.valueOf(targetUser.getUsePamAuthentication()));
+            form.set("usepam", targetUser.getUsePamAuthentication());
         }
 
         // Keep the new list tag happy:
@@ -109,8 +109,8 @@ public class UserEditSetupAction extends RhnAction {
 
         Set<Role> orgRoles = targetUser.getOrg().getRoles();
 
-        List<UserRoleStatusBean> adminRoles = new LinkedList<UserRoleStatusBean>();
-        List<UserRoleStatusBean> regularRoles = new LinkedList<UserRoleStatusBean>();
+        List<UserRoleStatusBean> adminRoles = new LinkedList<>();
+        List<UserRoleStatusBean> regularRoles = new LinkedList<>();
 
         // Bit of a hack here. We're trying to represent three states to the processing
         // code with a checkbox that can only submit two. (i.e., there's no way to
@@ -143,12 +143,7 @@ public class UserEditSetupAction extends RhnAction {
             // and disable the item in the UI.
             if (UserFactory.IMPLIEDROLES.contains(currRole) &&
                     targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(uilabel);
-                sb.append(" - [ ");
-                sb.append(LocalizationService.getInstance().getMessage("Admin Access"));
-                sb.append(" ]");
-                uilabel = sb.toString();
+                uilabel = uilabel + (" - [ " + LocalizationService.getInstance().getMessage("Admin Access") + " ]");
 
                 disabled = true;
                 log.debug("2");

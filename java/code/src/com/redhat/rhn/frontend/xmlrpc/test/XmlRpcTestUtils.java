@@ -34,7 +34,7 @@ public class XmlRpcTestUtils {
         //Log in the user (handles authentication and active/disabled logic)
 
         String lifetime = Config.get().getString("session_database_lifetime");
-        long duration = Long.valueOf(lifetime);
+        long duration = Long.parseLong(lifetime);
 
         //Create a new session with the user
         WebSession session = SessionManager.makeSession(user.getId(), duration);

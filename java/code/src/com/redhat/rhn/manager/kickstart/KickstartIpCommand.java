@@ -50,8 +50,8 @@ public class KickstartIpCommand extends BaseKickstartCommand {
 
         Set s = this.ksdata.getIps();
 
-        for (Iterator i = s.iterator(); i.hasNext();) {
-            KickstartIpRange ipr = (KickstartIpRange) i.next();
+        for (Object oIn : s) {
+            KickstartIpRange ipr = (KickstartIpRange) oIn;
             IpAddress min = new IpAddress(ipr.getMin());
             IpAddress max = new IpAddress(ipr.getMax());
             IpAddressRange iar = new IpAddressRange(min, max, id);
@@ -124,8 +124,8 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      */
     public boolean deleteRange(Long ksidIn, String min, String max) {
         Set s = this.ksdata.getIps();
-        for (Iterator i = s.iterator(); i.hasNext();) {
-            KickstartIpRange ipr = (KickstartIpRange) i.next();
+        for (Object oIn : s) {
+            KickstartIpRange ipr = (KickstartIpRange) oIn;
             if (ipr.getKsdata().getId().equals(ksidIn) &&
                     ipr.getMax().toString().equals(max) &&
                     ipr.getMin().toString().equals(min)) {
@@ -157,7 +157,7 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return coverted long array
      */
     private long [] convertLongArr(Long[] arrIn) {
-        return new long[]{arrIn[0].longValue(), arrIn[1].longValue(), arrIn[2].longValue(), arrIn[3].longValue()};
+        return new long[]{arrIn[0], arrIn[1], arrIn[2], arrIn[3]};
     }
 
     /**

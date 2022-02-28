@@ -44,7 +44,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -119,8 +118,8 @@ public class ErrataSetupAction extends RhnAction implements Listable {
 
         Map params =  new HashMap();
         Set keys = request.getParameterMap().keySet();
-        for (Iterator i = keys.iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        for (Object keyIn : keys) {
+            String key = (String) keyIn;
             params.put(key, request.getParameter(key));
         }
 

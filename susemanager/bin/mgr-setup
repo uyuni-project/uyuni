@@ -20,7 +20,7 @@ DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
     opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    centos|rhel|almalinux|rocky)    JVM='java-11-openjdk.x86_64';; 
+    centos|rhel|almalinux|rocky|ol)    JVM='java-11-openjdk.x86_64';; 
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
@@ -523,7 +523,7 @@ copy_remote_files() {
     chmod 750 /srv/tftpboot
     chown -R wwwrun.www /var/spacewalk
     ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
-    update-ca-certificates
+    /usr/share/rhn/certs/update-ca-cert-trust.sh
     /usr/lib/susemanager/bin/migrate-cobbler.sh
 }
 
@@ -810,8 +810,7 @@ do_setup() {
             rm -f /usr/share/rhn/$certname
             certname=RHN-ORG-TRUSTED-SSL-CERT
         else
-            ln -s /usr/share/rhn/$certname /etc/pki/trust/anchors
-            update-ca-certificates
+            /usr/share/rhn/certs/update-ca-cert-trust.sh $certname
         fi
         echo "
         INSERT INTO rhnISSMaster (id, label, is_current_master, ca_cert)

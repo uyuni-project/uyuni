@@ -20,5 +20,5 @@ package com.suse.mgrsync;
 public enum MgrSyncStatus {
     AVAILABLE,
     INSTALLED,
-    UNAVAILABLE;
+    UNAVAILABLE
 }

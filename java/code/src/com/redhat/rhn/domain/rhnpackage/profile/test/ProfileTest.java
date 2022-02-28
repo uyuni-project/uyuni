@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,8 +72,8 @@ public class ProfileTest extends RhnBaseTestCase {
     public static Profile lookupByIdAndOrg(Long id, Org org) throws Exception {
         Session session = HibernateFactory.getSession();
         return (Profile) session.getNamedQuery("Profile.findByIdAndOrg")
-                                    .setLong("id", id.longValue())
-                                    .setLong("org_id", org.getId().longValue())
+                                    .setLong("id", id)
+                                    .setLong("org_id", org.getId())
                                     .uniqueResult();
     }
 
@@ -120,13 +119,12 @@ public class ProfileTest extends RhnBaseTestCase {
         session.flush();
 
         Query qry = session.getNamedQuery("Profile.compatibleWithServer");
-        qry.setLong("sid", server.getId().longValue());
-        qry.setLong("org_id", user.getOrg().getId().longValue());
+        qry.setLong("sid", server.getId());
+        qry.setLong("org_id", user.getOrg().getId());
         List list = qry.list();
         assertNotNull("List is null", list);
         assertFalse("List is empty", list.isEmpty());
-        for (Iterator itr = list.iterator(); itr.hasNext();) {
-            Object o = itr.next();
+        for (Object o : list) {
             assertEquals("Contains non Profile objects",
                     Profile.class, o.getClass());
         }

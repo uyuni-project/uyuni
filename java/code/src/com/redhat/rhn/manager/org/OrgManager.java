@@ -112,7 +112,7 @@ public class OrgManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Org_queries", "trusted_orgs");
 
         Long orgIdIn = user.getOrg().getId();
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
 
         return DataList.getDataList(m, params,
@@ -137,7 +137,7 @@ public class OrgManager extends BaseManager {
             throw pex;
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "trust_overview");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
         return DataList.getDataList(m, params, Collections.EMPTY_MAP);
     }
@@ -149,7 +149,7 @@ public class OrgManager extends BaseManager {
      */
     public static DataList<MultiOrgUserOverview> activeUsers(Long orgIdIn) {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_multiorg");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
         return DataList.getDataList(m, params, Collections.EMPTY_MAP);
     }
@@ -163,7 +163,7 @@ public class OrgManager extends BaseManager {
     public static DataList<OrgChannelDto> orgChannelTrusts(Long cid, Org org) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "protected_trust_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", cid);
         return DataList.getDataList(m, params, Collections.EMPTY_MAP);

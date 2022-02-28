@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.security;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 
 import java.util.Set;
 
@@ -27,27 +26,16 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class BaseAuthenticationService implements AuthenticationService {
 
     protected boolean requestURIRequiresAuthentication(final HttpServletRequest request) {
-        return !CollectionUtils.exists(getUnprotectedURIs(), new Predicate() {
-            public boolean evaluate(Object uri) {
-                return request.getRequestURI().startsWith(uri.toString());
-            }
-        });
+        return !CollectionUtils.exists(getUnprotectedURIs(), uri -> request.getRequestURI().startsWith(uri.toString()));
     }
 
     protected boolean requestURIdoesLogin(final HttpServletRequest request) {
-        return CollectionUtils.exists(getLoginURIs(), new Predicate() {
-            public boolean evaluate(Object uri) {
-                return request.getRequestURI().startsWith(uri.toString());
-            }
-        });
+        return CollectionUtils.exists(getLoginURIs(), uri -> request.getRequestURI().startsWith(uri.toString()));
     }
 
     protected boolean requestPostCsfrWhitelist(final HttpServletRequest request) {
-        return CollectionUtils.exists(getPostUnprotectedURIs(), new Predicate() {
-            public boolean evaluate(Object uri) {
-                return request.getRequestURI().startsWith(uri.toString());
-            }
-        });
+        return CollectionUtils.exists(getPostUnprotectedURIs(),
+                uri -> request.getRequestURI().startsWith(uri.toString()));
     }
 
     protected abstract Set getUnprotectedURIs();

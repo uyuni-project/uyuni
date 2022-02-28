@@ -131,7 +131,7 @@ public class AddCustomErrataAction extends RhnListAction {
 
         //if we submitted, go to confirm page
         if (requestContext.wasDispatched(SUBMITTED)) {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put(CID, request.getParameter(CID));
             params.put(CHECKED, request.getParameter(CHECKED));
             params.put(SELECTED_CHANNEL,

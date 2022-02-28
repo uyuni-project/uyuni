@@ -80,10 +80,10 @@ public class CloneChannelAction extends RhnAction {
         // only subscribable channels should be shown.
         Set<Long> subscribableCids = ChannelManager.subscribableChannelIdsForUser(user);
 
-        List<Map<String, String>> channels = new ArrayList<Map<String, String>>();
-        Map<String, Long> nameToId = new HashMap<String, Long>();
-        Map<Long, TreeSet<String>> parentToChildren = new HashMap<Long, TreeSet<String>>();
-        TreeSet<String> parents = new TreeSet<String>();
+        List<Map<String, String>> channels = new ArrayList<>();
+        Map<String, Long> nameToId = new HashMap<>();
+        Map<Long, TreeSet<String>> parentToChildren = new HashMap<>();
+        TreeSet<String> parents = new TreeSet<>();
 
         List<ChannelTreeNode> channelTree = ChannelManager.allChannelTree(user, null);
         // add all parents
@@ -93,7 +93,7 @@ public class CloneChannelAction extends RhnAction {
             }
             nameToId.put(channel.getName(), channel.getId());
             parents.add(channel.getName());
-            parentToChildren.put(channel.getId(), new TreeSet<String>());
+            parentToChildren.put(channel.getId(), new TreeSet<>());
         }
 
         // add all children
@@ -109,7 +109,7 @@ public class CloneChannelAction extends RhnAction {
                 // Case when a child channel is public and belongs to a private base channel
                 nameToId.put(channel.getName(), channel.getId());
                 parents.add(channel.getName());
-                parentToChildren.put(channel.getId(), new TreeSet<String>());
+                parentToChildren.put(channel.getId(), new TreeSet<>());
             }
         }
 
@@ -139,7 +139,7 @@ public class CloneChannelAction extends RhnAction {
      * @param value value to be submitted with form.
      */
     private void addOption(List<Map<String, String>> options, String key, String value) {
-        Map<String, String> selection = new HashMap<String, String>();
+        Map<String, String> selection = new HashMap<>();
         selection.put("label", key);
         selection.put("value", value);
         options.add(selection);

@@ -20,7 +20,6 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,8 +47,8 @@ public class ChainedListener implements TriggerListener {
     @Override
     public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
             CompletedExecutionInstruction cei) {
-        for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
-            TriggerListener listener = (TriggerListener) iter.next();
+        for (Object oIn : this.listenerChain) {
+            TriggerListener listener = (TriggerListener) oIn;
             listener.triggerComplete(trigger, ctx, cei);
         }
     }
@@ -59,8 +58,8 @@ public class ChainedListener implements TriggerListener {
      */
     @Override
     public void triggerFired(Trigger trigger, JobExecutionContext ctx) {
-        for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
-            TriggerListener listener = (TriggerListener) iter.next();
+        for (Object oIn : this.listenerChain) {
+            TriggerListener listener = (TriggerListener) oIn;
             listener.triggerFired(trigger, ctx);
         }
     }
@@ -70,8 +69,8 @@ public class ChainedListener implements TriggerListener {
      */
     @Override
     public void triggerMisfired(Trigger trigger) {
-        for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
-            TriggerListener listener = (TriggerListener) iter.next();
+        for (Object oIn : this.listenerChain) {
+            TriggerListener listener = (TriggerListener) oIn;
             listener.triggerMisfired(trigger);
         }
     }
@@ -82,8 +81,8 @@ public class ChainedListener implements TriggerListener {
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
         boolean retval = false;
-        for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
-            TriggerListener listener = (TriggerListener) iter.next();
+        for (Object oIn : this.listenerChain) {
+            TriggerListener listener = (TriggerListener) oIn;
             boolean tmp = listener.vetoJobExecution(trigger, ctx);
             if (!retval && tmp) {
                 retval = true;

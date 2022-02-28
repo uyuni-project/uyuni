@@ -155,7 +155,7 @@ public class DistChannelMapEditAction extends RhnAction {
     }
 
     private Map<String, String> makeValidationMap(DynaActionForm form) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(OS, form.getString(OS));
         map.put(RELEASE, form.getString(RELEASE));
         return map;

@@ -111,10 +111,10 @@ function responseErrorMessage(
   messageMapFunc: MapFuncType | null | undefined = null
 ): Array<MessageType> {
   if (jqXHR instanceof Error) {
-    console.error("Error: " + jqXHR.toString());
+    Loggerhead.error("Error: " + jqXHR.toString());
     throw jqXHR;
   } else {
-    console.error("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
+    Loggerhead.error("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
   }
 
   if (

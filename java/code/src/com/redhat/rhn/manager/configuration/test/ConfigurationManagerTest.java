@@ -166,7 +166,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertFalse(dr.stream().flatMapToLong(id -> LongStream.of(((ConfigSystemDto) id).getId()))
                 .anyMatch(id->id == minion.getId()));
 
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("cfnid", cfnids[0]);
         elabParams.put("label", ConfigChannelType.local().getLabel());
         dr.elaborate(elabParams);
@@ -369,7 +369,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
         assertEquals(5, dr.getTotalSize());
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("ccid", gcc1.getId());
         params.put("cfnid", theFile.getConfigFileName().getId());
         dr.elaborate(params);
@@ -499,9 +499,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(cf);
 
         //Simple checks to see that everything committed alright
-        assertTrue(cf.getId().longValue() > 0);
+        assertTrue(cf.getId() > 0);
         assertNotNull(cf.getConfigChannel());
-        assertTrue(cf.getConfigChannel().getId().longValue() > 0);
+        assertTrue(cf.getConfigChannel().getId() > 0);
 
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
@@ -902,7 +902,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         //
         DataResult dr = ConfigurationManager.getInstance().listSystemInfoForChannel(user,
                 gcc1, null);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
+        Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("ccid", gcc1.getId());
         dr.elaborate(elabParams);
 
@@ -1059,7 +1059,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(srv1);
 
-        Set<ConfigRevision> revisions = new HashSet<ConfigRevision>();
+        Set<ConfigRevision> revisions = new HashSet<>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
@@ -1083,7 +1083,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(gcc2);
 
         // System 1 - both g1f1 and g1f2 should deploy here
-        Set<Server> systems  = new HashSet<Server>();
+        Set<Server> systems  = new HashSet<>();
         systems.add(srv1);
         mgr.deployConfiguration(user, systems, new Date());
         DataResult<ScheduledAction> actions = ActionManager.
@@ -1093,7 +1093,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(user,
-                                                    action.getId().longValue());
+                        action.getId());
             }
         }
         assertNotNull(ca);
@@ -1209,7 +1209,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         rev1 = ConfigTestUtils.createConfigRevision(g1f1,
                                 ConfigTestUtils.createConfigContent(),
                                 ConfigTestUtils.createConfigInfo(),
-                rev1.getRevision().longValue() + 1);
+                rev1.getRevision() + 1);
         ConfigurationFactory.commit(gcc1);
 
         //add a duuplicate file to gcc2
@@ -1330,15 +1330,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         List revisions = new ArrayList();
 
-        for (int i = 0; i < paths.length; i++) {
+        for (String pathIn : paths) {
             ConfigFile fl = sandbox.createConfigFile(
-                    ConfigFileState.normal(), paths[i]);
+                    ConfigFileState.normal(), pathIn);
             ConfigRevision rev = ConfigTestUtils.createConfigRevision(fl,
-                                               ConfigTestUtils.createConfigContent(),
-                                               ConfigTestUtils.createConfigInfo(),
+                    ConfigTestUtils.createConfigContent(),
+                    ConfigTestUtils.createConfigInfo(),
                     (long) RandomUtils.nextInt(0,
                             Integer.MAX_VALUE)
-                                               );
+            );
             revisions.add(rev.getRevision());
             ConfigurationFactory.commit(sandbox);
         }

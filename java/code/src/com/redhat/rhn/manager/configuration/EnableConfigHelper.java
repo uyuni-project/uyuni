@@ -79,9 +79,9 @@ public class EnableConfigHelper {
         //iterate through the dataresult and perform actions
         for (int n = 0; n < dr.getTotalSize(); n++) {
             ConfigSystemDto dto = (ConfigSystemDto)dr.get(n);
-            Long sid = dto.getId().longValue();
+            Long sid = dto.getId();
             Server current = SystemManager.lookupByIdAndUser(sid, user);
-            set.addElement(dto.getId().longValue(),
+            set.addElement(dto.getId(),
                     (long) enableSystem(dto, current, earliestIn));
         }
 

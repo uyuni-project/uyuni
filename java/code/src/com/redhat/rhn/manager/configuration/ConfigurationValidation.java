@@ -61,8 +61,8 @@ public class ConfigurationValidation {
             return result;
         }
 
-        boolean hasStart = content.indexOf(macroStart) >= 0;
-        boolean hasEnd = content.indexOf(macroEnd) >= 0;
+        boolean hasStart = content.contains(macroStart);
+        boolean hasEnd = content.contains(macroEnd);
 
         // If no macros, we're done too
         if (!hasStart && !hasEnd) {
@@ -162,7 +162,7 @@ public class ConfigurationValidation {
                     "configmanager.filedetails.path.has-ending-slash", path));
         }
 
-        if (path.indexOf("..") != -1) {
+        if (path.contains("..")) {
             result.addError(new ValidatorError(
                     "configmanager.filedetails.path.has-relative-dirs", path));
         }

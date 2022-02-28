@@ -31,7 +31,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,8 +64,8 @@ public class ChannelManagementPermsSetupAction extends RhnListAction {
 
         DataResult dr = UserManager.channelManagement(user, pc);
         ArrayList selectedChannels = new ArrayList(dr.size());
-        for (Iterator i = dr.iterator(); i.hasNext();) {
-            ChannelPerms current = (ChannelPerms)i.next();
+        for (Object oIn : dr) {
+            ChannelPerms current = (ChannelPerms) oIn;
             if (current.isHasPerm()) {
                 selectedChannels.add(String.valueOf(current.getId()));
             }
@@ -76,7 +75,7 @@ public class ChannelManagementPermsSetupAction extends RhnListAction {
         request.setAttribute("user", user);
         request.setAttribute("role", "manage");
         request.setAttribute("userIsChannelAdmin",
-                             Boolean.valueOf(user.hasRole(RoleFactory.CHANNEL_ADMIN)));
+                user.hasRole(RoleFactory.CHANNEL_ADMIN));
         form.set("selectedChannels", selectedChannels.toArray(new String[0]));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

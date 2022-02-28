@@ -81,8 +81,8 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     private void clearDb() {
-        CloudRmtHostFactory.lookupCloudRmtHosts().forEach(rmt -> CloudRmtHostFactory.deleteCloudRmtHost(rmt));
-        PaygSshDataFactory.lookupPaygSshData().forEach(p -> PaygSshDataFactory.deletePaygSshData(p));
+        CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
+        PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         HibernateFactory.commitTransaction();
     }
 

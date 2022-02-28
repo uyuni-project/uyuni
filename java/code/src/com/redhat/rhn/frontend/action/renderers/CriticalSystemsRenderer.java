@@ -49,7 +49,7 @@ public class CriticalSystemsRenderer extends BaseFragmentRenderer {
             mcdr = RendererHelper.sortOverviews(mcdr);
         }
 
-        mcdr.setElaborationParams(new HashMap<String, Object>());
+        mcdr.setElaborationParams(new HashMap<>());
         ListTagHelper.bindSetDeclTo(LIST_NAME, getSetDecl(), request);
         TagHelper.bindElaboratorTo(LIST_NAME, mcdr.getElaborator(), request);
 

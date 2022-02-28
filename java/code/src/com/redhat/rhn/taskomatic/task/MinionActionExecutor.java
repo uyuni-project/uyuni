@@ -73,7 +73,7 @@ public class MinionActionExecutor extends RhnJavaJob {
                 .getJobDataMap().getLongValueFromString("action_id");
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
-                .map(userId -> UserFactory.lookupById(userId))
+                .map(UserFactory::lookupById)
                 .orElse(null);
 
         boolean isStagingJob =

@@ -76,7 +76,7 @@ public class ActivationKeysListAction extends RhnAction {
             set.clear();
             for (ActivationKeyDto dto : dataSet) {
                 if (!dto.isKeyDisabled()) {
-                    set.addElement(dto.getId().longValue());
+                    set.addElement(dto.getId());
                 }
                 if (dto.isOrgDefault()) {
                     request.setAttribute(DEFAULT_KEY, dto);
@@ -118,14 +118,14 @@ public class ActivationKeysListAction extends RhnAction {
         int numEnabled = 0;
         int numDisabled = 0;
         for (ActivationKeyDto dto : currentKeys) {
-            Token token = TokenFactory.lookup(dto.getId().longValue(),
+            Token token = TokenFactory.lookup(dto.getId(),
                                             user.getOrg());
-            if (set.contains(dto.getId().longValue()) && token.isTokenDisabled()) {
+            if (set.contains(dto.getId()) && token.isTokenDisabled()) {
                 token.enable();
                 TokenFactory.save(token);
                 numEnabled++;
             }
-            else if (!set.contains(dto.getId().longValue()) &&
+            else if (!set.contains(dto.getId()) &&
                                         !token.isTokenDisabled()) {
                 token.disable();
                 TokenFactory.save(token);

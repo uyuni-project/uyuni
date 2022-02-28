@@ -252,7 +252,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
         Date scheduleDate = getStrutsDelegate().readScheduleDate(
                 form, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
-        List<Long> servers = new ArrayList<Long>();
+        List<Long> servers = new ArrayList<>();
         servers.add(server.getId());
         String label = StringUtil.nullIfEmpty(form.getString("lbl"));
         String msg = LocalizationService

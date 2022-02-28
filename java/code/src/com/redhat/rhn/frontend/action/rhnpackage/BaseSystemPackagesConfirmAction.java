@@ -149,7 +149,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
         Long sid = requestContext.getRequiredParam("sid");
 
         Set<String> data = SessionSetHelper.lookupAndBind(request, getDecl(sid));
-        List<PackageListItem> items = new LinkedList<PackageListItem>();
+        List<PackageListItem> items = new LinkedList<>();
         for (String key : data) {
             items.add(PackageListItem.parse(key));
         }
@@ -236,7 +236,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
         //Remove the actions from the users set
         SessionSetHelper.obliterate(request, getDecl(sid));
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         processParamMap(formIn, request, params);
         return strutsDelegate.forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

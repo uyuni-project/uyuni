@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.BaseManager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -150,7 +149,7 @@ public class KickstartManager extends BaseManager {
                 "rendered correctly.\n");
 
         return errorStrings.stream()
-                .map(errorString -> contents.contains(errorString))
+                .map(contents::contains)
                 .anyMatch(Predicate.isEqual(true));
     }
 
@@ -162,7 +161,7 @@ public class KickstartManager extends BaseManager {
      */
     public DataResult<SystemOverview> kickstartableSystemsInSsm(User user) {
         SelectMode m = ModeFactory.getMode("System_queries", "ssm_kickstartable");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         return makeDataResult(params, Collections.EMPTY_MAP, null, m);
     }
@@ -220,7 +219,7 @@ public class KickstartManager extends BaseManager {
         DataResult ipRanges = null;
         SelectMode mode = ModeFactory.getMode("General_queries",
             "org_ks_ip_ranges_for_ip");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         params.put("ip", clientIpIn.getLongNumber());
         ipRanges = mode.execute(params);
@@ -228,8 +227,8 @@ public class KickstartManager extends BaseManager {
         IpAddressRange bestRange = null;
 
         // find innermost range and return profile
-        for (Iterator itr = ipRanges.iterator(); itr.hasNext();) {
-            KickstartIpRangeDto range = (KickstartIpRangeDto)itr.next();
+        for (Object ipRangeIn : ipRanges) {
+            KickstartIpRangeDto range = (KickstartIpRangeDto) ipRangeIn;
             IpAddressRange iprange = new IpAddressRange(range.getMin().longValue(),
                     range.getMax().longValue(),
                     range.getId().longValue());
@@ -252,13 +251,8 @@ public class KickstartManager extends BaseManager {
      * @return List of KickstartableTree objects
      */
     public List<KickstartableTree> removeInvalid(List<KickstartableTree> trees) {
-        List<KickstartableTree> ret = new LinkedList<KickstartableTree>(trees);
-        for (Iterator<KickstartableTree> itr = ret.iterator(); itr.hasNext();) {
-            KickstartableTree tree = itr.next();
-            if (!tree.isValid()) {
-                itr.remove();
-            }
-        }
+        List<KickstartableTree> ret = new LinkedList<>(trees);
+        ret.removeIf(tree -> !tree.isValid());
         return ret;
     }
 }

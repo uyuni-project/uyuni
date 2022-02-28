@@ -30,7 +30,7 @@ public class Member {
      */
     public Member() {
         name = "";
-        values = new ArrayList<String>();
+        values = new ArrayList<>();
     }
 
     /**

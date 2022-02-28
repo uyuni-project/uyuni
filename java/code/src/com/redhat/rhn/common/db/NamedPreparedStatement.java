@@ -84,7 +84,7 @@ public final class NamedPreparedStatement {
 
             List<Integer> lst = parameterMap.get(name);
             if (lst == null) {
-                lst = new ArrayList<Integer>();
+                lst = new ArrayList<>();
             }
             lst.add(variableNumber);
             parameterMap.put(name, lst);
@@ -177,10 +177,8 @@ public final class NamedPreparedStatement {
 
     private static void setVars(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap, Map<String, ?> map) {
-        Iterator<String> i = map.keySet().iterator();
 
-        while (i.hasNext()) {
-            String name = i.next();
+        for (String name : map.keySet()) {
             Iterator<Integer> positions = getPositions(name, parameterMap);
             while (positions.hasNext()) {
                 Integer pos = positions.next();
@@ -197,10 +195,8 @@ public final class NamedPreparedStatement {
 
     private static void setOutputVars(CallableStatement cs,
             Map<String, List<Integer>> parameterMap, Map<String, Integer> map) {
-        Iterator<String> i = map.keySet().iterator();
 
-        while (i.hasNext()) {
-            String name = i.next();
+        for (String name : map.keySet()) {
             Iterator<Integer> positions = getPositions(name, parameterMap);
             while (positions.hasNext()) {
                 Integer pos = positions.next();

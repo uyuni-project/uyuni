@@ -89,7 +89,7 @@ public class DistUpgradeManager extends BaseManager {
     public static boolean isUpgradeSupported(Server server, User user) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries",
                 "system_dup_supported");
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sid", server.getId());
         @SuppressWarnings("unchecked")
@@ -106,7 +106,7 @@ public class DistUpgradeManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("product_id", productId);
         return m.execute(params);
     }
@@ -120,7 +120,7 @@ public class DistUpgradeManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findSourceProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("product_id", productId);
         return m.execute(params);
     }
@@ -136,7 +136,7 @@ public class DistUpgradeManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("base_channel_id", baseChannelID);
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "channels_required_for_product_set");
         return m.execute(params, productIDs);
@@ -153,7 +153,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
     public static EssentialChannelDto getProductBaseChannelDto(long productID, ChannelArch arch) {
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("pid", productID);
         params.put("channel_arch_id", arch.getId());
         SelectMode m = ModeFactory.getMode("Channel_queries", "suse_base_channels_for_suse_product");
@@ -193,16 +193,13 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
-    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = new Comparator<SUSEProduct>() {
-        @Override
-        public int compare(SUSEProduct o1, SUSEProduct o2) {
-            int result = new RpmVersionComparator().compare(
-                    o1.getVersion(), o2.getVersion());
-            if (result != 0) {
-                return result;
-            }
-            return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = (o1, o2) -> {
+        int result = new RpmVersionComparator().compare(
+                o1.getVersion(), o2.getVersion());
+        if (result != 0) {
+            return result;
         }
+        return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
     };
 
     public static final Comparator<List<SUSEProduct>> PRODUCT_LIST_VERSION_COMPARATOR =
@@ -220,7 +217,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             Optional<SUSEProductSet> installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        Collections.sort(migrationTargets, (tgt1, tgt2) -> {
+        migrationTargets.sort((tgt1, tgt2) -> {
             int i = PRODUCT_VERSION_COMPARATOR.compare(tgt2.getBaseProduct(), tgt1.getBaseProduct());
             if (i != 0) {
                 return i;
@@ -345,7 +342,7 @@ public class DistUpgradeManager extends BaseManager {
                                     baseSucc.getFriendlyName() + ":");
                             // let's print out list of list with friendly names
                             compatibleExtensionSuccessors.stream()
-                                    .map(css -> css.stream().map(cs -> cs.getFriendlyName()).collect(toList()))
+                                    .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
                                     .forEach(css -> logger.debug(css));
                             logger.debug("-----------------------");
                         }
@@ -412,7 +409,7 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of cloned channels
      */
     public static List<ClonedChannel> getAllClones(Channel channel) {
-        List<ClonedChannel> ret = new ArrayList<ClonedChannel>();
+        List<ClonedChannel> ret = new ArrayList<>();
         if (channel != null) {
             Set<ClonedChannel> clones = channel.getClonedChannels();
             ret.addAll(clones);
@@ -462,7 +459,7 @@ public class DistUpgradeManager extends BaseManager {
             List<Channel> children = clone.getAccessibleChildrenFor(user);
 
             // Init the list of required channel IDs
-            List<Long> requiredChannelIDs = new ArrayList<Long>();
+            List<Long> requiredChannelIDs = new ArrayList<>();
 
             // All product channels need to be available as clones!
             for (EssentialChannelDto c : requiredChildChannels) {
@@ -584,7 +581,7 @@ public class DistUpgradeManager extends BaseManager {
             throws DistUpgradeException {
         // Make sure we have exactly one base channel
         Channel baseChannel = null;
-        List<Channel> childChannels = new ArrayList<Channel>();
+        List<Channel> childChannels = new ArrayList<>();
         for (String label : channelLabels) {
             Channel channel = ChannelManager.lookupByLabelAndUser(label, user);
             if (channel.isBaseChannel()) {
@@ -602,7 +599,7 @@ public class DistUpgradeManager extends BaseManager {
         }
 
         // Check validity of child channels
-        Set<Long> channelIDs = new HashSet<Long>();
+        Set<Long> channelIDs = new HashSet<>();
         channelIDs.add(baseChannel.getId());
         for (Channel channel : childChannels) {
             if (!channel.getParentChannel().getLabel().equals(baseChannel.getLabel())) {
@@ -696,7 +693,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
             List<SUSEProductSet> allMigrationTargets, Optional<Set<String>> missingSuccessorExtensions) {
 
-        List<SUSEProductSet> migrationTargets = new LinkedList<SUSEProductSet>();
+        List<SUSEProductSet> migrationTargets = new LinkedList<>();
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.get().getAddonProducts().isEmpty()) {
                 migrationTargets.add(t);

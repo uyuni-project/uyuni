@@ -105,10 +105,7 @@ public class TaskoXmlRpcServer {
                 xmlrpcServer.getSerializer().addCustomSerializer(
                         (XmlRpcCustomSerializer)clazz.newInstance());
             }
-            catch (InstantiationException e) {
-                e.printStackTrace(System.out);
-            }
-            catch (IllegalAccessException e) {
+            catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace(System.out);
             }
         }

@@ -89,7 +89,7 @@ public class ActivationKeyPackagesCommand {
      */
     public ValidatorError parseAndUpdatePackages(String packagesIn) {
 
-        Set<TokenPackage> tokenPackages = new HashSet<TokenPackage>();
+        Set<TokenPackage> tokenPackages = new HashSet<>();
 
         if (log.isDebugEnabled()) {
             log.debug("parseAndUpdatePackages() : packagesIn: " + packagesIn);

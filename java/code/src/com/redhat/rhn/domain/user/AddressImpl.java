@@ -226,13 +226,8 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      * @return String value of AddressImpl object
      */
     public String toString() {
-        StringBuilder retval = new StringBuilder();
-        retval.append("{ID: " + getId());
-        retval.append(", type: " + getType());
-        retval.append(", created: " + getCreated());
-        retval.append(", modified: " + getModified());
-        retval.append(", address1: " + getAddress1() + "}");
-        return retval.toString();
+        return "{ID: " + getId() + ", type: " + getType() + ", created: " + getCreated() +
+                ", modified: " + getModified() + ", address1: " + getAddress1() + "}";
     }
 
     // NOTE THIS IS LEGACY REMOVE LATER!!

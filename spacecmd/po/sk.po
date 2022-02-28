@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:39+0000\n"
-"PO-Revision-Date: 2022-01-20 17:50+0000\n"
+"POT-Creation-Date: 2022-02-11 19:13+0000\n"
+"PO-Revision-Date: 2022-02-11 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -2248,7 +2248,7 @@ msgstr "Nájdené %s chýbajúce skupiny, ukončuje sa"
 #. assume old backup, not in json format. Read complete file as string
 #: ../src/spacecmd/group.py:383
 msgid "Assuming group to be in old plain text format"
-msgstr ""
+msgstr "Predpokladáme, že skupina je v starom formáte jednoduchého textu"
 
 #: ../src/spacecmd/group.py:395
 #, python-format
@@ -2270,12 +2270,12 @@ msgstr "Aktualizácia popisu pre skupinu: %s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
+msgstr "Aktualizovať údaje vzorca zo zálohy? [a/N]:"
 
 #: ../src/spacecmd/group.py:416
-#, fuzzy, python-format
+#, python-format
 msgid "Updating data for group: %s"
-msgstr "Aktualizácia popisu pre skupinu: %s"
+msgstr "Aktualizácia údajov pre skupinu: %s"
 
 #: ../src/spacecmd/group.py:424
 #, python-format

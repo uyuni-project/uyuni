@@ -80,10 +80,10 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
     public void updateFiles(String listIn) {
         this.list.getFileNames().clear();
         String[] files = StringUtils.split(listIn, "\n");
-        for (int i = 0; i < files.length; i++) {
-            String cleanFile = files[i].trim();
+        for (String fileIn : files) {
+            String cleanFile = fileIn.trim();
             if (cleanFile != null && !cleanFile.equals("")) {
-                this.list.addFileName(files[i].trim());
+                this.list.addFileName(fileIn.trim());
             }
         }
     }

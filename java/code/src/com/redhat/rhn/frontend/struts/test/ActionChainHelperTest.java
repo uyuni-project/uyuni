@@ -47,7 +47,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             user);
 
         // poor-man's DynaActionForm mocking
-        final Map<String, Object> formMap = new HashMap<String, Object>();
+        final Map<String, Object> formMap = new HashMap<>();
         DynaActionForm form = new DynaActionForm() {
             @Override
             public Object get(String nameIn) {
@@ -74,16 +74,16 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
      * Tests prepopulateActionChains().
      */
     public void testPrepopulateActionChains() {
-        List<ActionChain> actionChains = new LinkedList<ActionChain>();
+        List<ActionChain> actionChains = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
                 user));
         }
 
-        List<Map<String, String>> result = new LinkedList<Map<String, String>>();
+        List<Map<String, String>> result = new LinkedList<>();
 
         for (ActionChain actionChain : ActionChainFactory.getActionChains(user)) {
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("id", actionChain.getLabel());
             map.put("text", actionChain.getLabel());
             result.add(map);

@@ -78,7 +78,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
 
     public void testDontCleanGoodPins() throws Exception {
         Map<Long, SCCSubscription> subscriptionsBySccId = SCCCachingFactory.lookupSubscriptions()
-                .stream().collect(Collectors.toMap(s -> s.getSccId(), s -> s));
+                .stream().collect(Collectors.toMap(SCCSubscription::getSccId, s -> s));
         Map<Long, SUSEProduct> productsBySccId = SUSEProductFactory.productsByProductIds();
 
         Server server = ServerFactoryTest.createTestServer(user);

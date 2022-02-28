@@ -59,7 +59,6 @@ import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -73,10 +72,9 @@ import java.util.stream.Stream;
  */
 public class RegistrationUtils {
 
-    private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad",
-               "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client", "mgr-virtualization-host", "mgr-osad")
-    );
+    private static final List<String> BLACKLIST = List.of("rhncfg", "rhncfg-actions", "rhncfg-client",
+            "rhn-virtualization-host", "osad", "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client",
+            "mgr-virtualization-host", "mgr-osad");
 
     private static final String OS = "os";
     private static final String OS_ARCH = "osarch";
@@ -253,7 +251,7 @@ public class RegistrationUtils {
                             Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                             Set<Channel> channelsForProducts = findChannelsForProducts(suseProducts, minionId);
                             Set<Channel> baseChannels = channelsForProducts.stream()
-                                    .filter(c -> c.isBaseChannel())
+                                    .filter(Channel::isBaseChannel)
                                     .collect(toSet());
                             if (baseChannels.isEmpty()) {
                                 return emptySet();
@@ -304,7 +302,7 @@ public class RegistrationUtils {
             Optional<ActivationKey> activationKey) {
         Map<Boolean, List<Channel>> compatibleChannels =
                 channels.stream().filter(c -> c.getChannelArch().getCompatibleServerArches().contains(serverArch))
-                        .collect(partitioningBy(c -> c.isBaseChannel()));
+                        .collect(partitioningBy(Channel::isBaseChannel));
 
         Optional<Channel> activationKeyBaseChannel = activationKey.flatMap(ak -> ofNullable(ak.getBaseChannel()));
 
@@ -417,7 +415,7 @@ public class RegistrationUtils {
                 .map(rootChannelLabel -> {
 
                     Stream<Channel> channelStream = product.getSuseProductChannels().stream()
-                            .filter(pc -> pc.isMandatory())
+                            .filter(SUSEProductChannel::isMandatory)
                             .map(SUSEProductChannel::getChannel)
                             // we want the parent channel (== null) and its childs
                             .filter(c -> c.getParentChannel() == null ||

@@ -57,7 +57,7 @@ public class SSMScheduleCommand {
     private Server proxy;
     private String networkType;
     private String networkInterface;
-    private List<Action> scheduledActions =  new ArrayList<Action>();
+    private List<Action> scheduledActions = new ArrayList<>();
     private String kernelParamType;
     private String customKernelParams;
 
@@ -172,7 +172,7 @@ public class SSMScheduleCommand {
      * @return list of ValidatorErrors that were encountered
      */
     public List<ValidatorError> store() {
-        List<ValidatorError> errors = new ArrayList<ValidatorError>();
+        List<ValidatorError> errors = new ArrayList<>();
 
         for (SystemOverview sys : systems) {
             ValidatorError e;

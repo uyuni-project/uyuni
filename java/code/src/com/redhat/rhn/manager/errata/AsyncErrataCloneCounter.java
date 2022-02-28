@@ -36,7 +36,7 @@ public class AsyncErrataCloneCounter {
     private static AsyncErrataCloneCounter instance = new AsyncErrataCloneCounter();
 
     private AsyncErrataCloneCounter() {
-        count = new Hashtable<Long, Integer>();
+        count = new Hashtable<>();
     }
 
     /**
@@ -63,13 +63,7 @@ public class AsyncErrataCloneCounter {
      * @param cid channel id
      */
     public void addAsyncErrataCloneJob(Long cid) {
-        Integer n = count.get(cid);
-        if (n != null) {
-            count.put(cid, n + 1);
-        }
-        else {
-            count.put(cid, 1);
-        }
+        count.merge(cid, 1, Integer::sum);
     }
 
     /**

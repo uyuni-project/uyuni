@@ -263,11 +263,13 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
             Org org) {
         VirtualHostManager vhm =
             factory.createVirtualHostManager(label, org, "File",
-                new HashMap<String, String>() { {
-                        put("url", "notimportant");
-                        put("username", "Bing Bong");
-                        put("password", "imaginary friend");
-                    } });
+                    new HashMap<>() {
+                        {
+                            put("url", "notimportant");
+                            put("username", "Bing Bong");
+                            put("password", "imaginary friend");
+                        }
+                    });
         factory.save(vhm);
         return vhm;
     }

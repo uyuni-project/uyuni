@@ -39,10 +39,18 @@ Feature: PXE boot a terminal with Cobbler
     And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
     And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
-    And I enter "useonlinerepo insecure=1" as "kernelopts"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP2-TFTP" link
+
+  # WORKAROUND bsc#1195842
+  # Default cobbler kernel parameters are wrong in case of proxy
+  Scenario: Fix kernel parameters
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP2-TFTP"
+    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP2-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp2-installer-updates-x86_64/SLE-15-SP2-TFTP" as "kernelopts"
+    And I click on "Update Autoinstallable Distribution"
+    Then I should see a "Autoinstallable Distribution Updated" text
 
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -86,7 +94,7 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Check connection from PXE boot minion to the proxy
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the PXE boot minion
     When I install the GPG key of the test packages repository on the PXE boot minion

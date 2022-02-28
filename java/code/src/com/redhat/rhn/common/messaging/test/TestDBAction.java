@@ -46,7 +46,7 @@ public class TestDBAction implements MessageAction {
     public void execute(EventMessage msg) {
         TestDBEventMessage tm = (TestDBEventMessage) msg;
         System.out.println("Execute ..");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("data", tm.getTestString());
         DataResult dr =
             TestUtils.runTestQuery("select_test_time_series", params);

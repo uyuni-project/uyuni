@@ -128,9 +128,9 @@ def cpu_data():
     if lscpu is not None:
         try:
             log.debug("Trying lscpu to get CPU data")
-            ret = __salt__['cmd.run_all']('{0} -J'.format(lscpu), output_loglevel='quiet')
+            ret = __salt__['cmd.run_all']('{0}'.format(lscpu), env={'LC_ALL': 'C'}, output_loglevel='quiet')
             if ret['retcode'] == 0:
-                data = json.loads(ret["stdout"])
+                lines = ret["stdout"].splitlines()
                 name_map = {
                     "Model name": "cpu_model",
                     "Vendor ID": "cpu_vendor",
@@ -139,9 +139,10 @@ def cpu_data():
                     "Core(s) per socket": "cpu_cores",
                 }
                 values = {}
-                for entry in data.get("lscpu"):
-                    if entry["field"][:-1] in name_map.keys():
-                        values[name_map[entry["field"][:-1]]] = entry["data"]
+                for line in lines:
+                    parts = [l.strip() for l in line.split(":", 1)]
+                    if len(parts) == 2 and parts[0] in name_map:
+                        values[name_map[parts[0]]] = parts[1]
                 log.debug(values)
                 return values
             else:

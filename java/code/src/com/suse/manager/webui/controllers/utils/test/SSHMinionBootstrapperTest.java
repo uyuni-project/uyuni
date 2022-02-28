@@ -100,13 +100,11 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         String contactMethod = key.map(k -> k.getContactMethod().getLabel()).orElse(getDefaultContactMethod());
         Map<String, Object> pillarData = new HashMap<>();
-        key.ifPresent(k -> {
-            ActivationKeyManager.getInstance().findAll(user)
-            .stream()
-            .filter(ak -> k.getKey().equals(ak.getKey()))
-            .findFirst()
-            .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
-        });
+        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(user)
+        .stream()
+        .filter(ak -> k.getKey().equals(ak.getKey()))
+        .findFirst()
+        .ifPresent(ak -> pillarData.put("activation_key", ak.getKey())));
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         if (contactMethod.equals("ssh-push-tunnel")) {
             pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));

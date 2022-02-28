@@ -1,13 +1,19 @@
-- make tools aware of the reporting database
-- create taskomatic schedule to update report database
-- create susemanager-schema-utility RPM package
-- Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
-- Add created and modified fields to suseMinionInfo to make
-  uyuni roster module cache validation more accurate
-- add ubuntu errata data and install handling
-- FIX error when an image profile / store is deleted
-  during build / inspect action (bsc#1191597, bsc#1192150)
-- SLES PAYG client support on cloud
+  * Corrected source URLs in spec file.
+
+-------------------------------------------------------------------
+Tue Feb 15 10:07:07 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * make tools aware of the reporting database
+  * create taskomatic schedule to update report database
+  * create susemanager-schema-utility RPM package
+  * Replace not existing Asia/Beijing timezone with Asia/Shanghai (bsc#1194862)
+  * Add created and modified fields to suseMinionInfo to make
+    uyuni roster module cache validation more accurate
+  * add ubuntu errata data and install handling
+  * FIX error when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
+  * SLES PAYG client support on cloud
 
 -------------------------------------------------------------------
 Tue Jan 25 17:32:06 CET 2022 - jgonzalez@suse.com

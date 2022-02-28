@@ -149,12 +149,8 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void setPillarsMap(Optional<Map<String, Object>> op) {
         op.ifPresentOrElse(
-            p -> {
-                pillars = Json.GSON.toJson(p);
-            },
-            () -> {
-                pillars = null;
-            });
+            p -> pillars = Json.GSON.toJson(p),
+            () -> pillars = null);
     }
 
     /**
@@ -178,7 +174,7 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void addResult(ApplyStatesActionResult resultIn) {
         if (results == null) {
-            results = new HashSet<ApplyStatesActionResult>();
+            results = new HashSet<>();
         }
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);

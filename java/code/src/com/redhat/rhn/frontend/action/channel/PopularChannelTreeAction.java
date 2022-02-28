@@ -70,9 +70,9 @@ public class PopularChannelTreeAction extends BaseChannelTreeAction {
             count = Long.parseLong(countStr);
         }
 
-        List<Map<String, Object>> preSetList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> preSetList = new ArrayList<>();
         for (Long l : preSetCounts) {
-            Map<String, Object> countMap = new HashMap<String, Object>();
+            Map<String, Object> countMap = new HashMap<>();
             countMap.put("count", l);
             countMap.put("selected", l.equals(count));
             preSetList.add(countMap);

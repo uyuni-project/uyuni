@@ -53,7 +53,7 @@ public class CobblerUnregisteredSystemCreateCommand extends
      */
     @Override
     protected void processNetworkInterfaces(SystemRecord rec, Server serverIn) {
-        List<Network> ifaces = new LinkedList<Network>();
+        List<Network> ifaces = new LinkedList<>();
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface ni : serverIn.getNetworkInterfaces()) {
                 CobblerNetworkInterface n = (CobblerNetworkInterface) ni;

@@ -37,7 +37,6 @@ import org.cobbler.Distro;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +148,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         setupChildChannels(ctx, channelId, cmd);
 
         // Setup list of releases and channels
-        List<LabelValueBean> channels = new LinkedList<LabelValueBean>();
+        List<LabelValueBean> channels = new LinkedList<>();
         Collection<Channel> channelList = cmd.getAvailableChannels();
         for (Channel c : channelList) {
             log.debug("channel : " + c);
@@ -186,17 +185,13 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         }
         else {
             // Remove the Proxy channels from the child channel list
-            for (Iterator<Channel> iter = childchannels.iterator(); iter.hasNext();) {
-                if (iter.next().isProxy()) {
-                    iter.remove();
-                }
-            }
+            childchannels.removeIf(Channel::isProxy);
         }
         log.debug("AVAIL_CHILD_CHANNELS: " + childchannels);
         ctx.getRequest().setAttribute(AVAIL_CHILD_CHANNELS, childchannels);
 
         // Setup the list of selected child channels
-        Map<Long, Long> selectedChannels = new HashMap<Long, Long>();
+        Map<Long, Long> selectedChannels = new HashMap<>();
         if (cmd.getKickstartData().getChildChannels() != null) {
             Set<Channel> channelSet = cmd.getKickstartData().getChildChannels();
             for (Channel c : channelSet) {
@@ -308,7 +303,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         if (tree != null && !tree.getInstallType().isRhel2() &&
                 !tree.getInstallType().isRhel3() &&
                 !tree.getInstallType().isRhel4()) {
-            List<LabelValueEnabledBean> repos = new LinkedList<LabelValueEnabledBean>();
+            List<LabelValueEnabledBean> repos = new LinkedList<>();
             for (RepoInfo repo : RepoInfo.getStandardRepos(tree)) {
                 repos.add(lve(repo.getName(), repo.getName(), !repo.isAvailable()));
             }

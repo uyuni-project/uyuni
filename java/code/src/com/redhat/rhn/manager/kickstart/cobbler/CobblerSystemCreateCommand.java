@@ -294,7 +294,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         // Setup the kickstart metadata so the URLs and activation key are setup
         Map<String, Object> ksmeta = rec.getKsMeta();
         if (ksmeta == null) {
-            ksmeta = new HashMap<String, Object>();
+            ksmeta = new HashMap<>();
         }
 
         if (!StringUtils.isBlank(mediaPath)) {
@@ -385,7 +385,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     protected void processNetworkInterfaces(SystemRecord rec,
             Server serverIn) {
-        List<Network> nics = new LinkedList<Network>();
+        List<Network> nics = new LinkedList<>();
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
                 // don't create a physical network device for a bond

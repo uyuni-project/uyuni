@@ -35,7 +35,7 @@ public class RuleResultDiffer {
      * @param secondTestResultId id of TestResult to compare
      */
     public RuleResultDiffer(Long firstTestResultId, Long secondTestResultId) {
-        dataMap = new HashMap<String, RuleResultComparator>();
+        dataMap = new HashMap<>();
         addFirstList(ScapManager.ruleResultsPerScan(firstTestResultId));
         addSecondList(ScapManager.ruleResultsPerScan(secondTestResultId));
     }
@@ -69,7 +69,7 @@ public class RuleResultDiffer {
      * @return results
      */
     public List<RuleResultComparator> getData() {
-        return new ArrayList<RuleResultComparator>(dataMap.values());
+        return new ArrayList<>(dataMap.values());
     }
 
     /**
@@ -80,7 +80,7 @@ public class RuleResultDiffer {
      * @return results
      */
     public List<RuleResultComparator> getData(Boolean differs) {
-        List<RuleResultComparator> result = new ArrayList<RuleResultComparator>();
+        List<RuleResultComparator> result = new ArrayList<>();
         for (RuleResultComparator item : dataMap.values()) {
             if (item.getDiffers() == differs) {
                 result.add(item);

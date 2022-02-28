@@ -223,22 +223,22 @@ end
 #
 # Enter a text into a textfield
 #
-When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
-  fill_in arg2, with: arg1
+When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
+  fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
   execute_script("document.getElementsByName('#{arg2}')[0].value = '#{arg1}'")
 end
 
-When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
+When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |text, field|
   within(:xpath, '//section') do
-    fill_in arg2, with: arg1
+    fill_in(field, with: text, fill_options: { clear: :backspace })
   end
 end
 
-When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
-  fill_in arg1, with: $no_auth_registry
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |field|
+  fill_in(field, with: $no_auth_registry, fill_options: { clear: :backspace })
 end
 
 # Go back in the browser history
@@ -496,12 +496,12 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   page.reset!
   visit Capybara.app_host
-  next if all(:xpath, "//header//span[text()='#{user}']").any?
+  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
+  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
 
-  fill_in 'username', with: user
-  fill_in 'password', with: passwd
+  fill_in('username', with: user)
+  fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
   step %(I should be logged in)
@@ -521,7 +521,7 @@ end
 
 Then(/^I should be logged in$/) do
   xpath_query = "//a[@href='/rhn/Logout.do']"
-  raise 'User is not logged in' unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  raise 'User is not logged in' unless find(:xpath, xpath_query)
 end
 
 Then(/^I am logged in$/) do
@@ -565,6 +565,26 @@ end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+end
+
+Then(/^I should see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" short hostname$/) do |host|
+  system_name = get_system_name(host).partition('.').first
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
+end
+
+Then(/^I should see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+end
+
+Then(/^I should not see "([^"]*)" hostname$/) do |host|
+  system_name = get_system_name(host)
+  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 #
