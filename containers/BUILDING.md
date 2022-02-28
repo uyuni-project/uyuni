@@ -2,19 +2,19 @@
 
 ## Building
 
- - `make` builds all containers
- - `make proxy-squid` builds an individual image (autocompletion via TAB works)
-   - use `make proxy-squid PRODUCT_REPO=https://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-Module-SUSE-Manager-Proxy-4.3-POOL-x86_64-Media1/` to override product repo URL
- - `make push` builds all containers and pushes them to `REGISTRY` (by default, registry.tf.local)
-   - use `make push REGISTRY=myregistry.intra.net` to override registry name
- - `make push-proxy-squid` pushes an individual image
+- `make` builds all containers
+- `make proxy-squid` builds an individual image (autocompletion via TAB works)
+  - use `make proxy-squid PRODUCT_REPO=https://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-Module-SUSE-Manager-Proxy-4.3-POOL-x86_64-Media1/` to override product repo URL
+- `make push` builds all containers and pushes them to `REGISTRY` (by default, registry.tf.local)
+  - use `make push REGISTRY=myregistry.intra.net` to override registry name
+- `make push-proxy-squid` pushes an individual image
 
 ## Pushing to the Open Build Service
 
- - `make osc-init` checks out the OBS project
-   - use `make osc-init OSC_PROJECT=my:project` to override the OBS project name 
- - `make osc-checkin` pushes all containers to their respective OBS projects. A local copy of projects is created in `obs-project`
- - `make osc-checkin OSC_API_URL=https://api.suse.de OSC_PROJECT=Devel:Galaxy:Manager:Head:Containers` specifies different API endpoints and projects
+- `make osc-init` checks out the OBS project
+  - use `make osc-init OSC_PROJECT=my:project` to override the OBS project name
+- `make osc-checkin` pushes all containers to their respective OBS projects. A local copy of projects is created in `obs-project`
+- `make osc-checkin OSC_API_URL=https://api.suse.de OSC_PROJECT=Devel:Galaxy:Manager:Head:Containers` specifies different API endpoints and projects
 
 ## Running a local registry (in sumaform)
 

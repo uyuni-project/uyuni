@@ -18,41 +18,41 @@ IMAGES=(proxy-ssh proxy-httpd proxy-salt-broker proxy-squid proxy-tftpd)
 
 for image in "${IMAGES[@]}"
 do
-	podman pull --tls-verify=false $REGISTRY/$image
+  podman pull --tls-verify=false $REGISTRY/$image
 done
 
 podman pod create --name proxy-pod \
-        --publish 22:22 \
-        --publish 8080:8080 \
-        --publish 443:443 \
-        --publish 4505:4505 \
-        --publish 4506:4506 \
-				--add-host $ADD_HOST
+  --publish 22:22 \
+  --publish 8080:8080 \
+  --publish 443:443 \
+  --publish 4505:4505 \
+  --publish 4506:4506 \
+  --add-host $ADD_HOST
 
 podman run --rm=true -dt --pod proxy-pod \
   -v $CONFIG_DIR:/etc/uyuni \
-	--name proxy-ssh \
-	$REGISTRY/proxy-ssh
+  --name proxy-ssh \
+  $REGISTRY/proxy-ssh
 
 podman run --rm=true -dt --pod proxy-pod \
-	-v $CONFIG_DIR:/etc/uyuni \
-	-v $RHN_CACHE_DIR:/var/cache/rhn \
-	-v $TFTPBOOT_DIR:/srv/tftpboot \
-	--name proxy-httpd \
-	$REGISTRY/proxy-httpd
+  -v $CONFIG_DIR:/etc/uyuni \
+  -v $RHN_CACHE_DIR:/var/cache/rhn \
+  -v $TFTPBOOT_DIR:/srv/tftpboot \
+  --name proxy-httpd \
+  $REGISTRY/proxy-httpd
 
 podman run --rm=true -dt --pod proxy-pod \
-	-v $CONFIG_DIR:/etc/uyuni \
-	--name proxy-salt-broker \
-	$REGISTRY/proxy-salt-broker
+  -v $CONFIG_DIR:/etc/uyuni \
+  --name proxy-salt-broker \
+  $REGISTRY/proxy-salt-broker
 
 podman run --rm=true -d --pod proxy-pod \
-	-v $CONFIG_DIR:/etc/uyuni \
-	-v $SQUID_CACHE_DIR:/var/cache/squid \
-	--name proxy-squid \
-	$REGISTRY/proxy-squid
+  -v $CONFIG_DIR:/etc/uyuni \
+  -v $SQUID_CACHE_DIR:/var/cache/squid \
+  --name proxy-squid \
+  $REGISTRY/proxy-squid
 
 podman run --rm=true -dt --pod proxy-pod \
-	-v $CONFIG_DIR:/etc/uyuni \
-	--name proxy-tftpd \
-	$REGISTRY/proxy-tftpd
+  -v $CONFIG_DIR:/etc/uyuni \
+  --name proxy-tftpd \
+  $REGISTRY/proxy-tftpd
