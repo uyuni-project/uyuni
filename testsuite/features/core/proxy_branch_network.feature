@@ -78,6 +78,8 @@ Feature: Setup Uyuni for Retail branch network
     And I uncheck enable route box
     And I uncheck enable NAT box
     And I enter "example" in branch id field
+    And I enter "FQDN" in salt client naming scheme field
+    And I check Do not prefix salt client ID with Branch ID box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 

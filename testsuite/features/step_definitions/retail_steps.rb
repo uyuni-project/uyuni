@@ -374,6 +374,7 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
     'third available zone name'    => 'bind#available_zones#2#$key',
     'TFTP base directory'          => 'tftpd#root_dir',
     'branch id'                    => 'pxe#branch_id',
+    'salt client naming scheme'    => 'pxe#minion_id_naming',
     'disk id'                      => 'partitioning#0#$key',
     'disk device'                  => 'partitioning#0#device',
     'first partition id'           => 'partitioning#0#partitions#0#$key',

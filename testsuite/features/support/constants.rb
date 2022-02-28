@@ -59,10 +59,11 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'language'                        => 'keyboard_and_language#language',
               'keyboard layout'                 => 'keyboard_and_language#keyboard_layout' }.freeze
 
-BOX_IDS = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
-            'include forwarders'        => 'bind#config#include_forwarders',
-            'enable route'              => 'branch_network#firewall#enable_route',
-            'enable NAT'                => 'branch_network#firewall#enable_NAT' }.freeze
+BOX_IDS = { 'enable SLAAC with routing'                   => 'branch_network#firewall#enable_SLAAC_with_routing',
+            'include forwarders'                          => 'bind#config#include_forwarders',
+            'enable route'                                => 'branch_network#firewall#enable_route',
+            'enable NAT'                                  => 'branch_network#firewall#enable_NAT',
+            'Do not prefix salt client ID with Branch ID' => 'pxe#disable_id_prefix' }.freeze
 
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',
