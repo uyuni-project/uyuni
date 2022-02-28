@@ -224,11 +224,9 @@ public class ContentSyncManager {
         // if repos are read with "fromdir", no credentials are used. We signal this
         // with one null Credentials object
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
-            return new ArrayList<>() {
-                {
-                    add(null);
-                }
-            };
+            List<Credentials> list = new ArrayList<>();
+            list.add(null);
+            return list;
         }
 
         List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();

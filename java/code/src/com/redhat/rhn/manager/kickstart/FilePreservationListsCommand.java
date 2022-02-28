@@ -42,8 +42,7 @@ public class FilePreservationListsCommand extends BaseKickstartCommand {
     */
     public void removeFileListsByIds(List<Long> ids) {
         for (Long id : ids) {
-
-            this.getKickstartData().getPreserveFileLists().removeIf(list -> list.getId() == id);
+            this.getKickstartData().getPreserveFileLists().removeIf(list -> list.getId().equals(id));
         }
     }
 

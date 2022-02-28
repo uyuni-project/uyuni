@@ -345,11 +345,7 @@ public class SystemHandler extends BaseHandler {
         final Entitlement entitlement = EntitlementManager.getByName(entitlementLevel);
 
         // Make sure we got a valid entitlement and the server can be entitled to it
-        validateEntitlements(new ArrayList<>() {
-            {
-                add(entitlement);
-            }
-        });
+        validateEntitlements(Arrays.asList(entitlement));
         if (!this.systemEntitlementManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
