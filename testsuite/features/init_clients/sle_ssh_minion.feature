@@ -34,7 +34,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I follow "Proxy" in the content area
     Then I should see "ssh_minion" hostname
 
-@cloud_compatibility
+@skip_cloud
   Scenario: Migrate this SSH minion to SLE 15 SP3
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
@@ -48,7 +48,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
-@cloud_compatibility
+@skip_cloud
   Scenario: Check the migration is successful for this SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Events"
