@@ -561,7 +561,7 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
 end
 
 When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
-  if $product == product_version
+  if $product == product_version && ENV["PROVIDER"] != "aws"
     step %(I open the sub-list of the product "#{product}")
   end
 end
