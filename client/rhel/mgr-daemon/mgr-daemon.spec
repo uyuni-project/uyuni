@@ -79,6 +79,7 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 BuildRequires:  systemd-units
 %else
+BuildRequires:  systemd-rpm-macros
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
