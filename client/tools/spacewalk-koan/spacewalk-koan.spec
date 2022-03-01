@@ -103,6 +103,7 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sit
 %endif
 
 %if 0%{?build_py3}
+alias python=python3
 make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir}
 %endif
