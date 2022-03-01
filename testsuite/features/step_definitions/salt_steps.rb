@@ -192,13 +192,15 @@ When(/^I enter command "([^"]*)"$/) do |cmd|
 end
 
 When(/^I enter target "([^"]*)"$/) do |host|
-  value = if ENV['PROVIDER'] == "aws"
-            get_system_name(host)
-          elsif host == 'ceos_minion'
-            "*centos*"
-          elsif host == 'ubuntu_minion'
-            "*ubuntu*"
-          end
+  value =
+    if ENV['PROVIDER'] == "aws"
+      get_system_name(host)
+    elsif host == 'ceos_minion'
+      "*centos*"
+    elsif host == 'ubuntu_minion'
+      "*ubuntu*"
+    end
+
   fill_in('target', with: value, fill_options: { clear: :backspace })
 end
 
