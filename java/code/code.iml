@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module">
+    <option name="configuration">
+      <map />
+    </option>
+  </component>
+  <component name="FacetManager">
+    <facet type="IvyIDEA" name="IvyIDEA">
+      <configuration>
+        <option name="ivyFile" value="$MODULE_DIR$/../buildconf/ivy/ivy-suse.xml" />
+        <option name="ivySettingsFile" value="$MODULE_DIR$/../buildconf/ivy/ivyconf.xml" />
+        <option name="useProjectSettings" value="false" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/internal/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/webapp" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="branding" />
+    <orderEntry type="module-library">
+      <library name="IvyIDEA">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/antlr/jars/antlr-2.7.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/asm/jars/asm-3.3.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/bcel/jars/bcel-5.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/byte-buddy/jars/byte-buddy-1.8.17.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/c3p0/jars/c3p0-0.9.5.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/cglib/jars/cglib-3.2.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/classmate/jars/classmate-1.3.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/classpathx-mail-1.3.1-monolithic/jars/classpathx-mail-1.3.1-monolithic-1.1.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-beanutils/jars/commons-beanutils-1.9.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-cli/jars/commons-cli-1.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-codec/jars/commons-codec-1.11.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-collections/jars/commons-collections-3.2.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-digester/jars/commons-digester-1.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-discovery/jars/commons-discovery-0.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-el/jars/commons-el-1.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-fileupload/jars/commons-fileupload-1.1.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-io/jars/commons-io-2.6.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-jexl/jars/commons-jexl-2.1.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-lang3/jars/commons-lang3-3.8.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-logging/jars/commons-logging-1.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/commons-validator/jars/commons-validator-1.3.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/concurrent/jars/concurrent-1.3.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/concurrentlinkedhashmap-lru/jars/concurrentlinkedhashmap-lru-1.3.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/dom4j/jars/dom4j-1.6.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/dwr/jars/dwr-3.0.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/ehcache-core/jars/ehcache-core-2.10.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/geronimo-jta-1.1-api/jars/geronimo-jta-1.1-api-1.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/google-gson/jars/google-gson-2.8.5.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hibernate-commons-annotations/jars/hibernate-commons-annotations-5.0.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/httpasyncclient/jars/httpasyncclient-4.1.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/httpclient/jars/httpclient-4.5.6.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/httpcore/jars/httpcore-4.4.10.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/httpcore-nio/jars/httpcore-nio-4.4.10.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/ical4j/jars/ical4j-3.0.18.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jade4j/jars/jade4j-1.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jaf/jars/jaf-1.1.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jakarta-persistence-api/jars/jakarta-persistence-api-2.2.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/java-saml/jars/java-saml-2.4.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/java-saml-core/jars/java-saml-core-2.4.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/javassist/jars/javassist-3.20.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jboss-logging/jars/jboss-logging-3.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jcommon/jars/jcommon-1.0.16.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jdom/jars/jdom-1.1.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/joda-time/jars/joda-time-2.10.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jose4j/jars/jose4j-0.5.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/log4j/jars/log4j-1.2.12.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jsch/jars/jsch-0.1.55.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-buffer/jars/netty-buffer-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-codec/jars/netty-codec-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-common/jars/netty-common-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-handler/jars/netty-handler-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-resolver/jars/netty-resolver-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-transport/jars/netty-transport-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/netty-transport-native-unix-common/jars/netty-transport-native-unix-common-4.1.44.Final.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/oro/jars/oro-2.0.8.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/postgresql-jdbc/jars/postgresql-jdbc-42.2.16.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/quartz/jars/quartz-2.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/redstone-xmlrpc/jars/redstone-xmlrpc-1.1_20071120.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/redstone-xmlrpc-client/jars/redstone-xmlrpc-client-1.1_20071120.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simpleclient/jars/simpleclient-0.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simpleclient_common/jars/simpleclient_common-0.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simpleclient_httpserver/jars/simpleclient_httpserver-0.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simpleclient_servlet/jars/simpleclient_servlet-0.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simple-core/jars/simple-core-3.1.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/simple-xml/jars/simple-xml-2.6.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/sitemesh/jars/sitemesh-2.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/slf4j-api/jars/slf4j-api-1.7.30.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/slf4j-log4j12/jars/slf4j-log4j12-1.7.30.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/spark-core/jars/spark-core-2.7.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/spark-template-jade/jars/spark-template-jade-2.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/statistics/jars/statistics-1.0.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/stax-api/jars/stax-api-1.0.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/stax2-api/jars/stax2-api-3.1.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/stringtree-json/jars/stringtree-json-2.0.9.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/struts/jars/struts-1.2.9.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/taglibs-standard-impl/jars/taglibs-standard-impl-1.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/taglibs-standard-jstlel/jars/taglibs-standard-jstlel-1.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/taglibs-standard-spec/jars/taglibs-standard-spec-1.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/woodstox-core-asl/jars/woodstox-core-asl-4.4.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/xalan-j2/jars/xalan-j2-2.7.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/xalan-j2-serializer/jars/xalan-j2-serializer-2.7.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/xerces-j2/jars/xerces-j2-2.12.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/xmlsec/jars/xmlsec-2.0.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/velocity/jars/velocity-1.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jasper/jars/jasper-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jasper-el/jars/jasper-el-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/tomcat-el-3.0-api/jars/tomcat-el-3.0-api-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/tomcat-jsp-2.3-api/jars/tomcat-jsp-2.3-api-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/tomcat-juli/jars/tomcat-juli-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/tomcat-servlet-4.0-api/jars/tomcat-servlet-4.0-api-9.0.36.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/checkstyle/checkstyle/jars/all-8.30.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hamcrest-core/jars/hamcrest-core-1.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hamcrest-library/jars/hamcrest-library-1.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.xml.bind/jaxb-api/jars/jaxb-api-2.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-core/jars/jaxb-core-2.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-impl/jars/jaxb-impl-2.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/junit/jars/junit-4.12.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock/jars/jmock-2.12.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-junit3/jars/jmock-junit3-2.12.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-legacy/jars/jmock-legacy-2.12.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-imposters/jars/jmock-imposters-2.12.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/mockobjects/mockobjects-core/jars/mockobjects-core-0.09.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/mockobjects/mockobjects-jdk1.4-j2ee1.3/jars/mockobjects-jdk1.4-j2ee1.3-0.09.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.objenesis/objenesis/jars/objenesis-1.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.websocket/javax.websocket-api/bundles/javax.websocket-api-1.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/strutstestcase/strutstestcase/jars/strutstestcase-2.1.3-1.2-2.4.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jacoco/org.jacoco.ant/jars/nodeps-0.8.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hibernate-types/jars/hibernate-types-2.12.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jackson-annotations/jars/jackson-annotations-2.10.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jackson-core/jars/jackson-core-2.10.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/jackson-databind/jars/jackson-databind-2.10.5.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/salt-netapi-client/jars/salt-netapi-client-0.19.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/snakeyaml/jars/snakeyaml-1.28.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/pgjdbc-ng/jars/pgjdbc-ng-0.8.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/spy/jars/spy-0.8.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/client/jars/client-1.0.0~beta.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/common/jars/common-1.0.0~beta.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hibernate-c3p0/jars/hibernate-c3p0-5.3.25.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hibernate-core/jars/hibernate-core-5.3.25.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/suse/hibernate-ehcache/jars/hibernate-ehcache-5.3.25.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.xml.bind/jaxb-api/javadocs/jaxb-api-2.3.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-core/javadocs/jaxb-core-2.3.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-impl/javadocs/jaxb-impl-2.3.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock/javadocs/jmock-2.12.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-junit3/javadocs/jmock-junit3-2.12.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-legacy/javadocs/jmock-legacy-2.12.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-imposters/javadocs/jmock-imposters-2.12.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.objenesis/objenesis/javadocs/objenesis-1.0-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.websocket/javax.websocket-api/javadocs/javax.websocket-api-1.1-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/strutstestcase/strutstestcase/javadocs/strutstestcase-2.1.3-1.2-2.4-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jacoco/org.jacoco.ant/javadocs/org.jacoco.ant-0.8.7-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.xml.bind/jaxb-api/sources/jaxb-api-2.3.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-core/sources/jaxb-core-2.3.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.sun.xml.bind/jaxb-impl/sources/jaxb-impl-2.3.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock/sources/jmock-2.12.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-junit3/sources/jmock-junit3-2.12.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-legacy/sources/jmock-legacy-2.12.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jmock/jmock-imposters/sources/jmock-imposters-2.12.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/mockobjects/mockobjects-core/sources/mockobjects-core-0.09-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/mockobjects/mockobjects-jdk1.4-j2ee1.3/sources/mockobjects-jdk1.4-j2ee1.3-0.09-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.objenesis/objenesis/sources/objenesis-1.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/javax.websocket/javax.websocket-api/sources/javax.websocket-api-1.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/strutstestcase/strutstestcase/sources/strutstestcase-2.1.3-1.2-2.4-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.jacoco/org.jacoco.ant/sources/org.jacoco.ant-0.8.7-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (c) &amp;#36;today.year SUSE LLC&#10;&#10;This software is licensed to you under the GNU General Public License,&#10;version 2 (GPLv2). There is NO WARRANTY for this software, express or&#10;implied, including the implied warranties of MERCHANTABILITY or FITNESS&#10;FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2&#10;along with this software; if not, see&#10;http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.&#10;&#10;Red Hat trademarks are not licensed under GPLv2. No permission is&#10;granted to use or replicate Red Hat trademarks that are incorporated&#10;in this software or its documentation." />
+    <option name="myName" value="Uyuni" />
+  </copyright>
+</component>

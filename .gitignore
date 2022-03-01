@@ -30,7 +30,6 @@ java/*.jar
 java/*.txt
 java/*.out
 java/test-results
-java/**/*.iml
 javabuild/checkstyle.cache.src
 thrift/gen-*
 search-server/spacewalk-search/.classpath
@@ -66,8 +65,17 @@ yarn-error.log
 rel-eng/custom/__pycache__
 
 # Intellij IDEA
-.idea/
-*.iml
+#.idea/
+.idea/sonarlint
+.idea/sonarlint-state.xml
+.idea/encodings.xml
+.idea/kotlinc.xml
+.idea/misc.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
+
+
 java/out
 out/
 java/buildconf/checkstyle.cache.src
