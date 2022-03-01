@@ -793,7 +793,7 @@ end
 
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
- # rubocop:disable Style/WhateverLineLengthIsCalled
+  # rubocop:disable Layout/LineLength
   # Distribution
   repos = ENV["PROVIDER"] != "aws" ? "os_pool_repo os_update_repo" : "SLE-Module-Basesystem#{os_version}-Pool SLE-Module-Basesystem#{os_version}-Updates"
   log $build_host.run("zypper mr --enable #{repos}")
@@ -817,16 +817,17 @@ When(/^I enable repositories before installing Docker$/) do
   end
 
   $build_host.run('zypper -n --gpg-auto-import-keys ref')
-  # rubocop:enable Style/WhateverLineLengthIsCalled
+  # rubocop:enable Layout/LineLength
 end
 
 When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
+  # rubocop:disable Style/WhateverLineLengthIsCalled
   # Distribution
   repos = ENV["PROVIDER"] != "aws" ? "os_pool_repo os_update_repo" : "SLE-Module-Basesystem#{os_version}-Pool SLE-Module-Basesystem#{os_version}-Updates"
   log $build_host.run("zypper mr --disable #{repos}")
-
+  # rubocop:enable Style/WhateverLineLengthIsCalled
   # Tools
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
   log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
