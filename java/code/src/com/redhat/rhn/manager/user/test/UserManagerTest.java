@@ -84,7 +84,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        this.users = new HashSet<User>();
+        this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     }
@@ -450,23 +450,23 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         Org o1 = usr.getOrg();
         Set<Role> oRoles = o1.getRoles();
-        List<String> roleLabels = new LinkedList<String>();
+        List<String> roleLabels = new LinkedList<>();
         // We know that all newly created Orgs have the ORG_ADMIN
         // so if we add all the UserGroup IDs to the list then
         // the User should have the ORG_ADMIN assigned to it.
         for (Role role : oRoles) {
             roleLabels.add(role.getLabel());
         }
-        UserManager.addRemoveUserRoles(usr, roleLabels, new LinkedList<String>());
+        UserManager.addRemoveUserRoles(usr, roleLabels, new LinkedList<>());
         UserManager.storeUser(usr);
 
         UserTestUtils.assertOrgAdmin(usr);
 
         // Make sure we can take roles away from ourselves:
         int numRoles = usr.getRoles().size();
-        List<String> removeRoles = new LinkedList<String>();
+        List<String> removeRoles = new LinkedList<>();
         removeRoles.add(RoleFactory.ORG_ADMIN.getLabel());
-        UserManager.addRemoveUserRoles(usr, new LinkedList<String>(),
+        UserManager.addRemoveUserRoles(usr, new LinkedList<>(),
                 removeRoles);
         UserManager.storeUser(usr);
         assertEquals(numRoles - 1, usr.getRoles().size());
@@ -681,7 +681,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
        Server s = ServerFactoryTest.createTestServer(user, true,
                ServerConstants.getServerGroupTypeEnterpriseEntitled());
-       List<Long> ids = new ArrayList<Long>();
+       List<Long> ids = new ArrayList<>();
        ids.add(s.getId());
        List<SystemSearchResult> dr =
            UserManager.visibleSystemsAsDtoFromList(user, ids);
@@ -699,7 +699,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        s.addNetworkInterface(lo);
        s.setPrimaryInterface(lo);
        s.setDescription("Test Description Value");
-       List<Long> ids = new ArrayList<Long>();
+       List<Long> ids = new ArrayList<>();
        ids.add(s.getId());
        DataResult<SystemSearchResult> dr =
            UserManager.visibleSystemsAsDtoFromList(user, ids);

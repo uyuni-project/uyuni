@@ -66,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -327,9 +326,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                         // unsubscribe children first if subscribed
                         List<Channel> children = channelIn
                                 .getAccessibleChildrenFor(user);
-                        Iterator<Channel> i = children.iterator();
-                        while (i.hasNext()) {
-                            Channel child = i.next();
+                        for (Channel child : children) {
                             if (s.isSubscribed(child)) {
                                 // unsubscribe server from child channel
 
@@ -337,7 +334,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                                 child.setAccess(accessIn);
                                 ChannelFactory.save(child);
                                 s = SystemManager.
-                                unsubscribeServerFromChannel(s, child);
+                                        unsubscribeServerFromChannel(s, child);
                             }
                         }
                     }
@@ -416,10 +413,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             updated.setGloballySubscribable((sharing != null) &&
                     ("all".equals(sharing)), loggedInUser.getOrg());
             updated = (Channel) ChannelFactory.reload(updated);
-            ServerFactory.listMinionsByChannel(updated.getId()).stream().forEach(ms -> {
-                MinionPillarManager.INSTANCE.generatePillar(ms, false,
-                        Collections.emptySet());
-            });
+            ServerFactory.listMinionsByChannel(updated.getId()).stream()
+                    .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
 
         }
         catch (InvalidGPGFingerprintException borg) {
@@ -725,7 +720,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public static void prepDropdowns(RequestContext ctx, Channel original) {
         User loggedInUser = ctx.getCurrentUser();
         // populate parent base channels
-        List<Map<String, String>> baseChannels = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> baseChannels = new ArrayList<>();
         List<Channel> bases = ChannelManager.findAllBaseChannelsForOrg(
                         loggedInUser);
 
@@ -756,13 +751,13 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         }
         ctx.getRequest().setAttribute("parentChannels", baseChannels);
 
-        Map<Long, String> parentChannelArches = new HashMap<Long, String>();
+        Map<Long, String> parentChannelArches = new HashMap<>();
         for (Channel c : bases) {
             parentChannelArches.put(c.getId(), c.getChannelArch().getLabel());
         }
         ctx.getRequest().setAttribute("parentChannelArches", parentChannelArches);
 
-        Map<Long, String> parentChannelChecksums = new HashMap<Long, String>();
+        Map<Long, String> parentChannelChecksums = new HashMap<>();
         for (Channel c : bases) {
             parentChannelChecksums.put(c.getId(), c.getChecksumTypeLabel());
         }
@@ -771,20 +766,20 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         JSONWriter json = new JSONWriter();
 
         // base channel arches
-        List<Map<String, String>> channelArches = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> channelArches = new ArrayList<>();
         List<ChannelArch> arches = ChannelManager.getChannelArchitectures();
-        List<Map<String, String>> allArchConstruct = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> allArchConstruct = new ArrayList<>();
         for (ChannelArch arch : arches) {
             addOption(channelArches, arch.getName(), arch.getLabel());
-            Map<String, String> archAttrs = new HashMap<String, String>();
+            Map<String, String> archAttrs = new HashMap<>();
             archAttrs.put(NAME, arch.getName());
             archAttrs.put(LABEL, arch.getLabel());
             allArchConstruct.add(archAttrs);
         }
         ctx.getRequest().setAttribute("channelArches", channelArches);
 
-        Map<String, String> archCompatMap = new HashMap<String, String>();
-        Set<String> uniqueParentChannelArches = new HashSet<String>(parentChannelArches
+        Map<String, String> archCompatMap = new HashMap<>();
+        Set<String> uniqueParentChannelArches = new HashSet<>(parentChannelArches
                 .values());
         for (String arch : uniqueParentChannelArches) {
             archCompatMap.put(
@@ -795,7 +790,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         ctx.getRequest().setAttribute("archCompatMap", archCompatMap);
 
         // set the list of yum supported checksums
-        List<Map<String, String>> checksums = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> checksums = new ArrayList<>();
         for (ChecksumType chType : ChannelFactory.listYumSupportedChecksums()) {
             addOption(checksums, chType.getLabel(), chType.getLabel());
         }
@@ -810,7 +805,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
      */
     private static void addOption(List<Map<String, String>> options, String key,
             String value) {
-        Map<String, String> selection = new HashMap<String, String>();
+        Map<String, String> selection = new HashMap<>();
         selection.put(LABEL, key);
         selection.put("value", value);
         options.add(selection);
@@ -838,7 +833,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public List<OrgTrust> getResult(RequestContext ctx) {
         Org org = ctx.getCurrentUser().getOrg();
         Set<Org> trustedorgs = org.getTrustedOrgs();
-        List<OrgTrust> trusts = new ArrayList<OrgTrust>();
+        List<OrgTrust> trusts = new ArrayList<>();
         for (Org o : trustedorgs) {
             DataResult<Map<String, Object>> dr =
                 SystemManager.sidsInOrgTrust(org.getId(), o.getId());

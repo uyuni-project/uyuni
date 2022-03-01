@@ -7463,133 +7463,133 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru a {2} z 1 adresára v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z 1 adresára a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z 1 adresára a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru a {2} z {3} adresárov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {2} z 1 adresára v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z 1 adresára a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z 1 adresára a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov a {2} z {3} adresárov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z 1 súboru, {2} z {3} adresárov a {4} z 1 symbolického odkazu v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target/>
+        <target>{0} z {1} súborov, {2} z {3} adresárov a {4} z {5} symbolických odkazov v systéme boli úspešne porovnané so súbormi spravovanými @@PRODUCT_NAME@@. [&lt;a href="{6}"&gt;Zobraziť podrobnosti&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target/>
+        <target>Žiadne existujúce súbory v existujúcom systéme sa nelíšili od súborov spravovaných @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-        <target/>
+        <target>1 z 1 súboru v systéme sa líšil od súborov spravovaných @@PRODUCT_NAME@@</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
           <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target/>
+        <target>{0} z {1} súborov v systéme sa líšilo od súborov spravovaných @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7659,565 +7659,565 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} directories</source>
-        <target/>
+        <target>{2} adresáre</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} directories and {3} symlink</source>
-        <target/>
+        <target>{2} adresáre a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2" xml:space="preserve">
           <source>{2} directories and {3} symlinks</source>
-        <target/>
+        <target>{2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} file</source>
-        <target/>
+        <target>{1} súbor</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} file and {3} symlink</source>
-        <target/>
+        <target>{1} súbor a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} file and {3} symlinks</source>
-        <target/>
+        <target>{1} súbor a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directory</source>
-        <target/>
+        <target>{1} súbor a {2} adresár</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlink</source>
-        <target/>
+        <target>{1} súbor, {2} adresár a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlinks</source>
-        <target/>
+        <target>{1} súbor, {2} adresár a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directories</source>
-        <target/>
+        <target>{1} súbor a {2} adresáre</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlink</source>
-        <target/>
+        <target>{1} súbor, {2} adresáre a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{1} súbor, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} files</source>
-        <target/>
+        <target>{1} súbory</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} files and {3} symlink</source>
-        <target/>
+        <target>{1} súbory a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} files and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directory</source>
-        <target/>
+        <target>{1} súbory a {2} adresár</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlink</source>
-        <target/>
+        <target>{1} súbory, {2} adresár a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory, {2} adresár a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directories</source>
-        <target/>
+        <target>{1} súbory a {2} adresáre</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlink</source>
-        <target/>
+        <target>{1} súbory, {2} adresáre a {3} symbolický odkaz</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{1} súbory, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{0} stavy, {1} súbor, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
-        <target/>
+        <target>{0} stavy, {1} súbory, {2} adresáre a {3} symbolické odkazy</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state</source>
-        <target/>
+        <target>{0} stav</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} file</source>
-        <target/>
+        <target>{0} stav a {1} súbor</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} files</source>
-        <target/>
+        <target>{0} stav a {1} súbory</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_0" xml:space="preserve">
           <source>No configuration channels</source>
-        <target/>
+        <target>Žiadne konfiguračné kanály</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_1" xml:space="preserve">
           <source>1 configuration channel</source>
-        <target/>
+        <target>1 konfiguračný kanál</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_2" xml:space="preserve">
           <source>{0} configuration channels</source>
-        <target/>
+        <target>{0} konfiguračné kanály</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.unavailable" xml:space="preserve">
         <source>(no access to parent channel)</source>
-        <target/>
+        <target>(bez prístupu k rodičovskému kanálu)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.script.toolarge" xml:space="preserve">
         <source>The script must be smaller than {0} characters.</source>
-        <target/>
+        <target>Skript musí byť menší ako {0} znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/KickstartScriptEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.success" xml:space="preserve">
         <source>{0} File List(s) deleted.</source>
-        <target/>
+        <target>Vymazané {0} zoznam(y) súborov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.failure" xml:space="preserve">
         <source>{0} File List(s) could not be deleted.</source>
-        <target/>
+        <target>{0} zoznam(y) súborov sa nepodarilo vymazať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.poweron" xml:space="preserve">
         <source>Power On</source>
-        <target/>
+        <target>Zapnúť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.poweroff" xml:space="preserve">
         <source>Power Off</source>
-        <target/>
+        <target>Vypnúť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.reboot" xml:space="preserve">
         <source>Reboot</source>
-        <target/>
+        <target>Reštartovať</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.command_failed" xml:space="preserve">
         <source>Cobbler reported a power management error, please check Cobbler logs.</source>
-        <target/>
+        <target>Cobbler nahlásil chybu správy napájania, skontrolujte, prosím, záznamy pre Cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.not_configured" xml:space="preserve">
         <source>Cannot do power management on a system that has no saved configuration.</source>
-        <target/>
+        <target>Nie je možné vykonávať správu napájania na systéme, ktorý nemá uloženú konfiguráciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
         <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
-        <target/>
+        <target>Táto funkcia je dostupná len na serveroch @@PRODUCT_NAME@@, ktoré majú nainštalovaných "agentov zábran", ktorí sú prípadne k dispozícii ako balíky "fence-agents", "fence-agents-all" alebo "fence-agents-ipmilan" v závislosti od operačného systému a požadovanej infraštruktúry správy napájania. Prosím, nainštalujte agentov zábran. Ak pre váš operačný systém nie sú k dispozícii agenti zábran, funkcia správy napájania nie je podporovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
-        <target/>
+        <target>Advanced Lights Out Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc" xml:space="preserve">
         <source>APC</source>
-        <target/>
+        <target>APC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc_snmp" xml:space="preserve">
         <source>APC via SNMP</source>
-        <target/>
+        <target>APC cez SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve">
         <source>BayTech</source>
-        <target/>
+        <target state="translated">BayTech</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve">
         <source>BladeCenter</source>
-        <target/>
+        <target>BladeCenter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.brocade" xml:space="preserve">
         <source>BROCADE</source>
-        <target/>
+        <target>BROCADE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.bullpap" xml:space="preserve">
         <source>Bull FAME via PAP</source>
-        <target/>
+        <target>Bull FAME cez PAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
         <source>Cisco MDS</source>
-        <target/>
+        <target>Cisco MDS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
         <source>Cisco UCS</source>
-        <target/>
+        <target>Cisco UCS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cpint" xml:space="preserve">
         <source>GFS on s390 and zSeries</source>
-        <target/>
+        <target>GFS na s390 a zSeries</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve">
         <source>Dell DRAC</source>
-        <target/>
+        <target>Dell DRAC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve">
         <source>Dell DRAC 5</source>
-        <target/>
+        <target>Dell DRAC 5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
-        <target/>
+        <target>Eaton SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.egenera" xml:space="preserve">
         <source>Egenera</source>
-        <target/>
+        <target>Egenera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.eps" xml:space="preserve">
         <source>ePowerSwitch</source>
-        <target/>
+        <target>ePowerSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.hds_cb" xml:space="preserve">
         <source>Hitachi HDS Compute Blade</source>
-        <target/>
+        <target>Hitachi HDS Compute Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.hpblade" xml:space="preserve">
         <source>HP Blade</source>
-        <target/>
+        <target>HP Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ibmblade" xml:space="preserve">
         <source>IBM Blade</source>
-        <target/>
+        <target>IBM Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ifmib" xml:space="preserve">
         <source>Cisco IF-MIB</source>
-        <target/>
+        <target>Cisco IF-MIB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ilo" xml:space="preserve">
         <source>HP Integrated Lights-Out</source>
-        <target/>
+        <target>HP Integrated Lights-Out</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
         <source>HP Integrated Lights-Out Management Processor</source>
-        <target/>
+        <target>HP Integrated Lights-Out Management Processor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.intelmodular" xml:space="preserve">
         <source>Intel Modular Server</source>
-        <target/>
+        <target>Intel Modular Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipdu" xml:space="preserve">
         <source>HP Intelligent Power Distribution Unit</source>
-        <target/>
+        <target>HP Intelligent Power Distribution Unit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilan" xml:space="preserve">
         <source>IPMI</source>
-        <target/>
+        <target>IPMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ldom" xml:space="preserve">
         <source>SPARC Logical Domains</source>
-        <target/>
+        <target>SPARC Logical Domains</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.lpar" xml:space="preserve">
         <source>IBM LPAR</source>
-        <target/>
+        <target>IBM LPAR</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.mcdata" xml:space="preserve">
         <source>McData</source>
-        <target/>
+        <target>McData</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.netio" xml:space="preserve">
         <source>Koukaam NETIO</source>
-        <target/>
+        <target>Koukaam NETIO</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ovh" xml:space="preserve">
         <source>OVH</source>
-        <target/>
+        <target>OVH</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.rackswitch" xml:space="preserve">
         <source>IBM RackSwitch</source>
-        <target/>
+        <target>IBM RackSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.rhevm" xml:space="preserve">
         <source>Red Hat Enterprise Virtualization Manager</source>
-        <target/>
+        <target>Red Hat Enterprise Virtualization Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.rsa" xml:space="preserve">
         <source>IBM Remote Supervisor Adapter</source>
-        <target/>
+        <target>IBM Remote Supervisor Adapter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.rsb" xml:space="preserve">
         <source>Fujitsu-Siemens RSB</source>
-        <target/>
+        <target>Fujitsu-Siemens RSB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.sanbox2" xml:space="preserve">
         <source>QLogic SANbox2</source>
-        <target/>
+        <target>QLogic SANbox2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.scsi" xml:space="preserve">
         <source>SCSI-3</source>
-        <target/>
+        <target>SCSI-3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.virsh" xml:space="preserve">
         <source>libvirt</source>
-        <target/>
+        <target>libvirt</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.vixel" xml:space="preserve">
         <source>Vixel</source>
-        <target/>
+        <target>Vixel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.vmware" xml:space="preserve">
         <source>VMWare</source>
-        <target/>
+        <target>VMWare</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.vmware_soap" xml:space="preserve">
         <source>VMWare via SOAP</source>
-        <target/>
+        <target>VMWare cez SOAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.wti" xml:space="preserve">
         <source>WTI PowerSwitch</source>
-        <target/>
+        <target>WTI PowerSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.xcat" xml:space="preserve">
         <source>Extreme Cloud Administration Toolkit</source>
-        <target/>
+        <target>Extreme Cloud Administration Toolkit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.xenapi" xml:space="preserve">
         <source>Xen</source>
-        <target/>
+        <target>Xen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.zvm" xml:space="preserve">
         <source>z/VM</source>
-        <target/>
+        <target>z/VM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -11011,100 +11011,132 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+      <trans-unit id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <source>Pay-as-you-go authentication update</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <source>Pay-as-you-go update RMT hosts</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <source>Product data needs refresh.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <source>Product cannot be found: missing identifier {0}.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <source>There are conflicting channel labels {0}.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <source>A parent product conflicts with existing channels.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <source>Unexpected error while adding the product.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
       <target state="new"/>
   </trans-unit>
       </body>

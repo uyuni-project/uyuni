@@ -2,6 +2,7 @@
 # Connection objects
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
+# Copyright (c) 2022 SUSE, LLC
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 
@@ -11,9 +12,9 @@ import base64
 import encodings.idna
 import socket
 from platform import python_version
+from rhn.stringutils import bstr, ustr, sstr
 from rhn import SSL
 from rhn import nonblocking
-from rhn import i18n
 
 try: # python2
     import httplib
@@ -164,8 +165,8 @@ class HTTPProxyConnection(HTTPConnection):
             return
         # Authenticated proxy
         userpass = "%s:%s" % (self.__username, self.__password)
-        enc_userpass = base64.encodestring(i18n.bstr(userpass)).replace(i18n.bstr("\n"), i18n.bstr(""))
-        self.putheader("Proxy-Authorization", "Basic %s" % i18n.sstr(enc_userpass))
+        enc_userpass = base64.encodestring(bstr(userpass)).replace(bstr("\n"), bstr(""))
+        self.putheader("Proxy-Authorization", "Basic %s" % sstr(enc_userpass))
 
     def _set_hostport(self, host, port):
         (self.host, self.port) = self._get_hostport(host, port)
@@ -264,7 +265,7 @@ def idn_puny_to_unicode(hostname):
     if hostname is None:
         return None
     else:
-        hostname = i18n.bstr(hostname)
+        hostname = bstr(hostname)
         return hostname.decode('idna')
 
 def idn_ascii_to_puny(hostname):
@@ -272,8 +273,8 @@ def idn_ascii_to_puny(hostname):
     if hostname is None:
         return None
     else:
-        hostname = i18n.ustr(hostname)
-        return i18n.ustr(hostname.encode('idna'))
+        hostname = ustr(hostname)
+        return ustr(hostname.encode('idna'))
 
 
 idn_pune_to_unicode = idn_puny_to_unicode

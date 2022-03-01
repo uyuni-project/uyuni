@@ -170,7 +170,7 @@ public class SystemMigrateAction extends RhnAction {
         boolean success = true;
         boolean failure = false;
 
-        List<Server> serverList = new ArrayList<Server>();
+        List<Server> serverList = new ArrayList<>();
         serverList.add(s);
 
         List<Long> serversMigrated = migrationManager.migrateServers(user,

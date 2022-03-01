@@ -18,7 +18,7 @@ export const renderer = (id: string, { projects, flashMessage }: RendererProps =
   try {
     projectsJson = JSON.parse(projects || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

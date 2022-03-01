@@ -474,7 +474,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
 
-  @uyuni
+  @salt_bundle
   Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
     And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
@@ -84,7 +85,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
     private Set<Long> getSystemIds(RequestContext ctxt, ActionType actionType) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionType.getLabel()).stream()
-                .map(dto -> dto.getId())
+                .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
     }
 

@@ -23,7 +23,6 @@ import org.jdom.input.SAXBuilder;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class SchemaParser {
      */
     public SchemaParser(URL schemaURLIn) throws IOException {
         this.schemaURL = schemaURLIn;
-        constraints = new LinkedHashMap<String, Constraint>();
+        constraints = new LinkedHashMap<>();
         schemaNamespace =
             Namespace.getNamespace(SCHEMA_NAMESPACE_URI);
 
@@ -122,9 +121,9 @@ public class SchemaParser {
             List attributes = schemaDoc.getRootElement()
                                          .getChildren("attribute",
                                                       schemaNamespace);
-            for (Iterator i = attributes.iterator(); i.hasNext();) {
+            for (Object attributeIn : attributes) {
                 // Iterate and handle
-                Element attribute = (Element)i.next();
+                Element attribute = (Element) attributeIn;
                 handleAttribute(attribute);
             }
             // Handle attributes nested within complex types
@@ -292,8 +291,8 @@ public class SchemaParser {
         List requiredIfFields =
              simpleType.getChildren("requiredIf", schemaNamespace);
         if (requiredIfFields != null && requiredIfFields.size() > 0) {
-            for (Iterator i = requiredIfFields.iterator(); i.hasNext();) {
-                Element requiredIf = (Element)i.next();
+            for (Object requiredIfFieldIn : requiredIfFields) {
+                Element requiredIf = (Element) requiredIfFieldIn;
                 String fieldName = requiredIf.getAttributeValue("field");
                 String fieldValue = requiredIf.getAttributeValue("value");
                 lc.addField(fieldName, fieldValue);

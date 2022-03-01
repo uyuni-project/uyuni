@@ -2,6 +2,10 @@ branches:
   <PROXY_HOSTNAME>:
     branch_ip: <NET_PREFIX><PROXY>
     branch_prefix: example.org
+    terminal_naming:
+      disable_id_prefix: true
+      disable_unique_suffix: true
+      minion_id_naming: FQDN
     configure_bind_options:
       include_forwarders: true
       options:

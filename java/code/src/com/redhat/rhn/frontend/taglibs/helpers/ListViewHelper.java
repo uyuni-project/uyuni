@@ -19,7 +19,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -196,8 +195,8 @@ public class ListViewHelper {
 
     private void filterMaps(List accum) {
         String filterValue = getFilterParam();
-        for (Iterator iter = this.result.iterator(); iter.hasNext();) {
-            Map row = (Map) iter.next();
+        for (Object oIn : this.result) {
+            Map row = (Map) oIn;
             String value = (String) row.get(this.filterByField);
             if (value != null && value.contains(filterValue)) {
                 accum.add(row);
@@ -212,23 +211,14 @@ public class ListViewHelper {
         if (method == null) {
             return;
         }
-        for (Iterator iter = this.result.iterator(); iter.hasNext();) {
-            Object o = iter.next();
+        for (Object o : this.result) {
             try {
-                String value = (String) method.invoke(o, (Object[])null);
+                String value = (String) method.invoke(o, (Object[]) null);
                 if (value.contains(filterValue)) {
                     accum.add(o);
                 }
             }
-            catch (IllegalAccessException e) {
-                e.printStackTrace();
-                continue;
-            }
-            catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                continue;
-            }
-            catch (InvocationTargetException e) {
+            catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
                 e.printStackTrace();
                 continue;
             }
@@ -241,9 +231,9 @@ public class ListViewHelper {
         methodName = "get" + methodName.substring(0, 1).toUpperCase() +
             methodName.substring(1);
         Method[] methods = dto.getClass().getMethods();
-        for (int x = 0; x < methods.length; x++) {
-            if (methods[x].getName().equals(methodName)) {
-                retval = methods[x];
+        for (Method methodIn : methods) {
+            if (methodIn.getName().equals(methodName)) {
+                retval = methodIn;
                 break;
             }
         }

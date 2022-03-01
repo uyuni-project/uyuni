@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
+# Copyright (c) 2022 SUSE, LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,49 +20,61 @@ import os
 import smtplib
 
 from rhn.connections import idn_puny_to_unicode
+from uyuni.common.context_managers import cfg_component
+from spacewalk.common.rhnConfig import PRODUCT_NAME
+from typing import NamedTuple, Union
 
-from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
-from uyuni.common.stringutils import to_string
+with cfg_component(None) as CFG:
+    PRODUCT_NAME = CFG.PRODUCT_NAME
+    FALLBACK_TRACEBACK_MAIL = CFG.TRACEBACK_MAIL
 
-# check if the headers have the minimum required fields
+class HeadersRecipients(NamedTuple):
+    headers: dict
+    to_addresses: Union[tuple, list]
 
 
-def __check_headers(h):
-    if not isinstance(h, type({})):
-        # does not look like a dictionary
-        h = {}
-    if "Subject" not in h:
-        h["Subject"] = "%s System Mail From %s" % (PRODUCT_NAME,
-                                                   idn_puny_to_unicode(os.uname()[1]))
-    if "To" not in h:
-        to = CFG.TRACEBACK_MAIL
+def __check_headers(headers: dict = None) -> HeadersRecipients:
+    """Ensure that the headers have the minimum required fields."""
+    if not isinstance(headers, dict):
+        headers = {}
+    if "Subject" not in headers:
+        hostname = idn_puny_to_unicode(os.uname().nodename)
+        headers["Subject"] = f"{PRODUCT_NAME} System Mail From {hostname}"
+    if "To" in headers:
+        to = headers["To"]
     else:
-        to = h["To"]
-    if "Content-Type" not in h:
-        h["Content-Type"] = "text/plain; charset=utf-8"
+        to = FALLBACK_TRACEBACK_MAIL
+    if "Content-Type" not in headers:
+        headers["Content-Type"] = "text/plain; charset=utf-8"
     if isinstance(to, (list, tuple)):
         toaddrs = to
-        to = ', '.join(to)
+        to = ", ".join(to)
     else:
-        toaddrs = to.split(',')
-    h["To"] = to
-    return [h, toaddrs]
-
-# check the headers for sanity cases and send the mail
+        toaddrs = to.split(",")
+    headers["To"] = to
+    return HeadersRecipients(headers, toaddrs)
 
 
-def send(headers, body, sender=None):
-    try:
-        (headers, toaddrs) = __check_headers(headers)
-    except:
+def send(headers: dict, body: str, sender=None):
+    """Send an email with the passed content.
+
+    The headers are checked for a minimum of fields, which will be filled with
+    sensible defaults if they don't exist.
+
+    :param headers: email headers
+    :param body: email body
+    :param sender: email "From" address, optional
+    """
+    headers_recipients = __check_headers(headers)
+    if not headers_recipients:
         return
-    if sender is None:
-        sender = headers["From"]
-    joined_headers = ''
-    for h in list(headers.keys()):
-        joined_headers += "%s: %s\n" % (h, headers[h])
 
-    server = smtplib.SMTP('localhost')
-    msg = "%s\n%s\n" % (to_string(joined_headers), to_string(body))
-    server.sendmail(sender, toaddrs, msg)
-    server.quit()
+    if sender is None:
+        sender = headers_recipients.headers["From"]
+    joined_headers = "".join(
+        [f"{k}: {v}\n" for k, v in headers_recipients.headers.items()]
+    )
+    msg = f"{joined_headers}\n{body}\n"
+
+    with smtplib.SMTP("localhost") as smtp:
+        smtp.sendmail(sender, headers_recipients.to_addresses, msg)

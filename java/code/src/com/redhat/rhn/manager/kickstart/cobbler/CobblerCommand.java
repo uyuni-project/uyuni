@@ -32,7 +32,6 @@ import org.cobbler.SystemRecord;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -245,9 +244,8 @@ public abstract class CobblerCommand {
             log.debug("Ifacenames: " + ifacenames);
             Map ifaces = (Map) row.get("interfaces");
             log.debug("ifaces: " + ifaces);
-            Iterator names = ifacenames.iterator();
-            while (names.hasNext()) {
-                String name = (String) names.next();
+            for (Object ifacenameIn : ifacenames) {
+                String name = (String) ifacenameIn;
                 log.debug("Name: " + name);
                 Map iface = (Map) ifaces.get(name);
                 log.debug("iface: " + iface);

@@ -10,7 +10,7 @@ if [ ! -z $PG_TMPFS_DIR ]; then
     ./docker-testing-pgsql-move-data-to-tmpfs.sh $PG_TMPFS_DIR
 fi
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
+export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
 
 echo Going to reset pgsql database
@@ -20,6 +20,7 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 #sysctl -w kernel.shmmax=18446744073709551615
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 
 # this copy the latest schema from the git into the system

@@ -44,8 +44,6 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
-import java.util.Iterator;
-
 /**
  * SystemEntitlementsSubmitActionTest
  */
@@ -126,9 +124,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     }
 
     private EntitlementServerGroup  findGroupOfType(ServerGroupType type) {
-        for (Iterator<EntitlementServerGroup> itr = user.getOrg().getEntitledServerGroups()
-                .iterator(); itr.hasNext();) {
-            EntitlementServerGroup grp = itr.next();
+        for (EntitlementServerGroup grp : user.getOrg().getEntitledServerGroups()) {
             if (type.equals(grp.getGroupType())) {
                 return grp;
             }

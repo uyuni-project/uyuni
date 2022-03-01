@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.util.Objects;
+
 /**
  * ArchType
  */
@@ -78,7 +80,7 @@ public class ChecksumType extends BaseDomainHelper {
 
         ChecksumType checksumType = (ChecksumType) o;
 
-        return id != null ? id.equals(checksumType.id) : checksumType.id == null;
+        return Objects.equals(id, checksumType.id);
     }
 
     /** {@inheritDoc} */

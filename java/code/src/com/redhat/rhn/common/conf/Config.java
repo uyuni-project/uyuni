@@ -23,10 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -82,9 +83,11 @@ public class Config {
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
     /** set of configuration file names */
-    private final TreeSet<File> fileList = new TreeSet<File>(new Comparator<File>() {
+    private final TreeSet<File> fileList = new TreeSet<>(new Comparator<>() {
 
-        /** {inheritDoc} */
+        /**
+         * {inheritDoc}
+         */
         public int compare(File f1, File f2) {
             // Need to make sure we read the child namespace before the base
             // namespace.  To do that, we sort the list in reverse order based
@@ -115,6 +118,16 @@ public class Config {
     public Config() throws ConfigException {
         addPath(DEFAULT_DEFAULT_CONF_DIR);
         addPath(getDefaultConfigFilePath());
+        parseFiles();
+    }
+
+    /**
+     * Read the entries only for the specified path list.
+     *
+     * @param pathList the list of path to be evaluated
+     */
+    public Config(Collection<String> pathList) {
+        pathList.forEach(this::addPath);
         parseFiles();
     }
 
@@ -311,7 +324,7 @@ public class Config {
      * @return instance of java.util.List populated with config values
      */
     public List<String> getList(String name) {
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         String[] vals = getStringArray(name);
         if (vals != null) {
             retval.addAll(Arrays.asList(vals));
@@ -470,8 +483,8 @@ public class Config {
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
             Properties newProps = new Properties();
-            for (Iterator j = props.keySet().iterator(); j.hasNext();) {
-                String key = (String) j.next();
+            for (Object oIn : props.keySet()) {
+                String key = (String) oIn;
                 String newKey = key;
                 if (!key.startsWith(ns)) {
                     newKey = ns + "." + key;
@@ -488,20 +501,41 @@ public class Config {
      * not a particularly fast method and should be used only at startup or
      * some other discreet time.  Repeated calls to this method are guaranteed
      * to be slow.
+     *
      * @param namespace Namespace of properties to be returned.
      * @return subset of the properties that begin with the given namespace.
      */
     public Properties getNamespaceProperties(String namespace) {
-        Properties prop = new Properties();
-        for (Iterator i = configValues.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        return getNamespaceProperties(namespace, namespace);
+    }
+
+    /**
+     * Returns a subset of the properties for the given namespace. All the properties
+     * will be moved to the specified new namespace. This is not a particularly
+     * fast method and should be used only at startup or some other discreet time.
+     * Repeated calls to this method are guaranteed to be slow.
+     *
+     * @param namespace Namespace of properties to be returned.
+     * @param newNamespace the new namespace
+     * @return subset of the properties that begin with the given namespace.
+     */
+    public Properties getNamespaceProperties(String namespace, String newNamespace) {
+        final Properties prop = new Properties();
+        for (Map.Entry<Object, Object> entry : configValues.entrySet()) {
+            String key = (String) entry.getKey();
             if (key.startsWith(namespace)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Looking for key: [" + key + "]");
                 }
-                prop.put(key, configValues.getProperty(key));
+
+                if (!namespace.equals(newNamespace)) {
+                    key = key.replaceFirst(namespace, newNamespace);
+                }
+
+                prop.put(key, entry.getValue());
             }
         }
+
         return prop;
     }
 }

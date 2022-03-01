@@ -90,6 +90,6 @@ public class TimezoneDto extends BaseDto implements RowCallback {
      * {@inheritDoc}
      */
     public List<String> getCallBackColumns() {
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 }

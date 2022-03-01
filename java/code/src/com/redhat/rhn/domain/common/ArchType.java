@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * ArchType
  */
@@ -100,7 +102,7 @@ public class ArchType extends BaseDomainHelper {
 
         ArchType archType = (ArchType) o;
 
-        return id != null ? id.equals(archType.id) : archType.id == null;
+        return Objects.equals(id, archType.id);
     }
 
     /** {@inheritDoc} */

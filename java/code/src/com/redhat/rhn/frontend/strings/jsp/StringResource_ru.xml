@@ -27739,6 +27739,17 @@ given channel.</source>
         <source>Pay-as-you-go</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <source>Update Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <source>Update Reporting Database</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

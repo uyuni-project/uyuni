@@ -213,7 +213,7 @@ public class SetupWizardProductDto implements Selectable,
         public boolean isFinished() {
             return equals(SyncStatus.SyncStage.FINISHED);
         }
-    };
+    }
 
     /** The product id */
     private Long productId;
@@ -247,7 +247,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /** Addon products. */
     private List<SetupWizardProductDto> addonProducts =
-            new LinkedList<SetupWizardProductDto>();
+            new LinkedList<>();
 
     /** Aggregated product sync status. */
     private SyncStatus syncStatus;
@@ -359,7 +359,7 @@ public class SetupWizardProductDto implements Selectable,
                 getMandatoryChannels().stream(),
                 getOptionalChannels().stream()
                 )
-                .filter(c -> c.isInstallerUpdates())
+                .filter(Channel::isInstallerUpdates)
                 .collect(Collectors.toList());
     }
 

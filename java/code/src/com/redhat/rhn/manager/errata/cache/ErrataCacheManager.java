@@ -67,7 +67,7 @@ public class ErrataCacheManager extends HibernateFactory {
         if (org == null) {
             return 0;
         }
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         DataResult dr = executeSelectMode("ErrataCache_queries",
                 "count_servers_in_errata_cache_queue", params);
@@ -87,7 +87,7 @@ public class ErrataCacheManager extends HibernateFactory {
     public static int deleteErrataCacheQueue(Org org) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_errata_cache_queue");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return m.executeUpdate(params);
     }
@@ -98,7 +98,7 @@ public class ErrataCacheManager extends HibernateFactory {
      * @return all Server ids for the given org.
      */
     public static DataResult allServerIdsForOrg(Org org) {
-        HashMap<String, Object> params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return executeSelectMode("ErrataCache_queries",
                 "all_serverids_for_org", params);
@@ -110,7 +110,7 @@ public class ErrataCacheManager extends HibernateFactory {
      * @return packages needing updates for the given server id.
      */
     public static DataResult packagesNeedingUpdates(Long sid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         return executeSelectMode("ErrataCache_queries",
                 "packages_needing_updates", params);
@@ -128,7 +128,7 @@ public class ErrataCacheManager extends HibernateFactory {
         if (errataId != null) {
             WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                     "delete_needed_cache");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("server_id", sid);
             params.put("errata_id", errataId);
             params.put("package_id", packageId);
@@ -136,7 +136,7 @@ public class ErrataCacheManager extends HibernateFactory {
         }
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_cache_null_errata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         params.put("package_id", packageId);
         return m.executeUpdate(params);
@@ -150,7 +150,7 @@ public class ErrataCacheManager extends HibernateFactory {
     public static int deleteNeededCache(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_cache_all");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         return m.executeUpdate(params);
     }
@@ -165,7 +165,7 @@ public class ErrataCacheManager extends HibernateFactory {
     public static int insertNeededErrataCache(Long sid, Long eid, Long pid) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "insert_needed_errata_cache");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         params.put("errata_id", eid);
         params.put("package_id", pid);
@@ -183,14 +183,14 @@ public class ErrataCacheManager extends HibernateFactory {
         if (eid != null) {
             WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                     "delete_needed_errata_cache");
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("server_id", sid);
             params.put("errata_id", eid);
             return m.executeUpdate(params);
         }
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_errata_cache_null_errata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         return m.executeUpdate(params);
     }
@@ -204,7 +204,7 @@ public class ErrataCacheManager extends HibernateFactory {
     public static int deleteNeededErrataCache(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_errata_cache_all");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         return m.executeUpdate(params);
     }
@@ -229,7 +229,7 @@ public class ErrataCacheManager extends HibernateFactory {
      */
     public static void updateCacheForChannelsAsync(Set<Channel> channelsToUpdate) {
         log.debug("updateErrataCacheForChannelsAsync");
-        List<Long> channels = new LinkedList<Long>();
+        List<Long> channels = new LinkedList<>();
         for (Channel c : channelsToUpdate) {
             channels.add(c.getId());
         }
@@ -313,7 +313,7 @@ public class ErrataCacheManager extends HibernateFactory {
             return;
         }
         int count = 0;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", cid);
         if (eid != null) {
             Errata errata = ErrataFactory.lookupById(eid);
@@ -353,7 +353,7 @@ public class ErrataCacheManager extends HibernateFactory {
         int count = 0;
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_cache_for_channel_errata");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", cid);
         count = m.executeUpdate(params, eids);
         if (log.isDebugEnabled()) {
@@ -374,7 +374,7 @@ public class ErrataCacheManager extends HibernateFactory {
         int count = 0;
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_cache_for_errata_packages");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("errata_id", eid);
         count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
@@ -395,9 +395,9 @@ public class ErrataCacheManager extends HibernateFactory {
 
         CallableMode m = ModeFactory.getCallableMode("ErrataCache_queries",
                 "update_needed_cache_for_channel");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", cid);
-        m.execute(params, new HashMap<String, Integer>());
+        m.execute(params, new HashMap<>());
     }
 
     /**
@@ -410,7 +410,7 @@ public class ErrataCacheManager extends HibernateFactory {
             List<Long> pids) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "delete_needed_cache_for_channel_packages");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", cid);
         int count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
@@ -430,7 +430,7 @@ public class ErrataCacheManager extends HibernateFactory {
     public static int insertImageNeededErrataCache(Long iid, Long eid, Long pid) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                 "insert_image_needed_errata_cache");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("image_id", iid);
         params.put("errata_id", eid);
         params.put("package_id", pid);

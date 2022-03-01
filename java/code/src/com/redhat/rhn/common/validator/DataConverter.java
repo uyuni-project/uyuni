@@ -15,7 +15,6 @@
 package com.redhat.rhn.common.validator;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -47,9 +46,7 @@ public class DataConverter {
     private DataConverter() {
         schemaMappings = getSchemaMappings();
         javaMappings = new HashMap();
-        Iterator i = schemaMappings.keySet().iterator();
-        while (i.hasNext()) {
-            Object key = i.next();
+        for (Object key : schemaMappings.keySet()) {
             javaMappings.put(schemaMappings.get(key), key);
         }
     }

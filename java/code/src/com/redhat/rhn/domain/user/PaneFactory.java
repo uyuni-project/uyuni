@@ -21,7 +21,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +49,8 @@ public class PaneFactory {
             session = HibernateFactory.getSession();
             List list = session.getNamedQuery("Pane.findAllPanes").list();
             Map paneMap = new LinkedHashMap();
-            for (Iterator itr = list.iterator(); itr.hasNext();) {
-                Pane pane = (Pane)itr.next();
+            for (Object oIn : list) {
+                Pane pane = (Pane) oIn;
                 paneMap.put(pane.getLabel(), pane);
             }
             return paneMap;

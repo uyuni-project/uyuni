@@ -32,10 +32,25 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
 
     private static final long serialVersionUID = 5351605245345217308L;
 
-    private static final Logger LOG = Logger
-            .getLogger(EmptyVarcharInterceptor.class);
+    private static final Logger LOG = Logger.getLogger(EmptyVarcharInterceptor.class);
 
-    private boolean autoConvert = false;
+    private boolean autoConvert;
+
+    /**
+     * Default constructor. Auto conversion is disabled by default.
+     */
+    public EmptyVarcharInterceptor() {
+        this(false);
+    }
+
+    /**
+     * Build a new instance specifying if empty varchar will be automatically converted to null.
+     *
+     * @param autoConvertIn if true automatically convert all empty varchar fields to null.
+     */
+    public EmptyVarcharInterceptor(boolean autoConvertIn) {
+        this.autoConvert = autoConvertIn;
+    }
 
     protected static boolean emptyStringToNull(Object entity, Serializable id,
             Object[] state, String[] propertyNames, Type[] types,

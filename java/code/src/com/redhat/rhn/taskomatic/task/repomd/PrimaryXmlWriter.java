@@ -130,7 +130,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addPackageFormatDetails(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
 
         localHandler.startElement("format");
 
@@ -163,7 +163,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addBasicPackageDetails(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
+        long pkgId = pkgDto.getId();
 
         localHandler.addElementWithCharacters("name", sanitize(pkgId, pkgDto
                 .getName()));
@@ -310,7 +310,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * @return package evr object
      */
     private static Map<String, String> parseEvr(String evr) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("epoch", null);
         map.put("version", null);
         map.put("release", null);

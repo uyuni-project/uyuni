@@ -105,13 +105,10 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
-AfterStep do |scenario|
+AfterStep do
   if has_css?('.senna-loading', wait: 0)
     STDOUT.puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
-    unless has_no_css?('.senna-loading', wait: 15)
-      # Note: See the special behavior of this step here: https://github.com/cucumber/cucumber-ruby/issues/1101
-      scenario.fail!(StandardError.new('Timeout: Waiting AJAX transition'))
-    end
+    raise StandardError, 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
   end
 end
 
@@ -370,6 +367,16 @@ end
 # do some tests only if the server is using Uyuni
 Before('@uyuni') do
   skip_this_scenario unless $product == 'Uyuni'
+end
+
+# do some tests only if we are using salt bundle
+Before('@salt_bundle') do
+  skip_this_scenario unless $use_salt_bundle
+end
+
+# do some tests only if we are using salt bundle
+Before('@skip_if_salt_bundle') do
+  skip_this_scenario if $use_salt_bundle
 end
 
 # do test only if HTTP proxy for Uyuni is defined

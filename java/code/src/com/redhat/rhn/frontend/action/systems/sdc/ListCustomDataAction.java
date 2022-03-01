@@ -33,7 +33,6 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,8 +67,8 @@ public class ListCustomDataAction extends RhnAction {
         }
 
         List<String> keyList = new ArrayList();
-        for (Iterator itr = customDataValues.iterator(); itr.hasNext();) {
-            CustomDataValue val = (CustomDataValue) itr.next();
+        for (Object customDataValueIn : customDataValues) {
+            CustomDataValue val = (CustomDataValue) customDataValueIn;
             keyList.add(val.getKey().getLabel());
         }
         Collections.sort(keyList);

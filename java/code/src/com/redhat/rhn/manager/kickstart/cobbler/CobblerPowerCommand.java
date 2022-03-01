@@ -57,7 +57,7 @@ public class CobblerPowerCommand extends CobblerCommand {
         PowerOff,
         /** Reboot. */
         Reboot
-    };
+    }
 
     /**
      * Instantiates a new Cobbler power management command.

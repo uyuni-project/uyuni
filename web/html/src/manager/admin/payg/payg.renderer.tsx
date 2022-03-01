@@ -17,7 +17,7 @@ export const renderer = (id: string, { payg, wasFreshlyCreatedMessage }: Rendere
   try {
     paygJson = JSON.parse(payg || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

@@ -57,7 +57,7 @@ from up2date_client import rhncli, rhnserver
 
 from rhn import SSL
 from rhn import rhnLockfile
-from rhn.i18n import bstr, sstr
+from rhn.stringutils import bstr, sstr
 from rhn.tb import raise_with_tb
 
 from distutils.sysconfig import get_python_lib

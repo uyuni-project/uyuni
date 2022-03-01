@@ -225,7 +225,10 @@ end
 
 # Other global variables
 $product = product
+$product_version = product_version
+$use_salt_bundle = use_salt_bundle
 $pxeboot_mac = ENV['PXEBOOT_MAC']
+$pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
 $sle11sp3_terminal_mac = ENV['SLE11SP3_TERMINAL_MAC']
 $sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
 $sle15sp3_terminal_mac = ENV['SLE15SP3_TERMINAL_MAC']

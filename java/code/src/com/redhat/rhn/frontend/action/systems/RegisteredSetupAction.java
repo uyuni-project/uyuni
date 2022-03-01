@@ -53,11 +53,11 @@ public class RegisteredSetupAction extends BaseSystemsAction {
             HttpServletResponse response) {
         ActionForward forward = super.execute(mapping, formIn, request, response);
         LocalizationService ls = LocalizationService.getInstance();
-        List<LabelValueBean> optionsLabelValueBeans = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> optionsLabelValueBeans = new ArrayList<>();
 
-        for (int j = 0; j < OPTIONS.length; ++j) {
-            optionsLabelValueBeans.add(new LabelValueBean(ls.getMessage(OPTIONS[j]),
-                                                                        OPTIONS[j]));
+        for (String optionIn : OPTIONS) {
+            optionsLabelValueBeans.add(new LabelValueBean(ls.getMessage(optionIn),
+                    optionIn));
         }
 
         request.setAttribute("options", optionsLabelValueBeans);

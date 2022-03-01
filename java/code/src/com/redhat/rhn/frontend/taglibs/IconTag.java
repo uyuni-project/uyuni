@@ -40,7 +40,7 @@ public class IconTag extends TagSupport {
     private static Map<String, String> icons;
 
     static {
-        icons = new HashMap<String, String>();
+        icons = new HashMap<>();
         icons.put("action-failed", "fa fa-times-circle-o fa-1-5x text-danger");
         icons.put("action-ok", "fa fa-check-circle-o fa-1-5x text-success");
         icons.put("action-pending", "fa fa-clock-o fa-1-5x");
@@ -55,6 +55,7 @@ public class IconTag extends TagSupport {
         icons.put("errata-security-important", "fa fa-shield fa-1-1-5x errata-important");
         icons.put("errata-security-critical", "fa fa-shield fa-1-1-5x errata-critical");
         icons.put("errata-retracted", "fa fa-1-5x fa-times-circle errata-retracted");
+        icons.put("external-link", "fa fa-external-link");
         icons.put("event-type-errata", "fa spacewalk-icon-patches");
         icons.put("event-type-package", "fa spacewalk-icon-packages");
         icons.put("event-type-preferences", "fa fa-cog");

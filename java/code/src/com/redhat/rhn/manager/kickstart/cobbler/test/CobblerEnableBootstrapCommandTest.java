@@ -50,7 +50,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel("test-kernel")
                 .setInitrd("test-initrd")
-                .setKsmeta(new HashMap<String, Object>())
+                .setKsmeta(new HashMap<>())
                 .build(connection);
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
         SystemRecord system = SystemRecord.create(connection, SystemRecord.BOOTSTRAP_NAME,
@@ -62,7 +62,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         previousActivationKey.setBootstrap("Y");
 
         // check that all above actually exists
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        HashMap<String, Object> criteria = new HashMap<>();
         criteria.put("uid", system.getId());
         List<Map<String, Object>> previousSystem = CobblerDisableBootstrapCommandTest
             .invoke(connection, "find_system", criteria);
@@ -118,7 +118,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         Map<String, Object> newProfile = CobblerDisableBootstrapCommandTest.invoke(
             connection, "find_profile", criteria).get(0);
         assertEquals(Distro.BOOTSTRAP_NAME, newProfile.get("distro"));
-        Map<String, Object> expectedOptions = new HashMap<String, Object>();
+        Map<String, Object> expectedOptions = new HashMap<>();
         String activationKeyToken = user.getOrg().getId() + "-" +
             ActivationKey.BOOTSTRAP_TOKEN;
         expectedOptions.put("spacewalk_hostname", config.getHostname());

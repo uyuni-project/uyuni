@@ -26,7 +26,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +71,8 @@ public class SummaryPopulation extends RhnJavaJob {
             log.debug("Done finding orgs w/ recent action activity");
 
             log.debug("Enqueing orgs");
-            for (Iterator itr = orgSet.iterator(); itr.hasNext();) {
-                OrgIdWrapper bdw = (OrgIdWrapper) itr.next();
+            for (Object oIn : orgSet) {
+                OrgIdWrapper bdw = (OrgIdWrapper) oIn;
                 enqueueOrg(bdw.toLong());
             }
             log.debug("Finished enqueing orgs");
@@ -89,7 +88,7 @@ public class SummaryPopulation extends RhnJavaJob {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SUMMARYPOP_AWOL_SERVER_IN_ORGS);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         int checkin = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
         if (log.isDebugEnabled()) {
             log.debug("Server checkin threshold for AWOL servers: " + checkin);
@@ -105,7 +104,7 @@ public class SummaryPopulation extends RhnJavaJob {
     }
 
     private int enqueueOrg(Long orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_VERIFY_SUMMARY_QUEUE);

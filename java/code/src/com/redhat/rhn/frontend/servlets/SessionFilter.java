@@ -57,11 +57,7 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
             logHere("Transaction committed");
             committed = true;
         }
-        catch (IOException e) {
-            LOG.error(ROLLBACK_MSG, e);
-            throw e;
-        }
-        catch (ServletException e) {
+        catch (IOException | AssertionError | ServletException e) {
             LOG.error(ROLLBACK_MSG, e);
             throw e;
         }
@@ -73,10 +69,6 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
             LOG.error(ROLLBACK_MSG, e);
             request.setAttribute("exception", LocalizationService.getInstance()
                     .getMessage("errors.unexpected"));
-            throw e;
-        }
-        catch (AssertionError e) {
-            LOG.error(ROLLBACK_MSG, e);
             throw e;
         }
         finally {

@@ -112,11 +112,11 @@ public class DataResult<T> extends ArrayList<T> {
             fromIndex = last - 1;
         }
         if (fromIndex == -1) {
-            return new DataResult<T>(mode);
+            return new DataResult<>(mode);
         }
 
         List<T> temp = super.subList(fromIndex, last);
-        DataResult<T> dr = new DataResult<T>(temp, mode);
+        DataResult<T> dr = new DataResult<>(temp, mode);
         dr.start = fromIndex + 1;
         dr.end = toIndex;
         dr.totalSize = this.getTotalSize();
@@ -246,7 +246,7 @@ public class DataResult<T> extends ArrayList<T> {
      */
     public Map<Character, Integer> getIndex() {
         if (index == null) {
-            this.index = new HashMap<Character, Integer>();
+            this.index = new HashMap<>();
         }
         return index;
     }

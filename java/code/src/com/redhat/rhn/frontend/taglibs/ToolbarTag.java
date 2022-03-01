@@ -493,7 +493,7 @@ public class ToolbarTag extends TagSupport {
     public int doStartTag() throws JspException {
         JspWriter out = null;
         try {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             out = pageContext.getOut();
 
             baseTag = new HtmlTag("div");
@@ -534,7 +534,7 @@ public class ToolbarTag extends TagSupport {
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             out = pageContext.getOut();
 
             buf.append(renderHelpUrl());

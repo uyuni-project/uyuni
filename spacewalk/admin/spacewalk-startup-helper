@@ -4,6 +4,7 @@ LSOF="/usr/sbin/lsof"
 if [ -x "/usr/bin/lsof" ]; then
     LSOF="/usr/bin/lsof"
 fi
+REPORTDB_EXISTS='n'
 
 perform_db_schema_upgrade() {
     /usr/bin/spacewalk-schema-upgrade -y
@@ -11,6 +12,17 @@ perform_db_schema_upgrade() {
     if [ $? -ne 0 ]; then
         echo "Database schema upgrade failed. Please check the logs."
         exit 1
+    fi
+}
+
+perform_report_db_schema_upgrade() {
+    if [ $REPORTDB_EXISTS == 'y' ]; then
+        /usr/bin/spacewalk-schema-upgrade -y --reportdb
+
+        if [ $? -ne 0 ]; then
+            echo "Report Database schema upgrade failed. Please check the logs."
+            exit 1
+        fi
     fi
 }
 
@@ -27,32 +39,113 @@ check_schema_version() {
         echo "Incompatible database schema version detected! Minimal schema version required by Backend: $MIN_BACK_SCHEMA"
         exit 1
     fi
+    if [ $REPORTDB_EXISTS == 'y' ]; then
+        MIN_JAVA_REPORT_SCHEMA=$( egrep -m1 "^java.min_report_schema_version[[:space:]]*=" /usr/share/rhn/config-defaults/rhn_java.conf | sed 's/^java.min_report_schema_version[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+        CMP=$(echo "select rpm.vercmp(null, X.version, X.release, null, '$MIN_JAVA_REPORT_SCHEMA', '0') from (select version, release from VersionInfo where label = 'schema') X;" | spacewalk-sql --select-mode --reportdb - | sed -n 3p | xargs)
+        if [ $CMP -lt 0 ]; then
+            echo "Incompatible database schema version detected! Minimal report schema version required by Java: $MIN_JAVA_REPORT_SCHEMA"
+            exit 1
+        fi
+    fi
 }
 
-check_database() {
-    RETRIES=10;
-    source /etc/os-release
+check_db_version() {
+    RETRIES=10
     while [ $RETRIES -gt 0 ]; do
 
-        IFS="." read -ra VARR <<< $(echo "show server_version;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
-
+        IFS="." read -ra VARR <<< $(echo "show server_version;" | spacewalk-sql --select-mode $1 - | sed -n 3p | xargs)
         if [ $? -eq 0 ]; then
-            if [ $VERSION_ID == "15.3" -a "${VARR[0]}" != "13" ]; then
-                echo "Database version '${VARR[0]}' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
-                exit 1
-            elif [ $VERSION_ID == "15.4" -a "${VARR[0]}" != "14" ]; then
-                echo "Database version '${VARR[0]}' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
-                exit 1
-            fi
-            perform_db_schema_upgrade
-            check_schema_version
-            exit 0 # db is running
+            echo "${VARR[0]}"
+	    return 0
         fi
 
         ((RETRIES--))
         sleep 1
     done
-    exit 1
+    return 1
+}
+
+parse_rhn_property() {
+    ATTRIBUTE="$1"
+    VAR="$2"
+    VALUE=$(grep "^$ATTRIBUTE" /etc/rhn/rhn.conf |cut -d'=' -f2 | tail -n1 | tr -d '\n ')
+    eval "$(printf "%q=%q" "$VAR" "$VALUE")"
+}
+
+
+db_migrate_md5_to_scram() {
+    if ! grep "md5" /var/lib/pgsql/data/pg_hba.conf >/dev/null; then
+        return
+    fi
+    logger -p user.notice "Migrate database password encryption from md5 to scram-sha256"
+    if ! grep -E "^password_encryption[[:space:]]*=[[:space:]]*scram-sha-256" /var/lib/pgsql/data/postgresql.conf >/dev/null; then
+        logger -p user.notice "Set database password encryption default to scram-sha256"
+        echo "password_encryption = scram-sha-256" >> /var/lib/pgsql/data/postgresql.conf
+        systemctl reload postgresql
+    fi
+    parse_rhn_property "db_name" DBNAME
+    parse_rhn_property "db_user" DBUSER
+    parse_rhn_property "db_password" DBPASSWD
+
+    logger -p user.notice "Reset database password for user: $DBUSER"
+    runuser - postgres -c "echo \"ALTER USER $DBUSER WITH PASSWORD '$DBPASSWD';\" | psql"
+
+    logger -p user.notice "Change encryption in pg_hba.conf to scram-sha-256"
+    sed -i 's|md5|scram-sha-256|g' /var/lib/pgsql/data/pg_hba.conf
+}
+
+check_database() {
+
+    # Check, if we use the correct database version
+    source /etc/os-release
+    DB_VERSION=$(check_db_version)
+    if [ $? -ne 0 ]; then
+        echo "Cannot access the Database"
+        exit 1
+    elif [ $VERSION_ID == "15.3" -a "$DB_VERSION" != "13" ]; then
+        echo "Database version '$DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
+        exit 1
+    elif [ $VERSION_ID == "15.4" -a "$DB_VERSION" != "14" ]; then
+        echo "Database version '$DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
+        exit 1
+    fi
+
+    # Check, if the report DB was already setup
+    if egrep -m1 "^report_db_host[[:space:]]*=[[:space:]]*[a-zA-Z0-9_-]+" /etc/rhn/rhn.conf; then
+        REPORTDB_EXISTS='y'
+    else
+        # Check, if the DB is local and we should setup the reporting DB automated
+	if egrep -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf; then
+            # Do not use 'md5' auth anymore, migrate to 'scram-sha-256' if needed
+            db_migrate_md5_to_scram
+
+            # if the main database is local, we setup the report DB automatically
+            /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --autogenpw \
+                                          --address '*' --remote '0.0.0.0/0,::/0' && {
+                REPORTDB_EXISTS='y'
+            }
+        else
+            logger -p user.notice "Database not local - skipping setup of report database"
+        fi
+    fi
+
+    if [ $REPORTDB_EXISTS == 'y' ]; then
+        REPORT_DB_VERSION=$(check_db_version --reportdb)
+        if [ $? -ne 0 ]; then
+            echo "Cannot access the Report Database"
+            exit 1
+        elif [ $VERSION_ID == "15.3" -a "$REPORT_DB_VERSION" != "13" ]; then
+            echo "Report Database version '$REPORT_DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
+            exit 1
+        elif [ $VERSION_ID == "15.4" -a "$REPORT_DB_VERSION" != "14" ]; then
+            echo "Report Database version '$REPORT_DB_VERSION' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
+            exit 1
+        fi
+    fi
+    perform_db_schema_upgrade
+    perform_report_db_schema_upgrade
+    check_schema_version
+    exit 0
 }
 
 wait_for_jabberd() {

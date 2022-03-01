@@ -72,7 +72,7 @@ public class SystemGroupsDTOSerializer extends RhnXmlRpcCustomSerializer {
     private List<Map<String, Object>> serializeSystemGroups(List<SystemGroupID> systemGroups) {
         List<Map<String, Object>> result = new ArrayList<>();
         for (SystemGroupID systemGroupID : systemGroups) {
-            Map<String, Object> groupInfo = new HashMap<String, Object>();
+            Map<String, Object> groupInfo = new HashMap<>();
             groupInfo.put("id", systemGroupID.getGroupID());
             groupInfo.put("name", systemGroupID.getGroupName());
             result.add(groupInfo);

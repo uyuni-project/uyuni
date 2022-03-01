@@ -25,7 +25,7 @@ from uyuni.common.usix import raise_with_tb
 from uyuni.common.usix import next as usix_next
 from uyuni.common import checksum
 from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 # bare-except and broad-except
 # pylint: disable=W0702,W0703

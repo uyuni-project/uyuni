@@ -18,6 +18,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -289,7 +290,7 @@ public class ImageInfoHandler extends BaseHandler {
             throw new NoSuchImageException();
         }
         return opt.get().getCustomDataValues().stream()
-                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue()));
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), ImageInfoCustomDataValue::getValue));
     }
 
     /**

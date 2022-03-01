@@ -350,7 +350,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         KickstartData profile = createProfile();
 
         // Test
-        List<String> fileLists = new ArrayList<String>();
+        List<String> fileLists = new ArrayList<>();
         fileLists.add(fileList.getLabel());
         int result = handler.addFilePreservations(regular, profile.getLabel(),
                 fileLists);
@@ -378,7 +378,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         FileList fileList = createFileList();
         KickstartData profile = createProfile();
 
-        List<String> fileLists = new ArrayList<String>();
+        List<String> fileLists = new ArrayList<>();
         fileLists.add(fileList.getLabel());
         int result = handler.addFilePreservations(regular, profile.getLabel(),
                 fileLists);
@@ -405,7 +405,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     }
 
     private FileList createFileList() {
-        List<String> files = new ArrayList<String>();
+        List<String> files = new ArrayList<>();
         files.add("file1");
         files.add("file2");
         int result = fpHandler.create(admin, "list1", files);

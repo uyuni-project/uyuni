@@ -26,7 +26,6 @@ from uyuni.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
-from uyuni.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from .importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \
@@ -265,7 +264,7 @@ class Backend:
 
             id = self.sequences['suseEula'].next()
             eulaHash[(text, checksum)] = id
-            h_insert.execute(id=id, text=to_string(val['text']), checksum=val['checksum'])
+            h_insert.execute(id=id, text=str(val['text']), checksum=val['checksum'])
 
     def processCVEs(self, cveHash):
         # First figure out which CVE's are already inserted

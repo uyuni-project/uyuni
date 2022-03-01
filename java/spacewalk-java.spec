@@ -58,11 +58,11 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.9
+Version:        4.3.12
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
-Source1:        %{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    ia64
@@ -190,6 +190,9 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
+%if 0%{?rhel} == 8
+Recommends:       rng-tools
+%endif
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
@@ -559,6 +562,7 @@ install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
 install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -661,6 +665,12 @@ echo "#### SYMLINKS END ####"
 %pre -n spacewalk-taskomatic
 %if !0%{?rhel}
 %service_add_pre taskomatic.service
+%endif
+
+%post
+%if 0%{?rhel} == 8
+echo "Trying to start optional rngd service..."
+systemctl start rngd ||:
 %endif
 
 %post -n spacewalk-taskomatic
@@ -877,6 +887,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %files config
 %defattr(644,root,root,755)
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf

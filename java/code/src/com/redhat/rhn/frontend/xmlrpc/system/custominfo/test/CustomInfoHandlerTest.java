@@ -20,8 +20,6 @@ import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import java.util.Iterator;
-
 /**
  * CustomInfoHandlerTest
  */
@@ -42,10 +40,10 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(initialSize + 1, result.size());
 
         boolean foundKey = false;
-        for (Iterator itr = result.iterator(); itr.hasNext();) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) itr.next();
+        for (Object oIn : result) {
+            CustomDataKeyOverview key = (CustomDataKeyOverview) oIn;
             if (key.getLabel().equals("testlabel") &&
-                key.getDescription().equals("test description")) {
+                    key.getDescription().equals("test description")) {
                 foundKey = true;
                 break;
             }
@@ -64,10 +62,10 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(initialKeys.size() + 1, result.size());
 
         boolean foundKey = false;
-        for (Iterator itr = result.iterator(); itr.hasNext();) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) itr.next();
+        for (Object valueIn : result) {
+            CustomDataKeyOverview key = (CustomDataKeyOverview) valueIn;
             if (key.getLabel().equals("testlabel") &&
-                key.getDescription().equals("test description")) {
+                    key.getDescription().equals("test description")) {
                 foundKey = true;
                 break;
             }
@@ -79,10 +77,10 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(initialKeys.size(), result.size());
 
         foundKey = false;
-        for (Iterator itr = result.iterator(); itr.hasNext();) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) itr.next();
+        for (Object oIn : result) {
+            CustomDataKeyOverview key = (CustomDataKeyOverview) oIn;
             if (key.getLabel().equals("testlabel") &&
-                key.getDescription().equals("test description")) {
+                    key.getDescription().equals("test description")) {
                 foundKey = true;
                 break;
             }

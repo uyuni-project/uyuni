@@ -38,7 +38,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.util.LabelValueBean;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,8 +72,8 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         List channelLabels = (List)request.getAttribute(TreeCreateAction.CHANNELS);
         boolean foundRhel4BaseChan = false;
         boolean foundRhel5BaseChan = false;
-        for (Iterator it = channelLabels.iterator(); it.hasNext();) {
-            LabelValueBean chan = (LabelValueBean)it.next();
+        for (Object channelLabelIn : channelLabels) {
+            LabelValueBean chan = (LabelValueBean) channelLabelIn;
             if (chan.getLabel().equals(rhel4BaseChan.getName())) {
                 foundRhel4BaseChan = true;
             }

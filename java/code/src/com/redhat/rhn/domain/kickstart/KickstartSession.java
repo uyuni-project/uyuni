@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.user.User;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -532,10 +531,9 @@ public class KickstartSession {
         if (this.history != null && this.history.size() > 0) {
 
             SortedMap sorted = new TreeMap();
-            Iterator i = this.history.iterator();
-            while (i.hasNext()) {
+            for (Object oIn : this.history) {
                 KickstartSessionHistory hist =
-                    (KickstartSessionHistory) i.next();
+                        (KickstartSessionHistory) oIn;
                 sorted.put(hist.getId(), hist);
             }
 

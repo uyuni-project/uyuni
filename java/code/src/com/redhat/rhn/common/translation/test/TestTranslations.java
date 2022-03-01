@@ -34,7 +34,7 @@ public class TestTranslations extends Translations {
     }
 
     public static Date long2Date(Long d) {
-        return new Date(d.longValue());
+        return new Date(d);
     }
 
     public static String list2String(List l) {

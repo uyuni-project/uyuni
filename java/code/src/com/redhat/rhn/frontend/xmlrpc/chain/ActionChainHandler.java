@@ -80,9 +80,9 @@ public class ActionChainHandler extends BaseHandler {
      *                    #array_end()
      */
     public List<Map<String, Object>> listChains(User loggedInUser) {
-        List<Map<String, Object>> chains = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> chains = new ArrayList<>();
         for (ActionChain actionChain : ActionChainFactory.getActionChains(loggedInUser)) {
-            Map<String, Object> info = new HashMap<String, Object>();
+            Map<String, Object> info = new HashMap<>();
             info.put("label", actionChain.getLabel());
             info.put("entrycount", actionChain.getEntries().size());
             chains.add(info);
@@ -116,13 +116,13 @@ public class ActionChainHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listChainActions(User loggedInUser,
                                                       String chainLabel) {
-        List<Map<String, Object>> entries = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> entries = new ArrayList<>();
         ActionChain chain = this.acUtil.getActionChainByLabel(loggedInUser, chainLabel);
 
         if (chain.getEntries() != null && !chain.getEntries().isEmpty()) {
             for (ActionChainEntry entry : chain.getEntries()) {
                 String label = entry.getAction().getName();
-                Map<String, Object> info = new HashMap<String, Object>();
+                Map<String, Object> info = new HashMap<>();
                 info.put("id", entry.getAction().getId());
                 info.put("label", StringUtil.nullOrValue(label) == null ?
                                   entry.getAction().getActionType().getName() :
@@ -476,7 +476,7 @@ public class ActionChainHandler extends BaseHandler {
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String scriptLabel, String uid, String gid,
             Integer timeout, String scriptBody) {
-        List<Long> systems = new ArrayList<Long>();
+        List<Long> systems = new ArrayList<>();
         systems.add((long) serverId);
 
         ScriptActionDetails script = ActionManager.createScript(

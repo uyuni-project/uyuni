@@ -91,7 +91,8 @@ public class ImageSyncedEvent {
      * @return event data as map
      */
     public Map<String, Object> getData() {
-        TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() { };
+        TypeToken<Map<String, Object>> typeToken = new TypeToken<>() {
+        };
         return getData(typeToken);
     }
 

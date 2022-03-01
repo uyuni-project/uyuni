@@ -31,9 +31,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.action.Action;
 
-import java.util.Iterator;
-
-
 
 /**
  * PreservationListConfirmDeleteActionTest
@@ -86,11 +83,9 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
         assertEquals(rhnsetLabel, set.getLabel());
 
         // clean up
-        Iterator i = set.getElements().iterator();
-        while (i.hasNext()) {
-            RhnSetElement elem = (RhnSetElement) i.next();
+        for (RhnSetElement elem : set.getElements()) {
             FileList fl = CommonFactory.lookupFileList(elem.getElement(),
-                                                            user.getOrg());
+                    user.getOrg());
             CommonFactory.removeFileList(fl);
         }
     }

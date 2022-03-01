@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import _groupBy from "lodash/groupBy";
 import _isEmpty from "lodash/isEmpty";
+import _isEqual from "lodash/isEqual";
 import _last from "lodash/last";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
@@ -41,8 +42,11 @@ const Project = (props: Props) => {
   const hasEditingPermissions = isOrgAdmin(roles);
 
   useInterval(() => {
-    onAction({}, "get", project.properties.label).then((project) => {
-      setProject(project);
+    onAction({}, "get", project.properties.label).then((newProject) => {
+      // Only propagate the received value if something has changed
+      if (!_isEqual(project, newProject)) {
+        setProject(newProject);
+      }
     });
   }, 5000);
 

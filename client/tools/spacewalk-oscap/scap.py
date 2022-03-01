@@ -10,7 +10,7 @@ from up2date_client import up2dateLog
 from up2date_client import rhnserver
 from up2date_client import up2dateAuth
 from up2date_client import up2dateErrors
-from rhn.i18n import sstr, bstr
+from rhn.stringutils import sstr, bstr
 
 __rhnexport__ = [ 'xccdf_eval' ]
 

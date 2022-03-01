@@ -26,11 +26,11 @@ public class ChannelActionDAO {
     public static final Long UNSUBSCRIBE = 2L;
     private String name;
     private Long id;
-    private Set<Long> subsAllowed = new HashSet<Long>();
-    private Set<Long> unsubsAllowed = new HashSet<Long>();
+    private Set<Long> subsAllowed = new HashSet<>();
+    private Set<Long> unsubsAllowed = new HashSet<>();
 
-    private Set<String> subNamesAllowed =  new HashSet<String>();
-    private Set<String> unsubNamesAllowed = new HashSet<String>();
+    private Set<String> subNamesAllowed = new HashSet<>();
+    private Set<String> unsubNamesAllowed = new HashSet<>();
 
     /**
      * What Server are we going to act on?

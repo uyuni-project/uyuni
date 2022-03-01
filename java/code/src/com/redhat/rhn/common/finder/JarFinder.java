@@ -52,7 +52,7 @@ class JarFinder implements Finder {
             String starts = conn.getEntryName();
             JarFile jfile = conn.getJarFile();
 
-            List<String> result = new LinkedList<String>();
+            List<String> result = new LinkedList<>();
 
             Enumeration<JarEntry> e = jfile.entries();
             while (e.hasMoreElements()) {
@@ -71,8 +71,8 @@ class JarFinder implements Finder {
                     if (entryName.endsWith(endStr)) {
                         if (excludes != null) {
                             boolean exclude = false;
-                            for (int j = 0; j < excludes.length; j++) {
-                                String excludesEnds = excludes[j] + "." + endStr;
+                            for (String excludeIn : excludes) {
+                                String excludesEnds = excludeIn + "." + endStr;
                                 if (entryName.endsWith(excludesEnds)) {
                                     exclude = true;
                                     break;

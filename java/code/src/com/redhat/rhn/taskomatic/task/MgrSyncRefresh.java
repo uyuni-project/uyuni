@@ -76,7 +76,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
         // Use mgr-inter-sync if this server is an ISS slave
         if (IssFactory.getCurrentMaster() != null) {
             log.info("This server is an ISS slave, refresh using mgr-inter-sync");
-            List<String> cmd = new ArrayList<String>();
+            List<String> cmd = new ArrayList<>();
             cmd.add("/usr/bin/mgr-inter-sync");
             cmd.add("--include-custom-channels");
             if (noRepoSync) {

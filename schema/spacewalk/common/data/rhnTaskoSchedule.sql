@@ -161,5 +161,9 @@ VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-payg-default',
        (SELECT id FROM rhnTaskoBunch WHERE name='update-payg-data-bunch'),
        current_timestamp, '0 0/10 * * * ?');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-bunch'),
+        current_timestamp, '0 0 0 ? * *');
 
 commit;

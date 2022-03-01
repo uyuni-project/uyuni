@@ -1,4 +1,15 @@
-- remove TLS Certificates from package
+-------------------------------------------------------------------
+Mon Feb 21 12:07:41 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * preserve TLS Certificates during migration
+
+-------------------------------------------------------------------
+Tue Feb 15 10:02:51 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * adapt rhn.conf template for reporting database
+  * remove TLS Certificates from package
 
 -------------------------------------------------------------------
 Tue Jan 18 13:52:35 CET 2022 - jgonzalez@suse.com

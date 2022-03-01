@@ -175,9 +175,9 @@ EOF
     sed -i 's/^\([^#].*\)$/### next line has been commented out by spacewalk-setup-postgresql: ###\n##\1/ ' $PG_HBA
     cat >> $PG_HBA <<EOF
 
-local $PGNAME $PGUSER md5
-host  $PGNAME $PGUSER 127.0.0.1/8 md5
-host  $PGNAME $PGUSER ::1/128 md5
+local $PGNAME $PGUSER scram-sha-256
+host  $PGNAME $PGUSER 127.0.0.1/8 scram-sha-256
+host  $PGNAME $PGUSER ::1/128 scram-sha-256
 local $PGNAME postgres ident map=usermap
 local postgres postgres ident map=usermap
 
@@ -186,7 +186,7 @@ EOF
     if $STANDALONE; then
         for ADDR in $(echo $REMOTE|sed 's/,/ /g'); do
             cat >> $PG_HBA <<EOF
-host $PGNAME $PGUSER $ADDR md5
+host $PGNAME $PGUSER $ADDR scram-sha-256
 EOF
         done
 

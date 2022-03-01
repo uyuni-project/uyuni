@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +79,7 @@ public class BaseUserSetupAction extends RhnAction {
     public Map<String, LangDisplayBean> buildImageMap(List<String> locales) {
         Map<String, LangDisplayBean> retval = new LinkedHashMap();
         LocalizationService ls = LocalizationService.getInstance();
-        for (Iterator iter = locales.iterator(); iter.hasNext();) {
-            String locale = (String) iter.next();
+        for (String locale : locales) {
             LangDisplayBean ldb = new LangDisplayBean();
             ldb.setLanguageCode(locale);
             ldb.setLocalizedName(ls.getMessage("preferences.jsp.lang." + locale));
@@ -97,10 +95,10 @@ public class BaseUserSetupAction extends RhnAction {
     public List getTimeZones() {
         List dataList = UserManager.lookupAllTimeZones();
         List displayList = new ArrayList();
-        for (int i = 0; i < dataList.size(); i++) {
+        for (Object oIn : dataList) {
             String display = LocalizationService.getInstance()
-                .getMessage(((RhnTimeZone)dataList.get(i)).getOlsonName());
-            String value = String.valueOf(((RhnTimeZone)dataList.get(i)).getTimeZoneId());
+                    .getMessage(((RhnTimeZone) oIn).getOlsonName());
+            String value = String.valueOf(((RhnTimeZone) oIn).getTimeZoneId());
             displayList.add(createDisplayMap(display, value));
         }
         return displayList;

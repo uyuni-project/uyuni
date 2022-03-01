@@ -28,7 +28,6 @@ import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -51,9 +50,8 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         assertNotNull(trees);
         assertTrue(trees.size() > 0);
         boolean foundBaseTree = false;
-        Iterator i = trees.iterator();
-        while (i.hasNext()) {
-            KickstartableTree t = (KickstartableTree) i.next();
+        for (Object treeIn : trees) {
+            KickstartableTree t = (KickstartableTree) treeIn;
             if (t.getChannel().getParentChannel() == null) {
                 foundBaseTree = true;
             }

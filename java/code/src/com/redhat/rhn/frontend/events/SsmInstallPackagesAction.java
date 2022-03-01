@@ -48,7 +48,7 @@ public class SsmInstallPackagesAction extends SsmPackagesAction {
                         channelId, u, SetLabels.SYSTEM_LIST);
 
         // Create one action for all servers to which the packages are installed
-        List<Long> serverIds = new LinkedList<Long>();
+        List<Long> serverIds = new LinkedList<>();
         for (EssentialServerDto dto : servers) {
             serverIds.add(dto.getId());
         }
@@ -62,7 +62,7 @@ public class SsmInstallPackagesAction extends SsmPackagesAction {
 
         Set<String> data = sipe.getPackages();
         // Convert the package list to domain objects
-        List<PackageListItem> pkgListItems = new ArrayList<PackageListItem>(data.size());
+        List<PackageListItem> pkgListItems = new ArrayList<>(data.size());
         for (String key : data) {
             pkgListItems.add(PackageListItem.parse(key));
         }

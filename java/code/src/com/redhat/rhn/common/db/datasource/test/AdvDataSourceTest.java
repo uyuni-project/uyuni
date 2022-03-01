@@ -56,7 +56,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     private void lookup(String foobar, int id, int size) {
         SelectMode m = ModeFactory.getMode("test_queries", "find_in_table");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foobar", foobar);
         params.put("id", id);
         DataResult<AdvDataSourceDto> dr = m.execute(params);
@@ -69,7 +69,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     private void insert(String foobar, int id) throws Exception {
         WriteMode m = ModeFactory.getWriteMode("test_queries", "insert_into_table");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foobar", foobar);
         params.put("id", id);
         params.put("test_column", "test-" + TestUtils.randomString());
@@ -156,7 +156,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         // Take nothing for granted, make sure the data is there.
         insert("Blarg", 1);
         WriteMode m = ModeFactory.getWriteMode("test_queries", "delete_from_table");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foobar", "Blarg");
         assertEquals(1, m.executeUpdate(params));
         // Close our Session so we test to make sure it
@@ -169,7 +169,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         insert("update_test", 4);
 
         WriteMode m = ModeFactory.getWriteMode("test_queries", "update_in_table");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foobar", "after_update");
         params.put("id", 4);
         int res = m.executeUpdate(params);
@@ -188,7 +188,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         insert("update_multi_test", 5);
 
         WriteMode m = ModeFactory.getWriteMode("test_queries", "update_in_table");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foobar", "after_update_multi");
         params.put("id", 5);
         int res = m.executeUpdate(params);
@@ -298,7 +298,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         List inclause = new ArrayList();
         inclause.add(500);
         inclause.add(1);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", "jesusr");
 
         DataResult dr = m.execute(params, inclause);
@@ -361,7 +361,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     public void testFoo() {
         SelectMode mode = ModeFactory.getMode("Errata_queries",
                 "unscheduled_relevant_to_system");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", 1);
         params.put("sid", 1000010173);
         DataResult dr = mode.execute(params);

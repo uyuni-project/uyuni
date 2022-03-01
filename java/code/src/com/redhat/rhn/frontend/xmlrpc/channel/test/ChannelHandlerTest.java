@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,8 +54,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
         for (Map<String, Object> item : result) {
             Set<String> keys = item.keySet();
-            for (Iterator<String> itr = keys.iterator(); itr.hasNext();) {
-                Object key = itr.next();
+            for (Object key : keys) {
                 // make sure we don't send out null
                 assertNotNull(item.get(key));
             }
@@ -79,8 +77,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length > 0);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -110,8 +108,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length > 0);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -140,8 +138,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length > 0);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -175,8 +173,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length > 0);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -211,8 +209,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertNotNull(result);
         assertTrue(result.length > 0);
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -242,8 +240,8 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.length > 0);
 
         boolean foundChannel = false;
-        for (int i = 0; i < result.length; i++) {
-            ChannelTreeNode item = (ChannelTreeNode) result[i];
+        for (Object oIn : result) {
+            ChannelTreeNode item = (ChannelTreeNode) oIn;
             if (item.getName() != null) {
                 if (item.getName().equals(channel.getName())) {
                     foundChannel = true;
@@ -259,7 +257,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         Org org = OrgFactory.createOrg();
         org.setName("org created by OrgFactory test: " + TestUtils.randomString());
         org = OrgFactory.save(org);
-        assertTrue(org.getId().longValue() > 0);
+        assertTrue(org.getId() > 0);
         return org;
     }
 }

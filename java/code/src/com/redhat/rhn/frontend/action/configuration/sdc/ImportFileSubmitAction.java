@@ -37,7 +37,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,8 +138,8 @@ public class ImportFileSubmitAction extends RhnSetAction {
 
         //Look at every path, validate and either add that path to the
         //import set or add error messages for that path to the request.
-        for (int i = 0; i < names.length; i++) {
-            String name = names[i].trim(); //trim takes care of \r chars too.
+        for (String nameIn : names) {
+            String name = nameIn.trim(); //trim takes care of \r chars too.
             if (name.equals("")) {
                 continue; //skip blank lines... would cause error.
             }
@@ -150,7 +149,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
             //add to the import set
             if (problems.isEmpty()) {
                 ConfigFileName path =
-                    ConfigurationFactory.lookupOrInsertConfigFileName(name);
+                        ConfigurationFactory.lookupOrInsertConfigFileName(name);
                 importSet.addElement(path.getId());
             }
             //add to the errors
@@ -189,9 +188,8 @@ public class ImportFileSubmitAction extends RhnSetAction {
          * actually just the two longs. The user and label should be for the
          * RhnSet, but not for every element of the set.
          */
-        Iterator i = selectedSet.getElements().iterator();
-        while (i.hasNext()) {
-            importSet.addElement(((RhnSetElement)i.next()).getElement());
+        for (RhnSetElement rhnSetElementIn : selectedSet.getElements()) {
+            importSet.addElement(rhnSetElementIn.getElement());
         }
 
         //data cleanup

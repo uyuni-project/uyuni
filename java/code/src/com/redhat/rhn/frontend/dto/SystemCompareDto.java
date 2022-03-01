@@ -61,7 +61,7 @@ public class SystemCompareDto {
      */
     public List<Item> getLastCheckinDates() {
         LocalizationService ls = LocalizationService.getInstance();
-        List<String> ret = new LinkedList<String>();
+        List<String> ret = new LinkedList<>();
         for (Server server : servers) {
             ret.add(ls.formatDate(server.getLastCheckin()));
         }
@@ -96,10 +96,10 @@ public class SystemCompareDto {
      * @return a List of List of items
      */
     private List<List<Item>> compareList(List<List> lists, Map<String, String> idMap) {
-        List<List<Item>> compared = new LinkedList<List<Item>>();
-        Map<String, Integer> similarity = new HashMap<String, Integer>();
+        List<List<Item>> compared = new LinkedList<>();
+        Map<String, Integer> similarity = new HashMap<>();
         for (List list : lists) {
-            List<Item> itemized = new LinkedList<Item>();
+            List<Item> itemized = new LinkedList<>();
             for (Object o : list) {
                 String s = (o != null) ? String.valueOf(o).trim() : "";
                 Item i = new Item();
@@ -128,8 +128,8 @@ public class SystemCompareDto {
     }
 
     private List<Item> compare(List strings, Map<String, String> idMap) {
-        List<Item> compared = new LinkedList<Item>();
-        Map<String, Integer> similarity = new HashMap<String, Integer>();
+        List<Item> compared = new LinkedList<>();
+        Map<String, Integer> similarity = new HashMap<>();
         for (Object o : strings) {
             String s = (o != null) ? String.valueOf(o).trim() : "";
             Item i = new Item();
@@ -156,7 +156,7 @@ public class SystemCompareDto {
      */
 
     public List<List<Item>> getMacAddresses() {
-        List<List> addresses = new LinkedList<List>();
+        List<List> addresses = new LinkedList<>();
         for (Server system : servers) {
             addresses.add(getMacAddresses(system));
         }
@@ -168,7 +168,7 @@ public class SystemCompareDto {
      * @return a list of ip addresses per system
      */
     public List<List<Item>> getIpAddresses() {
-        List<List> addresses = new LinkedList<List>();
+        List<List> addresses = new LinkedList<>();
         for (Server system : servers) {
             addresses.add(getIpAddresses(system));
         }
@@ -180,7 +180,7 @@ public class SystemCompareDto {
      * @return a list of ip addresses per system
      */
     public List<List<Item>> getIpv6Addresses() {
-        List<List> addresses = new LinkedList<List>();
+        List<List> addresses = new LinkedList<>();
         for (Server system : servers) {
             addresses.add(getIpv6Addresses(system));
         }
@@ -192,8 +192,8 @@ public class SystemCompareDto {
      * @return a list of system groups per system
      */
     public List<List<Item>> getSystemGroups() {
-        List<List> groups = new LinkedList<List>();
-        Map<String, String> idMap = new HashMap<String, String>();
+        List<List> groups = new LinkedList<>();
+        Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
             List sysGroups = new LinkedList();
             for (ServerGroup sg : system.getManagedGroups()) {
@@ -211,7 +211,7 @@ public class SystemCompareDto {
      */
     public List<Item> getRegistrationDates() {
         LocalizationService ls = LocalizationService.getInstance();
-        List<String> dates = new LinkedList<String>();
+        List<String> dates = new LinkedList<>();
         for (Server s : servers) {
             dates.add(ls.formatDate(s.getCreated()));
         }
@@ -223,7 +223,7 @@ public class SystemCompareDto {
      * @return the list of system ids
      */
     public List<Item> getSystemIds() {
-        List<String> ids = new LinkedList<String>();
+        List<String> ids = new LinkedList<>();
         for (Server s : servers) {
             ids.add(s.getId().toString());
         }
@@ -235,8 +235,8 @@ public class SystemCompareDto {
      * @return the list of base channels
      */
     public List<Item> getBaseChannels() {
-        List<String> ids = new LinkedList<String>();
-        Map<String, String> idMap = new HashMap<String, String>();
+        List<String> ids = new LinkedList<>();
+        Map<String, String> idMap = new HashMap<>();
         for (Server s : servers) {
             if (s.getBaseChannel() != null) {
                 ids.add(s.getBaseChannel().getName());
@@ -255,8 +255,8 @@ public class SystemCompareDto {
      * @return a list of child channels per system
      */
     public List<List<Item>> getChildChannels() {
-        List<List> ret = new LinkedList<List>();
-        Map<String, String> idMap = new HashMap<String, String>();
+        List<List> ret = new LinkedList<>();
+        Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
             List keys = new LinkedList();
             Set<Channel> childChannels = system.getChildChannels();
@@ -277,8 +277,8 @@ public class SystemCompareDto {
      * @return a list of configuration channels per system
      */
     public List<List<Item>> getConfigChannels() {
-        List<List> ret = new LinkedList<List>();
-        Map<String, String> idMap = new HashMap<String, String>();
+        List<List> ret = new LinkedList<>();
+        Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
             List keys = new LinkedList();
             if (system.getConfigChannelCount() > 0) {
@@ -298,7 +298,7 @@ public class SystemCompareDto {
      * @return a list of system add-on entitlements per system
      */
     public List<List<Item>> getSystemEntitlements() {
-        List<List> ret = new LinkedList<List>();
+        List<List> ret = new LinkedList<>();
         for (Server system : servers) {
             List keys = new LinkedList();
             if (!system.getEntitlements().isEmpty()) {
@@ -327,7 +327,7 @@ public class SystemCompareDto {
      * @return a list of channel family entitlements per system
      */
     public List<List<Item>> getSoftwareEntitlements() {
-        List<List> ret = new LinkedList<List>();
+        List<List> ret = new LinkedList<>();
         for (Server system : servers) {
             List keys = new LinkedList();
 
@@ -352,8 +352,8 @@ public class SystemCompareDto {
      * @return a list of activation keys used per system
      */
     public List<List<Item>> getActivationKeys() {
-        List<List> ret = new LinkedList<List>();
-        Map<String, String> idMap = new HashMap<String, String>();
+        List<List> ret = new LinkedList<>();
+        Map<String, String> idMap = new HashMap<>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         for (Server system : servers) {
             List keys = new LinkedList();
@@ -385,7 +385,7 @@ public class SystemCompareDto {
     }
 
     private List<String> getIpAddresses(Server system) {
-        List<String> macs = new LinkedList<String>();
+        List<String> macs = new LinkedList<>();
         for (NetworkInterface n : system.getNetworkInterfaces()) {
             if (!n.getIPv4Addresses().isEmpty()) {
                 for (ServerNetAddress4 addr : n.getIPv4Addresses()) {
@@ -400,7 +400,7 @@ public class SystemCompareDto {
     }
 
     private List<String> getIpv6Addresses(Server system) {
-        List<String> addrs = new LinkedList<String>();
+        List<String> addrs = new LinkedList<>();
         for (NetworkInterface n : system.getNetworkInterfaces()) {
             for (ServerNetAddress6 ad6 : n.getIPv6Addresses()) {
                 String addr = ad6.getAddress();

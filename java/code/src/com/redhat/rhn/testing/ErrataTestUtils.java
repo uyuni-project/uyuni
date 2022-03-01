@@ -79,7 +79,7 @@ public class ErrataTestUtils {
      * @throws Exception if anything goes wrong
      */
     public static Server createTestServer(User user) throws Exception {
-        return createTestServer(user, new ArrayList<Channel>());
+        return createTestServer(user, new ArrayList<>());
     }
 
     /**
@@ -101,7 +101,7 @@ public class ErrataTestUtils {
         WriteMode m = ModeFactory.getWriteMode("cve_audit_queries",
                 "insert_relevant_channel");
 
-        Map<String, Long> parameters = new HashMap<String, Long>(2);
+        Map<String, Long> parameters = new HashMap<>(2);
         parameters.put("sid", server.getId());
         parameters.put("cid", channel.getId());
 
@@ -340,9 +340,9 @@ public class ErrataTestUtils {
         Package result = PackageTest.createTestPackage(user.getOrg());
         result.setPackageArch(PackageFactory.lookupPackageArchByLabel(arch));
 
-        List<Long> list = new ArrayList<Long>(1);
+        List<Long> list = new ArrayList<>(1);
         list.add(result.getId());
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("cid", channel.getId());
         WriteMode m = ModeFactory.getWriteMode("Channel_queries", "add_channel_packages");
         m.executeUpdate(params, list);

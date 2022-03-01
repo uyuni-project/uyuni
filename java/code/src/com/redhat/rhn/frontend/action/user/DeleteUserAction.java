@@ -67,7 +67,7 @@ public class DeleteUserAction extends RhnAction {
         if (loggedInUser.getId().equals(uid)) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("user.deleteself"));
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("uid", uid);
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward("failure"),
@@ -78,7 +78,7 @@ public class DeleteUserAction extends RhnAction {
         if (user.getPermanentRoles().contains(RoleFactory.lookupByLabel("org_admin"))) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("user.deleteadmin"));
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("uid", uid);
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward("failure"),
@@ -91,7 +91,7 @@ public class DeleteUserAction extends RhnAction {
         catch (DeleteSatAdminException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("user.cannot.delete.last.sat.admin"));
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("uid", uid);
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward("failure"),
