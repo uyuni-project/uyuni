@@ -1,3 +1,5 @@
+- Fix errors on calling sed -E ... by force_restart_minion
+  with action chains
 - Postgres exporter package was renamed
 - fix deprecation warnings
 - enforce correct minion configuration similar to bootstrapping
@@ -12,6 +14,7 @@ Wed Jan 12 16:11:26 CET 2022 - jmassaguerpla@suse.de
     in transactional systems
   * Don't create skeleton /srv/salt/top.sls
   * Add missing compressed_hash value from Kiwi inspect (bsc#1191702)
+
 -------------------------------------------------------------------
 Thu Oct 28 12:10:46 CEST 2021 - jgonzalez@suse.com
 
