@@ -842,7 +842,7 @@ end
 When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
-  # rubocop:disable Style/WhateverLineLengthIsCalled
+  # rubocop:disable Layout/LineLength
   # Distribution
   repos = ENV["PROVIDER"] != "aws" ? "os_pool_repo os_update_repo" : "SLE-Module-Basesystem#{os_version}-Pool SLE-Module-Basesystem#{os_version}-Updates"
   log $build_host.run("zypper mr --disable #{repos}")
@@ -864,6 +864,7 @@ When(/^I disable repositories after installing Docker$/) do
     repos = ENV["PROVIDER"] != "aws" ? "containers_pool_repo containers_updates_repo" : "SLE-Module-Containers#{os_version}-Pool SLE-Module-Containers#{os_version}-Updates"
     log $build_host.run("zypper mr --disable #{repos}")
   end
+  # rubocop:enable Layout/LineLength
 end
 
 # Register client
