@@ -68,7 +68,7 @@ check_db_version() {
 parse_rhn_property() {
     ATTRIBUTE="$1"
     VAR="$2"
-    VALUE=$(grep "^$ATTRIBUTE" /etc/rhn/rhn.conf |cut -d'=' -f2 | tail -n1 | tr -d '\n ')
+    VALUE=$(grep "^$ATTRIBUTE" /etc/rhn/rhn.conf |cut -d'=' -f2 | tail -n1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '\n')
     eval "$(printf "%q=%q" "$VAR" "$VALUE")"
 }
 
