@@ -51,7 +51,6 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
@@ -128,7 +127,6 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
@@ -181,7 +179,6 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
 
         Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, "5");
 
