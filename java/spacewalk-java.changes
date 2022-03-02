@@ -1,5 +1,4 @@
-- enhance SCC data with checkin time and submit the checkin times
-  for all clients, that they can be seen in SCC
+- allow SCC to display the last check-in time for registered systems
 - generate the system ssh key when bootstrapping a salt-ssh client
   (bsc#1194909)
 - Provide link for CVEs
