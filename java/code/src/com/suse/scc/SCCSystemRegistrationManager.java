@@ -83,7 +83,7 @@ public class SCCSystemRegistrationManager {
 
         ArrayList<List<SCCUpdateSystemJson>> batches = new ArrayList<>(
                 IntStream.range(0, sysList.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 199),
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
                                 Collectors.mapping(e->sysList.get(e), Collectors.toList())
                                 )).values());
         for (List<SCCUpdateSystemJson> batch: batches) {
