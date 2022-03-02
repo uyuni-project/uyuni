@@ -1,4 +1,8 @@
-- handle npe when syncing ubuntu errata (bsc#1196619)
+-------------------------------------------------------------------
+Wed Mar 02 14:10:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.2.33-1
+  * handle npe when syncing ubuntu errata (bsc#1196619)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
