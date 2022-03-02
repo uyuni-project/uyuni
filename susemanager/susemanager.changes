@@ -1,3 +1,4 @@
+- set default for registration batch size
   * Added gettext build requirement for RHEL.
   * Reuse existing certificate code.
 
