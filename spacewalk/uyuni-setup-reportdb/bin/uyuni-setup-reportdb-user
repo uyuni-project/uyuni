@@ -99,7 +99,7 @@ set_value() {
 parse_properties() {
     ATTRIBUTE="$1"
     VAR="$2"
-    VALUE=$(grep "^$ATTRIBUTE" $RHN_CONF |cut -d'=' -f2 | tail -n1 | tr -d '\n ')
+    VALUE=$(grep "^$ATTRIBUTE" $RHN_CONF |cut -d'=' -f2 | tail -n1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '\n')
     eval "$(printf "%q=%q" "$VAR" "$VALUE")"
 }
 
