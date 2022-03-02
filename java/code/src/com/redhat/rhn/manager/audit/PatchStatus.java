@@ -25,7 +25,8 @@ public enum PatchStatus {
     AFFECTED_PATCH_INAPPLICABLE("Affected, patch available in unassigned channel", 0),
     AFFECTED_PATCH_APPLICABLE("Affected, patch available in assigned channel", 1),
     NOT_AFFECTED("Not affected", 2),
-    PATCHED("Patched", 3);
+    PATCHED("Patched", 3),
+    AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT("Affected, patch available in a Product Migration target", 4);
 
     /**
      * The lower the more severe

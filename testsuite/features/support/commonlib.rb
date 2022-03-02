@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021 SUSE LLC.
+# Copyright (c) 2013-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -14,62 +14,6 @@ def generate_temp_file(name, content)
   Tempfile.open(name) do |file|
     file.write(content)
     return file.path
-  end
-end
-
-# extract various data from Retail yaml configuration
-def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['terminals'].keys
-end
-
-def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['branch_prefix']
-end
-
-def read_server_domain_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['server_domain']
-end
-
-# determine image for PXE boot tests
-def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    'Kiwi/POS_Image-JeOS7_42'
-    # 'Kiwi/POS_Image-JeOS7_head' for head branch
-  when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    'Kiwi/POS_Image-JeOS6_41'
-    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
-    # 'Kiwi/POS_Image-JeOS6_head' for head branch
-  else
-    raise 'Is this a supported image version?'
-  end
-end
-
-def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    'POS_Image_JeOS7_42'
-    # 'POS_Image_JeOS7_head' for head branch
-  when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    'POS_Image_JeOS6_41'
-    # 'POS_Image_JeOS6_42' for 4.2 branch
-    # 'POS_Image_JeOS6_head' for head branch
-  else
-    raise 'Is this a supported image version?'
   end
 end
 
@@ -100,9 +44,9 @@ end
 # the URL depends on whether we use a proxy or not
 def registration_url
   if $proxy.nil?
-    "https://#{$server.ip}/XMLRPC"
+    "https://#{$server.full_hostname}/XMLRPC"
   else
-    "https://#{$proxy.ip}/XMLRPC"
+    "https://#{$proxy.full_hostname}/XMLRPC"
   end
 end
 
@@ -110,7 +54,7 @@ def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
   raise unless (items_label = find(:xpath, items_label_xpath).text)
-  items_label.split('of ')[1]
+  items_label.split('of ')[1].strip
 end
 
 def product
@@ -179,7 +123,7 @@ def click_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -188,7 +132,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -197,7 +141,7 @@ def click_link_or_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -208,7 +152,7 @@ module CapybaraNodeElementExtension
     begin
       raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
     rescue StandardError, Capybara::ExpectationNotMet => e
-      puts e.message # Skip errors related to .senna-loading element
+      STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end
@@ -236,6 +180,7 @@ end
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
   repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
   repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
   repo_name.gsub!('/', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label

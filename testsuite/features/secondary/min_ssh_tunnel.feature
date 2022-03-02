@@ -85,3 +85,4 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I accept "sle_minion" key in the Salt master
     Then I should see "sle_minion" via spacecmd
+    And I wait until onboarding is completed for "sle_minion"

@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
@@ -26,7 +26,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I check the "prometheus" formula
     And I check the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Configure Prometheus formula
     When I follow "Formulas" in the content area
@@ -53,9 +53,13 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Visit monitoring endpoints on the minion
-    When I visit "Prometheus" endpoint of this "sle_minion"
+    When I wait until "prometheus" service is active on "sle_minion"
+    And I visit "Prometheus" endpoint of this "sle_minion"
+    And I wait until "prometheus-node_exporter" service is active on "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"
+    And I wait until "prometheus-apache_exporter" service is active on "sle_minion"
     And I visit "Prometheus apache exporter" endpoint of this "sle_minion"
+    And I wait until "prometheus-postgres_exporter" service is active on "sle_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
@@ -63,7 +67,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I uncheck the "prometheus" formula
     And I uncheck the "prometheus-exporters" formula
     And I click on "Save"
-    Then I should see a "Formula saved" text
+    Then I wait until I see "Formula saved" text
 
   Scenario: Cleanup: apply highstate after test monitoring
     And I follow "States" in the content area

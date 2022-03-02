@@ -188,6 +188,14 @@ public class Credentials extends BaseDomainHelper {
     }
 
     /**
+     * @return if this credential is the current primary scc credential which
+     * is at the moment denoted by having the url field set.
+     */
+    public boolean isPrimarySCCCredential() {
+        return type.getLabel().equals(TYPE_SCC) && url != null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

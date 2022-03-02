@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.1.18
+Version:        4.1.19
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -34,6 +34,7 @@ BuildArch:      noarch
 BuildRequires:  fdupes
 BuildRequires:  docbook-utils
 BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif

@@ -1,16 +1,16 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
 #   /etc/rhn/rhn.conf
-# file on your SUSE Manager server.
+# file on your Uyuni server.
 #
 # For the scope of these tests, we configure it as follows:
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
 
 @buildhost
-@long_test
+@scope_retail
 @scope_building_container_images
 Feature: Build OS images
 
@@ -43,7 +43,7 @@ Feature: Build OS images
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
-    And I am on the image store of the kiwi image for organization "1"
+    And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image
 
 @proxy
@@ -55,7 +55,7 @@ Feature: Build OS images
     And I apply state "image-sync" to "proxy"
     Then the image should exist on "proxy"
 
-  Scenario: Cleanup: remove the image from SUSE Manager server
+  Scenario: Cleanup: remove the image from Uyuni server
     Given I am authorized for the "Images" section
     When I follow the left menu "Images > Image List"
     And I wait until I do not see "There are no entries to show." text

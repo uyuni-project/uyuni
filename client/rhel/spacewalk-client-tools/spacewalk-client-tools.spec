@@ -77,7 +77,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.1.10
+Version:        4.1.11
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
@@ -272,6 +272,7 @@ Requires:       python3-dbus
 Requires:       python3-gobject-base
 %endif
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 
 %ifnarch s390 s390x

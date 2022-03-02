@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 12 15:59:35 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.6-1
+  * require python macros for building
+
+-------------------------------------------------------------------
 Mon Mar 01 13:17:27 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.5-1

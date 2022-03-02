@@ -1,3 +1,11 @@
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+
+-------------------------------------------------------------------
+Wed Jan 26 11:12:42 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.31-1
+  * Update Web UI version to 4.1.13
+
 -------------------------------------------------------------------
 Wed Nov 03 12:33:20 CET 2021 - jgonzalez@suse.com
 

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
@@ -264,6 +265,7 @@ public class SaltServerActionService {
         }
 
         ActionType actionType = actionIn.getActionType();
+        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
@@ -308,8 +310,7 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
             ImageBuildActionDetails details = imageBuildAction.getDetails();
-            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
-                    ip -> imageBuildAction(
+            return ImageProfileFactory.lookupById(details.getImageProfileId()).map(ip -> imageBuildAction(
                             minions,
                             Optional.ofNullable(details.getVersion()),
                             ip,

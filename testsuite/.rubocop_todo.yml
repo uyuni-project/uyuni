@@ -46,6 +46,7 @@ Layout/EmptyLineAfterGuardClause:
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/lock_packages_on_client.rb'
     - 'features/step_definitions/navigation_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/client_stack.rb'
@@ -67,7 +68,7 @@ Layout/FirstArrayElementLineBreak:
 # Cop supports --auto-correct.
 Layout/FirstHashElementLineBreak:
   Exclude:
-    - 'features/step_definitions/salt_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'
     - 'features/support/xmlrpc_configchannel.rb'
@@ -91,7 +92,7 @@ Layout/FirstMethodArgumentLineBreak:
 # SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
 Layout/HashAlignment:
   Exclude:
-    - 'features/step_definitions/salt_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'
 
@@ -258,6 +259,8 @@ Metrics/AbcSize:
 # ExcludedMethods: refine
 Metrics/BlockLength:
   Max: 26
+  Exclude:
+    - 'features/step_definitions/retail_steps.rb'
 
 # Offense count: 9
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -322,6 +325,7 @@ Style/AndOr:
   Exclude:
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -394,6 +398,7 @@ Style/GlobalVars:
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/lock_packages_on_client.rb'
     - 'features/step_definitions/navigation_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
@@ -417,6 +422,7 @@ Style/IfUnlessModifier:
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/navigation_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/ssh.rb'
@@ -429,6 +435,7 @@ Style/ImplicitRuntimeError:
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/lock_packages_on_client.rb'
     - 'features/step_definitions/navigation_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/commonlib.rb'
@@ -453,6 +460,7 @@ Style/InlineComment:
 Style/IpAddresses:
   Exclude:
     - 'features/step_definitions/command_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 473
@@ -477,6 +485,7 @@ Style/MissingElse:
     - 'features/step_definitions/datepicker_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/navigation_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/support/client_stack.rb'
     - 'features/support/commonlib.rb'
@@ -542,6 +551,7 @@ Style/RedundantInterpolation:
     - 'Rakefile'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -572,7 +582,7 @@ Style/StderrPuts:
 Style/StringHashKeys:
   Exclude:
     - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
+    - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'

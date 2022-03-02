@@ -28,7 +28,7 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.1.10
+Version:        4.1.11
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -98,6 +98,7 @@ fi
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
+%{_sbindir}/uyuni-update-config
 %{_bindir}/rhn-config-satellite.pl
 %{_bindir}/rhn-config-schema.pl
 %{_bindir}/rhn-generate-pem.pl
@@ -125,6 +126,7 @@ fi
 %{_unitdir}/salt-secrets-config.service
 %{_unitdir}/mgr-websockify.service
 %{_unitdir}/uyuni-check-database.service
+%{_unitdir}/uyuni-update-config.service
 %{_unitdir}/*.service.d
 %endif
 

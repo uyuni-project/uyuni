@@ -5,8 +5,5 @@ network:
   ethernets:
     ens3:
       dhcp4: yes
-      dhcp4-overrides:
-        use-dns: no
-        use-routes: no
     ens4:
       dhcp4: yes

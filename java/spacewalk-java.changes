@@ -1,12 +1,36 @@
-- Run Prometheus JMX exporter as Java agent (bsc#1184617)
-- Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
-- Fix package update action with shared channels (bsc#1191313)
-- fix issue with empty action chains getting deleted too early (bsc#1191377)
-- switch to best repo auth item for contentsources (bsc#1191442)
-- Set product name and version in the User-Agent header when connecting to SCC
-- update last boot time of SSH Minions after bootstrapping (bsc#1191899)
-- Mark SSH minion actions when they're picked up (bsc#1188505)
-- Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+- Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
+- fix ClassCastException during action processing (bsc#1195043)
+- Fix disappearing metadata key files after channel change (bsc#1192822)
+- Pass only selected servers to taskomatic for cancelation (bsc#1194044)
+
+-------------------------------------------------------------------
+Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de
+
+-------------------------------------------------------------------
+Wed Jan 26 13:25:45 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.43-1
+  * Fix stack overflow when building a CLM project from modular sources (bsc#1194990)
+
+-------------------------------------------------------------------
+Wed Jan 12 16:06:03 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.42-1
+  * Avoid using RPM tags when filtering modular packages in CLM (bsc#1192487)
+  * fix XML syntax in cobbler snippets (bsc#1193694)
+  * Fix stripping module metadata when cloning channels in CLM (bsc#1193008)
+  * Fix system information forwarding to SCC (bsc#1188900)
+  * forward registration data to SUSE Customer Center
+  * Run Prometheus JMX exporter as Java agent (bsc#1184617)
+  * Fix calling wrong XMLRPC bootstrap method (bsc#1192736)
+  * Fix package update action with shared channels (bsc#1191313)
+  * fix issue with empty action chains getting deleted too early (bsc#1191377)
+  * switch to best repo auth item for contentsources (bsc#1191442)
+  * Set product name and version in the User-Agent header when connecting to SCC
+  * update last boot time of SSH Minions after bootstrapping (bsc#1191899)
+  * Mark SSH minion actions when they're picked up (bsc#1188505)
+  * Add compressed flag to image pillars when kiwi image is compressed (bsc#1191702)
 -------------------------------------------------------------------
 Thu Oct 28 12:07:07 CEST 2021 - jgonzalez@suse.com
 

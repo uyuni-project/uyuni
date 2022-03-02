@@ -20,14 +20,21 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.scc.SCCSystemRegistrationManager;
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.apache.log4j.Logger;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -163,6 +170,21 @@ public class MirrorCredentialsManager {
                         }
                     });
             }
+        }
+
+        // Check for systems registered under this credentials and start delete requests
+        List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
+        log.debug(itemList.size() + " RegCacheItems found to force delete");
+        try {
+            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            String uuid = ContentSyncManager.getUUID();
+            SCCConfig sccConfig = new SCCConfig(url, "", "", uuid);
+            SCCClient sccClient = new SCCWebClient(sccConfig);
+            SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
+            sccRegManager.deregister(itemList, true);
+        }
+        catch (URISyntaxException e) {
+            log.error("Invalid SCC URL configured.", e);
         }
 
         // Clear Repository Authentications

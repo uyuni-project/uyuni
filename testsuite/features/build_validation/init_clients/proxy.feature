@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -13,7 +13,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
 
-  Scenario: Install proxy software
+  Scenario: Install proxy software for build validation
     When I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
@@ -43,6 +43,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
     And I configure the proxy
+    And I allow all SSL protocols on the proxy's apache
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
@@ -78,6 +79,15 @@ Feature: Setup SUSE Manager proxy
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field
     And I enter "no" in first value field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@proxy
+@private_net
+  Scenario: Parametrize the branch network
+    When I follow first "Branch Network" in the content area
+    And I uncheck enable route box
+    And I uncheck enable NAT box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 

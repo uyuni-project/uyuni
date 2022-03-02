@@ -50,7 +50,7 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.1.5
+Version:        4.1.6
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -146,6 +146,7 @@ Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib >= 4.1.3
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}

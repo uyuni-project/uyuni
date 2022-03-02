@@ -45,7 +45,7 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        4.1.9
+Version:        4.1.10
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -75,6 +75,7 @@ Python 2 libraries required by both Uyuni server and client tools.
 Summary:        Uyuni server and client tools libraries for python3
 Group:          Development/Languages/Python
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 Conflicts:      %{name} < 1.7.0
 %if 0%{?suse_version}
 Requires:       python3-base

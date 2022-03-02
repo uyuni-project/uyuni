@@ -3,6 +3,7 @@ mgr_disable_mine:
   file.managed:
     - name: /etc/salt/minion.d/susemanager-mine.conf
     - contents: "mine_enabled: False"
+    - unless: grep 'mine_enabled:' /etc/salt/minion.d/susemanager-mine.conf
 
 mgr_salt_minion:
   service.running:

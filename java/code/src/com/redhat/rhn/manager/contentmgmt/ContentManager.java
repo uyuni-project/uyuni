@@ -74,6 +74,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -82,7 +83,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -1023,6 +1024,8 @@ public class ContentManager {
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         tgtChannel.getPackages().clear();
+        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+                srcChannel.getPackages().size(), filters.size()));
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
         ChannelFactory.save(tgtChannel);
@@ -1044,6 +1047,8 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
+        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+                src.getErratas().size(), errataFilters.size()));
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
@@ -1074,22 +1079,22 @@ public class ContentManager {
      * @return Pair containing (left side) a set of entities not filtered-out
      * and (right side) a set of entities filtered out
      */
-    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities,
-            Collection<? extends ContentFilter<T>> filters) {
+    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities, Collection<? extends ContentFilter<T>> filters) {
         Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
                 .collect(groupingBy(ContentFilter::getRule));
+        List<ContentFilter<T>> denyFilters = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList());
+        List<ContentFilter<T>> allowFilters = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList());
 
-        Predicate<T> denyPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList()).stream()
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
+        // First add the denied packages by testing all DENY filters against a package, and then filter out any package
+        // that is explicitly allowed by testing all ALLOW filters against the same package and negating the result.
+        Set<T> denied = entities.stream()
+                .filter(e -> denyFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
+                .filter(e -> !allowFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
+                .collect(Collectors.toUnmodifiableSet());
 
-        Predicate<T> allowPredicate = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList()).stream()
-                .map(f -> (Predicate) f)
-                .reduce(x -> false, (f1, f2) -> f1.or(f2));
-
-        Predicate<T> compositePredicate = denyPredicate.negate().or(allowPredicate);
-        Map<Boolean, Set<T>> filteredEntities = entities.stream().collect(partitioningBy(compositePredicate, toSet()));
-        return Pair.of(filteredEntities.get(true), filteredEntities.get(false));
+        Set<T> allowed = new HashSet<>(entities);
+        allowed.removeAll(denied);
+        return Pair.of(allowed, denied);
     }
 
     private static List<Long> extractPackageIds(Collection<Package> packages) {

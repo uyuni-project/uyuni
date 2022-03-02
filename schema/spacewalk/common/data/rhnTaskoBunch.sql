@@ -114,4 +114,7 @@ INSERT INTO RhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-minion-action-executor-bunch', 'Execute actions on SSH Minions', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-forward-registration-bunch', 'Forward registrations to SUSE Customer Center', null);
+
 commit;

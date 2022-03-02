@@ -1,6 +1,13 @@
-- exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
-- Minor spec update.
-- Added RHN config parameter httpd_config_dir.
+-------------------------------------------------------------------
+Wed Jan 12 16:03:15 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.30-1
+  * Add headers to update proxy auth token in listChannels (bsc#1193585)
+  * require python macros for building
+  * Fix the IS_SUSE variable in spacewalk-debug
+  * exchange zypp-plugin dependency to use the python3 version (bsc#1192514)
+  * Minor spec update.
+  * Added RHN config parameter httpd_config_dir.
 
 -------------------------------------------------------------------
 Thu Oct 28 12:03:44 CEST 2021 - jgonzalez@suse.com

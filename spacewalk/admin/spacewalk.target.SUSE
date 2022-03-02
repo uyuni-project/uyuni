@@ -1,5 +1,6 @@
 [Unit]
 Description=Spacewalk
+Requires=uyuni-update-config.service
 Requires=uyuni-check-database.service
 Requires=tomcat.service
 Requires=spacewalk-wait-for-tomcat.service

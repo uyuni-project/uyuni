@@ -87,7 +87,12 @@ public class SCCClientUtils {
             String user, String logDir) throws IOException {
         InputStream inputStream = null;
         try {
-            inputStream = response.getEntity().getContent();
+            if (response.getEntity() == null) {
+                inputStream = InputStream.nullInputStream();
+            }
+            else {
+                inputStream = response.getEntity().getContent();
+            }
             Header encodingHeader = response.getFirstHeader("Content-Encoding");
             String encoding = encodingHeader != null ? encodingHeader.getValue() : null;
             if (GZIP_ENCODING.equals(encoding)) {

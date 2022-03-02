@@ -64,6 +64,7 @@ Feature: Manage users
     And I should see a "Created:" text
     And I should see a "Last Sign In:" text
 
+@susemanager
   Scenario: Add roles
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
@@ -75,7 +76,32 @@ Feature: Manage users
     And I check "role_config_admin"
     And I click on "Update"
     Then the "role_satellite_admin" checkbox should be disabled
-    And I should see a "$PRODUCT Administrator" text
+    And I should see a "SUSE Manager Administrator" text
+    And I should see "role_org_admin" as checked
+    And I should see a "Organization Administrator" text
+    And the "role_system_group_admin" checkbox should be disabled
+    And I should see a "System Group Administrator - [ Admin Access ]" text
+    And the "role_channel_admin" checkbox should be disabled
+    And I should see a "Channel Administrator - [ Admin Access ]" text
+    And the "role_activation_key_admin" checkbox should be disabled
+    And I should see a "Activation Key Administrator - [ Admin Access ]" text
+    And the "role_config_admin" checkbox should be disabled
+    And I should see a "Configuration Administrator - [ Admin Access ]" text
+    And I should see a "Above roles are granted via the Organization Administrator role." text
+
+@uyuni
+  Scenario: Add roles
+    When I follow the left menu "Users > User List > Active"
+    And I follow "user1"
+    When the "role_satellite_admin" checkbox should be disabled
+    And I check "role_org_admin"
+    And I check "role_system_group_admin"
+    And I check "role_channel_admin"
+    And I check "role_activation_key_admin"
+    And I check "role_config_admin"
+    And I click on "Update"
+    Then the "role_satellite_admin" checkbox should be disabled
+    And I should see a "Uyuni Administrator" text
     And I should see "role_org_admin" as checked
     And I should see a "Organization Administrator" text
     And the "role_system_group_admin" checkbox should be disabled
@@ -132,13 +158,28 @@ Feature: Manage users
     When I follow "All"
     Then I should see a "user1" link
 
+@susemanager
   Scenario: Reactivate user
     When I follow the left menu "Users > User List > Active"
     And I follow "Deactivated"
     And I follow "user1"
     Then I should see a "Reactivate User" link
     When I follow "Reactivate User"
-    Then I should see a "This action will allow this user to access $PRODUCT. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
+    Then I should see a "This action will allow this user to access SUSE Manager. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
+    When I click on "Reactivate User"
+    Then I should see a "Active Users" text
+    And I should see a "user1" link
+    When I follow "Deactivated"
+    Then I should not see a "user1" link
+
+@uyuni
+  Scenario: Reactivate user
+    When I follow the left menu "Users > User List > Active"
+    And I follow "Deactivated"
+    And I follow "user1"
+    Then I should see a "Reactivate User" link
+    When I follow "Reactivate User"
+    Then I should see a "This action will allow this user to access Uyuni. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
     When I click on "Reactivate User"
     Then I should see a "Active Users" text
     And I should see a "user1" link

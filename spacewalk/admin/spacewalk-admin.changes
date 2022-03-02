@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 12 16:02:49 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.11-1
+  * add service to update configfile and introduce a backup scc user
+
+-------------------------------------------------------------------
 Thu Sep 30 16:43:49 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.10-1

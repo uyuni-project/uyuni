@@ -1,5 +1,9 @@
-- Make bootstrap script to use bash when called with a different
-  interpreter (bsc#1191656)
+-------------------------------------------------------------------
+Wed Jan 12 16:04:07 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.20-1
+  * Make bootstrap script to use bash when called with a different
+    interpreter (bsc#1191656)
 
 -------------------------------------------------------------------
 Fri Oct 29 15:45:46 CEST 2021 - jgonzalez@suse.com

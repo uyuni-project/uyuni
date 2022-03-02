@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jan 12 16:07:12 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.7-1
+  * Update the token in case a channel can't be found in the cache.
+    (bsc#1193585)
+  * Fix traceback on handling sslerror (bsc#1187673)
+
+-------------------------------------------------------------------
 Thu Oct 28 12:13:34 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.6-1

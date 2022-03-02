@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jan 12 16:08:18 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.5-1
+  * Fixes query for system-history report to prevent more than one
+    row returned by a subquery with rhnxccdftestresult.identifier
+    (bsc#1191192)
+
+-------------------------------------------------------------------
 Thu Oct 28 12:08:58 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.4-1

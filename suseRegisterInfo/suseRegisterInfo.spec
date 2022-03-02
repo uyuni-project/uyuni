@@ -25,7 +25,7 @@
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
-Version:        4.1.3
+Version:        4.1.4
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0-only
@@ -67,6 +67,7 @@ Group:          Productivity/Other
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 2 specific files for %{name}.

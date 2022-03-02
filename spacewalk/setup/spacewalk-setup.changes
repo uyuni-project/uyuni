@@ -1,11 +1,15 @@
-- Increase "max_event_size" value for the Salt master (bsc#1191340)
-- Leave Cobbler bootloader directory at the default (bsc#1187708)
-- Don't delete cobbler.conf contents.
-- Fixed FileNotFoundError on cobbler setup.
-- cobbler20-setup was removed
-- spacewalk-setup-cobbler was reimplemented in Python
-- Config files for Cobbler don't get edited in place anymore, thus the original
-  ones are saved with a ".backup" suffix
+-------------------------------------------------------------------
+Wed Jan 12 16:08:52 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.10-1
+  * Increase "max_event_size" value for the Salt master (bsc#1191340)
+  * Leave Cobbler bootloader directory at the default (bsc#1187708)
+  * Don't delete cobbler.conf contents.
+  * Fixed FileNotFoundError on cobbler setup.
+  * cobbler20-setup was removed
+  * spacewalk-setup-cobbler was reimplemented in Python
+  * Config files for Cobbler don't get edited in place anymore, thus the original
+    ones are saved with a ".backup" suffix
 
 -------------------------------------------------------------------
 Mon Sep 20 12:16:05 CEST 2021 - jmassaguerpla@suse.de

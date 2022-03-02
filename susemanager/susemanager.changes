@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 12 16:10:25 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.32-1
+  * add additional default config values for forwarding registrations to SCC
+
+-------------------------------------------------------------------
 Fri Oct 29 15:46:04 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.31-1

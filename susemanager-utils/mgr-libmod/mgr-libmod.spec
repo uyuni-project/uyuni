@@ -16,7 +16,7 @@
 #
 
 Name:           mgr-libmod
-Version:        4.1.9
+Version:        4.1.10
 Release:        1
 Summary:        libmod app
 License:        MIT
@@ -26,6 +26,7 @@ Requires(pre):  coreutils
 Requires:       python3-libmodulemd
 BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
+BuildRequires:  python3-rpm-macros
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 URL:            https://github.com/uyuni-project/uyuni

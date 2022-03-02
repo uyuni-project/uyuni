@@ -45,7 +45,7 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.1.1
+Version:        4.1.2
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
 Release:        1%{?dist}
@@ -109,6 +109,7 @@ Obsoletes:      %{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host

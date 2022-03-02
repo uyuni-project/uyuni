@@ -1,3 +1,13 @@
+- Continue with index migration when the expected indexes do not exist
+  (bsc#1192566)
+
+-------------------------------------------------------------------
+Wed Jan 12 16:10:58 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.24-1
+  * Fix rhnChannelNewestPackageView in case there are duplicates (bsc#1193612)
+  * DB schema to support forwarding data to SCC
+
 -------------------------------------------------------------------
 Mon Sep 20 12:19:10 CEST 2021 - jmassaguerpla@suse.de
 

@@ -16,10 +16,21 @@ Feature: Bare metal discovery
     When I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
+@susemanager
   Scenario: Enable bare metal discovery
     When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
+    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
+    And I should see a "Enable adding to this organization" button
+    When I click on "Enable adding to this organization"
+    Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
+    And the PXE default profile should be enabled
+
+@uyuni
+  Scenario: Enable bare metal discovery
+    When I follow the left menu "Admin > Manager Configuration > General"
+    When I follow "Bare-metal systems" in the content area
+    Then I should see a "Allows Uyuni to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
     When I click on "Enable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
@@ -106,10 +117,21 @@ Feature: Bare metal discovery
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
+@susemanager
   Scenario: Cleanup: disable bare metal discovery
     When I follow the left menu "Admin > Manager Configuration > General"
     And I follow "Bare-metal systems" in the content area
-    Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
+    Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
+    And I should see a "Disable adding to this organization" button
+    When I click on "Disable adding to this organization"
+    Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
+    And the PXE default profile should be disabled
+
+@uyuni
+  Scenario: Cleanup: disable bare metal discovery
+    When I follow the left menu "Admin > Manager Configuration > General"
+    And I follow "Bare-metal systems" in the content area
+    Then I should see a "Allows Uyuni to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text

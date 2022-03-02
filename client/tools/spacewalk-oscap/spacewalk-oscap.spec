@@ -29,7 +29,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-oscap
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 Summary:        OpenSCAP plug-in for rhn-check
 License:        GPL-2.0-only
@@ -80,6 +80,7 @@ Requires:       python3-rhn-check >= 2.8.4
 Requires:       python3-rhnlib >= 2.8.3
 BuildRequires:  python3-devel
 BuildRequires:  python3-rhnlib >= 2.8.3
+BuildRequires:  python3-rpm-macros
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.

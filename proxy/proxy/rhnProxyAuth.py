@@ -44,6 +44,10 @@ from rhn import rpclib
 from rhn import SSL
 from . import rhnAuthCacheClient
 
+if hasattr(socket, 'sslerror'):
+    socket_error = socket.sslerror
+else:
+    from ssl import socket_error
 
 sys.path.append('/usr/share/rhn')
 from up2date_client import config # pylint: disable=E0012, C0413
@@ -253,7 +257,7 @@ problems, isn't running, or the token is somehow corrupt.
         for _i in range(self.__nRetries):
             try:
                 token = server.proxy.login(self.__systemid)
-            except (socket.error, socket.sslerror) as e:
+            except (socket.error, socket_error) as e:
                 if CFG.HTTP_PROXY:
                     # socket error, check to see if your HTTP proxy is running...
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -266,7 +270,7 @@ problems, isn't running, or the token is somehow corrupt.
                         # rather big problem: http proxy not running.
                         log_error("*** ERROR ***: %s" % error[1])
                         Traceback(mail=0)
-                    except socket.sslerror as e:
+                    except socket_error as e:
                         error = ['socket.sslerror',
                                  '(%s) %s' % (CFG.HTTP_PROXY, e)]
                         # rather big problem: http proxy not running.
