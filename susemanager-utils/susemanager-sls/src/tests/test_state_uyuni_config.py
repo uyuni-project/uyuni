@@ -1,5 +1,5 @@
 import pytest
-from mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch, call
 from . import mockery
 import pdb
 

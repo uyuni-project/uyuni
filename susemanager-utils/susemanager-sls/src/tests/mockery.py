@@ -4,7 +4,7 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 
 def setup_environment():

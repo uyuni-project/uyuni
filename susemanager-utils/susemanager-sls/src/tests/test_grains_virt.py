@@ -1,5 +1,5 @@
 import pytest
-from mock import MagicMock, patch, Mock
+from unittest.mock import MagicMock, patch, Mock
 from . import mockery
 mockery.setup_environment()
 

@@ -3,7 +3,7 @@ Author: Ricardo Mateus <rmateus@suse.com>
 '''
 
 import pytest
-from mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch, call
 from . import mockery
 
 mockery.setup_environment()
