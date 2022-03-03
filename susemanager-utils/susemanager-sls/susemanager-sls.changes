@@ -1,3 +1,4 @@
+- Use /var/lib/susemanager/formula_data if /srv/susemanager/formula_data is missing.
 - Avoid using lscpu -J option in grains (bsc#1195920)
 
 -------------------------------------------------------------------
