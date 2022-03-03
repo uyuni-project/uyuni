@@ -40,7 +40,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-@skip_cloud
+@skip_if_cloud
   Scenario: Migrate this minion to SLE 15 SP3
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -54,7 +54,7 @@ Feature: Bootstrap a Salt minion via the GUI
     When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
-@skip_cloud
+@skip_if_cloud
   Scenario: Check the migration is successful for this minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Events"

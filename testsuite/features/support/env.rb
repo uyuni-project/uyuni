@@ -406,6 +406,11 @@ Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
 end
 
+# skip tests if executed in cloud environment
+Before('@skip_if_cloud') do
+  skip_this_scenario if ENV["PROVIDER"] == 'aws'
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
