@@ -1,3 +1,4 @@
+- Use /var/lib/susemanager/formula_data if /srv/susemanager/formula_data is missing.
 - Use global import for which_bin in sumautil module
 - Get the formula pillar data from the database
 - Use flat repositories format for Debian based systems
