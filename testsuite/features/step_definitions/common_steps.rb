@@ -531,7 +531,7 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
 end
 
 When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version && $provider != "aws"
+  if $product == product_version && provider != "aws"
     step %(I #{select} "#{product}" as a product)
   end
 end
@@ -561,7 +561,7 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
 end
 
 When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
-  if $product == product_version && $provider != "aws"
+  if $product == product_version && provider != "aws"
     step %(I open the sub-list of the product "#{product}")
   end
 end
@@ -813,7 +813,7 @@ end
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
   # Distribution
-  repos = $provider != "aws" ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
+  repos = provider != "aws" ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
@@ -841,7 +841,7 @@ When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
   # Distribution
-  repos = $provider != "aws" ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
+  repos = provider != "aws" ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --disable #{repos}")
   # rubocop:enable Style/WhateverLineLengthIsCalled
   # Tools

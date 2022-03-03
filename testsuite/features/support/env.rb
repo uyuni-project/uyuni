@@ -33,7 +33,7 @@ custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repos
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
-  build_validation = !($provider == "aws")
+  build_validation = !(provider == "aws")
 end
 
 def enable_assertions
@@ -397,7 +397,7 @@ end
 
 # skip tests if executed in cloud environment
 Before('@skip_if_cloud') do
-  skip_this_scenario if $provider == 'aws'
+  skip_this_scenario if provider == 'aws'
 end
 
 # have more infos about the errors
