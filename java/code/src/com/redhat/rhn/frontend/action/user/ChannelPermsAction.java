@@ -28,7 +28,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +63,8 @@ public class ChannelPermsAction extends RhnListAction {
         List channelList = Arrays.asList(channels);
         List selectedList = Arrays.asList(selected);
 
-        for (Iterator i = channelList.iterator(); i.hasNext();) {
-            String currentChannel = (String) i.next();
+        for (Object oIn : channelList) {
+            String currentChannel = (String) oIn;
             boolean isSet = selectedList.contains(currentChannel);
 
             if (isSet) {

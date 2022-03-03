@@ -21,10 +21,10 @@ CREATE TABLE rhnActionImageInspect
                          CONSTRAINT rhn_act_image_inspect_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_store_id NUMERIC NOT NULL
+    image_store_id NUMERIC
                          CONSTRAINT rhn_act_image_inspect_is_fk
                              REFERENCES suseImageStore (id)
-                             ON DELETE CASCADE,
+                             ON DELETE SET NULL,
     build_action_id	NUMERIC,
     version          VARCHAR(128),
     name             VARCHAR(128),

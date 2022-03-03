@@ -69,6 +69,7 @@ Feature: Use advanced features of Salt formulas
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
+     And I click on "Expand All Sections"
      And I enter "text1" as "testing#str"
      And I enter "text2" as "testing#str_def"
      And I enter "text3" as "testing#str_or_null"
@@ -132,6 +133,7 @@ Feature: Use advanced features of Salt formulas
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
+     And I click on "Expand All Sections"
      And I enter "text1" as "testing#str"
      And I enter "1" as "testing#num"
      And I enter "2" as "testing#num_def"
@@ -171,6 +173,7 @@ Feature: Use advanced features of Salt formulas
   Scenario: Fill in and verify non-default values in minion formula
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
+     And I click on "Expand All Sections"
      And I enter "min_text1" as "testing#str"
      And I enter "min_text2" as "testing#str_def"
      And I enter "min_text3" as "testing#str_or_null"

@@ -193,7 +193,7 @@ public class OrgTrustHandler extends BaseHandler {
             throw new OrgNotInTrustException(trustOrgId);
         }
 
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
 
         if (trustOrg.getCreated() != null) {
             details.put("created", trustOrg.getCreated());
@@ -332,9 +332,9 @@ public class OrgTrustHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         List<Map<String, Object>> subscribed =
             SystemManager.subscribedInOrgTrust(orgId, trustOrgId);
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
         for (Map<String, Object> sm : subscribed) {
-            Map<String, Object> m = new HashMap<String, Object>();
+            Map<String, Object> m = new HashMap<>();
             m.put("systemId", sm.get("id"));
             m.put("systemName", sm.get("name"));
             result.add(m);

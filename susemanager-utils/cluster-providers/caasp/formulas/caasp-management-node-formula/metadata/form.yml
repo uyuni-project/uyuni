@@ -1,8 +1,0 @@
-caasp:
-  $type: namespace
-
-  management_node:
-    $type: boolean
-    $default: True
-    $name: Enable CaaSP management
-    $help: Enable CaaSP management

@@ -34,4 +34,13 @@ public class ProductSyncException extends Exception {
     public ProductSyncException(String message) {
         super(message);
     }
+
+    /**
+     * Message and exception constructor.
+     * @param message the message
+     * @param exception the exception
+     */
+    public ProductSyncException(String message, Exception exception) {
+        super(message, exception);
+    }
 }

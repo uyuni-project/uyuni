@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MailHelper;
@@ -39,7 +38,6 @@ import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -79,6 +77,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
@@ -155,7 +154,7 @@ public class SaltService implements SystemQuery, SaltApi {
             MinionPendingRegistrationService.containsSSHMinion(mid) ||
                         MinionServerFactory
                                 .findByMinionId(mid)
-                                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                                .filter(MinionServerUtils::isSshPushMinion)
                                 .isPresent();
 
     private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
@@ -319,8 +318,8 @@ public class SaltService implements SystemQuery, SaltApi {
         try {
             LOG.debug("Runner callSync: " + runnerCallToString(call));
             Result<R> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
-            return result.fold(p -> errorHandler.apply(p),
-                    r -> Optional.of(r)
+            return result.fold(errorHandler::apply,
+                    Optional::of
             );
         }
         catch (SaltException e) {
@@ -396,8 +395,8 @@ public class SaltService implements SystemQuery, SaltApi {
             LOG.debug("Wheel callSync: " + wheelCallToString(call));
             WheelResult<Result<R>> result = adaptException(call.callSync(SALT_CLIENT, PW_AUTH));
             return result.getData().getResult().fold(
-                    err -> errorHandler.apply(err),
-                    r -> Optional.of(r));
+                    errorHandler::apply,
+                    Optional::of);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -709,7 +708,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     callSync(Match.compound(target, Optional.empty()), new Glob("*"));
             return result.entrySet().stream()
                     .filter(e -> e.getValue().result().isPresent() && Boolean.TRUE.equals(e.getValue().result().get()))
-                    .map(e -> e.getKey())
+                    .map(Entry::getKey)
                     .collect(Collectors.toList());
         }
         catch (SaltException e) {
@@ -753,7 +752,8 @@ public class SaltService implements SystemQuery, SaltApi {
 
             // Salt pillar refresh doesn't reload the modules with the new pillar
             LocalCall<Boolean> modulesRefreshCall = new LocalCall<>("saltutil.refresh_modules",
-                    Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { });
+                    Optional.empty(), Optional.empty(), new TypeToken<>() {
+            });
             callAsync(modulesRefreshCall, minionList);
         }
         catch (SaltException e) {
@@ -934,7 +934,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
-                Opt.fold(metadataIn, () -> ScheduleMetadata.getDefaultMetadata(), Function.identity()).withBatchMode();
+                Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
         LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
         return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
@@ -1277,21 +1277,7 @@ public class SaltService implements SystemQuery, SaltApi {
                         throw new NoSuchElementException();
                     }
                 )
-        ).map(s -> s.getContainers());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Map<String, Map<String, Object>>> listClusterNodes(
-            MinionServer managementNode, ClusterProviderParameters clusterProviderParameters) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("cluster_type", clusterProviderParameters.getClusterProvider());
-        clusterProviderParameters.getClusterParams().ifPresent(cpp -> pillar.put("params", cpp));
-        return callSync(State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar),
-                Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class),
-                managementNode.getMinionId()).map(ret -> ret.listNodesResult().getChanges().getRet());
+        ).map(MgrK8sRunner.ContainersList::getContainers);
     }
 
     /**
@@ -1369,7 +1355,7 @@ public class SaltService implements SystemQuery, SaltApi {
         //response is empty in case the minion is down
         if (response.isPresent()) {
             return response.get().values().stream().filter(value -> !value.isResult())
-                    .map(value -> value.getComment())
+                    .map(StateApplyResult::getComment)
                     .collect(Collectors.collectingAndThen(Collectors.toList(),
                             (list) -> list.isEmpty() ? Optional.<List<String>>empty() :
                                     Optional.of(list)));

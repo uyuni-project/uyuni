@@ -54,7 +54,7 @@ public class RoleFactory extends HibernateFactory {
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (Role) session.getNamedQuery("Role.findById")
-                                       .setLong("id", id.longValue())
+                                       .setLong("id", id)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
@@ -108,9 +108,4 @@ public class RoleFactory extends HibernateFactory {
      * The constant representing image_admin
      */
     public static final Role IMAGE_ADMIN = lookupByLabel("image_admin");
-
-    /**
-     * The constant representing cluster_admin
-     */
-    public static final Role CLUSTER_ADMIN = lookupByLabel("cluster_admin");
 }

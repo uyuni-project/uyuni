@@ -1,6 +1,10 @@
-- Read modularity data from DISTTAG tag as fallback (bsc#1192487)
-- Add decompression of zck files to fileutils
-- require python macros for building
+-------------------------------------------------------------------
+Tue Jan 18 14:09:04 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Read modularity data from DISTTAG tag as fallback (bsc#1192487)
+  * Add decompression of zck files to fileutils
+  * require python macros for building
 
 -------------------------------------------------------------------
 Mon Aug 09 11:12:24 CEST 2021 - jgonzalez@suse.com

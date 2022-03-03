@@ -1,4 +1,4 @@
-default: -f pretty -r features
+default: -f pretty -r features --publish-quiet
 smdba: --tags @scope_smdba
 spacecmd: --tags @scope_spacecmd
 spacewalk_utils: --tags @scope_spacewalk_utils

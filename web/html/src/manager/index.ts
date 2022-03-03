@@ -7,13 +7,13 @@ Check the file content-management/index.js for an example
 import "./polyfills";
 import "react-hot-loader";
 import "core/spa/spa-engine";
+import "core/log";
 import "./legacy";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
 import Admin from "./admin";
 import Audit from "./audit";
-import Clusters from "./clusters";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
 import Groups from "./groups";
@@ -50,7 +50,6 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
-  ...Clusters,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

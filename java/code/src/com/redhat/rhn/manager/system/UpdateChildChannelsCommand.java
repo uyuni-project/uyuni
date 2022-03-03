@@ -67,7 +67,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
      * {@inheritDoc}
      */
     public ValidatorError store() {
-        List<Long> remove = new ArrayList<Long>();
+        List<Long> remove = new ArrayList<>();
         /*
          * Loop through the server channels and take any channels the server is already
          * subscribed to out of the cids list. Also, keep track of any we will have to
@@ -111,7 +111,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
         if (!isSkipChannelChangedEvent()) {
             MessageQueue.publish(new ChannelsChangedEventMessage(
-                    server.getId(), user.getId(), null,
+                    server.getId(), user.getId(),
                     isScheduleApplyChannelsState()));
         }
         super.store();

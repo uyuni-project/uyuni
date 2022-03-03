@@ -4,7 +4,7 @@ Author: bo@suse.de
 
 import json
 import pytest
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 from . import mockery
 mockery.setup_environment()
 

@@ -56,11 +56,11 @@ plugin_command "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
 
 section_header "SSL Configuration"
 
-pconf_files /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-plugin_command "/bin/ls -l --time-style=long-iso /srv/www/htdocs/pub/ | grep -i trusted"
+plugin_command "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
 
 
 plugin_command "psql --version"
@@ -74,4 +74,5 @@ plugin_command "echo \"select username scc_org from susecredentials sc join suse
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 plugin_command "cp /var/log/zypper.log $LOG"
+plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
 

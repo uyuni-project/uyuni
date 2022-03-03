@@ -187,15 +187,7 @@ public abstract class RhnBaseTestCase extends TestCase {
         try {
             return PropertyUtils.getProperty(bean, propName);
         }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
-        }
-        catch (InvocationTargetException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
-        }
-        catch (NoSuchMethodException e) {
+        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException("Could not get property " + propName +
                     " from " + bean, e);
         }
@@ -238,7 +230,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      * @param fragment the substring that must be contained in <code>body</code>
      */
     public static void assertContains(String body, String fragment) {
-        if (body.indexOf(fragment) == -1) {
+        if (!body.contains(fragment)) {
             fail("The string '" + body + "' must contain '" + fragment + "'");
         }
     }
@@ -250,7 +242,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      * @param fragment the substring that must be contained in <code>body</code>
      */
     public static void assertContains(String msg, String body, String fragment) {
-        if (body.indexOf(fragment) == -1) {
+        if (!body.contains(fragment)) {
             fail(msg);
         }
     }

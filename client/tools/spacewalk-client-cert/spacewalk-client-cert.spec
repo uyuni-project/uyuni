@@ -22,15 +22,15 @@
 %endif
 
 Name:           spacewalk-client-cert
-Version:        4.3.1
+Version:        4.3.2
 Release:        1
 Summary:        Package allowing manipulation with Spacewalk client certificates
 License:        GPL-2.0-only
 Group:          Applications/System
 
 URL:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Source1:        %{name}-rpmlintrc
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/tools/%{name}/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?build_py3}

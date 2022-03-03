@@ -24,7 +24,7 @@ Feature: Migrate a traditional client into a Salt minion
   Scenario: Check that the migrated system is now a minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
-    Then I wait until I see "Base System Type:     Salt" text, refreshing the page
+    Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
 
 @proxy
   Scenario: Check connection from migrated minion to proxy
@@ -100,7 +100,7 @@ Feature: Migrate a traditional client into a Salt minion
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
-  @uyuni
+  @salt_bundle
   Scenario: Cleanup: register minion again as traditional client
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
@@ -111,4 +111,4 @@ Feature: Migrate a traditional client into a Salt minion
   Scenario: Cleanup: check that the migrated minion is again a traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
-    Then I wait until I see "Base System Type:     Management" text, refreshing the page
+    Then I wait until I see "Base System Type:.*Management" regex, refreshing the page

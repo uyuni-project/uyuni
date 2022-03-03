@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.manager.satellite.Executor;
 
 import org.apache.log4j.Logger;
 
@@ -28,17 +29,20 @@ import java.io.File;
 public abstract class RepositoryWriter {
 
     protected Logger log = Logger.getLogger(RepositoryWriter.class);
-    protected String pathPrefix;
-    protected String mountPoint;
+    protected final String pathPrefix;
+    protected final String mountPoint;
+    protected final Executor cmdExecutor;
 
     /**
      * Constructor takes in pathprefix and mountpoint
      * @param pathPrefixIn prefix to package path
      * @param mountPointIn mount point package resides
+     * @param cmdExecutorIn {@link Executor} instance to run system commands
      */
-    public RepositoryWriter(String pathPrefixIn, String mountPointIn) {
+    public RepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
         this.pathPrefix = pathPrefixIn;
         this.mountPoint = mountPointIn;
+        this.cmdExecutor = cmdExecutorIn;
     }
 
     /**
@@ -67,8 +71,8 @@ public abstract class RepositoryWriter {
 
        String[] children = theDirectory.list();
        if (theDirectory.isDirectory() && children != null) {
-           for (int i = 0; i < children.length; i++) {
-               File file = new File(prefix + File.separator + children[i]);
+           for (String childIn : children) {
+               File file = new File(prefix + File.separator + childIn);
                if (!file.delete()) {
                    log.info("Couldn't remove " + file.getAbsolutePath());
                }

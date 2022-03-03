@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
@@ -30,6 +30,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
   Scenario: Configure Prometheus exporter formula on the CentOS minion
     When I follow "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
+    And I click on "Expand All Sections"
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
     And I check "apache" exporter
@@ -44,8 +45,11 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Visit monitoring endpoints on the CentOS minion
-    When I visit "Prometheus node exporter" endpoint of this "ceos_minion"
+    When I wait until "prometheus-node_exporter" service is active on "ceos_minion"
+    And I visit "Prometheus node exporter" endpoint of this "ceos_minion"
+    And I wait until "prometheus-apache_exporter" service is active on "ceos_minion"
     And I visit "Prometheus apache exporter" endpoint of this "ceos_minion"
+    And I wait until "prometheus-postgres_exporter" service is active on "ceos_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "ceos_minion"
 
   Scenario: Cleanup: undo Prometheus exporter formulas on the CentOS minion

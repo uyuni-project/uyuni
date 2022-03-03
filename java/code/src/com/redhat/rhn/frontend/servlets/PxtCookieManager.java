@@ -97,9 +97,9 @@ public class PxtCookieManager {
 
         String pxtCookieName = PXT_SESSION_COOKIE_NAME;
 
-        for (int i = 0; i < cookies.length; ++i) {
-            if (pxtCookieName.equals(cookies[i].getName())) {
-                return cookies[i];
+        for (Cookie cookieIn : cookies) {
+            if (pxtCookieName.equals(cookieIn.getName())) {
+                return cookieIn;
             }
         }
 

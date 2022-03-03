@@ -52,9 +52,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,7 +89,6 @@ public class FormulaFactory {
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
-    private static final String METADATA_DIR_CLUSTER_PROVIDERS = "/usr/share/susemanager/cluster-providers/metadata/";
     private static final String ORDER_PILLAR_CATEGORY = "formula_order";
 
     private static final Gson GSON = new GsonBuilder()
@@ -210,7 +206,7 @@ public class FormulaFactory {
 
     private static List<File> getFormulasFiles(File formulasFolder) {
         return Optional.ofNullable(formulasFolder.listFiles())
-                .map(filesList -> Arrays.asList(filesList))
+                .map(Arrays::asList)
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
                             ". Check if it exists and have the correct permissions (755).");
@@ -277,13 +273,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
-                data.ifPresent(formData -> {
-                    server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
-                        server.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
+                    server.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
@@ -470,7 +464,7 @@ public class FormulaFactory {
      */
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroup(
             String name, ServerGroup group) {
-        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(pillar -> pillar.getPillar());
+        Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
 
         // Load data from the legacy file if not converted yet
         File dataFile = new File(getGroupPillarDir() +
@@ -487,23 +481,6 @@ public class FormulaFactory {
     }
 
     /**
-     * Get the name of the formula that corresponds to the key used by the cluster provider.
-     * @param clusterProvider the name of the cluster provider
-     * @param formulaKey the key of the formula
-     * @return the name of the formula
-     */
-    public static Optional<String> getClusterProviderFormulaName(String clusterProvider, String formulaKey) {
-        Map<String, Object> metadata = getClusterProviderMetadata(clusterProvider);
-        return Maps.getValueByPath(metadata, "formulas:" + formulaKey)
-                .filter(Map.class::isInstance)
-                .map(Map.class::cast)
-                .filter(data -> !"cluster-provider".equals(data.get("source")))
-                .filter(data -> data.containsKey("name"))
-                .filter(data -> data.get("name") instanceof String)
-                .map(data -> (String)data.get("name"));
-    }
-
-    /**
      * Convert the legacy formulas of a group.
      *
      * @param group the group
@@ -516,13 +493,11 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getGroupFormulaValuesByNameAndGroup(formula, group);
-                data.ifPresent(formData -> {
-                    group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
-                        group.getPillars().add(pillar);
-                        return pillar;
-                    }).setPillar(formData);
-                });
+                data.ifPresent(formData -> group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
+                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
+                    group.getPillars().add(pillar);
+                    return pillar;
+                }).setPillar(formData));
                 FileUtils.deleteFile(new File(getGroupPillarDir() +
                         group.getId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
@@ -591,7 +566,7 @@ public class FormulaFactory {
         List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
         return formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS) &&
                 getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
-                        .map(data -> hasMonitoringDataEnabled(data))
+                        .map(FormulaFactory::hasMonitoringDataEnabled)
                         .orElse(false);
     }
 
@@ -717,10 +692,10 @@ public class FormulaFactory {
      * @return a list of formulas in correct order of execution
      */
     public static List<String> orderFormulas(List<String> formulasToOrder) {
-        LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
+        LinkedList<String> formulas = new LinkedList<>(formulasToOrder);
         formulas.sort(String.CASE_INSENSITIVE_ORDER);
 
-        Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
+        Map<String, List<String>> dependencyMap = new HashMap<>();
 
         for (String formula : formulas) {
             List<String> dependsOnList = (List<String>) getMetadata(formula, "after")
@@ -731,7 +706,7 @@ public class FormulaFactory {
 
         int index = 0;
         int minLength = formulas.size();
-        LinkedList<String> orderedList = new LinkedList<String>();
+        LinkedList<String> orderedList = new LinkedList<>();
 
         while (!formulas.isEmpty()) {
             String formula = formulas.removeFirst();
@@ -864,7 +839,7 @@ public class FormulaFactory {
      */
     public static boolean isMemberOfGroupHavingMonitoring(Server server) {
         return server.getManagedGroups().stream()
-                .map(grp -> FormulaFactory.hasMonitoringDataEnabled(grp))
+                .map(FormulaFactory::hasMonitoringDataEnabled)
                 .anyMatch(Boolean::booleanValue);
     }
 
@@ -890,132 +865,6 @@ public class FormulaFactory {
         }
         else {
             return false;
-        }
-    }
-
-    /**
-     * Returns the metadata of a cluster provider.
-     * @param provider the name of the formula
-     * @return the metadata
-     */
-    @SuppressWarnings("unchecked")
-    public static Map<String, Object> getClusterProviderMetadata(String provider) {
-        // TODO cache metadata ?
-        String metadataFilePath = provider + File.separator + METADATA_FILE;
-        File metadataFileStandalone = new File(METADATA_DIR_CLUSTER_PROVIDERS + metadataFilePath);
-        try {
-            if (metadataFileStandalone.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
-            }
-            else {
-                return Collections.emptyMap();
-            }
-        }
-        catch (IOException e) {
-            return Collections.emptyMap();
-        }
-    }
-
-    /**
-     * Get a value from the cluster provider metadata.
-     * @param provider the name of the cluster provider
-     * @param key the key of the value
-     * @param keyType the Java type of the value
-     * @param <T> the Java type of the value
-     * @return the value of the metadata key
-     */
-    public static <T> Optional<T> getClusterProviderMetadata(String provider, String key, Class<T> keyType) {
-        Map<String, Object> metadata = FormulaFactory.getClusterProviderMetadata(provider);
-        return Maps.getValueByPath(metadata, key)
-                .filter(keyType::isInstance)
-                .map(keyType::cast);
-    }
-
-    /**
-     * Get a formula layout from a cluster provider. The formula is referenced by its key not by it's actual name.
-     * @param provider the name of the cluster provider
-     * @param formulaKey the key of the formula used by the provider
-     * @return the formula layout as a Map
-     */
-    public static Optional<Map<String, Object>> getClusterProviderFormulaLayout(String provider, String formulaKey) {
-        Map<String, Object> metadata = getClusterProviderMetadata(provider);
-        Optional<String> formulaName = Maps.getValueByPath(metadata, "formulas:" + formulaKey + ":name")
-                .filter(String.class::isInstance)
-                .map(String.class::cast);
-
-        String formulaSource = Maps.getValueByPath(metadata, "formulas:" + formulaKey + ":source")
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .orElse("system");
-
-        if (formulaName.isEmpty()) {
-            return Optional.empty();
-        }
-        if ("system".equals(formulaSource)) {
-            return getFormulaLayoutByName(formulaName.get());
-        }
-        else if ("cluster-provider".equals(formulaSource)) {
-            return getFormulaLayoutByClusterProviderAndName(provider, formulaName.get());
-        }
-        else {
-            throw new RuntimeException("Unknown formula source " + formulaSource);
-        }
-    }
-
-    private static Optional<Map<String, Object>> getFormulaLayoutByClusterProviderAndName(String provider,
-                                                                                          String name) {
-        Path layoutFile = Paths.get(METADATA_DIR_CLUSTER_PROVIDERS, provider, name + ".yml");
-        try {
-            if (Files.exists(layoutFile)) {
-                return Optional.of(YAML.load(new FileInputStream(layoutFile.toFile())));
-            }
-            else {
-                return Optional.empty();
-            }
-        }
-        catch (FileNotFoundException | YAMLException e) {
-            LOG.error("Error loading layout for formula '" + name +
-                    "' from cluster provider '" + provider + "'", e);
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Checks the type of the formula.
-     * @param formula the name of the formula
-     * @param type the type
-     * @return whether the formula has the given type or not
-     */
-    public static boolean formulaHasType(String formula, String type) {
-        Map<String, Object> metadata = getMetadata(formula);
-        return Optional.ofNullable(metadata.get("type"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .map(t -> t.equals(type))
-                .orElse(false);
-    }
-
-    /**
-     * Get all installed cluster providers.
-     * @return a list containing the metadata of all installed cluster providers
-     */
-    public static List<Map<String, Object>> getClusterProvidersMetadata() {
-        Path dir = Path.of(METADATA_DIR_CLUSTER_PROVIDERS);
-        try {
-            return Files.list(dir)
-                    .filter(Files::isDirectory)
-                    .map(p -> {
-                        String provider = p.getFileName().toString();
-                        Map<String, Object> m = getClusterProviderMetadata(provider);
-                        m = new HashMap<>(m);
-                        m.put("label", provider);
-                        return m;
-                    })
-                    .collect(Collectors.toList());
-        }
-        catch (IOException e) {
-            LOG.error("Error loading providers metadata", e);
-            return Collections.emptyList();
         }
     }
 

@@ -171,73 +171,69 @@ public class RemoteMinionCommands {
                 sendMessage(session, new AsyncJobStartEventDto("preview",
                         previewedMinions, resSSH.isPresent()));
 
-                res.forEach((minionId, future) -> {
-                    future.whenComplete((matchResult, err) -> {
-                        if (!previewedMinions.contains(minionId)) {
-                            // minion is not visible to this user
-                            return;
-                        }
-                        if (matchResult != null && matchResult.result().orElse(false)) {
-                            sendMessage(session, new MinionMatchResultEventDto(minionId));
-                        }
-                        if (err != null) {
-                            if (err instanceof TimeoutException) {
-                                sendMessage(session,
-                                        new ActionTimedOutEventDto(minionId, "preview"));
-                                LOG.debug("Timed out waiting for response from minion " +
-                                        minionId);
-                            }
-                            else {
-                                LOG.error("Error waiting for minion " + minionId, err);
-                                sendMessage(session,
-                                        new ActionErrorEventDto(minionId,
-                                                "ERR_WAIT_MATCH",
-                                                "Error waiting for matching: " +
-                                                        err.getMessage()));
-                            }
-                        }
-                    });
-                });
-
-                resSSH.ifPresent(future -> {
-                    future.whenComplete((result, err) -> {
-                        if (err != null) {
-                            if (err instanceof TimeoutException) {
-                                sendMessage(session,
-                                        new ActionTimedOutEventDto(true, "preview"));
-                                LOG.debug(
-                                    "Timed out waiting for response from salt-ssh minions");
-                            }
-                            else {
-                                LOG.error("Error waiting for salt-ssh minions", err);
-                                sendMessage(session,
-                                        new ActionErrorEventDto(null,
-                                                "ERR_WAIT_SSH_MATCH",
-                                                "Error waiting for matching: " +
-                                                        err.getMessage()));
-                            }
-                            return;
-                        }
-                        if (result != null) {
-                            List<String> sshMinions = result.entrySet().stream()
-                                    .filter((entry) -> {
-                                        if (!allVisibleMinions.contains(entry.getKey())) {
-                                            // minion is not visible to this user
-                                            return false;
-                                        }
-                                        return entry.getValue() != null &&
-                                                entry.getValue().result().orElse(false);
-                                    })
-                                    .map((entry) -> entry.getKey())
-                                    .collect(Collectors.toList());
-
-                            previewedMinions.addAll(sshMinions);
-
+                res.forEach((minionId, future) -> future.whenComplete((matchResult, err) -> {
+                    if (!previewedMinions.contains(minionId)) {
+                        // minion is not visible to this user
+                        return;
+                    }
+                    if (matchResult != null && matchResult.result().orElse(false)) {
+                        sendMessage(session, new MinionMatchResultEventDto(minionId));
+                    }
+                    if (err != null) {
+                        if (err instanceof TimeoutException) {
                             sendMessage(session,
-                                    new SSHMinionMatchResultDto(sshMinions));
+                                    new ActionTimedOutEventDto(minionId, "preview"));
+                            LOG.debug("Timed out waiting for response from minion " +
+                                    minionId);
                         }
-                    });
-                });
+                        else {
+                            LOG.error("Error waiting for minion " + minionId, err);
+                            sendMessage(session,
+                                    new ActionErrorEventDto(minionId,
+                                            "ERR_WAIT_MATCH",
+                                            "Error waiting for matching: " +
+                                                    err.getMessage()));
+                        }
+                    }
+                }));
+
+                resSSH.ifPresent(future -> future.whenComplete((result, err) -> {
+                    if (err != null) {
+                        if (err instanceof TimeoutException) {
+                            sendMessage(session,
+                                    new ActionTimedOutEventDto(true, "preview"));
+                            LOG.debug(
+                                "Timed out waiting for response from salt-ssh minions");
+                        }
+                        else {
+                            LOG.error("Error waiting for salt-ssh minions", err);
+                            sendMessage(session,
+                                    new ActionErrorEventDto(null,
+                                            "ERR_WAIT_SSH_MATCH",
+                                            "Error waiting for matching: " +
+                                                    err.getMessage()));
+                        }
+                        return;
+                    }
+                    if (result != null) {
+                        List<String> sshMinions = result.entrySet().stream()
+                                .filter((entry) -> {
+                                    if (!allVisibleMinions.contains(entry.getKey())) {
+                                        // minion is not visible to this user
+                                        return false;
+                                    }
+                                    return entry.getValue() != null &&
+                                            entry.getValue().result().orElse(false);
+                                })
+                                .map(Map.Entry::getKey)
+                                .collect(Collectors.toList());
+
+                        previewedMinions.addAll(sshMinions);
+
+                        sendMessage(session,
+                                new SSHMinionMatchResultDto(sshMinions));
+                    }
+                }));
 
             }
             else if (msg.isCancel()) {

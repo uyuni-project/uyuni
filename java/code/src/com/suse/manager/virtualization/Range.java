@@ -72,9 +72,9 @@ public class Range<T> {
         if (node == null) {
             return Optional.empty();
         }
-        Range<T> def = new Range<T>(
-            converter.apply(node.getAttributeValue("start")),
-            converter.apply(node.getAttributeValue("end"))
+        Range<T> def = new Range<>(
+                converter.apply(node.getAttributeValue("start")),
+                converter.apply(node.getAttributeValue("end"))
         );
         return Optional.of(def);
     }

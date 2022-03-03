@@ -70,7 +70,7 @@ public class UpdateCustomDataAction extends RhnAction {
         User loggedInUser = context.getCurrentUser();
         Long sid = context.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
@@ -134,10 +134,8 @@ public class UpdateCustomDataAction extends RhnAction {
             cdv.setModified(new Date());
             cdv.setLastModifier(user);
             server.addCustomDataValue(cdv);
-            server.asMinionServer().ifPresent(minion -> {
-                MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                    MinionPillarManager.PillarSubset.CUSTOM_INFO);
-            });
+            server.asMinionServer().ifPresent(minion -> MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                MinionPillarManager.PillarSubset.CUSTOM_INFO));
 
             request.setAttribute(VAL_PARAM, form.get(VAL_PARAM));
             return getStrutsDelegate().forwardParams(mapping.findForward("updated"),
@@ -149,7 +147,7 @@ public class UpdateCustomDataAction extends RhnAction {
     }
 
     private Object makeValidationMap(DynaActionForm formIn) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(VAL_PARAM, formIn.getString(VAL_PARAM));
         return map;
     }

@@ -35,7 +35,7 @@ public class MinionPillarManager {
         GROUP_MEMBERSHIP,
         VIRTUALIZATION,
         CUSTOM_INFO
-    };
+    }
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(MinionPillarManager.class);

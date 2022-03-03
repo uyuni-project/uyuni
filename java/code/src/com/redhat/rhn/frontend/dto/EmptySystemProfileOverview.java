@@ -30,7 +30,7 @@ public class EmptySystemProfileOverview extends SystemOverview {
      * @return the MAC addresses
      */
     public List<String> getMacs() {
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         for (NetworkInterface networkInterface : ServerFactory.lookupById(getId())
                 .getNetworkInterfaces()) {
             if (networkInterface.isMacValid()) {

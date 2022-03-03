@@ -19,7 +19,6 @@
 
 #!BuildIgnore:  udev-mini libudev-mini1
 %if 0%{?fedora} || 0%{?rhel} 
-%{!?pylint_check: %global pylint_check 1}
 %define apacheconfdir %{_sysconfdir}/httpd
 %else
 %define apacheconfdir %{_sysconfdir}/apache2
@@ -29,7 +28,7 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.3
+Version:        4.3.5
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -59,10 +58,6 @@ Requires:       rhnlib
 Requires:       libxslt
 Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
-%if 0%{?pylint_check}
-BuildRequires:  python3-rhn-client-tools
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  /usr/bin/docbook2man
 
 Obsoletes:      proxy-installer < 5.3.0
@@ -101,6 +96,7 @@ install -m 644 rhn.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 cobbler-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 insights-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 755 configure-proxy.sh $RPM_BUILD_ROOT/%{_usr}/sbin
+install -m 755 spacewalk-setup-httpd $RPM_BUILD_ROOT/%{_bindir}
 install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
@@ -116,10 +112,6 @@ install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-acti
 install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
 %check
-%if 0%{?pylint_check}
-# check coding style
-spacewalk-python3-pylint .
-%endif
 
 %post
 %if 0%{?suse_version}
@@ -158,6 +150,7 @@ fi
 %{_usr}/share/rhn/get_system_id.xslt
 %{_usr}/sbin/rhn-proxy-activate
 %{_usr}/sbin/fetch-certificate
+%{_bindir}/spacewalk-setup-httpd
 %doc answers.txt
 %license LICENSE
 %dir %{_usr}/share/rhn/proxy-template

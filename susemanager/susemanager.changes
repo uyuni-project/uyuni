@@ -1,9 +1,25 @@
-- Bootstrap repo configureable.
-- Added installation on Rocky Linux 8.
-- fix pg-migrate to check version of postgresql??-server (bsc#1192368)
-- Add sha256 hash to venv-enabled-ARCH.txt file generated
-  with mgr-create-bootstrap-repo
-- Enable bootstrapping for Debian 11
+  * Added gettext build requirement for RHEL.
+  * Reuse existing certificate code.
+
+-------------------------------------------------------------------
+Tue Feb 15 10:05:55 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Accept Oracle Linux
+  * setup reporting database with default values
+  * Add mgr-salt-ssh wrapper to use with uyuni roster Salt module
+  * mgr-setup: do not concatenate www and apache groups (bsc#1195171)
+
+-------------------------------------------------------------------
+Tue Jan 18 15:06:14 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Bootstrap repo configureable
+  * Added installation on Rocky Linux 8
+  * fix pg-migrate to check version of postgresql??-server (bsc#1192368)
+  * Add sha256 hash to venv-enabled-ARCH.txt file generated
+    with mgr-create-bootstrap-repo
+  * Enable bootstrapping for Debian 11
 
 -------------------------------------------------------------------
 Fri Dec 03 12:30:25 CET 2021 - jgonzalez@suse.com

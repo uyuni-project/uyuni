@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.3.2
+Version:        4.3.3
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -111,13 +111,13 @@ Requires:       postgresql14-contrib
 # we do not support postgresql versions > 14.x yet
 Conflicts:      postgresql-implementation >= 15
 Conflicts:      postgresql-contrib-implementation >= 15
-%else # not sle_version >= 150300
+%else # not sle_version >= 150400
 Requires:       postgresql13
 Requires:       postgresql13-contrib
 # we do not support postgresql versions > 13.x yet
 Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
-%endif # if sle_version >= 150300
+%endif # if sle_version >= 150400
 %else # not suse_version
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12

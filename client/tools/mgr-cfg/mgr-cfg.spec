@@ -36,7 +36,7 @@
 %global __python /usr/bin/python2 
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?suse_version} < 1500) || 0%{?ubuntu} || 0%{?debian}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400) || 0%{?ubuntu} || 0%{?debian}
 %global build_py2   1
 %endif
 
@@ -69,7 +69,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.3.2
+Version:        4.3.4
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
@@ -83,7 +83,7 @@ Group:          Applications/System
 %endif
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
-Source1:        %{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/tools/mgr-cfg/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch

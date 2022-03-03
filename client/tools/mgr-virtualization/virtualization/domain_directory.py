@@ -24,7 +24,7 @@ except ImportError:
     # who import us can exit gracefully.
     libvirt = None
 
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 from virtualization.domain_config import DomainConfig
 from virtualization.errors        import VirtualizationException

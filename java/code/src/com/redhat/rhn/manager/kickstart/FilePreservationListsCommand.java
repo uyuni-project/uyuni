@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.user.User;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -43,16 +42,7 @@ public class FilePreservationListsCommand extends BaseKickstartCommand {
     */
     public void removeFileListsByIds(List<Long> ids) {
         for (Long id : ids) {
-            Iterator<FileList> listsIter = this.getKickstartData().getPreserveFileLists()
-                    .iterator();
-
-            while (listsIter.hasNext()) {
-                FileList list = listsIter.next();
-
-                if (list.getId() == id) {
-                    listsIter.remove();
-                }
-            }
+            this.getKickstartData().getPreserveFileLists().removeIf(list -> list.getId().equals(id));
         }
     }
 
@@ -75,7 +65,7 @@ public class FilePreservationListsCommand extends BaseKickstartCommand {
         if (ksdata.getPreserveFileLists() != null) {
             return ksdata.getPreserveFileLists();
         }
-        return new HashSet<FileList>();
+        return new HashSet<>();
     }
 
 }

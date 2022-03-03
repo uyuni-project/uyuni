@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC.
+# Copyright (c) 2020-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -6,6 +6,7 @@ Feature: Smoke tests for <client>
   In order to test <client>
   As an authorized user
   I want to :
+  - View the details of the system
   - Install a package via Web UI
   - Install a patch via Web UI
   - Remove a package via Web UI
@@ -25,12 +26,11 @@ Feature: Smoke tests for <client>
     And the kernel for "<client>" should be correct
     And the OS version for "<client>" should be correct
     And the IPv4 address for "<client>" should be correct
-    # disabled for the moment due to a possible bug (#bsc1193858)
-    # And the IPv6 address for "<client>" should be correct
+    And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
     And the uptime for "<client>" should be correct
-    And I can see several text fields for "<client>"
+    And I should see several text fields for "<client>"
 
 @skip_for_debianlike
   Scenario: Install a patch on the <client>

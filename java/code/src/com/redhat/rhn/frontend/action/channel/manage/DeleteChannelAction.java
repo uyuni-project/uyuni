@@ -98,7 +98,7 @@ public class DeleteChannelAction extends RhnAction {
                 createSuccessMessage(request, "message.channeldeleted", channel.getName());
                 if (dr.size() > 0) {
                     prefillRhnSetWithElements(RhnSetDecl.DELETABLE_PACKAGE_LIST.get(user), dr.iterator());
-                    Map<String, Object> params = new HashMap<String, Object>();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("selected_channel", "all_managed_packages");
                     params.put("forwarded", "true");
                     return getStrutsDelegate().forwardParams(actionMapping.findForward("delete"), params);

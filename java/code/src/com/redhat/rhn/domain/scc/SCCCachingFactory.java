@@ -372,7 +372,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param sccSubId id to delete
      */
     public static void deleteSubscriptionBySccId(Long sccSubId) {
-        SCCSubscription sub = SCCCachingFactory.lookupSubscriptionBySccId(sccSubId.longValue());
+        SCCSubscription sub = SCCCachingFactory.lookupSubscriptionBySccId(sccSubId);
         if (sub != null) {
             singleton.removeObject(sub);
         }
@@ -459,6 +459,21 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
         return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
                 .setParameter("channelFamily", channelFamily).getResultList();
+    }
+
+    /**
+     * Returns a list of repositories for a product, independent of the version, and arch.
+     *
+     * @param productName name of the product we want to filter
+     * @param archName arch name we want to filter
+     * @return List of repositories for all version of one product and arch
+     */
+    public static List<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(String productName,
+                                                                                    String archName) {
+        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg")
+                .setParameter("product_name", productName)
+                .setParameter("arch_name", archName)
+                .getResultList();
     }
 
     /**

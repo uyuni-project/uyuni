@@ -22,7 +22,11 @@ CREATE TABLE suseMinionInfo
     minion_id           VARCHAR(256) NOT NULL,
     os_family           VARCHAR(32),
     kernel_live_version VARCHAR(255),
-    ssh_push_port       NUMERIC
+    ssh_push_port       NUMERIC,
+    created   TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL
 )
 
 ;

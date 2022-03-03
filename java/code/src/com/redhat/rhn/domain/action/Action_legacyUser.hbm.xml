@@ -505,49 +505,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction"
-                  lazy="true" discriminator-value="515">
-            <join table="rhnActionClusterGroupRefreshNodes">
-                <key column="action_id"/>
-                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster"/>
-            </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction"
-                lazy="true" discriminator-value="516">
-            <set name="serverIds" table="rhnActionClusterServers">
-                <key column="action_id"/>
-                <element column="server_id" type="long"/>
-            </set>
-            <join table="rhnActionClusterJoinNode">
-                <key column="action_id"/>
-                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
-                <property name="jsonParams" type="string" column="json_params" not-null="true" />
-            </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction"
-                  lazy="true" discriminator-value="517">
-            <set name="serverIds" table="rhnActionClusterServers">
-                <key column="action_id"/>
-                <element column="server_id" type="long"/>
-            </set>
-            <join table="rhnActionClusterRemoveNode">
-                <key column="action_id"/>
-                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
-                <property name="jsonParams" type="string" column="json_params" not-null="true" />
-            </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction"
-                  lazy="true" discriminator-value="518">
-            <join table="rhnActionClusterUpgradeCluster">
-                <key column="action_id"/>
-                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
-                <property name="jsonParams" type="string" column="json_params" not-null="true" />
-            </join>
-        </subclass>
-
         <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction"
                   discriminator-value="519" lazy="true">
             <join table="rhnActionVirtNetworkStateChange">
@@ -631,24 +588,13 @@ select {ra.*}
             NULL as source from dual) ra_16_,
     (select NULL as pool_name,
             NULL as volume_name from dual) ra_17_,
-    (select NULL as cluster_id from dual) ra_18_,
-    (select NULL as cluster_id,
-            NULL as server_id,
-            NULL as json_params from dual) ra_19_,
-    (select NULL as cluster_id,
-            NULL as server_id,
-            NULL as json_params from dual) ra_20_,
-    (select NULL as cluster_id,
-            NULL as json_params from dual) ra_21_,
     (select NULL as network_name,
-            NULL as state from dual) ra_22_,
+            NULL as state from dual) ra_18_,
     (select NULL as network_name,
-            NULL as definition from dual) ra_23_,
-    (select NULL as playbook_path,
-            NULL as inventory_path from dual) ra_25_,
+            NULL as definition from dual) ra_19_,
     (select NULL as uuid,
             NULL as primitive,
-            NULL as target from dual) ra_24_
+            NULL as target from dual) ra_20_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -721,7 +667,7 @@ select {ra.*}
 
     <query name="Action.findMinionSummaries">
     <![CDATA[
-        SELECT sa.server.id, s.minionId, s.digitalServerId, s.machineId, c.label
+        SELECT sa.server.id, s.minionId, s.digitalServerId, s.machineId, c.label, s.os
             FROM ServerAction AS sa
                 JOIN sa.server AS s
                 JOIN s.contactMethod AS c
@@ -769,24 +715,13 @@ select sa.server_id
                              NULL as source from dual) ra_16_,
                      (select NULL as pool_name,
                              NULL as volume_name from dual) ra_17_,
-                     (select NULL as cluster_id from dual) ra_18_,
-                     (select NULL as cluster_id,
-                             NULL as server_id,
-                             NULL as json_params from dual) ra_19_,
-                     (select NULL as cluster_id,
-                             NULL as server_id,
-                             NULL as json_params from dual) ra_20_,
-                     (select NULL as cluster_id,
-                             NULL as json_params from dual) ra_21_,
                      (select NULL as network_name,
-                             NULL as state from dual) ra_22_,
+                             NULL as state from dual) ra_18_,
                      (select NULL as network_name,
-                             NULL as definition from dual) ra_23_,
-                     (select NULL as playbook_path,
-                             NULL as inventory_path from dual) ra_25_,
+                             NULL as definition from dual) ra_19_,
                      (select NULL as uuid,
                              NULL as primitive,
-                             NULL as target from dual) ra_24_
+                             NULL as target from dual) ra_20_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

@@ -48,6 +48,7 @@ public class MgrKiwiImageRunner {
         args.put("image_store_dir", imageStoreDir);
 
         return new RunnerCall<>("kiwi-image-collect.kiwi_collect_image",
-                Optional.of(args), new TypeToken<MgrUtilRunner.ExecResult>() { });
+                Optional.of(args), new TypeToken<>() {
+        });
     }
 }

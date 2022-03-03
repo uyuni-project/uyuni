@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.RepoMetadata;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.task.TaskManager;
 
@@ -154,7 +155,17 @@ public class RpmRepositoryWriter extends RepositoryWriter {
      * @param mountPointIn mount point package resides
      */
     public RpmRepositoryWriter(String pathPrefixIn, String mountPointIn) {
-        super(pathPrefixIn, mountPointIn);
+        this(pathPrefixIn, mountPointIn, new SystemCommandExecutor());
+    }
+
+    /**
+     * Constructor takes in pathprefix and mountpoint
+     * @param pathPrefixIn prefix to package path
+     * @param mountPointIn mount point package resides
+     * @param cmdExecutorIn {@link Executor} instance to run system commands
+     */
+    public RpmRepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
+        super(pathPrefixIn, mountPointIn, cmdExecutorIn);
     }
 
     /**
@@ -259,10 +270,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             susedataFile = new CompressingDigestOutputWriter(
                     new FileOutputStream(prefix + SUSEDATA_FILE), checksumAlgo);
         }
-        catch (IOException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
+        catch (IOException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
 
@@ -411,11 +419,12 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         createdFiles.add(organizer.move(REPOMD_FILE, "repomd.xml"));
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
-            SystemCommandExecutor sce = new SystemCommandExecutor();
             String[] signCommand = new String[2];
             signCommand[0] = "mgr-sign-metadata";
             signCommand[1] = prefix + "repomd.xml";
-            sce.execute(signCommand);
+            cmdExecutor.execute(signCommand);
+            createdFiles.add(new File(prefix, "repomd.xml.asc"));
+            createdFiles.add(new File(prefix, "repomd.xml.key"));
         }
         log.info("Repository metadata generation for '" +
                 channel.getLabel() + "' finished in " +
@@ -452,6 +461,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             throw new RuntimeException(e);
         }
         catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
         log.info("Solv file successfully create for '" + channel.getLabel() + "'");
@@ -474,7 +484,6 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         catch (IOException e) {
             log.warn("Cannot create " + NOREPO_FILE + " file.");
         }
-        return;
     }
 
     private String getRepoMetadataRelativeFilename(Channel channel, String metadataType) {
@@ -583,13 +592,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             updateinfoFile = new CompressingDigestOutputWriter(
                     new FileOutputStream(prefix + UPDATEINFO_FILE), checksumtypeIn);
         }
-        catch (FileNotFoundException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (IOException e) {
+        catch (IOException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
         BufferedWriter updateinfoBufferedWriter = new BufferedWriter(
@@ -613,11 +616,10 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     /**
      * Generates product info for given channel
      * @param channel channel info
-     * @param checksumtype checksum type
+     * @param checksumtypeIn checksum type
      * @return repodata index
      */
-    private RepomdIndexData generateProducts(Channel channel, String prefix,
-            String checksumtypeIn) {
+    private RepomdIndexData generateProducts(Channel channel, String prefix, String checksumtypeIn) {
 
         DigestOutputStream productsFile;
         try {
@@ -625,10 +627,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     new FileOutputStream(prefix + PRODUCTS_FILE),
                     MessageDigest.getInstance(checksumtypeIn));
         }
-        catch (FileNotFoundException e) {
-            throw new RepomdRuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
+        catch (FileNotFoundException | NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
         BufferedWriter productsBufferedWriter = new BufferedWriter(

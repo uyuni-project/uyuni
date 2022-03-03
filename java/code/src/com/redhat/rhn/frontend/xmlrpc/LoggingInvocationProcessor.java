@@ -27,13 +27,14 @@ import java.util.List;
 import redstone.xmlrpc.XmlRpcInvocation;
 import redstone.xmlrpc.XmlRpcInvocationInterceptor;
 
+
 /**
  * LoggingInvocationProcessor extends the marquee-xmlrpc library to allow
  * us to log method calls.
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
-    private static ThreadLocal<User> caller = new ThreadLocal<User>();
+    private static ThreadLocal<User> caller = new ThreadLocal<>();
 
     private static ThreadLocal timer = new ThreadLocal() {
         protected synchronized Object initialValue() {
@@ -80,18 +81,13 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         StringBuffer buf = new StringBuffer();
         try {
             // Create the call in a separate buffer for reuse
-            StringBuffer call = new StringBuffer();
-            call.append(invocation.getHandlerName());
-            call.append(".");
-            call.append(invocation.getMethodName());
-            call.append("(");
-            call.append(processArguments(invocation.getHandlerName(),
-                    invocation.getMethodName(), invocation.getArguments()));
-            call.append(")");
 
             buf.append("REQUESTED FROM: ");
             buf.append(RhnXmlRpcServer.getCallerIp());
             buf.append(" CALL: ");
+            String call = invocation.getHandlerName() + "." + invocation.getMethodName() + "(" +
+                    processArguments(invocation.getHandlerName(), invocation.getMethodName(),
+                            invocation.getArguments()) + ")";
             buf.append(call);
             buf.append(" CALLER: (");
             buf.append(getCallerLogin());
@@ -186,6 +182,11 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                 return argPosition == 4;
             case "system.bootstrapWithPrivateKey":
                 return argPosition == 4 || argPosition == 5;
+            case "admin.payg.create":
+                return argPosition == 5 || argPosition == 6 || argPosition == 7 ||
+                        argPosition == 11 || argPosition == 12 || argPosition == 13;
+            case "admin.payg.setDetails":
+                return argPosition == 1;
             default:
                 return false;
         }

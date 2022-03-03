@@ -1,0 +1,33 @@
+#
+# Process the .pre files
+# Then, build the oracle and postgres schemas
+# Expected Args:
+#   SCHEMA
+#   VERSION
+#   RELEASE
+
+PRE_FILES  := $(shell find . -name \*.pre)
+POST_FILES := $(addsuffix .sql,$(basename $(PRE_FILES)))
+PWD := $(shell pwd)
+
+SANITY_CHECK_SCRIPT := "schema-source-sanity-check.pl"
+all : sanity-check $(POST_FILES) postgres upgrade
+
+upgrade:
+	echo Upgrade
+	for i in $@/*/. ; do $(MAKE) -C $$i -f ../Makefile ; done
+
+postgres :
+	$(MAKE) -C $@ -f Makefile
+
+clean :
+	rm -f $(POST_FILES)
+	rm -rf postgres/tables/common/
+
+%.sql : %.pre
+	sed -e "s!SCHEMA_NAME!'$(SCHEMA)'!g" -e "s!SCHEMA_VERSION!'$(VERSION)'!g" -e "s!SCHEMA_RELEASE!'$(RELEASE)'!" $< > $@
+
+sanity-check :
+	perl $(shell type -a -P schema-source-sanity-check.pl $(SANITY_CHECK_SCRIPT)) $(PWD)
+
+.PHONY: postgres clean sanity-check upgrade

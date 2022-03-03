@@ -59,6 +59,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ConfigChannelHandlerTest
@@ -146,8 +147,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testLookupGlobal() throws Exception {
-        List<String> channelLabels = new LinkedList<String>();
-        List<ConfigChannel> channels = new LinkedList<ConfigChannel>();
+        List<String> channelLabels = new LinkedList<>();
+        List<ConfigChannel> channels = new LinkedList<>();
 
         for (int i = 0; i < 10; i++) {
             ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
@@ -183,7 +184,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     public void testDelete() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
-        List<String> labels = new LinkedList<String>();
+        List<String> labels = new LinkedList<>();
         labels.add(cc.getLabel());
         List<ConfigChannel> channels = handler.lookupChannelInfo(admin, labels);
         assertEquals(1, channels.size());
@@ -216,6 +217,58 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    public void testSyncSaltFiles() throws Exception {
+
+        // Remove all channels
+        var deleted = removeAllGlobals();
+        assertEquals(1, deleted);
+
+        // Create a normal channel with a file attached
+        ConfigChannel channel = handler.create(admin, LABEL, NAME, DESCRIPTION, "normal");
+        ConfigFile file = ConfigTestUtils.createConfigFile(channel);
+        ConfigTestUtils.createConfigRevision(file);
+
+        assertEquals(LABEL, channel.getLabel());
+        assertEquals(NAME, channel.getName());
+        assertEquals(DESCRIPTION, channel.getDescription());
+        assertEquals(admin.getOrg(), channel.getOrg());
+        assertEquals(ConfigChannelType.normal(), channel.getConfigChannelType());
+        assertEquals(1, channel.getConfigFiles().size());
+        assertNotNull(file.getLatestConfigRevision());
+
+        // Remove files from the disk only
+        ConfigTestUtils.removeChannelFiles(channel);
+        assertFalse(ConfigTestUtils.lookUpChannelFiles(channel));
+
+        // Sync files on the disk.
+        handler.syncSaltFilesOnDisk(admin, List.of(channel.getLabel()));
+        assertTrue(ConfigTestUtils.lookUpChannelFiles(channel));
+
+    }
+
+    public void testSyncSaltFilesNoChannels() throws Exception {
+
+        // Remove all channels.
+        var deleted = removeAllGlobals();
+        assertEquals(1, deleted);
+
+        // Attempt restoring files on the disk while there are no channels.
+        var synced = handler.syncSaltFilesOnDisk(admin, List.of());
+        assertEquals(1, synced);
+
+    }
+
+    /**
+     * Deletes a list of  global channels.
+     *
+     * @return 1 if successful with the operation errors out otherwise.
+     */
+    private int removeAllGlobals() {
+        var channels = handler.listGlobals(admin);
+        var labels = channels.stream().map(ConfigChannelDto::getLabel).collect(Collectors.toList());
+        return handler.deleteChannels(admin, labels);
+    }
+
     /**
      * Checks if a given config channel is present in a list.
      * @param cc Config channel
@@ -236,7 +289,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                             String perms, boolean isDir,
                             ConfigChannel cc, String selinuxCtx)
                                         throws ValidatorException {
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put(ConfigRevisionSerializer.GROUP, group);
         data.put(ConfigRevisionSerializer.OWNER, owner);
         data.put(ConfigRevisionSerializer.PERMISSIONS, perms);
@@ -276,7 +329,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private ConfigRevision createSymlinkRevision(String path, String targetPath,
             ConfigChannel cc, String selinuxCtx)
                         throws ValidatorException {
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put(ConfigRevisionSerializer.TARGET_PATH, targetPath);
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
@@ -293,7 +346,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     private void assertRev(ConfigRevision rev, String path, ConfigChannel cc) {
-        List<String> paths = new ArrayList<String>(1);
+        List<String> paths = new ArrayList<>(1);
         paths.add(path);
         assertTrue(rev.matches(handler.lookupFileInfo(admin, cc.getLabel(), paths)
                     .get(0)));
@@ -420,8 +473,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     public void testListFiles() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
-        List<String> paths = new LinkedList<String>();
-        Map<String, ConfigRevision> revisions = new HashMap<String, ConfigRevision>();
+        List<String> paths = new LinkedList<>();
+        Map<String, ConfigRevision> revisions = new HashMap<>();
 
         setupPathsAndRevisions(cc, paths, revisions);
 
@@ -459,8 +512,8 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     public void testRemovePaths() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
-        List<String> paths = new LinkedList<String>();
-        Map<String, ConfigRevision> revisions = new HashMap<String, ConfigRevision>();
+        List<String> paths = new LinkedList<>();
+        Map<String, ConfigRevision> revisions = new HashMap<>();
 
         setupPathsAndRevisions(cc, paths, revisions);
         paths.remove(paths.size() - 1);
@@ -487,7 +540,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = dr.size();
 
         // schedule file comparison action
-        List<Integer> serverIds = new ArrayList<Integer>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         Integer actionId = handler.scheduleFileComparisons(admin, LABEL, path,
@@ -533,7 +586,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         ServerFactory.save(srv1);
 
         Map<Long, Set<ConfigRevision>> revisions =
-            new HashMap<Long, Set<ConfigRevision>>();
+                new HashMap<>();
 
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
@@ -558,7 +611,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
 
         // System 1 - both g1f1 and g1f2 should deploy here
-        List<Number> systems  = new ArrayList<Number>();
+        List<Number> systems  = new ArrayList<>();
         systems.add(srv1.getId());
         Date date = new Date();
 
@@ -585,7 +638,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
             if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(regular,
-                                                    action.getId().longValue());
+                        action.getId());
             }
         }
         assertNotNull(ca);
@@ -641,7 +694,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private void store(Map<Long, Set<ConfigRevision>> revisions, Long ccid,
             ConfigRevision crev) {
         if (!revisions.containsKey(ccid)) {
-            revisions.put(ccid, new HashSet<ConfigRevision>());
+            revisions.put(ccid, new HashSet<>());
         }
         revisions.get(ccid).add(crev);
     }

@@ -26,8 +26,10 @@ import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.matcher.json.InputJson;
+import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.MessageJson;
 import com.suse.matcher.json.OutputJson;
+import com.suse.matcher.json.ProductJson;
 
 import java.util.Collections;
 import java.util.Date;
@@ -87,7 +89,7 @@ public class SubscriptionMatchProcessor {
                         "virtualGuest",
                     output.getMatches().stream()
                         .filter(m -> m.getSystemId().equals(s.getId()))
-                        .map(m -> m.getSubscriptionId())
+                        .map(MatchJson::getSubscriptionId)
                         .distinct()
                         .collect(toList())
                 ))
@@ -179,8 +181,8 @@ public class SubscriptionMatchProcessor {
 
     private Map<String, Product> products(InputJson input, OutputJson output) {
         Set<Long> freeProducts = input.getProducts().stream()
-                .filter(p -> p.getFree())
-                .map(p -> p.getId())
+                .filter(ProductJson::getFree)
+                .map(ProductJson::getId)
                 .collect(toSet());
 
         Set<Pair<Long, Long>> confirmedProductSystemPairs = output.getMatches().stream()
@@ -196,7 +198,7 @@ public class SubscriptionMatchProcessor {
                 // step 3: filter out matched products
                 .filter(p -> !confirmedProductSystemPairs.contains(p))
                 // step 4: collect them in a map using groupingBy
-                .collect(groupingBy(p -> p.getLeft(), mapping(Pair::getRight, toSet())));
+                .collect(groupingBy(Pair::getLeft, mapping(Pair::getRight, toSet())));
 
         return input.getProducts().stream()
                 .collect(toMap(
@@ -252,7 +254,7 @@ public class SubscriptionMatchProcessor {
          * @return the new Pair instance
          */
         public static <L, R> Pair<L, R> of(L left, R right) {
-            return new Pair<L, R>(left, right);
+            return new Pair<>(left, right);
         }
 
         /**

@@ -90,12 +90,12 @@ public class ChannelOrgHandler extends BaseHandler {
 
         // populate a result that includes all orgs that could be trusted with a boolean
         // that indicates if the orgs is indeed trusted.
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
         for (OrgChannelDto orgDto : orgs) {
             Org org = OrgFactory.lookupById(orgDto.getId());
 
             if (org != null) {
-                Map<String, Object> entry = new HashMap<String, Object>();
+                Map<String, Object> entry = new HashMap<>();
 
                 entry.put("org_id", org.getId().intValue());
                 entry.put("org_name", org.getName());

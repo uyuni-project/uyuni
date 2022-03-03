@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 #
-# Copyright (c) 2014 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,10 +11,9 @@
 
 import hashlib
 from spacewalk.common.rhnException import rhnFault
-from uyuni.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 
-def find_or_create_eula(eula):
+def find_or_create_eula(eula: str):
     """Return the id of the eula inside of the suseEula table.
 
        A new entry inside of the suseEula table is added only when needed.
@@ -53,7 +51,7 @@ def find_or_create_eula(eula):
                 VALUES (:id, :text, :checksum)
             """,
             blob_map=blob_map)
-        h.execute(id=id, text=to_string(eula), checksum=checksum)
+        h.execute(id=id, text=eula, checksum=checksum)
 
         return id
 

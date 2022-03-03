@@ -110,11 +110,11 @@ public class OrgFactory extends HibernateFactory {
 
         IssFactory.unmapLocalOrg(org);
 
-        Map<String, Object> in = new HashMap<String, Object>();
+        Map<String, Object> in = new HashMap<>();
         in.put("org_id", oid);
         CallableMode m = ModeFactory.getCallableMode(
                 "Org_queries", "delete_organization");
-        m.execute(in, new HashMap<String, Integer>());
+        m.execute(in, new HashMap<>());
     }
 
     /**
@@ -165,8 +165,8 @@ public class OrgFactory extends HibernateFactory {
         CallableMode m = ModeFactory.getCallableMode("General_queries",
                 "create_org");
 
-        Map<String, Object> inParams = new HashMap<String, Object>();
-        Map<String, Integer> outParams = new HashMap<String, Integer>();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         inParams.put("name", org.getName());
         // password is currently required as an input to the create_new_org
@@ -184,7 +184,6 @@ public class OrgFactory extends HibernateFactory {
         retval.addRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         retval.addRole(RoleFactory.SAT_ADMIN);
         retval.addRole(RoleFactory.IMAGE_ADMIN);
-        retval.addRole(RoleFactory.CLUSTER_ADMIN);
 
         // Save the object since we may have in memory items to write\
         singleton.saveInternal(retval);
@@ -281,7 +280,7 @@ public class OrgFactory extends HibernateFactory {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                 "activation_keys_for_org");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataList keys = DataList.getDataList(m, params, Collections.EMPTY_MAP);
         return (long) keys.size();
@@ -295,7 +294,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getKickstarts(Org orgIn) {
         SelectMode m = ModeFactory.getMode("General_queries",
                 "kickstarts_for_org");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataList kickstarts = DataList.getDataList(m, params, Collections.EMPTY_MAP);
         return (long) kickstarts.size();
@@ -338,7 +337,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static List<Org> lookupOrgsUsingChannelFamily(
             ChannelFamily channelFamily) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cf", channelFamily);
         return singleton.listObjectsByNamedQuery(
                 "Org.findOrgsWithSystemsInChannelFamily", params);
@@ -349,7 +348,7 @@ public class OrgFactory extends HibernateFactory {
      * @return Total number of orgs.
      */
     public static Long getTotalOrgCount() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         return (Long)singleton.lookupObjectByNamedQuery(
                 "Org.numOfOrgs", params);
@@ -361,7 +360,7 @@ public class OrgFactory extends HibernateFactory {
      *  @return date created for Trusted Org
      */
     public static Date getTrustedSince(Long org, Long trustedOrg) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", org);
         params.put("trusted_org_id", trustedOrg);
         return (Date)singleton.lookupObjectByNamedQuery(
@@ -374,7 +373,7 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems migrated to orgIn
      */
     public static Long getMigratedSystems(Long orgTo, Long orgFrom) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_to_id", orgTo);
         params.put("org_from_id", orgFrom);
         return (Long)singleton.lookupObjectByNamedQuery("Org.getMigratedSystems", params);
@@ -386,7 +385,7 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems migrated to orgIn
      */
     public static Long getSharedChannels(Long orgId, Long trustId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         params.put("org_trust_id", trustId);
         return (Long)singleton.lookupObjectByNamedQuery("Org.getSharedChannels", params);
@@ -398,7 +397,7 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems trustId has subscribed to orgId channels
      */
     public static Long getSharedSubscribedSys(Long orgId, Long trustId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         params.put("org_trust_id", trustId);
         return (Long)singleton.lookupObjectByNamedQuery("Org.getSharedSubscribedSys", params);
@@ -409,7 +408,7 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupAllOrgs() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return singleton.listObjectsByNamedQuery(
                 "Org.findAll", params);
     }

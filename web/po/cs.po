@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-09 15:26+0100\n"
+"POT-Creation-Date: 2022-02-26 14:45+0000\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -41,6 +41,26 @@ msgid ""
 msgstr ""
 "Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome "
 "nebo Edge"
+
+#: ../html/src/components/FormulaForm.tsx:22
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
+
+#: ../html/src/components/FormulaForm.tsx:151
+msgid "Please input required fields: {0}"
+msgstr "Zadejte prosím povinná pole: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:154
+msgid "Invalid format of fields: {0}"
+msgstr "Neplatný formát polí: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:204
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"Na této stránce můžete nakonfigurovat vzorce Salt pro automatickou instalaci "
+"a konfiguraci softwaru."
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -105,11 +125,6 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďte stavy."
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:94
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:146
-#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:51
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:105
 #: ../html/src/manager/images/image-view.tsx:786
 #: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -196,7 +211,6 @@ msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:113
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:167
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
@@ -216,8 +230,9 @@ msgstr "Zrušit"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:96
 #: ../html/src/components/table/Table.tsx:117
+#: ../html/src/manager/admin/payg/payg.tsx:68
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
-#: ../html/src/manager/content-management/project/project.tsx:99
+#: ../html/src/manager/content-management/project/project.tsx:103
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
@@ -253,36 +268,6 @@ msgstr "Smazat projekt"
 msgid "Are you sure you want to delete project "
 msgstr "Opravdu chcete smazat projekt "
 
-#: ../html/src/components/FormulaForm.tsx:22
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
-msgid "Please input required fields: {0}"
-msgstr "Zadejte prosím povinná pole: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:158
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
-msgid "Invalid format of fields: {0}"
-msgstr "Neplatný formát polí: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:208
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"Na této stránce můžete nakonfigurovat vzorce Salt pro automatickou instalaci "
-"a konfiguraci softwaru."
-
-#: ../html/src/components/formulas/EditGroup.tsx:321
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
-"datech (v Salt)."
-
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " Žádná skupina"
@@ -299,8 +284,6 @@ msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:279
 #: ../html/src/components/panels/CreatorPanel.tsx:124
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:83
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:177
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -309,10 +292,16 @@ msgid "Save"
 msgstr "Uložit"
 
 #: ../html/src/components/formula-selection.tsx:299
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:62
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 msgid "Formulas"
 msgstr "Vzorce"
+
+#: ../html/src/components/formulas/EditGroup.tsx:321
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
+"datech (v Salt)."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
@@ -337,7 +326,6 @@ msgstr "Přepnout viditelnost sekce"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:124
 #: ../html/src/components/input/FormMultiInput.stories.tsx:166
 #: ../html/src/components/input/FormMultiInput.stories.tsx:235
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:66
@@ -346,6 +334,7 @@ msgstr "Přepnout viditelnost sekce"
 #: ../html/src/components/input/Range.stories.tsx:46
 #: ../html/src/components/input/Select.stories.tsx:35
 #: ../html/src/components/input/Text.stories.tsx:44
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
@@ -363,8 +352,8 @@ msgid "Users"
 msgstr "Uživatelé"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/form.stories.tsx:29
 #: ../html/src/components/input/Text.stories.tsx:29
+#: ../html/src/components/input/form.stories.tsx:29
 msgid "First Name"
 msgstr "První jméno"
 
@@ -373,12 +362,12 @@ msgstr "První jméno"
 #: ../html/src/components/input/FormMultiInput.stories.tsx:116
 #: ../html/src/components/input/FormMultiInput.stories.tsx:218
 #: ../html/src/components/input/FormMultiInput.stories.tsx:226
-#: ../html/src/components/input/form.stories.tsx:31
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
 #: ../html/src/components/input/Text.stories.tsx:31
 #: ../html/src/components/input/Text.stories.tsx:40
+#: ../html/src/components/input/form.stories.tsx:31
 msgid "Minimum 2 characters"
 msgstr "Aspoň dva znaky"
 
@@ -392,7 +381,6 @@ msgid "Login"
 msgstr "Přihlášení"
 
 #: ../html/src/components/input/FormMultiInput.tsx:148
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:94
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -401,6 +389,8 @@ msgid "required"
 msgstr "požadovaný"
 
 #: ../html/src/components/input/Password.stories.tsx:29
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/login.tsx:173
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
@@ -474,7 +464,8 @@ msgid "First"
 msgstr "První"
 
 #: ../html/src/components/pagination.tsx:28
-#: ../html/src/manager/admin/setup/products/products.tsx:394
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:155
+#: ../html/src/manager/admin/setup/products/products.tsx:407
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -482,12 +473,8 @@ msgid "Prev"
 msgstr "Předchozí"
 
 #: ../html/src/components/pagination.tsx:33
-#: ../html/src/manager/admin/setup/products/products.tsx:400
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:27
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:103
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:155
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:114
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:46
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:161
+#: ../html/src/manager/admin/setup/products/products.tsx:413
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -503,7 +490,8 @@ msgid "Page"
 msgstr "Strana"
 
 #: ../html/src/components/pagination.tsx:108
-#: ../html/src/manager/admin/setup/products/products.tsx:405
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:166
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "z"
@@ -634,7 +622,7 @@ msgid "({0} selected)"
 msgstr "(Vybráno: {0})"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:322
+#: ../html/src/manager/admin/setup/products/products.tsx:335
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -645,8 +633,8 @@ msgstr "Vybrat vše"
 #: ../html/src/components/table/TableDataHandler.tsx:346
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:464
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
@@ -668,34 +656,34 @@ msgstr "Žádná data"
 msgid "Help"
 msgstr "Pomoc"
 
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:16
+#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:25
 msgid "Base channel not found or not authorized."
 msgstr "Základní kanál nenalezen či neautorizován."
 
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:17
+#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:19
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:26
 msgid "Child channel not found or not authorized."
 msgstr "Podřízený kanál nenalezen či neautorizován."
 
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
+#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:27
 msgid "Invalid channel id"
 msgstr "Neplatný ID kanálu"
 
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
 msgstr "Vyžadované kanály"
 
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:32
 msgid "none"
 msgstr "žádný"
 
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:30
+#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
 msgstr "Vyžadovat tento kanál"
 
@@ -779,7 +767,6 @@ msgstr "Nastala chyba. Stav monitorování neznámý. Obnovte stránku."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:60
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:332
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
@@ -910,16 +897,204 @@ msgid ""
 "effect."
 msgstr " Aby se změny konfigurace projevily, je potřeba Tomcat a Taskomatic."
 
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:39
+msgid "Add new pay-as-you-go ssh connection data"
+msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
+msgid "Add pay-as-you-go ssh data"
+msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:47
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
+#: ../html/src/manager/images/image-profile-edit.tsx:503
+#: ../html/src/manager/images/image-profiles.tsx:147
+#: ../html/src/manager/images/image-profiles.tsx:148
+#: ../html/src/manager/images/image-store-edit.tsx:225
+#: ../html/src/manager/images/image-stores.tsx:147
+#: ../html/src/manager/images/image-stores.tsx:148
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
+#: ../html/src/manager/state/recurring-states-list.tsx:51
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
+#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
+#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
+msgid "Create"
+msgstr "Vytvořit"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:68
+#, fuzzy
+msgid "Pay-as-you-go connection Description"
+msgstr "Popis výrobku"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:71
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
+#: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
+msgid "Description"
+msgstr "Popis"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:75
+#, fuzzy
+msgid "Instance SSH connection data"
+msgstr "Instance je zastaralá"
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:80
+msgid "Bastion SSH connection data"
+msgstr ""
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:84
+#: ../html/src/manager/admin/setup/products/products.tsx:266
+msgid "Setup Wizard"
+msgstr "Průvodce nastavením"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:111
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
+msgid "Filter by any value"
+msgstr "Filtrovat podle libovolné hodnoty"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:116
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#, fuzzy
+msgid "Host"
+msgstr "Hostitelé"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
+#: ../html/src/manager/images/image-view-runtime.tsx:130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/virtual-list.tsx:84
+msgid "Status"
+msgstr "Stav"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:140
+#, fuzzy
+msgid "Last Update Status"
+msgstr "Stav shody dat"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:141
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
+msgid "never"
+msgstr "nikdy"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:186
+msgid "Add Pay-as-you-go"
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
+#: ../html/src/manager/login/use-login-api.ts:60
+#: ../html/src/manager/virtualization/ActionApi.tsx:53
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
+msgid ""
+"Request interrupted or invalid response received from the server. Please try "
+"again."
+msgstr ""
+"Žádost přerušena nebo ze serveru přijata neplatná odpověď. Prosím opakujte."
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
+#, fuzzy
+msgid "Pay-as-you-go properties updated successfully"
+msgstr "Vlastnosti projektu aktualizovány úspěšně"
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
+#, fuzzy
+msgid "Edit Information"
+msgstr "Další informace"
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
+msgid "Editing properties.."
+msgstr "Úprava vlastností.."
+
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
+#, fuzzy
+msgid "Last Status Update"
+msgstr "Počáteční datum"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
+#, fuzzy
+msgid "Edit "
+msgstr "Upravit"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+msgid "Editing ssh connection data.."
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#, fuzzy
+msgid "SSH Port"
+msgstr "Port"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+#, fuzzy
+msgid "User"
+msgstr "Uživatelé"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+msgid "SSH Private Key"
+msgstr "Privátní klíč SSH"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+msgid "SSH Private Key Passphrase"
+msgstr "Heslo privátního klíče SSH"
+
+#: ../html/src/manager/admin/payg/payg.tsx:58
+#, fuzzy
+msgid "The instance you are looking for does not exist or has been deleted"
+msgstr "Hledaný projekt neexistuje nebo byl odstraněn"
+
+#: ../html/src/manager/admin/payg/payg.tsx:65
+#, fuzzy
+msgid "Instance Hostname: {0}"
+msgstr "Podrobnosti instance pro '{0}'"
+
+#: ../html/src/manager/admin/payg/payg.tsx:74
+msgid "Delete Pay-as-you-go"
+msgstr ""
+
+#: ../html/src/manager/admin/payg/payg.tsx:77
+#: ../html/src/manager/content-management/project/project.tsx:113
+msgid "Are you sure you want to delete project"
+msgstr "Opravdu chcete odstranit projekt"
+
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:146
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:222
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -947,7 +1122,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:139
+#: ../html/src/manager/admin/setup/products/products.tsx:145
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -955,15 +1130,11 @@ msgstr ""
 "Není k dispozici žádné předplatné serveru SUSE Manager. Produkty vyžadující "
 "kanál nástrojů klienta se nezobrazí."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:182
+#: ../html/src/manager/admin/setup/products/products.tsx:188
 msgid "The product catalog refresh is running..."
 msgstr "Probíhá aktualizace katalogu produktů..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:253
-msgid "Setup Wizard"
-msgstr "Průvodce nastavením"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:278
+#: ../html/src/manager/admin/setup/products/products.tsx:291
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -971,28 +1142,28 @@ msgstr ""
 "Aktualizace údajů o produktu aktuálně běží na pozadí. Zkuste to znovu "
 "později."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:283
+#: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalog produktů se stále aktualizuje, vyčkejte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:285
+#: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "Select some product first."
 msgstr "Nejprve vyberte nějaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:294
-#: ../html/src/manager/admin/setup/products/products.tsx:302
+#: ../html/src/manager/admin/setup/products/products.tsx:307
+#: ../html/src/manager/admin/setup/products/products.tsx:315
 msgid "Add products"
 msgstr "Přidat produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:321
+#: ../html/src/manager/admin/setup/products/products.tsx:334
 msgid "Clear products selection"
 msgstr "Vymazat výběr produktů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:361
+#: ../html/src/manager/admin/setup/products/products.tsx:374
 msgid "Why aren't all products displayed in the list?"
 msgstr "Proč se v seznamu nezobrazují všechny produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1000,7 +1171,7 @@ msgstr ""
 "Produkty zobrazené v tomto seznamu jsou přímo propojeny s přihlašovacími "
 "údaji Vaší organizace (zrcadlená pověření) a Vašimi předplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:369
+#: ../html/src/manager/admin/setup/products/products.tsx:382
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1008,7 +1179,7 @@ msgstr ""
 "Domníváte-li se, že nějaké produkty chybí, ujistěte se, že jste v předchozím "
 "kroku průvodce přidali správná pověření organizace."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:379
+#: ../html/src/manager/admin/setup/products/products.tsx:392
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1016,120 +1187,120 @@ msgstr ""
 "Tento server je konfigurován jako podřízený synchronizace mezi servery "
 "(ISS). Produkty lze spravovat pouze na ISS master."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:455
+#: ../html/src/manager/admin/setup/products/products.tsx:468
 msgid "Filter by architecture"
 msgstr "Filtrovat podle architektury"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:550
+#: ../html/src/manager/admin/setup/products/products.tsx:563
 msgid "Filter by product Description"
 msgstr "Filtrovat podle popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:620
+#: ../html/src/manager/admin/setup/products/products.tsx:633
 msgid "Product Description"
 msgstr "Popis výrobku"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:626
-#: ../html/src/manager/admin/setup/products/products.tsx:1004
+#: ../html/src/manager/admin/setup/products/products.tsx:639
+#: ../html/src/manager/admin/setup/products/products.tsx:1017
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:628
+#: ../html/src/manager/admin/setup/products/products.tsx:641
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:648
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:806
+#: ../html/src/manager/admin/setup/products/products.tsx:819
 msgid " channels sync failed"
 msgstr " synchronizace kanálů selhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:814
+#: ../html/src/manager/admin/setup/products/products.tsx:827
 msgid " channels sync in progress"
 msgstr " probíhá synchronizace kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:822
+#: ../html/src/manager/admin/setup/products/products.tsx:835
 msgid " channels synced"
 msgstr " kanály synchronizovány"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Chcete-li povolit tento produkt, je třeba nejprve vybrat nadřazený produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:848
+#: ../html/src/manager/admin/setup/products/products.tsx:861
 msgid "Select this product"
 msgstr "Zvolit tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:873
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrcadlen."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:889
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:58
+#: ../html/src/manager/admin/setup/products/products.tsx:902
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:531
 msgid "recommended"
 msgstr "doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:907
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:77
+#: ../html/src/manager/admin/setup/products/products.tsx:920
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:578
 msgid "include recommended"
 msgstr "zahrnout, co je doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:949
+#: ../html/src/manager/admin/setup/products/products.tsx:962
 msgid "SCC product catalog refresh in progress"
 msgstr "Probíhá aktualizace katalogu produktů SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:952
+#: ../html/src/manager/admin/setup/products/products.tsx:965
 msgid "Scheduling channels product resync"
 msgstr "Plánování resynchronizace produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:955
+#: ../html/src/manager/admin/setup/products/products.tsx:968
 msgid "Channels product resync scheduled"
 msgstr "Je naplánována resynchronizace produktu kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:971
 msgid "Schedule channels product resync"
 msgstr "Naplánovat resynchronizaci produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:1032
 msgid "Show product's channels"
 msgstr "Zobrazit kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1064
 msgid "Product Channels - "
 msgstr "Kanály produktů - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1056
+#: ../html/src/manager/admin/setup/products/products.tsx:1069
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1063
+#: ../html/src/manager/admin/setup/products/products.tsx:1076
 msgid "Optional Channels"
 msgstr "Volitelné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1078
+#: ../html/src/manager/admin/setup/products/products.tsx:1091
 msgid "not synced"
 msgstr "nesynchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/admin/setup/products/products.tsx:1094
 msgid "sync in progress"
 msgstr "probíhá synchronizace"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1097
 msgid "synced"
 msgstr "synchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1100
 msgid "sync failed"
 msgstr "synchronizace selhala"
 
@@ -1185,7 +1356,7 @@ msgid " seconds"
 msgstr " sekund"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:261
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:296
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
 #: ../html/src/manager/systems/virtual-list.tsx:59
@@ -1213,16 +1384,6 @@ msgstr "Čas ukončení"
 msgid "Elapsed Time"
 msgstr "Spotřebovaný čas"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:267
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
-#: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
-msgid "Status"
-msgstr "Stav"
-
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
 msgid "Data"
@@ -1234,7 +1395,7 @@ msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:564
+#: ../html/src/manager/notifications/notification-messages.tsx:568
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
@@ -1242,54 +1403,58 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:566
+#: ../html/src/manager/notifications/notification-messages.tsx:570
 #: ../html/src/utils/network.ts:101
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:33
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
 msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:37
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
 msgid "Affected, patches available in a Product Migration target"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
 msgid "Not affected"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
 #, fuzzy
 msgid "Patched"
 msgstr "Záplaty"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:180
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:185
 msgid "CVE Audit"
 msgstr "Audit CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:187
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:192
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:242
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:247
 msgid "Audit Servers"
 msgstr "Auditovat servery"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "Audit Images"
 msgstr "Auditovat obrazy"
 
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
+msgid "MITRE CVE link"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
+msgid "SUSE Security CVE link"
+msgstr ""
+
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:281
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:96
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:154
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
@@ -1309,7 +1474,7 @@ msgstr "Auditovat obrazy"
 msgid "Name"
 msgstr "Název"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:298
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:658
@@ -1323,51 +1488,51 @@ msgstr "Název"
 msgid "Actions"
 msgstr "Akce"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:349
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
 #, fuzzy
 msgid "No action required"
 msgstr "Nutný restart systému"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:308
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 msgid "Install a new patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:345
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:375
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:380
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:407
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
 msgid "If you see this report a bug."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
 #: ../html/src/manager/images/image-view-overview.tsx:595
 msgid "Rebuild"
 msgstr "Přebudovat"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:364
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
 msgid "Patch available but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:367
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:35
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
 msgid "Channel"
 msgstr "Kanál"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:368
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:393
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:429
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
@@ -1599,18 +1764,6 @@ msgstr "Krok 2/2: vyberte předplatné pro systém "
 msgid "Back to sytem selection"
 msgstr "Zpět k výběru systému"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:156
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:276
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-msgid "Description"
-msgstr "Popis"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:388
 msgid "Save Pin"
 msgstr "Uložit připnutí"
@@ -1643,31 +1796,6 @@ msgstr "Nenašlo se žádné předplatné."
 msgid "Your subscriptions"
 msgstr "Vaše předplatná"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
-msgid "Edit Virtual Host Managers"
-msgstr "Upravit správce virtuálních hostitelů"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
-msgid "Subscription Matching"
-msgstr "Párování předplatného"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
-msgid "Subscriptions"
-msgstr "Předplatné"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
-msgid "Unmatched Products"
-msgstr "Nespárované produkty"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
-msgid "Pins "
-msgstr "Piny "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
-msgid "Messages "
-msgstr "Zprávy "
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:59
 msgid "Product name"
 msgstr "Název produktu"
@@ -1684,6 +1812,11 @@ msgstr "Ukázat seznam systémů"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:92
 msgid "No unmatching products are found."
 msgstr "Nenalezeny žádné nespárované produkty."
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
+msgid "Unmatched Products"
+msgstr "Nespárované produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:145
 msgid "System name"
@@ -1709,312 +1842,25 @@ msgstr "1-2 sokety nebo 1-2 virtuální stroje"
 msgid "Per-instance"
 msgstr "Na každou instanci"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:39
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:51
-msgid "Add Cluster"
-msgstr "Přidat cluster"
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
+msgid "Edit Virtual Host Managers"
+msgstr "Upravit správce virtuálních hostitelů"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:58
-msgid "Select management node"
-msgstr "Vyberte uzel správy"
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:89
+msgid "Subscription Matching"
+msgstr "Párování předplatného"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:76
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:105
-#: ../html/src/manager/clusters/cluster/cluster.tsx:127
-msgid "Provider Settings"
-msgstr "Nastavení poskytovatele"
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:154
+msgid "Subscriptions"
+msgstr "Předplatné"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:99
-msgid "Provider:"
-msgstr "Poskytovatel:"
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
+msgid "Pins "
+msgstr "Piny "
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:103
-msgid "Management Node:"
-msgstr "Uzel správy:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:46
-msgid "Add cluster"
-msgstr "Přidat klastr"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:60
-msgid "Add"
-msgstr "Přidat"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:79
-msgid "Name:"
-msgstr "Název:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:91
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
-msgid "Label:"
-msgstr "Jmenovka:"
-
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:105
-msgid "Description:"
-msgstr "Popis:"
-
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:21
-msgid "Available cluster providers"
-msgstr "Dostupní poskytovatelé klastrů"
-
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:62
-msgid "Settings saved successfully"
-msgstr "Nastavení uloženo úspěšně"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "Ano"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "Ne"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:41
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:334
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
-msgid "(none)"
-msgstr "(žádný)"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:91
-msgid "System group refresh action scheduled successfully"
-msgstr "Akce obnovení systémové skupiny byla úspěšně naplánována"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:117
-msgid "Cluster properties updated successfully"
-msgstr "Vlastnosti klastru aktualizovány úspěšně"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:190
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:257
-msgid "Edit cluster details"
-msgstr "Upravit podrobnosti klastru"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:203
-msgid "Join node"
-msgstr "Připojit uzel"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:213
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:51
-msgid "Remove node"
-msgstr "Odebrat uzel"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:230
-msgid "Upgrade cluster"
-msgstr "Upgradovat klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:240
-msgid "Refresh system group"
-msgstr "Obnovit systémovou skupinu"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:250
-msgid "Cluster Properties"
-msgstr "Vlastnosti klastru"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:256
-msgid "Edit properties"
-msgstr "Upravit vlastnosti"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
-#: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
-#: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
-msgid "Label"
-msgstr "Označení"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:280
-msgid "Cluster provider"
-msgstr "Poskytovatel klastrů"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:284
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:119
-msgid "Management node"
-msgstr "Uzel správy"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:290
-msgid "System group"
-msgstr "Systémová skupina"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:306
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:91
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:127
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
-msgid "Filter by any value"
-msgstr "Filtrovat podle libovolné hodnoty"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:326
-msgid "Node Hostname"
-msgstr "Název hostitele uzlu"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:28
-msgid "Action has been "
-msgstr "Akce byla "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:29
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
-msgstr "naplánována"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:30
-msgid " successfully."
-msgstr " úspěšně."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:35
-#: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
-msgid "Action has been successfully added to the Action Chain "
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:41
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:27
-msgid "Cluster "
-msgstr "Klastr "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:43
-msgid " has been added successfully."
-msgstr " bylo úspěšně přidáno."
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:93
-#: ../html/src/manager/clusters/cluster/cluster.tsx:105
-msgid "Delete cluster"
-msgstr "Odstranit klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:94
-msgid "Delete Cluster"
-msgstr "Odstranit Klastr"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:108
-msgid "Are you sure you want to delete cluster?"
-msgstr "Opravdu chcete odstranit klastr?"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:109
-msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:124
-#: ../html/src/manager/images/image-view.tsx:764
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-msgid "Overview"
-msgstr "Přehled"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:48
-msgid "Join "
-msgstr "Připojit "
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:53
-msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr "POZOR: před připojením k novému uzlu se ujistěte, že uzel má:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:57
-msgid ""
-"Container as a Service Platform (CaaSP) channels assigned - or any children "
-"channels of CaaSP channels"
-msgstr ""
-"Přiřazené kanály kontejneru jako platformy služeb (CaaSP) - nebo jakékoli "
-"podřízené kanály kanálů CaaSP"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:60
-msgid ""
-"The management node can access the node as root via ssh without password"
-msgstr "Uzel správy může přistupovat k uzlu jako root pomocí ssh bez hesla"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:68
-msgid "Select system to join"
-msgstr "Vyberte systém, kam se chcete připojit"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:83
-msgid "New node configuration"
-msgstr "Konfigurace nového uzlu"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:103
-msgid "Schedule join node"
-msgstr "Naplánovat připojení uzlu"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:107
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:74
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:78
-msgid "Cluster:"
-msgstr "Klastr:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:111
-msgid "Node to join:"
-msgstr "Uzel k připojení:"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:121
-msgid "Join"
-msgstr "Připojit"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:29
-msgid " has been deleted successfully."
-msgstr " bylo úspěšně odstraněno."
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:50
-msgid "Add an existing cluster"
-msgstr "Přidat existující klastr"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:82
-msgid "Clusters"
-msgstr "Klastry"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:106
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:31
-#: ../html/src/manager/images/image-stores.tsx:184
-#: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:617
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:502
-#: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Type"
-msgstr "Typ"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:45
-msgid "Remove nodes"
-msgstr "Odebrat uzly"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:70
-msgid "Schedule remove node"
-msgstr "Naplánovat odstranění uzlu"
-
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:78
-msgid "Nodes to remove:"
-msgstr "Uzly k odebrání:"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:41
-msgid "Upgrade plan"
-msgstr "Plán upgradu"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:38
-msgid "Upgrade "
-msgstr "Upgradovat "
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:57
-msgid "Configuration override"
-msgstr "Překonání konfigurace"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:74
-msgid "Schedule upgrade cluster"
-msgstr "Naplánovat upgrade clusteru"
-
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:84
-msgid "Upgrade"
-msgstr "Upgrade (povýšení verze)"
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:161
+msgid "Messages "
+msgstr "Zprávy "
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:32
 msgid "You do not have permissions to perform this action"
@@ -2027,24 +1873,6 @@ msgstr "Vytvořit nový projekt životního cyklu obsahu"
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
 msgid "Create project"
 msgstr "Vytvořit projekt"
-
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
-#: ../html/src/manager/images/image-profile-edit.tsx:503
-#: ../html/src/manager/images/image-profiles.tsx:147
-#: ../html/src/manager/images/image-profiles.tsx:148
-#: ../html/src/manager/images/image-store-edit.tsx:225
-#: ../html/src/manager/images/image-stores.tsx:147
-#: ../html/src/manager/images/image-stores.tsx:148
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
-msgid "Create"
-msgstr "Vytvořit"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
@@ -2311,43 +2139,22 @@ msgstr "Projekty životního cyklu obsahu"
 msgid "Last Build"
 msgstr "Poslední sestavení"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
-msgid "never"
-msgstr "nikdy"
-
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:121
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:42
 msgid "Environment Lifecycle"
 msgstr "Životní cyklus životního prostředí"
 
-#: ../html/src/manager/content-management/project/project.tsx:58
+#: ../html/src/manager/content-management/project/project.tsx:62
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "Hledaný projekt neexistuje nebo byl odstraněn"
 
-#: ../html/src/manager/content-management/project/project.tsx:94
+#: ../html/src/manager/content-management/project/project.tsx:98
 msgid "Content Lifecycle Project - {0}"
 msgstr "Projekt životního cyklu obsahu - {0}"
 
-#: ../html/src/manager/content-management/project/project.tsx:106
+#: ../html/src/manager/content-management/project/project.tsx:110
 msgid "Delete Project"
 msgstr "Odstranit projekt"
-
-#: ../html/src/manager/content-management/project/project.tsx:109
-msgid "Are you sure you want to delete project"
-msgstr "Opravdu chcete odstranit projekt"
-
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
-#: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
-msgstr ""
-"Žádost přerušena nebo ze serveru přijata neplatná odpověď. Prosím opakujte."
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 msgid "Package"
@@ -2552,6 +2359,20 @@ msgstr "Historie verze {0}"
 msgid "Version {0} successfully built into {1}"
 msgstr "Verze {0} úspěšně zabudována do {1}"
 
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
+#: ../html/src/manager/images/image-build.tsx:258
+#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-profiles.tsx:177
+#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-stores.tsx:177
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
+msgid "Label"
+msgstr "Označení"
+
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
 msgstr "Vložte před"
@@ -2711,9 +2532,9 @@ msgstr "Upravit vlastnosti"
 msgid "Project properties updated successfully"
 msgstr "Vlastnosti projektu aktualizovány úspěšně"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
-msgid "Editing properties.."
-msgstr "Úprava vlastností.."
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:48
+msgid "Label:"
+msgstr "Jmenovka:"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:56
 msgid "Versions history:"
@@ -2727,56 +2548,82 @@ msgstr "zobrazit více"
 msgid "Versions history"
 msgstr "Historie verzí"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:82
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
+#, fuzzy
+msgid "New base channel"
+msgstr "Nový základní kanál"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
 msgid "New Base Channel"
 msgstr "Nový základní kanál"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:112
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:175
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Vyberte kanál, který má být zvolen jako nový základní kanál"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:119
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:191
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
 msgstr "Podřízené kanály"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:213
 msgid "Clear Search"
 msgstr "Výmaz hledání"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:22
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:98
-msgid "no child channels"
-msgstr "žádné podřízené kanály"
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
+#, fuzzy
+msgid "This channel requires:"
+msgstr "Tento kanál je doporučen"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:57
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
+#, fuzzy
+msgid "This channel is required by:"
+msgstr "Tento kanál je doporučen"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
 msgstr "Tento kanál je doporučen"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:62
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:75
 msgid "This channel is mandatory"
 msgstr "Tento kanál je povinný"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:63
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:536
 msgid "mandatory"
 msgstr "povinné"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:52
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/empty-child.tsx:8
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:98
+msgid "no child channels"
+msgstr "žádné podřízené kanály"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
+#: ../html/src/manager/images/image-stores.tsx:184
+#: ../html/src/manager/images/image-view-patches.tsx:79
+#: ../html/src/manager/images/image-view.tsx:617
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
+#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/state/highstate-summary.tsx:73
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
+msgid "Type"
+msgstr "Typ"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:56
 msgid "has unsynchronized patches"
 msgstr "má nesynchronizované opravy"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:95
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:99
 msgid "Sources"
 msgstr "Zdroje"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:113
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:117
 msgid "Sources edited successfully"
 msgstr "Zdroje upraveny úspěšně"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:139
 #: ../html/src/manager/images/image-build.tsx:287
 msgid "Software Channels"
 msgstr "Softwarové kanály"
@@ -2828,33 +2675,6 @@ msgstr ""
 "Použití konfiguračních kanálů bylo naplánováno pro každý minion server v "
 "této skupině"
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid "Formula saved. Apply the "
-msgstr "Vzorec uložen. Použijte "
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-msgid " for the changes to take effect."
-msgstr " aby se změny uplatnily."
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
-msgid "Invalid target type."
-msgstr "Neplatný typ cíle."
-
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:16
 msgid ""
@@ -2863,6 +2683,33 @@ msgid ""
 msgstr ""
 "Vzorec uložen. Upravte možnosti konfigurace v povolených vzorcích a "
 "aplikujte "
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
+msgid " for the changes to take effect."
+msgstr " aby se změny uplatnily."
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
+msgid "Invalid target type."
+msgstr "Neplatný typ cíle."
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+msgid "Formula saved. Apply the "
+msgstr "Vzorec uložen. Použijte "
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -2907,9 +2754,25 @@ msgid ""
 msgstr ""
 "Při plánování úkolu došlo k chybě. Ujistěte se, že je spuštěn plánovač úloh."
 
+#: ../html/src/manager/images/image-build.tsx:205
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
+msgid "Action has been successfully added to the Action Chain "
+msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
+
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr "naplánována"
 
 #: ../html/src/manager/images/image-build.tsx:241
 msgid "Profile Summary"
@@ -3513,6 +3376,11 @@ msgstr "Opravdu chcete odstranit vybraný obraz?"
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
 
+#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+msgid "Overview"
+msgstr "Přehled"
+
 #: ../html/src/manager/login/login.tsx:53
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
@@ -4023,8 +3891,8 @@ msgstr "Provedení scénáře bylo"
 msgid "Applying the config channels has been "
 msgstr "Použití konfiguračních kanálů bylo "
 
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:62
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 msgid "Configuration"
 msgstr "Konfigurace"
 
@@ -4117,97 +3985,101 @@ msgstr "Vytvoření úložiště Bootstrap se nezdařilo"
 msgid "State apply failed"
 msgstr "Aplikace stavu selhala"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:137
+#: ../html/src/manager/notifications/notification-messages.tsx:50
+msgid "Pay-as-you-go refresh authentication data failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:245
-#: ../html/src/manager/notifications/notification-messages.tsx:246
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Info"
 msgstr "Informace"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Warning"
 msgstr "Výstraha"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
+#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:266
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:324
+#: ../html/src/manager/notifications/notification-messages.tsx:328
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:373
+#: ../html/src/manager/notifications/notification-messages.tsx:377
 msgid "Retry onboarding"
 msgstr "Zkuste se registrovat znovu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:383
+#: ../html/src/manager/notifications/notification-messages.tsx:387
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:412
+#: ../html/src/manager/notifications/notification-messages.tsx:416
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:444
-#: ../html/src/manager/notifications/notification-messages.tsx:445
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-#: ../html/src/manager/notifications/notification-messages.tsx:453
+#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:457
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
-#: ../html/src/manager/notifications/notification-messages.tsx:552
+#: ../html/src/manager/notifications/notification-messages.tsx:474
+#: ../html/src/manager/notifications/notification-messages.tsx:556
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:475
+#: ../html/src/manager/notifications/notification-messages.tsx:479
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Summary"
 msgstr "Souhrn"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:514
+#: ../html/src/manager/notifications/notification-messages.tsx:518
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Action"
 msgstr "Akce"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:540
+#: ../html/src/manager/notifications/notification-messages.tsx:544
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -4552,6 +4424,14 @@ msgstr "Frekvence"
 msgid "Target Type"
 msgstr "Typ cíle"
 
+#: ../html/src/manager/state/recurring-states-utils.tsx:4
+msgid "Minion"
+msgstr "Následovník"
+
+#: ../html/src/manager/state/recurring-states-utils.tsx:6
+msgid "Group"
+msgstr "Skupina"
+
 #: ../html/src/manager/state/recurring-states.tsx:142
 msgid "Schedule successfully"
 msgstr "Naplánováno úspěšně"
@@ -4567,14 +4447,6 @@ msgid ""
 msgstr ""
 "Níže uvedené časy jsou zobrazeny v časovém pásmu serveru {0}. Naplánovaný "
 "čas bude časem serveru."
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:4
-msgid "Minion"
-msgstr "Následovník"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:6
-msgid "Group"
-msgstr "Skupina"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -4644,11 +4516,6 @@ msgstr "Zavést systém"
 msgid "e.g., ••••••••••••"
 msgstr "např. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
-msgid "SSH Private Key"
-msgstr "Privátní klíč SSH"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
@@ -4656,10 +4523,6 @@ msgid ""
 msgstr ""
 "Soubor bude uložen v dočasném souboru na serveru a bude odstraněn po "
 "proceduře zavedení systému"
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
-msgid "SSH Private Key Passphrase"
-msgstr "Heslo privátního klíče SSH"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
 msgid "Leave empty for no passphrase"
@@ -4677,28 +4540,13 @@ msgstr ""
 "Můžete přidat systémy do správy pouze poskytnutím přihlašovacích údajů SSH. "
 "{0} připraví systém na dálku a registroje ho."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
-#, fuzzy
-msgid "Host"
-msgstr "Hostitelé"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
 msgid "e.g., host.domain.com"
 msgstr "např. host.doman.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
-#, fuzzy
-msgid "SSH Port"
-msgstr "Port"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portů: 1 - 65535"
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
-#, fuzzy
-msgid "User"
-msgstr "Uživatelé"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid ""
@@ -4914,6 +4762,11 @@ msgstr "(Nový základní kanál se nepodařilo určit)"
 msgid "system(s) to subscribe"
 msgstr "systém(y) k odběru"
 
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+msgid "(none)"
+msgstr "(žádný)"
+
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
 msgid "system(s) incompatible"
@@ -5029,6 +4882,31 @@ msgstr "Nejsou dostupné žádné podřízené kanály."
 msgid "Confirm Software Channel Change"
 msgstr "Potvrďte změnu softwarového kanálu"
 
+#: ../html/src/manager/systems/virtual-list.tsx:42
+#, fuzzy
+msgid "Virtual Systems"
+msgstr "Hostované virtuální systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:60
+#, fuzzy
+msgid "No Virtual Systems."
+msgstr "Hostované virtuální systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:65
+#, fuzzy
+msgid "Virtual Host"
+msgstr "Správce virtuálních hostiteľů"
+
+#: ../html/src/manager/systems/virtual-list.tsx:73
+#, fuzzy
+msgid "Virtual System"
+msgstr "Hostované virtuální systémy"
+
+#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+msgid "Base Software Channel"
+msgstr "Základní softwarový kanál"
+
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr ""
@@ -5137,66 +5015,25 @@ msgstr "Správci virtuálních hostiteľů"
 msgid "Add a virtual host manager"
 msgstr "Přidat Správce virtuálních hostiteľů"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
-#, fuzzy
-msgid "Virtual Systems"
-msgstr "Hostované virtuální systémy"
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
+msgid "Please install libvirt python module."
+msgstr "Instalujte prosím modul libvirt python."
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
-#, fuzzy
-msgid "No Virtual Systems."
-msgstr "Hostované virtuální systémy"
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr ""
+"KVM ani Xen neběží. Přesvědčte se, že jsou nainstalovány a moduly jádra "
+"načteny."
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-#, fuzzy
-msgid "Virtual Host"
-msgstr "Správce virtuálních hostiteľů"
+#: ../html/src/manager/virtualization/ListTab.tsx:162
+msgid "{0} selected"
+msgstr "{0} vybráno"
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-#, fuzzy
-msgid "Virtual System"
-msgstr "Hostované virtuální systémy"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
-msgid "Base Software Channel"
-msgstr "Základní softwarový kanál"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "Odpojeno"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "Spojení selhalo"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "Přepnout plnou velikost"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "Hostitel není spuštěn"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "Neznámý host"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "Další pokus"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "Připojování..."
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "Něco se pokazilo, spojení ukončeno"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "Vytvořit virtuální stroj"
+#: ../html/src/manager/virtualization/ListTab.tsx:242
+msgid "Action Status"
+msgstr "Stav akce"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:225
@@ -5265,6 +5102,55 @@ msgstr "Cesta ke sdílené složce clusteru pro definice virtuálních počíta�
 msgid "Graphics"
 msgstr "Grafika"
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
+msgid "Retry"
+msgstr "Další pokus"
+
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
+msgid "Connecting..."
+msgstr "Připojování..."
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Disconnected"
+msgstr "Odpojeno"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
+msgid "Failed to connect"
+msgstr "Spojení selhalo"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
+msgid "Toggle full size"
+msgstr "Přepnout plnou velikost"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
+msgid "Guest is not running"
+msgstr "Hostitel není spuštěn"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
+msgid "Unknown guest"
+msgstr "Neznámý host"
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
+msgid "Something went wrong, connection is closed"
+msgstr "Něco se pokazilo, spojení ukončeno"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
+msgid "Create Virtual Machine"
+msgstr "Vytvořit virtuální stroj"
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+msgid "Migrate"
+msgstr "Migrovat"
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
+msgid "Select where to migrate the virtual guest to."
+msgstr "Zvolte, kam migrovat virtuální host."
+
+#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
+msgid "Target Host"
+msgstr "Cílový hostitel"
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
 msgid "Start / Resume"
 msgstr "Spustit / Pokračovat"
@@ -5326,19 +5212,6 @@ msgstr "pozastaveno"
 msgid "Graphical Console"
 msgstr "Grafická konzole"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-msgid "Migrate"
-msgstr "Migrovat"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "Zvolte, kam migrovat virtuální host."
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "Cílový hostitel"
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
 msgid "Device type"
 msgstr "Typ zařízení"
@@ -5369,10 +5242,6 @@ msgstr "Soubor"
 msgid "Format"
 msgstr "Formát"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "Disky"
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
 msgid "Source storage pool"
 msgstr "Fond úložiště zdrojů"
@@ -5388,6 +5257,10 @@ msgstr "Velikost disku (GB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
 msgid "Source template image URL"
 msgstr "URL obrazu zdrojové šablony"
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
+msgid "Disks"
+msgstr "Disky"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
@@ -5415,26 +5288,6 @@ msgstr "Vyprázdnit pole"
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
 msgstr "Jediný virtuální stroj využívající téměř všechny zdroje hostitele"
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "Instalujte prosím modul libvirt python."
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVM ani Xen neběží. Přesvědčte se, že jsou nainstalovány a moduly jádra "
-"načteny."
-
-#: ../html/src/manager/virtualization/ListTab.tsx:162
-msgid "{0} selected"
-msgstr "{0} vybráno"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:242
-msgid "Action Status"
-msgstr "Stav akce"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
 msgid "Create Virtual Network"
@@ -5671,47 +5524,6 @@ msgstr "Záznamy TXT"
 msgid "Value"
 msgstr "Hodnota"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"Použijte existující, konfigurovaný most (bridge). Není aktivní žádné "
-"pravidlo iptables, IP adresa ani služba DHCP/DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"Virtuální síť používající směrovací zásobník IP adres hostitelů bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"Virtuální síť používající směrovací zásobník IP adres hostitelů bez pravidel "
-"firewallu, bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "Virtuální síť bez připojení k jiným sítím"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "fond SR-IOV"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
-
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
 msgid "Network address"
 msgstr "Síťová adresa"
@@ -5808,6 +5620,47 @@ msgstr "Označeno"
 msgid "Untagged"
 msgstr "Neoznačeno"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"Použijte existující, konfigurovaný most (bridge). Není aktivní žádné "
+"pravidlo iptables, IP adresa ani služba DHCP/DNS"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů a NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+"Virtuální síť používající směrovací zásobník IP adres hostitelů bez NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+"Virtuální síť používající směrovací zásobník IP adres hostitelů bez pravidel "
+"firewallu, bez NAT"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
+msgid "Virtual network with no connection to other networks"
+msgstr "Virtuální síť bez připojení k jiným sítím"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+msgstr "Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. "
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
+msgid "SR-IOV pool"
+msgstr "fond SR-IOV"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
+
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."
 msgstr "Nelze získat síťová zařízení serveru. Prosím zkuste to znovu."
@@ -5868,6 +5721,14 @@ msgstr "Filtrovat podle názvu fondu nebo svazku"
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
 msgid "Partition separator"
 msgstr "Oddělovač oddílů"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "Ano"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "Ne"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
 msgid "Host name"
@@ -6126,6 +5987,170 @@ msgstr "nedefinováno"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} čaj {1}"
+
+#~ msgid "Add Cluster"
+#~ msgstr "Přidat cluster"
+
+#~ msgid "Select management node"
+#~ msgstr "Vyberte uzel správy"
+
+#~ msgid "Provider Settings"
+#~ msgstr "Nastavení poskytovatele"
+
+#~ msgid "Provider:"
+#~ msgstr "Poskytovatel:"
+
+#~ msgid "Management Node:"
+#~ msgstr "Uzel správy:"
+
+#~ msgid "Add cluster"
+#~ msgstr "Přidat klastr"
+
+#~ msgid "Add"
+#~ msgstr "Přidat"
+
+#~ msgid "Name:"
+#~ msgstr "Název:"
+
+#~ msgid "Description:"
+#~ msgstr "Popis:"
+
+#~ msgid "Available cluster providers"
+#~ msgstr "Dostupní poskytovatelé klastrů"
+
+#~ msgid "Settings saved successfully"
+#~ msgstr "Nastavení uloženo úspěšně"
+
+#~ msgid "System group refresh action scheduled successfully"
+#~ msgstr "Akce obnovení systémové skupiny byla úspěšně naplánována"
+
+#~ msgid "Cluster properties updated successfully"
+#~ msgstr "Vlastnosti klastru aktualizovány úspěšně"
+
+#~ msgid "Edit cluster details"
+#~ msgstr "Upravit podrobnosti klastru"
+
+#~ msgid "Join node"
+#~ msgstr "Připojit uzel"
+
+#~ msgid "Remove node"
+#~ msgstr "Odebrat uzel"
+
+#~ msgid "Upgrade cluster"
+#~ msgstr "Upgradovat klastr"
+
+#~ msgid "Refresh system group"
+#~ msgstr "Obnovit systémovou skupinu"
+
+#~ msgid "Cluster Properties"
+#~ msgstr "Vlastnosti klastru"
+
+#~ msgid "Edit properties"
+#~ msgstr "Upravit vlastnosti"
+
+#~ msgid "Cluster provider"
+#~ msgstr "Poskytovatel klastrů"
+
+#~ msgid "Management node"
+#~ msgstr "Uzel správy"
+
+#~ msgid "System group"
+#~ msgstr "Systémová skupina"
+
+#~ msgid "Node Hostname"
+#~ msgstr "Název hostitele uzlu"
+
+#~ msgid "Action has been "
+#~ msgstr "Akce byla "
+
+#~ msgid " successfully."
+#~ msgstr " úspěšně."
+
+#~ msgid "Cluster "
+#~ msgstr "Klastr "
+
+#~ msgid " has been added successfully."
+#~ msgstr " bylo úspěšně přidáno."
+
+#~ msgid "Delete cluster"
+#~ msgstr "Odstranit klastr"
+
+#~ msgid "Delete Cluster"
+#~ msgstr "Odstranit Klastr"
+
+#~ msgid "Are you sure you want to delete cluster?"
+#~ msgstr "Opravdu chcete odstranit klastr?"
+
+#~ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
+#~ msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
+
+#~ msgid "Join "
+#~ msgstr "Připojit "
+
+#~ msgid "NOTE: before joining a new node, make sure that the node has:"
+#~ msgstr "POZOR: před připojením k novému uzlu se ujistěte, že uzel má:"
+
+#~ msgid ""
+#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
+#~ "children channels of CaaSP channels"
+#~ msgstr ""
+#~ "Přiřazené kanály kontejneru jako platformy služeb (CaaSP) - nebo jakékoli "
+#~ "podřízené kanály kanálů CaaSP"
+
+#~ msgid ""
+#~ "The management node can access the node as root via ssh without password"
+#~ msgstr "Uzel správy může přistupovat k uzlu jako root pomocí ssh bez hesla"
+
+#~ msgid "Select system to join"
+#~ msgstr "Vyberte systém, kam se chcete připojit"
+
+#~ msgid "New node configuration"
+#~ msgstr "Konfigurace nového uzlu"
+
+#~ msgid "Schedule join node"
+#~ msgstr "Naplánovat připojení uzlu"
+
+#~ msgid "Cluster:"
+#~ msgstr "Klastr:"
+
+#~ msgid "Node to join:"
+#~ msgstr "Uzel k připojení:"
+
+#~ msgid "Join"
+#~ msgstr "Připojit"
+
+#~ msgid " has been deleted successfully."
+#~ msgstr " bylo úspěšně odstraněno."
+
+#~ msgid "Add an existing cluster"
+#~ msgstr "Přidat existující klastr"
+
+#~ msgid "Clusters"
+#~ msgstr "Klastry"
+
+#~ msgid "Remove nodes"
+#~ msgstr "Odebrat uzly"
+
+#~ msgid "Schedule remove node"
+#~ msgstr "Naplánovat odstranění uzlu"
+
+#~ msgid "Nodes to remove:"
+#~ msgstr "Uzly k odebrání:"
+
+#~ msgid "Upgrade plan"
+#~ msgstr "Plán upgradu"
+
+#~ msgid "Upgrade "
+#~ msgstr "Upgradovat "
+
+#~ msgid "Configuration override"
+#~ msgstr "Překonání konfigurace"
+
+#~ msgid "Schedule upgrade cluster"
+#~ msgstr "Naplánovat upgrade clusteru"
+
+#~ msgid "Upgrade"
+#~ msgstr "Upgrade (povýšení verze)"
 
 #~ msgid ""
 #~ "provided channel that corresponds to the installed SUSE Linux version. "

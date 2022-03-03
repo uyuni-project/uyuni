@@ -43,7 +43,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -203,7 +202,7 @@ public class PackagesHandler extends BaseHandler {
          * Loop through the data result and merge the data into the correct format
          */
         for (PackageFileDto file : dr) {
-            Map<String, Object> row = new HashMap<String, Object>();
+            Map<String, Object> row = new HashMap<>();
 
             // Default items (mtime and file_size cannot be null)
             row.put("path", StringUtils.defaultString(file.getName()));
@@ -309,9 +308,9 @@ public class PackagesHandler extends BaseHandler {
              * Loop through each item in the dependencies data result, adding each row
              * to the returnList
              */
-            for (Iterator resultItr = dr.iterator(); resultItr.hasNext();) {
+            for (Object oIn : dr) {
                 Map row = new HashMap(); // The map we'll put into returnList
-                Map map = (Map) resultItr.next();
+                Map map = (Map) oIn;
 
                 String name = (String) map.get("name");
                 String version = (String) map.get("version");
@@ -357,10 +356,6 @@ public class PackagesHandler extends BaseHandler {
         try {
             PackageManager.schedulePackageRemoval(loggedInUser, pkg);
         }
-        catch (FaultException e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        }
         catch (RuntimeException e) {
             logger.error(e.getMessage(), e);
             throw e;
@@ -396,10 +391,6 @@ public class PackagesHandler extends BaseHandler {
         }
         try {
             PackageManager.schedulePackageSourceRemoval(loggedInUser, pkg);
-        }
-        catch (FaultException e) {
-            logger.error(e.getMessage(), e);
-            throw e;
         }
         catch (RuntimeException e) {
             logger.error(e.getMessage(), e);

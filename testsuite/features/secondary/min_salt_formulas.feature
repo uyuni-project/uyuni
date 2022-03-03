@@ -32,6 +32,7 @@ Feature: Use salt formulas
   Scenario: Parametrize the formula on the minion
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
+     And I click on "Expand All Sections"
      And I select "Etc/GMT-5" in timezone name field
      And I select "French" in language field
      And I select "French (Canada)" in keyboard layout field

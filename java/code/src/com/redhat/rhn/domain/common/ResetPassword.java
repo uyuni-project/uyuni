@@ -175,20 +175,8 @@ public class ResetPassword extends BaseDomainHelper {
      */
     @Override
     public String toString() {
-        return new StringBuilder("ResetPassword [id=")
-                                .append(getId())
-                                .append(", token=")
-                                .append(getToken())
-                                .append(", userId=")
-                                .append(getUserId())
-                                .append(", isValid=")
-                                .append(isValid())
-                                .append(", created=")
-                                .append(getCreated())
-                                .append(", isExpired=")
-                                .append(isExpired())
-                                .append("]")
-                                .toString();
+        return "ResetPassword [id=" + getId() + ", token=" + getToken() + ", userId=" + getUserId() +
+                ", isValid=" + isValid() + ", created=" + getCreated() + ", isExpired=" + isExpired() + "]";
 
     }
 }

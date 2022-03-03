@@ -1,8 +1,0 @@
-description:
-  Settings for the CaaSP cluster management tools
-group: clustering
-scope: group
-# formula used by a cluster provider
-type: cluster-formula
-# data will be saved under pillar mgr_clusters:<cluster_name>:settings
-cluster_pillar_key: settings

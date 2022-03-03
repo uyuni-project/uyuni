@@ -36,7 +36,7 @@ Name:           spacewalk-certs-tools
 Summary:        Spacewalk SSL Key/Cert Tool
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.3
+Version:        4.3.5
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -104,6 +104,7 @@ make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
 
 ln -s rhn-ssl-tool-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
+ln -s mgr-ssl-cert-setup-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/mgr-ssl-cert-setup
 ln -s rhn-bootstrap-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
 ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
@@ -135,6 +136,7 @@ esac
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
 %{_bindir}/rhn-ssl-tool
+%{_bindir}/mgr-ssl-cert-setup
 %{_bindir}/rhn-bootstrap
 %attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %attr(755,root,root) %{_sbindir}/spacewalk-ssh-push-init
@@ -159,5 +161,6 @@ esac
 %{python3_sitelib}/certs
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python3_version}
 %attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python3_version}
+%attr(755,root,root) %{_bindir}/mgr-ssl-cert-setup-%{python3_version}
 
 %changelog

@@ -14,7 +14,7 @@ import os
 import sys
 import time
 from rhn import connections
-from rhn.i18n import sstr, bstr
+from rhn.stringutils import sstr, bstr
 from rhn.SmartIO import SmartIO
 from rhn.UserDictCase import UserDictCase
 

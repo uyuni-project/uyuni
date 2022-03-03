@@ -1,5 +1,5 @@
 {
     "cpu_model": "POWER9 (architected), altivec supported",
-    "cpu_numanodes": "2",
+    "cpu_numanodes": "1",
     "cpu_cores": "1"
 }

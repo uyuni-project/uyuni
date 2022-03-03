@@ -48,7 +48,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
                 e.getId(), p.getId());
         addRequestParameter(RequestContext.SID, server.getId().toString());
         actionPerform();
-        assertTrue(getActualForward().indexOf("errata.jsp") > -1);
+        assertTrue(getActualForward().contains("errata.jsp"));
 
     }
 
@@ -84,7 +84,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         actionPerform();
-        assertTrue(getActualForward().indexOf("ErrataConfirm") > -1);
+        assertTrue(getActualForward().contains("ErrataConfirm"));
     }
 
 }

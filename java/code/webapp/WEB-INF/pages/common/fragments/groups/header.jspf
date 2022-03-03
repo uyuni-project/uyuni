@@ -11,7 +11,6 @@
             miscUrl="/rhn/systems/WorkWithGroup.do?sgid=${systemgroup.id}"
             deletionType="systemgroup"
             deletionUrl="/rhn/groups/Delete.do?sgid=${systemgroup.id}"
-            deletionAcl="not is_cluster_group()"
         >
             <c:out value="${systemgroup.name}" />
         </rhn:toolbar>
@@ -22,11 +21,5 @@
         </rhn:toolbar>
     </c:otherwise>
 </c:choose>
-
-<rhn:require acl="is_cluster_group()">
-<div class="alert alert-info">
-<p>System group is owned by a cluster. Deleting the system group is disabled. To delete the group you must delete the corresponding cluster.</p>
-</div>
-</rhn:require>
 
 <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/system_group_detail.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

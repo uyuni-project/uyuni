@@ -20,11 +20,8 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -44,17 +41,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private final FormulaManager formulaManager = new FormulaManager(saltApi);
-    private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager,
-            formulaManager);
-    private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager,
-            serverGroupManager);
-    private final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-    private final SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils,
-            clusterManager, formulaManager, saltKeyUtils);
-    private final MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
-            saltUtils);
+    private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
 
     @Override
     public void setUp() throws Exception {
@@ -72,6 +59,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).
      */
     public void testCleanupScriptActions() throws Exception {
+
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatus(ActionFactory.STATUS_COMPLETED);
@@ -90,6 +83,11 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is deleted in case no Action is there at all.
      */
     public void testCleanupScriptWithoutAction() throws Exception {
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+        saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(123456L));
 
         // Testing
@@ -101,6 +99,11 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
     public void testCleanupScriptActionsPickedUp() throws Exception {
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+        saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatus(ActionFactory.STATUS_PICKED_UP);

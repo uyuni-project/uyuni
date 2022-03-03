@@ -122,7 +122,7 @@ public class MgrSyncUtils {
             arch = packageArch.getLabel();
         }
         else {
-            arch = PRODUCT_ARCHS.stream().filter(a -> channelLabel.contains(a)).findFirst().orElse(arch);
+            arch = PRODUCT_ARCHS.stream().filter(channelLabel::contains).findFirst().orElse(arch);
         }
         if (arch.equals("i686") || arch.equals("i586") ||
                 arch.equals("i486") || arch.equals("i386")) {

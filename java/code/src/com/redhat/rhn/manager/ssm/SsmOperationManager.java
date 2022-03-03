@@ -54,7 +54,7 @@ public class SsmOperationManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("ssm_operation_queries", "find_all_operations");
 
-        Map<String, Object> params = new HashMap<String, Object>(1);
+        Map<String, Object> params = new HashMap<>(1);
         params.put("user_id", user.getId());
 
         return m.execute(params);
@@ -74,7 +74,7 @@ public class SsmOperationManager extends BaseManager {
         SelectMode m =
             ModeFactory.getMode("ssm_operation_queries", "find_operations_with_status");
 
-        Map<String, Object> params = new HashMap<String, Object>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
         params.put("status", SsmOperationStatus.IN_PROGRESS.getText());
 
@@ -95,7 +95,7 @@ public class SsmOperationManager extends BaseManager {
         SelectMode m =
             ModeFactory.getMode("ssm_operation_queries", "find_operations_with_status");
 
-        Map<String, Object> params = new HashMap<String, Object>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
         params.put("status", SsmOperationStatus.COMPLETED.getText());
 
@@ -117,7 +117,7 @@ public class SsmOperationManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("ssm_operation_queries", "find_operation_by_id");
 
-        Map<String, Object> params = new HashMap<String, Object>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
         params.put("op_id", operationId);
 
@@ -163,7 +163,7 @@ public class SsmOperationManager extends BaseManager {
 
         SelectMode selectMode;
         WriteMode writeMode;
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         // Select the operation ID manually from the sequence so we can add the mappings
         // from the operation to the servers
@@ -206,7 +206,7 @@ public class SsmOperationManager extends BaseManager {
         WriteMode m =
             ModeFactory.getWriteMode("ssm_operation_queries", "update_status");
 
-        Map<String, Object> params = new HashMap<String, Object>(3);
+        Map<String, Object> params = new HashMap<>(3);
         params.put("user_id", user.getId());
         params.put("op_id", operationId);
         params.put("status", SsmOperationStatus.COMPLETED.getText());
@@ -225,7 +225,7 @@ public class SsmOperationManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("ssm_operation_queries",
             "find_server_data_for_operation_id");
 
-        Map<String, Object> params = new HashMap<String, Object>(1);
+        Map<String, Object> params = new HashMap<>(1);
         params.put("op_id", operationId);
 
         // list of maps of server_id -> <id>
@@ -246,7 +246,7 @@ public class SsmOperationManager extends BaseManager {
         WriteMode writeMode =
             ModeFactory.getWriteMode("ssm_operation_queries", "map_servers_to_operation");
 
-        Map<String, Object> params = new HashMap<String, Object>(3);
+        Map<String, Object> params = new HashMap<>(3);
         params.put("op_id", operationId);
         params.put("user_id", userId);
         params.put("set_label", setLabel);
@@ -266,7 +266,7 @@ public class SsmOperationManager extends BaseManager {
         WriteMode writeMode =
             ModeFactory.getWriteMode("ssm_operation_queries",
                                         "map_sids_to_operation");
-        Map<String, Object> params = new HashMap<String, Object>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("op_id", operationId);
         params.put("user_id", userId);
         writeMode.executeUpdate(params, sidsIn);
@@ -282,7 +282,7 @@ public class SsmOperationManager extends BaseManager {
         String note) {
         WriteMode writeMode = ModeFactory.getWriteMode("ssm_operation_queries",
             "add_note_to_operation_on_server");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("op_id", operationId);
         params.put("server_id", serverId);
         params.put("note", note);

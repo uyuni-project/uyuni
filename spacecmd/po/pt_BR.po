@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"POT-Creation-Date: 2022-02-11 19:13+0000\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -658,8 +658,8 @@ msgid "usage: configchannel_listsystems CHANNEL"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:82 ../src/spacecmd/configchannel.py:117
-#: ../src/spacecmd/group.py:505 ../src/spacecmd/group.py:559
-#: ../src/spacecmd/group.py:597 ../src/spacecmd/system.py:3314
+#: ../src/spacecmd/group.py:547 ../src/spacecmd/group.py:601
+#: ../src/spacecmd/group.py:639 ../src/spacecmd/system.py:3314
 #: ../src/spacecmd/system.py:3412
 msgid "This version of the API doesn't support this method"
 msgstr ""
@@ -841,26 +841,26 @@ msgstr ""
 msgid "usage: configchannel_details CHANNEL ..."
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:443 ../src/spacecmd/group.py:529
+#: ../src/spacecmd/configchannel.py:443 ../src/spacecmd/group.py:571
 #: ../src/spacecmd/kickstart.py:421
 #, python-format
 msgid "Label:       %s"
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:530
+#: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:572
 #: ../src/spacecmd/kickstart.py:420
 #, python-format
 msgid "Name:        %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/cryptokey.py:217
-#: ../src/spacecmd/group.py:531 ../src/spacecmd/system.py:682
+#: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:682
 #, python-format
 msgid "Description: %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:218
-#: ../src/spacecmd/group.py:532 ../src/spacecmd/kickstart.py:507
+#: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
 #: ../src/spacecmd/kickstart.py:1975
 #, python-format
 msgid "Type:        %s"
@@ -1674,7 +1674,7 @@ msgid ""
 "  -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:110 ../src/spacecmd/system.py:421
+#: ../src/spacecmd/errata.py:117 ../src/spacecmd/system.py:421
 #: ../src/spacecmd/system.py:730 ../src/spacecmd/system.py:886
 #: ../src/spacecmd/system.py:1023 ../src/spacecmd/system.py:1770
 #: ../src/spacecmd/system.py:3923 ../src/spacecmd/system.py:4233
@@ -1682,16 +1682,16 @@ msgstr ""
 msgid "Start Time [now]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:158
+#: ../src/spacecmd/errata.py:164
 msgid "No patches to apply"
 msgstr ""
 
 #. a summary of which errata we're going to apply
-#: ../src/spacecmd/errata.py:162
+#: ../src/spacecmd/errata.py:168
 msgid "Errata             Systems"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:234
+#: ../src/spacecmd/errata.py:172 ../src/spacecmd/system.py:234
 #: ../src/spacecmd/system.py:471 ../src/spacecmd/system.py:825
 #: ../src/spacecmd/system.py:948 ../src/spacecmd/system.py:1087
 #: ../src/spacecmd/system.py:1789 ../src/spacecmd/system.py:3935
@@ -1700,178 +1700,178 @@ msgstr ""
 msgid "Start Time: %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:168
+#: ../src/spacecmd/errata.py:177
 msgid "Apply these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:197
+#: ../src/spacecmd/errata.py:206
 #, python-format
 msgid "Scheduled %i system(s) for %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:218
+#: ../src/spacecmd/errata.py:227
 #, python-format
 msgid "No patches to schedule for %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:227
+#: ../src/spacecmd/errata.py:236
 #, python-format
 msgid "Scheduled %i patches for %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:236
+#: ../src/spacecmd/errata.py:245
 msgid "errata_listaffectedsystems: List of systems affected by an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:237
+#: ../src/spacecmd/errata.py:246
 msgid "usage: errata_listaffectedsystems ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:275
+#: ../src/spacecmd/errata.py:284
 msgid "errata_listcves: List of CVEs addressed by an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:276
+#: ../src/spacecmd/errata.py:285
 msgid "usage: errata_listcves ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:312
+#: ../src/spacecmd/errata.py:321
 msgid "No errata has been found"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:319
+#: ../src/spacecmd/errata.py:328
 msgid "errata_findbycve: List errata addressing a CVE"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:320
+#: ../src/spacecmd/errata.py:329
 msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:354
+#: ../src/spacecmd/errata.py:363
 msgid "errata_details: Show the details of an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:355
+#: ../src/spacecmd/errata.py:364
 msgid "usage: errata_details ERRATA|search:XXX ..."
-msgstr ""
-
-#: ../src/spacecmd/errata.py:390
-#, python-format
-msgid "%s is not a valid erratum"
-msgstr ""
-
-#: ../src/spacecmd/errata.py:397
-#, python-format
-msgid "Name:       %s"
-msgstr ""
-
-#: ../src/spacecmd/errata.py:398
-#, python-format
-msgid "Product:    %s"
 msgstr ""
 
 #: ../src/spacecmd/errata.py:399
 #, python-format
+msgid "%s is not a valid erratum"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:406
+#, python-format
+msgid "Name:       %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:407
+#, python-format
+msgid "Product:    %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:408
+#, python-format
 msgid "Type:       %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:400
+#: ../src/spacecmd/errata.py:409
 #, python-format
 msgid "Status:     %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:401
+#: ../src/spacecmd/errata.py:410
 #, python-format
 msgid "Issue Date: %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:403
+#: ../src/spacecmd/errata.py:412
 msgid "Topic"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:407 ../src/spacecmd/package.py:108
+#: ../src/spacecmd/errata.py:416 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:567
 msgid "Description"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:413
+#: ../src/spacecmd/errata.py:422
 msgid "Notes"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:418
+#: ../src/spacecmd/errata.py:427
 msgid "CVEs"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:422
+#: ../src/spacecmd/errata.py:431
 msgid "Solution"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:426
+#: ../src/spacecmd/errata.py:435
 msgid "References"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:430
+#: ../src/spacecmd/errata.py:439
 msgid "Affected Channels"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:434 ../src/spacecmd/org.py:281
+#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:281
 msgid "Affected Systems"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:438
+#: ../src/spacecmd/errata.py:447
 msgid "Affected Packages"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:448
+#: ../src/spacecmd/errata.py:457
 msgid "errata_delete: Delete an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:449
+#: ../src/spacecmd/errata.py:458
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:469
+#: ../src/spacecmd/errata.py:478
 msgid "No patches to delete"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:472
+#: ../src/spacecmd/errata.py:481
 msgid "Erratum            Channels"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:480
+#: ../src/spacecmd/errata.py:489
 msgid "Delete these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:486
+#: ../src/spacecmd/errata.py:495
 #, python-format
 msgid "Deleted %i patches"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:496
+#: ../src/spacecmd/errata.py:505
 msgid "errata_publish: Publish an patch to a channel"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:497
+#: ../src/spacecmd/errata.py:506
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:526
+#: ../src/spacecmd/errata.py:535
 msgid "No patches to publish"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:531
+#: ../src/spacecmd/errata.py:540
 msgid "Publish these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:543
+#: ../src/spacecmd/errata.py:552
 msgid "errata_search: List patches that meet the given criteria"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:544
+#: ../src/spacecmd/errata.py:553
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:546 ../src/spacecmd/scap.py:181
+#: ../src/spacecmd/errata.py:555 ../src/spacecmd/scap.py:181
 msgid "Example:"
 msgstr ""
 
@@ -1998,16 +1998,16 @@ msgstr ""
 msgid "Backup Group: %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:281
+#: ../src/spacecmd/group.py:287
 #, python-format
 msgid "Output File: %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:292
+#: ../src/spacecmd/group.py:302
 msgid "group_restore: restore a system group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:293
+#: ../src/spacecmd/group.py:303
 msgid ""
 "\n"
 "usage: group_restore INPUTDIR [NAME] ...\n"
@@ -2020,130 +2020,144 @@ msgid ""
 "    "
 msgstr ""
 
-#: ../src/spacecmd/group.py:339
+#: ../src/spacecmd/group.py:349
 #, python-format
 msgid "Restore dir %s does not exits or is not a directory"
 msgstr ""
 
-#: ../src/spacecmd/group.py:343
+#: ../src/spacecmd/group.py:353
 #, python-format
 msgid "Restore dir %s has no restore items"
 msgstr ""
 
-#: ../src/spacecmd/group.py:350
+#: ../src/spacecmd/group.py:360
 #, python-format
 msgid "Group %s was not found in backup"
 msgstr ""
 
-#: ../src/spacecmd/group.py:353
+#: ../src/spacecmd/group.py:363
 #, python-format
 msgid "Found %s missing groups, terminating"
 msgstr ""
 
-#: ../src/spacecmd/group.py:368
+#. assume old backup, not in json format. Read complete file as string
+#: ../src/spacecmd/group.py:383
+msgid "Assuming group to be in old plain text format"
+msgstr ""
+
+#: ../src/spacecmd/group.py:395
 #, python-format
 msgid "Group %s already restored"
 msgstr ""
 
-#: ../src/spacecmd/group.py:375
+#: ../src/spacecmd/group.py:401
 msgid "Changing description from:"
 msgstr ""
 
-#: ../src/spacecmd/group.py:377
+#: ../src/spacecmd/group.py:403
 msgid "Continue [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/group.py:380 ../src/spacecmd/group.py:383
+#: ../src/spacecmd/group.py:406
 #, python-format
 msgid "Updating description for group: %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:386
+#: ../src/spacecmd/group.py:409
+msgid "Update formula data from backup? [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/group.py:416
+#, python-format
+msgid "Updating data for group: %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:424
 #, python-format
 msgid "Creating new group %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:395
+#: ../src/spacecmd/group.py:437
 msgid "group_list: List available system groups"
 msgstr ""
 
-#: ../src/spacecmd/group.py:396
+#: ../src/spacecmd/group.py:438
 msgid "usage: group_list"
 msgstr ""
 
-#: ../src/spacecmd/group.py:413
+#: ../src/spacecmd/group.py:455
 msgid "group_listsystems: List the members of a group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:414
+#: ../src/spacecmd/group.py:456
 msgid "usage: group_listsystems GROUP"
 msgstr ""
 
-#: ../src/spacecmd/group.py:436
+#: ../src/spacecmd/group.py:478
 #, python-format
 msgid "%s is not a valid group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:450
+#: ../src/spacecmd/group.py:492
 msgid "group_details: Show the details of a system group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:451
+#: ../src/spacecmd/group.py:493
 msgid "usage: group_details GROUP ..."
 msgstr ""
 
-#: ../src/spacecmd/group.py:474 ../src/spacecmd/group.py:522
+#: ../src/spacecmd/group.py:516 ../src/spacecmd/group.py:564
 #, python-format
 msgid "The group \"%s\" is invalid"
 msgstr ""
 
-#: ../src/spacecmd/group.py:481
+#: ../src/spacecmd/group.py:523
 #, python-format
 msgid "ID:                %i"
 msgstr ""
 
-#: ../src/spacecmd/group.py:482
+#: ../src/spacecmd/group.py:524
 #, python-format
 msgid "Name:              %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:483
+#: ../src/spacecmd/group.py:525
 #, python-format
 msgid "Description:       %s"
 msgstr ""
 
-#: ../src/spacecmd/group.py:484
+#: ../src/spacecmd/group.py:526
 #, python-format
 msgid "Number of Systems: %i"
 msgstr ""
 
-#: ../src/spacecmd/group.py:488
+#: ../src/spacecmd/group.py:530
 msgid "Members"
 msgstr ""
 
-#: ../src/spacecmd/group.py:497
+#: ../src/spacecmd/group.py:539
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:498
+#: ../src/spacecmd/group.py:540
 msgid "usage: group_listconfigchannels GROUP"
 msgstr ""
 
-#: ../src/spacecmd/group.py:540
+#: ../src/spacecmd/group.py:582
 msgid "group_addconfigchannels: Add config channels to a group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:541
+#: ../src/spacecmd/group.py:583
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/group.py:578
+#: ../src/spacecmd/group.py:620
 msgid "group_removeconfigchannels: Remove config channels from a group"
 msgstr ""
 
-#: ../src/spacecmd/group.py:579
+#: ../src/spacecmd/group.py:621
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
 msgstr ""
 

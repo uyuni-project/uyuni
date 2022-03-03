@@ -28,7 +28,7 @@ public class ChannelSystemsListSetupTest extends RhnMockStrutsTestCase {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        long ccid = cc.getId().longValue();
+        long ccid = cc.getId();
         setRequestPathInfo("/configuration/channel/ChannelSystems");
         addRequestParameter("ccid", "" + ccid);
         actionPerform();

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
+"POT-Creation-Date: 2022-02-24 18:14+0000\n"
 "PO-Revision-Date: 2021-11-01 18:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -204,6 +204,283 @@ msgstr "Vyskytla sa chyba:"
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
 msgstr "Pozri /var/log/up2date pre viac informácii"
+
+#: ../src/up2date_client/rhnreg.py:76
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "Varovanie: nepodarilo sa povoliť rhnsd s systemd"
+
+#: ../src/up2date_client/rhnreg.py:82
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "Varovanie: nepodarilo sa povoliť rhnsd pomocou chkconfig"
+
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "Niue"
+
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "Varovanie"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "Pri aplikovaní vašej voľby sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
+
+#: ../src/up2date_client/rhnregGui.py:305
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+"Nebudete môcť úspešne zaregistrovať tento systém bez kontaktovania servera "
+"Spacewalk."
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "Nie je možné kontaktovať vybraný server"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+msgstr "Nemohli sme kontaktovať {PRODUCT_NAME} alebo Proxy na '{HOST}'."
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"Prekontrolujte umiestnenie - je '%s' správne? Ak nie, môžete ho opraviť a "
+"skúste znova."
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr "Uistite sa, či je sieťové pripojenie v tomto systéme funkčné."
+
+#: ../src/up2date_client/rhnregGui.py:341
+msgid "There was an error communicating with Spacewalk server."
+msgstr "Vyskytla sa chyba pri komunikácii so serverom Spacewalk."
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr ""
+"Server môže byť v režime výpadku. Možno budete musieť skúsiť pripojenie "
+"neskôr."
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr "Možno používate klienta, ktorý nie je kompatibilný so serverom."
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr ""
+"Prosím, zadajte informácie o svojom účte pre <b>%s</b> Spacewalk server:"
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "Musíte zadať prihlasovacie meno."
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "Musíte zadať a overiť heslo."
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "Vyskytol sa problém pri registrácii systému."
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr ""
+"Vyskytla sa chyba pri komunikácii s registračným serverom.  Ohlásená chyba:\n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "Pri zhromažďovaní informácií pre profil sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "Chyba pri spúšťaní hardvérového profilu"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "Pri vyplňovaní profilu sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "Musíte zvoliť meno pre prefil."
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "Pri vytváraní profilu sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr ""
+"Registrácia systému a odosielanie informácií o profile.  Prosím, čakajte."
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "Registrácia systému"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
+#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
+#: ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "Problém s registráciou systému:\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr "Zadané prihlasovacie číslo [ %s ] nie je platným prihlasovacím číslom."
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "Problém s registráciou systému."
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "Problém pri zápise systémového id na disk."
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "Vyskytol sa problém pri registrácii systému."
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "Odosielanie informácie o _hardvéri"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "Problém s odosielaním hardvérových informácií."
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "Odoslať informácie o _hardvéri"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "Problém pri odosielaní zoznamu balíčkov."
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"Nebolo možné otvoriť %s\n"
+"%s nie je povolené.\n"
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "Pri inštalácii certifikátu sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "Musíte zadať meno užívateľa."
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"Vyskytla sa chyba SSL. Dôvodom mohlo byť to, že vami vybraný súbor nebol "
+"súborom certifikátu."
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "Počas inštalácie nového certifikátu sa niečo pokazilo:\n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "neznámy"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "Pri získavaní zoznamu hardvéru sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "Pri zostavovaní zoznamu balíkov sa vyskytla chyba."
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "Balík"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "Arch"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr ""
+"Vytváram zoznam RPM balíčkov nainštalovaných vo vašom systéme.  Prosím "
+"počkajte."
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"Vyskytla sa chyba pri načítavaní vášho nastavenia.  Uistite sa,\n"
+"že máte dostatočné práva na čítanie /etc/sysconfig/rhn."
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr ""
+"Vyskytla sa chyba pri ukladaní nastavenia. Uistite sa,\n"
+"že ste vlastníkom %s."
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"Táto chyba sa nemala stať. Ak nám chcete pomôcť vylepšiť tento program, "
+"predložte chybu na bugzilla.suse.com. Veľmi užitočné by bolo zahrnutie "
+"príslušných častí '%s'. Vďaka!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -829,12 +1106,6 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "Závažná chyba"
 
-#: ../src/up2date_client/rhnreg_constants.py:244
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-msgid "Warning"
-msgstr "Varovanie"
-
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, python-format, python-brace-format
 msgid ""
@@ -1006,277 +1277,6 @@ msgstr "Áno, pokračovať"
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
 msgstr "Stlačením <medzerníka> zrušíte výber možnosti."
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "Niue"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "Pri aplikovaní vašej voľby sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"Nebudete môcť úspešne zaregistrovať tento systém bez kontaktovania servera "
-"Spacewalk."
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "Nie je možné kontaktovať vybraný server"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Nemohli sme kontaktovať {PRODUCT_NAME} alebo Proxy na '{HOST}'."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"Prekontrolujte umiestnenie - je '%s' správne? Ak nie, môžete ho opraviť a "
-"skúste znova."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "Uistite sa, či je sieťové pripojenie v tomto systéme funkčné."
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Vyskytla sa chyba pri komunikácii so serverom Spacewalk."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-"Server môže byť v režime výpadku. Možno budete musieť skúsiť pripojenie "
-"neskôr."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "Možno používate klienta, ktorý nie je kompatibilný so serverom."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"Prosím, zadajte informácie o svojom účte pre <b>%s</b> Spacewalk server:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "Musíte zadať prihlasovacie meno."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "Musíte zadať a overiť heslo."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "Vyskytol sa problém pri registrácii systému."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr ""
-"Vyskytla sa chyba pri komunikácii s registračným serverom.  Ohlásená chyba:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "Pri zhromažďovaní informácií pre profil sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "Chyba pri spúšťaní hardvérového profilu"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "Pri vyplňovaní profilu sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "Musíte zvoliť meno pre prefil."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "Pri vytváraní profilu sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-"Registrácia systému a odosielanie informácií o profile.  Prosím, čakajte."
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "Registrácia systému"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Problém s registráciou systému:\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr "Zadané prihlasovacie číslo [ %s ] nie je platným prihlasovacím číslom."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Problém s registráciou systému."
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Problém pri zápise systémového id na disk."
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "Vyskytol sa problém pri registrácii systému."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "Odosielanie informácie o _hardvéri"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "Problém s odosielaním hardvérových informácií."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "Odoslať informácie o _hardvéri"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "Problém pri odosielaní zoznamu balíčkov."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Nebolo možné otvoriť %s\n"
-"%s nie je povolené.\n"
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "Pri inštalácii certifikátu sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "Musíte zadať meno užívateľa."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Vyskytla sa chyba SSL. Dôvodom mohlo byť to, že vami vybraný súbor nebol "
-"súborom certifikátu."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Počas inštalácie nového certifikátu sa niečo pokazilo:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "neznámy"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "Pri získavaní zoznamu hardvéru sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "Pri zostavovaní zoznamu balíkov sa vyskytla chyba."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "Balík"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arch"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"Vytváram zoznam RPM balíčkov nainštalovaných vo vašom systéme.  Prosím "
-"počkajte."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Vyskytla sa chyba pri načítavaní vášho nastavenia.  Uistite sa,\n"
-"že máte dostatočné práva na čítanie /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Vyskytla sa chyba pri ukladaní nastavenia. Uistite sa,\n"
-"že ste vlastníkom %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Táto chyba sa nemala stať. Ak nám chcete pomôcť vylepšiť tento program, "
-"predložte chybu na bugzilla.suse.com. Veľmi užitočné by bolo zahrnutie "
-"príslušných častí '%s'. Vďaka!"
-
-#: ../src/up2date_client/rhnreg.py:76
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Varovanie: nepodarilo sa povoliť rhnsd s systemd"
-
-#: ../src/up2date_client/rhnreg.py:82
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "Varovanie: nepodarilo sa povoliť rhnsd pomocou chkconfig"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
@@ -1473,11 +1473,6 @@ msgstr ""
 "znova,\n"
 "    aby ste sa vyhli požadovaniu oprávnenia správy."
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-"Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"
-
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
@@ -1497,6 +1492,11 @@ msgstr "Aktualizujem hardvérový profil..."
 #: ../src/bin/rhn-profile-sync.py:52
 msgid "Updating virtualization profile..."
 msgstr "Aktualizujem profil balíčka..."
+
+#: ../src/bin/rhn_check.py:423
+msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+msgstr ""
+"Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"

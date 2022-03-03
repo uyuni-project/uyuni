@@ -21,6 +21,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.task.TaskManager;
 
@@ -48,7 +49,17 @@ public class DebRepositoryWriter extends RepositoryWriter {
      * @param mountPointIn mount point package resides
      */
     public DebRepositoryWriter(String pathPrefixIn, String mountPointIn) {
-        super(pathPrefixIn, mountPointIn);
+        this(pathPrefixIn, mountPointIn, new SystemCommandExecutor());
+    }
+
+    /**
+     * Constructor takes in pathprefix and mountpoint
+     * @param pathPrefixIn prefix to package path
+     * @param mountPointIn mount point package resides
+     * @param cmdExecutorIn {@link Executor} instance to run system commands
+     */
+    public DebRepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
+        super(pathPrefixIn, mountPointIn, cmdExecutorIn);
     }
 
     /**
@@ -131,8 +142,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
         releaseWriter.generateRelease();
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
-            SystemCommandExecutor sce = new SystemCommandExecutor();
-            int exitCode = sce.execute(
+            int exitCode = cmdExecutor.execute(
                     new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg",
                             prefix + "InRelease"});
             if (exitCode != 0) {
@@ -154,7 +164,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
 
     private void loadExtraTags(DataResult<PackageDto> packageBatch) {
         List<Long> pkgIds = packageBatch.stream()
-                .map(pkgDto -> pkgDto.getId())
+                .map(PackageDto::getId)
                 .collect(Collectors.toList());
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
         packageBatch.stream().forEach(pkgDto ->

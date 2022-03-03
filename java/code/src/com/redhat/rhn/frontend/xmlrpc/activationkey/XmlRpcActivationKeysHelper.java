@@ -73,7 +73,7 @@ public class XmlRpcActivationKeysHelper {
      */
     public List<ActivationKey> lookupKeys(User user, List<String> keys) {
 
-        List<ActivationKey> activationKeys = new LinkedList<ActivationKey>();
+        List<ActivationKey> activationKeys = new LinkedList<>();
         for (String key : keys) {
             activationKeys.add(lookupKey(user, key));
         }

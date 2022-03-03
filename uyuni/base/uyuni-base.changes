@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:07:52 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Remove EL6 support
+  * Fix Apache user/group for EL
+
+-------------------------------------------------------------------
 Mon Aug 09 10:45:38 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

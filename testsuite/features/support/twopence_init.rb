@@ -1,7 +1,8 @@
 # Copyright (c) 2016-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
-
+require 'require_all'
 require 'twopence'
+require_all 'features/support'
 
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
@@ -126,7 +127,7 @@ $nodes.each do |node|
   raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
+  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
 end
 
 # This function is used to get one of the nodes based on its type
@@ -137,7 +138,7 @@ def get_target(host)
 end
 
 # This function gets the system name, as displayed in systems list
-# * for the usual clients, it is the full hostname, e.g. hmu-centos.tf.local
+# * for the usual clients, it is the full hostname, e.g. suma-41-min-sle15.tf.local
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 # rubocop:disable Metrics/MethodLength
@@ -161,7 +162,7 @@ def get_system_name(host)
       node = get_target(host)
       system_name = node.full_hostname
     rescue RuntimeError => e
-      puts e.message
+      STDOUT.puts e.message
     end
   end
   system_name
@@ -224,7 +225,10 @@ end
 
 # Other global variables
 $product = product
+$product_version = product_version
+$use_salt_bundle = use_salt_bundle
 $pxeboot_mac = ENV['PXEBOOT_MAC']
+$pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
 $sle11sp3_terminal_mac = ENV['SLE11SP3_TERMINAL_MAC']
 $sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
 $sle15sp3_terminal_mac = ENV['SLE15SP3_TERMINAL_MAC']

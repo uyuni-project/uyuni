@@ -14,16 +14,22 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import org.hibernate.Session;
+
 import java.util.Map;
 
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
- *
  */
 public class CallableMode extends BaseMode {
 
-    /*package*/ CallableMode(ParsedMode parsedMode) {
-        super(parsedMode);
+    /**
+     * Creates an instance
+     * @param session hibernate database session to be used
+     * @param parsedMode the mode
+     */
+    /*package*/ CallableMode(Session session, ParsedMode parsedMode) {
+        super(session, parsedMode);
     }
 
     /**

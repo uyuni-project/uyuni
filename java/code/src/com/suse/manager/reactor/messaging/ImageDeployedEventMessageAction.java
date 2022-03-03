@@ -72,9 +72,8 @@ public class ImageDeployedEventMessageAction implements MessageAction {
                     " subscribing to channels and executing post-registration tasks.");
             ValueMap grains = imageDeployedEvent.getGrains();
 
-            grains.getOptionalAsString("osarch").ifPresent(osarch -> {
-                m.setServerArch(ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            });
+            grains.getOptionalAsString("osarch").ifPresent(
+                    osarch -> m.setServerArch(ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux")));
 
             Optional<String> activationKeyLabel = grains
                     .getMap("susemanager")

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021 SUSE LLC.
+# Copyright (c) 2013-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -17,62 +17,6 @@ def generate_temp_file(name, content)
   end
 end
 
-# extract various data from Retail yaml configuration
-def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['terminals'].keys
-end
-
-def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['branch_prefix']
-end
-
-def read_server_domain_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['server_domain']
-end
-
-# determine image for PXE boot tests
-def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'Kiwi/POS_Image-JeOS6_41' for 4.1 branch
-    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
-    'Kiwi/POS_Image-JeOS6_head'
-  else
-    raise 'Is this a supported image version?'
-  end
-end
-
-def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp3', 'sles15sp3o'
-    # 'POS_Image_JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'POS_Image_JeOS6_41' for 4.1 branch
-    # 'POS_Image_JeOS6_42' for 4.2 branch
-    'POS_Image_JeOS6_head'
-  else
-    raise 'Is this a supported image version?'
-  end
-end
-
 # If we for example
 #  - start a reposync in reposync/srv_sync_channels.feature
 #  - then kill it in reposync/srv_wait_for_reposync.feature
@@ -84,7 +28,7 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 def compute_list_to_leave_running
   # keep the repos needed for the auto-installation tests
-  do_not_kill = $long_tests_enabled ? CHANNEL_TO_SYNCH_BY_OS_VERSION['default'] : []
+  do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
     next unless node
     os_version, os_family = get_os_version(node)
@@ -111,7 +55,7 @@ def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
   raise unless (items_label = find(:xpath, items_label_xpath).text)
-  items_label.split('of ')[1]
+  items_label.split('of ')[1].strip
 end
 
 def product
@@ -120,6 +64,21 @@ def product
   _product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
   return 'SUSE Manager' if code.zero?
   raise 'Could not determine product'
+end
+
+def product_version
+  product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
+  m = product_raw.match(/patterns-uyuni_server-(.*)-.*/)
+  return m[1] if code.zero? && !m.nil?
+  product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
+  m = product_raw.match(/patterns-suma_server-(.*)-.*/)
+  return m[1] if code.zero? && !m.nil?
+  raise 'Could not determine product version'
+end
+
+def use_salt_bundle
+  # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
+  $product == 'Uyuni' || ['head', '4.3'].include?($product_version)
 end
 
 # create salt pillar file in the default pillar_roots location
@@ -180,7 +139,7 @@ def click_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -189,7 +148,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -198,7 +157,7 @@ def click_link_or_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -209,7 +168,7 @@ module CapybaraNodeElementExtension
     begin
       raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
     rescue StandardError, Capybara::ExpectationNotMet => e
-      puts e.message # Skip errors related to .senna-loading element
+      STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end
@@ -237,6 +196,7 @@ end
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
   repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
   repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
   repo_name.gsub!('/', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label

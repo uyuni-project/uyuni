@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2021 SUSE LLC.
+# Copyright (c) 2014-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -25,14 +25,15 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -4 -c 1 -I #{node.public_interface} #{$server.full_hostname}")
-  $server.run("ping -4 -c 1 #{node.public_ip}")
+  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  $server.run("ping -c 1 #{node.public_ip}")
 end
 
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
-  node.run_until_fail("ping -4 -c 1 -I #{node.private_interface} #{$server.full_hostname}")
-  $server.run_until_fail("ping -4 -c 1 #{node.private_ip}")
+  node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
+  # commented out as a machine with the same IP address might exist somewhere in our engineering network
+  # $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -57,7 +58,7 @@ end
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+    log 'Sanity check not implemented, move resource to external network first'
   else
     url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
     $server.run("curl --insecure --location #{url} --output /dev/null")
@@ -186,25 +187,25 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
   if host == 'server'
     salt = 'salt'
   end
   result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
-    puts line
+    log line
   end
 end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  changelog_file = $product == 'Uyuni' ? "changelog.gz" : "changelog.Debian.gz"
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
+  changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
-    puts line
+    log line
   end
 end
 
@@ -221,14 +222,11 @@ end
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
-    cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
-    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    cmd = 'mgr-salt-ssh'
   elsif host.include? 'minion' or host.include? 'build_host'
     cmd = 'salt'
-    extra_cmd = ''
   end
-  $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
+  $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
 Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
@@ -291,11 +289,11 @@ end
 # This function waits for all the reposyncs to complete.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row.
+# 60 seconds in a row.
 When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -307,7 +305,7 @@ When(/^I wait until all spacewalk\-repo\-sync finished$/) do
 
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
-    STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+    log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
     reposync_left_running_streak += 1
     sleep 1
   end
@@ -317,12 +315,12 @@ end
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -335,7 +333,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
-      STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+      log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
       next
@@ -344,7 +342,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
-    STDOUT.puts "Reposync of channel #{channel} killed"
+    log "Reposync of channel #{channel} killed"
   end
 end
 
@@ -369,7 +367,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       sleep 10
     end
   rescue StandardError => e
-    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -412,6 +410,10 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
+When(/^I restart cobbler on the server$/) do
+  $server.run('systemctl restart cobblerd.service')
+end
+
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
@@ -444,7 +446,7 @@ Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
   uri = URI.parse(base_url)
-  puts 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
+  log 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
   parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
   if !parameters_matches
     raise 'Some parameters are not as expected'
@@ -463,74 +465,6 @@ end
 
 Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
-end
-
-When(/^I restart the network on the PXE boot minion$/) do
-  # We have no IPv4 address on that machine yet,
-  # so the only way to contact it is via IPv6 link-local.
-  # We convert MAC address to IPv6 link-local address:
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  file = 'restart-network-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  # We have no direct access to the PXE boot minion
-  # so we run the command from the proxy
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I reboot the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Rebooting #{ipv6}..."
-  file = 'reboot-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + "%eth1"
-  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
-end
-
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
-When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
-  file = 'uyuni.key'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
-  return_code = file_inject($server, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  system_name = get_system_name('pxeboot_minion')
-  $server.run("salt-cp #{system_name} #{dest} #{dest}")
-  $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
@@ -615,27 +549,6 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-When(/^I start tftp on the proxy$/) do
-  case $product
-  # TODO: Should we handle this in Sumaform?
-  when 'Uyuni'
-    step %(I enable repositories before installing branch server)
-    cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
-          'zypper --non-interactive install tftp && ' \
-          'systemctl enable tftp.service && ' \
-          'systemctl start tftp.service'
-    $proxy.run(cmd)
-    step %(I disable repositories after installing branch server)
-  else
-    cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
-    $proxy.run(cmd)
-  end
-end
-
-When(/^I stop tftp on the proxy$/) do
-  $proxy.run('systemctl stop tftp.service')
-end
-
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
   raise "Not found:\n#{output}" unless output.include?(text)
@@ -650,7 +563,7 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{ENV['SERVER']} \
---proxy-fqdn=#{ENV['PROXY']}"
+--proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
 end
@@ -754,7 +667,7 @@ end
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
-  puts "OUT: #{output}"
+  log "OUT: #{output}"
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
@@ -853,7 +766,7 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   # use sumaform states to migrate to latest SP the system repositories:
   node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
@@ -1053,14 +966,19 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
         else
           "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
         end
-  STDOUT.puts 'Creating the boostrap repository on the server:'
-  STDOUT.puts '  ' + cmd
+  log 'Creating the boostrap repository on the server:'
+  log '  ' + cmd
   $server.run(cmd)
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
-  STDOUT.puts "Installed #{product} product: #{out}"
+  log "Installed #{product} product: #{out}"
+end
+
+When(/^I adapt zyppconfig$/) do
+   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
+   $proxy.run(cmd)
 end
 
 When(/^I install proxy pattern on the proxy$/) do
@@ -1093,72 +1011,6 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
-When(/^I set up the private network on the terminals$/) do
-  proxy = net_prefix + ADDRESSES['proxy']
-  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
-  nodes = [$client, $minion]
-  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
-  file = "/etc/sysconfig/network/ifcfg-eth1"
-  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  file2 = "/etc/resolv.conf"
-  nodes.each do |node|
-    next if node.nil?
-    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
-  end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
-  file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
-  conf2 = "GATEWAYDEV=eth0"
-  file2 = "/etc/sysconfig/network"
-  nodes.each do |node|
-    next if node.nil?
-    domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
-    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
-  end
-  # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
-  source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
-  dest = "/etc/netplan/01-netcfg.yaml"
-  nodes.each do |node|
-    next if node.nil?
-    return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
-    node.run('netplan apply')
-  end
-  # PXE boot minion
-  if $pxeboot_mac
-    step %(I restart the network on the PXE boot minion)
-  end
-end
-# rubocop:enable Metrics/BlockLength
-
-Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
-  node = get_target(host)
-  output, return_code = node.run("ip -4 address show eth1")
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
-end
-
-Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
-  node = get_target(host)
-  # we need "host" utility
-  step "I install package \"bind-utils\" on this \"#{host}\""
-  # direct name resolution
-  ["proxy.example.org", "dns.google.com"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-  # reverse name resolution
-  client = net_prefix + "2"
-  [client, "8.8.8.8"].each do |dest|
-    output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
-  end
-end
-
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.full_hostname}\n" \
@@ -1175,7 +1027,7 @@ When(/^I configure the proxy$/) do
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
              "SSL_EMAIL=galaxy-noise@suse.de\n" \
-             "SSL_CNAME_ASK=''\n" \
+             "SSL_CNAME_ASK=proxy.example.org\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
@@ -1187,6 +1039,19 @@ When(/^I configure the proxy$/) do
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
   $proxy.run(cmd, timeout: proxy_timeout)
+end
+
+When(/^I allow all SSL protocols on the proxy's apache$/) do
+  file = '/etc/apache2/ssl-global.conf'
+  key = 'SSLProtocol'
+  val = 'all -SSLv2 -SSLv3'
+  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
+  $proxy.run("systemctl reload apache2.service")
+end
+
+When(/^I restart squid service on the proxy$/) do
+  # We need to restart squid when we add a CNAME to the certificate
+  $proxy.run("systemctl restart squid.service")
 end
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
@@ -1553,6 +1418,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   $server.run(command)
 end
 
+When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  next unless host.include? 'ceos'
+
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
+end
+
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   round_minute = 60 # spacecmd uses timestamps with precision to minutes only
   long_wait_delay = 600
@@ -1612,60 +1485,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-When(/^I prepare the retail configuration file on server$/) do
-  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  dest = '/tmp/massive-import-terminals.yml'
-  return_code = file_inject($server, source, dest)
-  raise "File #{file} couldn't be copied to server" unless return_code.zero?
-
-  sed_values = "s/<PROXY_HOSTNAME>/#{$proxy.full_hostname}/; "
-  sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
-  sed_values << "s/<PROXY>/#{ADDRESSES['proxy']}/; "
-  sed_values << "s/<RANGE_BEGIN>/#{ADDRESSES['range begin']}/; "
-  sed_values << "s/<RANGE_END>/#{ADDRESSES['range end']}/; "
-  sed_values << "s/<PXEBOOT>/#{ADDRESSES['pxeboot_minion']}/; "
-  sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
-  sed_values << "s/<MINION>/#{ADDRESSES['sle_minion']}/; "
-  sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  sed_values << "s/<IMAGE>/#{compute_image_name}/"
-  $server.run("sed -i '#{sed_values}' #{dest}")
-end
-
-When(/^I import the retail configuration using retail_yaml command$/) do
-  filepath = '/tmp/massive-import-terminals.yml'
-  $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
-end
-
-When(/^I delete all the imported terminals$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-    puts "Deleting terminal with name: #{terminal}"
-    steps %(
-      When I follow "#{terminal}" terminal
-      And I follow "Delete System"
-      And I should see a "Confirm System Profile Deletion" text
-      And I click on "Delete Profile"
-      Then I should see a "has been deleted" text
-    )
-  end
-end
-
-When(/^I remove all the DHCP hosts created by retail_yaml$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    raise unless find(:xpath, "//*[@value='#{terminal}']/../../../..//*[@title='Remove item']").click
-  end
-end
-
-When(/^I remove the bind zones created by retail_yaml$/) do
-  domain = read_branch_prefix_from_yaml
-  raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
-  raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
-end
-
 Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   node = get_target(client)
   _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
@@ -1684,7 +1503,7 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   if host == 'server'
     salt_call = 'salt-call'
   end
@@ -1748,12 +1567,4 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
-end
-
-When(/^I allow all SSL protocols on the proxy's apache$/) do
-  file = '/etc/apache2/ssl-global.conf'
-  key = 'SSLProtocol'
-  val = 'all -SSLv2 -SSLv3'
-  $proxy.run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  $proxy.run("systemctl reload apache2.service")
 end

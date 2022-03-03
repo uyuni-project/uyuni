@@ -14,7 +14,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     out, _code = $server.run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
-      puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
       break
     end
     sleep 1
@@ -28,31 +28,40 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} stop", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl stop #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} stop", check_errors: false)
+  else
+    node.run("systemctl stop #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} start", check_errors: false)
+  else
+    node.run("systemctl start #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  ## Uyuni uses Salt Bundle. Package name is "venv-salt-minion"
-  pkgname = $product == 'Uyuni' ? "venv-salt-minion" : "salt-minion"
-  node.run("rc#{pkgname} restart", check_errors: false) if minion == 'sle_minion'
-  node.run("systemctl restart #{pkgname}", check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run("rc#{pkgname} restart", check_errors: false)
+  else
+    node.run("systemctl restart #{pkgname}", check_errors: false)
+  end
 end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
@@ -70,7 +79,7 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
     output, _code = target.run("#{salt_call} -lquiet saltutil.running")
     break if output == "local:\n"
@@ -173,37 +182,17 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in 'command', with: cmd
+  fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
 When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in 'target', with: minion
+  fill_in('target', with: minion, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
@@ -234,18 +223,18 @@ end
 
 When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_cache = $product == 'Uyuni' ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  salt_cache = $use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
   file_delete(node, "#{salt_cache}#{filename}")
 end
 
 When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   file_delete(node, "#{salt_config}#{filename}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
-  salt_config = $product == 'Uyuni' ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
@@ -255,12 +244,12 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
     raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).any?
+    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -270,215 +259,14 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if all(:xpath, xpath_query).any?
+  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
-  assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
+  assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   select(value, from: FIELD_IDS[box])
-end
-
-# rubocop:disable Metrics/BlockLength
-When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
-  fieldids = { 'IP'                       => 'branch_network#ip',
-               'domain name server'       => 'dhcpd#domain_name_servers#0',
-               'network IP'               => 'dhcpd#subnets#0#$key',
-               'dynamic IP range begin'   => 'dhcpd#subnets#0#range#0',
-               'dynamic IP range end'     => 'dhcpd#subnets#0#range#1',
-               'broadcast address'        => 'dhcpd#subnets#0#broadcast_address',
-               'routers'                  => 'dhcpd#subnets#0#routers#0',
-               'next server'              => 'dhcpd#subnets#0#next_server',
-               'pxeboot next server'      => 'dhcpd#hosts#2#next_server',
-               'first reserved IP'        => 'dhcpd#hosts#0#fixed_address',
-               'second reserved IP'       => 'dhcpd#hosts#1#fixed_address',
-               'third reserved IP'        => 'dhcpd#hosts#2#fixed_address',
-               'internal network address' => 'tftpd#listen_ip',
-               'vsftpd internal network address' => 'vsftpd_config#listen_address' }
-  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
-end
-
-When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
-  fieldids = { 'NIC'                             => 'branch_network#nic',
-               'domain name'                     => 'dhcpd#domain_name',
-               'listen interfaces'               => 'dhcpd#listen_interfaces#0',
-               'network mask'                    => 'dhcpd#subnets#0#netmask',
-               'filename'                        => 'dhcpd#subnets#0#filename',
-               'pxeboot filename'                => 'dhcpd#hosts#2#filename',
-               'first reserved hostname'         => 'dhcpd#hosts#0#$key',
-               'second reserved hostname'        => 'dhcpd#hosts#1#$key',
-               'third reserved hostname'         => 'dhcpd#hosts#2#$key',
-               'virtual network IPv4 address'    => 'default_net#ipv4#gateway',
-               'first IPv4 address for DHCP'     => 'default_net#ipv4#dhcp_start',
-               'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
-               'first option'                    => 'bind#config#options#0#0',
-               'first value'                     => 'bind#config#options#0#1',
-               'second option'                   => 'bind#config#options#1#0',
-               'second value'                    => 'bind#config#options#1#1',
-               'third option'                    => 'bind#config#options#2#0',
-               'third value'                     => 'bind#config#options#2#1',
-               'first configured zone name'      => 'bind#configured_zones#0#$key',
-               'first available zone name'       => 'bind#available_zones#0#$key',
-               'second configured zone name'     => 'bind#configured_zones#1#$key',
-               'second available zone name'      => 'bind#available_zones#1#$key',
-               'third configured zone name'      => 'bind#configured_zones#2#$key',
-               'third available zone name'       => 'bind#available_zones#2#$key',
-               'TFTP base directory'             => 'tftpd#root_dir',
-               'branch id'                       => 'pxe#branch_id',
-               'disk id'                         => 'partitioning#0#$key',
-               'disk device'                     => 'partitioning#0#device',
-               'first partition id'              => 'partitioning#0#partitions#0#$key',
-               'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
-               'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
-               'first OS image'                  => 'partitioning#0#partitions#0#image',
-               'first partition password'        => 'partitioning#0#partitions#0#luks_pass',
-               'second partition id'             => 'partitioning#0#partitions#1#$key',
-               'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
-               'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
-               'second OS image'                 => 'partitioning#0#partitions#1#image',
-               'second partition password'       => 'partitioning#0#partitions#1#luks_pass',
-               'third partition id'              => 'partitioning#0#partitions#2#$key',
-               'third partition size'            => 'partitioning#0#partitions#2#size_MiB',
-               'third filesystem format'         => 'partitioning#0#partitions#2#format',
-               'third mount point'               => 'partitioning#0#partitions#2#mountpoint',
-               'third OS image'                  => 'partitioning#0#partitions#2#image',
-               'third partition password'        => 'partitioning#0#partitions#2#luks_pass',
-               'FTP server directory'            => 'vsftpd_config#anon_root' }
-  fill_in fieldids[field], with: value
-end
-# rubocop:enable Metrics/BlockLength
-
-When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
-  fieldids = {
-    'file name'                       => '#file',
-    'SOA name server'                 => '#soa#ns',
-    'SOA contact'                     => '#soa#contact',
-    'first A name'                    => '#records#A#0#0',
-    'first A address'                 => '#records#A#0#1',
-    'second A name'                   => '#records#A#1#0',
-    'second A address'                => '#records#A#1#1',
-    'third A name'                    => '#records#A#2#0',
-    'third A address'                 => '#records#A#2#1',
-    'fourth A name'                   => '#records#A#3#0',
-    'fourth A address'                => '#records#A#3#1',
-    'first NS'                        => '#records#NS#@#0',
-    'first CNAME alias'               => '#records#CNAME#0#0',
-    'first CNAME name'                => '#records#CNAME#0#1',
-    'second CNAME alias'              => '#records#CNAME#1#0',
-    'second CNAME name'               => '#records#CNAME#1#1',
-    'third CNAME alias'               => '#records#CNAME#2#0',
-    'third CNAME name'                => '#records#CNAME#2#1',
-    'first for zones'                 => '#generate_reverse#for_zones#0',
-    'generate reverse network'        => '#generate_reverse#net'
-  }
-  zone_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]"
-
-  find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
-end
-
-When(/^I enter the hostname of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}." in #{field} field of #{zone} zone)
-end
-
-When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
-  node = get_target(host)
-  fill_in FIELD_IDS[field], with: node.public_ip
-end
-
-When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  node = get_target(host)
-  step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
-end
-
-When(/^I enter the local IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
-  step %(I enter "#{net_prefix + ADDRESSES[host]}" in #{field} field of #{zone} zone)
-end
-
-When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
-  if host == 'pxeboot_minion'
-    mac = $pxeboot_mac
-  elsif host.include? 'ubuntu'
-    node = get_target(host)
-    output, _code = node.run("ip link show dev ens4")
-    mac = output.split("\n")[1].split[1]
-  else
-    node = get_target(host)
-    output, _code = node.run("ip link show dev eth1")
-    mac = output.split("\n")[1].split[1]
-  end
-
-  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
-end
-
-When(/^I enter the local zone name in (.*) field$/) do |field|
-  reverse_net = get_reverse_net($private_net)
-  STDOUT.puts "#{$private_net} => #{reverse_net}"
-  step %(I enter "#{reverse_net}" in #{field} field)
-end
-
-When(/^I enter the local file name in (.*) field of zone with local name$/) do |field|
-  reverse_filename = 'master/db.' + get_reverse_net($private_net)
-  STDOUT.puts "#{$private_net} => #{reverse_filename}"
-  step %(I enter "#{reverse_filename}" in #{field} field of zone with local name)
-end
-
-When(/^I enter "([^"]*)" in (.*) field of zone with local name$/) do |value, field|
-  reverse_net = get_reverse_net($private_net)
-  step %(I enter "#{value}" in #{field} field of #{reverse_net} zone)
-end
-
-When(/^I enter the local network in (.*) field of zone with local name$/) do |field|
-  step %(I enter "#{$private_net}" in #{field} field of zone with local name)
-end
-
-When(/^I enter the image name in (.*) field$/) do |field|
-  name = compute_image_name
-  fill_in FIELD_IDS[field], with: name
-end
-
-When(/^I press "Add Item" in (.*) section$/) do |section|
-  sectionids = { 'host reservations' => 'dhcpd#hosts#add_item',
-                 'config options'    => 'bind#config#options#add_item',
-                 'configured zones'  => 'bind#configured_zones#add_item',
-                 'available zones'   => 'bind#available_zones#add_item',
-                 'partitions'        => 'partitioning#0#partitions#add_item' }
-  find(:xpath, "//i[@id='#{sectionids[section]}']").click
-end
-
-When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of (.*) zone$/) do |field, zone|
-  sectionids = {
-    'for zones' => 'for_zones',
-    'NS'       => 'NS#@',
-    'CNAME'    => 'CNAME',
-    'A'        => 'A'
-  }
-  xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//i[contains(@id, '##{sectionids[field]}#add_item')]"
-  find(:xpath, xpath).click
-end
-
-When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of zone with local name$/) do |field|
-  reverse_net = get_reverse_net($private_net)
-  step %(I press "Add Item" in #{field} section of #{reverse_net} zone)
-end
-
-When(/^I press "Remove Item" in (.*) CNAME of (.*) zone section$/) do |alias_name, zone|
-  cname_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//input[@name='Alias' and @value='#{alias_name}']/ancestor::div[@class='form-group']"
-  find(:xpath, "#{cname_xpath}/button").click
-end
-
-When(/^I press "Remove" in the routers section$/) do
-  cname_xpath = "//div[@id='dhcpd#subnets#0#routers#0']/button"
-  find(:xpath, cname_xpath).click
-end
-
-When(/^I press minus sign in (.*) section$/) do |section|
-  section_xpath = '//input[@name="Name" and @value="%s"]/ancestor::div[starts-with(@id, "bind#%s_zones#")]'
-  sectionids = { 'tf.local configured zone' => format(section_xpath, "tf.local", "configured"),
-                 'tf.local available zone'  => format(section_xpath, "tf.local", "available") }
-  find(:xpath, "#{sectionids[section]}/div[1]/i[@class='fa fa-minus']").click
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
@@ -520,15 +308,12 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-    extra_cmd = ''
   elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
-    cmd = 'salt-ssh'
-    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
-    $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+    cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'
   end
-  $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+  $server.run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
@@ -597,7 +382,7 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = $product == 'Uyuni' ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
@@ -651,7 +436,7 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
+  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
   elsif %w[ceos_minion].include?(host)
@@ -664,7 +449,7 @@ end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
+  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif %w[ceos_minion].include?(host)
@@ -698,7 +483,7 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  pkgs = $product == 'Uyuni' ? "venv-salt-minion" : "salt salt-minion"
+  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if host.include? 'ceos'
     node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
   elsif (host.include? 'ubuntu') || (host.include? 'debian')
@@ -707,7 +492,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   else
     node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
   end
-  if $product == 'Uyuni'
+  if $use_salt_bundle
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
@@ -757,14 +542,6 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   system_name = get_system_name(minion)
   output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    puts output
+    log output
   end
-end
-
-When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
-  cred = "--api-user admin --api-pass admin"
-  dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
-  names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
-  output, return_code = $server.run("retail_branch_init #{$proxy.full_hostname} #{dhcp} #{names} #{cred}")
-  raise "Command failed with following output: #{output}" unless return_code.zero?
 end

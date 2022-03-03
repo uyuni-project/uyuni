@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"PO-Revision-Date: 2022-02-24 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
 "plugin/ca/>\n"
@@ -13,17 +13,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "Hi ha hagut un error en la comunicació amb RHN."
+msgstr "Hi ha hagut un error de comunicació amb {PRODUCT_NAME}"
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "S'inhabilitarà el suport de Red Hat Satellite o RHN Classic."
+msgstr "El suport de {PRODUCT_NAME} o RHN Classic es desactivarà."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
@@ -36,11 +36,11 @@ msgstr ""
 "l'Spacewalk."
 
 #: ../rhnplugin.py:87
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
 msgstr ""
-"Hi ha hagut un error en analitzar els paràmetres d'intermediari de Red Hat "
-"Satellite."
+"S'ha produït un error en analitzar la configuració del servidor intermediari "
+"de {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
@@ -51,23 +51,23 @@ msgid "Cleaning"
 msgstr "Netejant"
 
 #: ../rhnplugin.py:113
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr "S'usa la llista de repositoris d'RHN des de la cau."
+msgstr "S'usa la llista de repositoris de {PRODUCT_NAME} de la memòria cau."
 
 #: ../rhnplugin.py:129
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
-msgstr "Aquest sistema no està registrat a RHN Classic o Red Hat Satellite."
+msgstr "Aquest sistema no està registrat amb RHN Classic o {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
 msgstr "Podeu usar rhn_register per a registrar-lo."
 
 #: ../rhnplugin.py:136
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} channel support will be disabled."
-msgstr "S'inhabilitarà el suport del canal d'RHN."
+msgstr "L'assistència del canal de {PRODUCT_NAME} es desactivarà."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."

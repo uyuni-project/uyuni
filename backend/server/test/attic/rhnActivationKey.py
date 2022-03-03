@@ -21,7 +21,7 @@ import time
 from uyuni.common import usix
 
 from spacewalk.server import rhnSQL
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 
 class InvalidTokenError(Exception):

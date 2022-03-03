@@ -86,7 +86,7 @@ public class GathererRunner {
         args.add("--logfile");
         args.add(LOG_DESTINATION);
 
-        Map<String, String> env = new HashMap<String, String>(System.getenv());
+        Map<String, String> env = new HashMap<>(System.getenv());
         ConfigDefaults config = ConfigDefaults.get();
         String proxyHostname = config.getProxyHost();
         if (!StringUtils.isBlank(proxyHostname)) {
@@ -139,18 +139,16 @@ public class GathererRunner {
             stdin.close();
 
             // Thread that reads process error output to avoid blocking
-            Thread errStreamReader = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        String line = null;
-                        BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                        while ((line = inErr.readLine()) != null) {
-                            // do nothing, just consuming stderr output
-                        }
+            Thread errStreamReader = new Thread(() -> {
+                try {
+                    String line = null;
+                    BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                    while ((line = inErr.readLine()) != null) {
+                        // do nothing, just consuming stderr output
                     }
-                    catch (Exception e) {
-                        logger.error("Error reading stderr from external process", e);
-                    }
+                }
+                catch (Exception e) {
+                    logger.error("Error reading stderr from external process", e);
                 }
             });
             errStreamReader.start();
@@ -178,6 +176,7 @@ public class GathererRunner {
             logger.error("execute(String[])", ioe);
         }
         catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             logger.error("execute(String[])", e);
         }
         return hosts;

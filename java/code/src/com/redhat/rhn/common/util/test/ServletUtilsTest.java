@@ -64,7 +64,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     private Hashtable<String, String> createParameterMap() {
-        Hashtable<String, String> parameterMap = new Hashtable<String, String>();
+        Hashtable<String, String> parameterMap = new Hashtable<>();
 
         parameterMap.put(param1Name, param1Value);
         parameterMap.put(param2Name, param2Value);
@@ -84,7 +84,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     public void testPathWithParams() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("a", new Object[] {1, 3});
         params.put("b", 2);
 
@@ -92,8 +92,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
 
         assertTrue(result.startsWith("/foo?"));
         Set<String> actualParams =
-                new HashSet<String>(Arrays.asList(result.substring(5).split("&")));
-        Set<String> expectedParams = new HashSet<String>();
+                new HashSet<>(Arrays.asList(result.substring(5).split("&")));
+        Set<String> expectedParams = new HashSet<>();
         expectedParams.add("a=1");
         expectedParams.add("a=3");
         expectedParams.add("b=2");
@@ -101,29 +101,29 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     public void testPathWithParamsValueUrlEncoding() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", "some; value&");
         String result = ServletUtils.pathWithParams("/foo", params);
         assertEquals("/foo?key=some%3B+value%26", result);
     }
 
     public void testPathWithParamsNullValue() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", null);
         String result = ServletUtils.pathWithParams("/foo", params);
         assertEquals("/foo", result);
     }
 
     public void testPathWithParamsArrayValueUrlEncoding() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("key", new Object[] {"value;", "value&", "$", "normal"});
         String result = ServletUtils.pathWithParams("/foo", params);
         assertEquals("/foo?key=value%3B&key=value%26&key=%24&key=normal", result);
     }
 
     public void testPathWithParamsListValue() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        List<String> values = new ArrayList<String>();
+        Map<String, Object> params = new HashMap<>();
+        List<String> values = new ArrayList<>();
         values.add("value;");
         values.add("value&");
         values.add("$");
@@ -135,14 +135,14 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     public void testPathWithParamsKeyUrlEncoding() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("a;", "somevalue");
         String result = ServletUtils.pathWithParams("/foo", params);
         assertEquals("/foo?a%3B=somevalue", result);
     }
 
     public void testPathWithParamsKeyArrayUrlEncoding() {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("a;", new Object[] {"1", "2", "3"});
         String result = ServletUtils.pathWithParams("/foo", params);
         assertEquals("/foo?a%3B=1&a%3B=2&a%3B=3", result);

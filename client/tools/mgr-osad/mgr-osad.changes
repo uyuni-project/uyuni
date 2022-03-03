@@ -1,5 +1,11 @@
-- require python macros for building
-- do not build python 2 package for SLE15
+  * Corrected source URL in spec file.
+
+-------------------------------------------------------------------
+Tue Jan 18 13:34:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * require python macros for building
+  * Do not build python 2 package for SLE15SP4 and higher
 
 -------------------------------------------------------------------
 Fri Nov 05 13:34:38 CET 2021 - jgonzalez@suse.com

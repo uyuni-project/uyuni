@@ -54,7 +54,7 @@ export class HeaderSearch extends React.PureComponent {
       <FocusGroup onFocusOut={() => this.setState({ isOpen: false })}>
         <button
           aria-label={t("Open search")}
-          className={`is-plain manual-toggle-box ${this.state.isOpen ? "open" : ""}`}
+          className={`is-plain header-non-link manual-toggle-box ${this.state.isOpen ? "open" : ""}`}
           onClick={() => this.setState({ isOpen: !this.state.isOpen })}
         >
           <i className="fa fa-search" aria-hidden="true" />

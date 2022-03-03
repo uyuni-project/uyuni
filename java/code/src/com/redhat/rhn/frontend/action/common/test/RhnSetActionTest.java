@@ -159,8 +159,8 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     private void verifyParam(String path, String name, String value) {
         String[] args = StringUtils.split(path, "?&");
-        for (int i = 0; i < args.length; i++) {
-            String[] param = StringUtils.split(args[i], "=");
+        for (String argIn : args) {
+            String[] param = StringUtils.split(argIn, "=");
             if (param[0].equals(name)) {
                 assertEquals(value, param[1]);
                 break;

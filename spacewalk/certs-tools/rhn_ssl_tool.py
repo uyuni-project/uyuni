@@ -59,7 +59,7 @@ from .sslToolConfig import ConfigFile, figureSerial, getOption, CERT_PATH, \
         CA_OPENSSL_CNF_NAME, SERVER_OPENSSL_CNF_NAME, POST_UNINSTALL_SCRIPT, \
         SERVER_RPM_SUMMARY, CA_CERT_RPM_SUMMARY
 
-from rhn.i18n import bstr, sstr
+from rhn.stringutils import bstr, sstr
 
 class GenPrivateCaKeyException(RhnSslToolException):
     """ private CA key generation error """

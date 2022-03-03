@@ -67,7 +67,7 @@ public class UserPrefAction extends RhnAction {
 
         user.setWebTheme(form.getString("theme"));
 
-        user.setTimeZone(UserManager.getTimeZone(((Integer) form.get("timezone")).intValue()));
+        user.setTimeZone(UserManager.getTimeZone((Integer) form.get("timezone")));
         user.setEmailNotify(BooleanUtils.toInteger((Boolean) form
                 .get("emailNotif"), 1, 0, 0));
         user.setTaskoNotify(BooleanUtils.toBoolean((Boolean) form.get("taskoNotify")));
@@ -94,8 +94,8 @@ public class UserPrefAction extends RhnAction {
         Set hiddenPanes = new HashSet(allPanes.values());
 
         if (selections != null) {
-            for (int i = 0; i < selections.length; i++) {
-                hiddenPanes.remove(allPanes.get(selections[i]));
+            for (String selectionIn : selections) {
+                hiddenPanes.remove(allPanes.get(selectionIn));
             }
         }
         user.setHiddenPanes(hiddenPanes);
@@ -115,7 +115,7 @@ public class UserPrefAction extends RhnAction {
         if (i == null) {
             return def;
         }
-        return i.intValue();
+        return i;
     }
 
     /**

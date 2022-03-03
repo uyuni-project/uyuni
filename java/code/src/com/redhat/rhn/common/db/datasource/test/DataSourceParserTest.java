@@ -150,13 +150,11 @@ public class DataSourceParserTest extends RhnBaseTestCase {
             PreparedStatement ps = null;
             try {
                 Collection<?> fileSet = ModeFactory.getKeys();
-                Iterator<?> i = fileSet.iterator();
-                while (i.hasNext()) {
-                    String file = (String)i.next();
-                    Iterator<?> j = ModeFactory.getFileKeys(file).values().iterator();
+                for (Object valueIn : fileSet) {
+                    String file = (String) valueIn;
 
-                    while (j.hasNext()) {
-                        ParsedMode m = (ParsedMode)j.next();
+                    for (Object oIn : ModeFactory.getFileKeys(file).values()) {
+                        ParsedMode m = (ParsedMode) oIn;
 
                         if (shouldSkip(m)) {
                             continue;
@@ -205,10 +203,9 @@ public class DataSourceParserTest extends RhnBaseTestCase {
             Map hm = (Map)i.next();
             List elab = (List)hm.get(elabName);
             assertTrue(elab.size() > 0);
-            Iterator j = elab.iterator();
-            while (j.hasNext()) {
-                Map curr = (Map)j.next();
-                assertTrue(((Number)curr.get("column_id")).intValue() > 0);
+            for (Object oIn : elab) {
+                Map curr = (Map) oIn;
+                assertTrue(((Number) curr.get("column_id")).intValue() > 0);
                 assertNotNull(curr.get("column_name"));
                 assertNotNull(curr.get("table_name"));
             }
@@ -249,7 +246,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         SelectMode m = ModeFactory.getMode("test_queries", "all_tables" + db_sufix);
         assertNotNull(m);
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foo", "bar");
         DataResult dr = m.execute(params);
         assertNotNull(dr);
@@ -284,7 +281,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     public void testExternalQuery() throws Exception {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("formvar_uid", 12345L);
         DataResult dr = m.execute(params);
         assertEquals(m, dr.getMode());

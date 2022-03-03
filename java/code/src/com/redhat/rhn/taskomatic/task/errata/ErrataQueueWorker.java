@@ -61,7 +61,7 @@ class ErrataQueueWorker implements QueueWorker {
 
             WriteMode marker = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_ENQUEUE_SAT_ERRATA);
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("errata_id", errataId);
             params.put("minutes", 0L);
             params.put("channel_id", channelId);
@@ -86,7 +86,7 @@ class ErrataQueueWorker implements QueueWorker {
     private void markInProgress() {
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_IN_PROGRESS);
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("errata_id", errataId);
         params.put("channel_id", channelId);
         int numRows = m.executeUpdate(params);
@@ -101,7 +101,7 @@ class ErrataQueueWorker implements QueueWorker {
     private void dequeueErrata() {
         WriteMode deqErrata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_DEQUEUE_ERRATA);
-        Map<String, Long> dqeParams = new HashMap<String, Long>();
+        Map<String, Long> dqeParams = new HashMap<>();
         dqeParams.put("errata_id", errataId);
         dqeParams.put("channel_id", channelId);
         int eqDeleted = deqErrata.executeUpdate(dqeParams);

@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -90,11 +89,7 @@ public class EditAction extends LookupDispatchAction {
         String keywordDisplay = StringUtil.join(
             LocalizationService.getInstance().getMessage("list delimiter"),
             IteratorUtils.getIterator(CollectionUtils.collect(errata.getKeywords(),
-                new Transformer() {
-                    public Object transform(Object o) {
-                        return o.toString();
-                    }
-                })));
+                    o -> o.toString())));
 
         //pre-populate form with current values
         form.set("synopsis", errata.getSynopsis());
@@ -238,9 +233,8 @@ public class EditAction extends LookupDispatchAction {
         }
 
         //add bugs from the form
-        Iterator i = bugs.iterator();
-        while (i.hasNext()) {
-            String[] bug = (String[])i.next();
+        for (Object bugIn : bugs) {
+            String[] bug = (String[]) bugIn;
             Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
@@ -251,9 +245,8 @@ public class EditAction extends LookupDispatchAction {
         String keywordsField = form.getString("keywords");
         if (keywordsField != null && keywordsField.length() > 0) {
             List keywordsOnPage = Arrays.asList(keywordsField.split(","));
-            Iterator keywordItr = keywordsOnPage.iterator();
-            while (keywordItr.hasNext()) {
-                String keyword = (String) keywordItr.next();
+            for (Object oIn : keywordsOnPage) {
+                String keyword = (String) oIn;
                 keyword = keyword.trim();
                 if (keyword != null && keyword.length() > 0) {
                     e.addKeyword(keyword);

@@ -1,7 +1,7 @@
 """
 Unit tests for the virt_utils module
 """
-from mock import Mock, MagicMock, patch, mock_open
+from unittest.mock import Mock, MagicMock, patch, mock_open
 from xml.etree import ElementTree
 import pytest
 

@@ -112,7 +112,7 @@ public class SaltActionChainGeneratorService {
     public Map<MinionSummary, Integer> getChunksPerMinion(Map<MinionSummary, List<SaltState>> minionStates) {
         return minionStates.entrySet().stream().collect(
                         Collectors.toMap(
-                                entry -> entry.getKey(),
+                                Map.Entry::getKey,
                                 entry -> entry.getValue().stream()
                                         .mapToInt(state -> mustSplit(state, entry.getKey()) ? 1 : 0).sum() + 1));
     }
@@ -135,9 +135,8 @@ public class SaltActionChainGeneratorService {
             SaltState state = states.get(i);
 
             if (state instanceof AbstractSaltRequisites) {
-                prevRequisiteRef(fileStates).ifPresent(ref -> {
-                    ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue());
-                });
+                prevRequisiteRef(fileStates)
+                        .ifPresent(ref -> ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue()));
             }
             if (state instanceof IdentifiableSaltState) {
                 IdentifiableSaltState modRun = (IdentifiableSaltState)state;
@@ -298,7 +297,7 @@ public class SaltActionChainGeneratorService {
                     if (!paramPillar.get("param_pkgs").stream()
                             .filter(e -> e.size() > 0)
                             .map(e -> e.get(0))
-                            .filter(e -> "salt".equals(e))
+                            .filter("salt"::equals)
                             .collect(Collectors.toList()).isEmpty()) {
                         return true;
                     }
@@ -382,9 +381,7 @@ public class SaltActionChainGeneratorService {
                 String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
                         "_" + minionServer.getMachineId() + "_*.sls";
                 try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir, filePattern)) {
-                    stream.forEach(slsFile -> {
-                        deleteSlsAndRefs(targetDir,  slsFile);
-                    });
+                    stream.forEach(slsFile -> deleteSlsAndRefs(targetDir,  slsFile));
                 }
                 catch (IOException e) {
                     LOG.warn("Error deleting action chain files", e);
@@ -407,9 +404,7 @@ public class SaltActionChainGeneratorService {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir,
                 ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId.map(id -> Long.toString(id)).orElse("*") +
                         "_" + machineId + "_*.sls")) {
-            stream.forEach(slsFile -> {
-                deleteSlsAndRefs(targetDir,  slsFile);
-            });
+            stream.forEach(slsFile -> deleteSlsAndRefs(targetDir,  slsFile));
         }
         catch (IOException e) {
             LOG.warn("Error deleting action chain files", e);
@@ -474,8 +469,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private boolean refInList(List<String> refList, String fileRef) {
-        return refList.stream().anyMatch(listRef ->
-            fileRef.startsWith(listRef)
+        return refList.stream().anyMatch(fileRef::startsWith
         );
     }
 
@@ -489,8 +483,8 @@ public class SaltActionChainGeneratorService {
      * @return the file name
      */
     public static String getActionChainSLSFileName(Long actionChainId, MinionSummary minionServer, int chunk) {
-        return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionChainId) +
-                "_" + minionServer.getMachineId() + "_" + Integer.toString(chunk) + ".sls");
+        return (ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
+                "_" + minionServer.getMachineId() + "_" + chunk + ".sls");
     }
 
     private void saveChunkSLS(List<SaltState> states, MinionSummary minion, long actionChainId, int chunk) {

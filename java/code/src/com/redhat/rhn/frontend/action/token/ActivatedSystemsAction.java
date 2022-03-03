@@ -60,8 +60,8 @@ public class ActivatedSystemsAction extends BaseListAction {
     /** {@inheritDoc} */
     public List getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
-        List<Server> servers =  new LinkedList<Server>(
-                            key.getToken().getActivatedServers());
+        List<Server> servers = new LinkedList<>(
+                key.getToken().getActivatedServers());
         setupMap(context, servers);
         return servers;
     }
@@ -73,8 +73,8 @@ public class ActivatedSystemsAction extends BaseListAction {
      * @param servers list of servers
      */
     private void setupMap(RequestContext context, List<Server> servers) {
-        Map<Long, Long> accessMap = new HashMap<Long, Long>();
-        Map<Long, String> dateMap = new HashMap<Long, String>();
+        Map<Long, Long> accessMap = new HashMap<>();
+        Map<Long, String> dateMap = new HashMap<>();
         LocalizationService ls = LocalizationService.getInstance();
         User user = context.getCurrentUser();
         for (Server server : servers) {

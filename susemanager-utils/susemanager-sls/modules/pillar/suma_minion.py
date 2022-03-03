@@ -230,7 +230,7 @@ def load_system_pillars(minion_id, cursor, pillar):
 
 
 def load_static_pillars(pillar):
-    """ 
+    """
     Including SUSE Manager static pillar data
     """
     for static_pillar in MANAGER_STATIC_PILLAR:

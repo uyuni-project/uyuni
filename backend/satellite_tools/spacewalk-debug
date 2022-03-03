@@ -423,7 +423,7 @@ if [ $IS_SUSE -eq 1 ]; then
         /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
     fi
 
-    ls -laR /srv/www/htdocs/pub > $DIR/ls-laR-htdocs
+    ls -laR $(spacewalk-cfg-get documentroot)/pub > $DIR/ls-laR-htdocs
 fi
 
 echo "    * timestamping"
@@ -450,6 +450,29 @@ if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
         done
 fi
 
+# task schedules
+if [ -f /usr/bin/spacewalk-sql ] ; then
+    # Extract task schedules from the database - only the default ones
+    TASK_SCHEDULE_DEFAULT_SQL="""
+        SELECT id, job_label, bunch_id, org_id,
+          active_from, active_till, cron_expr,
+          data, created, modified
+        FROM rhntaskoschedule
+        WHERE cron_expr is not null or job_label like '%default';
+    """
+    echo $TASK_SCHEDULE_DEFAULT_SQL | /usr/bin/spacewalk-sql --select-mode - > $DIR/tasko/task_schedule_default
+
+    # Extract task schedules from the database - only the modified ones
+    TASK_SCHEDULE_MODIFIED_SQL="""
+        SELECT id, job_label, bunch_id, org_id,
+          active_from, active_till, cron_expr,
+          data, created, modified
+        FROM rhntaskoschedule
+        WHERE created <> modified;
+    """
+    echo $TASK_SCHEDULE_MODIFIED_SQL | /usr/bin/spacewalk-sql --select-mode - > $DIR/tasko/task_schedule_modified
+fi
+
 # exclude private keys
 find $DIR -name "*PRIVATE*" -delete
 find $DIR -name "server.key*" -delete
@@ -474,3 +497,4 @@ else
   rm -Rf echo $DIR
   echo "Debug dump created, stored in $TARBALL"
 fi
+

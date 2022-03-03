@@ -1,5 +1,11 @@
-- require python macros for building
-- Add Debian 11 repositories
+  * Removed pylint according to Fedora packaging guidelines.
+
+-------------------------------------------------------------------
+Tue Jan 18 14:01:26 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * require python macros for building
+  * Add Debian 11 repositories
 
 -------------------------------------------------------------------
 Fri Dec 03 12:29:48 CET 2021 - jgonzalez@suse.com

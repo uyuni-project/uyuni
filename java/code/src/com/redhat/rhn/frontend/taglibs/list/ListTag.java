@@ -129,7 +129,7 @@ public class ListTag extends BodyTagSupport {
 
     private List<ListDecorator> getDecorators() {
         if (decorators == null) {
-            decorators = new LinkedList<ListDecorator>();
+            decorators = new LinkedList<>();
         }
         return decorators;
     }
@@ -296,8 +296,8 @@ public class ListTag extends BodyTagSupport {
             String msg = "Cannot set the column filter - [%s], " +
                         "since the table has been has already assigned a filter - [%s]";
 
-            throw new JspException(String.format(msg, String.valueOf(f),
-                                                        String.valueOf(filter)));
+            throw new JspException(String.format(msg, f,
+                    filter));
         }
         filter = f;
         Context threadContext = Context.getCurrentContext();
@@ -887,7 +887,7 @@ public class ListTag extends BodyTagSupport {
                 }
 
                 ListTagUtil.write(pageContext, "<br /><a href=\"");
-                List<String> excludeParams = new ArrayList<String>();
+                List<String> excludeParams = new ArrayList<>();
                 excludeParams.add(ListTagUtil.makeSelectActionName(getUniqueName()));
                 excludeParams.add(ListTagUtil.makeFilterByLabel(getUniqueName()));
                 excludeParams.add(ListTagUtil.makeFilterValueByLabel(getUniqueName()));

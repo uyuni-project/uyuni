@@ -9,4 +9,7 @@
   <rhn-tab name="Products" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/manager/admin/setup/products</rhn-tab-url>
   </rhn-tab>
+  <rhn-tab name="Pay-as-you-go" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/manager/admin/setup/payg</rhn-tab-url>
+  </rhn-tab>
 </rhn-navi-tree>

@@ -31,7 +31,7 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.5
+Version:        4.3.8
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -41,7 +41,6 @@ Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
-BuildRequires:  python3-mock
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
 # Different package names for SUSE and RHEL:
@@ -77,10 +76,12 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_states
+mkdir -p %{buildroot}/usr/share/susemanager/salt-ssh
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
 mkdir -p %{buildroot}/usr/share/susemanager/modules/engines
+mkdir -p %{buildroot}/usr/share/susemanager/modules/roster
 mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
@@ -88,10 +89,12 @@ mkdir -p %{buildroot}/usr/share/susemanager/reactor
 mkdir -p %{buildroot}/usr/share/susemanager/scap
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
+cp -R salt-ssh/* %{buildroot}/usr/share/susemanager/salt-ssh
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
+cp -R modules/roster/* %{buildroot}/usr/share/susemanager/modules/roster
 cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
@@ -140,12 +143,14 @@ fi
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/salt-ssh
 /usr/share/susemanager/pillar_data
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar
 /usr/share/susemanager/modules/tops
 /usr/share/susemanager/modules/runners
 /usr/share/susemanager/modules/engines
+/usr/share/susemanager/modules/roster
 /usr/share/susemanager/formulas
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap

@@ -23,10 +23,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
-import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
-import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -98,7 +94,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -132,9 +127,8 @@ public class ActionFactory extends HibernateFactory {
                         .setCacheable(true).list();
 
                 actionArchTypes = new HashSet();
-                Iterator i = types.iterator();
-                while (i.hasNext()) {
-                    ActionArchType type = (ActionArchType) i.next();
+                for (Object typeIn : types) {
+                    ActionArchType type = (ActionArchType) typeIn;
                     // don't cache the entire ActionArchType bean to avoid
                     // any LazyInitializatoinException latter
                     actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
@@ -216,7 +210,7 @@ public class ActionFactory extends HibernateFactory {
 
         SelectMode pending =
                 ModeFactory.getMode("System_queries", "system_pending_actions");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("sid", serverId);
         DataResult<Map> dr = pending.execute(params);
 
@@ -233,7 +227,7 @@ public class ActionFactory extends HibernateFactory {
     public static void removeActionForSystem(Number actionId, Number sid) {
         CallableMode mode =
                 ModeFactory.getCallableMode("System_queries", "delete_action_for_system");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("action_id", actionId);
         params.put("server_id",  sid);
         mode.execute(params, new HashMap());
@@ -500,18 +494,6 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SUBSCRIBE_CHANNELS)) {
             retval = new SubscribeChannelsAction();
         }
-        else if (typeIn.equals(TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
-            retval = new ClusterGroupRefreshNodesAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_JOIN_NODE)) {
-            retval = new ClusterJoinNodeAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_REMOVE_NODE)) {
-            retval = new ClusterRemoveNodeAction();
-        }
-        else if (typeIn.equals(TYPE_CLUSTER_UPGRADE_CLUSTER)) {
-            retval = new ClusterUpgradeAction();
-        }
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
         }
@@ -541,7 +523,7 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", id);
         params.put("orgId", user.getOrg().getId());
         return (Action)singleton.lookupObjectByNamedQuery(
@@ -558,7 +540,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Integer getServerActionCountByStatus(Org org, Action action,
             ActionStatus status) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("aid", action.getId());
         params.put("stid", status.getId());
         return (Integer)singleton.lookupObjectByNamedQuery(
@@ -580,7 +562,7 @@ public class ActionFactory extends HibernateFactory {
     public static Action lookupLastCompletedAction(User user,
             ActionType type,
             Server server) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("userId", user.getId());
         params.put("actionTypeId", type.getId());
         params.put("serverId", server.getId());
@@ -606,7 +588,7 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionType corresponding to label
      */
     public static ActionType lookupActionTypeByLabel(String label) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("label", label);
         return (ActionType)
                 singleton.lookupObjectByNamedQuery("ActionType.findByLabel", params, true);
@@ -618,7 +600,7 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionType corresponding to name
      */
     public static ActionType lookupActionTypeByName(String name) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("name", name);
         return (ActionType) singleton.lookupObjectByNamedQuery("ActionType.findByName",
                 params, true);
@@ -630,7 +612,7 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("name", name);
         return (ActionStatus)
                 singleton.lookupObjectByNamedQuery("ActionStatus.findByName", params, true);
@@ -646,7 +628,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ConfigRevisionActionResult
     lookupConfigActionResult(Long actionConfigRevisionId) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", actionConfigRevisionId);
         return (ConfigRevisionActionResult)
                 singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
@@ -700,9 +682,8 @@ public class ActionFactory extends HibernateFactory {
 
             PackageAction action = (PackageAction) actionIn;
             Set details = action.getDetails();
-            Iterator ditr = details.iterator();
-            while (ditr.hasNext()) {
-                PackageActionDetails detail = (PackageActionDetails) ditr.next();
+            for (Object detailIn : details) {
+                PackageActionDetails detail = (PackageActionDetails) detailIn;
                 PackageEvr evr = detail.getEvr();
 
                 // It is possible to have a Package Action with only a package name
@@ -762,8 +743,8 @@ public class ActionFactory extends HibernateFactory {
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
             actionsAtHierarchyLevel = new LinkedList();
-            for (Iterator i = results.iterator(); i.hasNext();) {
-                actionsAtHierarchyLevel.add(((Action)i.next()).getId());
+            for (Object resultIn : results) {
+                actionsAtHierarchyLevel.add(((Action) resultIn).getId());
             }
         }
         while (actionsAtHierarchyLevel.size() > 0);
@@ -790,7 +771,7 @@ public class ActionFactory extends HibernateFactory {
      * @return List of Action objects
      */
     public static List<Action> listActionsForServer(User user, Server serverIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("orgId", user.getOrg().getId());
         params.put("server", serverIn);
         return singleton.listObjectsByNamedQuery(
@@ -804,7 +785,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         return singleton.listObjectsByNamedQuery(
                 "ServerAction.findByServer", params);
@@ -835,7 +816,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
             List<ActionStatus> statusList) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("statusList", statusList);
         return singleton.listObjectsByNamedQuery(
@@ -850,7 +831,7 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList, Date createdDate) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("statusList", statusList);
         params.put("date", createdDate);
@@ -866,7 +847,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ServerAction getServerActionForServerAndAction(Server serverIn,
             Action actionIn) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("action", actionIn);
         return (ServerAction) singleton.lookupObjectByNamedQuery(
@@ -931,7 +912,7 @@ public class ActionFactory extends HibernateFactory {
      * @return history event
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", aid);
         return (ServerHistoryEvent) singleton.lookupObjectByNamedQuery(
                 "ServerHistory.lookupById", params);
@@ -962,7 +943,7 @@ public class ActionFactory extends HibernateFactory {
             log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
                     " is going to b set for these servers: " + serverIds);
         }
-        Map<String, Object>  parameters = new HashMap<String, Object>();
+        Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
 
@@ -979,7 +960,7 @@ public class ActionFactory extends HibernateFactory {
         if (log.isDebugEnabled()) {
             log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
         }
-        Map<String, Object>  parameters = new HashMap<String, Object>();
+        Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());
 
@@ -1405,30 +1386,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_VOLUME_DELETE =
             lookupActionTypeByLabel("virt.volume_delete");
-
-    /**
-     * The constant representing "Refresh cluster group nodes" [ID:515]
-     */
-    public static final ActionType TYPE_CLUSTER_GROUP_REFRESH_NODES =
-            lookupActionTypeByLabel("cluster.group_refresh_nodes");
-
-    /**
-     * The constant representing "Join node to cluster" [ID:516]
-     */
-    public static final ActionType TYPE_CLUSTER_JOIN_NODE =
-            lookupActionTypeByLabel("cluster.join_node");
-
-    /**
-     * The constant representing "Remove node from cluster" [ID:517]
-     */
-    public static final ActionType TYPE_CLUSTER_REMOVE_NODE =
-            lookupActionTypeByLabel("cluster.remove_node");
-
-    /**
-     * The constant representing "Upgrade cluster" [ID:518]
-     */
-    public static final ActionType TYPE_CLUSTER_UPGRADE_CLUSTER =
-            lookupActionTypeByLabel("cluster.upgrade_cluster");
 
     /**
      * The constant representing "Change a virtual network state" [ID:519]

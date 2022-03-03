@@ -4,7 +4,7 @@
 
 ## Prepare configuration for retail terminal and buildhost
 - features/build_validation/retail/sle11_deployment_preparation.feature
-## Build kiwi images for all retail terminal (expected time of building is around 1 hour / 20 minutes for each terminal)
+## Build Kiwi images for all retail terminal (expected time of building is around 1 hour / 20 minutes for each terminal)
 - features/build_validation/retail/build_sle11_kiwi_image.feature
 ## Deployment of retail terminal
 - features/build_validation/retail/deploy_sle11_terminal.feature

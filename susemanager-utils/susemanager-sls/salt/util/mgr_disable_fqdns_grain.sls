@@ -9,6 +9,7 @@ mgr_disable_fqdns_grains:
   file.append:
     - name: {{ susemanager_minion_config }}
     - text: "enable_fqdns_grains: False"
+    - unless: grep 'enable_fqdns_grains:' {{ susemanager_minion_config }}
 
 mgr_salt_minion:
   service.running:

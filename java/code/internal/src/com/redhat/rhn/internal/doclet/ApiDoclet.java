@@ -28,7 +28,6 @@ import com.sun.source.util.DocTrees;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -182,7 +181,7 @@ public abstract class ApiDoclet implements Doclet {
         List<TypeElement> serializers = getSerializers(classes, docEnv.getTypeUtils());
         List<TypeElement> handlers = getHandlers(classes, docEnv.getTypeUtils());
         Map<String, String> serialMap = getSerialMap(serializers, docEnv.getDocTrees());
-        List<Handler> handlerList = new ArrayList<Handler>();
+        List<Handler> handlerList = new ArrayList<>();
 
         for (TypeElement clas : handlers) {
             DocCommentTree docTree = docEnv.getDocTrees().getDocCommentTree(clas);
@@ -210,7 +209,7 @@ public abstract class ApiDoclet implements Doclet {
                         handler.setDesc(text);
                     }
                     return null;
-                };
+                }
             }.scan(docTree.getBlockTags(), handler);
 
             if (handler.isIgnored()) {
@@ -277,11 +276,11 @@ public abstract class ApiDoclet implements Doclet {
                                             call.setReturnDoc(rawText);
                                         }
                                         return null;
-                                    };
+                                    }
                                 }.scan(docEnv.getDocTrees().getDocCommentTree(executable).getBlockTags(), null);
 
                                 return call;
-                            };
+                            }
                         }.visit(element);
                         return call;
                     })
@@ -319,7 +318,7 @@ public abstract class ApiDoclet implements Doclet {
     }
 
     private Map<String, String> getSerialMap(List<TypeElement> classes, DocTrees docTrees) {
-        Map<String, String> map  = new HashMap<String, String>();
+        Map<String, String> map  = new HashMap<>();
 
         for (TypeElement clas : classes) {
             String doc = new DocTreeScanner<String, Void>() {
@@ -330,11 +329,11 @@ public abstract class ApiDoclet implements Doclet {
                         return text;
                     }
                     return null;
-                };
+                }
 
                 public String reduce(String r1, String r2) {
                     return (r1 == null ? "" : r1) + (r2 == null ? "" : r2);
-                };
+                }
             }.scan(docTrees.getDocCommentTree(clas).getBlockTags(), null);
 
             if (doc != null) {
@@ -349,12 +348,7 @@ public abstract class ApiDoclet implements Doclet {
         return classes.stream()
             .filter(clazz -> clazz.getSuperclass() != null &&
                     types.asElement(clazz.getSuperclass()).getSimpleName().contentEquals("BaseHandler"))
-            .sorted(new Comparator<TypeElement>() {
-                @Override
-                public int compare(TypeElement o1, TypeElement o2) {
-                    return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());
-                }
-            })
+            .sorted((o1, o2) -> o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString()))
             .collect(Collectors.toList());
     }
 
@@ -371,7 +365,7 @@ public abstract class ApiDoclet implements Doclet {
         @Override
         public String visitText(TextTree node, Void p) {
             return node.getBody();
-        };
+        }
 
         @Override
         public String visitEntity(EntityTree node, Void p) {
@@ -385,6 +379,6 @@ public abstract class ApiDoclet implements Doclet {
 
         public String reduce(String r1, String r2) {
             return (r2 == null ? "" : r2) + (r1 == null ? "" : r1);
-        };
+        }
     }
 }

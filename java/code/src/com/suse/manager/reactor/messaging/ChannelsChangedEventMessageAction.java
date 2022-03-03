@@ -17,7 +17,6 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -41,7 +40,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
@@ -86,17 +84,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             ErrataManager.insertErrataCacheTask(minion);
 
             // Regenerate the pillar data
-            MinionPillarManager.INSTANCE.generatePillar(minion,
-                    true,
-                    msg.getAccessTokenIds() != null ?
-                            msg.getAccessTokenIds().stream()
-                                    .map(tokenId -> AccessTokenFactory.lookupById(tokenId)
-                                            .orElseThrow(() ->
-                                                    new RuntimeException(
-                                                            "AccessToken not found id=" + msg.getServerId())))
-                                    .collect(Collectors.toList()) :
-                            Collections.emptyList()
-                    );
+            MinionPillarManager.INSTANCE.generatePillar(minion);
 
             // push the changed pillar data to the minion
             saltApi.refreshPillar(new MinionList(minion.getMinionId()));

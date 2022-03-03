@@ -30,7 +30,6 @@ from rhn.connections import idn_puny_to_unicode
 from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnLog import log_error
 from spacewalk.common.rhnTranslate import _
-from uyuni.common.stringutils import to_string
 from spacewalk.common import rhnMail
 from spacewalk.common import rhnFlags
 
@@ -46,12 +45,9 @@ QUIET_MAIL = None
 
 def print_env(fd=sys.stderr):
     """ Dump the environment. """
-    dct = os.environ
-    fd.write("\nEnvironment for PID=%d on exception:\n" % os.getpid())
-    el = list(dct.keys())
-    el.sort()
-    for k in el:
-        fd.write("%s = %s\n" % (to_string(k), to_string(dct[k])))
+    fd.write(f"\nEnvironment for PID={os.getpid()} on exception:\n")
+    for key, value in sorted(os.environ.items()):
+        fd.write(f"{key} = {value}\n")
 
 
 def print_locals(fd=sys.stderr, tb=None):
@@ -73,39 +69,39 @@ def print_locals(fd=sys.stderr, tb=None):
         f = f.f_back
     fd.write("\nLocal variables by frame\n")
     for frame in stack:
-        fd.write("Frame %s in %s at line %s\n" % (frame.f_code.co_name,
-                                                  frame.f_code.co_filename,
-                                                  frame.f_lineno))
-        for key, value in list(frame.f_locals.items()):
-            fd.write("\t%20s = " % to_string(key))
+        fd.write(f"Frame {frame.f_code.co_name} in {frame.f_code.co_filename} in line {frame.f_lineno}\n")
+        for key, value in frame.f_locals.items():
+            fd.write(f"\t{key:>20} = ")
             # We have to be careful not to cause a new error in our error
             # printer! Calling str() on an unknown object could cause an
             # error we don't want.
-            # pylint: disable=W0702
             try:
-                s = str(to_string(value))
-            except:
+                s = str(value)
+            except Exception:
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
                 s = "<ERROR WHILE PRINTING VALUE: string representation too large>"
-            fd.write("%s %s\n" % (type(value), s))
+            fd.write(f"{type(value)} s\n")
         fd.write("\n")
 
 
 def print_req(req, fd=sys.stderr):
-    """ get some debugging information about the current exception for sending
-        out when we raise an exception
+    """get some debugging information about the current exception for sending
+    out when we raise an exception
     """
 
     fd.write("Request object information:\n")
-    fd.write("URI: %s\n" % req.unparsed_uri)
-    fd.write("Remote Host: %s\nServer Name: %s:%d\n" % (
-        req.get_remote_host(), req.server.server_hostname, req.server.port))
+    fd.write(f"URI: {req.unparsed_uri}\n")
+    fd.write(
+        "Remote Host: {remote_host}\nServer Name: {server_hostname}:{server_port}\n".format(
+            remote_host=req.get_remote_host(),
+            server_hostname=req.server.server_hostname,
+            server_port=req.server.port,
+        )
+    )
     fd.write("Headers passed in:\n")
-    kl = list(req.headers_in.keys())
-    kl.sort()
-    for k in kl:
-        fd.write("\t%s: %s\n" % (to_string(k), to_string(req.headers_in[k])))
+    for key, value in sorted(req.headers_in.items()):
+        fd.write(f"\t{key}: {value}\n")
     return 0
 
 
@@ -133,16 +129,16 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
     exc = StringIO()
 
     unicode_hostname = idn_puny_to_unicode(hostname)
-    exc.write("Exception reported from %s\nTime: %s\n" % (to_string(unicode_hostname), t))
-    exc.write("Exception type %s\n" % to_string(e_type))
+    exc.write(f"Exception reported from {unicode_hostname}\nTime: {t}\n")
+    exc.write(f"Exception type {e_type}\n")
     if method:
-        exc.write("Exception while handling function %s\n" % to_string(method))
+        exc.write(f"Exception while handling function {e_type}\n")
 
     # print information about the request being served
     if req:
         print_req(req, exc)
     if extra:
-        exc.write("Extra information about this error:\n%s\n" % to_string(extra))
+        exc.write(f"Extra information about this error:\n{extra}\n")
 
     # Print the traceback
     exc.write("\nException Handler Information\n")
@@ -154,7 +150,7 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
 
     # we always log it somewhere
     if ostream:
-        ostream.write(to_string(exc.getvalue()))
+        ostream.write(exc.getvalue())
         ostream.write("\n")
 
     if mail:
@@ -165,13 +161,13 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
         # and send the mail
         # build the headers
         to = CFG.TRACEBACK_MAIL
-        fr = to
+        from_ = to
         if isinstance(to, type([])):
-            fr = to[0].strip()
+            from_ = to[0].strip()
             to = ', '.join([x.strip() for x in to])
         headers = {
-            "Subject": "%s TRACEBACK from %s" % (PRODUCT_NAME, unicode_hostname),
-            "From": "%s <%s>" % (hostname, fr),
+            "Subject": f"{PRODUCT_NAME} TRACEBACK from {unicode_hostname}",
+            "From": f"{hostname} <{from_}>",
             "To": to,
             "X-RHN-Traceback-Severity": severity,
             "Content-Type": 'text/plain; charset="utf-8"',
@@ -179,7 +175,7 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
         }
         QUIET_MAIL = QUIET_MAIL - 1     # count it no matter what
 
-        outstring = to_string(exc.getvalue())
+        outstring = exc.getvalue()
 
         # 5/18/05 wregglej - 151158 Go through every string in the security list
         # and censor it out of the debug information.

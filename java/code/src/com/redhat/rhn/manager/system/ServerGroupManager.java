@@ -129,7 +129,7 @@ public class ServerGroupManager {
             return false;
         }
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "is_visible");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sgid", group.getId());
         List result = m.execute(params);
@@ -246,8 +246,8 @@ public class ServerGroupManager {
         validateAccessCredentials(loggedInUser, group, group.getName());
         validateAdminCredentials(loggedInUser);
         List admins = new LinkedList();
-        for (Iterator itr = adminLogins.iterator(); itr.hasNext();) {
-            String login = (String) itr.next();
+        for (Object adminLoginIn : adminLogins) {
+            String login = (String) adminLoginIn;
             User admin = UserFactory.lookupByLogin(login);
             if (admin == null || !loggedInUser.getOrg().equals(admin.getOrg())) {
                 LocalizationService ls = LocalizationService.getInstance();
@@ -281,8 +281,8 @@ public class ServerGroupManager {
         adminSet.addAll(admins);
         ServerGroupFactory.save(sg);
         UserFactory factory = UserFactory.getInstance();
-        for (Iterator itr = admins.iterator(); itr.hasNext();) {
-            User u = (User) itr.next();
+        for (Object adminIn : admins) {
+            User u = (User) adminIn;
             factory.syncServerGroupPerms(u);
         }
     }
@@ -303,8 +303,8 @@ public class ServerGroupManager {
         admins.remove(loggedInUser); //can't disassociate thyself.
         adminSet.removeAll(admins);
         ServerGroupFactory.save(sg);
-        for (Iterator itr = admins.iterator(); itr.hasNext();) {
-            User u = (User) itr.next();
+        for (Object adminIn : admins) {
+            User u = (User) adminIn;
             UserFactory.save(u);
         }
     }
@@ -353,7 +353,7 @@ public class ServerGroupManager {
      * @param servers a collection of servers to add.
      */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
-        servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
+        servers.stream().map(Server::asMinionServer).flatMap(Opt::stream)
                 .forEach(s -> MinionPillarManager.INSTANCE.generatePillar(s, false,
                          MinionPillarManager.PillarSubset.GROUP_MEMBERSHIP));
 
@@ -462,7 +462,7 @@ public class ServerGroupManager {
      */
     public Map<String, String> errataCounts(User user, ServerGroup group) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "group_errata_counts");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", group.getId());
         DataResult<Map<String, String>> result = m.execute(params);
         return result.stream()

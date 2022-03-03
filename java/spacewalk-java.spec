@@ -29,15 +29,13 @@
 %define omit_tests      1
 
 %if 0%{?suse_version}
-%define appdir          /srv/tomcat/webapps
-%define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
+%define serverdir       /srv
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
 %define java_version    11
 %else
-%define appdir          %{_localstatedir}/lib/tomcat/webapps
-%define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
+%define serverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define salt_user_group salt
 %define apache2         httpd
@@ -49,7 +47,6 @@
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
-%define log4j                      (log4j or log4j12)
 
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
@@ -61,11 +58,11 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.6
+Version:        4.3.12
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
-Source1:        %{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    ia64
@@ -138,7 +135,7 @@ BuildRequires:  libxml2-devel
 %else
 BuildRequires:  libxml2-tools
 %endif
-BuildRequires:  %{log4j}
+BuildRequires:  log4j12
 BuildRequires:  slf4j-log4j12
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
@@ -193,6 +190,9 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
+%if 0%{?rhel} == 8
+Recommends:       rng-tools
+%endif
 %endif
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
@@ -230,11 +230,10 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat-taglibs-standard
-Requires:       uyuni-cluster-provider-caasp
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
-Requires:       %{log4j}
+Requires:       log4j12
 Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
@@ -329,7 +328,7 @@ This package contains testing files of spacewalk-java.
 %{_datadir}/rhn/lib/rhn-test.jar
 %{_datadir}/rhn/unit-tests/*
 %{_datadir}/rhn/unittest.xml
-%attr(644, tomcat, tomcat) %{jardir}/commons-lang3.jar
+%attr(644, tomcat, tomcat) %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-lang3.jar
 %endif
 
 %package apidoc-sources
@@ -378,7 +377,7 @@ Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
 %endif
-Requires:       %{log4j}
+Requires:       log4j12
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
@@ -523,8 +522,8 @@ export NO_BRP_STALE_LINK_ERROR=yes
 
 %if 0%{?suse_version}
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
-install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
-install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
+install -d -m 755 $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/
+install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
@@ -554,15 +553,16 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
-install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data/images
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
+install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/taskomatic.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/taskomatic.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -609,7 +609,7 @@ install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{space
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
-ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
+ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
 # special links for taskomatic
 TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
@@ -627,10 +627,10 @@ mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
 cp -R build/reports/apidocs/asciidoc/ $RPM_BUILD_ROOT%{_docdir}/%{name}/asciidoc/
 # delete JARs which must not be deployed
-rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-runtime.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat*.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jspapi.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jasper5-compiler.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jasper5-runtime.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/tomcat*.jar
 %if 0%{?omit_tests} > 0
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/lib/rhn-test.jar
 rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
@@ -638,33 +638,39 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
 # Prettifying symlinks
-mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
+mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
 
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
-mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
-mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
+mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jaf.jar
+mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamail.jar
+mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jta.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
-rm -rf $RPM_BUILD_ROOT%{jardir}/jakarta-activationjakarta.activation-api.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamaildsn.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailgimap.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailimap.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail-api.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmail.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmailapi.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailpop3.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/javamailsmtp.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation-api.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamaildsn.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailgimap.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailimap.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail-api.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmail.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmailapi.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailpop3.jar
+rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailsmtp.jar
 %endif
 
 # show all JAR symlinks
 echo "#### SYMLINKS START ####"
-find $RPM_BUILD_ROOT%{jardir} -name *.jar
+find $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib -name *.jar
 echo "#### SYMLINKS END ####"
 
 %pre -n spacewalk-taskomatic
 %if !0%{?rhel}
 %service_add_pre taskomatic.service
+%endif
+
+%post
+%if 0%{?rhel} == 8
+echo "Trying to start optional rngd service..."
+systemctl start rngd ||:
 %endif
 
 %post -n spacewalk-taskomatic
@@ -708,137 +714,137 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(-,root,root)
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
-%attr(775, root, tomcat) %dir %{appdir}
-%dir /srv/susemanager
-%dir /srv/susemanager/salt
-%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data/images
-%dir /srv/susemanager/formula_data
-%attr(750, tomcat, %{salt_user_group}) %dir /srv/susemanager/tmp
-%dir %{appdir}/rhn/
-%{appdir}/rhn/apidoc/
-%{appdir}/rhn/css/
-%{appdir}/rhn/errata/
-%{appdir}/rhn/img/
-%{appdir}/rhn/META-INF/
-%{appdir}/rhn/schedule/
-%{appdir}/rhn/systems/
-%{appdir}/rhn/users/
-%{appdir}/rhn/errors/
-%{appdir}/rhn/*.jsp
-%{appdir}/rhn/WEB-INF/classes
-%{appdir}/rhn/WEB-INF/decorators
-%{appdir}/rhn/WEB-INF/includes
-%{appdir}/rhn/WEB-INF/nav
-%{appdir}/rhn/WEB-INF/pages
-%{appdir}/rhn/WEB-INF/*.xml
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(775, root, tomcat) %dir %{serverdir}/tomcat/webapps
+%dir %{serverdir}/susemanager
+%dir %{serverdir}/susemanager/salt
+%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
+%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
+%dir %{serverdir}/susemanager/formula_data
+%attr(750, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
+%dir %{serverdir}/tomcat/webapps/rhn/
+%{serverdir}/tomcat/webapps/rhn/apidoc/
+%{serverdir}/tomcat/webapps/rhn/css/
+%{serverdir}/tomcat/webapps/rhn/errata/
+%{serverdir}/tomcat/webapps/rhn/img/
+%{serverdir}/tomcat/webapps/rhn/META-INF/
+%{serverdir}/tomcat/webapps/rhn/schedule/
+%{serverdir}/tomcat/webapps/rhn/systems/
+%{serverdir}/tomcat/webapps/rhn/users/
+%{serverdir}/tomcat/webapps/rhn/errors/
+%{serverdir}/tomcat/webapps/rhn/*.jsp
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/classes
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/decorators
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/includes
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/nav
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/pages
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
 # list of all jar symlinks without any version numbers
 # and wildcards (except non-symlink velocity)
-%{jardir}/antlr.jar
-%{jardir}/bcel.jar
-%{jardir}/c3p0*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/antlr.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/bcel.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/c3p0*.jar
 %if 0%{?fedora} || 0%{?sle_version} >= 150200 || 0%{?rhel}
-%{jardir}/cglib_cglib.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/cglib_cglib.jar
 %else
-%{jardir}/cglib.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/cglib.jar
 %endif
-%{jardir}/commons-beanutils.jar
-%{jardir}/commons-cli.jar
-%{jardir}/commons-codec.jar
-%{jardir}/commons-collections.jar
-%{jardir}/commons-digester.jar
-%{jardir}/commons-discovery.jar
-%{jardir}/commons-el.jar
-%{jardir}/commons-fileupload.jar
-%{jardir}/commons-io.jar
-%{jardir}/commons-logging.jar
-%{jardir}/*commons-validator.jar
-%{jardir}/concurrent*.jar
-%{jardir}/dom4j.jar
-%{jardir}/dwr.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-beanutils.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-cli.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-codec.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-collections.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-digester.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-discovery.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-el.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-fileupload.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-io.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-logging.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/*commons-validator.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/concurrent*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dom4j.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
-%{jardir}/snakeyaml.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/snakeyaml.jar
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
-%{jardir}/apache-commons-jexl_commons-jexl.jar
-%{jardir}/commons-lang3.jar
-%{jardir}/google-gson_google-gsongson.jar
-%{jardir}/httpcomponents_httpclient.jar
-%{jardir}/httpcomponents_httpcore.jar
-%{jardir}/httpcomponents_httpcore-nio.jar
-%{jardir}/httpasyncclient.jar
-%{jardir}/ical4j.jar
-%{jardir}/jade4j.jar
-%{jardir}/jose4j.jar
-%{jardir}/netty*.jar
-%{jardir}/salt-netapi-client.jar
-%{jardir}/slf4j_api.jar
-%{jardir}/slf4j_log4j12*.jar
-%{jardir}/spark-core.jar
-%{jardir}/spark-template-jade.jar
-%{jardir}/spy.jar
-%{jardir}/simpleclient*.jar
-%{jardir}/pgjdbc-ng.jar
-%{jardir}/java-saml-core.jar
-%{jardir}/java-saml.jar
-%{jardir}/joda-time.jar
-%{jardir}/stax-api.jar
-%{jardir}/stax2-api.jar
-%{jardir}/woodstox-core-asl.jar
-%{jardir}/xmlsec.jar
-%{jardir}/byte-buddy.jar
-%{jardir}/jakarta-persistence-api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/apache-commons-jexl_commons-jexl.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/commons-lang3.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/google-gson_google-gsongson.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/httpcomponents_httpclient.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/httpcomponents_httpcore.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/httpcomponents_httpcore-nio.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/httpasyncclient.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ical4j.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jade4j.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jose4j.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/netty*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/salt-netapi-client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/slf4j_api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/slf4j_log4j12*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/spark-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/spark-template-jade.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/spy.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/simpleclient*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/pgjdbc-ng.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/java-saml-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/java-saml.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/joda-time.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/stax-api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/stax2-api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/woodstox-core-asl.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/xmlsec.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/byte-buddy.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-persistence-api.jar
 
 # Hibernate and related
-%{jardir}/hibernate-core-5.jar
-%{jardir}/hibernate-c3p0-5.jar
-%{jardir}/hibernate-ehcache-5.jar
-%{jardir}/hibernate-commons-annotations.jar
-%{jardir}/hibernate-types-52-2.12.1.jar
-%{jardir}/ehcache-core.jar
-%{jardir}/classmate.jar
-%{jardir}/javassist.jar
-%{jardir}/jboss-logging.jar
-%{jardir}/statistics.jar
-%{jardir}/jackson-databind.jar
-%{jardir}/jackson-core.jar
-%{jardir}/jackson-annotations.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/hibernate-core-5.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/hibernate-c3p0-5.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/hibernate-ehcache-5.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/hibernate-commons-annotations.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/hibernate-types-52-2.12.1.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ehcache-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/classmate.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javassist.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/statistics.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jackson-databind.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jackson-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jackson-annotations.jar
 
-%{jardir}/jaf.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jaf.jar
 %if 0%{?sle_version} >= 150200
-%{jardir}/javax.mail.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javax.mail.jar
 %else
-%{jardir}/javamail.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamail.jar
 %endif
-%{jardir}/jcommon*.jar
-%{jardir}/jdom.jar
-%{jardir}/geronimo-jta-1.1-api.jar
-%{jardir}/log4j*.jar
-%{jardir}/oro.jar
-%{jardir}/quartz.jar
-%{jardir}/redstone-xmlrpc-client.jar
-%{jardir}/redstone-xmlrpc.jar
-%{jardir}/rhn.jar
-%{jardir}/simple-core.jar
-%{jardir}/simple-xml.jar
-%{jardir}/sitemesh.jar
-%{jardir}/stringtree-json.jar
-%{jardir}/xalan-j2.jar
-%{jardir}/xalan-j2-serializer.jar
-%{jardir}/xerces-j2.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jcommon*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jdom.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/geronimo-jta-1.1-api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/log4j*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/oro.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/quartz.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/redstone-xmlrpc-client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/redstone-xmlrpc.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/rhn.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/simple-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/simple-xml.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/sitemesh.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/stringtree-json.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/xalan-j2.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/xalan-j2-serializer.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/xerces-j2.jar
 
-%{jardir}/struts.jar
-%{jardir}/objectweb-asm_asm.jar
-%{jardir}/taglibs-standard-impl.jar
-%{jardir}/taglibs-standard-jstlel.jar
-%{jardir}/taglibs-standard-spec.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/struts.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/objectweb-asm_asm.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/taglibs-standard-impl.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/taglibs-standard-jstlel.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/taglibs-standard-spec.jar
 %if !0%{?suse_version}
-%{jardir}/glassfish-jaxb_jaxb-core.jar
-%{jardir}/glassfish-jaxb_jaxb-runtime.jar
-%{jardir}/glassfish-jaxb_txw2.jar
-%{jardir}/istack-commons-runtime.jar
-%{jardir}/jaxb-api.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/glassfish-jaxb_jaxb-core.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/glassfish-jaxb_jaxb-runtime.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/glassfish-jaxb_txw2.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/istack-commons-runtime.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jaxb-api.jar
 %endif
 
 # owned by cobbler needs cobbler permissions
@@ -860,7 +866,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?suse_version}
-%config(noreplace) %{appdir}/rhn/META-INF/context.xml
+%config(noreplace) %{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
@@ -868,8 +874,8 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/subscription-matcher
-%dir %{appdir}/rhn/WEB-INF
-%dir %{jardir}
+%dir %{serverdir}/tomcat/webapps/rhn/WEB-INF
+%dir %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
 
 %files -n spacewalk-taskomatic
 %defattr(644,root,root,775)
@@ -881,6 +887,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %files config
 %defattr(644,root,root,755)
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -903,9 +910,9 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
-%{jardir}/postgresql-jdbc.jar
-%{jardir}/ongres-scram_client.jar
-%{jardir}/ongres-scram_common.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_common.jar

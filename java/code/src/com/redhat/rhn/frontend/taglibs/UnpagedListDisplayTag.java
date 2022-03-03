@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -124,7 +123,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
 
     private void doSort(String sortedColumn) {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        Collections.sort(getPageList(), new DynamicComparator(sortedColumn,
+        getPageList().sort(new DynamicComparator(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
     }
 

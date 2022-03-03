@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,8 +107,8 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         DataResult channels = manager.ssmChannelListForSubscribeAlreadySubbed(user);
 
-        for (Iterator it = channels.iterator(); it.hasNext();) {
-            ConfigChannelDto channel = (ConfigChannelDto) it.next();
+        for (Object channelIn : channels) {
+            ConfigChannelDto channel = (ConfigChannelDto) channelIn;
             set.addElement(channel.getId());
         }
 

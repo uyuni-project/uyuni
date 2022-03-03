@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 import { Utils } from "utils/functions";
@@ -15,12 +16,19 @@ import {
   get,
   text,
 } from "./formulas/FormulaComponentGenerator";
+import { SearchField } from "./table/SearchField";
 
 const capitalize = Utils.capitalize;
 
 const defaultMessageTexts = {
   pillar_only_formula_saved: <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>,
 };
+
+export enum SectionState {
+  Expanded,
+  Mixed,
+  Collapsed,
+}
 
 type Props = {
   /** URL to get the server data */
@@ -62,6 +70,8 @@ type State = {
   messages: string[];
   warnings: string[];
   errors: string[];
+  sectionsExpanded: SectionState;
+  searchCriteria: string;
 };
 
 class FormulaForm extends React.Component<Props, State> {
@@ -78,6 +88,8 @@ class FormulaForm extends React.Component<Props, State> {
       messages: [],
       warnings: [],
       errors: [],
+      sectionsExpanded: SectionState.Collapsed,
+      searchCriteria: "",
     };
 
     window.addEventListener(
@@ -115,11 +127,7 @@ class FormulaForm extends React.Component<Props, State> {
           metadata: {},
         });
       else {
-        if (
-          data.formula_list.filter(
-            (formula) => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name)
-          ).length > 1
-        ) {
+        if (data.formula_list.filter((formula) => DEPRECATED_unsafeEquals(formula, data.formula_name)).length > 1) {
           this.state.warnings.push(
             t(
               'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
@@ -251,12 +259,29 @@ class FormulaForm extends React.Component<Props, State> {
       }
       const nextHref = this.props.getFormulaUrl(this.props.formulaId + 1);
       const prevHref = this.props.getFormulaUrl(this.props.formulaId - 1);
+      const showAllButton = (
+        <Button
+          handler={() => this.setState({ sectionsExpanded: SectionState.Expanded })}
+          text={t("Expand All Sections")}
+          className="btn-link"
+        />
+      );
+      const hideAllButton = (
+        <Button
+          handler={() => this.setState({ sectionsExpanded: SectionState.Collapsed })}
+          text={t("Collapse All Sections")}
+          className="btn-link"
+        />
+      );
       return (
         <FormulaFormContextProvider
           layout={this.state.formulaRawLayout}
           systemData={this.state.systemData}
           groupData={this.state.groupData}
           scope={this.props.scope}
+          sectionsExpanded={this.state.sectionsExpanded}
+          setSectionsExpanded={(status) => this.setState({ sectionsExpanded: status })}
+          searchCriteria={this.state.searchCriteria}
         >
           <div>
             {defaultMessage}
@@ -308,18 +333,26 @@ class FormulaForm extends React.Component<Props, State> {
                   </FormulaFormContext.Consumer>
                 </div>
               </SectionToolbar>
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3>{capitalize(get(this.state.formulaName, "Unnamed"))}</h3>
-                </div>
-                <div className="panel-body">
-                  <div className="formula-content">
-                    <p>{text(this.state.formulaMetadata.description)}</p>
-                    <hr />
-                    <FormulaFormRenderer />
+              <BootstrapPanel
+                title={capitalize(get(this.state.formulaName, t("Unnamed")))}
+                buttons={
+                  <div>
+                    {showAllButton} | {hideAllButton}
                   </div>
+                }
+              >
+                <div className="formula-content">
+                  <SearchField
+                    placeholder={t("Search by formula's group name")}
+                    criteria={this.state.searchCriteria}
+                    onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: SectionState.Expanded })}
+                  />
+                  <hr />
+                  <p>{text(this.state.formulaMetadata.description)}</p>
+                  <hr />
+                  <FormulaFormRenderer />
                 </div>
-              </div>
+              </BootstrapPanel>
             </div>
           </div>
         </FormulaFormContextProvider>

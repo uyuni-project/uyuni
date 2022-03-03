@@ -46,19 +46,13 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
-@proxy
-@private_net
   Scenario: Show the overview page of the proxy
-    Given I am on the Systems overview page of this "proxy"
-
+    Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "proxy"
 
 @proxy
 @private_net
   Scenario: Enable the branch network formulas on the branch server
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Suse Manager For Retail" text
@@ -77,6 +71,7 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Parametrize the branch network
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
+    And I click on "Expand All Sections"
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
@@ -92,6 +87,7 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Parametrize DHCP on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter "example.org" in domain name field
     And I enter the local IP address of "proxy" in domain name server field
     And I enter "eth1" in listen interfaces field
@@ -117,6 +113,7 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Parametrize DNS on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     # general information:
     And I check include forwarders box
     And I press "Add Item" in config options section
@@ -168,6 +165,7 @@ Feature: Setup Uyuni for Retail branch network
     # dhcpd:
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot_minion" in third reserved IP field
@@ -176,6 +174,7 @@ Feature: Setup Uyuni for Retail branch network
     Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in A section of example.org zone
     And I enter "pxeboot" in fourth A name field of example.org zone
     And I enter the local IP address of "pxeboot_minion" in fourth A address field of example.org zone
@@ -193,13 +192,20 @@ Feature: Setup Uyuni for Retail branch network
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories after installing branch server
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
+
+@proxy
+@private_net
+  Scenario: Disable repositories after installing branch services
+    When I disable repositories after installing branch server
+    # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
+    # And I wait until event "Package List Refresh scheduled by (none)" is completed
+    And I wait for "700" seconds
 
 @proxy
 @private_net
@@ -215,3 +221,17 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: The terminals should not reach the server
     Then "sle_client" should not communicate with the server using private interface
     And "sle_minion" should not communicate with the server using private interface
+
+@proxy
+@private_net
+  Scenario: Let the server know about the new IP and FQDN of the proxy
+    # WORKAROUND: bsc#1196050 - Hardware list refresh is not sufficient to detect a change in interface's IP address
+    When I restart salt-minion on "proxy"
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text

@@ -35,7 +35,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,7 +58,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         RequestContext requestContext = new RequestContext(request);
         Long uid = requestContext.getParamAsLong("uid");
         //UserPreferences under /rhn/users needs parameter, but /rhn/account does not
-        if (request.getRequestURL().toString().indexOf("/rhn/users/") != -1 &&
+        if (request.getRequestURL().toString().contains("/rhn/users/") &&
                 uid == null) {
             throw new BadParameterException(
                     "Invalid [null] value for parameter uid");
@@ -141,12 +140,12 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
 
         Map allPanes = PaneFactory.getAllPanes();
 
-        for (Iterator itr = allPanes.keySet().iterator(); itr.hasNext();) {
-            String key = (String) itr.next();
+        for (Object oIn : allPanes.keySet()) {
+            String key = (String) oIn;
             Pane pane = (Pane) allPanes.get(key);
             if (pane.isValidFor(user)) {
                 displayPanes.add(new LabelValueEnabledBean(makeDisplayString(pane),
-                                            key));
+                        key));
                 if (!userPanes.contains(pane)) {
                     selectedPanes.add(key);
                 }

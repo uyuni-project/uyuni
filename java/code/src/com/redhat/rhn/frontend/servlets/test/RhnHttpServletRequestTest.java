@@ -85,6 +85,5 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      * @throws Exception something bad happened
      */
     public void testOverrideSecureSat() throws Exception {
-        return;
     }
 }

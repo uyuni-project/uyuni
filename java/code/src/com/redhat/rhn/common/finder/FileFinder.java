@@ -47,7 +47,7 @@ class FileFinder implements Finder {
 
     /** {@inheritDoc} */
     public List<String> findExcluding(String[] excludes, String endStr) {
-        List<String> results = new LinkedList<String>();
+        List<String> results = new LinkedList<>();
 
         if (!startDir.exists()) {
             // Shouldn't ever happen, because the FinderFactory should only
@@ -60,36 +60,36 @@ class FileFinder implements Finder {
             log.debug("Starting search " + startDir);
             log.debug("File Array: " + Arrays.asList(fileList));
         }
-        for (int i = 0; i < fileList.length; i++) {
-            File current = new File(startDir, fileList[i]);
+        for (String sIn : fileList) {
+            File current = new File(startDir, sIn);
 
             if (current.isDirectory()) {
                 List<String> subdirList = new FileFinder(current,
                         path + File.separator +
-                        fileList[i]).findExcluding(excludes, endStr);
+                                sIn).findExcluding(excludes, endStr);
                 if (log.isDebugEnabled()) {
                     log.debug("adding: " + subdirList);
                 }
                 results.addAll(subdirList);
                 continue;
             }
-            if (fileList[i].endsWith(endStr)) {
+            if (sIn.endsWith(endStr)) {
                 if (excludes != null) {
                     boolean exclude = false;
-                    for (int j = 0; j < excludes.length; j++) {
-                        String excludesEnds = excludes[j] + "." + endStr;
-                        if (fileList[i].endsWith(excludesEnds)) {
+                    for (String excludeIn : excludes) {
+                        String excludesEnds = excludeIn + "." + endStr;
+                        if (sIn.endsWith(excludesEnds)) {
                             exclude = true;
                             break;
                         }
                     }
 
                     if (!exclude) {
-                        results.add(path + File.separator + fileList[i]);
+                        results.add(path + File.separator + sIn);
                     }
                 }
                 else {
-                    results.add(path + File.separator + fileList[i]);
+                    results.add(path + File.separator + sIn);
                 }
             }
         }

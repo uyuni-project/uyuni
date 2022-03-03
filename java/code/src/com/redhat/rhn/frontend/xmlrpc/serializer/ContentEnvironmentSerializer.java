@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import java.io.IOException;
@@ -63,12 +64,12 @@ public class ContentEnvironmentSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("name", environment.getName());
         helper.add("description", environment.getDescription());
         helper.add("version", environment.getVersion());
-        helper.add("status", environment.computeStatus().map(s -> s.getLabel()).orElse("unknown"));
+        helper.add("status", environment.computeStatus().map(EnvironmentTarget.Status::getLabel).orElse("unknown"));
         helper.add("contentProjectLabel", environment.getContentProject().getLabel());
         helper.add("previousEnvironmentLabel", environment.getPrevEnvironmentOpt()
-                .map(e -> e.getLabel()).orElse(null));
+                .map(ContentEnvironment::getLabel).orElse(null));
         helper.add("nextEnvironmentLabel", environment.getNextEnvironmentOpt()
-                .map(e -> e.getLabel()).orElse(null));
+                .map(ContentEnvironment::getLabel).orElse(null));
         helper.writeTo(writer);
     }
 }

@@ -28,7 +28,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -68,8 +67,8 @@ public class KickstartCleanup extends RhnJavaJob {
                 log.warn("Failed kickstart state id not found");
                 return;
             }
-            for (Iterator iter = dr.iterator(); iter.hasNext();) {
-                Map row = (Map) iter.next();
+            for (Object oIn : dr) {
+                Map row = (Map) oIn;
                 processRow(failedStateId, row);
             }
         }
@@ -93,7 +92,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private void processRow(Long failedStateId, Map row) {
         Long sessionId = (Long) row.get("id");
         if (log.isInfoEnabled()) {
-            log.info("Processing stalled kickstart session " + sessionId.longValue());
+            log.info("Processing stalled kickstart session " + sessionId);
         }
         Long actionId = (Long) row.get("action_id");
         Long oldServerId = (Long) row.get("old_server_id");
@@ -113,7 +112,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private void markFailed(Long sessionId, Long failedStateId) {
         WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_MARK_SESSION_FAILED);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("session_id", sessionId);
         params.put("failed_state_id", failedStateId);
         update.executeUpdate(params);
@@ -122,7 +121,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private Long findTopmostParentAction(Long startingAction) {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_PREREQ_ACTION);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("action_id", startingAction);
         if (log.isDebugEnabled()) {
             log.debug("StartingAction: " + startingAction);

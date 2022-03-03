@@ -28,7 +28,8 @@
 %global tftp_group root
 %global salt_user root
 %global salt_group root
-%global wwwroot %{_var}/www
+%global serverdir %{_sharedstatedir}
+%global wwwroot %{_localstatedir}/www
 %global wwwdocroot %{wwwroot}/html
 %endif
 
@@ -38,14 +39,15 @@
 %global tftp_group tftp
 %global salt_user salt
 %global salt_group salt
-%global wwwroot /srv/www
+%global serverdir /srv
+%global wwwroot %{serverdir}/www
 %global wwwdocroot %{wwwroot}/htdocs
 %endif
 
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.6
+Version:        4.3.8
 Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -54,6 +56,10 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
+
+%if 0%{?rhel}
+BuildRequires:  gettext
+%endif
 
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
@@ -143,6 +149,7 @@ BuildRequires:  python-enum34
 %endif
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
+Requires:       spacewalk-common
 Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
@@ -241,13 +248,13 @@ if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
     sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
+    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "%{serverdir}/tftpboot"
   fi
 fi
-if [ ! -d /srv/tftpboot ]; then
-  mkdir -p /srv/tftpboot
-  chmod 750 /srv/tftpboot
-  chown %{apache_user}:%{tftp_group} /srv/tftpboot
+if [ ! -d %{serverdir}/tftpboot ]; then
+  mkdir -p %{serverdir}/tftpboot
+  chmod 750 %{serverdir}/tftpboot
+  chown %{apache_user}:%{tftp_group} %{serverdir}/tftpboot
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
@@ -279,6 +286,9 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %if 0%{?suse_version}
 %{insserv_cleanup}
 %endif
+# Cleanup
+sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
+
 
 %files -f susemanager.lang
 %defattr(-,root,root,-)
@@ -322,6 +332,7 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %dir %{wwwdocroot}/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
+%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch

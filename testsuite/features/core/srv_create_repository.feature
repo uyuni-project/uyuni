@@ -124,11 +124,11 @@ Feature: Add a repository to a channel
     When I follow the left menu "Software > Channel List"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages" in the content area
-    Then I should see a "blackhole-dummy" text
+    And I wait until I see "blackhole-dummy" text, refreshing the page
 
 @ubuntu_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     When I follow the left menu "Software > Channel List"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
-    Then I should see a "blackhole-dummy" text
+    And I wait until I see "blackhole-dummy" text, refreshing the page

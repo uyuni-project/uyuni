@@ -75,7 +75,7 @@ public class CredentialsFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", label);
         return (CredentialsType) singleton.lookupObjectByNamedQuery(
                 "CredentialsType.findByLabel", params);
@@ -141,6 +141,17 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new Cloud Rmt {@link Credentials}
+     * @return new credential with type Cloud Rmt
+     */
+    public static Credentials createCloudRmtCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_CLOUD_RMT));
+        return creds;
+    }
+
+    /**
      * Create Credentials of a specific type
      * @param username - the username
      * @param password - the password
@@ -163,6 +174,9 @@ public class CredentialsFactory extends HibernateFactory {
         }
         else if (credentialsType.equals(Credentials.TYPE_SCC)) {
             credentials = CredentialsFactory.createSCCCredentials();
+        }
+        else if (credentialsType.equals(Credentials.TYPE_CLOUD_RMT)) {
+            credentials = CredentialsFactory.createCloudRmtCredentials();
         }
         else {
             return credentials;

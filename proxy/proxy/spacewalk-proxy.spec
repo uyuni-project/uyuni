@@ -16,16 +16,11 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
-%endif
-
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.2
+Version:        4.3.4
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -34,9 +29,6 @@ BuildRequires:  python3
 BuildArch:      noarch
 Requires:       httpd
 Requires:       python3-uyuni-common-libs
-%if 0%{?pylint_check}
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -203,6 +195,9 @@ do
 done
 
 %install
+install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/tls/certs
+install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/tls/private
+
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
 install -d -m 750 $RPM_BUILD_ROOT/%{_var}/cache/rhn/proxy-auth
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
@@ -240,12 +235,6 @@ install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ss
 install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 
 %check
-%if 0%{?pylint_check}
-# check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}:/usr/share/rhn
-# Run pylint check but never fail
-spacewalk-python3-pylint $RPM_BUILD_ROOT/usr/share/rhn ||:
-%endif
 
 %post broker
 if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
@@ -468,6 +457,9 @@ fi
 %dir %{destdir}/broker
 %dir %{destdir}/__pycache__/
 %{destdir}/__pycache__/*
+%dir %{_sysconfdir}/pki/tls
+%dir %{_sysconfdir}/pki/tls/certs
+%dir %{_sysconfdir}/pki/tls/private
 
 %files package-manager
 %defattr(-,root,root)

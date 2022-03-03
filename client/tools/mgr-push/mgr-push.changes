@@ -1,4 +1,10 @@
-- do not build python 2 package for SLE15
+- Corrected source URLs in spec file.
+
+-------------------------------------------------------------------
+Tue Jan 18 13:34:30 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Do not build python 2 package for SLE15SP4 and higher
 
 -------------------------------------------------------------------
 Mon Aug 09 10:51:12 CEST 2021 - jgonzalez@suse.com

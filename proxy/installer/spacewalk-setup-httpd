@@ -1,0 +1,16 @@
+#!/bin/bash
+
+HTTPDCONF_DIR=/etc/apache2/vhosts.d
+if [ ! -e /etc/apache2 ]; then
+  HTTPDCONF_DIR=/etc/httpd/conf.d
+fi
+PKI_DIR=/etc/pki/tls
+
+if [ ! -e $HTTPDCONF_DIR/ssl.conf ]; then
+    cp $HTTPDCONF_DIR/vhost-ssl.template $HTTPDCONF_DIR/ssl.conf
+fi
+sed -i -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $PKI_DIR/certs/spacewalk.crt|g" \
+    -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $PKI_DIR/private/spacewalk.key|g" \
+    -e "s|^[\t ]*SSLCipherSuite.*$|SSLCipherSuite ALL:!aNULL:!eNULL:!SSLv2:!LOW:!EXP:!MD5:@STRENGTH|g" \
+    -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
+    $HTTPDCONF_DIR/ssl.conf

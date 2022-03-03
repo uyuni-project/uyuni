@@ -109,7 +109,7 @@ public abstract class DocWriter {
             log(String.format("Generating handler call %s.%s", handler.getName(), call.getName()));
             call.setReturnDoc(renderMacro(templateDir, call.getReturnDoc(),
                     call.getName()));
-            List<String> params = new ArrayList<String>();
+            List<String> params = new ArrayList<>();
 
             for (String param : call.getParams()) {
                 params.add(renderMacro(templateDir, param,

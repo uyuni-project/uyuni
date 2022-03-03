@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
@@ -58,7 +57,6 @@ import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
-import com.suse.manager.webui.controllers.clusters.ClustersController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -107,7 +105,6 @@ public class Router implements SparkApplication {
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
-        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -119,7 +116,6 @@ public class Router implements SparkApplication {
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
-        ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -146,7 +142,7 @@ public class Router implements SparkApplication {
 
         // Admin Router
         AdminViewsController.initRoutes(jade);
-        AdminApiController.initRoutes();
+        AdminApiController.initRoutes(taskomaticApi);
 
         // Minions
         MinionController.initRoutes(jade);
@@ -200,9 +196,6 @@ public class Router implements SparkApplication {
 
         // Single Sign-On (SSO) via SAML
         SSOController.initRoutes();
-
-        // Clusters
-        clustersController.initRoutes(jade);
 
         // Maintenance windows
         MaintenanceController.initRoutes();

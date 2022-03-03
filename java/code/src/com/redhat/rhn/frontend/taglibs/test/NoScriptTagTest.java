@@ -47,12 +47,11 @@ public class NoScriptTagTest  extends RhnBaseTestCase {
         tth.assertDoEndTag(Tag.SKIP_BODY);
 
         RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
-        assertTrue(rout.toString().indexOf("<noscript>") > -1);
-        assertTrue(rout.toString().indexOf("</noscript>") > -1);
-        assertTrue(rout.toString().
-                            indexOf("\"" + RequestContext.NO_SCRIPT + "\"") > -1);
-        assertTrue(rout.toString().indexOf(SubmittedTag.HIDDEN) > -1);
-        assertTrue(rout.toString().indexOf(SubmittedTag.TRUE) > -1);
+        assertTrue(rout.toString().contains("<noscript>"));
+        assertTrue(rout.toString().contains("</noscript>"));
+        assertTrue(rout.toString().contains("\"" + RequestContext.NO_SCRIPT + "\""));
+        assertTrue(rout.toString().contains(SubmittedTag.HIDDEN));
+        assertTrue(rout.toString().contains(SubmittedTag.TRUE));
     }
 }
 

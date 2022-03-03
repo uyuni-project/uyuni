@@ -241,7 +241,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         WriteMode m =
             ModeFactory.
             getWriteMode("test_queries", "insert_into_rhnChannelNewestPackage");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", c.getId());
         params.put("name_id", p.getPackageName().getId());
         params.put("evr_id", p.getPackageEvr().getId());
@@ -254,7 +254,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         WriteMode cp =
             ModeFactory.
             getWriteMode("test_queries", "insert_into_rhnChannelPackage");
-        params = new HashMap<String, Object>();
+        params = new HashMap<>();
         params.put("channel_id", c.getId());
         params.put("packge_id", p.getId());
 

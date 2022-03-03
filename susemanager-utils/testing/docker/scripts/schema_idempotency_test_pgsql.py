@@ -182,9 +182,15 @@ def dump_database(dump_name, excluded_tables=None):
 def run_upgrade(upgrade_script, new_version):
     """ Run a database upgrade up to the specified version """
     log_path = "/var/log/spacewalk/schema-upgrade/"
+    perl_libs = (
+        "/manager/spacewalk/setup/lib/",
+        "/manager/web/modules/rhn/",
+        "/manager/web/modules/pxt/",
+        "/manager/schema/spacewalk/lib/",
+    )
     print("Upgrading to %s..." % new_version)
-    command = "export SUMA_TEST_SCHEMA_VERSION=%s; %s -y" % (
-        new_version, upgrade_script)
+    command = "export SUMA_TEST_SCHEMA_VERSION=%s; export PERLLIB=%s; %s -y" % (
+        new_version, ":".join(perl_libs), upgrade_script)
     if run_command(command):
         print("Upgrade executed successfully")
     else:

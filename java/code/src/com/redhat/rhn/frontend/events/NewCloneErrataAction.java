@@ -36,7 +36,7 @@ public class NewCloneErrataAction implements MessageAction {
     public void execute(EventMessage msgIn) {
         NewCloneErrataEvent msg = (NewCloneErrataEvent) msgIn;
         Long eid = msg.getErrata();
-        List<Errata> errata = new ArrayList<Errata>();
+        List<Errata> errata = new ArrayList<>();
         Errata erratum = ErrataFactory.lookupById(eid);
         Channel channel = msg.getChan();
         if (channel != null && erratum != null) {

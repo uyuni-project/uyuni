@@ -74,7 +74,7 @@ public class KickstartIpRangeDto extends BaseDto {
      */
     public void setMax(Long maxIn) {
         this.max = maxIn;
-        this.iprange.setMax(new IpAddress(maxIn.longValue()));
+        this.iprange.setMax(new IpAddress(maxIn));
     }
 
     /**
@@ -91,7 +91,7 @@ public class KickstartIpRangeDto extends BaseDto {
      */
     public void setMin(Long minIn) {
         this.min = minIn;
-        this.iprange.setMin(new IpAddress(minIn.longValue()));
+        this.iprange.setMin(new IpAddress(minIn));
     }
 
     /**

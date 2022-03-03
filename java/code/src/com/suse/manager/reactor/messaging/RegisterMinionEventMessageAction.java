@@ -154,7 +154,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public void registerSSHMinion(String minionId, Integer sshPushPort, Optional<Long> proxyId,
                                   Optional<String> activationKeyOverride) {
         Optional<MinionStartupGrains> startupGrainsOpt = saltApi.getGrains(minionId,
-                new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager");
+                new TypeToken<>() {
+                }, "machine_id", "saltboot_initrd", "susemanager");
         registerMinion(minionId, true, of(sshPushPort), proxyId, activationKeyOverride, startupGrainsOpt);
     }
 
@@ -173,7 +174,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
-                Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
+                Optional<String> mkey = grains.getSuseManagerGrain()
+                        .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey);
                 Optional<ActivationKey> managementKey =
                         mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
@@ -222,61 +224,53 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 Optional<String> reActivationKey, String machineId, boolean saltbootInitrd) {
         Opt.consume(reActivationKey,
             //Case A: Registration
-            () -> {
-                Opt.consume(ServerFactory.findByMachineId(machineId),
-                    () -> {
-                        Opt.consume(MinionServerFactory.findByMinionId(minionId),
-                            () -> {
-                                // Case 1.1 - new registration
-                                finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride,
-                                        isSaltSSH);
-                            },
-                            minionServer -> {
-                                // Case 2.1 - update found system with new values
-                                LOG.warn(String.format(
-                                        "A system with minion_id '%s' already exists, but with different " +
-                                        "machine-id ( %s vs. %s). Updating existing system with System ID: %s",
-                                        minionId, machineId, minionServer.getMachineId(), minionServer.getId()));
-                                updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                                applySaltBootStates(minionId, minionServer, saltbootInitrd);
-                            });
-                    },
-                    server -> {
-                        Opt.consume(MinionServerFactory.findByMinionId(minionId),
-                            () -> {
-                                // Case 1.2 - System got a new minion id
-                                Opt.consume(server.asMinionServer(),
-                                    () -> {
-                                        // traditional client wants migration to salt
-                                        finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId,
-                                                actKeyOverride, isSaltSSH);
-                                    },
-                                    registeredMinion -> {
-                                        updateAlreadyRegisteredInfo(minionId, machineId, registeredMinion);
-                                        applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
-                                    });
-                            },
-                            minionServer -> {
-                                server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
-                                    serverAsMinion -> {
-                                        // Case 2.2a
-                                        updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                                        applySaltBootStates(minionId, minionServer, saltbootInitrd);
-                                    },
-                                    () -> {
-                                        // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
-                                        // Can only happen when salt key was deleted and same minion id
-                                        // was accepted again
-                                        String msg = String.format(
-                                            "Systems with conflicting minion_id and machine-id were found (%s, %s). " +
-                                            "Onboarding aborted. Please remove conflicting systems first (%s, %s)",
-                                            minionId, machineId, minionServer.getId(), server.getId());
-                                        LOG.error(msg);
-                                        throw new RegisterMinionException(minionId, null, msg);
-                                    });
-                            });
-                    });
-            },
+            () -> Opt.consume(ServerFactory.findByMachineId(machineId),
+                () -> Opt.consume(MinionServerFactory.findByMinionId(minionId),
+                        () -> {
+                            // Case 1.1 - new registration
+                            finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride,
+                                    isSaltSSH);
+                        },
+                        minionServer -> {
+                            // Case 2.1 - update found system with new values
+                            LOG.warn(String.format(
+                                    "A system with minion_id '%s' already exists, but with different " +
+                                    "machine-id ( %s vs. %s). Updating existing system with System ID: %s",
+                                    minionId, machineId, minionServer.getMachineId(), minionServer.getId()));
+                            updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                            applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                        }),
+                server -> Opt.consume(MinionServerFactory.findByMinionId(minionId),
+                        () -> {
+                            // Case 1.2 - System got a new minion id
+                            Opt.consume(server.asMinionServer(),
+                                () -> {
+                                    // traditional client wants migration to salt
+                                    finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId,
+                                            actKeyOverride, isSaltSSH);
+                                },
+                                registeredMinion -> {
+                                    updateAlreadyRegisteredInfo(minionId, machineId, registeredMinion);
+                                    applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
+                                });
+                        },
+                        minionServer -> server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
+                                serverAsMinion -> {
+                                    // Case 2.2a
+                                    updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                                    applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                                },
+                                () -> {
+                                    // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
+                                    // Can only happen when salt key was deleted and same minion id
+                                    // was accepted again
+                                    String msg = String.format(
+                                        "Systems with conflicting minion_id and machine-id were found (%s, %s). " +
+                                        "Onboarding aborted. Please remove conflicting systems first (%s, %s)",
+                                        minionId, machineId, minionServer.getId(), server.getId());
+                                    LOG.error(msg);
+                                    throw new RegisterMinionException(minionId, null, msg);
+                                }))),
             //Case B : Reactivation
             rk -> {
                 reactivateSystem(minionId, machineId, rk);
@@ -439,7 +433,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             Org org = activationKey.map(ActivationKey::getOrg)
                             .orElseGet(() -> creator.map(User::getOrg)
                             .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
-                            .orElseGet(() -> OrgFactory.getSatelliteOrg())));
+                            .orElseGet(OrgFactory::getSatelliteOrg)));
             if (minion.getOrg() == null) {
                 minion.setOrg(org);
             }
@@ -539,7 +533,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         if (isSaltSSH) {
             return saltSSHProxyId
-                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .map(ServerFactory::lookupById)
                     .map(Server::getOrg);
         }
         else {
@@ -777,13 +771,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private static Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
         Optional<EssentialChannelDto> productBaseChannelDto =
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
-        Optional<Channel> baseChannel = productBaseChannelDto.flatMap(base -> {
-            return ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
-                LOG.info("Base channel " + c.getName() + " found for OS: " + sp.getName() +
-                        ", version: " + sp.getVersion() + ", arch: " + arch.getName());
-                return c;
-            });
-        });
+        Optional<Channel> baseChannel = productBaseChannelDto
+                .flatMap(base -> ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
+            LOG.info("Base channel " + c.getName() + " found for OS: " + sp.getName() +
+                    ", version: " + sp.getVersion() + ", arch: " + arch.getName());
+            return c;
+        }));
         if (!baseChannel.isPresent()) {
             LOG.warn("Product Base channel not found - refresh SCC sync?");
             return empty();
@@ -886,7 +879,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             "VERSION=%{VERSION}\\n" +
                             "PROVIDENAME=[%{PROVIDENAME},]\\n" +
                             "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + pkg)
-                        .entrySet().stream().findFirst().map(e -> e.getValue())
+                        .entrySet().stream().findFirst().map(Map.Entry::getValue)
                         .flatMap(res -> res.fold(
                                 err -> err.fold(
                                         err1 -> rpmErrQueryRHELRelease(err1, minionId),
@@ -894,7 +887,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId),
                                         err4 -> rpmErrQueryRHELRelease(err4, minionId),
                                         err5 -> rpmErrQueryRHELRelease(err5, minionId)),
-                                r -> of(r)
+                                Optional::of
                         ))
                         .map(result -> {
                             if (result.split("\\r?\\n").length > 3) {

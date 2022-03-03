@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-22 10:19+0100\n"
+"POT-Creation-Date: 2022-02-24 18:13+0000\n"
 "PO-Revision-Date: 2021-03-07 06:51+0000\n"
 "Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1275,16 +1275,16 @@ msgstr "Importando árvores kickstartable (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Árvores kickstartable importadas (%d)"
 
-#: ../satellite_tools/reposync.py:113 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviar log como um email +++"
 
-#: ../satellite_tools/reposync.py:116
+#: ../satellite_tools/reposync.py:117
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sincronizado. relatório de %s"
 
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email solicitado, mas não há nada para enviar +++"
 

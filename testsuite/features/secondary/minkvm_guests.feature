@@ -43,6 +43,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Parametrize the KVM virtualization host
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
+    And I click on "Expand All Sections"
     And I select "NAT" in virtual network mode field
     And I enter "192.168.124.1" in virtual network IPv4 address field
     And I enter "192.168.124.2" in first IPv4 address for DHCP field
@@ -368,7 +369,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 # Start provisioning scenarios
 
-@long_test
 @scc_credentials
   Scenario: Create auto installation distribution
     And I install package tftpboot-installation on the server
@@ -384,7 +384,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP2-TFTP" link
 
-@long_test
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -397,7 +396,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallation: 15-sp2-kvm" text
     And I should see a "Autoinstallation Details" text
 
-@long_test
 @scc_credentials
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
@@ -408,7 +406,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP2-TFTP" text
 
-@long_test
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -433,7 +430,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
     When I close the last opened window
 
-@long_test
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -442,7 +438,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp2-kvm" text
 
-@long_test
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -480,7 +475,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
 
-  @uyuni
+  @salt_bundle
   Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
     And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control

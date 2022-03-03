@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -99,7 +100,7 @@ public class ErrataListConfirmAction extends RhnAction implements
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         return SystemManager.inSet(user, SetLabels.SYSTEM_LIST).stream()
-                .map(s -> s.getId())
+                .map(SystemOverview::getId)
                 .collect(Collectors.toList());
     }
 
@@ -125,7 +126,7 @@ public class ErrataListConfirmAction extends RhnAction implements
         List<Long> serverIds = getSystemIds(request);
 
         RhnSet erratas = getSetDecl().get(context.getCurrentUser());
-        List<Long> errataIds = new ArrayList<Long>(erratas.size());
+        List<Long> errataIds = new ArrayList<>(erratas.size());
         errataIds.addAll(erratas.getElementValues());
 
         MessageQueue.publish(new SsmErrataEvent(

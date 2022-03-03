@@ -202,7 +202,7 @@ public class LoginHelper {
     }
 
     private static Set<Role> getRolesFromExtGroups(Set<String> groupNames) {
-        Set<Role> roles = new HashSet<Role>();
+        Set<Role> roles = new HashSet<>();
         for (String extGroupName : groupNames) {
             UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
             if (extGroup == null) {
@@ -216,7 +216,7 @@ public class LoginHelper {
     }
 
     private static Set<ServerGroup> getSgsFromExtGroups(Set<String> groupNames, Org org) {
-        Set<ServerGroup> sgs = new HashSet<ServerGroup>();
+        Set<ServerGroup> sgs = new HashSet<>();
         for (String extGroupName : groupNames) {
             OrgUserExtGroup extGroup =
                     UserGroupFactory.lookupOrgExtGroupByLabelAndOrg(extGroupName, org);
@@ -231,7 +231,7 @@ public class LoginHelper {
     }
 
     private static Set<String> getExtGroups(HttpServletRequest requestIn) {
-        Set<String> extGroups = new HashSet<String>();
+        Set<String> extGroups = new HashSet<>();
         Long nGroups = null;
         String nGroupsStr = (String) requestIn.getAttribute("REMOTE_USER_GROUP_N");
         if (nGroupsStr != null) {

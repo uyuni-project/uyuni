@@ -45,7 +45,7 @@ public class PackageActionFormatter extends ActionFormatter {
     public String getRelatedObjectDescription() {
         Set<PackageActionDetails> packages = ((PackageAction) this.getAction())
             .getDetails();
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         if (packages != null) {
             for (PackageActionDetails packageDetail : packages) {
                 result.add(

@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,11 +47,11 @@ public class PackageDependenciesAction extends RhnAction {
             return null;
         }
 
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
 
         // Loop through all items in data result
-        for (Iterator resultItr = dr.iterator(); resultItr.hasNext();) {
-            Map item = (Map) resultItr.next();
+        for (Object oIn : dr) {
+            Map item = (Map) oIn;
 
             String name = (String) item.get("name");
             String version = (String) item.get("version");

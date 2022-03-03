@@ -9,6 +9,44 @@
   in transactional systems
 - Add state for changing proxy
 - Enable basic support for Debian 11
+- Avoid using lscpu -J option in grains (bsc#1195920)
+
+-------------------------------------------------------------------
+Mon Feb 21 22:48:33 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Postgres exporter package was renamed
+
+-------------------------------------------------------------------
+Tue Feb 15 10:07:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Improve `pkgset` beacon with using `salt.cache`
+    to notify about the changes made while the minion was stopped
+  * Add dnfnotify plugin support for pkgset beacon
+  * Handle multiple Kiwi bundles (bsc#1194905)
+  * fix deprecation warnings
+  * Implement uyuni roster module for Salt
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
+  * Fix issues running mgr_events on Salt 3004
+
+-------------------------------------------------------------------
+Tue Jan 18 14:08:20 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Remove cluster management feature
+  * Fix dnf plugin path calculation when using Salt Bundle
+  * Use global import for which_bin in sumautil module
+  * Get the formula pillar data from the database
+  * Use flat repositories format for Debian based systems
+  * Add checking for libvirtd binary to grains.virt module
+  * Fix errors on calling sed -E ... by force_restart_minion
+    with action chains
+  * Fix problem installing/removing packages using action chains
+    in transactional systems
+  * Add state for changing proxy
+  * Enable basic support for Debian 11
 
 -------------------------------------------------------------------
 Fri Dec 03 12:33:13 CET 2021 - jgonzalez@suse.com

@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -252,8 +251,8 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         }
 
         if (childchannelIds != null) {
-            for (int i = 0; i < childchannelIds.length; i++) {
-                Long channelId = Long.valueOf(childchannelIds[i]);
+            for (String childchannelIdIn : childchannelIds) {
+                Long channelId = Long.valueOf(childchannelIdIn);
                 Channel c = ChannelManager.lookupByIdAndUser(channelId,
                         user);
                 getKickstartData().addChildChannel(c);
@@ -272,7 +271,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         logger.debug("getAvailableArches() - start");
         List<Channel> ksc = ChannelFactory.getKickstartableChannels(user
                 .getOrg());
-        Set<ChannelArch> retval = new HashSet<ChannelArch>();
+        Set<ChannelArch> retval = new HashSet<>();
         for (Channel c : ksc) {
             retval.add(c.getChannelArch());
         }
@@ -310,7 +309,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
     public Set<ChannelFamily> getAvailableChannelFamilies() {
         logger.debug("getAvailableChannelFamilies() - start");
         Collection<Channel> channels = getAvailableChannels();
-        Set<ChannelFamily> retval = new HashSet<ChannelFamily>();
+        Set<ChannelFamily> retval = new HashSet<>();
         for (Channel c : channels) {
             retval.add(c.getChannelFamily());
         }
@@ -323,7 +322,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      * @return Set of String values.
      */
     public Set<String> getAvailableUpdates() {
-        Set<String> retval = new TreeSet<String>();
+        Set<String> retval = new TreeSet<>();
         retval.addAll(Arrays.asList(UPDATES));
 
         logger.debug("getAvailableUpdates() - end - return value=" + retval);
@@ -368,14 +367,13 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         if (ksdata.isRhel5OrGreater()) {
             List<RepoInfo> repoList = RepoInfo.getStandardRepos(
                     ksdata.getKickstartDefaults().getKstree());
-            Map<String, RepoInfo> repoSet = new HashMap<String, RepoInfo>();
-            for (Iterator<RepoInfo> ri = repoList.iterator(); ri.hasNext();) {
-                RepoInfo rInfo = ri.next();
+            Map<String, RepoInfo> repoSet = new HashMap<>();
+            for (RepoInfo rInfo : repoList) {
                 repoSet.put(rInfo.getName(), rInfo);
             }
-            Set<RepoInfo> selected = new HashSet<RepoInfo>();
-            for (int i = 0; i < reposIn.length; i++) {
-                selected.add(repoSet.get(reposIn[i]));
+            Set<RepoInfo> selected = new HashSet<>();
+            for (String repoIn : reposIn) {
+                selected.add(repoSet.get(repoIn));
             }
             ksdata.setRepoInfos(selected);
             KickstartWizardHelper ksHelper = new KickstartWizardHelper(user);

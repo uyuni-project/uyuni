@@ -94,7 +94,7 @@ fi
 
 RHN_CONF="/etc/rhn/rhn.conf"
 GPG_SALT_EXPORT_FILE="/srv/susemanager/salt/gpg/mgr-keyring.gpg"
-GPG_PUB_EXPORT_FILE="/srv/www/htdocs/pub/mgr-gpg-pub.key"
+GPG_PUB_EXPORT_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-gpg-pub.key"
 SIGNING_CONF="/etc/rhn/signing.conf"
 
 if [[ ! -f $SIGNING_CONF ]]; then

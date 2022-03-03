@@ -313,7 +313,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           requiredByChannels: channelDeps.requiredByChannels,
         });
       })
-      .catch((err) => console.error(err.statusText));
+      .catch((err) => Loggerhead.error(err.statusText));
   }
 
   getChangeId = (change: ChannelChangeDto, childId: string | number) => {

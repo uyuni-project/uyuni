@@ -42,8 +42,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.clusters.ClusterFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -212,7 +210,7 @@ public class ServerGroupHandler extends BaseHandler {
 
         List servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
 
-        if (add.booleanValue()) {
+        if (add) {
             serverGroupManager.addServers(group, servers, loggedInUser);
         }
         else {
@@ -257,12 +255,6 @@ public class ServerGroupHandler extends BaseHandler {
     public int delete(User loggedInUser, String systemGroupName) {
         ensureSystemGroupAdmin(loggedInUser);
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
-        ClusterFactory.findClusterByGroupId(group.getId()).ifPresent(cluster -> {
-            throw new FaultException(1234, "group_owned_by_cluster",
-                    String.format("Group can't be deleted because it's owned by cluster '%s'." +
-                                    " Delete cluster to delete this group.",
-                            cluster.getName()));
-        });
         serverGroupManager.remove(loggedInUser, group);
         return 1;
     }

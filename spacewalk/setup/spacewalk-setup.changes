@@ -1,7 +1,21 @@
-- Merge all external pillars into one
-- During upgrade, set tomcat connector connectionTimeout
-  to 900000 if the previous values is the old default (20000)
-- Increase "max_event_size" value for the Salt master (bsc#1191340)
+  * Remove pylint according to Fedora package guidelines.
+
+-------------------------------------------------------------------
+Tue Feb 15 10:04:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * setup reporting database
+  * integrate new TLS Certificate setup and deployment tool
+
+-------------------------------------------------------------------
+Tue Jan 18 13:59:44 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Remove cluster providers support
+  * Merge all external pillars into one
+  * During upgrade, set tomcat connector connectionTimeout
+    to 900000 if the previous values is the old default (20000)
+  * Increase "max_event_size" value for the Salt master (bsc#1191340)
 
 -------------------------------------------------------------------
 Fri Dec 03 13:10:28 CET 2021 - jgonzalez@suse.com

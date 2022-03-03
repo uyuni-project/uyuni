@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-12 09:40+0100\n"
-"PO-Revision-Date: 2021-11-09 14:12+0000\n"
+"POT-Creation-Date: 2022-02-24 18:14+0000\n"
+"PO-Revision-Date: 2022-01-25 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/ja/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -218,6 +218,284 @@ msgstr "エラーが発生しました:"
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
 msgstr "詳細については、/var/log/up2date を参照してください"
+
+#: ../src/up2date_client/rhnreg.py:76
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "警告: systemd では rhnsd を有効に出来ません"
+
+#: ../src/up2date_client/rhnreg.py:82
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "警告: chkconfig では rhnsd を有効に出来ません"
+
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "通知"
+
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "警告"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "選択された項目を適用中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr ""
+"無効なプロトコルを指定しました。 https または http しか使用できません。"
+
+#: ../src/up2date_client/rhnregGui.py:305
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+"Spacewalk サーバーに接続しないと、このシステムを正しく登録することはできませ"
+"ん。"
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "選択したサーバーにコンタクトできません"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+msgstr "{HOST} にある {PRODUCT_NAME} または Proxy に接続できませんでした。"
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"場所を再確認してください、 「%s」は正しいですか? 正しくない場合、 修正してか"
+"らやり直してください。"
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr ""
+"このシステム上のネットワーク接続が使用可能な状態であるか確認してください。"
+
+#: ../src/up2date_client/rhnregGui.py:341
+msgid "There was an error communicating with Spacewalk server."
+msgstr "Spacewalk サーバとの通信時にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr ""
+"サーバーが停止モードの可能性があります。 後で接続し直す必要があるかもしれませ"
+"ん。"
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr "サーバーと非互換のクライアントを実行している可能性があります。"
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr "<b>%s</b> Spacewalk サーバーのアカウント情報を入力してください:"
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "ログインを入力する必要があります。"
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "パスワードをする必要があります。"
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "ログイン中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr "登録サーバと通信中にエラーが発生しました。メッセージ:\n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "プロファイルの情報を収集中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "ハードウェアプロファイルを実行中に問題が発生しました"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "プロファイルの移植中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "このプロファイル用に名前を選択する必要があります。"
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "プロファイルの作成中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr "システムを登録し、プロファイル情報を送信中です。少々お待ちください。"
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "システムを登録中"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
+#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
+#: ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "システムを登録中に問題発生:\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr ""
+"入力されたインストール番号 [ %s ] は有効なインストール番号ではありません。 前"
+"の画面に戻って修正してください。"
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "システムを登録中に問題発生。"
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "ディスクにシステムid書き込み中に問題発生。"
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "システムを登録中に問題発生。"
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "ハードウェア情報を送信中"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "ハードウェア情報の送信中に問題が発生しました。"
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "パッケージ情報を送信中"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "パッケージ情報の送信中に問題が発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"%s を開けません。\n"
+"%s が有効化されていません。\n"
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "証明書のインストール中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "証明書を選択する必要があります。"
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"SSL エラーが発生しました。 選択したファイルが証明書ファイルではなかった可能性"
+"があります。"
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "新しい証明書のインストール中に問題が発生しました。\n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "不明"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "ハードウェア一覧を取得中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "パッケージ一覧を構成中にエラーが発生しました。"
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "パッケージ"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "Arch"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr ""
+"システムにインストールされている RPM パッケージの一覧を構成しています。お待ち"
+"ください。"
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"設定のロード中にエラーが発生しました。/etc/sysconfig/rhn \n"
+"への読み込み権限があることを確認してください。"
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr ""
+"設定の保存中にエラーが発生しました。%s を所有していることを\n"
+"確認してください。"
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"このエラーは発生すべきエラーではありません。 このプログラムの改善にご助力頂け"
+"る場合には、bugzilla.suse.com でバグ報告をお願いします。 '%s' の該当部分をバ"
+"グ報告に入れて頂くと非常に助かります。ありがとうございます！"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -842,12 +1120,6 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "致命的エラー"
 
-#: ../src/up2date_client/rhnreg_constants.py:244
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-msgid "Warning"
-msgstr "警告"
-
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, python-format, python-brace-format
 msgid ""
@@ -956,7 +1228,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"ヒント:  '*' の付いたマイナーリリースは現在 Red Hat のサポートがあります。\n"
+" ヒント:  '*' の付いたマイナーリリースは現在 Red Hat のサポートがあります。\n"
 "\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:291
@@ -1018,278 +1290,6 @@ msgstr "はい、 続行します"
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
 msgstr "<space> を押してオプションの選択を外します。"
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "通知"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "選択された項目を適用中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
-"無効なプロトコルを指定しました。 https または http しか使用できません。"
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"Spacewalk サーバーに接続しないと、このシステムを正しく登録することはできませ"
-"ん。"
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "選択したサーバーにコンタクトできません"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "{HOST} にある {PRODUCT_NAME} または Proxy に接続できませんでした。"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"場所を再確認してください、 「%s」は正しいですか? 正しくない場合、 修正してか"
-"らやり直してください。"
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr ""
-"このシステム上のネットワーク接続が使用可能な状態であるか確認してください。"
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Spacewalk サーバとの通信時にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-"サーバーが停止モードの可能性があります。 後で接続し直す必要があるかもしれませ"
-"ん。"
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "サーバーと非互換のクライアントを実行している可能性があります。"
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "<b>%s</b> Spacewalk サーバーのアカウント情報を入力してください:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "ログインを入力する必要があります。"
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "パスワードをする必要があります。"
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "ログイン中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "登録サーバと通信中にエラーが発生しました。メッセージ:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "プロファイルの情報を収集中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "ハードウェアプロファイルを実行中に問題が発生しました"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "プロファイルの移植中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "このプロファイル用に名前を選択する必要があります。"
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "プロファイルの作成中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "システムを登録し、プロファイル情報を送信中です。少々お待ちください。"
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "システムを登録中"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "システムを登録中に問題発生:\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"入力されたインストール番号 [ %s ] は有効なインストール番号ではありません。 前"
-"の画面に戻って修正してください。"
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "システムを登録中に問題発生。"
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "ディスクにシステムid書き込み中に問題発生。"
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "システムを登録中に問題発生。"
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "ハードウェア情報を送信中"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "ハードウェア情報の送信中に問題が発生しました。"
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "パッケージ情報を送信中"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "パッケージ情報の送信中に問題が発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"%s を開けません。\n"
-"%s が有効化されていません。\n"
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "証明書のインストール中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "証明書を選択する必要があります。"
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"SSL エラーが発生しました。 選択したファイルが証明書ファイルではなかった可能性"
-"があります。"
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "新しい証明書のインストール中に問題が発生しました。\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "不明"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "ハードウェア一覧を取得中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "パッケージ一覧を構成中にエラーが発生しました。"
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "パッケージ"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arch"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"システムにインストールされている RPM パッケージの一覧を構成しています。お待ち"
-"ください。"
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"設定のロード中にエラーが発生しました。/etc/sysconfig/rhn \n"
-"への読み込み権限があることを確認してください。"
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"設定の保存中にエラーが発生しました。%s を所有していることを\n"
-"確認してください。"
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"このエラーは発生すべきエラーではありません。 このプログラムの改善にご助力頂け"
-"る場合には、 bugzilla.suse.com でバグ報告をお願いします。  '%s' の該当部分を"
-"バグ報告に入れて頂くと非常に助かります。ありがとうございます！"
-
-#: ../src/up2date_client/rhnreg.py:76
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "警告: systemd では rhnsd を有効に出来ません"
-
-#: ../src/up2date_client/rhnreg.py:82
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "警告: chkconfig では rhnsd を有効に出来ません"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
@@ -1486,16 +1486,12 @@ msgstr ""
 "エンタイトルメントの\n"
 "    催促を回避できます。"
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "mgr_check の複数のインスタンスを実行しようとしています。終了します。\n"
-
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
 "option"
 msgstr ""
-"このオプションを使用する前に、  `rhn_register` を実行してこのシステムを登録す"
+"このオプションを使用する前に、 `rhn_register` を実行してこのシステムを登録す"
 "る必要があります"
 
 #: ../src/bin/rhn-profile-sync.py:45
@@ -1509,6 +1505,10 @@ msgstr "ハードウェアプロファイルを更新しています..."
 #: ../src/bin/rhn-profile-sync.py:52
 msgid "Updating virtualization profile..."
 msgstr "仮想プロファイルを更新しています..."
+
+#: ../src/bin/rhn_check.py:423
+msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+msgstr "mgr_check の複数のインスタンスを実行しようとしています。終了します。\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"
@@ -2223,7 +2223,7 @@ msgstr "HTTP プロキシで認証を使用する(_T):"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
-msgstr "HTTP  プロキシによる認証を使用する"
+msgstr "HTTP プロキシによる認証を使用する"
 
 #: ../data/rh_register.glade.h:104
 msgid "Proxy _Username:"

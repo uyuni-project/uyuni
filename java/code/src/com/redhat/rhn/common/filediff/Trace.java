@@ -203,7 +203,7 @@ public class Trace {
         currentLineNew = 0;
         int linesOld = 0;
         int linesNew = 0;
-        List<Hunk> retval = new ArrayList<Hunk>();
+        List<Hunk> retval = new ArrayList<>();
 
         Edit current = edit;
         while (current != null) {
