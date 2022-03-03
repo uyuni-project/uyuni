@@ -1,4 +1,8 @@
-- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+-------------------------------------------------------------------
+Thu Mar 03 17:32:53 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.32-1
+  * Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
 
 -------------------------------------------------------------------
 Wed Jan 26 11:12:42 CET 2022 - jmassaguerpla@suse.de
