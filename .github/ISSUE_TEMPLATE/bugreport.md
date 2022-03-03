@@ -1,7 +1,7 @@
 ---
-name: Uyuni - Bugreport
+name: Bugreport
 about: Use this issue template for creating bug reports.
-title: Bugreport - XXX
+title: ''
 labels: bug, P5
 assignees: ''
 

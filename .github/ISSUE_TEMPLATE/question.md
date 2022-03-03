@@ -1,7 +1,7 @@
 ---
-name: Uyuni - Question
+name: Question
 about: Use this issue template when you have a question about Uyuni.
-title: Question - XXX
+title: ''
 labels: question
 assignees: ''
 
