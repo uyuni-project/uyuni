@@ -1,9 +1,13 @@
-- Fix errors on calling sed -E ... by force_restart_minion
-  with action chains
-- Postgres exporter package was renamed
-- fix deprecation warnings
-- enforce correct minion configuration similar to bootstrapping
-  (bsc#1192510)
+-------------------------------------------------------------------
+Thu Mar 03 17:34:12 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.33-1
+  * Fix errors on calling sed -E ... by force_restart_minion
+    with action chains
+  * Postgres exporter package was renamed
+  * fix deprecation warnings
+  * enforce correct minion configuration similar to bootstrapping
+    (bsc#1192510)
 
 -------------------------------------------------------------------
 Wed Jan 12 16:11:26 CET 2022 - jmassaguerpla@suse.de
