@@ -50,7 +50,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I follow "Install" in the content area
     When I check row with "orion-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Install Selected Packages"
-    And I pick 2 minutes from now as schedule time
+    And I pick 3 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "sle_minion"
@@ -61,7 +61,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
     And I click on "Apply Patches"
-    And I pick 2 minutes from now as schedule time
+    And I pick 3 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle_minion"

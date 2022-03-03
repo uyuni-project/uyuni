@@ -52,7 +52,7 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I follow "Install" in the content area
     When I check "orion-dummy-1.1-X" in the list
     And I click on "Install Selected Packages"
-    And I pick 2 minutes from now as schedule time
+    And I pick 3 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy_1.1" has been cached on this "ubuntu_minion"
