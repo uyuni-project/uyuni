@@ -1,4 +1,8 @@
-- Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
+-------------------------------------------------------------------
+Thu Mar 03 17:31:58 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.17-1
+  * Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
 
 -------------------------------------------------------------------
 Wed Jan 12 16:00:58 CET 2022 - jmassaguerpla@suse.de
