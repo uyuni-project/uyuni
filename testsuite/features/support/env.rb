@@ -25,7 +25,8 @@ $debug_mode = true if ENV['DEBUG']
 STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
-DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
+# DEFAULT_TIMEOUT temporarily increased from 250 to 350 due to several timeout issues
+DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 350
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
