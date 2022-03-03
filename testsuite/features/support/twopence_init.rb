@@ -323,7 +323,7 @@ def client_public_ip(host)
   interface = case host
               when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
                 'eth0'
-              when /^ubuntu/
+              when /^debian11/, /^ubuntu/
                 ubuntu_interface
               when 'kvm_server', 'xen_server'
                 'br0'
