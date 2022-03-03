@@ -816,7 +816,7 @@ ORDER BY SA.completion_time DESC
         </query>
 </mode>
 
-<mode name="recent_config_deploy_actions_for_user_postgres" class="com.redhat.rhn.frontend.dto.ServerActionDto">
+<mode name="recent_config_deploy_actions_for_user" class="com.redhat.rhn.frontend.dto.ServerActionDto">
   <query params="user_id, org_id, num, date">
          SELECT   S.id AS server_id, S.name AS server_name,
                   A.id AS id, RAS.name AS status,
@@ -840,7 +840,7 @@ ORDER BY SA.completion_time DESC
   </query>
 </mode>
 
-<mode name="recent_modified_config_files_for_user_postgres" class="com.redhat.rhn.frontend.dto.ConfigFileDto">
+<mode name="recent_modified_config_files_for_user" class="com.redhat.rhn.frontend.dto.ConfigFileDto">
   <query params="org_id, user_id, num">
        select CF.id, CC.id AS config_channel_id, CFT.label AS type,
               CFN.path, CCT.label AS config_channel_type, CF.modified,
