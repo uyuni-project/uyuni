@@ -1,3 +1,4 @@
+- Do not generate Salt Bundle sections in bootstrap for traditional
 - Reuse certificate code.
 - Allow alternative certificate filenames for update-ca-cert-trust.sh.
 - Add dynamic version for bootstrap script header (bsc#1186336)
