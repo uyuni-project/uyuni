@@ -15,7 +15,6 @@
  */
 package com.suse.manager.webui.utils;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -333,62 +332,61 @@ public class LoginHelper {
     public static List<String> validateDBVersion() {
         List<String> validationErrors = new ArrayList<>();
         LocalizationService ls = LocalizationService.getInstance();
-        if (ConfigDefaults.get().isPostgresql()) {
-            Long serverVersion = 0L;
-            String pgVersion = "";
-            Double osVersion = 0.0;
-            String osName = "";
+        Long serverVersion = 0L;
+        String pgVersion = "";
+        Double osVersion = 0.0;
+        String osName = "";
 
-            SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
-            DataResult<HashMap> dr = m.execute();
-            if (dr.size() > 0) {
-                serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
-            }
-            if (serverVersion == null) {
-                serverVersion = 0L;
-            }
-            m = ModeFactory.getMode("General_queries", "pg_version");
-            dr = m.execute();
-            if (dr.size() > 0) {
-                pgVersion = (String) dr.get(0).get("server_version");
-            }
+        SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
+        DataResult<HashMap> dr = m.execute();
+        if (dr.size() > 0) {
+            serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
+        }
+        if (serverVersion == null) {
+            serverVersion = 0L;
+        }
+        m = ModeFactory.getMode("General_queries", "pg_version");
+        dr = m.execute();
+        if (dr.size() > 0) {
+            pgVersion = (String) dr.get(0).get("server_version");
+        }
 
-            String osrelease = FileUtils.readStringFromFile("/etc/os-release");
-            for (String line : osrelease.split("\\r?\\n")) {
-                String[] resultKV = line.split("=", 2);
-                if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
-                    try {
-                        osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
-                    }
-                    catch (NumberFormatException e) {
-                        log.error("Unable to parse OS versionnumber " + resultKV[1]);
-                    }
+        String osrelease = FileUtils.readStringFromFile("/etc/os-release");
+        for (String line : osrelease.split("\\r?\\n")) {
+            String[] resultKV = line.split("=", 2);
+            if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
+                try {
+                    osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
                 }
-                else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
-                    osName = resultKV[1].replaceAll("\"", "'");
+                catch (NumberFormatException e) {
+                    log.error("Unable to parse OS versionnumber " + resultKV[1]);
                 }
             }
-            if (log.isDebugEnabled()) {
-                log.debug("PG DB version is: " + serverVersion);
-                log.debug("OS Version is: " + osVersion + " " + osVersion);
-            }
-            if (serverVersion < MIN_PG_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-                log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-            }
-            else if (serverVersion > MAX_PG_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-                log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-            }
-            else if (osVersion >= OS_VERSION_CHECK && serverVersion < OS_VERSION_MIN_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
-                        OS_VERSION_WANTED_DB_VERSION));
-                log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
-                        OS_VERSION_WANTED_DB_VERSION));
+            else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
+                osName = resultKV[1].replaceAll("\"", "'");
             }
         }
-        SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
-        DataResult<HashMap> dr = m.execute();
+        if (log.isDebugEnabled()) {
+            log.debug("PG DB version is: " + serverVersion);
+            log.debug("OS Version is: " + osVersion + " " + osVersion);
+        }
+        if (serverVersion < MIN_PG_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
+            log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
+        }
+        else if (serverVersion > MAX_PG_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+            log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+        }
+        else if (osVersion >= OS_VERSION_CHECK && serverVersion < OS_VERSION_MIN_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                    OS_VERSION_WANTED_DB_VERSION));
+            log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                    OS_VERSION_WANTED_DB_VERSION));
+        }
+
+        m = ModeFactory.getMode("General_queries", "installed_schema_version");
+        dr = m.execute();
         if (dr.size() == 0) {
             validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
             log.error(ls.getMessage("error.unfinished_schema_upgrade"));
