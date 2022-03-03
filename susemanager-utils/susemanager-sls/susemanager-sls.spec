@@ -22,9 +22,11 @@
 %endif
 
 %if 0%{?suse_version}
-%global wwwdocroot /srv/www/htdocs
+%global serverdir  /srv
+%global wwwdocroot %{serverdir}/www/htdocs
 %else
-%global wwwdocroot %{_var}/www/html
+%global serverdir  %{_localstatedir}
+%global wwwdocroot %{serverdir}/www/html
 %endif
 
 

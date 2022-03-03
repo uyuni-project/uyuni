@@ -29,14 +29,27 @@ except ImportError:
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
-MANAGER_PILLAR_DATA_PATH = '/srv/susemanager/pillar_data'
+MANAGER_PILLAR_DATA_PATHS = ['/srv/susemanager/pillar_data', '/var/lib/susemanager/pillar_data']
 
 # SUSE Manager formulas paths:
 MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metadata'
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
-FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
+FORMULAS_DATA_PATHS = ['/srv/susemanager/formula_data', '/var/lib/susemanager/formula_data']
 FORMULA_PREFIX = 'formula-'
+
+def find_path(path_list):
+    '''
+    Find the first existing path in a list.
+    '''
+    for path in path_list:
+        if os.path.isdir(path):
+            return path
+    return path_list[0]
+
+# Reassign alternative paths for different OS.
+MANAGER_PILLAR_DATA_PATH = find_path(MANAGER_PILLAR_DATA_PATHS)
+FORMULAS_DATA_PATH = find_path(FORMULAS_DATA_PATHS)
 
 # OS images path:
 IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
