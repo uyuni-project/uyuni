@@ -189,7 +189,8 @@ Feature: PXE boot a Retail terminal
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
-    And I wait until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    # Workaround: Increase timeout temporarily get rid of timeout issues
+    And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "Test-Channel-x86_64" is checked, refreshing the page
@@ -312,7 +313,8 @@ Feature: PXE boot a Retail terminal
   Scenario: Bootstrap the PXE boot minion
     When I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
-    And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    # Workaround: Increase timeout temporarily get rid of timeout issues
+    And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
     Then I follow the left menu "Systems > Overview"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
