@@ -16,10 +16,7 @@ package com.suse.manager.webui.utils;
 
 
 import static com.suse.utils.Opt.flatMap;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -28,22 +25,16 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.context.Context;
 
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.runner.Jobs.Info;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
-import com.suse.salt.netapi.results.Ret;
-import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 
@@ -55,7 +46,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -72,8 +62,6 @@ public class MinionActionUtils {
 
     private static final Logger LOG = Logger.getLogger(MinionActionUtils.class);
 
-    /** Whether the current database is Postgres. */
-    public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
     private final SaltServerActionService saltServerActionService;
     private final SaltApi saltApi;
     private final SaltUtils saltUtils;
@@ -119,64 +107,25 @@ public class MinionActionUtils {
      * at running jobs on the minion and the job cache using the
      * action id we add to the job as metadata.
      *
-     * @param sa ServerAction to update
-     * @param server MinionServer of this ServerAction
+     * @param serverAction ServerAction to update
      * @param running list of running jobs on the MinionServer
-     * @param infoMap map from actionIds to Salt job information objects
      * @return the updated ServerAction
      */
-    public ServerAction updateMinionActionStatus(ServerAction sa,
-            MinionServer server, List<SaltUtil.RunningInfo> running,
-            Map<Long, Optional<Info>> infoMap) {
-        long actionId = sa.getParentAction().getId();
-        boolean actionIsRunning = running.stream().filter(r ->
-                r.getMetadata(JsonElement.class)
-                        .flatMap(EXTRACT_ACTION_ID)
-                        .filter(id -> id == actionId)
-                        .isPresent()
-        ).findFirst().isPresent();
+    public ServerAction updateMinionActionStatus(ServerAction serverAction, List<SaltUtil.RunningInfo> running) {
+        long actionId = serverAction.getParentAction().getId();
+        boolean actionIsRunning = running.stream().anyMatch(r ->
+            r.getMetadata(JsonElement.class)
+             .flatMap(EXTRACT_ACTION_ID)
+             .filter(id -> id == actionId)
+             .isPresent()
+        );
 
-        if (!actionIsRunning) {
-            ServerAction serverAction = infoMap.get(actionId)
-                    .map(info -> {
-                        Optional<JsonElement> result = info
-                                .getResult(server.getMinionId(), JsonElement.class);
-                            // the result should only be missing if its still running
-                            // since we know at this point that its not running result
-                            // being empty means something went horribly wrong.
-                        return result.map(o -> {
-                            // If it is a string its likely to be an error because our
-                            // actions so far don't have String as a result type
-                            if (o.isJsonPrimitive() && o.getAsJsonPrimitive().isString()) {
-                                sa.fail(o.getAsJsonPrimitive().getAsString());
-                                return sa;
-                            }
-                            else {
-                                saltUtils.updateServerAction(sa, 0L,
-                                        true, info.getJid(), o, info.getFunction());
-                                saltUtils.handlePackageChanges(info.getFunction(), o,
-                                        server);
-                                return sa;
-                            }
-                        }).orElseGet(() -> {
-                            sa.fail("There was no result.");
-                            return sa;
-                        });
-                    }).orElseGet(() -> {
-                        if (!sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                            String message = "No job return event was received.";
-                            if (!POSTGRES) {
-                                message = "There was no job cache entry.";
-                            }
-                            sa.fail(message);
-                        }
-                        return sa;
-                    });
-            return serverAction;
+        if (!actionIsRunning && !serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+            String message = "No job return event was received.";
+            serverAction.fail(message);
         }
-        else {
-            return sa;
-        }
+
+        return serverAction;
     }
 
     /**
@@ -215,116 +164,13 @@ public class MinionActionUtils {
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 saltApi.running(new MinionList(minionIds));
 
-        Map<Long, Optional<Jobs.Info>> infoMap = serverActions.stream()
-          .map(sa -> sa.getParentAction().getId())
-          .distinct()
-          .collect(toMap(identity(), id -> infoForActionId(saltApi, id)));
-
-        serverActions.forEach(sa ->
-                sa.getServer().asMinionServer().ifPresent(minion -> {
-                    Optional.ofNullable(running.get(minion.getMinionId()))
-                            .ifPresent(r -> r.consume(error -> LOG.error(error.toString()),
-                    runningInfos -> ActionFactory.save(updateMinionActionStatus(sa, minion, runningInfos, infoMap))));
-                })
+        serverActions.forEach(serverAction ->
+            serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))
+              .ifPresent(r -> {
+                  r.consume(error -> LOG.error(error.toString()),
+                  runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
+              })
         );
-    }
-
-    /**
-     * Returns the Salt job information object for a SUSE Manager actionId.
-     *
-     * @param salt the salt service to use
-     * @param actionId the actionId
-     * @return an optional job information object
-     */
-    private Optional<Info> infoForActionId(SaltApi salt, long actionId) {
-        // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
-        // stored persistently via the database (see PGEventStream)
-        if (POSTGRES) {
-            return Optional.empty();
-        }
-
-        Map<String, Object> metadata = new HashMap<>();
-        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
-        Optional<String> jid = salt.jobsByMetadata(metadata)
-                .map(info -> info.keySet().stream().findFirst())
-                .orElse(Optional.empty());
-        return jid.flatMap(salt::listJob);
-    }
-
-    /**
-     * Cleans up Action Chain records.
-     */
-    public void cleanupMinionActionChains() {
-        // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
-        // stored persistently via the database (see PGEventStream)
-        if (POSTGRES) {
-            return;
-        }
-        Map<String, Object> metadata = new HashMap<>();
-        metadata.put(ScheduleMetadata.SUMA_ACTION_CHAIN, true);
-
-        // get only jobs since the last cleanup
-        LocalDateTime startTime = LocalDateTime.now()
-                .minus(1, ChronoUnit.HOURS);
-
-        Optional<Map<String, Jobs.ListJobsEntry>> actionChainsJobs =
-                saltApi.jobsByMetadata(metadata, startTime, LocalDateTime.now());
-
-        actionChainsJobs.ifPresent(jidsMap -> jidsMap.keySet().forEach(jid -> saltApi.listJob(jid)
-                .ifPresent(jobInfo -> {
-                TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>> typeToken =
-                        new TypeToken<>() {
-                        };
-
-                jobInfo.getMinions().forEach(minionId -> {
-                    try {
-                        Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> jobResult =
-                                jobInfo.getResult(minionId, typeToken);
-
-                        jobResult.ifPresent(res -> res.entrySet().stream().forEach(e -> {
-
-                                Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
-                                        SaltActionChainGeneratorService.parseActionChainStateId(e.getKey());
-
-                                if (stateId.isPresent()) {
-                                    long retActionId = stateId.get().getActionId();
-
-                                    Optional<ServerAction> serverAction =
-                                            Optional.ofNullable(ActionFactory.lookupById(retActionId))
-                                            .flatMap(action -> action
-                                                    .getServerActions()
-                                                    .stream()
-                                                    .filter(sa -> sa.getServer().asMinionServer().isPresent())
-                                                    .filter(sa -> sa.getServer().asMinionServer().get()
-                                                            .getMinionId().equals(minionId)).findFirst());
-
-                                    if (serverAction.isPresent() &&
-                                            (ActionFactory.STATUS_COMPLETED
-                                                    .equals(serverAction.get().getStatus()) ||
-                                            ActionFactory.STATUS_FAILED
-                                                    .equals(serverAction.get().getStatus()))) {
-                                        return;
-                                    }
-
-                                    StateApplyResult<Ret<JsonElement>> stateApplyResult = e.getValue();
-                                    saltServerActionService.handleAction(retActionId,
-                                            minionId,
-                                            stateApplyResult.isResult() ? 0 : -1,
-                                            stateApplyResult.isResult(),
-                                            jid,
-                                            stateApplyResult.getChanges().getRet(),
-                                            stateApplyResult.getName()
-                                    );
-                                }
-                            }));
-
-                    }
-                    catch (JsonSyntaxException e) {
-                        // expected, not all jobInfos will have a state apply result
-                        LOG.debug("Could not get result from job " + jid + ": " + e.getMessage());
-                    }
-                });
-            })));
     }
 
     /**
