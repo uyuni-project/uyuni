@@ -1,14 +1,3 @@
-- Use /var/lib/susemanager/formula_data if /srv/susemanager/formula_data is missing.
-- Use global import for which_bin in sumautil module
-- Get the formula pillar data from the database
-- Use flat repositories format for Debian based systems
-- Add checking for libvirtd binary to grains.virt module
-- Fix errors on calling sed -E ... by force_restart_minion
-  with action chains
-- Fix problem installing/removing packages using action chains
-  in transactional systems
-- Add state for changing proxy
-- Enable basic support for Debian 11
 - Avoid using lscpu -J option in grains (bsc#1195920)
 
 -------------------------------------------------------------------
