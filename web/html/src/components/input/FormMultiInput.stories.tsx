@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { action } from "@storybook/addon-actions";
-
 import { SubmitButton } from "components/buttons";
 
 import { Form } from "./Form";
@@ -21,7 +19,7 @@ export const MultipleFields = () => {
     <Form
       model={model}
       onChange={setModel}
-      onSubmit={action("Submit clicked")}
+      onSubmit={() => alert("Submit clicked")}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -35,7 +33,7 @@ export const MultipleFields = () => {
             [`user${index}_lastname`]: "",
           });
           setModel(newModel);
-          action("add clicked")(index);
+          alert("add clicked " + index);
         }}
         onRemove={(index) => {
           const newModel = Object.entries(model).reduce((res, entry) => {
@@ -43,7 +41,7 @@ export const MultipleFields = () => {
             return Object.assign(res, property);
           }, {});
           setModel(newModel);
-          action("remove clicked")(index);
+          alert("remove clicked " + index);
         }}
         disabled={false}
         panelTitle={(index) => model[`user${index}_lastname`] || "New user"}
@@ -82,7 +80,7 @@ export const SingleField = () => {
     <Form
       model={model}
       onChange={setModel}
-      onSubmit={action("Submit clicked")}
+      onSubmit={() => alert("Submit clicked")}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -95,7 +93,7 @@ export const SingleField = () => {
             [`user${index}_login`]: "",
           });
           setModel(newModel);
-          action("add clicked")(index);
+          alert("add clicked " + index);
         }}
         onRemove={(index) => {
           const newModel = Object.entries(model).reduce((res, entry) => {
@@ -103,7 +101,7 @@ export const SingleField = () => {
             return Object.assign(res, property);
           }, {});
           setModel(newModel);
-          action("remove clicked")(index);
+          alert("remove clicked " + index);
         }}
         disabled={false}
       >
@@ -132,7 +130,7 @@ export const CustomFieldsWithModal = () => {
     <Form
       model={model}
       onChange={setModel}
-      onSubmit={action("Submit clicked")}
+      onSubmit={() => alert("Submit clicked")}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -145,7 +143,7 @@ export const CustomFieldsWithModal = () => {
             [`user${index}_login`]: prompt("Username?"),
           });
           setModel(newModel);
-          action("add clicked")(index);
+          alert("add clicked " + index);
         }}
         onRemove={(index) => {
           const newModel = Object.entries(model).reduce((res, entry) => {
@@ -153,7 +151,7 @@ export const CustomFieldsWithModal = () => {
             return Object.assign(res, property);
           }, {});
           setModel(newModel);
-          action("remove clicked")(index);
+          alert("remove clicked " + index);
         }}
         disabled={false}
       >
@@ -181,7 +179,7 @@ export const TableFields = () => {
     <Form
       model={model}
       onChange={setModel}
-      onSubmit={action("Submit clicked")}
+      onSubmit={() => alert("Submit clicked")}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
@@ -196,7 +194,7 @@ export const TableFields = () => {
             [`user${index}_age`]: "",
           });
           setModel(newModel);
-          action("add clicked")(index);
+          alert("add clicked " + index);
         }}
         onRemove={(index) => {
           const newModel = Object.entries(model).reduce((res, entry) => {
@@ -204,7 +202,7 @@ export const TableFields = () => {
             return Object.assign(res, property);
           }, {});
           setModel(newModel);
-          action("remove clicked")(index);
+          alert("remove clicked " + index);
         }}
         disabled={false}
         header={header}

@@ -1,3 +1,4 @@
+- Upgrade Yarn to 1.22.17, upgrade Babel and related dependencies
 - Add react-select-async-paginate 0.6.0, add react-virtuoso 2.5.1.
 
 -------------------------------------------------------------------
