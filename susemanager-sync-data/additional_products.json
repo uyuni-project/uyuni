@@ -122,8 +122,8 @@
         ],
         "repositories" : [
             {
-                "id" : -344,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=BaseOS&infra=stock",
+                "id" : -372,
+                "url" : "https://vault.centos.org/centos/8/BaseOS/aarch64/os/",
                 "name" : "centos8",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8",
@@ -132,8 +132,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -345,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=AppStream&infra=stock",
+                "id" : -373,
+                "url" : "https://vault.centos.org/centos/8/AppStream/aarch64/os/",
                 "name" : "centos8-appstream",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 AppStream",
@@ -142,8 +142,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -346,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=centosplus&infra=stock",
+                "id" : -374,
+                "url" : "https://vault.centos.org/centos/8/centosplus/aarch64/os/",
                 "name" : "centos8-centosplus",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 Plus",
@@ -152,8 +152,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -347,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=cr&infra=stock",
+                "id" : -375,
+                "url" : "https://vault.centos.org/centos/8/cr/aarch64/os/",
                 "name" : "centos8-cr",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 CR",
@@ -162,8 +162,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -348,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=extras&infra=stock",
+                "id" : -376,
+                "url" : "https://vault.centos.org/centos/8/extras/aarch64/os/",
                 "name" : "centos8-extras",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 Extras",
@@ -172,8 +172,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -349,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=fasttrack&infra=stock",
+                "id" : -377,
+                "url" : "https://vault.centos.org/centos/8/fasttrack/aarch64/os/",
                 "name" : "centos8-fasttrack",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 FastTrack",
@@ -182,8 +182,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -350,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=aarch64&repo=PowerTools&infra=stock",
+                "id" : -378,
+                "url" : "https://vault.centos.org/centos/8/PowerTools/aarch64/os/",
                 "name" : "centos8-powertools",
                 "distro_target" : "aarch64",
                 "description" : "CentOS 8 PowerTools",
@@ -1912,8 +1912,8 @@
         ],
         "repositories" : [
             {
-                "id" : -145,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock",
+                "id" : -365,
+                "url" : "https://vault.centos.org/centos/8/BaseOS/x86_64/os/",
                 "name" : "centos8",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8",
@@ -1922,8 +1922,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -146,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock",
+                "id" : -366,
+                "url" : "https://vault.centos.org/centos/8/AppStream/x86_64/os/",
                 "name" : "centos8-appstream",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 AppStream",
@@ -1932,8 +1932,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -147,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=centosplus&infra=stock",
+                "id" : -367,
+                "url" : "https://vault.centos.org/centos/8/centosplus/x86_64/os/",
                 "name" : "centos8-centosplus",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 Plus",
@@ -1942,8 +1942,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -148,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=cr&infra=stock",
+                "id" : -368,
+                "url" : "https://vault.centos.org/centos/8/cr/x86_64/os/",
                 "name" : "centos8-cr",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 CR",
@@ -1952,8 +1952,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -149,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=extras&infra=stock",
+                "id" : -369,
+                "url" : "https://vault.centos.org/centos/8/extras/x86_64/os/",
                 "name" : "centos8-extras",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 Extras",
@@ -1962,8 +1962,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -150,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=fasttrack&infra=stock",
+                "id" : -370,
+                "url" : "https://vault.centos.org/centos/8/fasttrack/x86_64/os/",
                 "name" : "centos8-fasttrack",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 FastTrack",
@@ -1972,8 +1972,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -151,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=PowerTools&infra=stock",
+                "id" : -371,
+                "url" : "https://vault.centos.org/centos/8/PowerTools/x86_64/os/",
                 "name" : "centos8-powertools",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 PowerTools",
