@@ -193,7 +193,7 @@ end
 
 When(/^I enter target "([^"]*)"$/) do |host|
   value =
-    if ENV['PROVIDER'] == "aws"
+    if PROVIDER == 'aws'
       get_system_name(host)
     elsif host == 'ceos_minion'
       "*centos*"
