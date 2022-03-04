@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 19:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2022-02-11 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
@@ -2000,7 +2000,7 @@ msgstr "Odkazy"
 msgid "Affected Channels"
 msgstr "Ovplyvnené kanály"
 
-#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:281
+#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:319
 msgid "Affected Systems"
 msgstr "Ovplyvnené systémy"
 
@@ -2418,17 +2418,17 @@ msgstr "Distribúcie"
 msgid "Root Password: "
 msgstr "Heslo správcu systému: "
 
-#: ../src/spacecmd/kickstart.py:140 ../src/spacecmd/org.py:91
+#: ../src/spacecmd/kickstart.py:140 ../src/spacecmd/org.py:80
 #: ../src/spacecmd/user.py:86
 msgid "Repeat Password: "
 msgstr "Zopakujte heslo: "
 
-#: ../src/spacecmd/kickstart.py:145 ../src/spacecmd/org.py:96
+#: ../src/spacecmd/kickstart.py:145 ../src/spacecmd/org.py:85
 #: ../src/spacecmd/user.py:91
 msgid "Password must be at least 5 characters"
 msgstr "Heslo musí mať minimálne 5 znakov"
 
-#: ../src/spacecmd/kickstart.py:147 ../src/spacecmd/org.py:98
+#: ../src/spacecmd/kickstart.py:147 ../src/spacecmd/org.py:87
 #: ../src/spacecmd/user.py:93
 msgid "Passwords don't match"
 msgstr "Heslá sa nezhodujú"
@@ -3542,131 +3542,226 @@ msgstr "Nepodarilo sa pripojiť k %s"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) je príliš staré ( vyžaduje sa >= %s)"
 
-#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:249
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:249
 #: ../src/spacecmd/utils.py:563
 #, python-format
 msgid "Could not read %s"
 msgstr "Nepodarilo sa prečítať %s"
 
-#: ../src/spacecmd/misc.py:349
+#: ../src/spacecmd/misc.py:354
 msgid "Cached credentials are invalid"
 msgstr "Uložené prihlasovacie údaje sú neplatné"
 
-#: ../src/spacecmd/misc.py:356
+#: ../src/spacecmd/misc.py:361
 #, python-format
 msgid "Spacewalk Username: %s"
 msgstr "Používateľské meno Spacewalk: %s"
 
-#: ../src/spacecmd/misc.py:358
+#: ../src/spacecmd/misc.py:363
 msgid "Spacewalk Username:"
 msgstr "Používateľské meno Spacewalk:"
 
-#: ../src/spacecmd/misc.py:369
+#: ../src/spacecmd/misc.py:374
 msgid "Spacewalk Password: "
 msgstr "Heslo Spacewalk: "
 
-#: ../src/spacecmd/misc.py:375
+#: ../src/spacecmd/misc.py:380
 msgid "Invalid credentials"
 msgstr "Neplatné prihlasovanie údaje"
 
-#: ../src/spacecmd/misc.py:393
+#: ../src/spacecmd/misc.py:398
 #, python-format
 msgid "Could not write session file: %s"
 msgstr "Nepodarilo sa zapísať súbor sedenia: %s"
 
-#: ../src/spacecmd/misc.py:402
+#: ../src/spacecmd/misc.py:407
 #, python-format
 msgid "Connected to %s as %s"
 msgstr "Pripojené k %s ako %s"
 
-#: ../src/spacecmd/misc.py:410
+#: ../src/spacecmd/misc.py:415
 msgid "logout: Disconnect from the server"
 msgstr "logout: Odpojiť sa od servera"
 
-#: ../src/spacecmd/misc.py:411
+#: ../src/spacecmd/misc.py:416
 msgid "usage: logout"
 msgstr "použitie: logout"
 
-#: ../src/spacecmd/misc.py:428
+#: ../src/spacecmd/misc.py:433
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami: Vypísať meno aktuálne prihláseného používateľa"
 
-#: ../src/spacecmd/misc.py:429
+#: ../src/spacecmd/misc.py:434
 msgid "usage: whoami"
 msgstr "použitie: whoami"
 
-#: ../src/spacecmd/misc.py:437
+#: ../src/spacecmd/misc.py:442
 msgid "You are not logged in"
 msgstr "Nie ste prihlásený"
 
-#: ../src/spacecmd/misc.py:444
+#: ../src/spacecmd/misc.py:449
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto: Vypísať názov servera"
 
-#: ../src/spacecmd/misc.py:445
+#: ../src/spacecmd/misc.py:450
 msgid "usage: whoamitalkingto"
 msgstr "použitie: whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:453
+#: ../src/spacecmd/misc.py:458
 msgid "Yourself"
 msgstr "Vy sami"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:529
+#: ../src/spacecmd/misc.py:534
 msgid "** Generating errata cache **"
 msgstr "** Generovanie vyrovnávacej pamäte opráv chýb **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:579
+#: ../src/spacecmd/misc.py:584
 msgid "** Generating package cache **"
 msgstr "** Generovanie vyrovnávacej pamäte balíkov **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:688
+#: ../src/spacecmd/misc.py:693
 msgid "** Generating system cache **"
 msgstr "** Generovanie systémovej vyrovnávacej pamäte **"
 
-#: ../src/spacecmd/misc.py:723
+#: ../src/spacecmd/misc.py:728
 #, python-format
 msgid "Could not create directory %s"
 msgstr "Nepodarilo sa vytvoriť adresár %s"
 
-#: ../src/spacecmd/misc.py:795
+#: ../src/spacecmd/misc.py:800
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "Nie je možné nájsť ID systému pre %s"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:805
 msgid "Duplicate system profile names found!"
 msgstr "Boli nájdené duplicitné názvy systémových profilov!"
 
-#: ../src/spacecmd/misc.py:801
+#: ../src/spacecmd/misc.py:806
 msgid "Please reference systems by ID or resolve the"
 msgstr "Prosím, odkážte sa na systémy podľa ID alebo vyriešte"
 
-#: ../src/spacecmd/misc.py:802
+#: ../src/spacecmd/misc.py:807
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "základný problém pomocou 'system_delete' alebo 'system_rename'"
 
-#: ../src/spacecmd/misc.py:870
+#: ../src/spacecmd/misc.py:875
 #, python-format
 msgid "No systems in group %s"
 msgstr "Žiadne systémy v skupine %s"
 
-#: ../src/spacecmd/misc.py:884
+#: ../src/spacecmd/misc.py:889
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "Nie sú prihlásené žiadne systémy k %s"
 
-#: ../src/spacecmd/misc.py:944
+#: ../src/spacecmd/misc.py:949
 msgid "Is this ok [y/N]:"
 msgstr "Je to v poriadku [a/N]:"
 
-#: ../src/spacecmd/org.py:48
+#: ../src/spacecmd/org.py:63
+msgid "Organization Name:"
+msgstr "Názov organizácie:"
+
+#: ../src/spacecmd/org.py:64 ../src/spacecmd/user.py:74
+msgid "Username:"
+msgstr "Používateľské meno:"
+
+#: ../src/spacecmd/org.py:66
+#, python-format
+msgid "Prefix (%s):"
+msgstr "Predpona (%s):"
+
+#: ../src/spacecmd/org.py:68 ../src/spacecmd/user.py:75
+msgid "First Name:"
+msgstr "Krstné meno:"
+
+#: ../src/spacecmd/org.py:69 ../src/spacecmd/user.py:76
+msgid "Last Name:"
+msgstr "Priezvisko:"
+
+#: ../src/spacecmd/org.py:70 ../src/spacecmd/user.py:77
+msgid "Email:"
+msgstr "Email:"
+
+#: ../src/spacecmd/org.py:72 ../src/spacecmd/user.py:78
+msgid "PAM Authentication [y/N]:"
+msgstr "Overenie PAM [a/N]:"
+
+#: ../src/spacecmd/org.py:79 ../src/spacecmd/user.py:85
+msgid "Password: "
+msgstr "Heslo: "
+
+#: ../src/spacecmd/org.py:90
+msgid "An organization name is required"
+msgstr "Vyžaduje sa názov organizácie"
+
+#: ../src/spacecmd/org.py:94 ../src/spacecmd/user.py:96
+msgid "A username is required"
+msgstr "Vyžaduje sa používateľské meno"
+
+#: ../src/spacecmd/org.py:98 ../src/spacecmd/user.py:100
+msgid "A first name is required"
+msgstr "Vyžaduje sa krstné meno"
+
+#: ../src/spacecmd/org.py:102 ../src/spacecmd/user.py:104
+msgid "A last name is required"
+msgstr "Vyžaduje sa priezvisko"
+
+#: ../src/spacecmd/org.py:106 ../src/spacecmd/user.py:108
+msgid "An email address is required"
+msgstr "Vyžaduje sa emailová adresa"
+
+#: ../src/spacecmd/org.py:110 ../src/spacecmd/user.py:112
+msgid "A password is required"
+msgstr "Vyžaduje sa heslo"
+
+#: ../src/spacecmd/org.py:118
+msgid "Dr."
+msgstr "Dr."
+
+#: ../src/spacecmd/org.py:121
+msgid "Miss"
+msgstr "Slečna"
+
+#: ../src/spacecmd/org.py:128
+#, fuzzy
+msgid "org_createfirst: Create first organization and user after server setup"
+msgstr "org_create: Vytvoriť organizáciu"
+
+#: ../src/spacecmd/org.py:129
+#, fuzzy
+msgid ""
+"usage: org_createfirst [options])\n"
+"\n"
+"options:\n"
+"  -n ORG_NAME\n"
+"  -u USERNAME\n"
+"  -f FIRST_NAME\n"
+"  -l LAST_NAME\n"
+"  -e EMAIL\n"
+"  -p PASSWORD"
+msgstr ""
+"použitie: org_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV_ORG\n"
+"  -u POUŽÍVATEĽSKÉ_MENO\n"
+"  -P PREDPONA (%s)\n"
+"  -f KRSTNÉ_MENO\n"
+"  -l PRIEZVISKO\n"
+"  -e EMAIL\n"
+"  -p HESLO\n"
+"  --pam povolí overenie PAM"
+
+#: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
 msgstr "org_create: Vytvoriť organizáciu"
 
-#: ../src/spacecmd/org.py:49
+#: ../src/spacecmd/org.py:155
 #, python-format
 msgid ""
 "usage: org_create [options])\n"
@@ -3693,254 +3788,189 @@ msgstr ""
 "  -p HESLO\n"
 "  --pam povolí overenie PAM"
 
-#: ../src/spacecmd/org.py:76
-msgid "Organization Name:"
-msgstr "Názov organizácie:"
-
-#: ../src/spacecmd/org.py:77 ../src/spacecmd/user.py:74
-msgid "Username:"
-msgstr "Používateľské meno:"
-
-#: ../src/spacecmd/org.py:78
-#, python-format
-msgid "Prefix (%s):"
-msgstr "Predpona (%s):"
-
-#: ../src/spacecmd/org.py:80 ../src/spacecmd/user.py:75
-msgid "First Name:"
-msgstr "Krstné meno:"
-
-#: ../src/spacecmd/org.py:81 ../src/spacecmd/user.py:76
-msgid "Last Name:"
-msgstr "Priezvisko:"
-
-#: ../src/spacecmd/org.py:82 ../src/spacecmd/user.py:77
-msgid "Email:"
-msgstr "Email:"
-
-#: ../src/spacecmd/org.py:83 ../src/spacecmd/user.py:78
-msgid "PAM Authentication [y/N]:"
-msgstr "Overenie PAM [a/N]:"
-
-#: ../src/spacecmd/org.py:90 ../src/spacecmd/user.py:85
-msgid "Password: "
-msgstr "Heslo: "
-
-#: ../src/spacecmd/org.py:101
-msgid "An organization name is required"
-msgstr "Vyžaduje sa názov organizácie"
-
-#: ../src/spacecmd/org.py:105 ../src/spacecmd/user.py:96
-msgid "A username is required"
-msgstr "Vyžaduje sa používateľské meno"
-
-#: ../src/spacecmd/org.py:109 ../src/spacecmd/user.py:100
-msgid "A first name is required"
-msgstr "Vyžaduje sa krstné meno"
-
-#: ../src/spacecmd/org.py:113 ../src/spacecmd/user.py:104
-msgid "A last name is required"
-msgstr "Vyžaduje sa priezvisko"
-
-#: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
-msgid "An email address is required"
-msgstr "Vyžaduje sa emailová adresa"
-
-#: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
-msgid "A password is required"
-msgstr "Vyžaduje sa heslo"
-
-#: ../src/spacecmd/org.py:128
-msgid "Dr."
-msgstr "Dr."
-
-#: ../src/spacecmd/org.py:130
-msgid "Miss"
-msgstr "Slečna"
-
-#: ../src/spacecmd/org.py:149
+#: ../src/spacecmd/org.py:187
 msgid "org_delete: Delete an organization"
 msgstr "org_delete: Vymazať organizáciu"
 
-#: ../src/spacecmd/org.py:150
+#: ../src/spacecmd/org.py:188
 msgid "usage: org_delete NAME"
 msgstr "použitie: org_delete NÁZOV"
 
-#: ../src/spacecmd/org.py:169 ../src/spacecmd/org.py:202
-#: ../src/spacecmd/org.py:236 ../src/spacecmd/org.py:272
-#: ../src/spacecmd/org.py:381 ../src/spacecmd/org.py:417
+#: ../src/spacecmd/org.py:207 ../src/spacecmd/org.py:240
+#: ../src/spacecmd/org.py:274 ../src/spacecmd/org.py:310
+#: ../src/spacecmd/org.py:419 ../src/spacecmd/org.py:455
 #, python-format
 msgid "No organisation found for the name %s"
 msgstr "Pre názov %s nebola nájdená žiadna organizácia"
 
-#: ../src/spacecmd/org.py:170 ../src/spacecmd/org.py:203
-#: ../src/spacecmd/org.py:237 ../src/spacecmd/org.py:273
-#: ../src/spacecmd/org.py:382 ../src/spacecmd/org.py:418
+#: ../src/spacecmd/org.py:208 ../src/spacecmd/org.py:241
+#: ../src/spacecmd/org.py:275 ../src/spacecmd/org.py:311
+#: ../src/spacecmd/org.py:420 ../src/spacecmd/org.py:456
 msgid "Organisation '{}' was not found"
 msgstr "Organizácia '{}' nebola nájdená"
 
-#: ../src/spacecmd/org.py:172
+#: ../src/spacecmd/org.py:210
 msgid "Delete this organization [y/N]:"
 msgstr "Vymazať túto organizáciu [a/N]:"
 
-#: ../src/spacecmd/org.py:182
+#: ../src/spacecmd/org.py:220
 msgid "org_rename: Rename an organization"
 msgstr "org_rename: Premenovať organizáciu"
 
-#: ../src/spacecmd/org.py:183
+#: ../src/spacecmd/org.py:221
 msgid "usage: org_rename OLDNAME NEWNAME"
 msgstr "použitie: org_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
-#: ../src/spacecmd/org.py:214
+#: ../src/spacecmd/org.py:252
 msgid "org_addtrust: Add a trust between two organizations"
 msgstr "org_addtrust: Pridať dôveru medzi dvoma organizáciami"
 
-#: ../src/spacecmd/org.py:215
+#: ../src/spacecmd/org.py:253
 msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
 msgstr "použitie: org_addtrust VAŠA_ORG DÔVERYHODNÁ_ORG"
 
-#: ../src/spacecmd/org.py:240 ../src/spacecmd/org.py:276
+#: ../src/spacecmd/org.py:278 ../src/spacecmd/org.py:314
 #, python-format
 msgid "No trust organisation found for the name %s"
 msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
-#: ../src/spacecmd/org.py:241 ../src/spacecmd/org.py:277
+#: ../src/spacecmd/org.py:279 ../src/spacecmd/org.py:315
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "Organizácia '{}', ktorej možno dôverovať, nebola nájdená"
 
-#: ../src/spacecmd/org.py:251
+#: ../src/spacecmd/org.py:289
 msgid "org_removetrust: Remove a trust between two organizations"
 msgstr "org_removetrust: Odstrániť dôveru medzi dvoma organizáciami"
 
-#: ../src/spacecmd/org.py:252
+#: ../src/spacecmd/org.py:290
 msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
 msgstr "použitie: org_removetrust VAŠA_ORG DÔVERYHODNÁ_ORG"
 
-#: ../src/spacecmd/org.py:287
+#: ../src/spacecmd/org.py:325
 msgid "None"
 msgstr "Žiadny"
 
-#: ../src/spacecmd/org.py:289
+#: ../src/spacecmd/org.py:327
 msgid "Remove this trust [y/N]:"
 msgstr "Odstrániť túto dôveru [a/N]:"
 
-#: ../src/spacecmd/org.py:295
+#: ../src/spacecmd/org.py:333
 msgid "org_trustdetails: Show the details of an organizational trust"
 msgstr "org_trustdetails: Zobraziť podrobnosti o organizačnej dôvere"
 
-#: ../src/spacecmd/org.py:296
+#: ../src/spacecmd/org.py:334
 msgid "usage: org_trustdetails TRUSTED_ORG"
 msgstr "použitie: org_trustdetails DÔVERYHODNÁ_ORG"
 
-#: ../src/spacecmd/org.py:315
+#: ../src/spacecmd/org.py:353
 #, python-format
 msgid "No trusted organisation found for the name %s"
 msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
-#: ../src/spacecmd/org.py:316
+#: ../src/spacecmd/org.py:354
 msgid "Trusted organisation '{}' was not found"
 msgstr "Dôveryhodná organizácia '{}' nebola nájdená"
 
-#: ../src/spacecmd/org.py:323
+#: ../src/spacecmd/org.py:361
 #, python-format
 msgid "Trusted Organization:   %s"
 msgstr "Dôveryhodná organizácia:   %s"
 
-#: ../src/spacecmd/org.py:324
+#: ../src/spacecmd/org.py:362
 #, python-format
 msgid "Trusted Since:          %s"
 msgstr "Dôveryhodná od:          %s"
 
-#: ../src/spacecmd/org.py:325
+#: ../src/spacecmd/org.py:363
 #, python-format
 msgid "Systems Transferred From:  %i"
 msgstr "Systémy prenesené z:  %i"
 
-#: ../src/spacecmd/org.py:326
+#: ../src/spacecmd/org.py:364
 #, python-format
 msgid "Systems Transferred To:    %i"
 msgstr "Systémy prevedené na:    %i"
 
-#: ../src/spacecmd/org.py:328
+#: ../src/spacecmd/org.py:366
 msgid "Channels Consumed"
 msgstr "Použité kanály"
 
-#: ../src/spacecmd/org.py:335
+#: ../src/spacecmd/org.py:373
 msgid "Channels Provided"
 msgstr "Poskytnuté kanály"
 
-#: ../src/spacecmd/org.py:343
+#: ../src/spacecmd/org.py:381
 msgid "org_list: List all organizations"
 msgstr "org_list: Vypísať zoznam všetkých organizácií"
 
-#: ../src/spacecmd/org.py:344
+#: ../src/spacecmd/org.py:382
 msgid "usage: org_list"
 msgstr "použitie: org_list"
 
-#: ../src/spacecmd/org.py:362
+#: ../src/spacecmd/org.py:400
 msgid "org_listtrusts: List an organization's trusts"
 msgstr "org_listtrusts: Vypísať zoznam dôver organizácie"
 
-#: ../src/spacecmd/org.py:363
+#: ../src/spacecmd/org.py:401
 msgid "usage: org_listtrusts NAME"
 msgstr "použitie: org_listtrusts NÁZOV"
 
-#: ../src/spacecmd/org.py:387 ../src/spacecmd/org.py:388
+#: ../src/spacecmd/org.py:425 ../src/spacecmd/org.py:426
 msgid "No trust organisation has been found"
 msgstr "Nebola nájdená žiadna dôveryhodná organizácia"
 
-#: ../src/spacecmd/org.py:398
+#: ../src/spacecmd/org.py:436
 msgid "org_listusers: List an organization's users"
 msgstr "org_listusers: Vypísať zoznam používateľov organizácie"
 
-#: ../src/spacecmd/org.py:399
+#: ../src/spacecmd/org.py:437
 msgid "usage: org_listusers NAME"
 msgstr "použitie: org_listusers NÁZOV"
 
-#: ../src/spacecmd/org.py:429
+#: ../src/spacecmd/org.py:467
 msgid "org_details: Show the details of an organization"
 msgstr "org_details: Zobraziť podrobnosti o organizácii"
 
-#: ../src/spacecmd/org.py:430
+#: ../src/spacecmd/org.py:468
 msgid "usage: org_details NAME"
 msgstr "použitie: org_details NÁZOV"
 
-#: ../src/spacecmd/org.py:450
+#: ../src/spacecmd/org.py:488
 #, python-format
 msgid "Name:                   %s"
 msgstr "Názov:                   %s"
 
-#: ../src/spacecmd/org.py:451
+#: ../src/spacecmd/org.py:489
 #, python-format
 msgid "Active Users:           %i"
 msgstr "Aktívni používatelia:           %i"
 
-#: ../src/spacecmd/org.py:452
+#: ../src/spacecmd/org.py:490
 #, python-format
 msgid "Systems:                %i"
 msgstr "Systémy:                %i"
 
-#: ../src/spacecmd/org.py:456 ../src/spacecmd/org.py:458
+#: ../src/spacecmd/org.py:494 ../src/spacecmd/org.py:496
 #, python-format
 msgid "Trusts:                 %i"
 msgstr "Dôvery:                 %i"
 
-#: ../src/spacecmd/org.py:460
+#: ../src/spacecmd/org.py:498
 #, python-format
 msgid "System Groups:          %i"
 msgstr "Systémové skupiny:          %i"
 
-#: ../src/spacecmd/org.py:461
+#: ../src/spacecmd/org.py:499
 #, python-format
 msgid "Activation Keys:        %i"
 msgstr "Aktivačné kľúče:        %i"
 
-#: ../src/spacecmd/org.py:462
+#: ../src/spacecmd/org.py:500
 #, python-format
 msgid "Kickstart Profiles:     %i"
 msgstr "Profily Kickstart:     %i"
 
-#: ../src/spacecmd/org.py:463
+#: ../src/spacecmd/org.py:501
 #, python-format
 msgid "Configuration Channels: %i"
 msgstr "Konfiguračné kanály: %i"
@@ -4873,7 +4903,7 @@ msgstr "Nebolo možné prečítať súbor histórie"
 msgid "Exception occurred: %s"
 msgstr "Vyskytla sa výnimka: %s"
 
-#: ../src/spacecmd/shell.py:188 ../src/spacecmd/shell.py:227
+#: ../src/spacecmd/shell.py:194 ../src/spacecmd/shell.py:233
 #, python-format
 msgid "%s: event not found"
 msgstr "%s: udalosť sa nenašla"

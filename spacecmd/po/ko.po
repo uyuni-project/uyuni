@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 19:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -1955,7 +1955,7 @@ msgstr "참조"
 msgid "Affected Channels"
 msgstr "영향을 받는 채널"
 
-#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:281
+#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:319
 msgid "Affected Systems"
 msgstr "영향을 받는 시스템"
 
@@ -2368,17 +2368,17 @@ msgstr "배포"
 msgid "Root Password: "
 msgstr "루트 비밀번호: "
 
-#: ../src/spacecmd/kickstart.py:140 ../src/spacecmd/org.py:91
+#: ../src/spacecmd/kickstart.py:140 ../src/spacecmd/org.py:80
 #: ../src/spacecmd/user.py:86
 msgid "Repeat Password: "
 msgstr "비밀번호 다시 입력: "
 
-#: ../src/spacecmd/kickstart.py:145 ../src/spacecmd/org.py:96
+#: ../src/spacecmd/kickstart.py:145 ../src/spacecmd/org.py:85
 #: ../src/spacecmd/user.py:91
 msgid "Password must be at least 5 characters"
 msgstr "비밀번호는 5자 이상이어야 함"
 
-#: ../src/spacecmd/kickstart.py:147 ../src/spacecmd/org.py:98
+#: ../src/spacecmd/kickstart.py:147 ../src/spacecmd/org.py:87
 #: ../src/spacecmd/user.py:93
 msgid "Passwords don't match"
 msgstr "비밀번호가 일치하지 않음"
@@ -3469,131 +3469,226 @@ msgstr "%s에 연결하지 못함"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API(%s)가 너무 오래됨(>= %s 필수)"
 
-#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:249
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:249
 #: ../src/spacecmd/utils.py:563
 #, python-format
 msgid "Could not read %s"
 msgstr "%s을(를) 읽을 수 없음"
 
-#: ../src/spacecmd/misc.py:349
+#: ../src/spacecmd/misc.py:354
 msgid "Cached credentials are invalid"
 msgstr "캐시된 인증서가 유효하지 않음"
 
-#: ../src/spacecmd/misc.py:356
+#: ../src/spacecmd/misc.py:361
 #, python-format
 msgid "Spacewalk Username: %s"
 msgstr "Spacewalk 사용자 이름: %s"
 
-#: ../src/spacecmd/misc.py:358
+#: ../src/spacecmd/misc.py:363
 msgid "Spacewalk Username:"
 msgstr "Spacewalk 사용자 이름:"
 
-#: ../src/spacecmd/misc.py:369
+#: ../src/spacecmd/misc.py:374
 msgid "Spacewalk Password: "
 msgstr "Spacewalk 비밀번호: "
 
-#: ../src/spacecmd/misc.py:375
+#: ../src/spacecmd/misc.py:380
 msgid "Invalid credentials"
 msgstr "유효하지 않은 인증서"
 
-#: ../src/spacecmd/misc.py:393
+#: ../src/spacecmd/misc.py:398
 #, python-format
 msgid "Could not write session file: %s"
 msgstr "세션 파일에 쓸 수 없음: %s"
 
-#: ../src/spacecmd/misc.py:402
+#: ../src/spacecmd/misc.py:407
 #, python-format
 msgid "Connected to %s as %s"
 msgstr "%s에 %s(으)로 연결됨"
 
-#: ../src/spacecmd/misc.py:410
+#: ../src/spacecmd/misc.py:415
 msgid "logout: Disconnect from the server"
 msgstr "logout: 서버 연결 끊기"
 
-#: ../src/spacecmd/misc.py:411
+#: ../src/spacecmd/misc.py:416
 msgid "usage: logout"
 msgstr "사용법: logout"
 
-#: ../src/spacecmd/misc.py:428
+#: ../src/spacecmd/misc.py:433
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami: 현재 로그인한 사용자의 이름 출력"
 
-#: ../src/spacecmd/misc.py:429
+#: ../src/spacecmd/misc.py:434
 msgid "usage: whoami"
 msgstr "사용법: whoami"
 
-#: ../src/spacecmd/misc.py:437
+#: ../src/spacecmd/misc.py:442
 msgid "You are not logged in"
 msgstr "로그인되지 않음"
 
-#: ../src/spacecmd/misc.py:444
+#: ../src/spacecmd/misc.py:449
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto: 서버 이름 출력"
 
-#: ../src/spacecmd/misc.py:445
+#: ../src/spacecmd/misc.py:450
 msgid "usage: whoamitalkingto"
 msgstr "사용법: whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:453
+#: ../src/spacecmd/misc.py:458
 msgid "Yourself"
 msgstr "사용자 자신"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:529
+#: ../src/spacecmd/misc.py:534
 msgid "** Generating errata cache **"
 msgstr "** 오류 캐시 생성 중 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:579
+#: ../src/spacecmd/misc.py:584
 msgid "** Generating package cache **"
 msgstr "** 패키지 캐시 생성 중 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:688
+#: ../src/spacecmd/misc.py:693
 msgid "** Generating system cache **"
 msgstr "** 시스템 캐시 생성 중 **"
 
-#: ../src/spacecmd/misc.py:723
+#: ../src/spacecmd/misc.py:728
 #, python-format
 msgid "Could not create directory %s"
 msgstr "%s 디렉토리를 생성할 수 없음"
 
-#: ../src/spacecmd/misc.py:795
+#: ../src/spacecmd/misc.py:800
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s에 대한 시스템 ID를 찾을 수 없음"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:805
 msgid "Duplicate system profile names found!"
 msgstr "중복 시스템 프로파일 이름이 발견되었습니다!"
 
-#: ../src/spacecmd/misc.py:801
+#: ../src/spacecmd/misc.py:806
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID로 시스템을 참조하거나 다음을 해결:"
 
-#: ../src/spacecmd/misc.py:802
+#: ../src/spacecmd/misc.py:807
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 또는 'system_rename'의 근본적인 문제"
 
-#: ../src/spacecmd/misc.py:870
+#: ../src/spacecmd/misc.py:875
 #, python-format
 msgid "No systems in group %s"
 msgstr "%s 그룹에 시스템 없음"
 
-#: ../src/spacecmd/misc.py:884
+#: ../src/spacecmd/misc.py:889
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s에 가입한 시스템 없음"
 
-#: ../src/spacecmd/misc.py:944
+#: ../src/spacecmd/misc.py:949
 msgid "Is this ok [y/N]:"
 msgstr "계속하시겠습니까 [y/N]:"
 
-#: ../src/spacecmd/org.py:48
+#: ../src/spacecmd/org.py:63
+msgid "Organization Name:"
+msgstr "조직 이름:"
+
+#: ../src/spacecmd/org.py:64 ../src/spacecmd/user.py:74
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: ../src/spacecmd/org.py:66
+#, python-format
+msgid "Prefix (%s):"
+msgstr "접두어(%s):"
+
+#: ../src/spacecmd/org.py:68 ../src/spacecmd/user.py:75
+msgid "First Name:"
+msgstr "이름:"
+
+#: ../src/spacecmd/org.py:69 ../src/spacecmd/user.py:76
+msgid "Last Name:"
+msgstr "성:"
+
+#: ../src/spacecmd/org.py:70 ../src/spacecmd/user.py:77
+msgid "Email:"
+msgstr "이메일:"
+
+#: ../src/spacecmd/org.py:72 ../src/spacecmd/user.py:78
+msgid "PAM Authentication [y/N]:"
+msgstr "PAM 인증 [y/N]:"
+
+#: ../src/spacecmd/org.py:79 ../src/spacecmd/user.py:85
+msgid "Password: "
+msgstr "비밀번호: "
+
+#: ../src/spacecmd/org.py:90
+msgid "An organization name is required"
+msgstr "조직 이름은 필수입니다."
+
+#: ../src/spacecmd/org.py:94 ../src/spacecmd/user.py:96
+msgid "A username is required"
+msgstr "사용자 이름은 필수입니다."
+
+#: ../src/spacecmd/org.py:98 ../src/spacecmd/user.py:100
+msgid "A first name is required"
+msgstr "이름은 필수입니다."
+
+#: ../src/spacecmd/org.py:102 ../src/spacecmd/user.py:104
+msgid "A last name is required"
+msgstr "성은 필수입니다."
+
+#: ../src/spacecmd/org.py:106 ../src/spacecmd/user.py:108
+msgid "An email address is required"
+msgstr "이메일 주소는 필수입니다."
+
+#: ../src/spacecmd/org.py:110 ../src/spacecmd/user.py:112
+msgid "A password is required"
+msgstr "비밀번호는 필수입니다."
+
+#: ../src/spacecmd/org.py:118
+msgid "Dr."
+msgstr "Dr."
+
+#: ../src/spacecmd/org.py:121
+msgid "Miss"
+msgstr "Miss"
+
+#: ../src/spacecmd/org.py:128
+#, fuzzy
+msgid "org_createfirst: Create first organization and user after server setup"
+msgstr "org_create: 조직 생성"
+
+#: ../src/spacecmd/org.py:129
+#, fuzzy
+msgid ""
+"usage: org_createfirst [options])\n"
+"\n"
+"options:\n"
+"  -n ORG_NAME\n"
+"  -u USERNAME\n"
+"  -f FIRST_NAME\n"
+"  -l LAST_NAME\n"
+"  -e EMAIL\n"
+"  -p PASSWORD"
+msgstr ""
+"사용법: org_create [옵션])\n"
+"\n"
+"옵션:\n"
+"  -n ORG_NAME\n"
+"  -u 사용자 이름\n"
+"  -P 접두어(%s)\n"
+"  -f FIRST_NAME\n"
+"  -l LAST_NAME\n"
+"  -e 이메일\n"
+"  -p 비밀번호\n"
+"  --pam은 PAM 인증을 활성화"
+
+#: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
 msgstr "org_create: 조직 생성"
 
-#: ../src/spacecmd/org.py:49
+#: ../src/spacecmd/org.py:155
 #, python-format
 msgid ""
 "usage: org_create [options])\n"
@@ -3620,254 +3715,189 @@ msgstr ""
 "  -p 비밀번호\n"
 "  --pam은 PAM 인증을 활성화"
 
-#: ../src/spacecmd/org.py:76
-msgid "Organization Name:"
-msgstr "조직 이름:"
-
-#: ../src/spacecmd/org.py:77 ../src/spacecmd/user.py:74
-msgid "Username:"
-msgstr "사용자 이름:"
-
-#: ../src/spacecmd/org.py:78
-#, python-format
-msgid "Prefix (%s):"
-msgstr "접두어(%s):"
-
-#: ../src/spacecmd/org.py:80 ../src/spacecmd/user.py:75
-msgid "First Name:"
-msgstr "이름:"
-
-#: ../src/spacecmd/org.py:81 ../src/spacecmd/user.py:76
-msgid "Last Name:"
-msgstr "성:"
-
-#: ../src/spacecmd/org.py:82 ../src/spacecmd/user.py:77
-msgid "Email:"
-msgstr "이메일:"
-
-#: ../src/spacecmd/org.py:83 ../src/spacecmd/user.py:78
-msgid "PAM Authentication [y/N]:"
-msgstr "PAM 인증 [y/N]:"
-
-#: ../src/spacecmd/org.py:90 ../src/spacecmd/user.py:85
-msgid "Password: "
-msgstr "비밀번호: "
-
-#: ../src/spacecmd/org.py:101
-msgid "An organization name is required"
-msgstr "조직 이름은 필수입니다."
-
-#: ../src/spacecmd/org.py:105 ../src/spacecmd/user.py:96
-msgid "A username is required"
-msgstr "사용자 이름은 필수입니다."
-
-#: ../src/spacecmd/org.py:109 ../src/spacecmd/user.py:100
-msgid "A first name is required"
-msgstr "이름은 필수입니다."
-
-#: ../src/spacecmd/org.py:113 ../src/spacecmd/user.py:104
-msgid "A last name is required"
-msgstr "성은 필수입니다."
-
-#: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
-msgid "An email address is required"
-msgstr "이메일 주소는 필수입니다."
-
-#: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
-msgid "A password is required"
-msgstr "비밀번호는 필수입니다."
-
-#: ../src/spacecmd/org.py:128
-msgid "Dr."
-msgstr "Dr."
-
-#: ../src/spacecmd/org.py:130
-msgid "Miss"
-msgstr "Miss"
-
-#: ../src/spacecmd/org.py:149
+#: ../src/spacecmd/org.py:187
 msgid "org_delete: Delete an organization"
 msgstr "org_delete: 조직 삭제"
 
-#: ../src/spacecmd/org.py:150
+#: ../src/spacecmd/org.py:188
 msgid "usage: org_delete NAME"
 msgstr "사용법: org_delete NAME"
 
-#: ../src/spacecmd/org.py:169 ../src/spacecmd/org.py:202
-#: ../src/spacecmd/org.py:236 ../src/spacecmd/org.py:272
-#: ../src/spacecmd/org.py:381 ../src/spacecmd/org.py:417
+#: ../src/spacecmd/org.py:207 ../src/spacecmd/org.py:240
+#: ../src/spacecmd/org.py:274 ../src/spacecmd/org.py:310
+#: ../src/spacecmd/org.py:419 ../src/spacecmd/org.py:455
 #, python-format
 msgid "No organisation found for the name %s"
 msgstr "이름이 %s인 조직을 찾지 못함"
 
-#: ../src/spacecmd/org.py:170 ../src/spacecmd/org.py:203
-#: ../src/spacecmd/org.py:237 ../src/spacecmd/org.py:273
-#: ../src/spacecmd/org.py:382 ../src/spacecmd/org.py:418
+#: ../src/spacecmd/org.py:208 ../src/spacecmd/org.py:241
+#: ../src/spacecmd/org.py:275 ../src/spacecmd/org.py:311
+#: ../src/spacecmd/org.py:420 ../src/spacecmd/org.py:456
 msgid "Organisation '{}' was not found"
 msgstr "'{}' 조직을 찾지 못함"
 
-#: ../src/spacecmd/org.py:172
+#: ../src/spacecmd/org.py:210
 msgid "Delete this organization [y/N]:"
 msgstr "이 조직 삭제 [y/N]:"
 
-#: ../src/spacecmd/org.py:182
+#: ../src/spacecmd/org.py:220
 msgid "org_rename: Rename an organization"
 msgstr "org_rename: 조직 이름 변경"
 
-#: ../src/spacecmd/org.py:183
+#: ../src/spacecmd/org.py:221
 msgid "usage: org_rename OLDNAME NEWNAME"
 msgstr "사용법: org_rename OLDNAME NEWNAME"
 
-#: ../src/spacecmd/org.py:214
+#: ../src/spacecmd/org.py:252
 msgid "org_addtrust: Add a trust between two organizations"
 msgstr "org_addtrust: 두 조직 사이에 트러스트 추가"
 
-#: ../src/spacecmd/org.py:215
+#: ../src/spacecmd/org.py:253
 msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
 msgstr "사용법: org_addtrust YOUR_ORG ORG_TO_TRUST"
 
-#: ../src/spacecmd/org.py:240 ../src/spacecmd/org.py:276
+#: ../src/spacecmd/org.py:278 ../src/spacecmd/org.py:314
 #, python-format
 msgid "No trust organisation found for the name %s"
 msgstr "이름이 %s인 트러스트 조직을 찾지 못함"
 
-#: ../src/spacecmd/org.py:241 ../src/spacecmd/org.py:277
+#: ../src/spacecmd/org.py:279 ../src/spacecmd/org.py:315
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "트러스트 대상인 '{}' 조직을 찾지 못함"
 
-#: ../src/spacecmd/org.py:251
+#: ../src/spacecmd/org.py:289
 msgid "org_removetrust: Remove a trust between two organizations"
 msgstr "org_removetrust: 두 조직 사이의 트러스트 제거"
 
-#: ../src/spacecmd/org.py:252
+#: ../src/spacecmd/org.py:290
 msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
 msgstr "사용법: org_removetrust YOUR_ORG TRUSTED_ORG"
 
-#: ../src/spacecmd/org.py:287
+#: ../src/spacecmd/org.py:325
 msgid "None"
 msgstr "없음"
 
-#: ../src/spacecmd/org.py:289
+#: ../src/spacecmd/org.py:327
 msgid "Remove this trust [y/N]:"
 msgstr "이 트러스트 제거 [y/N]:"
 
-#: ../src/spacecmd/org.py:295
+#: ../src/spacecmd/org.py:333
 msgid "org_trustdetails: Show the details of an organizational trust"
 msgstr "org_trustdetails: 조직 트러스트 세부 사항 표시"
 
-#: ../src/spacecmd/org.py:296
+#: ../src/spacecmd/org.py:334
 msgid "usage: org_trustdetails TRUSTED_ORG"
 msgstr "사용법: org_trustdetails TRUSTED_ORG"
 
-#: ../src/spacecmd/org.py:315
+#: ../src/spacecmd/org.py:353
 #, python-format
 msgid "No trusted organisation found for the name %s"
 msgstr "이름이 %s인 트러스트된 조직을 찾지 못함"
 
-#: ../src/spacecmd/org.py:316
+#: ../src/spacecmd/org.py:354
 msgid "Trusted organisation '{}' was not found"
 msgstr "트러스트된 조직 '{}'을(를) 찾지 못함"
 
-#: ../src/spacecmd/org.py:323
+#: ../src/spacecmd/org.py:361
 #, python-format
 msgid "Trusted Organization:   %s"
 msgstr "트러스트된 조직:   %s"
 
-#: ../src/spacecmd/org.py:324
+#: ../src/spacecmd/org.py:362
 #, python-format
 msgid "Trusted Since:          %s"
 msgstr "다음 이후 트러스트됨:          %s"
 
-#: ../src/spacecmd/org.py:325
+#: ../src/spacecmd/org.py:363
 #, python-format
 msgid "Systems Transferred From:  %i"
 msgstr "시스템 마이그레이션 출처: %i"
 
-#: ../src/spacecmd/org.py:326
+#: ../src/spacecmd/org.py:364
 #, python-format
 msgid "Systems Transferred To:    %i"
 msgstr "시스템 전송 대상: %i"
 
-#: ../src/spacecmd/org.py:328
+#: ../src/spacecmd/org.py:366
 msgid "Channels Consumed"
 msgstr "사용한 채널"
 
-#: ../src/spacecmd/org.py:335
+#: ../src/spacecmd/org.py:373
 msgid "Channels Provided"
 msgstr "제공한 채널"
 
-#: ../src/spacecmd/org.py:343
+#: ../src/spacecmd/org.py:381
 msgid "org_list: List all organizations"
 msgstr "org_list: 모든 조직 나열"
 
-#: ../src/spacecmd/org.py:344
+#: ../src/spacecmd/org.py:382
 msgid "usage: org_list"
 msgstr "사용법: org_list"
 
-#: ../src/spacecmd/org.py:362
+#: ../src/spacecmd/org.py:400
 msgid "org_listtrusts: List an organization's trusts"
 msgstr "org_listtrusts: 조직의 트러스트 나열"
 
-#: ../src/spacecmd/org.py:363
+#: ../src/spacecmd/org.py:401
 msgid "usage: org_listtrusts NAME"
 msgstr "사용법: org_listtrusts NAME"
 
-#: ../src/spacecmd/org.py:387 ../src/spacecmd/org.py:388
+#: ../src/spacecmd/org.py:425 ../src/spacecmd/org.py:426
 msgid "No trust organisation has been found"
 msgstr "트러스트 조직을 찾을 수 없음"
 
-#: ../src/spacecmd/org.py:398
+#: ../src/spacecmd/org.py:436
 msgid "org_listusers: List an organization's users"
 msgstr "org_listusers: 조직의 사용자 나열"
 
-#: ../src/spacecmd/org.py:399
+#: ../src/spacecmd/org.py:437
 msgid "usage: org_listusers NAME"
 msgstr "사용법: org_listusers NAME"
 
-#: ../src/spacecmd/org.py:429
+#: ../src/spacecmd/org.py:467
 msgid "org_details: Show the details of an organization"
 msgstr "org_details: 조직의 세부 사항 표시"
 
-#: ../src/spacecmd/org.py:430
+#: ../src/spacecmd/org.py:468
 msgid "usage: org_details NAME"
 msgstr "사용법: org_details NAME"
 
-#: ../src/spacecmd/org.py:450
+#: ../src/spacecmd/org.py:488
 #, python-format
 msgid "Name:                   %s"
 msgstr "이름:                   %s"
 
-#: ../src/spacecmd/org.py:451
+#: ../src/spacecmd/org.py:489
 #, python-format
 msgid "Active Users:           %i"
 msgstr "활성 사용자:           %i"
 
-#: ../src/spacecmd/org.py:452
+#: ../src/spacecmd/org.py:490
 #, python-format
 msgid "Systems:                %i"
 msgstr "시스템:                %i"
 
-#: ../src/spacecmd/org.py:456 ../src/spacecmd/org.py:458
+#: ../src/spacecmd/org.py:494 ../src/spacecmd/org.py:496
 #, python-format
 msgid "Trusts:                 %i"
 msgstr "트러스트:                 %i"
 
-#: ../src/spacecmd/org.py:460
+#: ../src/spacecmd/org.py:498
 #, python-format
 msgid "System Groups:          %i"
 msgstr "시스템 그룹:          %i"
 
-#: ../src/spacecmd/org.py:461
+#: ../src/spacecmd/org.py:499
 #, python-format
 msgid "Activation Keys:        %i"
 msgstr "활성화 키:        %i"
 
-#: ../src/spacecmd/org.py:462
+#: ../src/spacecmd/org.py:500
 #, python-format
 msgid "Kickstart Profiles:     %i"
 msgstr "킥스타트 프로파일:     %i"
 
-#: ../src/spacecmd/org.py:463
+#: ../src/spacecmd/org.py:501
 #, python-format
 msgid "Configuration Channels: %i"
 msgstr "구성 채널: %i"
@@ -4790,7 +4820,7 @@ msgstr "이력 파일을 읽을 수 없음"
 msgid "Exception occurred: %s"
 msgstr "발생한 예외: %s"
 
-#: ../src/spacecmd/shell.py:188 ../src/spacecmd/shell.py:227
+#: ../src/spacecmd/shell.py:194 ../src/spacecmd/shell.py:233
 #, python-format
 msgid "%s: event not found"
 msgstr "%s: 이벤트를 찾을 수 없음"
