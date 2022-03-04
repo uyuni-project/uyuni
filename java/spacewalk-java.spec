@@ -620,8 +620,21 @@ RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
 ln -s -f %{_javadir}/ongres-scram/client.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_client.jar
 ln -s -f %{_javadir}/ongres-scram/common.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_common.jar
-ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
-ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
+
+# write an include file for the filelist
+if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
+    ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
+    ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
+    echo "
+%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
+%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
+%{_prefix}/share/rhn/search/lib/ongres-stringprep_stringprep.jar
+%{_prefix}/share/rhn/search/lib/ongres-stringprep_saslprep.jar
+    " > .mfiles-postgresql
+else
+    touch .mfiles-postgresql
+fi
+
 
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
@@ -897,18 +910,15 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 
-%files postgresql
+%files postgresql -f .mfiles-postgresql
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
 %{jardir}/postgresql-jdbc.jar
 %{jardir}/ongres-scram_client.jar
 %{jardir}/ongres-scram_common.jar
-%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
-%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
 %{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
-%{_prefix}/share/rhn/search/lib/ongres-stringprep_stringprep.jar
-%{_prefix}/share/rhn/search/lib/ongres-stringprep_saslprep.jar
+
 %changelog
