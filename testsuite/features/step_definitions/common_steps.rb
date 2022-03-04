@@ -843,7 +843,6 @@ When(/^I disable repositories after installing Docker$/) do
   # Distribution
   repos = PROVIDER != 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --disable #{repos}")
-  # rubocop:enable Style/WhateverLineLengthIsCalled
   # Tools
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
   log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")

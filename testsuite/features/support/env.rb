@@ -33,7 +33,7 @@ custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repos
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
-  build_validation = !(PROVIDER == 'aws')
+  build_validation = (PROVIDER != 'aws')
 end
 
 def enable_assertions
