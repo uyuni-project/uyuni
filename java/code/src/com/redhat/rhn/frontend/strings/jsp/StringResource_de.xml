@@ -10403,7 +10403,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
           <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
-        <target>Profile, die nicht @@PRODUCT_NAME@@-verwaltet sind, registrieren Systeme nach dem Kickstart nicht unbedingt bei @@PRODUCT_NAME@@. Sie sollten ggf. diese Kickstarts daraufhin überprüfen (klicken Sie dazu auf den Profilnamen), ob die ausgewählten Systeme nach dem Kickstart wieder in der @@PRODUCT_NAME@@-Systemliste erscheinen werden.</target>
+        <target> Profile, die nicht @@PRODUCT_NAME@@-verwaltet sind, registrieren Systeme nach dem Kickstart nicht unbedingt bei @@PRODUCT_NAME@@. Sie sollten ggf. diese Kickstarts daraufhin überprüfen (klicken Sie dazu auf den Profilnamen), ob die ausgewählten Systeme nach dem Kickstart wieder in der @@PRODUCT_NAME@@-Systemliste erscheinen werden.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -29258,17 +29258,17 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Pay-as-you-go</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
         <source>Update Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
