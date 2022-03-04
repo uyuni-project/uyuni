@@ -3,6 +3,7 @@ reviewers:
   groups:
     qa:
       - Bischoff
+      - elariekerboull
       - ktsamis
       - maximenoel8
       - nodeg
