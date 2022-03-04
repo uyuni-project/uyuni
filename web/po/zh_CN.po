@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-26 14:45+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2022-01-24 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -41,23 +41,41 @@ msgid ""
 "Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
 
-#: ../html/src/components/FormulaForm.tsx:22
+#: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:163
 msgid "Please input required fields: {0}"
 msgstr "请输入必填字段：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:166
 msgid "Invalid format of fields: {0}"
 msgstr "无效的字段格式：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:204
+#: ../html/src/components/FormulaForm.tsx:216
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
+
+#: ../html/src/components/FormulaForm.tsx:265
+msgid "Expand All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:272
+msgid "Collapse All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:337
+#, fuzzy
+msgid "Unnamed"
+msgstr "用户名"
+
+#: ../html/src/components/FormulaForm.tsx:346
+#, fuzzy
+msgid "Search by formula's group name"
+msgstr "按公式名称过滤"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -292,11 +310,11 @@ msgstr "保存"
 msgid "Formulas"
 msgstr "公式"
 
-#: ../html/src/components/formulas/EditGroup.tsx:321
+#: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "重设置"
