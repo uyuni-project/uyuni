@@ -29,4 +29,6 @@ module.exports = {
     userDateFormat: "YYYY-MM-DD",
     userTimeFormat: "HH:mm",
   },
+  // Until tests with `async (done) => ...` are fixed, we need to use a custom runner, see https://github.com/facebook/jest/issues/11404
+  testRunner: "jest-jasmine2",
 };
