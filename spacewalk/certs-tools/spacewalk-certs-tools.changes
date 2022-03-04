@@ -1,3 +1,5 @@
+- Generate openssl CA configuration if missing when creating server certificate
+
 -------------------------------------------------------------------
 Fri Mar 11 15:47:31 CET 2022 - jgonzalez@suse.com
 
