@@ -1,3 +1,4 @@
+- Generate openssl CA configuration if missing when creating server certificate
 - Do not generate Salt Bundle sections in bootstrap for traditional
 - Reuse certificate code.
 - Allow alternative certificate filenames for update-ca-cert-trust.sh.
