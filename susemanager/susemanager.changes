@@ -1,5 +1,3 @@
-  * Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap 
-    repo definitions (bsc#1196702)
   * Added gettext build requirement for RHEL.
   * Reuse existing certificate code.
 
