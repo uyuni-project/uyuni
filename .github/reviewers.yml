@@ -1,7 +1,7 @@
 reviewers:
   # Reviewer groups each of which has a list of GitHub usernames
   groups:
-    qa:
+    qe:
       - Bischoff
       - elariekerboull
       - ktsamis
@@ -15,7 +15,7 @@ files:
   # Keys are glob expressions.
   # You can assign groups defined above as well as GitHub usernames.
   'testsuite/**/!(*.feature)':
-    - qa
+    - qe
 
 options:
   ignore_draft: true
