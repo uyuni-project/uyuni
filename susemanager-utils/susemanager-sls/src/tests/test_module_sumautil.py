@@ -4,7 +4,7 @@ Author: mc@suse.com
 
 import sys
 
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 from . import mockery
 mockery.setup_environment()
 

@@ -20,7 +20,7 @@ from optparse import OptionParser, Option
 from config_common import rhn_log
 from config_common import cfg_exceptions
 from config_common import local_config
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 class HandlerBase:
     _options_table = []

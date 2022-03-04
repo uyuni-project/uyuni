@@ -20,7 +20,7 @@ from up2date_client import rhnreg_constants
 from up2date_client import hardware
 from up2date_client.rhnPackageInfo import convertPackagesFromHashToList
 from up2date_client.pkgplatform import getPlatform
-from rhn.i18n import ustr, sstr
+from rhn.stringutils import ustr, sstr
 from rhn.tb import raise_with_tb
 from suseRegister.info import getProductProfile
 

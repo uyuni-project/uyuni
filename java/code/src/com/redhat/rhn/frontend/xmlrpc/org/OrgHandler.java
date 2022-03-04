@@ -46,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
+import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -82,6 +83,52 @@ public class OrgHandler extends BaseHandler {
     }
 
     /**
+     * Create first organization and user after initial setup without authentication
+     * @param orgName Organization name. Must meet same criteria as in the web UI.
+     * @param adminLogin New administrator login name for the new org.
+     * @param adminPassword New administrator password.
+     * @param firstName New administrator's first name.
+     * @param lastName New administrator's last name.
+     * @param email New administrator's e-mail.
+     * @return Newly created organization object.
+     *
+     * @xmlrpc.doc Create first organization and user after initial setup without authentication
+     * @xmlrpc.param #param_desc("string", "orgName", "Organization name. Must meet same
+     * criteria as in the web UI.")
+     * @xmlrpc.param #param_desc("string", "adminLogin", "New administrator login name.")
+     * @xmlrpc.param #param_desc("string", "adminPassword", "New administrator password.")
+     * @xmlrpc.param #param_desc("string", "firstName", "New administrator's first name.")
+     * @xmlrpc.param #param_desc("string", "lastName", "New administrator's first name.")
+     * @xmlrpc.param #param_desc("string", "email", "New administrator's e-mail.")
+     * @xmlrpc.returntype $OrgDtoSerializer
+     */
+    public OrgDto createFirst(String orgName, String adminLogin,
+            String adminPassword, String firstName, String lastName,
+            String email) {
+        log.debug("OrgHandler.createFirst");
+
+        if (UserManager.satelliteHasUsers()) {
+            throw new ValidationException("Initial Organization and User already exist");
+        }
+
+        validateCreateOrgData(orgName, adminPassword, firstName, lastName, email,
+                false);
+
+        CreateOrgCommand cmd = new CreateOrgCommand(orgName, adminLogin, adminPassword,
+                email, true);
+        cmd.setFirstName(firstName);
+        cmd.setLastName(lastName);
+
+        ValidatorError[] verrors = cmd.store();
+        if (verrors != null) {
+            throw new ValidationException(verrors[0].getMessage());
+        }
+
+        return OrgManager.toDetailsDto(cmd.getNewOrg());
+
+    }
+
+    /**
      * Create a new organization.
      * @param loggedInUser The current user
      * @param orgName Organization name. Must meet same criteria as in the web UI.
@@ -113,6 +160,7 @@ public class OrgHandler extends BaseHandler {
             String adminPassword, String prefix, String firstName, String lastName,
             String email, Boolean usePamAuth) {
         log.debug("OrgHandler.create");
+
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
 
         validateCreateOrgData(orgName, adminPassword, firstName, lastName, email,

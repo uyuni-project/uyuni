@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -498,60 +499,18 @@ public class ReportDbHibernateFactory {
             return new byte[0];
         }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        try {
-            return toByteArrayImpl(fromBlob, baos);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); InputStream is = fromBlob.getBinaryStream()) {
+            IOUtils.copy(is, baos, 4000);
+            return baos.toByteArray();
         }
         catch (SQLException e) {
             LOG.error("SQL Error converting blob to byte array", e);
-            throw new DatabaseException(e.toString());
+            throw new DatabaseException(e.toString(), e);
         }
         catch (IOException e) {
             LOG.error("I/O Error converting blob to byte array", e);
-            throw new DatabaseException(e.toString());
+            throw new DatabaseException(e.toString(), e);
         }
-        finally {
-            try {
-                baos.close();
-            }
-            catch (IOException ex) {
-                LOG.error(ex);
-            }
-        }
-    }
-
-    /**
-     * helper utility to convert blob to byte array
-     * @param fromBlob blob to convert
-     * @param baos byte array output stream
-     * @return String version of the byte array contents
-     */
-    private byte[] toByteArrayImpl(Blob fromBlob, ByteArrayOutputStream baos)
-        throws SQLException, IOException {
-
-        byte[] buf = new byte[4000];
-        InputStream is = fromBlob.getBinaryStream();
-        try {
-            for (;;) {
-                int dataSize = is.read(buf);
-                if (dataSize == -1) {
-                    break;
-                }
-                baos.write(buf, 0, dataSize);
-            }
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException ex) {
-                    LOG.error(ex);
-                }
-            }
-        }
-        return baos.toByteArray();
     }
 
     /**

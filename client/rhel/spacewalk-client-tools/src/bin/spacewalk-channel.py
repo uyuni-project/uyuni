@@ -18,7 +18,7 @@ import os
 import re
 import sys
 from rhn import rpclib
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 from optparse import Option, OptionParser
 
 try: # python2

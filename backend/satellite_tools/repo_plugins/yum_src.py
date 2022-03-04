@@ -56,7 +56,7 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 
 # namespace prefix to parse patches.xml file

@@ -2,7 +2,7 @@ from config_common.rhn_log import log_debug, die
 from config_common.file_utils import ostr_to_sym
 import handler_base, base64
 import sys
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 
 class Handler(handler_base.HandlerBase):

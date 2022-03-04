@@ -3,7 +3,7 @@
 :codeauthor:    Pablo Suárez Hernández <psuarezhernandez@suse.de>
 '''
 
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 from . import mockery
 mockery.setup_environment()
 

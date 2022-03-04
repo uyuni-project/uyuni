@@ -16,7 +16,7 @@
 
 import os
 import rpm
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 from up2date_client import transaction
 from up2date_client import up2dateLog
 

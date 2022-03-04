@@ -69,6 +69,38 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }
 
+    public void testCreateFirst() throws Exception {
+        /*
+         * "dockerrun_pg" already creates a new Org during Init right now.
+         * Therefore check first if Org with ID '1' exist without performing further tests then.
+         * If there is no Org yet, perform actual test of createFirst method.
+
+        */
+        Org initialOrg = OrgFactory.lookupById((long) 1);
+        if (initialOrg != null) {
+            assertNotNull(initialOrg);
+        }
+        else {
+            handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                    "Admin", "firstadmin@example.com");
+            Org testOrg = OrgFactory.lookupByName(orgName[1]);
+            assertNotNull(testOrg);
+        }
+    }
+
+    public void testCreateFirstTwice() throws Exception {
+        try {
+            handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                    "Admin", "firstadmin@example.com");
+            handler.createFirst(orgName[1], "fakeadmin", "password", "First",
+                    "Admin", "firstadmin@example.com");
+            fail();
+        }
+        catch (ValidationException e) {
+            // expected, initial org/user can only be created once
+        }
+    }
+
     public void testCreate() throws Exception {
         handler.create(admin, orgName[0], "fakeadmin", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin@example.com", Boolean.FALSE);

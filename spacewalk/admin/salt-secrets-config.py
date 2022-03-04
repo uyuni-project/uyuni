@@ -61,6 +61,8 @@ with cfg_component(None) as CFG:
 with cfg_component("web") as CFG:
     uyuni_roster_config.update({
         "ssh_push_port_https": CFG.SSH_PUSH_PORT_HTTPS,
+        "ssh_pre_flight_script": CFG.SSH_SALT_PRE_FLIGHT_SCRIPT,
+        "ssh_use_salt_thin": CFG.SSH_USE_SALT_THIN == "true",
     })
     if CFG.SSH_PUSH_SUDO_USER:
         uyuni_roster_config.update({
@@ -91,7 +93,10 @@ with open("/etc/salt/master.d/susemanager_db.conf", "w") as f:
     os.fchmod(f.fileno(), 0o640)
 
 with open("/etc/salt/master.d/uyuni_roster.conf", "w") as f:
-    f.write(yaml.safe_dump({"uyuni_roster": uyuni_roster_config}, default_flow_style=False, allow_unicode=True))
+    uyuni_roster_cfg = {"uyuni_roster": uyuni_roster_config}
+    if "ssh_pre_flight_script" in uyuni_roster_config:
+        uyuni_roster_cfg.update({"ssh_run_pre_flight": True})
+    f.write(yaml.safe_dump(uyuni_roster_cfg, default_flow_style=False, allow_unicode=True))
     os.fchown(f.fileno(), pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
     os.fchmod(f.fileno(), 0o640)
 

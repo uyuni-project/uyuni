@@ -17,7 +17,6 @@
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from uyuni.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_kickstart
 
@@ -277,7 +276,7 @@ def _add_result(action_config_revision_id, diff):
 
     if diff:
         blob_map = {'result': 'result'}
-        diff = to_string(diff)
+        diff = str(diff)
     else:
         blob_map = None
         diff = None

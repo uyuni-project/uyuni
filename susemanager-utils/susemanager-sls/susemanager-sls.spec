@@ -22,9 +22,11 @@
 %endif
 
 %if 0%{?suse_version}
-%global wwwdocroot /srv/www/htdocs
+%global serverdir  /srv
+%global wwwdocroot %{serverdir}/www/htdocs
 %else
-%global wwwdocroot %{_var}/www/html
+%global serverdir  %{_localstatedir}
+%global wwwdocroot %{serverdir}/www/html
 %endif
 
 
@@ -39,7 +41,6 @@ Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
-BuildRequires:  python3-mock
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
 # Different package names for SUSE and RHEL:
@@ -75,6 +76,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_states
+mkdir -p %{buildroot}/usr/share/susemanager/salt-ssh
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
@@ -87,6 +89,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/reactor
 mkdir -p %{buildroot}/usr/share/susemanager/scap
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
+cp -R salt-ssh/* %{buildroot}/usr/share/susemanager/salt-ssh
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
@@ -140,6 +143,7 @@ fi
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/salt-ssh
 /usr/share/susemanager/pillar_data
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar

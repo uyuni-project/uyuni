@@ -349,10 +349,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                         })
                     ).orElse(false);
                     if (!inCluster) {
+                        LOG.error("No such virtual machine");
                         throw Spark.halt(HttpStatus.SC_BAD_REQUEST, "No such virtual machine");
                     }
                 },
                 () -> {
+                    LOG.error("No such virtual machine");
                     throw Spark.halt(HttpStatus.SC_BAD_REQUEST, "No such virtual machine");
                 }
             );
@@ -379,6 +381,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         Map<String, Object> data = new HashMap<>();
 
         if (!host.hasEntitlement(EntitlementManager.SALT)) {
+            LOG.error("Only for Salt-managed virtual hosts");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Only for Salt-managed virtual hosts");
         }
 
@@ -438,6 +441,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             ensureAccessToVirtualInstance(user, guest);
         }
         catch (LookupException e) {
+            LOG.error("Unauthorized", e);
             Spark.halt(HttpStatus.SC_UNAUTHORIZED, e.getLocalizedMessage());
         }
 
@@ -466,12 +470,14 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String refreshConsoleToken(Request request, Response response, User user) {
         if (!TokenBuilder.verifyToken(request.body())) {
+            LOG.error("Invalid token");
             Spark.halt(HttpStatus.SC_FORBIDDEN, "Invalid token");
         }
 
         String guestUuid = request.params("guestuuid");
         VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
         if (guest == null) {
+            LOG.error("Virtual machine not found");
             Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
         }
         Server host = guest.getHostSystem();
@@ -479,6 +485,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             ensureAccessToVirtualInstance(user, guest);
         }
         catch (LookupException e) {
+            LOG.error("Unauthorized", e);
             Spark.halt(HttpStatus.SC_UNAUTHORIZED, e.getLocalizedMessage());
         }
 
@@ -505,7 +512,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             return null;
         }
         if (guests.size() > 1) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine machine this UUID");
+            LOG.error("More than one virtual machine found for this UUID: " + uuid);
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine found for this UUID");
         }
         return guests.get(0);
     }
@@ -518,7 +526,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             token = tokenBuilder.getToken();
         }
         catch (JoseException e) {
-            LOG.error(e);
+            LOG.error("Service unavailable", e);
             Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
         }
         return token;
@@ -535,6 +543,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public Boolean refresh(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, true)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -556,6 +565,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String setMemory(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -577,6 +587,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String setVcpu(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -598,6 +609,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String restart(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -620,6 +632,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String shutdown(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -649,6 +662,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         actionsMap.put("delete", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
 
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -671,6 +685,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String migrate(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, true)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -692,6 +707,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String update(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -728,6 +744,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public String newGuest(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, true)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
@@ -742,6 +759,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                                 BiConsumer<Action, Integer> setter,
                                 Class<T> dataClass) {
         if (noHostSupportAction(host, false)) {
+            LOG.error("Action not supported for this host");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 

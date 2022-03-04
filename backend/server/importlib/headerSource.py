@@ -20,8 +20,7 @@ import time
 from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from .backendLib import gmtime, localtime
-from uyuni.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
-from uyuni.common.stringutils import to_string
+from uyuni.common.usix import ListType, TupleType
 from spacewalk.common.rhnLog import log_debug
 
 
@@ -43,38 +42,29 @@ class rpmPackage(IncompletePackage):
 
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
-        for f in list(self.keys()):
-            field = f
-            if f in self.tagMap:
-                field = self.tagMap[f]
-                if not field:
-                    # Unsupported
-                    continue
+        for key in self.keys():
+            field = self.tagMap.get(key, key)
+            if not field: # unsupported
+                continue
 
-            # get the db field value from the header
-            val = header[field]
-            if f == 'build_time':
-                if type(val) in (IntType, LongType):
-                    # A UNIX timestamp
-                    val = gmtime(val)
-            if f == 'payload_size':
-                if val is None:
+            value = header[field]
+            if key == "build_time" and isinstance(value, int):
+                value = gmtime(value) # unix timestamp
+            elif key == "payload_size":
+                if value is None:
                     # use longarchivesize header field for rpms with archive > 4GB
-                    if ('longarchivesize' in header) and (header['longarchivesize'] > 0):
-                        val = header['longarchivesize']
-                elif val < 0:
+                    if header.get("longarchivesize", 0) > 0:
+                        value = header["longarchivesize"]
+                elif value < 0:
                     # workaround for older rpms where signed
                     # attributes go negative for size > 2G
-                    val = LongType(val) + 2 ** 32
-            elif val:
-                # Convert to strings
-                if isinstance(val, UnicodeType):
-                    val = to_string(val)
-                else:
-                    val = str(val)
-            elif val == []:
-                val = None
-            self[f] = val
+                    value = int(value) + 2 ** 32
+            elif value == []:
+                value = None
+            elif value:
+                value = str(value)
+
+            self[key] = value
 
         self['package_size'] = size
         self['checksum_type'] = checksum_type
@@ -360,10 +350,10 @@ class rpmFile(File, ChangeLog):
         ChangeLog.populate(self, hash)
         # Fix the time
         tm = self['mtime']
-        if type(tm) in (IntType, LongType):
+        if isinstance(tm, int):
             # A UNIX timestamp
             self['mtime'] = localtime(tm)
-        if type(self['filedigest']) == StringType:
+        if isinstance(self['filedigest'], str):
             self['checksum'] = self['filedigest']
             del(self['filedigest'])
 
@@ -496,7 +486,7 @@ class rpmChangeLog(ChangeLog):
         ChangeLog.populate(self, hash)
         # Fix the time
         tm = self['time']
-        if type(tm) in (IntType, LongType):
+        if isinstance(tm, int):
             # A UNIX timestamp
             self['time'] = localtime(tm)
         # In changelog, data is either in UTF-8, or in any other

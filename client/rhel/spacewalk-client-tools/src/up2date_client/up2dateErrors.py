@@ -28,7 +28,7 @@ if not hasattr(t, 'ugettext'):
 _ = t.ugettext
 import OpenSSL
 from platform import dist
-from rhn.i18n import ustr
+from rhn.stringutils import ustr
 from up2date_client import config
 from up2date_client import up2dateLog
 from up2date_client.pkgplatform import getPlatform

@@ -4,7 +4,7 @@ import psycopg2
 import shlex
 import subprocess
 from mgr_events import Responder, DEFAULT_COMMIT_BURST
-from mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch, call
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database, drop_database
 

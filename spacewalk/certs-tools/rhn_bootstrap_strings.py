@@ -161,15 +161,7 @@ DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE=1
 # If empty, the SUSE Manager repositories provided at https://${{HOSTNAME}}/pub/repositories
 # are used.
 CLIENT_REPOS_ROOT=
-
-# Avoid installing venv-salt-minion instead salt-minion
-# even if it available in the bootstrap repo
-AVOID_VENV_SALT_MINION={avoid_venv}
-
-# Force installing venv-salt-minion instead salt-minion
-# even if it is NOT available in the bootstrap repo
-FORCE_VENV_SALT_MINION={force_venv}
-
+{venv_section}
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -258,6 +250,19 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
         if isUyuni:
             version = CFG.uyuni
 
+    venv_section = options.salt and """
+# Avoid installing venv-salt-minion instead salt-minion
+# even if it available in the bootstrap repo
+AVOID_VENV_SALT_MINION={avoid_venv}
+
+# Force installing venv-salt-minion instead salt-minion
+# even if it is NOT available in the bootstrap repo
+FORCE_VENV_SALT_MINION={force_venv}
+""".format(
+    avoid_venv=1 if bool(options.no_bundle) else 0,
+    force_venv=1 if bool(options.force_bundle) else 0,
+) or ""
+
     return _header.format(productName=productName,
                           version=version,
                           apachePubDirectory=apachePubDirectory,
@@ -268,8 +273,7 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
-                          avoid_venv=1 if bool(options.no_bundle) else 0,
-                          force_venv=1 if bool(options.force_bundle) else 0,
+                          venv_section=venv_section,
                           using_ssl=1,
                           using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
@@ -299,6 +303,32 @@ def getRegistrationStackSh(saltEnabled):
 
     PKG_NAME_VENV_UPDATE_YUM = list(PKG_NAME_VENV)
     PKG_NAME_VENV_UPDATE_YUM.extend(['yum', 'openssl'])
+
+    TEST_VENV_FUNC = saltEnabled and """
+function test_venv_enabled() {
+    if [ $FORCE_VENV_SALT_MINION -eq 1 ]; then
+        VENV_ENABLED=1
+    elif [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
+        local repourl="$CLIENT_REPO_URL"
+        if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
+            ARCH=$(rpm --eval "%{_host_cpu}")
+        else
+            ARCH=$(dpkg --print-architecture)
+        fi
+        VENV_FILE="venv-enabled-$ARCH.txt"
+        $FETCH $repourl/$VENV_FILE
+        if [ -f "$VENV_FILE" ]; then
+            echo "Bootstrap repo '$repourl' contains salt bundle."
+            repourl=""
+            VENV_ENABLED=1
+        fi
+        rm -f "$VENV_FILE"
+    fi
+}
+""" or ""
+    TEST_VENV_CALL = saltEnabled and """
+    test_venv_enabled
+""" or ""
 
     return """\
 echo
@@ -353,28 +383,7 @@ function test_repo_exists() {{
     fi
     rm -f repomd.xml
 }}
-
-function test_venv_enabled() {{
-    if [ $FORCE_VENV_SALT_MINION -eq 1 ]; then
-        VENV_ENABLED=1
-    elif [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
-        local repourl="$CLIENT_REPO_URL"
-        if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
-            ARCH=$(rpm --eval "%{{_host_cpu}}")
-        else
-            ARCH=$(dpkg --print-architecture)
-        fi
-        VENV_FILE="venv-enabled-$ARCH.txt"
-        $FETCH $repourl/$VENV_FILE
-        if [ -f "$VENV_FILE" ]; then
-            echo "Bootstrap repo '$repourl' contains salt bundle."
-            repourl=""
-            VENV_ENABLED=1
-        fi
-        rm -f "$VENV_FILE"
-    fi
-}}
-
+{TEST_VENV_FUNC}
 function get_rhnlib_pkgs() {{
     # Gets all installed rhnlib packages for update
     RHNLIB_PKG=""
@@ -492,9 +501,7 @@ if [ "$INSTALLER" == yum ]; then
     fi
 
     setup_bootstrap_repo
-
-    test_venv_enabled
-
+{TEST_VENV_CALL}
     getY_MISSING
 
     if [ -z "$Y_MISSING" ]; then
@@ -582,9 +589,7 @@ elif [ "$INSTALLER" == zypper ]; then
     CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
     CLIENT_REPO_NAME="susemanager:bootstrap"
     CLIENT_REPO_FILE="/etc/zypp/repos.d/$CLIENT_REPO_NAME.repo"
-
-    test_venv_enabled
-
+{TEST_VENV_CALL}
     getZ_MISSING
 
     if [ -z "$Z_MISSING" ]; then
@@ -755,9 +760,7 @@ elif [ "$INSTALLER" == apt ]; then
     CLIENT_REPO_FILE="/etc/apt/sources.list.d/$CLIENT_REPO_NAME.list"
 
     setup_deb_bootstrap_repo
-
-    test_venv_enabled
-
+{TEST_VENV_CALL}
     getA_MISSING
 
     apt-get --yes update
@@ -810,7 +813,8 @@ remove_bootstrap_repo
            PKG_NAME_UPDATE_YUM=' '.join(PKG_NAME_UPDATE_YUM),
            PKG_NAME_VENV=' '.join(PKG_NAME_VENV),
            PKG_NAME_VENV_UPDATE=' '.join(PKG_NAME_VENV_UPDATE),
-           PKG_NAME_VENV_UPDATE_YUM=' '.join(PKG_NAME_VENV_UPDATE_YUM))
+           PKG_NAME_VENV_UPDATE_YUM=' '.join(PKG_NAME_VENV_UPDATE_YUM),
+           TEST_VENV_FUNC=TEST_VENV_FUNC, TEST_VENV_CALL=TEST_VENV_CALL)
 
 def getConfigFilesSh():
     return """\
