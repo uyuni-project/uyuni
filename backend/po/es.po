@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:10+0000\n"
 "PO-Revision-Date: 2022-02-05 02:12+0000\n"
 "Last-Translator: Javier Llorente <javier@opensuse.org>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
@@ -1061,12 +1061,12 @@ msgstr "Información de Clase de Error: %s\n"
 msgid "Explanation: %s"
 msgstr "Explicación: %s"
 
-#: ../common/rhnTB.py:205
+#: ../common/rhnTB.py:201
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "ERROR: %s %s: %s"
 
-#: ../common/rhnTB.py:207
+#: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr "TRAZA: %s"

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-26 14:45+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2022-02-13 08:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -42,26 +42,44 @@ msgstr ""
 "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいず"
 "れかをお使いください"
 
-#: ../html/src/components/FormulaForm.tsx:22
+#: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:163
 msgid "Please input required fields: {0}"
 msgstr "必須の項目に入力を行なってください: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:166
 msgid "Invalid format of fields: {0}"
 msgstr "項目の書式が正しくありません: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:204
+#: ../html/src/components/FormulaForm.tsx:216
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
 "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
 "を行なうことができます。"
+
+#: ../html/src/components/FormulaForm.tsx:265
+msgid "Expand All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:272
+msgid "Collapse All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:337
+#, fuzzy
+msgid "Unnamed"
+msgstr "ユーザ名"
+
+#: ../html/src/components/FormulaForm.tsx:346
+#, fuzzy
+msgid "Search by formula's group name"
+msgstr "Formula 名でフィルタ"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -302,12 +320,12 @@ msgstr "保存"
 msgid "Formulas"
 msgstr "Formula"
 
-#: ../html/src/components/formulas/EditGroup.tsx:321
+#: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 "この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "リセット"

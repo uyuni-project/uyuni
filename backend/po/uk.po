@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:10+0000\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -1093,12 +1093,12 @@ msgstr "Дані помилкового класу: %s\n"
 msgid "Explanation: %s"
 msgstr "Пояснення: %s"
 
-#: ../common/rhnTB.py:205
+#: ../common/rhnTB.py:201
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "ПОМИЛКА: %s %s: %s"
 
-#: ../common/rhnTB.py:207
+#: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr "ТРАСУВАННЯ: %s"

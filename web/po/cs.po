@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-26 14:45+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -42,25 +42,43 @@ msgstr ""
 "Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome "
 "nebo Edge"
 
-#: ../html/src/components/FormulaForm.tsx:22
+#: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:163
 msgid "Please input required fields: {0}"
 msgstr "Zadejte prosím povinná pole: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:166
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:204
+#: ../html/src/components/FormulaForm.tsx:216
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
 "Na této stránce můžete nakonfigurovat vzorce Salt pro automatickou instalaci "
 "a konfiguraci softwaru."
+
+#: ../html/src/components/FormulaForm.tsx:265
+msgid "Expand All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:272
+msgid "Collapse All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:337
+#, fuzzy
+msgid "Unnamed"
+msgstr "Uživatelské jméno"
+
+#: ../html/src/components/FormulaForm.tsx:346
+#, fuzzy
+msgid "Search by formula's group name"
+msgstr "Filtrovat podle názvu vzorce"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -297,13 +315,13 @@ msgstr "Uložit"
 msgid "Formulas"
 msgstr "Vzorce"
 
-#: ../html/src/components/formulas/EditGroup.tsx:321
+#: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 "Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
 "datech (v Salt)."
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "Reset"

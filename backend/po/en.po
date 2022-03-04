@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:10+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Jens Maucher <jens.maucher@gmx.de>\n"
 "Language-Team: English <https://l10n.opensuse.org/projects/uyuni/backend/en/"
@@ -1147,12 +1147,12 @@ msgstr ""
 msgid "Explanation: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:205
+#: ../common/rhnTB.py:201
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:207
+#: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr ""

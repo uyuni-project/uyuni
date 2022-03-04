@@ -3631,8 +3631,8 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">(GMT+0800) 中国</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
