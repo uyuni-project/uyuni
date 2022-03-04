@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-04 10:11+0000\n"
-"PO-Revision-Date: 2022-02-08 19:12+0000\n"
+"PO-Revision-Date: 2022-03-04 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -64,21 +64,19 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:265
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Rozbaliť všetky sekcie"
 
 #: ../html/src/components/FormulaForm.tsx:272
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Zbaliť všetky sekcie"
 
 #: ../html/src/components/FormulaForm.tsx:337
-#, fuzzy
 msgid "Unnamed"
-msgstr "Používateľské meno"
+msgstr "Bez názvu"
 
 #: ../html/src/components/FormulaForm.tsx:346
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "Filtrovať podľa názvu vzorca"
+msgstr "Hľadať podľa názvu skupiny vzorca"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -1461,11 +1459,11 @@ msgstr "Auditovať obrazy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "Odkaz MITRE CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "Odkaz SUSE Security CVE"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -2563,7 +2561,6 @@ msgid "Versions history"
 msgstr "História verzií"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "Nový základný kanál"
 
@@ -2586,14 +2583,12 @@ msgid "Clear Search"
 msgstr "Vymazať vyhľadávanie"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "Tento kanál je odporúčaný"
+msgstr "Tento kanál vyžaduje:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "Tento kanál je odporúčaný"
+msgstr "Tento kanál je vyžadovaný:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
