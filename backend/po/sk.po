@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"POT-Creation-Date: 2022-03-04 10:10+0000\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -1054,12 +1054,12 @@ msgstr "Informácia o triede chýb: %s\n"
 msgid "Explanation: %s"
 msgstr "Vysvetlenie: %s"
 
-#: ../common/rhnTB.py:205
+#: ../common/rhnTB.py:201
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "CHYBA: %s %s: %s"
 
-#: ../common/rhnTB.py:207
+#: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s"
