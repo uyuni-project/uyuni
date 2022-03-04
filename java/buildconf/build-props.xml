@@ -122,6 +122,12 @@
     <available file="${java.lib.dir}/jmock/jmock.jar" />
   </condition>
 
+  <condition property="stringprep-jars"
+                value="ongres-stringprep/saslprep ongres-stringprep/stringprep"
+                 else="">
+    <available file="${java.lib.dir}/ongres-stringprep/saslprep.jar"/>
+  </condition>
+
   <available file="${java.lib.dir}/cglib/cglib.jar" type="file" property="cglib-jar" value="cglib/cglib" />
   <available file="${java.lib.dir}/cglib.jar" type="file" property="cglib-jar" value="cglib" />
 
@@ -134,7 +140,7 @@
              ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
-             ongres-stringprep/saslprep ongres-stringprep/stringprep taglibs-standard-impl taglibs-standard-jstlel
+             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec logdriver quartz dwr slf4j-api slf4j-log4j12
              concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
 
@@ -193,7 +199,7 @@
              ${tomcat-jars} ${javamail} jdom jsch dwr
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
-             ongres-stringprep/saslprep ongres-stringprep/stringprep taglibs-standard-impl taglibs-standard-jstlel
+             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec quartz ${suse-common-jars} velocity
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
 
@@ -207,7 +213,7 @@
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             postgresql-jdbc ongres-scram/client ongres-scram/common ongres-stringprep/saslprep ongres-stringprep/stringprep
+             postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
              snakeyaml simple-xml ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
 
