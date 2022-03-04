@@ -40,8 +40,8 @@ fillSpecFile().then(() => {
 
     if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
       shell.echo(`
-                    There are vulnerabilities on the downloaded npm libraries.
-                    Please run "yarn audit" and fix the detected vulnerabilities `);
+                  There are vulnerabilities on the downloaded npm libraries.
+                  Please run "yarn audit" and fix the detected vulnerabilities `);
       shell.exit(1);
     }
   }
