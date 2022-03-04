@@ -2298,8 +2298,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-validator v13.5.2 - Chris O'Hara <cohara87@gmail.com>
-https://github.com/chriso/validator.js.git
+validator v13.7.0 - Chris O'Hara <cohara87@gmail.com>
+git+https://github.com/validatorjs/validator.js.git
 --------------------------------------------------------------------------------
 
 Copyright (c) 2018 Chris O'Hara <cohara87@gmail.com>

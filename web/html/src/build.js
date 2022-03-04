@@ -34,5 +34,15 @@ fillSpecFile().then(() => {
       // TODO: This should be an error again after dependabot issues are addressed
       // shell.exit(1);
     }
+
+    // TODO: This should be simply `yarn audit` once Storybook issues are resolved
+    const { stdout: auditStdout } = shell.exec("yarn audit --groups dependencies,devDependencies");
+
+    if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
+      shell.echo(`
+                    There are vulnerabilities on the downloaded npm libraries.
+                    Please run "yarn audit" and fix the detected vulnerabilities `);
+      shell.exit(1);
+    }
   }
 });

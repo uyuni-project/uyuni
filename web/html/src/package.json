@@ -7,7 +7,7 @@
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
   "scripts": {
-    "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc audit-deps",
+    "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc",
     "audit-deps": "yarn audit --groups \"dependencies devDependencies\"",
     "clean": "rm -rf node_modules && rm -rf dist",
     "dev": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development",
