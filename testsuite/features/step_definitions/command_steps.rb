@@ -762,8 +762,8 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
-           "    \"assword:\"                                              {send \"linux\r\"}\n" \
+	   "    -re -nocase \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
+           "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
   path = generate_temp_file('push-registration.exp', script)
