@@ -19,7 +19,7 @@ export const renderer = (id: string, { contentAdd, flashMessage }: RendererProps
   try {
     providersJson = JSON.parse(contentAdd || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

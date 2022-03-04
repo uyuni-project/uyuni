@@ -33,7 +33,7 @@ const FinishAddCluster = (props: Props) => {
           window.location.href = `/rhn/manager/cluster/${data}`;
         })
         .catch((err: ErrorMessagesType) => {
-          console.error(err);
+          Loggerhead.error(err.toString());
           props.setMessages(err.messages);
           throw err;
         });

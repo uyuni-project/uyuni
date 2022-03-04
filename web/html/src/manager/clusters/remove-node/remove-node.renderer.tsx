@@ -20,14 +20,14 @@ export const renderer = (id: string, { cluster, nodes, flashMessage }: RendererP
   try {
     clusterObj = JSON.parse(cluster || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   let nodesObj: any = {};
   try {
     nodesObj = JSON.parse(nodes || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(
