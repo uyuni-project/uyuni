@@ -3,7 +3,7 @@
 Test suite for spacecmd.system module.
 """
 from datetime import datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, mock_open
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.system
 
@@ -490,3 +490,189 @@ class TestSystem:
             assert_expect([call], next(iter(expected)))
             expected.pop(0)
         assert not expected
+
+    def test_do_system_bootstrap(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '', False), {})])
+
+    def test_do_system_bootstrap_with_activation_key(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret -a 1-akey")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '1-akey', False), {})])
+
+    def test_do_system_bootstrap_with_reactivation(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret -r 1-re-key")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '', '1-re-key', False), {})])
+
+    def test_do_system_bootstrap_saltssh(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret -a 1-sshkey --saltssh")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '1-sshkey', True), {})])
+
+
+    def test_do_system_bootstrap_proxy(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret --proxyid 1000010042")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '', 1000010042, False), {})])
+
+
+    def test_do_system_bootstrap_all(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -P secret -a 1-sshkey -r 1-re-key --proxyid 1000010042 --saltssh")
+
+        assert shell.client.system.bootstrap.called
+        assert not shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrap.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'secret', '1-sshkey', '1-re-key', 1000010042, True), {})])
+
+
+    def test_do_system_bootstrap_sshprivkey(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        with patch("spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key") as opn:
+            spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key")
+
+        assert not shell.client.system.bootstrap.called
+        assert shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrapWithPrivateSshKey.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'private_ssh_key', '', '', False), {})])
+
+
+    def test_do_system_bootstrap_sshprivkey_password(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        with patch("spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key") as opn:
+            spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -S key_secret")
+
+        assert not shell.client.system.bootstrap.called
+        assert shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrapWithPrivateSshKey.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'private_ssh_key', 'key_secret', '', False), {})])
+
+    def test_do_system_bootstrap_sshprivkey_activationkey(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        with patch("spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key") as opn:
+            spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -a 1-akey")
+
+        assert not shell.client.system.bootstrap.called
+        assert shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrapWithPrivateSshKey.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'private_ssh_key', '', '1-akey', False), {})])
+
+    def test_do_system_bootstrap_sshprivkey_reactivationkey(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        with patch("spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key") as opn:
+            spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -r 1-re-key")
+
+        assert not shell.client.system.bootstrap.called
+        assert shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrapWithPrivateSshKey.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'private_ssh_key', '', '', '1-re-key', False), {})])
+
+
+    def test_do_system_bootstrap_sshprivkey_all(self, shell):
+        """
+        Test do_system_bootstrap
+        """
+
+        shell.help_system_bootstrap = MagicMock()
+        shell.client.system.bootstrap = MagicMock()
+        shell.client.system.bootstrapWithPrivateSshKey = MagicMock()
+
+        with patch("spacecmd.system.open", new_callable=mock_open, read_data="private_ssh_key") as opn:
+            spacecmd.system.do_system_bootstrap(shell, "-H uyuni.example.com -u admin -k /tmp/ssh_priv_key -S key_secret -a 1-akey -r 1-re-key --proxyid 1000010042 --saltssh")
+
+        assert not shell.client.system.bootstrap.called
+        assert shell.client.system.bootstrapWithPrivateSshKey.called
+        assert_args_expect(shell.client.system.bootstrapWithPrivateSshKey.call_args_list,
+                           [((shell.session, 'uyuni.example.com', 22, 'admin', 'private_ssh_key', 'key_secret', '1-akey', '1-re-key', 1000010042, True), {})])

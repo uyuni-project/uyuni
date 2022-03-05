@@ -28,6 +28,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -89,6 +90,17 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
                                                 String defaultContactMethod) {
+        Optional<MgrUtilRunner.ExecResult> res = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+        if (!res.isPresent()) {
+            LOG.error("Could not generate salt-ssh public key.");
+            return new BootstrapResult(false, Optional.empty(), "Could not generate salt-ssh public key.");
+        }
+        if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
+            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
+            return new BootstrapResult(false, Optional.empty(),
+                    "Generating salt-ssh public key failed: " + res.get().getStderr());
+        }
+
         BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
