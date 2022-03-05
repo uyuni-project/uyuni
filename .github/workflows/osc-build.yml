@@ -1,0 +1,34 @@
+name: OSC build
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'web/html/src/**'
+  pull_request:
+    paths:
+      - 'web/html/src/**'
+
+jobs:
+  web_build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install OSC
+      run: sudo apt-get install -y osc
+
+    - name: Run build
+      working-directory: ./web
+      run: osc build
