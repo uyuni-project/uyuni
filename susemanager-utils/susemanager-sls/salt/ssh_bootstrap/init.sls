@@ -1,3 +1,7 @@
+##
+##  java bootstrapping calls certs.sls before this state
+##
+
 mgr_ssh_identity:
   ssh_auth.present:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
