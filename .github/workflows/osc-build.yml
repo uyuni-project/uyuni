@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'web/html/src/**'
+    # paths:
+    #   - 'web/html/src/**'
   pull_request:
-    paths:
-      - 'web/html/src/**'
+    # paths:
+    #   - 'web/html/src/**'
 
 jobs:
   web_build:
@@ -32,3 +32,4 @@ jobs:
     - name: Run build
       working-directory: ./web
       run: osc build
+      # TODO: Can we have a public account with only readonly access to enough things to make this work?
