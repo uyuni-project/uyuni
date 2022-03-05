@@ -33,3 +33,7 @@ jobs:
       working-directory: ./web
       run: osc build
       # TODO: Can we have a public account with only readonly access to enough things to make this work?
+      # Alternatively, we can remove the pull_request hook and use repo secrets
+      # See
+      #  - https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md
+      #  - https://docs.github.com/en/actions/security-guides/encrypted-secrets
