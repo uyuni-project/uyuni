@@ -379,6 +379,8 @@ report-db-port=$REPORT_DB_PORT
 report-db-user=$REPORT_DB_USER
 report-db-password=$REPORT_DB_PASS
 report-db-ca-cert=/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+[ ! -d "/etc/pki/trust/anchors" ] && report-db-ca-cert=/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT
+
 enable-tftp=$MANAGER_ENABLE_TFTP
 " > /root/spacewalk-answers
     if [ -n "$SCC_USER" ]; then
