@@ -117,7 +117,7 @@ fi
 
 
 create() {
-    if [ $LOCAL ]; then
+    if $LOCAL ; then
         ADDRESS="127.0.0.1"
         REMOTE="127.0.0.1/32,::1/128"
         FQDN="localhost"
@@ -201,7 +201,7 @@ work_mem = 2560kB
 EOF
     fi
 
-    if [ ! $LOCAL ]; then
+    if ! $LOCAL ; then
         # SSL setup is required when opening DB to the world
         postgres_reconfig "ssl" "on"
         postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
@@ -254,7 +254,7 @@ EOF
         rhn_reconfig "report_db_name" "$PGNAME"
         rhn_reconfig "report_db_host" "$FQDN"
         rhn_reconfig "report_db_port" "$PORT"
-	if [ ! $LOCAL ]; then
+	if ! $LOCAL ; then
             rhn_reconfig "report_db_ssl_enabled" "1"
             rhn_reconfig "report_db_sslrootcert" "$CA_CERT"
         fi
@@ -415,7 +415,7 @@ postgresql_service() {
         initdb)
             if isSUSE ; then
                 # the start script initialize the DB
-		if [ $LOCAL ]; then
+		if $LOCAL ; then
                     $RUNUSER - postgres -c "/usr/share/postgresql/postgresql-script start"
                 else
                     systemctl start postgresql
@@ -425,19 +425,19 @@ postgresql_service() {
 	    fi
 	    ;;
         status)
-            if [ $LOCAL ]; then
+            if $LOCAL ; then
                 pgrep -x postgresql >/dev/null && return 1 || return 0
             else
                 systemctl $1 postgresql
             fi
             ;;
         enable)
-            if [ ! $LOCAL ]; then
+            if ! $LOCAL ; then
                 systemctl $1 postgresql
             fi
             ;;
         *)
-            if [ $LOCAL ]; then
+            if $LOCAL ; then
                 echo ">> $1"
                 $RUNUSER - postgres -c "/usr/share/postgresql/postgresql-script $1"
             else
