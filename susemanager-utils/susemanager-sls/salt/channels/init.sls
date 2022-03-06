@@ -1,3 +1,6 @@
+include:
+  - util.syncstates
+
 {%- if grains['os_family'] == 'RedHat' %}
 
 {%- set yum_version = salt['pkg.version']("yum") %}
