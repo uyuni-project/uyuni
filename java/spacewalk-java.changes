@@ -1,3 +1,5 @@
+- prepare to use new postgresql-jdbc driver with stringprep and saslprep
+  support (bsc#1196693)
 - allow SCC to display the last check-in time for registered systems
 - generate the system ssh key when bootstrapping a salt-ssh client
   (bsc#1194909)
