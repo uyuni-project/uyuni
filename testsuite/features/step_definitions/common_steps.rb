@@ -850,13 +850,13 @@ When(/^I disable repositories after installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/ && PROVIDER != 'aws'
+  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && PROVIDER != 'aws'
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ && PROVIDER != 'aws'
+  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER != 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
