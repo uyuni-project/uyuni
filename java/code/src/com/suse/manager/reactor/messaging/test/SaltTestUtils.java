@@ -16,6 +16,8 @@ package com.suse.manager.reactor.messaging.test;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.salt.netapi.calls.Call;
@@ -35,14 +37,11 @@ import org.hamcrest.Matchers;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 
 /**
  * Provides utility functions to use in salt-related unit tests.
@@ -83,8 +82,8 @@ public class SaltTestUtils {
     public static <T> Optional<T> getSaltResponse(String filename, Map<String, String> placeholders,
                                                   TypeToken<T> type) {
         try {
-            Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
-            String content = Files.lines(path).collect(Collectors.joining("\n"));
+            String path = new File(TestUtils.findTestData(filename).getPath()).getAbsolutePath();
+            String content = FileUtils.readStringFromFile(path);
 
             if (placeholders != null) {
                 for (Map.Entry<String, String> entry : placeholders.entrySet()) {
@@ -99,7 +98,7 @@ public class SaltTestUtils {
             return Optional.of(target);
         }
         catch (IOException | ClassNotFoundException e) {
-           throw new RuntimeException(e);
+           throw new RhnRuntimeException(e);
         }
     }
 
