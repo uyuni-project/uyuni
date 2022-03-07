@@ -1,6 +1,14 @@
 - fixing how the return code is returned in mgrutil runner (bsc#1194909)
 
 -------------------------------------------------------------------
+Mon Mar 07 12:30:24 CET 2022 - jmassaguerpla@suse.de
+
+- version 4.1.34-1
+  * Improve `pkgset` beacon with using `salt.cache`
+    to notify about the changes made while the minion was stopped
+  * Align the code of pkgset beacon to prevent warnings (bsc#1194464)
+
+-------------------------------------------------------------------
 Thu Mar 03 17:34:12 CET 2022 - jmassaguerpla@suse.de
 
 - version 4.1.33-1
