@@ -1,3 +1,4 @@
+- Fix possible traceback in uyuni roster if no ssh port in the DB
 - fixing how the return code is returned in mgrutil runner (bsc#1194909)
 - Use /var/lib/susemanager/formula_data if /srv/susemanager/formula_data is missing.
 - Avoid using lscpu -J option in grains (bsc#1195920)
