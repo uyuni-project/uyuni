@@ -33,8 +33,8 @@
 # Uyuni Code Owners
 
 # Release Engineering
-rel-eng/ @release-engineering
-tito.props @release-engineering
+rel-eng/ @uyuni-project/release-engineering
+tito.props @uyuni-project/release-engineering
 
 # Cobbler
 java/conf/cobbler/snippets/ @SchoolGuy

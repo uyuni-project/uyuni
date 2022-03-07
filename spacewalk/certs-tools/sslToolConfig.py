@@ -29,7 +29,7 @@ import socket
 ## local imports
 from uyuni.common.fileutils import cleanupNormPath, rotateFile, rhn_popen, cleanupAbsPath
 from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 
 # defaults where we can see them (NOTE: directory is figured at write time)
 CERT_PATH = '/usr/share/rhn/certs/'

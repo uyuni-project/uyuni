@@ -1,3 +1,6 @@
+include:
+  - util.syncstates
+
 {%- if grains['os_family'] == 'RedHat' %}
 
 {%- set yum_version = salt['pkg.version']("yum") %}
@@ -133,9 +136,9 @@ mgrchannels_install_products:
     - require:
       - file: mgrchannels_*
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
-    - saltutil: sync_states
+      - saltutil: sync_states
 {%- else %}
-    - mgrcompat: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
 

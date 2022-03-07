@@ -43,6 +43,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Parametrize the KVM virtualization host
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
+    And I click on "Expand All Sections"
     And I select "NAT" in virtual network mode field
     And I enter "192.168.124.1" in virtual network IPv4 address field
     And I enter "192.168.124.2" in first IPv4 address for DHCP field
@@ -474,7 +475,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
 
-  @uyuni
+  @salt_bundle
   Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
     And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
     And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control

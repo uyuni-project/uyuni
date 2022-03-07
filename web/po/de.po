@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-26 14:45+0000\n"
+"POT-Creation-Date: 2022-03-04 10:11+0000\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -42,22 +42,38 @@ msgstr ""
 "Der Browser Internet Explorer wird nicht unterstützt. Bitte versuchen sie "
 "Firefox, Chrome oder Edge"
 
-#: ../html/src/components/FormulaForm.tsx:22
+#: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:163
 msgid "Please input required fields: {0}"
 msgstr "Pflichtfelder bitte ausfüllen: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:166
 msgid "Invalid format of fields: {0}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:204
+#: ../html/src/components/FormulaForm.tsx:216
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:265
+msgid "Expand All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:272
+msgid "Collapse All Sections"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:337
+msgid "Unnamed"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:346
+msgid "Search by formula's group name"
 msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:49
@@ -289,11 +305,11 @@ msgstr "Speichern"
 msgid "Formulas"
 msgstr "Formulare"
 
-#: ../html/src/components/formulas/EditGroup.tsx:321
+#: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:146
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "Zurücksetzen"

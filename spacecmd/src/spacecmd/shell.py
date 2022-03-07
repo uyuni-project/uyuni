@@ -148,6 +148,12 @@ class SpacewalkShell(Cmd):
             if not re.match('clear_caches', line, re.I):
                 return line
 
+        # Handle initial org and user creation
+        # Get 'self.client' object without login or session caching
+        if re.match('org_createfirst', line, re.I):
+            self.do_login('')
+            return line
+
         # login before attempting to run a command
         if not self.session:
             # disable no-member error message

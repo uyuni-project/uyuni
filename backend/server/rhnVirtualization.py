@@ -1014,32 +1014,10 @@ class VirtualizationListener:
 class EntitlementVirtualizationListener(VirtualizationListener):
 
     def guest_registered(self, host_sid, guest_sid):
-        host_system_slots = server_lib.check_entitlement(host_sid, True)
-        #host_system_slots = list(host_system_slots.keys())
-
-        if "virtualization_host" in host_system_slots:
-            host_system_slots.remove("virtualization_host")
-        if "foreign_entitled" in host_system_slots:
-            host_system_slots.remove("foreign_entitled")
-
-        guest_system_slots = server_lib.check_entitlement(guest_sid)
-        guest_system_slots = list(guest_system_slots.keys())
-
-        for entitlement in host_system_slots:
-            if entitlement not in guest_system_slots:
-                try:
-                    rhnSQL.transaction(entitlement)
-                    procedure.rhn_entitlements.entitle_server(guest_sid,
-                                                              entitlement)
-                except rhnSQL.SQLError:
-                    e = sys.exc_info()[1]
-                    rhnSQL.rollback(entitlement)
-                    log_error("Error adding entitlement %s to host ID-%s: %s"
-                              % (entitlement, guest_sid, str(e)))
-                    # rhnSQL.rollback()
-                    return
-
-        # rhnSQL.commit()
+        # dropped code which entitle the guest to all entitlements of the host
+        # this does not make sense when host and guest can have different
+        # base entitlements (salt vs. management)
+        pass
 
 
 # This file provides an interface that allows components of the RHN server to

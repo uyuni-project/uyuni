@@ -1,4 +1,12 @@
 - Introducing directory specific tokens for dynamic usage.
+- Finding empty profiles by mac address must be case insensitive (bsc#1196407)
+- prepare to use new postgresql-jdbc driver with stringprep and saslprep
+  support (bsc#1196693)
+- allow SCC to display the last check-in time for registered systems
+- generate the system ssh key when bootstrapping a salt-ssh client
+  (bsc#1194909)
+- Fix disappearing metadata key files after channel change (bsc#1192822)
+- New endpoint 'createFirst' added to 'org' xmlrpc api to allow initial organization and user creation
 - Corrected source URLs in spec file.
 - RHEL certificate compatibility.
 - Reuse existing certificate file detection.
@@ -11,7 +19,7 @@
 Fri Feb 25 15:31:09 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.12-1
-  * handle npe when syncing ubuntu errata
+  * handle npe when syncing ubuntu errata (bsc#1196619)
 
 -------------------------------------------------------------------
 Thu Feb 17 11:47:41 CET 2022 - jgonzalez@suse.com

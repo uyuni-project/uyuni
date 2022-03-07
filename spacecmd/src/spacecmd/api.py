@@ -92,7 +92,10 @@ def do_api(self, args):
         return
 
     try:
-        res = api(self.session, *api_args)
+        if api_name in ['api.getVersion', 'api.systemVersion']:
+            res = api(*api_args)
+        else:
+            res = api(self.session, *api_args)
 
         if not isinstance(res, list):
             res = [res]

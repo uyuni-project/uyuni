@@ -22,6 +22,7 @@ import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCUpdateSystemJson;
 
 import java.util.List;
 
@@ -87,6 +88,16 @@ public interface SCCClient {
      * @throws SCCClientException
      */
     SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
+            throws SCCClientException;
+
+    /**
+     * Update multiple clients in SCC
+     * @param systems system data to update
+     * @param username the username
+     * @param password the password
+     * @throws SCCClientException
+     */
+    void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
             throws SCCClientException;
 
     /**

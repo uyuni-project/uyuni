@@ -30,7 +30,7 @@ from uyuni.common import rhn_mpm
 from uyuni.common.rhn_pkg import package_from_filename, get_package_header
 from uyuni.common.usix import raise_with_tb
 from up2date_client import rhnserver
-from rhn.i18n import sstr
+from rhn.stringutils import sstr
 from rhnpush import rhnpush_cache
 
 if sys.version_info[0] == 3:

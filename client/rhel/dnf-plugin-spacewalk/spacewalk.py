@@ -33,7 +33,7 @@ import up2date_client.up2dateAuth
 import up2date_client.config
 import up2date_client.rhnChannel
 import up2date_client.rhnPackageInfo
-from rhn.i18n import ustr
+from rhn.stringutils import ustr
 from up2date_client import up2dateErrors
 
 STORED_CHANNELS_NAME = '_spacewalk.json'

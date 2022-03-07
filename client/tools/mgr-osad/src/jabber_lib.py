@@ -31,7 +31,7 @@ except ImportError: # python 3
     from osad.rhn_log import log_debug, log_error
 
 from uyuni.common.usix import raise_with_tb
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 
 import warnings
 try:

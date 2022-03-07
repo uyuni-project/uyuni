@@ -30,7 +30,7 @@ import os
 
 import socket
 import select
-from rhn.i18n import bstr
+from rhn.stringutils import bstr
 import sys
 
 DEFAULT_TIMEOUT = 120

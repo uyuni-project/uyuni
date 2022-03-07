@@ -1531,7 +1531,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * Tests finding an empty profile by hostname and HW addresses.
      */
     public void testFindByHostnameAndHwAddrs() throws Exception {
-        String hwAddr = "11:22:33:44:55:66";
+        String hwAddr = "11:22:AA:bb:55:66";
         MinionServer minion = createEmptyProfile(of("myhost"), of(hwAddr));
 
         // lookup by hostname should match
@@ -1551,7 +1551,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // lookup by hostname and HW addrs should match
         Set<String> moreAddrs = new HashSet<>();
-        moreAddrs.add(hwAddr);
+        // Change mac address case to validate case insensitive match
+        moreAddrs.add("11:22:aa:BB:55:66");
         moreAddrs.add("11:22:33:44:55:77");
         List<MinionServer> fromDb4 = SystemManager.findMatchingEmptyProfiles(of("myhost"), moreAddrs);
         assertEquals(1, fromDb4.size());

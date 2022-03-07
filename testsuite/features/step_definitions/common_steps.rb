@@ -709,7 +709,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
-  force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
+  force_bundle = $use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
