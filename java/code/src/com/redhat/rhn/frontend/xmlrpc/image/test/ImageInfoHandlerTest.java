@@ -143,7 +143,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
             assertEquals("Image already exists.", e.getMessage());
         }
 
-        ImageInfoFactory.delete(info.get());
+        ImageInfoFactory.delete(info.get(), saltServiceMock);
         ret = handler.importImage(admin, "my-external-image", "1.0",
                 server.getId().intValue(), store.getLabel(), "", getNow());
         assertTrue(ret > 0);

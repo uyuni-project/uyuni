@@ -1592,6 +1592,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
         }});
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
@@ -1600,9 +1604,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
 
-        doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
-            // reload imgInfo to get the files
-            info = TestUtils.reload(info);
+        ImageInfo image = doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
             // name and version is updated from the Kiwi build result
             assertEquals("POS_Image_JeOS6", info.getName());
             assertEquals("6.0.0", info.getVersion());
@@ -1613,6 +1615,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
                 info.getImageFiles().stream().findFirst().get().getFile());
         });
+        ImageInfoFactory.delete(image, saltServiceMock);
+        HibernateFactory.getSession().flush();
     }
 
     public void testKiwiImageInspect() throws Exception {
@@ -1629,6 +1633,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
         }});
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
@@ -1636,14 +1644,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", (info) -> {
+        ImageInfo image = doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
 
-            Pillar pillar = user.getOrg().getPillars().stream()
-                .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
-                .findFirst()
-                .get();
+            Pillar pillar = info.getPillar();
 
             Map<String, Object> map = pillar.getPillar();
 
@@ -1661,6 +1666,18 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
+
+        String category = "Image" + image.getId();
+
+        HibernateFactory.getSession().flush();
+
+        ImageInfoFactory.delete(image, saltServiceMock);
+
+        HibernateFactory.getSession().flush();
+
+        assertFalse(user.getOrg().getPillars().stream()
+                   .filter(item -> (("Image" + image.getId()).equals(item.getCategory())))
+                   .findAny().isPresent());
     }
 
     public void testKiwiImageInspectCompressedImage() throws Exception {
@@ -1740,9 +1757,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertNotNull(imgInfo);
 
         // other assertions after build
-        assertions.accept(imgInfoBuild.get());
+        assertions.accept(imgInfo);
 
-        return imgInfoBuild.get();
+        return imgInfo;
     }
 
     private ImageInfo doTestKiwiImageInspect(MinionServer server, ImageProfile profile,

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.image;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -332,7 +333,7 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        ImageInfoFactory.deleteWithObsoletes(opt.get());
+        ImageInfoFactory.deleteWithObsoletes(opt.get(), GlobalInstanceHolder.SALT_API);
         return 1;
     }
 

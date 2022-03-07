@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.image;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -29,6 +28,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
@@ -272,9 +272,8 @@ public class ImageInfoFactory extends HibernateFactory {
         instance.saveObject(imageInfo);
     }
 
-    private static void removeImageFile(String path) {
-        GlobalInstanceHolder.SALT_API
-                .removeFile(Paths.get(path))
+    private static void removeImageFile(String path, SaltApi saltApi) {
+        saltApi.removeFile(Paths.get(path))
                 .orElseThrow(() -> new IllegalStateException("Can't remove image file " + path));
     }
 
@@ -282,9 +281,10 @@ public class ImageInfoFactory extends HibernateFactory {
      * Delete a {@link DeltaImageInfo}.
      *
      * @param delta the delta image info to delete
+     * @param saltApi the SaltApi used to delete the related file
      */
-    public static void deleteDeltaImage(DeltaImageInfo delta) {
-        removeImageFile(OSImageStoreUtils.getDeltaImageFilePath(delta));
+    public static void deleteDeltaImage(DeltaImageInfo delta, SaltApi saltApi) {
+        removeImageFile(OSImageStoreUtils.getDeltaImageFilePath(delta), saltApi);
         instance.removeObject(delta);
     }
 
@@ -292,14 +292,16 @@ public class ImageInfoFactory extends HibernateFactory {
      * Delete a {@link ImageInfo}.
      *
      * @param imageInfo the image info to delete
+     * @param saltApi the SaltApi used to delete the related file
      */
-    public static void delete(ImageInfo imageInfo) {
-        imageInfo.getDeltaSourceFor().stream().forEach(ImageInfoFactory::deleteDeltaImage);
-        imageInfo.getDeltaTargetFor().stream().forEach(ImageInfoFactory::deleteDeltaImage);
+    public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
+        imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+        imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
 
+        // delete files
         imageInfo.getImageFiles().stream().forEach(f -> {
             if (!f.isExternal()) {
-                removeImageFile(OSImageStoreUtils.getOSImageFilePath(f));
+                removeImageFile(OSImageStoreUtils.getOSImageFilePath(f), saltApi);
             }
         });
         instance.removeObject(imageInfo);
@@ -310,8 +312,9 @@ public class ImageInfoFactory extends HibernateFactory {
      *  same name, version and store.
      *
      * @param image the image info to delete
+     * @param saltApi the SaltApi used to delete the related file
      */
-    public static void deleteWithObsoletes(ImageInfo image) {
+    public static void deleteWithObsoletes(ImageInfo image, SaltApi saltApi) {
         if (!image.isObsolete() && image.isBuilt()) {
             CriteriaBuilder builder = getSession().getCriteriaBuilder();
             CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
@@ -322,10 +325,10 @@ public class ImageInfoFactory extends HibernateFactory {
                     builder.equal(root.get("store"), image.getStore().getId()),
                     builder.isTrue(root.get("obsolete"))));
             getSession().createQuery(query).getResultList().stream().forEach(obsImage -> {
-                delete(obsImage);
+                delete(obsImage, saltApi);
             });
         }
-        delete(image);
+        delete(image, saltApi);
     }
 
     /**

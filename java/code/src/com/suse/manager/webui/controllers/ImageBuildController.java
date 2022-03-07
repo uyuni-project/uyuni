@@ -23,6 +23,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static com.suse.utils.Json.GSON;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -796,7 +797,7 @@ public class ImageBuildController {
             return json(res, ResultJson.error("not_found"));
         }
 
-        images.forEach(ImageInfoFactory::deleteWithObsoletes);
+        images.forEach(info -> ImageInfoFactory.deleteWithObsoletes(info, GlobalInstanceHolder.SALT_API));
         return json(res, ResultJson.success(images.size()));
     }
 
