@@ -817,8 +817,10 @@ When(/^I enable repositories before installing Docker$/) do
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  if PROVIDER != 'aws'
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
@@ -829,7 +831,7 @@ When(/^I enable repositories before installing Docker$/) do
   end
 
   # Containers
-  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER != 'aws'
+  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER == 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -843,9 +845,12 @@ When(/^I disable repositories after installing Docker$/) do
   # Distribution
   repos = PROVIDER != 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --disable #{repos}")
+
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  if PROVIDER != 'aws'
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
@@ -856,7 +861,7 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   # Containers
-  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER != 'aws'
+  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER == 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
