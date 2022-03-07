@@ -831,7 +831,7 @@ When(/^I enable repositories before installing Docker$/) do
   end
 
   # Containers
-  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER == 'aws'
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || PROVIDER == 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -861,7 +861,7 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   # Containers
-  unless ( os_family =~ /^opensuse/ || os_version =~ /^11/ ) && PROVIDER == 'aws'
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || PROVIDER == 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
