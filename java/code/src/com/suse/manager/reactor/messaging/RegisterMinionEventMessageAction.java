@@ -574,6 +574,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .get("hwaddr_interfaces").orElse(Collections.emptyMap());
         return hwInterfaces.values().stream()
                 .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
+                .map(String::toLowerCase)
                 .collect(Collectors.toSet());
     }
 
