@@ -196,9 +196,29 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     /**
+     * Constructor to use for unit testing
+     *
+     * @param client Salt client
+     */
+    public SaltService(SaltClient client) {
+        asyncHttpClient = null;
+        saltClient = client;
+        saltSSHService = new SaltSSHService(saltClient, SaltActionChainGeneratorService.INSTANCE);
+        defaultBatch = Batch.custom().withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
+                .withDelay(ConfigDefaults.get().getSaltBatchDelay())
+                .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
+                .withPresencePingGatherJobTimeout(ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
+                .build();
+    }
+
+    /**
      * Close the opened resources when the service is no longer needed
      */
     public void close() {
+        if (asyncHttpClient == null) {
+            return;
+        }
+
         try {
             asyncHttpClient.close();
         }
