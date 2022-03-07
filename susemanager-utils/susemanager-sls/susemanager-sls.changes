@@ -1,3 +1,7 @@
+- Improve `pkgset` beacon with using `salt.cache`
+  to notify about the changes made while the minion was stopped
+- Align the code of pkgset beacon to prevent warnings (bsc#1194464)
+
 -------------------------------------------------------------------
 Thu Mar 03 17:34:12 CET 2022 - jmassaguerpla@suse.de
 
