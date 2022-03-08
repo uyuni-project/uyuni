@@ -2,7 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ page import="com.redhat.rhn.common.conf.Config" %>
+<%@ page import="com.redhat.rhn.common.conf.ConfigDefaults" %>
 
 <html:html>
     <body>

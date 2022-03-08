@@ -2,6 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ page import="com.redhat.rhn.common.conf.ConfigDefaults" %>
 
 <html:html >
 
@@ -14,7 +15,7 @@
         <bean:message key="cobbler.jsp.summary1"/>
     </p>
     <p>
-        <bean:message key="cobbler.jsp.summary2" arg0="@SHAREDSERVDIR@" arg1="@CUSTOMSERVDIR@" />
+        <bean:message key="cobbler.jsp.summary2" arg0="${ConfigDefaults.get().getSharedServiceDir()}" arg1="${ConfigDefaults.get().getLocalServiceDir()}" />
     </p>
     <p>
         <bean:message key="cobbler.jsp.summary3"/>
