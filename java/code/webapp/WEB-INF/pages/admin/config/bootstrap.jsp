@@ -10,7 +10,7 @@
                      helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/bootstrap-script.html">
             <bean:message key="bootstrap.jsp.toolbar"/>
         </rhn:toolbar>
-        <p><bean:message key="bootstrap.jsp.summary" arg0="${Config.get().getString('documentroot')}"/></p>
+        <p><bean:message key="bootstrap.jsp.summary" arg0="${ConfigDefaults.get().getDocumentRoot()}"/></p>
         <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/sat_config.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <div class="panel panel-default">
             <div class="panel-heading">
