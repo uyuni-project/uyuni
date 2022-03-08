@@ -1,4 +1,4 @@
-#!BuildTag: proxy-httpd:latest proxy-httpd:%PKG_VERSION% proxy-httpd:%PKG_VERSION%.%RELEASE% proxy-httpd:beta
+#!BuildTag: uyuni/proxy-httpd:latest uyuni/proxy-httpd:%PKG_VERSION% uyuni/proxy-httpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-httpd:beta
 
 FROM registry.suse.com/suse/sle15:15.3
 
