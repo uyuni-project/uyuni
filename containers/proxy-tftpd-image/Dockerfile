@@ -1,4 +1,4 @@
-#!BuildTag: proxy-tftpd:latest proxy-tftpd:%PKG_VERSION% proxy-tftpd:%PKG_VERSION%.%RELEASE% proxy-tftpd:beta
+#!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:%PKG_VERSION% uyuni/proxy-tftpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-tftpd:beta
 
 FROM registry.suse.com/suse/sle15:15.3
 

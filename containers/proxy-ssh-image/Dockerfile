@@ -1,4 +1,4 @@
-#!BuildTag: proxy-ssh:latest proxy-ssh:%PKG_VERSION% proxy-ssh:%PKG_VERSION%.%RELEASE% proxy-ssh:beta
+#!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:%PKG_VERSION% uyuni/proxy-ssh:%PKG_VERSION%.%RELEASE% uyuni/proxy-ssh:beta
 
 FROM registry.suse.com/suse/sle15:15.3
 
