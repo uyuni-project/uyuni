@@ -54,7 +54,7 @@ public abstract class RepomdWriter {
      * @param writer content writer
      * @param shouldEscape says whether write output shall be escaped
      */
-    public RepomdWriter(Writer writer, boolean shouldEscape) {
+    protected RepomdWriter(Writer writer, boolean shouldEscape) {
 
         OutputFormat of = new OutputFormat();
         of.setPreserveSpace(true);

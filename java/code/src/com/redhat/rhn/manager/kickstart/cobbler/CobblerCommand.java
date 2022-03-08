@@ -55,7 +55,7 @@ public abstract class CobblerCommand {
      * Construct a CobblerCommand
      * @param userIn - xmlrpc token for cobbler
      */
-    public CobblerCommand(User userIn) {
+    protected CobblerCommand(User userIn) {
         if (userIn == null) {
             xmlRpcToken = IntegrationService.get().getAuthToken(
                 ConfigDefaults.get().getCobblerAutomatedUser());
@@ -77,7 +77,7 @@ public abstract class CobblerCommand {
      * Construct a CobblerCommand without using authentication
      *  This should only be used for taskomatic!
      */
-    public CobblerCommand() {
+    protected CobblerCommand() {
         this(null);
     }
 

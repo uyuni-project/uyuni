@@ -135,7 +135,7 @@ public abstract class ProjectSource {
     /**
      * Standard constructor
      */
-    public ProjectSource() {
+    protected ProjectSource() {
         state = State.ATTACHED;
     }
 
@@ -143,7 +143,7 @@ public abstract class ProjectSource {
      * Standard constructor
      * @param project the ContentProject
      */
-    public ProjectSource(ContentProject project) {
+    protected ProjectSource(ContentProject project) {
         this();
         this.contentProject = project;
     }

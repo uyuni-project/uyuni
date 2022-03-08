@@ -27,7 +27,7 @@ public abstract class BaseHandler implements AclHandler {
     /**
      *
      */
-    public BaseHandler() {
+    protected BaseHandler() {
         super();
     }
 

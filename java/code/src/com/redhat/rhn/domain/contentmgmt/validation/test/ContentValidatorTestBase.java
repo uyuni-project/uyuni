@@ -48,7 +48,7 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
 
     private ContentManager manager;
 
-    public ContentValidatorTestBase() {
+    protected ContentValidatorTestBase() {
         loc = LocalizationService.getInstance();
     }
 

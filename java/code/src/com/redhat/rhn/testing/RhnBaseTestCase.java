@@ -51,14 +51,14 @@ public abstract class RhnBaseTestCase extends TestCase {
      * Constructs a TestCase with the given name.
      * @param name Name of TestCase.
      */
-    public RhnBaseTestCase(String name) {
+    protected RhnBaseTestCase(String name) {
         super(name);
     }
 
     /**
      * Default Constructor
      */
-    public RhnBaseTestCase() {
+    protected RhnBaseTestCase() {
         super();
         MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
     }

@@ -78,7 +78,7 @@ public abstract class EnvironmentTarget {
     /**
      * Standard constructor
      */
-    public EnvironmentTarget() {
+    protected EnvironmentTarget() {
         status = Status.NEW;
     }
 
@@ -87,7 +87,7 @@ public abstract class EnvironmentTarget {
      *
      * @param contentEnvironmentIn the Environment
      */
-    public EnvironmentTarget(ContentEnvironment contentEnvironmentIn) {
+    protected EnvironmentTarget(ContentEnvironment contentEnvironmentIn) {
         this();
         this.contentEnvironment = contentEnvironmentIn;
     }

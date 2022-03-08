@@ -41,12 +41,12 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     /**
      * @param name The test case name
      */
-    public AuthenticationServiceAbstractTestCase(String name) {
+    protected AuthenticationServiceAbstractTestCase(String name) {
         super(name);
     }
 
 
-    public AuthenticationServiceAbstractTestCase() {
+    protected AuthenticationServiceAbstractTestCase() {
     }
 
     /**

@@ -47,7 +47,7 @@ public abstract class DocWriter {
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
+    protected DocWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
         output = outputIn;
         templates = templatesIn;
         product = productIn;

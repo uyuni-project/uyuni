@@ -44,7 +44,7 @@ public abstract class SsmPackageEvent implements EventDatabaseMessage {
      *            <code>null</code>
      * @param actionChainIn the selected Action Chain or null
      */
-    public SsmPackageEvent(Long userIdIn, Date earliestIn, ActionChain actionChainIn) {
+    protected SsmPackageEvent(Long userIdIn, Date earliestIn, ActionChain actionChainIn) {
 
         if (userIdIn == null) {
             throw new IllegalArgumentException("userIdIn cannot be null");

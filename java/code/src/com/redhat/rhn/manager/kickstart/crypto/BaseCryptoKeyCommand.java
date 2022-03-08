@@ -30,7 +30,7 @@ public abstract class BaseCryptoKeyCommand {
     /**
      * Constructor
      */
-    public BaseCryptoKeyCommand() {
+    protected BaseCryptoKeyCommand() {
     }
 
     /**
