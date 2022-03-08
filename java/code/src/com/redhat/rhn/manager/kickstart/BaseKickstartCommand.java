@@ -43,7 +43,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
      * @param userIn Logged in User
      *
      */
-    public BaseKickstartCommand(Long ksidIn, User userIn) {
+    protected BaseKickstartCommand(Long ksidIn, User userIn) {
         this(KickstartFactory
                 .lookupKickstartDataByIdAndOrg(userIn.getOrg(), ksidIn), userIn);
 
@@ -56,7 +56,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
      * @param userIn Logged in User
      *
      */
-    public BaseKickstartCommand(KickstartData data, User userIn) {
+    protected BaseKickstartCommand(KickstartData data, User userIn) {
         super();
         this.ksdata = data;
         this.user = userIn;

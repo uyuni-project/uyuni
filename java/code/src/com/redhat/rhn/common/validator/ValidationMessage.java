@@ -30,7 +30,7 @@ public abstract class ValidationMessage {
      * @param keyIn the key to use to lookup the localized string
      * @param valuesIn the values to substitute in the message
      */
-     public ValidationMessage(String keyIn, Object... valuesIn) {
+    protected ValidationMessage(String keyIn, Object... valuesIn) {
          this.key = keyIn;
          this.values = valuesIn;
      }
@@ -40,7 +40,7 @@ public abstract class ValidationMessage {
       * l10n key
       * @param keyIn the key to use to lookup the localized string
       */
-     public ValidationMessage(String keyIn) {
+     protected ValidationMessage(String keyIn) {
          this(keyIn, (Object[])null);
      }
 
