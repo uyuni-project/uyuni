@@ -150,15 +150,21 @@ class RepoSyncTest(unittest.TestCase):
                       "repo_plugins.bad-repo-type_src.\n",
                       self.stderr.getvalue())
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_success_no_regen(self):
         rs = _init_reposync(self.reposync)
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
           {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, None)
         rs = _mock_sync(self.reposync, rs)
-        rs.sync()
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            rs.sync()
 
         self.assertEqual(rs.repo_plugin.call_args[0],
                 (('http://none.host/bogus-url', 'bogus-url', True, True)))
@@ -176,41 +182,59 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.called)
         self.assertFalse(self.reposync.taskomatic.add_to_erratacache_queue.called)
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_success_regen(self):
         rs = _init_reposync(self.reposync)
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, {})
         rs = _mock_sync(self.reposync, rs)
         rs.regen = True
-        rs.sync()
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            rs.sync()
 
         self.assertEqual(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,
                          ((["Label"], [], "server.app.yumreposync"), {}))
         self.assertEqual(self.reposync.taskomatic.add_to_erratacache_queue.call_args,
                          (("Label", ), {}))
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):
         rs = self._create_mocked_reposync()
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
         rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
         rs.sendErrorMail = Mock()
 
-        etime, ret = rs.sync()
-        self.assertEqual(-1, ret)
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            etime, ret = rs.sync()
+            self.assertEqual(-1, ret)
         self.assertEqual(rs.sendErrorMail.call_args,
-                         (("anony-error", ), {}))
+                     (("anony-error", ), {}))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         rs.sendErrorMail = Mock()
-        etime, ret = rs.sync()
-        self.assertEqual(-1, ret)
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            etime, ret = rs.sync()
+            self.assertEqual(-1, ret)
 
         error_string = self.reposync.log.call_args[0][1]
         assert (error_string.startswith('Traceback') and
@@ -684,6 +708,7 @@ class SyncTest(unittest.TestCase):
         self.addCleanup(module_patcher.stop)
         self.addCleanup(class_patcher.stop)
 
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_pass_multiple_urls_params(self):
         from spacewalk.satellite_tools.reposync import RepoSync
         urls = ['http://some.url', 'http://some-other.url']
@@ -693,7 +718,13 @@ class SyncTest(unittest.TestCase):
             url=urls
         )
         repo_sync = _mock_sync(spacewalk.satellite_tools.reposync, repo_sync)
-        repo_sync.sync()
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
+
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            repo_sync.sync()
 
     @patch('spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials')
     def test_set_repo_credentials_with_multiple_urls(self, mocked_method):
@@ -891,6 +922,7 @@ class RunScriptTest(unittest.TestCase):
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
 
+@patch("uyuni.common.context_managers.initCFG", Mock())
 def test_channel_exceptions():
     """Test raising all the different exceptions when syncing"""
     # the only way to write a test generator with nose is if we put it
@@ -899,6 +931,10 @@ def test_channel_exceptions():
     repoSync.os = Mock()
     repoSync.rhnSQL.initDB = Mock()
     repoSync.rhnSQL.commit = Mock()
+    CFG = Mock()
+    CFG.MOUNT_POINT = '/tmp'
+    CFG.PREPENDED_DIR = ''
+    CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
     _mock_rhnsql(
         repoSync,
@@ -916,8 +952,9 @@ def test_channel_exceptions():
         (yum_src.RepoMDError, "RepoMDError")]:
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
-        _, ret = rs.sync()
-        assert ret == -1
+        with patch("uyuni.common.context_managers.CFG", CFG):
+            _, ret = rs.sync()
+            assert ret == -1
         assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"), ), {})
 
 def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
@@ -988,11 +1025,6 @@ def _mock_sync(reposync, rs):
 
     rs.update_date = Mock()
 
-    reposync.initCFG = Mock()
-    reposync.CFG = Mock()
-    reposync.CFG.MOUNT_POINT = '/tmp'
-    reposync.CFG.PREPENDED_DIR = ''
-    reposync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
     reposync.fileutils.createPath = Mock()
     reposync.os.walk = Mock(return_value=[])
     reposync.subprocess.call = Mock()
