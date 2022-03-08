@@ -723,12 +723,14 @@ type=rpm-md
         path = None
         with open(repomd_path, 'rb') as repomd:
             for _, elem in etree.iterparse(repomd):
-                if elem.tag.endswith("data") and elem.attrib.get("type") == tag:
-                    path = get_location_from_xml_element(elem)
-                    break
-        if not path:
+                if elem.tag.endswith("data") and elem.attrib.get("type").startswith(tag):
+                    path = os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame,
+                            get_location_from_xml_element(elem))
+                    if os.path.exists(path):
+                        break
+        if not path or not os.path.exists(path):
             return None
-        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, path)
+        return path
 
     def _get_repodata_path(self):
         """
@@ -1245,10 +1247,26 @@ type=rpm-md
         pass
 
     def _decompress(self, filename):
+        outname = filename
         if filename.endswith('.gz'):
             return gzip.open(filename)
         elif filename.endswith('.bz2'):
             return bz2.open(filename)
         elif filename.endswith('.xz'):
             return lzma.open(filename)
-        return open(filename, 'rt')
+        elif filename.endswith('.zck'):
+            outname = filename[:-4]
+            with open(outname, "w") as outfile:
+                process = subprocess.run(['/usr/bin/unzck', '-c', filename ], stdout=outfile, stderr=subprocess.PIPE)
+                if process.returncode:
+                    if process.stderr:
+                        raise RepoMDError("Decompressing failed.\n{}".format(sstr(process.stderr)))
+                    raise RepoMDError("Decompressing failed.")
+        elif filename.endswith('.zst'):
+            outname = filename[:-4]
+            process = subprocess.run(['/usr/bin/zstd', '-d', '-o', outname, filename], stderr=subprocess.PIPE)
+            if process.returncode:
+                if process.stderr:
+                    raise RepoMDError("Decompressing failed.\n{}".format(sstr(process.stderr)))
+                raise RepoMDError("Decompressing failed.")
+        return open(outname, 'rt')

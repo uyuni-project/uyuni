@@ -250,6 +250,9 @@ Requires:       cobbler >= 3.0.0
 Requires:       %{m2crypto}
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
+Recommends:     zchunk
+Recommends:     zstd
+
 
 %description tools
 Various utilities for the Spacewalk Server.
