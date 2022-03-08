@@ -11,8 +11,8 @@
 
 from mock import Mock, patch
 
-from spacewalk.satellite_tools.download import ThreadedDownloader, pycurl
-
+from spacewalk.satellite_tools.download import ThreadedDownloader, PyCurlFileObjectThread, pycurl
+from urlgrabber.grabber import URLGrabberOptions
 
 class NoKeyErrorsDict(dict):
     """Like a dict that is only accessed by .get(key)"""
@@ -48,3 +48,30 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
 
         curl_spy.setopt.assert_any_call(pycurl.LOW_SPEED_LIMIT, 42)
         curl_spy.setopt.assert_any_call(pycurl.LOW_SPEED_TIME, 42)
+
+
+@patch("uyuni.common.context_managers.initCFG", Mock())
+@patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
+@patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
+@patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
+@patch("spacewalk.satellite_tools.download.os.path.isfile", Mock(return_value=False))
+def test_reposync_configured_http_proxy_passed_to_urlgrabber():
+    http_proxy = 'http://proxy.example.com:8080'
+    opts = URLGrabberOptions(proxy=None, proxies={'http': http_proxy, 'https': http_proxy, 'ftp': http_proxy})
+    url = "https://download.opensuse.org"
+
+    CFG = Mock()
+    CFG.http_proxy = http_proxy
+    CFG.REPOSYNC_TIMEOUT = 42
+    CFG.REPOSYNC_MINRATE = 42
+    CFG.REPOSYNC_DOWNLOAD_THREADS = 42 # Throws ValueError if not defined
+
+    curl_spy = Mock()
+
+    with patch(
+        "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
+    ), patch("uyuni.common.context_managers.CFG", CFG):
+
+        pycurlobj = PyCurlFileObjectThread(url, "file.rpm", opts, curl_spy, None)
+        assert pycurlobj.opts.proxy == http_proxy
+

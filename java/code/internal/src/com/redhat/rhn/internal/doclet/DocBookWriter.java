@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.internal.doclet;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +41,7 @@ public class DocBookWriter extends DocWriter {
     /**
      * {@inheritDoc}
      */
-    public void write(List<Handler> handlers,
-            Map<String, String> serializers) throws Exception {
+    public void write(List<Handler> handlers, Map<String, String> serializers) throws IOException {
 
         // First macro-tize the serializer's docs
         renderSerializers(templates, serializers);
@@ -69,21 +69,20 @@ public class DocBookWriter extends DocWriter {
      * @return string containing DocBook XML markup
      */
     public static String transcode(String string) {
-        String ret = "";
         // Remove href, italic and br
-        ret = string.replaceAll("<a [^>]*>", "");
-        ret = ret.replaceAll("</a>", "");
-        ret = ret.replaceAll("<i>", "");
-        ret = ret.replaceAll("</i>", "");
-        ret = ret.replaceAll("<br/>", "</para><para>");
-        ret = ret.replaceAll("<br>", "</para><para>");
+        String ret = string.replaceAll("<a [^>]*>", "");
+        ret = ret.replace("</a>", "");
+        ret = ret.replace("<i>", "");
+        ret = ret.replace("</i>", "");
+        ret = ret.replace("<br/>", "</para><para>");
+        ret = ret.replace("<br>", "</para><para>");
         // Transform lists
-        ret = ret.replaceAll("<ul>", "</para><itemizedlist>");
-        ret = ret.replaceAll("</ul>", "</itemizedlist><para>");
-        ret = ret.replaceAll("<li>", "<listitem><para>");
-        ret = ret.replaceAll("</li>", "</para></listitem>");
+        ret = ret.replace("<ul>", "</para><itemizedlist>");
+        ret = ret.replace("</ul>", "</itemizedlist><para>");
+        ret = ret.replace("<li>", "<listitem><para>");
+        ret = ret.replace("</li>", "</para></listitem>");
         // Remove arbitrary stuff
-        ret = ret.replaceAll("<Specified System>", "Specified System");
+        ret = ret.replace("<Specified System>", "Specified System");
         return ret;
     }
 }

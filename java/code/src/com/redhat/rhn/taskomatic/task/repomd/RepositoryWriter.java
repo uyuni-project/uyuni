@@ -39,7 +39,7 @@ public abstract class RepositoryWriter {
      * @param mountPointIn mount point package resides
      * @param cmdExecutorIn {@link Executor} instance to run system commands
      */
-    public RepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
+    protected RepositoryWriter(String pathPrefixIn, String mountPointIn, Executor cmdExecutorIn) {
         this.pathPrefix = pathPrefixIn;
         this.mountPoint = mountPointIn;
         this.cmdExecutor = cmdExecutorIn;

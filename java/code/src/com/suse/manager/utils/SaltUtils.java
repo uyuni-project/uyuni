@@ -647,7 +647,8 @@ public class SaltUtils {
 
     private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
             boolean success) {
-        ApplyStatesAction applyStatesAction = (ApplyStatesAction)serverAction.getParentAction();
+        ApplyStatesAction applyStatesAction =
+                (ApplyStatesAction)HibernateFactory.unproxy(serverAction.getParentAction());
 
         // Revisit the action status if test=true
         if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {

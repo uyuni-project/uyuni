@@ -68,7 +68,7 @@ public abstract class ConfigFileData {
     /**
      * Constructor for COnfigFIleData
      */
-    public ConfigFileData() {
+    protected ConfigFileData() {
         setPermissions("644");
         setOwner("root");
         setGroup("root");

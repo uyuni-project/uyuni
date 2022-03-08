@@ -90,13 +90,13 @@ public abstract class AnsiblePath extends BaseDomainHelper {
     /**
      * Standard constructor
      */
-    public AnsiblePath() { }
+    protected AnsiblePath() { }
 
     /**
      * Standard constructor
      * @param minionServerIn the minion server
      */
-    public AnsiblePath(MinionServer minionServerIn) {
+    protected AnsiblePath(MinionServer minionServerIn) {
         this.minionServer = minionServerIn;
     }
 

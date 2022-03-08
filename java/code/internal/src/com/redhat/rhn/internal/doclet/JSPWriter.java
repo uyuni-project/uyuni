@@ -16,6 +16,7 @@
 package com.redhat.rhn.internal.doclet;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +43,7 @@ public class JSPWriter extends DocWriter {
      *
      * {@inheritDoc}
      */
-    public void write(List<Handler> handlers,
-            Map<String, String> serializers) throws Exception {
+    public void write(List<Handler> handlers, Map<String, String> serializers) throws IOException {
 
         // Create the handlers folder
         String handlersDir = output + "/handlers/";

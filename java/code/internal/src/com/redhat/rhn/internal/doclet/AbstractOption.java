@@ -35,10 +35,10 @@ public abstract class AbstractOption implements Doclet.Option {
      * @param descriptionIn help text for the option
      * @param parametersIn parameters names
      */
-    public AbstractOption(String nameIn,
-            boolean hasArgIn,
-            String descriptionIn,
-            String parametersIn) {
+    protected AbstractOption(String nameIn,
+                             boolean hasArgIn,
+                             String descriptionIn,
+                             String parametersIn) {
         this.name = nameIn;
         this.hasArg = hasArgIn;
         this.description = descriptionIn;
