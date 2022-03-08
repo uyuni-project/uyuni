@@ -838,11 +838,7 @@ public class ConfigDefaults {
      * @return document root directory
      */
     public String getDocumentRoot() {
-        String documentrootString = Config.get().getString(HTTP_DOCUMENT_ROOT);
-        if (documentrootString == null) {
-            // Return SUSE default location if not set up.
-            return "/srv/www/htdocs";
-        }
+        String documentrootString = Config.get().getString(HTTP_DOCUMENT_ROOT, "/srv/www/htdocs");
         return documentrootString;
     }
 
