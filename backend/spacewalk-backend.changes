@@ -1,3 +1,5 @@
+- implement more decompression algorithms for reposync (bsc#1196704)
+
 -------------------------------------------------------------------
 Wed Jan 12 16:03:15 CET 2022 - jmassaguerpla@suse.de
 
