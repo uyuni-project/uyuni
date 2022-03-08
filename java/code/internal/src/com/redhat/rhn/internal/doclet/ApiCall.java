@@ -16,6 +16,7 @@ package com.redhat.rhn.internal.doclet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.lang.model.element.ExecutableElement;
 
@@ -197,15 +198,6 @@ public class ApiCall implements Comparable<ApiCall> {
 
 
     /**
-     *
-     * {@inheritDoc}
-     */
-    public int compareTo(ApiCall o) {
-        return this.getName().compareTo(o.getName());
-    }
-
-
-    /**
      * Get the method
      * @return the method
      */
@@ -236,5 +228,30 @@ public class ApiCall implements Comparable<ApiCall> {
      */
     public void setIgnored() {
         this.ignored = true;
+    }
+
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+        ApiCall apiCall = (ApiCall) oIn;
+        return Objects.equals(name, apiCall.name);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+
+    @Override
+    public int compareTo(ApiCall o) {
+        return this.getName().compareTo(o.getName());
     }
 }
