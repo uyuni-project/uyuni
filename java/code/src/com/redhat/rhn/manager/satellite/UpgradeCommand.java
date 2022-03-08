@@ -317,7 +317,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     }
 
     /**
-     * Regenerate all minion custom SLS files (@SHAREDSERVDIR@/susemanager/salt/custom/custom_*.sls) according to
+     * Regenerate all minion custom SLS files (/srv/susemanager/salt/custom/custom_*.sls) according to
      * the information stored on the database.
      */
     private void refreshCustomSlsFiles() {

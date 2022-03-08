@@ -132,11 +132,6 @@
 
   <target name="init-install" depends="set-default-config-dir">
     <property name="installbuild" value="true" />
-    <property name="customserverdir" value="/srv" />
-    <property name="sharedserverdir" value="/srv" />
-    <replace file="code/src/com/suse/manager/webui/services/SaltConstants.java" token="@SHAREDSERVDIR@" value="${sharedserverdir}" />
-    <replace file="code/webapp/WEB-INF/pages/admin/config/cobbler.jsp" token="@SHAREDSERVDIR@" value="${sharedserverdir}" />
-    <replace file="code/webapp/WEB-INF/pages/admin/config/cobbler.jsp" token="@CUSTOMSERVDIR@" value="${customserverdir}" />
   </target>
 
   <target name="cctarget"

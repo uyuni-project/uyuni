@@ -98,7 +98,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
     public void refreshFiles() throws IOException {
         Path tempSaltRootPath = null;
         try {
-            // generate org and group files to temp dir @SHAREDSERVDIR@/susemanager/tmp/saltXXXX
+            // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
             Files.createDirectories(saltGenerationTempDir);
             tempSaltRootPath = Files
                     .createTempDirectory(saltGenerationTempDir, "salt");
@@ -137,8 +137,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             Path tempCustomPath = tempSaltRootPath
                     .resolve(SALT_CONFIG_STATES_DIR);
 
-            // copy @SHAREDSERVDIR@/susemanager/salt/custom/custom_*.sls
-            // to @SHAREDSERVDIR@/susemanager/tmpXXXX/salt/custom
+            // copy /srv/susemanager/salt/custom/custom_*.sls
+            // to /srv/susemanager/tmpXXXX/salt/custom
             if (Files.exists(saltPath)) {
                 for (Path serverSls : Files.newDirectoryStream(saltPath,
                         SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
@@ -149,20 +149,20 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                 }
             }
 
-            // rm -rf @SHAREDSERVDIR@/susemanager/tmp/custom_todelete
+            // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
-            // mv @SHAREDSERVDIR@/susemanager/salt/custom -> @SHAREDSERVDIR@/susemanager/tmp/custom_todelete
+            // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
             if (Files.exists(saltPath)) {
                 Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
             }
-            // mv @SHAREDSERVDIR@/susemanager/tmp/saltXXXX/custom -> @SHAREDSERVDIR@/susemanager/salt/custom
+            // mv /srv/susemanager/tmp/saltXXXX/custom -> /srv/susemanager/salt/custom
             if (Files.exists(tempCustomPath)) {
                 // this condition is needed only at setup time when there are no orgs yet
                 Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
                 setAttributes(saltPath, "tomcat", "susemanager",
                         Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
             }
-            // rm -rf @SHAREDSERVDIR@/susemanager/tmp/custom_todelete
+            // rm -rf /srv/susemanager/tmp/custom_todelete
             if (Files.exists(oldSaltPath)) {
                 FileUtils.deleteDirectory(oldSaltPath.toFile());
             }

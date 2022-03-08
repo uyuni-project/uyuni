@@ -70,7 +70,7 @@ public class ConfigChannelSaltManager {
 
     /**
      * No arg constructor. Will initialize {@link #baseDirPath} with
-     * '@SHAREDSERVDIR@/susemanager/salt'.
+     * '/srv/susemanager/salt'.
      */
     private ConfigChannelSaltManager() {
         this.baseDirPath = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;

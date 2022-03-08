@@ -79,7 +79,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     }
 
     public void testDoExecuteNoCustomDir() throws Exception {
-        // no @SHAREDSERVDIR@/susemanager/salt/custom
+        // no /srv/susemanager/salt/custom
         Files.deleteIfExists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
         assertFalse(Files.exists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)));
 
