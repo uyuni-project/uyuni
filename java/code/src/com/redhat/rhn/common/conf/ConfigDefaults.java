@@ -199,7 +199,7 @@ public class ConfigDefaults {
     private static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS = "java.taskomatic_channel_repodata_workers";
 
     /**
-     * HTTP defauls
+     * HTTP defaults
      */
     private static final String HTTP_DOCUMENT_ROOT = "documentroot";
 
@@ -211,6 +211,13 @@ public class ConfigDefaults {
     private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
     private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
+
+    /**
+     * Service folders
+     */
+    private static final String SHARED_SERVICE_DIR = "shared_service_dir";
+    private static final String LOCAL_SERVICE_DIR = "local_service_dir";
+
 
     /**
      * SUSE Manager defaults
@@ -840,6 +847,24 @@ public class ConfigDefaults {
     public String getDocumentRoot() {
         String documentrootString = Config.get().getString(HTTP_DOCUMENT_ROOT, "/srv/www/htdocs");
         return documentrootString;
+    }
+
+    /**
+     * Get the shared service directory.
+     * @return shared service directory
+     */
+    public String getSharedServiceDir() {
+        String sharedServiceDirString = Config.get().getString(SHARED_SERVICE_DIR, "/srv");
+        return sharedServiceDirString;
+    }
+
+    /**
+     * Get the local service directory.
+     * @return local service directory
+     */
+    public String getLocalServiceDir() {
+        String localServiceDirString = Config.get().getString(LOCAL_SERVICE_DIR, "/srv");
+        return localServiceDirString;
     }
 
     /**

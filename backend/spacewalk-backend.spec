@@ -32,8 +32,10 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
+%global localservicedir %{_localstatedir}
 %global documentroot %{_localstatedir}/www/html 
 %global m2crypto python3-m2crypto
+%global sharedservicedir %{_sharedstatedir}
 %global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
 %endif
 
@@ -42,8 +44,10 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
+%global localservicedir /srv
 %global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
+%global sharedservicedir /srv
 %global sslrootcert %{_sysconfdir}/pki/trust/anchors/
 %endif
 
@@ -331,6 +335,10 @@ sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefau
 sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#LOCAL_SERVICE_DIR#|%{localservicedir}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#SHARED_SERVICE_DIR#|%{sharedservicedir}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+
+
 
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*

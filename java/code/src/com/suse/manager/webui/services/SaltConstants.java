@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 /**
  * Various constants related to Salt.
  */
@@ -21,13 +23,13 @@ public class SaltConstants {
 
     private SaltConstants() { }
 
-    public static final String SUMA_STATE_FILES_ROOT_PATH = "@SHAREDSERVDIR@/susemanager/salt";
+    public static final String SUMA_STATE_FILES_ROOT_PATH = ConfigDefaults.get().getSharedServiceDir() + "/susemanager/salt";
 
-    public static final String SUMA_PILLAR_DATA_PATH = "@SHAREDSERVDIR@/susemanager/pillar_data";
+    public static final String SUMA_PILLAR_DATA_PATH = ConfigDefaults.get().getSharedServiceDir() + "/susemanager/pillar_data";
 
-    public static final String SUMA_PILLAR_IMAGES_DATA_PATH = "@SHAREDSERVDIR@/susemanager/pillar_data/images";
+    public static final String SUMA_PILLAR_IMAGES_DATA_PATH = ConfigDefaults.get().getSharedServiceDir() + "/susemanager/pillar_data/images";
 
-    public static final String SALT_FILE_GENERATION_TEMP_PATH = "@SHAREDSERVDIR@/susemanager/tmp";
+    public static final String SALT_FILE_GENERATION_TEMP_PATH = ConfigDefaults.get().getSharedServiceDir() + "/susemanager/tmp";
 
     public static final String SALT_SSH_DIR_PATH = "/var/lib/salt/.ssh";
 
@@ -51,7 +53,7 @@ public class SaltConstants {
 
     public static final String SALT_PACKAGES_STATES_DIR = "packages";
 
-    public static final String LEGACY_STATES_BACKUP = "@SHAREDSERVDIR@/susemanager/legacy_states";
+    public static final String LEGACY_STATES_BACKUP = ConfigDefaults.get().getSharedServiceDir() + "/susemanager/legacy_states";
 
     public static final String SCRIPTS_DIR = "scripts";
 
