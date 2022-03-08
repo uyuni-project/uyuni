@@ -1,3 +1,5 @@
+- Adjust sync_post_tftpd_proxies module to cobbler >= 3.3.1
+
 -------------------------------------------------------------------
 Mon Aug 09 11:11:44 CEST 2021 - jgonzalez@suse.com
 
