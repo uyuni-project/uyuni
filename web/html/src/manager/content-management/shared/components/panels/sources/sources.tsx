@@ -53,7 +53,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
 };
 
 const renderSourceEntry = (source) => {
-  const unsyncedPatches = source.hasUnsyncedPatches ? "(" + t("has unsynchronized patches") + ")" : "";
+  const unsyncedPatches = source.hasUnsyncedPatches ? "<a target="_blank" href="/rhn/channels/manage/errata/SyncErrata.do?cid=" + source.targetChannelId + ">(" + t("has unsynchronized patches") + ")</a>" : "";
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
       // TODO: If you touch this code, please make sure the `href` property here is obsolete and remove it
