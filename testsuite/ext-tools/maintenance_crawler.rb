@@ -11,12 +11,12 @@ require 'nokogiri'
 
 class MaintenanceCrawler
 
-  def initialize(mi_number, options = {})
+  def initialize(root_url, options = {})
     @verbose = options[:verbose]
-    @thread_count = options[:thread_count]
     @architecture = options[:architecture]
-    
-    @root_url = "http://download.suse.de/download/ibs/SUSE:/Maintenance:/#{mi_number}/"
+    @thread_count = options[:thread_count]
+    @thread_count ||= 1
+    @root_url = root_url
   end
 
   # Perform the site crawl
@@ -121,7 +121,7 @@ class MaintenanceCrawler
     return nil if url.nil? or url.empty? or url.include? '../' or not url.include? './'
 
     bad_matches = [
-      /^(http(?!#{Regexp.escape @root_url.gsub('http','')})|\/\/)/, # Discard external links
+      /^(http(?!#{Regexp.escape @root_url.gsub("http","")})|\/\/)/, # Discard external links
       /^mailto/, # Discard mailto links
       /^tel/, # Discard telephone
       /^javascript/ # Discard javascript triggers
@@ -163,19 +163,18 @@ end
 # Gather Command Line Options
 options = {}
 options[:verbose] = false
-options[:thread_count] = 1
 options[:architecture] = 'x86_64'
 
 opt_parser = OptionParser.new do |opt|
-  opt.banner = 'Usage: simple_crawler MI_Number [OPTIONS]'
-  opt.separator  ''
-  opt.separator  'Options'
+  opt.banner = "Usage: maintenance_crawler list_MI_numbers(separated by comma) [OPTIONS]"
+  opt.separator  ""
+  opt.separator  "Options"
 
-  opt.on('-t n', '--thread-count=n', OptionParser::DecimalInteger, 'Process using a thread pool of size n') do |thread_count|
+  opt.on("-t n","--thread-count=n", OptionParser::DecimalInteger, "Process using a thread pool of size n") do |thread_count|
     options[:thread_count] = thread_count
   end
 
-  opt.on('-v', '--verbose', 'show all urls processed') do
+  opt.on("-v","--verbose","show all urls processed") do
     options[:verbose] = true
   end
 
@@ -183,7 +182,7 @@ opt_parser = OptionParser.new do |opt|
     options[:architecture] = architecture
   end
 
-  opt.on('-h', '--help', 'help (show this)') do
+  opt.on("-h","--help","help (show this)") do
     puts opt_parser
     exit
   end
@@ -192,14 +191,16 @@ end
 # Run crawler
 opt_parser.parse!
 
-# Require Maintenance Incidence Number
+# Require domain
 if ARGV.count < 1
   puts opt_parser
   exit
 end
 
-# Crawl domain URL
-mi_number = ARGV[0]
-c = MaintenanceCrawler.new(mi_number, options)
-c.crawl
-puts c.get_repos
+# Crawl Maintenance Incidences
+mi_numbers = ARGV[0]
+mi_numbers.split(',').each do |mi_number|
+  c = MaintenanceCrawler.new("http://download.suse.de/download/ibs/SUSE:/Maintenance:/#{mi_number}/", options)
+  c.crawl
+  puts c.get_repos
+end
