@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.vendor="Uyuni project"
 LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
 LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/proxy-squid:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="registry.opensuse.org/uyuni/proxy-squid:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
 # Squid
