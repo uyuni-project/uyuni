@@ -1,4 +1,4 @@
-#!BuildTag: proxy-salt-broker:latest proxy-salt-broker:%PKG_VERSION% proxy-salt-broker:%PKG_VERSION%.%RELEASE% proxy-salt-broker:beta
+#!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:%PKG_VERSION% uyuni/proxy-salt-broker:%PKG_VERSION%.%RELEASE% uyuni/proxy-salt-broker:beta
 
 FROM registry.suse.com/suse/sle15:15.3 AS fat
 
