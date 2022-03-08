@@ -9,17 +9,25 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
+  initial_time = Time.now
   result, return_code = node.run('hostname -f', check_errors: false)
+  end_time = Time.now
+  resolution_time = end_time - initial_time
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
+  raise "FQDN resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise 'hostname is not fully qualified' unless result == node.full_hostname
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
+  initial_time = Time.now
   result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
+  end_time = Time.now
+  resolution_time = end_time - initial_time
   result.delete!("\n")
   raise 'cannot do reverse resolution' unless return_code.zero?
+  raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
