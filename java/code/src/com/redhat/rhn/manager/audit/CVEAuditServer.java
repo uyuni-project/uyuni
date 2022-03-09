@@ -31,7 +31,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
     private PatchStatus patchStatus;
 
     // LinkedHashSet is used to preserve insertion order when iterating
-    private Set<ChannelIdNameLabelTriple> channels;
+    private Set<AuditChannelInfo> channels;
     private Set<ErrataIdAdvisoryPair> erratas;
 
     /**
@@ -43,7 +43,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * @param erratasIn errata
      */
     public CVEAuditServer(long idIn, String nameIn, PatchStatus statusIn,
-                          Set<ChannelIdNameLabelTriple> channelsIn,
+                          Set<AuditChannelInfo> channelsIn,
                           Set<ErrataIdAdvisoryPair> erratasIn) {
         this.id = idIn;
         this.name = nameIn;
@@ -93,7 +93,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the set of channels.
      * @return the channels
      */
-    public Set<ChannelIdNameLabelTriple> getChannels() {
+    public Set<AuditChannelInfo> getChannels() {
         return channels;
     }
 
