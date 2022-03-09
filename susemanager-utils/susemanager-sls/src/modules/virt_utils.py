@@ -3,7 +3,7 @@ virt utility functions
 """
 
 import logging
-from pathlib import Path
+import os
 import os.path
 import re
 import subprocess
@@ -43,7 +43,9 @@ def get_cluster_filesystem(path):
     :param path: the path to check
     :return: the matching Filesystem resource name or `None`
     """
-    resolved = Path(path).resolve()
+    resolved = os.readlink(path)
+    if not resolved.endswith("/"):
+        resolved += "/"
     try:
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
@@ -57,12 +59,8 @@ def get_cluster_filesystem(path):
                 if directory is None:
                     continue
                 directory_value = directory.get("value")
-                if directory_value:
-                    if (
-                        os.path.commonpath([str(resolved), directory_value])
-                        == directory_value
-                    ):
-                        return resource.get("id")
+                if directory_value and resolved.startswith(directory_value):
+                    return resource.get("id")
     except OSError as err:
         log.debug("Failed to get cluster resource name for path, %s: %s", path, err)
 

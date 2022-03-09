@@ -36,7 +36,7 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
      * Construct a command with a User.
      * @param userIn to use.
      */
-    public BaseFileListEditCommand(User userIn) {
+    protected BaseFileListEditCommand(User userIn) {
         super();
         this.user = userIn;
     }

@@ -30,7 +30,7 @@ public abstract class BaseConfigureCommand {
      * user requesting the config.
      * @param userIn who wants to config the sat.
      */
-    public BaseConfigureCommand(User userIn) {
+    protected BaseConfigureCommand(User userIn) {
         this.user = userIn;
 
         if (!this.user.hasRole(RoleFactory.SAT_ADMIN)) {

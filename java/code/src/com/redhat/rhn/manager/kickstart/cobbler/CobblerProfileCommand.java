@@ -50,7 +50,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
      * @param ksDataIn - KickstartData to sync
      * @param userIn - user wanting to sync with cobbler
      */
-    public CobblerProfileCommand(KickstartData ksDataIn, User userIn) {
+    protected CobblerProfileCommand(KickstartData ksDataIn, User userIn) {
         super(userIn);
         this.ksData = ksDataIn;
     }
@@ -62,7 +62,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
      *
      * @param ksDataIn - KickstartData to sync
      */
-    public CobblerProfileCommand(KickstartData ksDataIn) {
+    protected CobblerProfileCommand(KickstartData ksDataIn) {
         super();
         this.ksData = ksDataIn;
     }

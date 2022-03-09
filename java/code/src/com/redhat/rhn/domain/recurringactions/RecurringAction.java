@@ -70,7 +70,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     /**
      * Standard constructor
      */
-    public RecurringAction() { }
+    protected RecurringAction() { }
 
     /**
      * Constructor
@@ -79,7 +79,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @param isActive if action is active
      * @param creatorIn the creator User
      */
-    public RecurringAction(boolean test, boolean isActive, User creatorIn) {
+    protected RecurringAction(boolean test, boolean isActive, User creatorIn) {
         this.testMode = test;
         this.active = isActive;
         this.creator = creatorIn;

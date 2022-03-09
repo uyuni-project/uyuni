@@ -28,6 +28,7 @@ import com.sun.source.util.DocTrees;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -133,12 +134,6 @@ public abstract class ApiDoclet implements Doclet {
     protected ApiDoclet() {
     }
 
-    @Override
-    public abstract boolean run(DocletEnvironment docEnv);
-
-    @Override
-    public abstract String getName();
-
     /**
      * @return The documentation writer for the Doclet implementation
      * @param outputIn the folder where the result needs to be written
@@ -170,7 +165,6 @@ public abstract class ApiDoclet implements Doclet {
      * @param docEnv the doclet environment
      * @param docType 'jsp' or 'wiki'
      * @return boolean
-     * @throws Exception e
      */
     public boolean run(DocletEnvironment docEnv, String docType) {
         Set<TypeElement> classes = docEnv.getIncludedElements().stream()
@@ -191,26 +185,7 @@ public abstract class ApiDoclet implements Doclet {
 
             log("Processing handler: " + clas.getSimpleName().toString());
 
-            new DocTreeScanner<Void, Handler>() {
-                public Void visitUnknownBlockTag(UnknownBlockTagTree node, Handler handler) {
-                    log("Visiting unknown tag: " + node.getTagName());
-                    if (node.getTagName().equals(XMLRPC_IGNORE)) {
-                        handler.setIgnored();
-                        return null;
-                    }
-
-                    String text = new TextExtractor().scan(node.getContent(), null);
-                    if (node.getTagName().equals(XMLRPC_NAMESPACE)) {
-                        log("Handler Namespace content: " + text);
-                        handler.setName(text);
-                    }
-                    else if (node.getTagName().equals(XMLRPC_DOC)) {
-                        log("Handler Doc content: " + text);
-                        handler.setDesc(text);
-                    }
-                    return null;
-                }
-            }.scan(docTree.getBlockTags(), handler);
+            new HandlerDoctreeScanner().scan(docTree.getBlockTags(), handler);
 
             if (handler.isIgnored()) {
                 continue;
@@ -228,62 +203,20 @@ public abstract class ApiDoclet implements Doclet {
                 clas.getEnclosedElements().stream()
                     .filter(enclosed -> enclosed.getKind().equals(ElementKind.METHOD) &&
                                         enclosed.getModifiers().contains(Modifier.PUBLIC))
-                    .map(element -> {
-                        ApiCall call = new SimpleElementVisitor9<ApiCall, Void>() {
+                    .map(element -> new SimpleElementVisitor9<ApiCall, Void>() {
+                            @Override
                             public ApiCall visitExecutable(ExecutableElement executable, Void p) {
                                 log("Visiting executable: " + executable.getSimpleName().toString());
                                 ApiCall call = new ApiCall(executable);
                                 call.setName(executable.getSimpleName().toString());
 
-                                new DocTreeScanner<Void, Void>() {
-                                    public Void visitDeprecated(DeprecatedTree node, Void ignore) {
-                                        call.setDeprecated(true);
-                                        String text = new TextExtractor().scan(node.getBody(), null);
-                                        call.setDeprecatedReason(text);
-                                        return null;
-                                    }
-
-                                    public Void visitSince(SinceTree node, Void ignore) {
-                                        call.setSinceAvailable(true);
-                                        String text = new TextExtractor().scan(node.getBody(), null);
-                                        call.setSinceVersion(text);
-                                        return null;
-                                    }
-
-                                    public Void visitUnknownBlockTag(UnknownBlockTagTree node, Void ignore) {
-                                        log("Visiting unknown tag: " + node.getTagName());
-                                        if (node.getTagName().equals(XMLRPC_IGNORE)) {
-                                            call.setIgnored();
-                                            return null;
-                                        }
-
-                                        String rawText = new TextExtractor().scan(node.getContent(), null);
-                                        String text = rawText;
-                                        if (docType.equals("docbook")) {
-                                            text = DocBookWriter.transcode(rawText);
-                                        }
-
-                                        if (node.getTagName().equals(XMLRPC_DOC)) {
-                                            log("Call Doc content: " + text);
-                                            call.setDoc(text);
-                                        }
-                                        else if (node.getTagName().equals(XMLRPC_PARAM)) {
-                                            log("Call Param content: " + text);
-                                            call.addParam(text);
-                                        }
-                                        else if (node.getTagName().equals(XMLRPC_RETURN)) {
-                                            log("Call Return content: " + rawText);
-                                            call.setReturnDoc(rawText);
-                                        }
-                                        return null;
-                                    }
-                                }.scan(docEnv.getDocTrees().getDocCommentTree(executable).getBlockTags(), null);
+                                new CallDoctreeScanner(docType).
+                                        scan(docEnv.getDocTrees().getDocCommentTree(executable).getBlockTags(), call);
 
                                 return call;
                             }
-                        }.visit(element);
-                        return call;
-                    })
+                        }.visit(element)
+                    )
                 .filter(call -> !call.isIgnored())
                 .collect(Collectors.toList()));
 
@@ -322,6 +255,7 @@ public abstract class ApiDoclet implements Doclet {
 
         for (TypeElement clas : classes) {
             String doc = new DocTreeScanner<String, Void>() {
+                @Override
                 public String visitUnknownBlockTag(UnknownBlockTagTree node, Void ignore) {
                     if (node.getTagName().equals(XMLRPC_DOC)) {
                         String text = new TextExtractor().scan(node.getContent(), null);
@@ -331,6 +265,7 @@ public abstract class ApiDoclet implements Doclet {
                     return null;
                 }
 
+                @Override
                 public String reduce(String r1, String r2) {
                     return (r1 == null ? "" : r1) + (r2 == null ? "" : r2);
                 }
@@ -348,10 +283,11 @@ public abstract class ApiDoclet implements Doclet {
         return classes.stream()
             .filter(clazz -> clazz.getSuperclass() != null &&
                     types.asElement(clazz.getSuperclass()).getSimpleName().contentEquals("BaseHandler"))
-            .sorted((o1, o2) -> o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString()))
+            .sorted(Comparator.comparing(oIn -> oIn.getSimpleName().toString()))
             .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("java:S106")
     private void log(String msg) {
         if (debug) {
             System.err.println(msg);
@@ -361,7 +297,7 @@ public abstract class ApiDoclet implements Doclet {
     /**
      * DocTree scanner extracting everything as on string
      */
-    class TextExtractor extends DocTreeScanner<String, Void> {
+    static class TextExtractor extends DocTreeScanner<String, Void> {
         @Override
         public String visitText(TextTree node, Void p) {
             return node.getBody();
@@ -377,8 +313,88 @@ public abstract class ApiDoclet implements Doclet {
             return node.getName().toString();
         }
 
+        @Override
         public String reduce(String r1, String r2) {
             return (r2 == null ? "" : r2) + (r1 == null ? "" : r1);
+        }
+    }
+
+    private class HandlerDoctreeScanner extends DocTreeScanner<Void, Handler> {
+        @Override
+        public Void visitUnknownBlockTag(UnknownBlockTagTree node, Handler handler) {
+            log("Visiting unknown tag: " + node.getTagName());
+            if (node.getTagName().equals(XMLRPC_IGNORE)) {
+                handler.setIgnored();
+                return null;
+            }
+
+            String text = new TextExtractor().scan(node.getContent(), null);
+            if (node.getTagName().equals(XMLRPC_NAMESPACE)) {
+                log("Handler Namespace content: " + text);
+                handler.setName(text);
+            }
+            else if (node.getTagName().equals(XMLRPC_DOC)) {
+                log("Handler Doc content: " + text);
+                handler.setDesc(text);
+            }
+            return null;
+        }
+    }
+
+    private class CallDoctreeScanner extends DocTreeScanner<Void, ApiCall> {
+
+        private final String docType;
+
+        CallDoctreeScanner(String docTypeIn) {
+            docType = docTypeIn;
+        }
+
+        @Override
+        public Void visitDeprecated(DeprecatedTree node, ApiCall call) {
+            call.setDeprecated(true);
+            String text = new TextExtractor().scan(node.getBody(), null);
+            call.setDeprecatedReason(text);
+            return null;
+        }
+
+        @Override
+        public Void visitSince(SinceTree node, ApiCall call) {
+            call.setSinceAvailable(true);
+            String text = new TextExtractor().scan(node.getBody(), null);
+            call.setSinceVersion(text);
+            return null;
+        }
+
+        @Override
+        public Void visitUnknownBlockTag(UnknownBlockTagTree node, ApiCall call) {
+            log("Visiting unknown tag: " + node.getTagName());
+            if (node.getTagName().equals(XMLRPC_IGNORE)) {
+                call.setIgnored();
+                return null;
+            }
+
+            String rawText = new TextExtractor().scan(node.getContent(), null);
+            String text = rawText;
+            if (docType.equals("docbook")) {
+                text = DocBookWriter.transcode(rawText);
+            }
+
+            switch (node.getTagName()) {
+                case XMLRPC_DOC:
+                    log("Call Doc content: " + text);
+                    call.setDoc(text);
+                    break;
+                case XMLRPC_PARAM:
+                    log("Call Param content: " + text);
+                    call.addParam(text);
+                    break;
+                case XMLRPC_RETURN:
+                    log("Call Return content: " + rawText);
+                    call.setReturnDoc(rawText);
+                    break;
+                default:
+            }
+            return null;
         }
     }
 }

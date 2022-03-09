@@ -14,12 +14,15 @@
  */
 package com.suse.scc.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -30,10 +33,12 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCUpdateSystemJson;
 
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +53,12 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Server testSystem = ServerTestUtils.createTestSystem();
+        ServerInfo serverInfo = testSystem.getServerInfo();
+        serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        testSystem.setServerInfo(serverInfo);
+
         SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
                 new URI("https://localhost"), "username", "password", "uuid")) {
             @Override
@@ -56,6 +66,7 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
                     throws SCCClientException {
                 assertEquals("username", username);
                 assertEquals("password", password);
+                assertEquals(new Date(0), system.getLastSeenAt());
                 return new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L);
             }
 
@@ -76,7 +87,9 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setUsername("username");
         credentials.setPassword("password");
+        credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
+
         sccSystemRegistrationManager.register(testSystems, credentials);
         List<SCCRegCacheItem> afterRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
         assertEquals(allUnregistered.size() - 1, afterRegistration.size());
@@ -113,4 +126,122 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         assertEquals(0, itemsAfterDeregistration.size());
     }
 
+    public void testUpdateSystems() throws Exception {
+        Path tmpSaltRoot = Files.createTempDirectory("salt");
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
+                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
+        Server testSystem = ServerTestUtils.createTestSystem();
+        ServerInfo serverInfo = testSystem.getServerInfo();
+        serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        testSystem.setServerInfo(serverInfo);
+
+        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
+                new URI("https://localhost"), "username", "password", "uuid")) {
+            @Override
+            public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
+                    throws SCCClientException {
+                assertEquals("username", username);
+                assertEquals("password", password);
+                assertEquals(new Date(0), system.getLastSeenAt());
+                return new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L);
+            }
+
+            @Override
+            public void deleteSystem(long id, String username, String password) throws SCCClientException {
+                assertEquals(12345L, id);
+                assertEquals("username", username);
+                assertEquals("password", password);
+            }
+
+            @Override
+            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+                    throws SCCClientException {
+                assertEquals("username", username);
+                assertEquals("password", password);
+                assertEquals(new Date(0), systems.get(0).getLastSeenAt());
+            }
+        };
+
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCCachingFactory.initNewSystemsToForward();
+        List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
+        List<SCCRegCacheItem> testSystems = allUnregistered.stream()
+                .filter(i -> i.getOptServer().get().equals(testSystem))
+                .collect(Collectors.toList());
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setUsername("username");
+        credentials.setPassword("password");
+        credentials.setUrl("https://scc.suse.com");
+        CredentialsFactory.storeCredentials(credentials);
+        sccSystemRegistrationManager.register(testSystems, credentials);
+
+        sccSystemRegistrationManager.updateLastSeen();
+    }
+
+    public void testMassUpdateSystems() throws Exception {
+        Path tmpSaltRoot = Files.createTempDirectory("salt");
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
+                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
+
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, "5");
+
+        int c = 0;
+        while (c < 16) {
+            Server testSystem = ServerTestUtils.createTestSystem();
+            ServerInfo serverInfo = testSystem.getServerInfo();
+            serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+            testSystem.setServerInfo(serverInfo);
+            c += 1;
+        }
+
+        class TestSCCWebClient extends SCCWebClient {
+
+            protected int callCnt;
+
+            TestSCCWebClient(SCCConfig configIn) {
+                super(configIn);
+                callCnt = 0;
+            }
+
+        }
+
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
+                new URI("https://localhost"), "username", "password", "uuid")) {
+            @Override
+            public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
+                    throws SCCClientException {
+                return new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L);
+            }
+
+            @Override
+            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+                    throws SCCClientException {
+                callCnt += 1;
+                assertTrue("more requests then expected", callCnt <= 4);
+                if (callCnt < 4) {
+                    assertEquals(5, systems.size());
+                }
+                else {
+                    assertEquals(1, systems.size());
+                }
+            }
+        };
+
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCCachingFactory.initNewSystemsToForward();
+        List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
+        List<SCCRegCacheItem> testSystems = allUnregistered.stream()
+                .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
+                .collect(Collectors.toList());
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setUsername("username");
+        credentials.setPassword("password");
+        credentials.setUrl("https://scc.suse.com");
+        CredentialsFactory.storeCredentials(credentials);
+        sccSystemRegistrationManager.register(testSystems, credentials);
+
+        sccSystemRegistrationManager.updateLastSeen();
+    }
 }

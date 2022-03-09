@@ -39,7 +39,7 @@ public abstract class BaseDomainHelper {
     /**
      * Create a new empty object
      */
-    public BaseDomainHelper() {
+    protected BaseDomainHelper() {
     }
 
 

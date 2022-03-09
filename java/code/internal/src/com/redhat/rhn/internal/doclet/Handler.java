@@ -16,6 +16,7 @@ package com.redhat.rhn.internal.doclet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -87,14 +88,6 @@ public class Handler implements Comparable<Handler> {
     }
 
     /**
-     * adds an apicall to the list
-     * @param callIn the call to add
-     */
-    public void addApiCall(ApiCall callIn) {
-        calls.add(callIn);
-    }
-
-    /**
      * gets the description of the handler
      * @return the description
      */
@@ -125,15 +118,25 @@ public class Handler implements Comparable<Handler> {
         this.ignored = true;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    @Override
     public int compareTo(Handler o) {
         return this.getName().compareTo(o.getName());
     }
 
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+        Handler handler = (Handler) oIn;
+        return Objects.equals(name, handler.name);
+    }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
