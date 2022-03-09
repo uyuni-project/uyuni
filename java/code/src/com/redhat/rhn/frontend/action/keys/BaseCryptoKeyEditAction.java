@@ -66,12 +66,9 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException(
-                    "Only Org Admins or Configuration Admins can modify crypto keys");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.summary.acl.header"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.acl.reason5"));
-            throw pex;
+            throw new PermissionException("Only Org Admins or Configuration Admins can modify crypto keys",
+                        ls.getMessage("permission.jsp.summary.acl.header"),
+                        ls.getMessage("permission.jsp.summary.acl.reason5"));
         }
 
         DynaActionForm form = (DynaActionForm) formIn;

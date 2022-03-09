@@ -58,11 +58,8 @@ public class ScapFactory extends HibernateFactory {
         XccdfTestResult result = lookupTestResultById(xid);
         if (result == null || result.getServer().getId() != sid) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find XCCDF scan " +
-                    xid + " for system " + sid);
-
-            e.setLocalizedTitle(ls.getMessage("lookup.xccdfscan.title"));
-            throw e;
+            throw new LookupException("Could not find XCCDF scan " + xid + " for system " + sid,
+                    ls.getMessage("lookup.xccdfscan.title"), null, null);
         }
         return result;
     }

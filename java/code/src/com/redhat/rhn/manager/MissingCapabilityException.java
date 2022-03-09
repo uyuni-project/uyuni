@@ -27,8 +27,8 @@ public class MissingCapabilityException extends RhnRuntimeException {
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 1569955542059271165L;
-    private Server server;
-    private String  capability;
+    private final Server server;
+    private final String  capability;
 
     /**
      * Constructor for exception on missing capability on a bunch of servers.

@@ -26,9 +26,9 @@ public class DownloadException extends RhnRuntimeException {
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = -4736455302534983513L;
-    private String content;
-    private String url;
-    private int errorCode;
+    private final String content;
+    private final String url;
+    private final int errorCode;
     private static final String ERROR_TEMPLATE = "Error occurred while downloading " +
                                 "contents from [%s].\nHere are the contents of" +
                                  " the error\n [%s] \n \n error code = [%s]";
@@ -39,6 +39,9 @@ public class DownloadException extends RhnRuntimeException {
      */
     public DownloadException(String msg, Throwable t) {
         super(msg, t);
+        content = null;
+        url = null;
+        errorCode = 0;
     }
 
     /**

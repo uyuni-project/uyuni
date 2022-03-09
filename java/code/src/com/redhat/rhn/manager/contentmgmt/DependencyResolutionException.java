@@ -21,15 +21,6 @@ package com.redhat.rhn.manager.contentmgmt;
 public class DependencyResolutionException extends Exception {
 
     /**
-     * Initialize exception with a message
-     *
-     * @param message the exception message
-     */
-    public DependencyResolutionException(String message) {
-        super(message);
-    }
-
-    /**
      * Initialize exception with a message and a cause
      *
      * @param message the exception message

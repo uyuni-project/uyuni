@@ -673,11 +673,10 @@ public class ErrataManager extends BaseManager {
         // throw a lookup exception
         if (!notFoundIds.isEmpty()) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find errata: " + notFoundIds);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.errata"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.errata"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.errata"));
-            throw e;
+            throw new LookupException("Could not find errata: " + notFoundIds,
+                    ls.getMessage("lookup.jsp.title.errata"),
+                    ls.getMessage("lookup.jsp.reason1.errata"),
+                    ls.getMessage("lookup.jsp.reason2.errata"));
         }
 
         // The errata belongs to the users org

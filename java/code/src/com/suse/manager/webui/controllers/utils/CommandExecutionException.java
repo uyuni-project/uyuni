@@ -26,9 +26,9 @@ import java.util.StringJoiner;
  */
 public class CommandExecutionException extends Exception {
 
-    private Integer exitValue;
-    private String stdout;
-    private String stderr;
+    private final Integer exitValue;
+    private final String stdout;
+    private final String stderr;
 
     /**
      * Create an exception with a message and a subprocess handle. Detailed output will only be appended if the command
@@ -55,16 +55,28 @@ public class CommandExecutionException extends Exception {
         // Fill in output details if the process is finished
         if (!execProcess.isAlive()) {
             this.exitValue = execProcess.exitValue();
+            String out = null;
             try {
-                this.stdout = IOUtils.toString(execProcess.getInputStream(), StandardCharsets.UTF_8);
+                out = IOUtils.toString(execProcess.getInputStream(), StandardCharsets.UTF_8);
             }
             catch (IOException ignored) {
+                // Ignored
             }
+            stdout = out;
+
+            String err = null;
             try {
-                this.stderr = IOUtils.toString(execProcess.getErrorStream(), StandardCharsets.UTF_8);
+                err = IOUtils.toString(execProcess.getErrorStream(), StandardCharsets.UTF_8);
             }
             catch (IOException ignored) {
+                // Ignored
             }
+            stderr = err;
+        }
+        else {
+            stdout = null;
+            stderr = null;
+            exitValue = null;
         }
     }
 

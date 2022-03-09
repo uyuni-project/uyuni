@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.user.User;
  */
 public class DeleteSatAdminException extends RhnRuntimeException {
 
-    private User targetUser;
+    private final User targetUser;
 
     /**
      * Constructor

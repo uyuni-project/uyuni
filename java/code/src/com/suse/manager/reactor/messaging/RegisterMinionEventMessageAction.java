@@ -958,8 +958,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Represents an Exception during the registration process.
      */
     public class RegisterMinionException extends RuntimeException {
-        private String minionId;
-        private Org org;
+        private final String minionId;
+        private final Org org;
         RegisterMinionException(String minionIdIn, Org orgIn) {
             super();
             minionId = minionIdIn;

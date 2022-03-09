@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
  */
 public class RetractedErrataException extends RuntimeException  {
 
-    private List<Long> errataIds;
-
     /**
      * Constructor
      * @param errataIdsIn The retracted errata ids.
@@ -35,21 +33,5 @@ public class RetractedErrataException extends RuntimeException  {
         super(LocalizationService.getInstance().
                 getMessage("api.errata.retractederrata",
                         errataIdsIn.stream().map(Object::toString).collect(Collectors.joining(","))));
-    }
-
-    /**
-     * Constructor
-     * @param errataIdsIn The retracted errata ids.
-     * @param cause the cause
-     */
-    public RetractedErrataException(List<Long> errataIdsIn, Throwable cause) {
-        super(LocalizationService.getInstance().
-                getMessage("api.errata.retractederrata",
-                        errataIdsIn.stream().map(Object::toString).collect(Collectors.joining(","))),
-                cause);
-    }
-
-    public List<Long> getErrataIds() {
-        return errataIds;
     }
 }

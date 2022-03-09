@@ -55,11 +55,9 @@ public class RemoveMastersAction extends RhnAction {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(
-                            "Only satellite admins can remove known masters");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.iss.slave"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw new PermissionException("Only satellite admins can remove known masters",
+                    ls.getMessage("permission.jsp.title.iss.slave"),
+                    ls.getMessage("permission.jsp.summary.general"));
         }
 
         ActionForward destination = null;

@@ -25,7 +25,7 @@ public class InvalidRepoLabelException extends FaultException {
     /**
      * Indicates why the repository label is invalid.
      */
-    private Reason reason;
+    private final Reason reason;
 
     /**
      * Comment for <code>serialVersionUID</code>
@@ -37,9 +37,8 @@ public class InvalidRepoLabelException extends FaultException {
      * @param repoLabel Repository label already in use
      */
     public InvalidRepoLabelException(String repoLabel) {
-        super(2, "Repo label already in use", "edit.channel.repo.repolabelinuse",
+        super(2, repoLabel, "edit.channel.repo.repolabelinuse",
                 new Object[] {repoLabel});
-        this.label = repoLabel;
         this.reason = Reason.LABEL_IN_USE;
     }
 
@@ -55,17 +54,8 @@ public class InvalidRepoLabelException extends FaultException {
      */
     public InvalidRepoLabelException(String repoLabel, Reason reasonIn,
             String messageIdIn, String argIn) {
-        super(2, "invalidRepositoryLabel", messageIdIn, new Object[] {argIn});
-
-        this.label = repoLabel;
+        super(2, repoLabel, messageIdIn, new Object[] {argIn});
         this.reason = reasonIn;
-    }
-
-    /**
-     * @return invalid label that caused this exception; may be <code>null</code>
-     */
-    public String getLabel() {
-        return label;
     }
 
     /**

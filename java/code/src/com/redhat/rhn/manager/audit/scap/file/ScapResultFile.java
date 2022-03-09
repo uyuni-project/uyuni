@@ -86,10 +86,8 @@ public class ScapResultFile implements StreamInfo {
         catch (IOException e) {
             e.printStackTrace();
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException le = new LookupException("Could not server file '" +
-                filename + "' for XCCDF Scan " + testResult.getId());
-            le.setLocalizedTitle(ls.getMessage("lookup.scapfile.title"));
-            throw le;
+            throw new LookupException("Could not server file '" + filename + "' for XCCDF Scan " + testResult.getId(),
+                    ls.getMessage("lookup.scapfile.title"), null, null);
         }
     }
 

@@ -27,10 +27,9 @@ import com.redhat.rhn.common.localization.LocalizationService;
  */
 public class LookupException extends DatabaseException  {
 
-    private static LocalizationService lc = LocalizationService.getInstance();
-    private String localizedTitle;
-    private String localizedReason1;
-    private String localizedReason2;
+    private final String localizedTitle;
+    private final String localizedReason1;
+    private final String localizedReason2;
 
     /////////////////////////
     // Constructors
@@ -40,7 +39,19 @@ public class LookupException extends DatabaseException  {
      * @param message exception message
      */
     public LookupException(String message) {
-        super(message);
+        this(message, null, null, null, null);
+    }
+
+    /**
+     * Constructor
+     * @param message exception message
+     * @param localizedTitleIn the localized title
+     * @param localizedReason1In the localized first reason
+     * @param localizedReason2In the localized second reason
+     */
+    public LookupException(String message,
+                           String localizedTitleIn, String localizedReason1In, String localizedReason2In) {
+        this(message, null, localizedTitleIn, localizedReason1In, localizedReason2In);
     }
 
     /**
@@ -50,9 +61,16 @@ public class LookupException extends DatabaseException  {
      * by the Throwable.getCause() method). (A null value is
      * permitted, and indicates that the cause is nonexistent or
      * unknown.)
+     * @param localizedTitleIn the localized title
+     * @param localizedReason1In the localized first reason
+     * @param localizedReason2In the localized second reason
      */
-    public LookupException(String message, Throwable cause) {
+    public LookupException(String message, Throwable cause,
+                           String localizedTitleIn, String localizedReason1In, String localizedReason2In) {
         super(message, cause);
+        localizedTitle = localizedTitleIn;
+        localizedReason1 = localizedReason1In;
+        localizedReason2 = localizedReason2In;
     }
 
     /**
@@ -60,15 +78,7 @@ public class LookupException extends DatabaseException  {
      */
     public String getLocalizedReason1() {
         return localizedReason1 != null ?
-                localizedReason1 : lc.getMessage("lookup.default.reason1");
-    }
-
-
-    /**
-     * @param reason1KeyIn The localizedReason1 to set.
-     */
-    public void setLocalizedReason1(String reason1KeyIn) {
-        localizedReason1 = reason1KeyIn;
+                localizedReason1 : LocalizationService.getInstance().getMessage("lookup.default.reason1");
     }
 
 
@@ -77,15 +87,7 @@ public class LookupException extends DatabaseException  {
      */
     public String getLocalizedReason2() {
         return localizedReason2 != null ?
-                localizedReason2 : lc.getMessage("lookup.default.reason2");
-    }
-
-
-    /**
-     * @param reason2KeyIn The localizedReason2 to set.
-     */
-    public void setLocalizedReason2(String reason2KeyIn) {
-        localizedReason2 = reason2KeyIn;
+                localizedReason2 : LocalizationService.getInstance().getMessage("lookup.default.reason2");
     }
 
 
@@ -94,15 +96,6 @@ public class LookupException extends DatabaseException  {
      */
     public String getLocalizedTitle() {
         return localizedTitle != null ?
-                localizedTitle : lc.getMessage("lookup.default.title");
+                localizedTitle : LocalizationService.getInstance().getMessage("lookup.default.title");
     }
-
-
-    /**
-     * @param titleKeyIn The localizedTitle to set.
-     */
-    public void setLocalizedTitle(String titleKeyIn) {
-        localizedTitle = titleKeyIn;
-    }
-
 }

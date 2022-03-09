@@ -20,8 +20,8 @@ package com.redhat.rhn.domain.contentmgmt.modulemd;
  */
 public class ConflictingStreamsException extends ModulemdApiException {
 
-    private Module module;
-    private Module other;
+    private final Module module;
+    private final Module other;
 
     /**
      * Initialize a new instance

@@ -16,9 +16,9 @@
 package com.redhat.rhn;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
-import com.redhat.rhn.common.validator.ValidatorWarning;
+
+import java.util.Optional;
 
 /**
  * Generic XML RPC fault
@@ -27,9 +27,9 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 public class FaultException extends RuntimeException  {
 
     private static final long serialVersionUID = -8293171315924454538L;
-    protected int errorCode;
-    protected String label;
-    protected Object [] arguments;
+    private final int errorCode;
+    private final String label;
+    private final transient Object [] arguments;
 
     /**
      * Constructor
@@ -41,6 +41,7 @@ public class FaultException extends RuntimeException  {
         super(message);
         this.errorCode =  error;
         this.label =  lbl;
+        this.arguments = null;
     }
 
     /**
@@ -72,6 +73,7 @@ public class FaultException extends RuntimeException  {
         // begin member variable initialization
         this.errorCode =  error;
         this.label =  lbl;
+        this.arguments = null;
     }
 
     /**
@@ -83,13 +85,15 @@ public class FaultException extends RuntimeException  {
      */
     public static FaultException create(int errorIn, String labelIn,
             ValidatorResult resultIn) {
-        for (ValidatorError ve : resultIn.getErrors()) {
-            return new FaultException(errorIn, labelIn, ve.getKey(), ve.getValues());
+        Optional<FaultException> e = resultIn.getErrors().stream().findFirst()
+                .map(ve -> new FaultException(errorIn, labelIn, ve.getKey(), ve.getValues()));
+        if (e.isPresent()) {
+            return e.get();
         }
-        for (ValidatorWarning vw : resultIn.getWarnings()) {
-            return new FaultException(errorIn, labelIn, vw.getKey(), vw.getValues());
-        }
-        return new FaultException(errorIn, labelIn, "");
+
+        e = resultIn.getWarnings().stream().findFirst()
+                .map(vw -> new FaultException(errorIn, labelIn, vw.getKey(), vw.getValues()));
+        return e.orElseGet(() -> new FaultException(errorIn, labelIn, ""));
     }
 
     /**
@@ -101,14 +105,6 @@ public class FaultException extends RuntimeException  {
     }
 
     /**
-     * Sets the errorCode to the given value.
-     * @param error error code
-     */
-    public void setErrorCode(int error) {
-        this.errorCode = error;
-    }
-
-    /**
      * Returns the value of label
      * @return String label
      */
@@ -117,27 +113,11 @@ public class FaultException extends RuntimeException  {
     }
 
     /**
-     * Sets the label to the given value.
-     * @param lbl error label
-     */
-    public void setLabel(String lbl) {
-        this.label = lbl;
-    }
-
-    /**
      * getter for exception arguments
      * @return arguments
      */
     public Object[] getArgs() {
         return arguments;
-    }
-
-    /**
-     * setter for exception arguments
-     * @param args arguments
-     */
-    public void setArgs(Object[] args) {
-        this.arguments = args;
     }
 
 }

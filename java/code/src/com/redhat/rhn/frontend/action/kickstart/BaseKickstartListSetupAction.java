@@ -50,12 +50,9 @@ public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException(
-                    "Only Org Admins or Configuration Admins can list kickstarts");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.summary.acl.header"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.acl.reason5"));
-            throw pex;
+            throw new PermissionException("Only Org Admins or Configuration Admins can list kickstarts",
+                    ls.getMessage("permission.jsp.summary.acl.header"),
+                    ls.getMessage("permission.jsp.summary.acl.reason5"));
         }
 
         return super.execute(mapping, formIn, request, response);

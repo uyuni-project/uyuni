@@ -29,7 +29,7 @@ public class InvalidChannelLabelException extends FaultException {
     /**
      * Indicates why the channel label is invalid.
      */
-    private Reason reason;
+    private final Reason reason;
 
     /**
      * Creates a new indication of a channel label issue that does not specify the reason
@@ -41,6 +41,7 @@ public class InvalidChannelLabelException extends FaultException {
      */
     public InvalidChannelLabelException() {
         super(1201, "invalidChannelLabel", "Invalid channel label");
+        reason = null;
     }
 
     /**
@@ -51,9 +52,7 @@ public class InvalidChannelLabelException extends FaultException {
      *                 <code>null</code>
      */
     public InvalidChannelLabelException(String labelIn, Reason reasonIn) {
-        super(1201, "invalidChannelLabel", "Invalid channel label");
-
-        this.label = labelIn;
+        super(1201, labelIn, "Invalid channel label");
         this.reason = reasonIn;
     }
 
@@ -70,17 +69,8 @@ public class InvalidChannelLabelException extends FaultException {
     public InvalidChannelLabelException(String labelIn, Reason reasonIn,
         String messageIdIn, String argIn) {
 
-        super(1201, "invalidChannelLabel", messageIdIn, new Object[] {argIn});
-
-        this.label = labelIn;
+        super(1201, labelIn, messageIdIn, new Object[] {argIn});
         this.reason = reasonIn;
-    }
-
-    /**
-     * @return invalid label that caused this exception; may be <code>null</code>
-     */
-    public String getLabel() {
-        return label;
     }
 
     /**

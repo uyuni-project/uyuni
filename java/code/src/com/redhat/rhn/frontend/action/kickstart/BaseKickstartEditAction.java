@@ -55,12 +55,9 @@ public abstract class BaseKickstartEditAction extends RhnAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException(
-                    "Only Org Admins or Configuration Admins can modify kickstarts");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.summary.acl.header"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.acl.reason5"));
-            throw pex;
+            throw new PermissionException("Only Org Admins or Configuration Admins can modify kickstarts",
+                    ls.getMessage("permission.jsp.summary.acl.header"),
+                    ls.getMessage("permission.jsp.summary.acl.reason5"));
         }
         String forwardname = RhnHelper.DEFAULT_FORWARD;
         DynaActionForm form = (DynaActionForm) formIn;

@@ -35,17 +35,14 @@ import com.redhat.rhn.frontend.html.HtmlTag;
  */
 public class PermissionException extends RhnRuntimeException  {
 
-    private String localizedTitle;
-    private String localizedSummary;
-
+    private final String localizedTitle;
+    private final String localizedSummary;
     /**
      * Constructor
      * @param message exception message
      */
     public PermissionException(String message) {
-        super(message);
-        // begin member variable initialization
-        setDefaults();
+        this(message, null, null);
     }
 
     /**
@@ -57,9 +54,7 @@ public class PermissionException extends RhnRuntimeException  {
      * unknown.)
      */
     public PermissionException(String message, Throwable cause) {
-        super(message, cause);
-        // begin member variable initialization
-        setDefaults();
+        this(message, cause, null, null);
     }
 
     /**
@@ -67,17 +62,55 @@ public class PermissionException extends RhnRuntimeException  {
      * @param role Cause for the exception (bad role)
      */
     public PermissionException(Role role) {
-        this("You do not have permissions to " +
-                "perform this action. You need to have at least a " + role.getName() +
-                                 " role to perform this action");
-        // begin member variable initialization
+        this(role, null, null);
     }
 
-    private void setDefaults() {
+    /**
+     * Constructor
+     * @param message exception message
+     * @param localizedTitleIn The localizedTitle to set.
+     * @param localizedSummaryIn The localizedSummary to set.
+     */
+    public PermissionException(String message, String localizedTitleIn, String localizedSummaryIn) {
+        super(message);
         LocalizationService ls = LocalizationService.getInstance();
-        //Set the default title.
-        setLocalizedTitle(ls.getMessage("permission.jsp.title.acl"));
 
+        localizedTitle = localizedTitleIn != null ? localizedTitleIn : ls.getMessage("permission.jsp.title.acl");
+        localizedSummary = localizedSummaryIn != null ? localizedSummaryIn : getDefaultSummary();
+    }
+
+    /**
+     * Constructor
+     * @param message exception message
+     * @param cause the cause (which is saved for later retrieval
+     * by the Throwable.getCause() method). (A null value is
+     * permitted, and indicates that the cause is nonexistent or
+     * unknown.)
+     * @param localizedTitleIn The localizedTitle to set.
+     * @param localizedSummaryIn The localizedSummary to set.
+     */
+    public PermissionException(String message, Throwable cause, String localizedTitleIn, String localizedSummaryIn) {
+        super(message, cause);
+        LocalizationService ls = LocalizationService.getInstance();
+
+        localizedTitle = localizedTitleIn != null ? localizedTitleIn : ls.getMessage("permission.jsp.title.acl");
+        localizedSummary = localizedSummaryIn != null ? localizedSummaryIn : getDefaultSummary();
+    }
+
+    /**
+     * Constructor
+     * @param role Cause for the exception (bad role)
+     * @param localizedTitleIn The localizedTitle to set.
+     * @param localizedSummaryIn The localizedSummary to set.
+     */
+    public PermissionException(Role role, String localizedTitleIn, String localizedSummaryIn) {
+        this("You do not have permissions to " +
+                "perform this action. You need to have at least a " + role.getName() +
+                                 " role to perform this action", localizedTitleIn, localizedSummaryIn);
+    }
+
+    private String getDefaultSummary() {
+        LocalizationService ls = LocalizationService.getInstance();
         //Set the summary. The default summary gives several reasons
         StringBuilder summary = new StringBuilder();
         summary.append(ls.getMessage("permission.jsp.summary.acl.header"));
@@ -87,7 +120,7 @@ public class PermissionException extends RhnRuntimeException  {
 
         //The second reason gives the minutes for a login session to expire.
         int seconds = Config.get().getInt(ConfigDefaults.WEB_SESSION_DATABASE_LIFETIME);
-        Integer minutes = seconds / 60;
+        int minutes = seconds / 60;
         String loginUrl = "/";
         addReason(ol, "permission.jsp.summary.acl.reason2",
                 new Object[] {minutes, loginUrl});
@@ -102,7 +135,7 @@ public class PermissionException extends RhnRuntimeException  {
 
         //finally set the summary.
         summary.append(ol.render());
-        setLocalizedSummary(summary.toString());
+        return summary.toString();
     }
 
     private void addReason(HtmlTag parent, String key, Object[] args) {
@@ -123,26 +156,9 @@ public class PermissionException extends RhnRuntimeException  {
 
 
     /**
-     * @param localizedSummaryIn The localizedSummary to set.
-     */
-    public void setLocalizedSummary(String localizedSummaryIn) {
-        localizedSummary = localizedSummaryIn;
-    }
-
-
-    /**
      * @return Returns the localizedTitle.
      */
     public String getLocalizedTitle() {
         return localizedTitle;
     }
-
-
-    /**
-     * @param localizedTitleIn The localizedTitle to set.
-     */
-    public void setLocalizedTitle(String localizedTitleIn) {
-        localizedTitle = localizedTitleIn;
-    }
-
 }

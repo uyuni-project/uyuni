@@ -1719,10 +1719,9 @@ public class PackageManager extends BaseManager {
             String msg = "User: " + user.getLogin() +
                     " does not have access to packages: " +
                     orgNoAccess;
-            PermissionException pex = new PermissionException(msg);
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.package"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.package"));
-            throw pex;
+            throw new PermissionException(msg,
+                    ls.getMessage("permission.jsp.title.package"),
+                    ls.getMessage("permission.jsp.summary.package"));
         }
         if (checkArchCompat && !archNonCompat.isEmpty()) {
             throw new IncompatibleArchException(channel.getChannelArch(), archNonCompat);

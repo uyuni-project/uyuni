@@ -48,10 +48,9 @@ public class DeleteUserSetupAction extends RhnAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("Missing Acl");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.deleteuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.deleteuser"));
-            throw pex;
+            throw new PermissionException("Missing Acl",
+                    ls.getMessage("permission.jsp.title.deleteuser"),
+                    ls.getMessage("permission.jsp.summary.deleteuser"));
         }
         Long uid = requestContext.getRequiredParam("uid");
 

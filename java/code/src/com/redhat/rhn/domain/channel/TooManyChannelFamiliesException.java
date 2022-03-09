@@ -29,35 +29,18 @@ import com.redhat.rhn.common.RhnRuntimeException;
  */
 public class TooManyChannelFamiliesException extends RhnRuntimeException  {
 
-    private Long chanId;
+    private final Long chanId;
 
     /////////////////////////
     // Constructors
     /////////////////////////
-        /**
+    /**
      * Constructor
      * @param channelId channel id
      * @param message exception message
      */
     public TooManyChannelFamiliesException(Long channelId, String message) {
         super(message);
-        // begin member variable initialization
-        this.chanId =  channelId;
-    }
-
-        /**
-     * Constructor
-     * @param channelId channel id
-     * @param message exception message
-     * @param cause the cause (which is saved for later retrieval
-     * by the Throwable.getCause() method). (A null value is
-     * permitted, and indicates that the cause is nonexistent or
-     * unknown.)
-     */
-    public TooManyChannelFamiliesException(Long channelId, String message,
-            Throwable cause) {
-        super(message, cause);
-        // begin member variable initialization
         this.chanId =  channelId;
     }
 
@@ -71,13 +54,4 @@ public class TooManyChannelFamiliesException extends RhnRuntimeException  {
     public Long getChannelId() {
         return chanId;
     }
-
-    /**
-     * Sets the channelId to the given value.
-     * @param channelId channel id
-     */
-    public void setChannelId(Long channelId) {
-        this.chanId = channelId;
-    }
-
 }

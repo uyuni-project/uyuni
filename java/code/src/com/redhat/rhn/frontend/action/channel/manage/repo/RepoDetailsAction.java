@@ -189,12 +189,10 @@ public class RepoDetailsAction extends RhnAction {
                     context.getCurrentUser().getOrg());
             if (repo == null) {
                 LocalizationService ls = LocalizationService.getInstance();
-                LookupException e = new LookupException("Repo with id " + context.getParamAsLong("id") +
-                        " does not exist");
-                e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.repo"));
-                e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.repo"));
-                e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.repo"));
-                throw e;
+                throw new LookupException("Repo with id " + context.getParamAsLong("id") + " does not exist",
+                        ls.getMessage("lookup.jsp.title.repo"),
+                        ls.getMessage("lookup.jsp.reason1.repo"),
+                        ls.getMessage("lookup.jsp.reason2.repo"));
             }
             setupRepo(request, form, repo);
         }
