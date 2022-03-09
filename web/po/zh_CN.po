@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-04 10:11+0000\n"
+"POT-Creation-Date: 2022-03-09 09:04+0000\n"
 "PO-Revision-Date: 2022-01-24 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -274,14 +274,6 @@ msgstr "取消"
 msgid "Delete"
 msgstr "删除"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:18
-msgid "Delete project"
-msgstr "删除项目"
-
-#: ../html/src/components/dialog/dialog.stories.tsx:21
-msgid "Are you sure you want to delete project "
-msgstr "您确定要删除项目吗 "
-
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " 无组"
@@ -331,12 +323,15 @@ msgstr "显示/隐藏口令"
 msgid "Toggle section visibility"
 msgstr "切换部分可见性"
 
-#: ../html/src/components/input/Check.stories.tsx:28
+#: ../html/src/components/input/DateTime.stories.tsx:29
+msgid "Time"
+msgstr "时间"
+
 #: ../html/src/components/input/DateTime.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:74
-#: ../html/src/components/input/FormMultiInput.stories.tsx:124
-#: ../html/src/components/input/FormMultiInput.stories.tsx:166
-#: ../html/src/components/input/FormMultiInput.stories.tsx:235
+#: ../html/src/components/input/FormMultiInput.stories.tsx:72
+#: ../html/src/components/input/FormMultiInput.stories.tsx:122
+#: ../html/src/components/input/FormMultiInput.stories.tsx:164
+#: ../html/src/components/input/FormMultiInput.stories.tsx:233
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:66
@@ -345,48 +340,41 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/Range.stories.tsx:46
 #: ../html/src/components/input/Select.stories.tsx:35
 #: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "提交"
 
-#: ../html/src/components/input/DateTime.stories.tsx:29
-msgid "Time"
-msgstr "时间"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:91
-#: ../html/src/components/input/FormMultiInput.stories.tsx:141
-#: ../html/src/components/input/FormMultiInput.stories.tsx:190
+#: ../html/src/components/input/FormMultiInput.stories.tsx:28
+#: ../html/src/components/input/FormMultiInput.stories.tsx:89
+#: ../html/src/components/input/FormMultiInput.stories.tsx:139
+#: ../html/src/components/input/FormMultiInput.stories.tsx:188
 msgid "Users"
 msgstr "用户"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:55
+#: ../html/src/components/input/FormMultiInput.stories.tsx:53
 #: ../html/src/components/input/Text.stories.tsx:29
-#: ../html/src/components/input/form.stories.tsx:29
 msgid "First Name"
 msgstr "名字"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:57
-#: ../html/src/components/input/FormMultiInput.stories.tsx:66
-#: ../html/src/components/input/FormMultiInput.stories.tsx:116
-#: ../html/src/components/input/FormMultiInput.stories.tsx:218
-#: ../html/src/components/input/FormMultiInput.stories.tsx:226
+#: ../html/src/components/input/FormMultiInput.stories.tsx:55
+#: ../html/src/components/input/FormMultiInput.stories.tsx:64
+#: ../html/src/components/input/FormMultiInput.stories.tsx:114
+#: ../html/src/components/input/FormMultiInput.stories.tsx:216
+#: ../html/src/components/input/FormMultiInput.stories.tsx:224
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
 #: ../html/src/components/input/Text.stories.tsx:31
 #: ../html/src/components/input/Text.stories.tsx:40
-#: ../html/src/components/input/form.stories.tsx:31
 msgid "Minimum 2 characters"
 msgstr "最少 2 个字符"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:64
+#: ../html/src/components/input/FormMultiInput.stories.tsx:62
 msgid "Last Name"
 msgstr "姓氏"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:114
+#: ../html/src/components/input/FormMultiInput.stories.tsx:112
 #: ../html/src/manager/login/login.tsx:162
 msgid "Login"
 msgstr "登录"
@@ -5854,6 +5842,12 @@ msgstr "未定义"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Delete project"
+#~ msgstr "删除项目"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "您确定要删除项目吗 "
 
 #~ msgid "Add Cluster"
 #~ msgstr "添加群集"
