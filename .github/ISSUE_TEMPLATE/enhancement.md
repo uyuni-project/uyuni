@@ -1,9 +1,10 @@
 ---
-name: Uyuni - Enhancement
+name: Enhancement
 about: Use this issue template for creating enhancement requests.
-title: Enhancement - XXX
+title: ''
 labels: enhancement
 assignees: ''
+
 ---
 
 # Short description
