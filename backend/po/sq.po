@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-04 10:10+0000\n"
+"POT-Creation-Date: 2022-03-09 09:03+0000\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Albanian (http://www.transifex.com/projects/p/fedora/language/"
@@ -1100,16 +1100,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:117
+#: ../satellite_tools/reposync.py:118
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 

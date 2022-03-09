@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target>Hola,
+
+{0} {1} ha creat un inici de sessió de @@PRODUCT_NAME@@. El teu
+Inici de sessió @@PRODUCT_NAME@@, en combinació amb una subscripció activa @@VENDOR_NAME@@,
+us ofereix accés per gestionar sistemes a @@PRODUCT_NAME@@.
+
+  Inici de sessió de @@PRODUCT_NAME@@: {2}
+       Contrasenya: {3}
+         correu electrònic: {4}
+
+  {5}
+
+Important: si us plau, canvieu la contrasenya en iniciar sessió.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">

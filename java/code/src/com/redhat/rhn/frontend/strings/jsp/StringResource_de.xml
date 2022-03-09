@@ -867,7 +867,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.userlist" xml:space="preserve">
           <source>You must be an organization administrator to view this page. Contact your organization administrator to get information on the users in this system.</source>
-        <target>Sie müssen ein Organisations-Administrator sein, um diese Seite ansehen zu können.  Kontaktieren Sie Ihren Organisations-Administrator, um Informationen über die Benutzer in diesem System zu erhalten.</target>
+        <target>Sie müssen ein Organisations-Administrator sein, um diese Seite ansehen zu können. Kontaktieren Sie Ihren Organisations-Administrator, um Informationen über die Benutzer in diesem System zu erhalten.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>

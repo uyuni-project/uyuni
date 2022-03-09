@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-04 10:11+0000\n"
+"POT-Creation-Date: 2022-03-09 09:04+0000\n"
 "PO-Revision-Date: 2022-01-25 07:11+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -278,14 +278,6 @@ msgstr "취소"
 msgid "Delete"
 msgstr "삭제"
 
-#: ../html/src/components/dialog/dialog.stories.tsx:18
-msgid "Delete project"
-msgstr "프로젝트 삭제"
-
-#: ../html/src/components/dialog/dialog.stories.tsx:21
-msgid "Are you sure you want to delete project "
-msgstr "프로젝트를 삭제하시겠습니까 "
-
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " 그룹 없음"
@@ -336,12 +328,15 @@ msgstr "비밀번호 표시/숨기기"
 msgid "Toggle section visibility"
 msgstr "섹션 표시 여부 전환"
 
-#: ../html/src/components/input/Check.stories.tsx:28
+#: ../html/src/components/input/DateTime.stories.tsx:29
+msgid "Time"
+msgstr "시간"
+
 #: ../html/src/components/input/DateTime.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:74
-#: ../html/src/components/input/FormMultiInput.stories.tsx:124
-#: ../html/src/components/input/FormMultiInput.stories.tsx:166
-#: ../html/src/components/input/FormMultiInput.stories.tsx:235
+#: ../html/src/components/input/FormMultiInput.stories.tsx:72
+#: ../html/src/components/input/FormMultiInput.stories.tsx:122
+#: ../html/src/components/input/FormMultiInput.stories.tsx:164
+#: ../html/src/components/input/FormMultiInput.stories.tsx:233
 #: ../html/src/components/input/Password.stories.tsx:36
 #: ../html/src/components/input/Radio.stories.tsx:39
 #: ../html/src/components/input/Radio.stories.tsx:66
@@ -350,48 +345,41 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/Range.stories.tsx:46
 #: ../html/src/components/input/Select.stories.tsx:35
 #: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "제출"
 
-#: ../html/src/components/input/DateTime.stories.tsx:29
-msgid "Time"
-msgstr "시간"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:91
-#: ../html/src/components/input/FormMultiInput.stories.tsx:141
-#: ../html/src/components/input/FormMultiInput.stories.tsx:190
+#: ../html/src/components/input/FormMultiInput.stories.tsx:28
+#: ../html/src/components/input/FormMultiInput.stories.tsx:89
+#: ../html/src/components/input/FormMultiInput.stories.tsx:139
+#: ../html/src/components/input/FormMultiInput.stories.tsx:188
 msgid "Users"
 msgstr "사용자"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:55
+#: ../html/src/components/input/FormMultiInput.stories.tsx:53
 #: ../html/src/components/input/Text.stories.tsx:29
-#: ../html/src/components/input/form.stories.tsx:29
 msgid "First Name"
 msgstr "이름"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:57
-#: ../html/src/components/input/FormMultiInput.stories.tsx:66
-#: ../html/src/components/input/FormMultiInput.stories.tsx:116
-#: ../html/src/components/input/FormMultiInput.stories.tsx:218
-#: ../html/src/components/input/FormMultiInput.stories.tsx:226
+#: ../html/src/components/input/FormMultiInput.stories.tsx:55
+#: ../html/src/components/input/FormMultiInput.stories.tsx:64
+#: ../html/src/components/input/FormMultiInput.stories.tsx:114
+#: ../html/src/components/input/FormMultiInput.stories.tsx:216
+#: ../html/src/components/input/FormMultiInput.stories.tsx:224
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
 #: ../html/src/components/input/Text.stories.tsx:31
 #: ../html/src/components/input/Text.stories.tsx:40
-#: ../html/src/components/input/form.stories.tsx:31
 msgid "Minimum 2 characters"
 msgstr "2자 이상"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:64
+#: ../html/src/components/input/FormMultiInput.stories.tsx:62
 msgid "Last Name"
 msgstr "성"
 
-#: ../html/src/components/input/FormMultiInput.stories.tsx:114
+#: ../html/src/components/input/FormMultiInput.stories.tsx:112
 #: ../html/src/manager/login/login.tsx:162
 msgid "Login"
 msgstr "로그인"
@@ -5950,6 +5938,12 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "Delete project"
+#~ msgstr "프로젝트 삭제"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "프로젝트를 삭제하시겠습니까 "
 
 #~ msgid "Add Cluster"
 #~ msgstr "클러스터 추가"
