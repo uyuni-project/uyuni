@@ -806,7 +806,7 @@ When(/^I enable repositories before installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && !$is_cloud_provider
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -836,7 +836,7 @@ When(/^I disable repositories after installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && !$is_cloud_provider
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
@@ -1020,7 +1020,9 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath)['for'].....C........W..C.............
+7
+
 
   case target_status
   when 'selected'
