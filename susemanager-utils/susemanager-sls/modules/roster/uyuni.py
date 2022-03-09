@@ -299,7 +299,7 @@ class UyuniRoster:
                     minion_id=prow.minion_id,
                     proxies=proxies,
                     tunnel=prow.tunnel,
-                    ssh_push_port=int(prow.ssh_push_port),
+                    ssh_push_port=int(prow.ssh_push_port or SSH_PUSH_PORT),
                 )
             proxies = []
             if row is None:
