@@ -1681,7 +1681,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Set<Channel> channels = new HashSet<>();
         channels.add(channel);
         createTestPackage(user, errata, channel, "noarch");
-        ImageInfo image = createImageInfo(channels, user);
+        ImageInfo image = createImageInfo(channels, user, true);
         CVEAuditManager.populateCVEChannels();
 
         // No filtering
@@ -1723,7 +1723,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package unpatched = createTestPackage(user, channel, "noarch");
         createLaterTestPackage(user, errata, channel, unpatched);
 
-        ImageInfo image = createImageInfo(channels, user);
+        ImageInfo image = createImageInfo(channels, user, true);
         createImagePackage(unpatched, image);
 
         CVEAuditManager.populateCVEChannels();
@@ -1763,7 +1763,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createLaterTestPackage(user, errata, channel, unpatched, null, unpatched.getPackageEvr().getVersion(),
                 unpatched.getPackageEvr().getRelease());
 
-        ImageInfo image = createImageInfo(channels, user);
+        ImageInfo image = createImageInfo(channels, user, true);
         createImagePackage(unpatched, image);
 
         CVEAuditManager.populateCVEChannels();
@@ -1812,7 +1812,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
 
-        ImageInfo image = createImageInfo(channels, user);
+        ImageInfo image = createImageInfo(channels, user, true);
         createImagePackage(unpatched, image);
 
         CVEAuditManager.populateCVEChannels();

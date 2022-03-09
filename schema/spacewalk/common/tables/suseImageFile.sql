@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2017 SUSE LLC
+-- Copyright (c) 2022 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,22 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseImageRepoDigest
+
+CREATE TABLE suseImageFile
 (
     id             NUMERIC NOT NULL
-                     CONSTRAINT suse_rdigest_id_pk PRIMARY KEY,
-    image_info_id    NUMERIC NOT NULL,
-    repo_digest    VARCHAR(255) NOT NULL,
+                     CONSTRAINT suse_imgfile_fileid_pk PRIMARY KEY,
+    image_info_id  NUMERIC NOT NULL,
+    file           TEXT NOT NULL,
+    type           VARCHAR(16) NOT NULL,
+    external       CHAR(1) DEFAULT ('N') NOT NULL,
     created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    CONSTRAINT suse_rdigest_imginfo_fk FOREIGN KEY (image_info_id)
+
+    CONSTRAINT suse_imgfile_imginfo_fk FOREIGN KEY (image_info_id)
         REFERENCES suseImageInfo (id) ON DELETE CASCADE
-)
+);
 
-;
-
-CREATE SEQUENCE suse_img_repodigest_id_seq;
+CREATE SEQUENCE suse_image_file_id_seq;

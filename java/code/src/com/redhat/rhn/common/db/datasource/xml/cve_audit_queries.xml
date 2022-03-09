@@ -162,7 +162,7 @@
   <query params="cve_identifier, user_id">
     WITH affected_and_patched AS (
       SELECT suseImageInfoPackage.image_info_id as image_info_id,
-        suseImageInfo.name || ':' || suseImageInfo.version as image_name,
+        suseImageInfo.name || ':' || suseImageInfo.version || '-' || suseImageInfo.curr_revision_num as image_name,
         rhnChannelErrata.errata_id,
         rhnErrata.advisory as errata_advisory,
         rhnErrataPackage.package_id,
@@ -226,10 +226,11 @@
           AND rhnCVE.name = :cve_identifier
           AND web_contact.org_id = suseImageInfo.org_id
           AND web_contact.id = :user_id
+          AND suseImageInfo.built = 'Y'
     ),
     not_affected AS (
       SELECT suseImageInfo.id as image_info_id,
-        suseImageInfo.name || ':' || suseImageInfo.version as image_name,
+        suseImageInfo.name || ':' || suseImageInfo.version || '-' || suseImageInfo.curr_revision_num as image_name,
         CAST(NULL AS INTEGER) AS errata_id,
         CAST(NULL AS CHAR) AS errata_advisory,
         CAST(NULL AS INTEGER) AS package_id,
@@ -247,6 +248,7 @@
         FROM suseImageInfo
           JOIN web_contact ON suseImageInfo.org_id = web_contact.org_id
         WHERE web_contact.id = :user_id
+          AND suseImageInfo.built = 'Y'
           AND suseImageInfo.id NOT IN (
             SELECT image_info_id FROM affected_and_patched
         )

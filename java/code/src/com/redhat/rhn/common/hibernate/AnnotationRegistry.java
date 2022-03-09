@@ -28,8 +28,9 @@ import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
-import com.redhat.rhn.domain.image.ImageBuildHistory;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
@@ -98,11 +99,12 @@ public class AnnotationRegistry {
         KiwiProfile.class,
         ImageProfile.class,
         ProfileCustomDataValue.class,
+        DeltaImageInfo.class,
+        ImageFile.class,
         ImageInfo.class,
         ImageInfoCustomDataValue.class,
         ImageOverview.class,
         ImagePackage.class,
-        ImageBuildHistory.class,
         ImageRepoDigest.class,
         VirtualHostManagerNodeInfo.class,
         NotificationMessage.class,

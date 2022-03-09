@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,43 +19,39 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * ImageBuildHistory
+ * ImageFile
  */
 @Entity
-@Table(name = "suseImageBuildHistory")
-public class ImageBuildHistory extends BaseDomainHelper {
+@Table(name = "suseImageFile")
+public class ImageFile extends BaseDomainHelper {
 
     private Long id;
-    private int revisionNumber;
     private ImageInfo imageInfo;
-    private Set<ImageRepoDigest> repoDigests = new HashSet<>();
+    private String file;
+    private String type;
+    private boolean external;
 
     /**
      * @return the id
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgbuildhistory_seq")
-    @SequenceGenerator(name = "imgbuildhistory_seq",
-            sequenceName = "suse_img_buildhistory_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgfile_seq")
+    @SequenceGenerator(name = "imgfile_seq",
+            sequenceName = "suse_image_file_id_seq")
     public Long getId() {
         return id;
     }
@@ -68,25 +64,10 @@ public class ImageBuildHistory extends BaseDomainHelper {
     }
 
     /**
-     * @return the revision number
-     */
-    @Column(name = "revision_num")
-    public int getRevisionNumber() {
-        return revisionNumber;
-    }
-
-    /**
-     * @param revisionNumberIn the revision number
-     */
-    public void setRevisionNumber(int revisionNumberIn) {
-        this.revisionNumber = revisionNumberIn;
-    }
-
-    /**
      * @return the image info
      */
     @ManyToOne
-    @JoinColumn(name = "image_info_id")
+    @JoinColumn(name = "image_info_id", nullable = false)
     public ImageInfo getImageInfo() {
         return imageInfo;
     }
@@ -98,32 +79,69 @@ public class ImageBuildHistory extends BaseDomainHelper {
         this.imageInfo = imageInfoIn;
     }
 
+
     /**
-     * @return the repo digests
+     * @return the file
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "buildHistory", cascade = CascadeType.ALL)
-    public Set<ImageRepoDigest> getRepoDigests() {
-        return repoDigests;
+    @Column(name = "file")
+    public String getFile() {
+        return file;
     }
 
     /**
-     * @param repoDigestsIn the repo digests
+     * @param fileIn file to set
      */
-    public void setRepoDigests(Set<ImageRepoDigest> repoDigestsIn) {
-        this.repoDigests = repoDigestsIn;
+    public void setFile(String fileIn) {
+        this.file = fileIn;
     }
+
+    /**
+     * @return the type
+     */
+    @Column(name = "type")
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param typeIn file to set
+     */
+    public void setType(String typeIn) {
+        this.type = typeIn;
+    }
+
+
+    /**
+     * @return true if the file is not managed
+     */
+    @Column(name = "external")
+    @Type(type = "yes_no")
+    public boolean isExternal() {
+        return external;
+    }
+
+
+    /**
+     * @param externalIn the external file
+     */
+    public void setExternal(boolean externalIn) {
+        this.external = externalIn;
+    }
+
 
     /**
      * {@inheritDoc}
      */
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageBuildHistory)) {
+        if (!(other instanceof ImageFile)) {
             return false;
         }
-        ImageBuildHistory castOther = (ImageBuildHistory) other;
+        ImageFile castOther = (ImageFile) other;
         return new EqualsBuilder()
                 .append(imageInfo, castOther.imageInfo)
-                .append(revisionNumber, castOther.revisionNumber)
+                .append(file, castOther.file)
+                .append(type, castOther.type)
+                .append(external, castOther.external)
                 .isEquals();
     }
 
@@ -133,7 +151,9 @@ public class ImageBuildHistory extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageInfo)
-                .append(revisionNumber)
+                .append(file)
+                .append(type)
+                .append(external)
                 .toHashCode();
     }
 

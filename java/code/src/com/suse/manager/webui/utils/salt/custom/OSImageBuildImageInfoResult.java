@@ -33,4 +33,11 @@ public class OSImageBuildImageInfoResult {
     public List<OSImageInspectSlsResult.Bundle> getBundles() {
         return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
     }
+
+    /**
+     * @return the image info
+     */
+    public OSImageInspectSlsResult.Image getImage() {
+        return image;
+    }
 }

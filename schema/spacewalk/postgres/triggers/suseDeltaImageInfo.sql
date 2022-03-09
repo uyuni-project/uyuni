@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2017 SUSE LLC
+-- Copyright (c) 2022 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,25 +10,22 @@
 --
 -- triggers for suseImageInfo
 
-create or replace function suse_imginfo_mod_trig_fun() returns trigger as
+CREATE OR REPLACE FUNCTION suse_delta_image_info_mod_trig_fun() RETURNS TRIGGER AS
 $$
-begin
+BEGIN
 	new.modified := current_timestamp;
 	return new;
-end;
-$$ language plpgsql;
+END;
+$$ LANGUAGE PLPGSQL;
 
-create trigger
-suse_imginfo_mod_trig
-before insert or update on suseImageInfo
-for each row
-execute procedure suse_imginfo_mod_trig_fun();
+CREATE TRIGGER suse_delta_image_info_mod_trig BEFORE INSERT OR UPDATE ON suseDeltaImageInfo
+  FOR EACH ROW EXECUTE PROCEDURE suse_delta_image_info_mod_trig_fun();
 
-CREATE OR REPLACE FUNCTION suse_image_info_image_removed_trig_fun() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION suse_delta_image_info_image_removed_trig_fun() RETURNS TRIGGER AS $$
 BEGIN
   DELETE FROM suseSaltPillar WHERE id = OLD.pillar_id;
   RETURN OLD;
 END $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER suse_image_info_image_removed_trig AFTER DELETE ON suseImageInfo
-  FOR EACH ROW EXECUTE PROCEDURE suse_image_info_image_removed_trig_fun();
+CREATE TRIGGER suse_delta_image_info_image_removed_trig AFTER DELETE ON suseDeltaImageInfo
+  FOR EACH ROW EXECUTE PROCEDURE suse_delta_image_info_image_removed_trig_fun();

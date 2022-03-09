@@ -21,16 +21,20 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.image.DeltaImageInfo;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
@@ -40,6 +44,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -72,6 +77,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -79,6 +85,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
@@ -87,6 +94,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }};
 
     private static TaskomaticApi taskomaticApi;
+    private static SaltApi saltApiMock;
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
@@ -101,6 +109,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        if (saltApiMock == null) {
+            saltApiMock = CONTEXT.mock(TestSaltApi.class);
+        }
     }
 
     public final void testConvertChecksum() {
@@ -365,8 +376,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
                 user);
 
-        // Image info should be reset
-        assertEquals(1, ImageInfoFactory.listImageInfos(user.getOrg()).size());
+        // Image info should be added
+        assertEquals(2, ImageInfoFactory.listImageInfos(user.getOrg()).size());
         ImageInfo info2 = ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store.getId()).get();
 
         // ImageInfo instance is preserved on new builds if it exists already with the same name/version and store
@@ -380,12 +391,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v2.0", profile, new Date(),
                 user);
 
-        // We should have two image infos with same labels but different versions
+        // We should have 3 image infos: suma-3.1-base-v1.0-1, suma-3.1-base-v1.0-2, suma-3.1-base-v2.0-1
         List<ImageInfo> infoList = ImageInfoFactory.listImageInfos(user.getOrg());
 
-        assertEquals(2, infoList.size());
+        assertEquals(3, infoList.size());
         infoList.forEach(i -> assertEquals("suma-3.1-base", i.getName()));
-        assertFalse(infoList.get(0).getVersion().equals(infoList.get(1).getVersion()));
+        //assertFalse(infoList.get(0).getVersion().equals(infoList.get(1).getVersion()));
 
         info = ImageInfoFactory.lookupByName("suma-3.1-base", "v2.0", store.getId()).get();
 
@@ -508,6 +519,118 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
         assertEquals(1, lookup.size());
         assertEquals(img1, lookup.get(0));
+    }
+
+    public void testUpdateRevision() throws Exception {
+        ImageStore store = createImageStore("mystore", user);
+        ImageInfo img1 = createImageInfo("test", "1.0.0", user);
+        ImageInfoFactory.updateRevision(img1);
+        assertEquals(1, img1.getRevisionNumber());
+        ImageInfoFactory.updateRevision(img1);
+        assertEquals(1, img1.getRevisionNumber());
+        ImageInfo img2 = createImageInfo("test", "1.0.0", user);
+        ImageInfoFactory.updateRevision(img2);
+        assertEquals(2, img2.getRevisionNumber());
+        ImageInfoFactory.updateRevision(img2);
+        assertEquals(2, img2.getRevisionNumber());
+    }
+
+    public void testDelete() throws Exception {
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApiMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0.tgz",
+                                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+        }});
+
+        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg()).get();
+
+        ImageInfo image = createImageInfo("test", "1.0.0", store, user);
+        String category = "Image" + image.getId();
+        Pillar pillarEntry = new Pillar(category, new TreeMap<String, Object>(), image.getOrg());
+        HibernateFactory.getSession().save(pillarEntry);
+        image.setPillar(pillarEntry);
+
+        ImageFile bundleFile = new ImageFile();
+        bundleFile.setFile("test-1.0.0.tgz");
+        bundleFile.setType("bundle");
+        bundleFile.setImageInfo(image);
+        image.getImageFiles().add(bundleFile);
+
+
+        ImageInfoFactory.save(image);
+        HibernateFactory.getSession().flush();
+
+        ImageInfoFactory.delete(image, saltApiMock);
+
+        HibernateFactory.getSession().flush();
+
+        assertFalse(user.getOrg().getPillars().stream()
+              .filter(item -> (category.equals(item.getCategory())))
+              .findAny().isPresent());
+
+    }
+
+    public void testDeltaImage() throws Exception {
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApiMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta1.tgz",
+                                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltApiMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta2.tgz",
+                                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+        }});
+
+        Org org = user.getOrg();
+        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", org).get();
+
+        ImageInfo img1 = createImageInfo("test", "1.0.0", store, user);
+        ImageInfo img2 = createImageInfo("test", "1.0.1", store, user);
+        ImageInfo img3 = createImageInfo("test", "1.0.2", store, user);
+
+        HibernateFactory.getSession().flush();
+
+        DeltaImageInfo delta1 = ImageInfoFactory.createDeltaImageInfo(img1, img2,
+                                                 "delta1.tgz", new TreeMap<String, Object>());
+        DeltaImageInfo delta2 = ImageInfoFactory.createDeltaImageInfo(img2, img3,
+                                                 "delta2.tgz", new TreeMap<String, Object>());
+
+        HibernateFactory.getSession().flush();
+        assertEquals(3, ImageInfoFactory.listImageInfos(org).size());
+        assertEquals(2, ImageInfoFactory.listDeltaImageInfos(org).size());
+        assertEquals(2, org.getPillars().size()); //each delta has a pillar
+
+        // deleting a target image should delete also the delta
+        ImageInfoFactory.delete(img3, saltApiMock);
+
+        HibernateFactory.getSession().flush();
+        org = TestUtils.reload(org);
+
+        assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
+        assertEquals(1, ImageInfoFactory.listDeltaImageInfos(org).size());
+        assertEquals(1, org.getPillars().size());
+
+        // deleting a delta should not delte the images
+        ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
+
+        HibernateFactory.getSession().flush();
+        org = TestUtils.reload(org);
+
+        assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
+        assertEquals(0, ImageInfoFactory.listDeltaImageInfos(org).size());
+        assertEquals(0, org.getPillars().size());
+
+        // deleting a source image should delete also the delta
+        ImageInfoFactory.delete(img1, saltApiMock);
+
+        HibernateFactory.getSession().flush();
+        org = TestUtils.reload(org);
+
+        assertEquals(1, ImageInfoFactory.listImageInfos(org).size());
+        assertEquals(0, ImageInfoFactory.listDeltaImageInfos(org).size());
+        assertEquals(0, org.getPillars().size());
     }
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {

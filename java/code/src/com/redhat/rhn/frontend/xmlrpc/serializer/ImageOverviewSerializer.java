@@ -93,6 +93,7 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
                 ba -> helper.add("buildStatus", ba.getStatus().getName().toLowerCase()));
         image.getInspectServerAction().ifPresent(
                 ia -> helper.add("inspectStatus", ia.getStatus().getName().toLowerCase()));
+        helper.add("files", image.getImageFiles());
 
         helper.writeTo(writer);
     }

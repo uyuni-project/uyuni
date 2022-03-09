@@ -36,11 +36,9 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -721,19 +719,11 @@ public class ActionChainManager {
      */
     public static ImageBuildAction scheduleImageBuild(long buildHostId, String version, ImageProfile profile,
                                      Date earliest, ActionChain actionChain, User user) throws TaskomaticApiException {
-        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
-        if ((!server.hasContainerBuildHostEntitlement() && profile.asDockerfileProfile().isPresent()) ||
-                (!server.hasOSImageBuildHostEntitlement() && profile.asKiwiProfile().isPresent())) {
-            throw new IllegalArgumentException("Server is not a build host.");
-        }
-
-        if (profile.asDockerfileProfile().isPresent()) {
-            version = version.isEmpty() ? "latest" : version;
-        }
+        ImageInfo info = ImageInfoFactory.createImageInfo(buildHostId, version, profile);
 
         Set<Action> result = scheduleActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
-                earliest, actionChain, null, Collections.singleton(server.getId()));
+                earliest, actionChain, null, Collections.singleton(buildHostId));
 
         ImageBuildAction action = (ImageBuildAction)result.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
@@ -749,35 +739,7 @@ public class ActionChainManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        // Load or create an image info entry
-        ImageInfo info =
-                ImageInfoFactory.lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
-                        .orElseGet(ImageInfo::new);
-
-        info.setName(profile.getLabel());
-        info.setVersion(version);
-        info.setStore(profile.getTargetStore());
-        info.setOrg(server.getOrg());
         info.setBuildAction(action);
-        info.setProfile(profile);
-        info.setImageType(profile.getImageType());
-        info.setBuildServer(server);
-        if (profile.getToken() != null) {
-            info.setChannels(new HashSet<>(profile.getToken().getChannels()));
-        }
-
-        // Image arch should be the same as the build host
-        // If this is not the case, we can set the correct value in the inspect action
-        // return event
-        info.setImageArch(server.getServerArch());
-
-        // Checksum will be available from inspect
-
-        // Copy custom data values from image profile
-        if (profile.getCustomDataValues() != null) {
-            profile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
-                    .add(new ImageInfoCustomDataValue(cdv, info)));
-        }
 
         ImageInfoFactory.save(info);
 

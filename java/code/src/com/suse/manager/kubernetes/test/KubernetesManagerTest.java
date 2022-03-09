@@ -15,7 +15,6 @@
 
 package com.suse.manager.kubernetes.test;
 
-import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -72,13 +71,8 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
-
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v1", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.setRevisionNumber(1);
 
         TestUtils.saveAndFlush(imgInfo);
 
@@ -100,15 +94,10 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo(
-                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production:latest", "latest", user);
-
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo = createImageWithRepoDigest(
+                "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production:latest", "latest", 1,
                 "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production@sha256:" +
                         "362f5f5d8d3670c9c499ae171ce059e9fa1889c879bfc2db78b97f37998dc717");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.setRevisionNumber(1);
 
         TestUtils.saveAndFlush(imgInfo);
 
@@ -132,26 +121,19 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
-
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo1 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
+        TestUtils.saveAndFlush(imgInfo1);
+
+        ImageInfo imgInfo2 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 2,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.getBuildHistory().add(history2);
-        imgInfo.setRevisionNumber(2);
-
-        TestUtils.saveAndFlush(imgInfo);
+        TestUtils.saveAndFlush(imgInfo2);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
-        assertEquals(1, usages.size());
-        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
-        assertEquals(3, getMatchingContainers(imgInfo, usages).count());
-        assertEquals(1, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 1).count());
-        assertEquals(2, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 2).count());
+        assertEquals(2, usages.size());
+        assertEquals(2, getMatchingContainers(imgInfo2, usages).count());
+        assertEquals(1, getMatchingContainers(imgInfo1, usages).count());
     }
 
     /**
@@ -164,30 +146,28 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         VirtualHostManager cluster1 = createVirtHostManager("/srv/salt/kubeconfig1");
         VirtualHostManager cluster2 = createVirtHostManager("/srv/salt/kubeconfig2");
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
-
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo1 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        ImageBuildHistory history2 = createImageBuildHistory(imgInfo, 2,
+        TestUtils.saveAndFlush(imgInfo1);
+
+        ImageInfo imgInfo2 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 2,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.getBuildHistory().add(history2);
-        imgInfo.setRevisionNumber(2);
-
-        TestUtils.saveAndFlush(imgInfo);
+        TestUtils.saveAndFlush(imgInfo2);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
-        assertEquals(1, usages.size());
-        assertEquals(imgInfo, usages.iterator().next().getImageInfo());
-        assertEquals(6, getMatchingContainers(imgInfo, usages).count());
-        assertEquals(3,
-                getMatchingContainers(imgInfo, usages).filter(c -> c.getVirtualHostManager().equals(cluster1)).count());
-        assertEquals(3,
-                getMatchingContainers(imgInfo, usages).filter(c -> c.getVirtualHostManager().equals(cluster2)).count());
-        assertEquals(2, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 1).count());
-        assertEquals(4, getMatchingContainers(imgInfo, usages).filter(c -> c.getBuildRevision().get() == 2).count());
+        assertEquals(2, usages.size());
+
+        assertEquals(2, getMatchingContainers(imgInfo1, usages).count());
+        assertEquals(1,
+            getMatchingContainers(imgInfo1, usages).filter(c -> c.getVirtualHostManager().equals(cluster1)).count());
+        assertEquals(1,
+            getMatchingContainers(imgInfo1, usages).filter(c -> c.getVirtualHostManager().equals(cluster2)).count());
+        assertEquals(4, getMatchingContainers(imgInfo2, usages).count());
+        assertEquals(2,
+            getMatchingContainers(imgInfo2, usages).filter(c -> c.getVirtualHostManager().equals(cluster1)).count());
+        assertEquals(2,
+            getMatchingContainers(imgInfo2, usages).filter(c -> c.getVirtualHostManager().equals(cluster2)).count());
     }
 
     /**
@@ -205,13 +185,9 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         createVirtHostManager();
 
         ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "latest", user);
-        imgInfo.setStore(store);
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "latest", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.setRevisionNumber(1);
+        imgInfo.setStore(store);
 
         TestUtils.saveAndFlush(imgInfo);
 
@@ -234,13 +210,8 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
-
-        ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1,
+        ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v1", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
-
-        imgInfo.getBuildHistory().add(history1);
-        imgInfo.setRevisionNumber(1);
 
         TestUtils.saveAndFlush(imgInfo);
 
@@ -288,14 +259,13 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         return virtualHostManager;
     }
 
-    private ImageBuildHistory createImageBuildHistory(ImageInfo imgInfo, int revision, String digest) {
-        ImageBuildHistory history = new ImageBuildHistory();
-        history.setRevisionNumber(revision);
-        history.setImageInfo(imgInfo);
+    private ImageInfo createImageWithRepoDigest(String name, String version, int revision, String digest) {
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo(name, version, user);
+        imgInfo.setRevisionNumber(revision);
         ImageRepoDigest digest1 = new ImageRepoDigest();
-        digest1.setBuildHistory(history);
+        digest1.setImageInfo(imgInfo);
         digest1.setRepoDigest(digest);
-        history.getRepoDigests().add(digest1);
-        return history;
+        imgInfo.getRepoDigests().add(digest1);
+        return imgInfo;
     }
 }

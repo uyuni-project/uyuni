@@ -15,7 +15,6 @@
 
 package com.suse.manager.kubernetes;
 
-import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
@@ -82,11 +81,10 @@ public class KubernetesManager {
      * {@link ImageInfo}
      */
     public Set<ImageUsage> getImagesUsage(VirtualHostManager virtualHostManager) {
-        List<ImageBuildHistory> buildHistory = ImageInfoFactory.listBuildHistory();
-        Map<String, ImageBuildHistory> digestToHistory =
-                buildHistory.stream().flatMap(build -> build.getRepoDigests().stream())
-                        .collect(Collectors.toMap(ImageRepoDigest::getRepoDigest,
-                                ImageRepoDigest::getBuildHistory));
+        List<ImageRepoDigest> imageRepoDigests = ImageInfoFactory.listImageRepoDigests();
+        Map<String, ImageInfo> digestToInfo =
+                imageRepoDigests.stream().collect(Collectors.toMap(ImageRepoDigest::getRepoDigest,
+                                ImageRepoDigest::getImageInfo));
 
         Map<Long, ImageUsage> imgToUsage = new HashMap<>();
 
@@ -120,15 +118,14 @@ public class KubernetesManager {
                         if (imgDigest.startsWith(DOCKER_PULLABLE)) {
                             imgDigest = StringUtils.removeStart(container.getImageId(), DOCKER_PULLABLE);
                         }
-                        ImageBuildHistory imgBuildHistory = digestToHistory.get(imgDigest);
+                        ImageInfo imageInfo = digestToInfo.get(imgDigest);
                         Optional<Integer> imgBuildRevision = Optional.empty();
                         Optional<ImageUsage> usage;
-                        if (imgBuildHistory != null) {
-                            imgBuildRevision = Optional.of(imgBuildHistory.getRevisionNumber());
+                        if (imageInfo != null) {
+                            imgBuildRevision = Optional.of(imageInfo.getRevisionNumber());
                             usage = Optional.of(imgToUsage.computeIfAbsent(
-                                    imgBuildHistory.getImageInfo().getId(),
-                                    (infoId) -> new ImageUsage(
-                                            imgBuildHistory.getImageInfo())));
+                                    imageInfo.getId(),
+                                    (infoId) -> new ImageUsage(imageInfo)));
                         }
                         else {
                             LOG.debug("Image build history not found for digest: " +

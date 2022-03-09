@@ -1,3 +1,5 @@
+- Improve image management
+- Store delta image info in the database
 - fix advisory status migration (bsc#1195765)
 - Corrected source URLs in spec file.
 

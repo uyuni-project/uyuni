@@ -235,7 +235,7 @@ suseKiwiProfile                :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
 suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
 suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo \
-                                  rhnChecksum
+                                  rhnChecksum suseSaltPillar
 suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
 suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
@@ -254,6 +254,7 @@ suseProducts                   :: rhnPackageArch rhnChannelFamily
 suseProductChannel             :: suseProducts rhnChannel
 suseProductExtension           :: suseProducts
 suseProductSCCRepository       :: suseProducts suseSCCRepository
+suseSaltPillar                 :: rhnServer rhnServerGroup web_customer
 suseSCCOrderItem               :: suseCredentials
 suseSCCRegCache                :: suseCredentials rhnServer
 suseSCCRepositoryAuth          :: suseCredentials rhnContentSource
