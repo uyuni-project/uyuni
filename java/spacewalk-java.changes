@@ -1,3 +1,5 @@
+- CVE Audit: Show patch as available in the currently installed product even if successor
+  patch affects additional packages (bsc#1196455)
 - send notifications for new or changed ubuntu errata (bsc#1196977)
 - change directory owner and permissions only when needed
 - Fixed broken help link for system overview
