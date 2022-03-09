@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-04 18:13+0000\n"
+"POT-Creation-Date: 2022-03-09 09:04+0000\n"
 "PO-Revision-Date: 2021-11-11 05:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -318,20 +318,20 @@ msgid "Contact Method:         %s"
 msgstr "연락 방법:         %s"
 
 #: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:432
-#: ../src/spacecmd/system.py:3083
+#: ../src/spacecmd/system.py:3084
 msgid "Software Channels"
 msgstr "소프트웨어 채널"
 
 #: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:806
-#: ../src/spacecmd/configchannel.py:920 ../src/spacecmd/system.py:3092
+#: ../src/spacecmd/configchannel.py:920 ../src/spacecmd/system.py:3093
 msgid "Configuration Channels"
 msgstr "구성 채널"
 
-#: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:3097
+#: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:3098
 msgid "Entitlements"
 msgstr "권한 부여"
 
-#: ../src/spacecmd/activationkey.py:989 ../src/spacecmd/system.py:3103
+#: ../src/spacecmd/activationkey.py:989 ../src/spacecmd/system.py:3104
 msgid "System Groups"
 msgstr "시스템 그룹"
 
@@ -519,7 +519,7 @@ msgstr ""
 "                   하위 채널 레이블, 구성 채널 이름에서 foo를 bar로 대체 "
 
 #: ../src/spacecmd/activationkey.py:1479 ../src/spacecmd/kickstart.py:467
-#: ../src/spacecmd/system.py:3078
+#: ../src/spacecmd/system.py:3079
 msgid "Activation Keys"
 msgstr "활성화 키"
 
@@ -630,7 +630,7 @@ msgstr ""
 "activationkey_setcontactmethod: 이 키로 등록된 시스템에서 사용할 연락 방법을 "
 "설정합니다."
 
-#: ../src/spacecmd/activationkey.py:1805 ../src/spacecmd/system.py:4382
+#: ../src/spacecmd/activationkey.py:1805 ../src/spacecmd/system.py:4383
 msgid "Available contact methods: "
 msgstr "사용할 수 있는 연락 방법: "
 
@@ -710,8 +710,8 @@ msgstr "사용법: configchannel_listsystems CHANNEL"
 
 #: ../src/spacecmd/configchannel.py:82 ../src/spacecmd/configchannel.py:117
 #: ../src/spacecmd/group.py:547 ../src/spacecmd/group.py:601
-#: ../src/spacecmd/group.py:639 ../src/spacecmd/system.py:3314
-#: ../src/spacecmd/system.py:3412
+#: ../src/spacecmd/group.py:639 ../src/spacecmd/system.py:3315
+#: ../src/spacecmd/system.py:3413
 msgid "This version of the API doesn't support this method"
 msgstr "이 API 버전은 이 메서드를 지원하지 않음"
 
@@ -910,7 +910,7 @@ msgid "Name:        %s"
 msgstr "이름:        %s"
 
 #: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/cryptokey.py:217
-#: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:682
+#: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:683
 #, python-format
 msgid "Description: %s"
 msgstr "설명: %s"
@@ -963,7 +963,7 @@ msgstr "레이블:"
 #: ../src/spacecmd/configchannel.py:481 ../src/spacecmd/cryptokey.py:67
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:205
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
-#: ../src/spacecmd/system.py:3769
+#: ../src/spacecmd/system.py:3770
 msgid "Description:"
 msgstr "설명:"
 
@@ -1227,8 +1227,8 @@ msgstr "사용법: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgid "No valid system selected"
 msgstr "유효한 시스템이 선택되지 않음"
 
-#: ../src/spacecmd/configchannel.py:1108 ../src/spacecmd/system.py:513
-#: ../src/spacecmd/system.py:533 ../src/spacecmd/system.py:965
+#: ../src/spacecmd/configchannel.py:1108 ../src/spacecmd/system.py:514
+#: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:966
 #, python-format
 msgid "Action ID: %i"
 msgstr "작업 ID: %i"
@@ -1697,7 +1697,7 @@ msgstr "유효하지 않은 설치 유형"
 msgid "A path is required"
 msgstr "경로는 필수입니다."
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2571
+#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2572
 msgid "A base channel is required"
 msgstr "기본 채널은 필수입니다."
 
@@ -1815,11 +1815,11 @@ msgstr ""
 "옵션:\n"
 "  -s START_TIME"
 
-#: ../src/spacecmd/errata.py:117 ../src/spacecmd/system.py:421
-#: ../src/spacecmd/system.py:730 ../src/spacecmd/system.py:886
-#: ../src/spacecmd/system.py:1023 ../src/spacecmd/system.py:1770
-#: ../src/spacecmd/system.py:3923 ../src/spacecmd/system.py:4233
-#: ../src/spacecmd/system.py:4295 ../src/spacecmd/system.py:4460
+#: ../src/spacecmd/errata.py:117 ../src/spacecmd/system.py:422
+#: ../src/spacecmd/system.py:731 ../src/spacecmd/system.py:887
+#: ../src/spacecmd/system.py:1024 ../src/spacecmd/system.py:1771
+#: ../src/spacecmd/system.py:3924 ../src/spacecmd/system.py:4234
+#: ../src/spacecmd/system.py:4296 ../src/spacecmd/system.py:4461
 msgid "Start Time [now]:"
 msgstr "시작 시간 [지금]:"
 
@@ -1832,11 +1832,11 @@ msgstr "적용할 패치 없음"
 msgid "Errata             Systems"
 msgstr "오류             시스템"
 
-#: ../src/spacecmd/errata.py:172 ../src/spacecmd/system.py:234
-#: ../src/spacecmd/system.py:471 ../src/spacecmd/system.py:825
-#: ../src/spacecmd/system.py:948 ../src/spacecmd/system.py:1087
-#: ../src/spacecmd/system.py:1789 ../src/spacecmd/system.py:3935
-#: ../src/spacecmd/system.py:4479
+#: ../src/spacecmd/errata.py:172 ../src/spacecmd/system.py:235
+#: ../src/spacecmd/system.py:472 ../src/spacecmd/system.py:826
+#: ../src/spacecmd/system.py:949 ../src/spacecmd/system.py:1088
+#: ../src/spacecmd/system.py:1790 ../src/spacecmd/system.py:3936
+#: ../src/spacecmd/system.py:4480
 #, python-format
 msgid "Start Time: %s"
 msgstr "시작 시간: %s"
@@ -2085,10 +2085,10 @@ msgstr "group_removesystems: 그룹에서 시스템 제거"
 msgid "usage: group_removesystems GROUP <SYSTEMS>"
 msgstr "사용법: group_removesystems GROUP <SYSTEMS>"
 
-#: ../src/spacecmd/group.py:151 ../src/spacecmd/system.py:120
-#: ../src/spacecmd/system.py:236 ../src/spacecmd/system.py:479
-#: ../src/spacecmd/system.py:1483 ../src/spacecmd/system.py:1791
-#: ../src/spacecmd/system.py:4481
+#: ../src/spacecmd/group.py:151 ../src/spacecmd/system.py:121
+#: ../src/spacecmd/system.py:237 ../src/spacecmd/system.py:480
+#: ../src/spacecmd/system.py:1484 ../src/spacecmd/system.py:1792
+#: ../src/spacecmd/system.py:4482
 msgid "Systems"
 msgstr "시스템"
 
@@ -2098,8 +2098,8 @@ msgstr "이 시스템 제거 [y/N]:"
 
 #: ../src/spacecmd/group.py:164 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:136
-#: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4523
-#: ../src/spacecmd/system.py:4606
+#: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4524
+#: ../src/spacecmd/system.py:4607
 msgid "No systems found"
 msgstr "시스템을 찾을 수 없음"
 
@@ -4016,7 +4016,7 @@ msgid "No packages found to remove"
 msgstr "제거할 패키지를 찾지 못함"
 
 #: ../src/spacecmd/package.py:206 ../src/spacecmd/package.py:264
-#: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:950
+#: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "이 패키지 제거 [y/N]:"
 
@@ -4359,28 +4359,28 @@ msgstr "사용법: report_ipaddresses [<SYSTEMS>]"
 
 #: ../src/spacecmd/report.py:204 ../src/spacecmd/report.py:268
 #: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:209
-#: ../src/spacecmd/system.py:217 ../src/spacecmd/system.py:398
-#: ../src/spacecmd/system.py:583 ../src/spacecmd/system.py:748
-#: ../src/spacecmd/system.py:904 ../src/spacecmd/system.py:1041
-#: ../src/spacecmd/system.py:1142 ../src/spacecmd/system.py:1212
-#: ../src/spacecmd/system.py:1267 ../src/spacecmd/system.py:1366
-#: ../src/spacecmd/system.py:1598 ../src/spacecmd/system.py:1662
-#: ../src/spacecmd/system.py:1705 ../src/spacecmd/system.py:1785
-#: ../src/spacecmd/system.py:1927 ../src/spacecmd/system.py:1969
-#: ../src/spacecmd/system.py:2058 ../src/spacecmd/system.py:2126
-#: ../src/spacecmd/system.py:2209 ../src/spacecmd/system.py:2264
-#: ../src/spacecmd/system.py:2324 ../src/spacecmd/system.py:2383
-#: ../src/spacecmd/system.py:2441 ../src/spacecmd/system.py:2502
-#: ../src/spacecmd/system.py:2581 ../src/spacecmd/system.py:2662
-#: ../src/spacecmd/system.py:2717 ../src/spacecmd/system.py:2990
-#: ../src/spacecmd/system.py:3143 ../src/spacecmd/system.py:3212
-#: ../src/spacecmd/system.py:3266 ../src/spacecmd/system.py:3335
-#: ../src/spacecmd/system.py:3431 ../src/spacecmd/system.py:3531
-#: ../src/spacecmd/system.py:3595 ../src/spacecmd/system.py:3651
-#: ../src/spacecmd/system.py:3827 ../src/spacecmd/system.py:4105
-#: ../src/spacecmd/system.py:4248 ../src/spacecmd/system.py:4310
-#: ../src/spacecmd/system.py:4358 ../src/spacecmd/system.py:4416
-#: ../src/spacecmd/system.py:4475
+#: ../src/spacecmd/system.py:218 ../src/spacecmd/system.py:399
+#: ../src/spacecmd/system.py:584 ../src/spacecmd/system.py:749
+#: ../src/spacecmd/system.py:905 ../src/spacecmd/system.py:1042
+#: ../src/spacecmd/system.py:1143 ../src/spacecmd/system.py:1213
+#: ../src/spacecmd/system.py:1268 ../src/spacecmd/system.py:1367
+#: ../src/spacecmd/system.py:1599 ../src/spacecmd/system.py:1663
+#: ../src/spacecmd/system.py:1706 ../src/spacecmd/system.py:1786
+#: ../src/spacecmd/system.py:1928 ../src/spacecmd/system.py:1970
+#: ../src/spacecmd/system.py:2059 ../src/spacecmd/system.py:2127
+#: ../src/spacecmd/system.py:2210 ../src/spacecmd/system.py:2265
+#: ../src/spacecmd/system.py:2325 ../src/spacecmd/system.py:2384
+#: ../src/spacecmd/system.py:2442 ../src/spacecmd/system.py:2503
+#: ../src/spacecmd/system.py:2582 ../src/spacecmd/system.py:2663
+#: ../src/spacecmd/system.py:2718 ../src/spacecmd/system.py:2991
+#: ../src/spacecmd/system.py:3144 ../src/spacecmd/system.py:3213
+#: ../src/spacecmd/system.py:3267 ../src/spacecmd/system.py:3336
+#: ../src/spacecmd/system.py:3432 ../src/spacecmd/system.py:3532
+#: ../src/spacecmd/system.py:3596 ../src/spacecmd/system.py:3652
+#: ../src/spacecmd/system.py:3828 ../src/spacecmd/system.py:4106
+#: ../src/spacecmd/system.py:4249 ../src/spacecmd/system.py:4311
+#: ../src/spacecmd/system.py:4359 ../src/spacecmd/system.py:4417
+#: ../src/spacecmd/system.py:4476
 msgid "No systems selected"
 msgstr "시스템을 선택하지 않음"
 
@@ -4424,14 +4424,14 @@ msgstr "scap_listxccdfscans: 지정된 시스템에서 완료된 OpenSCAP 스캔
 msgid "usage: scap_listxccdfscans <SYSTEMS>"
 msgstr "사용법: scap_listxccdfscans <SYSTEMS>"
 
-#: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:612
-#: ../src/spacecmd/system.py:1228 ../src/spacecmd/system.py:1280
-#: ../src/spacecmd/system.py:1379 ../src/spacecmd/system.py:2069
-#: ../src/spacecmd/system.py:2394 ../src/spacecmd/system.py:2452
-#: ../src/spacecmd/system.py:2675 ../src/spacecmd/system.py:2730
-#: ../src/spacecmd/system.py:3156 ../src/spacecmd/system.py:3281
-#: ../src/spacecmd/system.py:3373 ../src/spacecmd/system.py:3456
-#: ../src/spacecmd/system.py:3544
+#: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:613
+#: ../src/spacecmd/system.py:1229 ../src/spacecmd/system.py:1281
+#: ../src/spacecmd/system.py:1380 ../src/spacecmd/system.py:2070
+#: ../src/spacecmd/system.py:2395 ../src/spacecmd/system.py:2453
+#: ../src/spacecmd/system.py:2676 ../src/spacecmd/system.py:2731
+#: ../src/spacecmd/system.py:3157 ../src/spacecmd/system.py:3282
+#: ../src/spacecmd/system.py:3374 ../src/spacecmd/system.py:3457
+#: ../src/spacecmd/system.py:3545
 #, python-format
 msgid "System: %s"
 msgstr "시스템: %s"
@@ -4641,7 +4641,7 @@ msgid "Date:      %s"
 msgstr "날짜:      %s"
 
 #: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
-#: ../src/spacecmd/system.py:3288
+#: ../src/spacecmd/system.py:3289
 #, python-format
 msgid "Completed: %s"
 msgstr "완료: %s"
@@ -5259,7 +5259,7 @@ msgstr "                            생성할 수 있는 채널 아키텍처"
 msgid "usage: softwarechannel_listarches"
 msgstr "사용법: softwarechannel_listarches"
 
-#: ../src/spacecmd/softwarechannel.py:660 ../src/spacecmd/system.py:4076
+#: ../src/spacecmd/softwarechannel.py:660 ../src/spacecmd/system.py:4077
 msgid "options:"
 msgstr "옵션:"
 
@@ -6378,63 +6378,63 @@ msgstr "ssm_clear: SSM에서 모든 시스템 제거"
 msgid "usage: ssm_clear"
 msgstr "사용법: ssm_clear"
 
-#: ../src/spacecmd/system.py:51
+#: ../src/spacecmd/system.py:52
 msgid "Same"
 msgstr "동일"
 
-#: ../src/spacecmd/system.py:52
+#: ../src/spacecmd/system.py:53
 msgid "Only here"
 msgstr "여기에만"
 
-#: ../src/spacecmd/system.py:53
+#: ../src/spacecmd/system.py:54
 msgid "Newer here"
 msgstr "여기에 최신"
 
-#: ../src/spacecmd/system.py:54
+#: ../src/spacecmd/system.py:55
 msgid "Only there"
 msgstr "저기에만"
 
-#: ../src/spacecmd/system.py:55
+#: ../src/spacecmd/system.py:56
 msgid "Newer there"
 msgstr "저기에 최신"
 
-#: ../src/spacecmd/system.py:75 ../src/spacecmd/system.py:4021
+#: ../src/spacecmd/system.py:76 ../src/spacecmd/system.py:4022
 msgid "Package"
 msgstr "패키지"
 
-#: ../src/spacecmd/system.py:76
+#: ../src/spacecmd/system.py:77
 msgid "This System"
 msgstr "이 시스템"
 
-#: ../src/spacecmd/system.py:77
+#: ../src/spacecmd/system.py:78
 msgid "Other System"
 msgstr "기타 시스템"
 
-#: ../src/spacecmd/system.py:78 ../src/spacecmd/system.py:4024
+#: ../src/spacecmd/system.py:79 ../src/spacecmd/system.py:4025
 msgid "Difference"
 msgstr "차이"
 
-#: ../src/spacecmd/system.py:126
+#: ../src/spacecmd/system.py:127
 msgid "Removing Channels"
 msgstr "채널 제거 중"
 
-#: ../src/spacecmd/system.py:129
+#: ../src/spacecmd/system.py:130
 msgid "Adding Channels"
 msgstr "채널 추가 중"
 
-#: ../src/spacecmd/system.py:167
+#: ../src/spacecmd/system.py:168
 msgid "system_list: List all system profiles"
 msgstr "system_list: 모든 시스템 프로파일 나열"
 
-#: ../src/spacecmd/system.py:168
+#: ../src/spacecmd/system.py:169
 msgid "usage: system_list"
 msgstr "사용법: system_list"
 
-#: ../src/spacecmd/system.py:184
+#: ../src/spacecmd/system.py:185
 msgid "system_reboot: Reboot a system"
 msgstr "system_reboot: 시스템 재부팅"
 
-#: ../src/spacecmd/system.py:185
+#: ../src/spacecmd/system.py:186
 msgid ""
 "usage: system_reboot <SYSTEMS> [options])\n"
 "\n"
@@ -6446,51 +6446,51 @@ msgstr ""
 "옵션:\n"
 "  -s START_TIME"
 
-#: ../src/spacecmd/system.py:240
+#: ../src/spacecmd/system.py:241
 msgid "Reboot these systems [y/N]:"
 msgstr "이 시스템 재부팅 [y/N]:"
 
-#: ../src/spacecmd/system.py:256
+#: ../src/spacecmd/system.py:257
 msgid "system_search: List systems that match the given criteria"
 msgstr "system_search: 지정된 기준과 일치하는 시스템 나열"
 
-#: ../src/spacecmd/system.py:257
+#: ../src/spacecmd/system.py:258
 msgid "usage: system_search QUERY"
 msgstr "사용법: system_search QUERY"
 
-#: ../src/spacecmd/system.py:259
+#: ../src/spacecmd/system.py:260
 msgid "Available Fields:"
 msgstr "사용할 수 있는 필드:"
 
-#: ../src/spacecmd/system.py:262
+#: ../src/spacecmd/system.py:263
 msgid "Examples:"
 msgstr "예:"
 
-#: ../src/spacecmd/system.py:263
+#: ../src/spacecmd/system.py:264
 msgid "> system_search device:vmware"
 msgstr "> system_search device:vmware"
 
-#: ../src/spacecmd/system.py:264
+#: ../src/spacecmd/system.py:265
 msgid "> system_search ip:192.168.82"
 msgstr "> system_search ip:192.168.82"
 
-#: ../src/spacecmd/system.py:282 ../src/spacecmd/system.py:289
+#: ../src/spacecmd/system.py:283 ../src/spacecmd/system.py:290
 msgid "Invalid query"
 msgstr "유효하지 않은 쿼리"
 
-#: ../src/spacecmd/system.py:325
+#: ../src/spacecmd/system.py:326
 msgid "Invalid search field"
 msgstr "유효하지 않은 검색 필드"
 
-#: ../src/spacecmd/system.py:355
+#: ../src/spacecmd/system.py:356
 msgid "system_runscript: Schedule a script to run on the list of"
 msgstr "system_runscript: 다음 목록에서 실행할 스크립트 예약"
 
-#: ../src/spacecmd/system.py:356
+#: ../src/spacecmd/system.py:357
 msgid "                  systems provided"
 msgstr "                  입력한 시스템"
 
-#: ../src/spacecmd/system.py:357
+#: ../src/spacecmd/system.py:358
 msgid ""
 "usage: system_runscript <SYSTEMS> [options])\n"
 "\n"
@@ -6512,240 +6512,240 @@ msgstr ""
 "  -l 레이블\n"
 "  -f 파일"
 
-#: ../src/spacecmd/system.py:402
+#: ../src/spacecmd/system.py:403
 msgid "User [root]:"
 msgstr "사용자 [루트]:"
 
-#: ../src/spacecmd/system.py:403
+#: ../src/spacecmd/system.py:404
 msgid "Group [root]:"
 msgstr "그룹 [루트]:"
 
-#: ../src/spacecmd/system.py:412
+#: ../src/spacecmd/system.py:413
 msgid "Timeout (in seconds) [600]:"
 msgstr "시간 제한(초) [600]:"
 
-#: ../src/spacecmd/system.py:418
+#: ../src/spacecmd/system.py:419
 msgid "Invalid timeout"
 msgstr "유효하지 않은 시간 제한"
 
-#: ../src/spacecmd/system.py:424
+#: ../src/spacecmd/system.py:425
 msgid "Label/Short Description [default]:"
 msgstr "레이블/짧은 설명 [기본값]:"
 
-#: ../src/spacecmd/system.py:428
+#: ../src/spacecmd/system.py:429
 msgid "Script File [create]:"
 msgstr "스크립트 파일 [생성]:"
 
-#: ../src/spacecmd/system.py:441
+#: ../src/spacecmd/system.py:442
 msgid "No script provided"
 msgstr "입력된 스크립트 없음"
 
-#: ../src/spacecmd/system.py:460
+#: ../src/spacecmd/system.py:461
 msgid "A script file is required"
 msgstr "스크립트 파일은 필수입니다."
 
-#: ../src/spacecmd/system.py:468
+#: ../src/spacecmd/system.py:469
 #, python-format
 msgid "User:       %s"
 msgstr "사용자:       %s"
 
-#: ../src/spacecmd/system.py:469
+#: ../src/spacecmd/system.py:470
 #, python-format
 msgid "Group:      %s"
 msgstr "그룹:      %s"
 
-#: ../src/spacecmd/system.py:470
+#: ../src/spacecmd/system.py:471
 #, python-format
 msgid "Timeout:    %i seconds"
 msgstr "시간 제한:    %i초"
 
-#: ../src/spacecmd/system.py:474
+#: ../src/spacecmd/system.py:475
 #, python-format
 msgid "Label:      %s"
 msgstr "레이블:      %s"
 
-#: ../src/spacecmd/system.py:475
+#: ../src/spacecmd/system.py:476
 msgid "Script Contents"
 msgstr "스크립트 컨텐트"
 
-#: ../src/spacecmd/system.py:537 ../src/spacecmd/system.py:840
-#: ../src/spacecmd/system.py:968 ../src/spacecmd/system.py:1104
-#: ../src/spacecmd/system.py:4635
+#: ../src/spacecmd/system.py:538 ../src/spacecmd/system.py:841
+#: ../src/spacecmd/system.py:969 ../src/spacecmd/system.py:1105
+#: ../src/spacecmd/system.py:4636
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "%s을(를) 예약하지 못함"
 
-#: ../src/spacecmd/system.py:540
+#: ../src/spacecmd/system.py:541
 #, python-format
 msgid "Scheduled: %i system(s)"
 msgstr "예약됨: %i개 시스템"
 
-#: ../src/spacecmd/system.py:547 ../src/spacecmd/utils.py:245
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:245
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s을(를) 제거할 수 없음"
 
-#: ../src/spacecmd/system.py:556
+#: ../src/spacecmd/system.py:557
 msgid "system_listhardware: List the hardware details of a system"
 msgstr "system_listhardware: 시스템의 하드웨어 세부 사항 나열"
 
-#: ../src/spacecmd/system.py:557
+#: ../src/spacecmd/system.py:558
 msgid "usage: system_listhardware <SYSTEMS>"
 msgstr "사용법: system_listhardware <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:616
+#: ../src/spacecmd/system.py:617
 msgid "Network"
 msgstr "네트워크"
 
-#: ../src/spacecmd/system.py:625
+#: ../src/spacecmd/system.py:626
 #, python-format
 msgid "Interface:   %s"
 msgstr "인터페이스:   %s"
 
-#: ../src/spacecmd/system.py:626
+#: ../src/spacecmd/system.py:627
 #, python-format
 msgid "MAC Address: %s"
 msgstr "MAC 주소: %s"
 
-#: ../src/spacecmd/system.py:627
+#: ../src/spacecmd/system.py:628
 #, python-format
 msgid "IP Address:  %s"
 msgstr "IP 주소:  %s"
 
-#: ../src/spacecmd/system.py:628
+#: ../src/spacecmd/system.py:629
 #, python-format
 msgid "Netmask:     %s"
 msgstr "넷마스크:     %s"
 
-#: ../src/spacecmd/system.py:629
+#: ../src/spacecmd/system.py:630
 #, python-format
 msgid "Broadcast:   %s"
 msgstr "브로드캐스트:   %s"
 
-#: ../src/spacecmd/system.py:630
+#: ../src/spacecmd/system.py:631
 #, python-format
 msgid "Module:      %s"
 msgstr "모듈:      %s"
 
-#: ../src/spacecmd/system.py:634
+#: ../src/spacecmd/system.py:635
 msgid "CPU"
 msgstr "CPU"
 
-#: ../src/spacecmd/system.py:636
+#: ../src/spacecmd/system.py:637
 #, python-format
 msgid "Count:    %i"
 msgstr "카운트:    %i"
 
-#: ../src/spacecmd/system.py:637
+#: ../src/spacecmd/system.py:638
 #, python-format
 msgid "Arch:     %s"
 msgstr "아키텍처:     %s"
 
-#: ../src/spacecmd/system.py:638
+#: ../src/spacecmd/system.py:639
 #, python-format
 msgid "MHz:      %s"
 msgstr "MHz:      %s"
 
-#: ../src/spacecmd/system.py:639
+#: ../src/spacecmd/system.py:640
 #, python-format
 msgid "Cache:    %s"
 msgstr "캐시:    %s"
 
-#: ../src/spacecmd/system.py:640
+#: ../src/spacecmd/system.py:641
 #, python-format
 msgid "Vendor:   %s"
 msgstr "제조사:   %s"
 
-#: ../src/spacecmd/system.py:641
+#: ../src/spacecmd/system.py:642
 #, python-format
 msgid "Model:    %s"
 msgstr "모델:    %s"
 
-#: ../src/spacecmd/system.py:644
+#: ../src/spacecmd/system.py:645
 msgid "Memory"
 msgstr "메모리"
 
-#: ../src/spacecmd/system.py:646
+#: ../src/spacecmd/system.py:647
 #, python-format
 msgid "RAM:  %i"
 msgstr "RAM:  %i"
 
-#: ../src/spacecmd/system.py:647
+#: ../src/spacecmd/system.py:648
 #, python-format
 msgid "Swap: %i"
 msgstr "스왑: %i"
 
-#: ../src/spacecmd/system.py:651
+#: ../src/spacecmd/system.py:652
 msgid "DMI"
 msgstr "DMI"
 
-#: ../src/spacecmd/system.py:652
+#: ../src/spacecmd/system.py:653
 #, python-format
 msgid "Vendor:       %s"
 msgstr "제조사:       %s"
 
-#: ../src/spacecmd/system.py:653
+#: ../src/spacecmd/system.py:654
 #, python-format
 msgid "System:       %s"
 msgstr "시스템:       %s"
 
-#: ../src/spacecmd/system.py:654
+#: ../src/spacecmd/system.py:655
 #, python-format
 msgid "Product:      %s"
 msgstr "제품:      %s"
 
-#: ../src/spacecmd/system.py:655
+#: ../src/spacecmd/system.py:656
 #, python-format
 msgid "Board:        %s"
 msgstr "보드:        %s"
 
-#: ../src/spacecmd/system.py:658
+#: ../src/spacecmd/system.py:659
 msgid "Asset"
 msgstr "자산"
 
-#: ../src/spacecmd/system.py:664
+#: ../src/spacecmd/system.py:665
 #, python-format
 msgid "BIOS Release: %s"
 msgstr "BIOS 릴리스: %s"
 
-#: ../src/spacecmd/system.py:665
+#: ../src/spacecmd/system.py:666
 #, python-format
 msgid "BIOS Vendor:  %s"
 msgstr "BIOS 제조사:  %s"
 
-#: ../src/spacecmd/system.py:666
+#: ../src/spacecmd/system.py:667
 #, python-format
 msgid "BIOS Version: %s"
 msgstr "BIOS 버전: %s"
 
-#: ../src/spacecmd/system.py:670
+#: ../src/spacecmd/system.py:671
 msgid "Devices"
 msgstr "장치"
 
-#: ../src/spacecmd/system.py:680
+#: ../src/spacecmd/system.py:681
 msgid "Description: None"
 msgstr "설명: 없음"
 
-#: ../src/spacecmd/system.py:684
+#: ../src/spacecmd/system.py:685
 #, python-format
 msgid "Driver:      %s"
 msgstr "드라이버:      %s"
 
-#: ../src/spacecmd/system.py:685
+#: ../src/spacecmd/system.py:686
 #, python-format
 msgid "Class:       %s"
 msgstr "클래스:       %s"
 
-#: ../src/spacecmd/system.py:686
+#: ../src/spacecmd/system.py:687
 #, python-format
 msgid "Bus:         %s"
 msgstr "버스:         %s"
 
-#: ../src/spacecmd/system.py:694
+#: ../src/spacecmd/system.py:695
 msgid "system_installpackage: Install a package on a system"
 msgstr "system_installpackage: 시스템에 패키지 설치"
 
-#: ../src/spacecmd/system.py:695
+#: ../src/spacecmd/system.py:696
 msgid ""
 "usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])\n"
 "\n"
@@ -6757,30 +6757,30 @@ msgstr ""
 "옵션:\n"
 "    -s START_TIME"
 
-#: ../src/spacecmd/system.py:797
+#: ../src/spacecmd/system.py:798
 msgid "No packages to install"
 msgstr "설치할 패키지 없음"
 
-#: ../src/spacecmd/system.py:821
+#: ../src/spacecmd/system.py:822
 #, python-format
 msgid "%s does not have access to all requested packages"
 msgstr "%s에 요청된 모든 패키지에 대한 액세스 권한 없음"
 
-#: ../src/spacecmd/system.py:827
+#: ../src/spacecmd/system.py:828
 msgid "Install these packages [y/N]:"
 msgstr "이 패키지 설치 [y/N]:"
 
-#: ../src/spacecmd/system.py:842 ../src/spacecmd/system.py:970
-#: ../src/spacecmd/system.py:1106
+#: ../src/spacecmd/system.py:843 ../src/spacecmd/system.py:971
+#: ../src/spacecmd/system.py:1107
 #, python-format
 msgid "Scheduled %i system(s)"
 msgstr "예약된 %i개 시스템"
 
-#: ../src/spacecmd/system.py:850
+#: ../src/spacecmd/system.py:851
 msgid "system_removepackage: Remove a package from a system"
 msgstr "system_removepackage: 시스템에서 패키지 제거"
 
-#: ../src/spacecmd/system.py:851
+#: ../src/spacecmd/system.py:852
 msgid ""
 "usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])\n"
 "\n"
@@ -6792,11 +6792,11 @@ msgstr ""
 "옵션:\n"
 "    -s START_TIME"
 
-#: ../src/spacecmd/system.py:978
+#: ../src/spacecmd/system.py:979
 msgid "system_upgradepackage: Upgrade a package on a system"
 msgstr "system_upgradepackage: 시스템에서 패키지 업그레이드"
 
-#: ../src/spacecmd/system.py:979
+#: ../src/spacecmd/system.py:980
 msgid ""
 "usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')\n"
 "\n"
@@ -6808,58 +6808,58 @@ msgstr ""
 "옵션:\n"
 "    -s START_TIME"
 
-#: ../src/spacecmd/system.py:1059 ../src/spacecmd/system.py:1155
+#: ../src/spacecmd/system.py:1060 ../src/spacecmd/system.py:1156
 #, python-format
 msgid "No upgrades available for %s"
 msgstr "%s에서 사용할 수 있는 업그레이드 없음"
 
-#: ../src/spacecmd/system.py:1082
+#: ../src/spacecmd/system.py:1083
 #, python-format
 msgid "Couldn't get name for package %i"
 msgstr "%i 패키지의 이름을 가져올 수 없음"
 
-#: ../src/spacecmd/system.py:1089
+#: ../src/spacecmd/system.py:1090
 msgid "Upgrade these packages [y/N]:"
 msgstr "이 패키지 업그레이드 [y/N]:"
 
-#: ../src/spacecmd/system.py:1114
+#: ../src/spacecmd/system.py:1115
 msgid "system_listupgrades: List the available upgrades for a system"
 msgstr "system_listupgrades: 시스템에서 사용할 수 있는 업그레이드 나열"
 
-#: ../src/spacecmd/system.py:1115
+#: ../src/spacecmd/system.py:1116
 msgid "usage: system_listupgrades <SYSTEMS>"
 msgstr "사용법: system_listupgrades <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1183
+#: ../src/spacecmd/system.py:1184
 msgid "system_listinstalledpackages: List the installed packages on a"
 msgstr "system_listinstalledpackages: 다음에 설치된 패키지 나열"
 
-#: ../src/spacecmd/system.py:1184
+#: ../src/spacecmd/system.py:1185
 msgid "                              system"
 msgstr "                              시스템"
 
-#: ../src/spacecmd/system.py:1185
+#: ../src/spacecmd/system.py:1186
 msgid "usage: system_listinstalledpackages <SYSTEMS>"
 msgstr "사용법: system_listinstalledpackages <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1239
+#: ../src/spacecmd/system.py:1240
 msgid "system_listconfigchannels: List the config channels of a system"
 msgstr "system_listconfigchannels: 시스템의 구성 채널 나열"
 
-#: ../src/spacecmd/system.py:1240
+#: ../src/spacecmd/system.py:1241
 msgid "usage: system_listconfigchannels <SYSTEMS>"
 msgstr "사용법: system_listconfigchannels <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1286 ../src/spacecmd/system.py:1389
+#: ../src/spacecmd/system.py:1287 ../src/spacecmd/system.py:1390
 #, python-format
 msgid "%s does not support configuration channels"
 msgstr "%s은(는) 구성 채널을 지원하지 않음"
 
-#: ../src/spacecmd/system.py:1323
+#: ../src/spacecmd/system.py:1324
 msgid "system_listconfigfiles: List the managed config files of a system"
 msgstr "system_listconfigfiles: 시스템의 모든 관리되는 구성 파일 나열"
 
-#: ../src/spacecmd/system.py:1324
+#: ../src/spacecmd/system.py:1325
 msgid ""
 "usage: system_listconfigfiles <SYSTEMS>')\n"
 "options:\n"
@@ -6875,24 +6875,24 @@ msgstr ""
 "  -c/--central : 중앙에서 관리되는 파일 나열\n"
 "  -q/--quiet   : 자동 모드(헤더 생략)"
 
-#: ../src/spacecmd/system.py:1412
+#: ../src/spacecmd/system.py:1413
 #, python-format
 msgid "Error, unexpected channel type label %s"
 msgstr "오류, 예기치 않은 채널 유형 레이블 %s"
 
-#: ../src/spacecmd/system.py:1424
+#: ../src/spacecmd/system.py:1425
 msgid "system_addconfigfile: Create a configuration file"
 msgstr "system_addconfigfile: 구성 파일 생성"
 
-#: ../src/spacecmd/system.py:1425
+#: ../src/spacecmd/system.py:1426
 msgid "Note this is only for system sandbox or locally-managed files"
 msgstr "시스템 샌드박스 또는 로컬 관리 파일 전용입니다."
 
-#: ../src/spacecmd/system.py:1426
+#: ../src/spacecmd/system.py:1427
 msgid "Centrally managed files should be created via configchannel_addfile"
 msgstr "중앙 관리 파일은 configchannel_addfile을 통해 생성해야 합니다."
 
-#: ../src/spacecmd/system.py:1427
+#: ../src/spacecmd/system.py:1428
 msgid ""
 "usage: system_addconfigfile [SYSTEM] [options]\n"
 "\n"
@@ -6942,28 +6942,28 @@ msgstr ""
 "위한\n"
 "  일부 작업이 수행되었지만, 사용자가 명시적으로 지정해야 할 수 있습니다.\n"
 
-#: ../src/spacecmd/system.py:1494
+#: ../src/spacecmd/system.py:1495
 #, python-format
 msgid "%s is not a valid system"
 msgstr "%s은(는) 유효한 시스템이 아닙니다."
 
-#: ../src/spacecmd/system.py:1504
+#: ../src/spacecmd/system.py:1505
 msgid "System-Sandbox or Locally-Managed? [S/L]:"
 msgstr "시스템 샌드박스 또는 로컬 관리? [S/L]:"
 
-#: ../src/spacecmd/system.py:1520
+#: ../src/spacecmd/system.py:1521
 msgid "Must choose system-sandbox or locally-managed option"
 msgstr "시스템 샌드박스 또는 로컬 관리 옵션을 선택해야 합니다."
 
-#: ../src/spacecmd/system.py:1525
+#: ../src/spacecmd/system.py:1526
 msgid "Must provide system"
 msgstr "시스템을 입력해야 합니다."
 
-#: ../src/spacecmd/system.py:1559
+#: ../src/spacecmd/system.py:1560
 msgid "system_addconfigchannels: Add config channels to a system"
 msgstr "system_addconfigchannels: 시스템에 구성 채널 추가"
 
-#: ../src/spacecmd/system.py:1560
+#: ../src/spacecmd/system.py:1561
 msgid ""
 "usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]\n"
 "\n"
@@ -6977,36 +6977,36 @@ msgstr ""
 "  -t 목록의 맨 위에 채널 추가\n"
 "  -b 목록의 맨 아래에 채널 추가"
 
-#: ../src/spacecmd/system.py:1604
+#: ../src/spacecmd/system.py:1605
 msgid "Add to top or bottom? [T/b]:"
 msgstr "상단 또는 하단에 추가하시겠습니까? [T/b]:"
 
-#: ../src/spacecmd/system.py:1628
+#: ../src/spacecmd/system.py:1629
 msgid "system_removeconfigchannels: Remove config channels from a system"
 msgstr "system_removeconfigchannels: 시스템에서 구성 채널 제거"
 
-#: ../src/spacecmd/system.py:1629
+#: ../src/spacecmd/system.py:1630
 msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "사용법: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
 
-#: ../src/spacecmd/system.py:1679
+#: ../src/spacecmd/system.py:1680
 msgid ""
 "system_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr "system_setconfigchannelorder: 구성 채널의 순서가 지정된 순서 설정"
 
-#: ../src/spacecmd/system.py:1680
+#: ../src/spacecmd/system.py:1681
 msgid "usage: system_setconfigchannelorder <SYSTEMS>"
 msgstr "사용법: system_setconfigchannelorder <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1720
+#: ../src/spacecmd/system.py:1721
 msgid "New Configuration Channels"
 msgstr "새 구성 채널"
 
-#: ../src/spacecmd/system.py:1740
+#: ../src/spacecmd/system.py:1741
 msgid "system_deployconfigfiles: Deploy all configuration files for a system"
 msgstr "system_deployconfigfiles: 시스템을 위한 모든 구성 파일 배포"
 
-#: ../src/spacecmd/system.py:1741
+#: ../src/spacecmd/system.py:1742
 msgid ""
 "usage: system_deployconfigfiles <SYSTEMS> [options]\n"
 "\n"
@@ -7018,20 +7018,20 @@ msgstr ""
 "옵션:\n"
 "    -s START_TIME"
 
-#: ../src/spacecmd/system.py:1795
+#: ../src/spacecmd/system.py:1796
 msgid "Deploy ALL configuration files to these systems [y/N]:"
 msgstr "이 시스템에 모든 구성 파일 배포 [y/N]:"
 
-#: ../src/spacecmd/system.py:1805
+#: ../src/spacecmd/system.py:1806
 #, python-format
 msgid "Scheduled deployment for %i system(s)"
 msgstr "%i개 시스템에 예약된 배포"
 
-#: ../src/spacecmd/system.py:1813
+#: ../src/spacecmd/system.py:1814
 msgid "system_delete: Delete a system profile"
 msgstr "system_delete: 시스템 프로파일 삭제"
 
-#: ../src/spacecmd/system.py:1814
+#: ../src/spacecmd/system.py:1815
 msgid ""
 "usage: system_delete [options] <SYSTEMS>\n"
 "\n"
@@ -7053,93 +7053,93 @@ msgstr ""
 "삭제\n"
 "    "
 
-#: ../src/spacecmd/system.py:1858
+#: ../src/spacecmd/system.py:1859
 msgid "No systems to delete"
 msgstr "삭제할 시스템 없음"
 
-#: ../src/spacecmd/system.py:1866
+#: ../src/spacecmd/system.py:1867
 #, python-format
 msgid "%s  System ID"
 msgstr "%s  시스템 ID"
 
-#: ../src/spacecmd/system.py:1866
+#: ../src/spacecmd/system.py:1867
 msgid "Profile"
 msgstr "프로파일"
 
-#: ../src/spacecmd/system.py:1874
+#: ../src/spacecmd/system.py:1875
 msgid "Delete these systems [y/N]:"
 msgstr "이 시스템 삭제 [y/N]:"
 
-#: ../src/spacecmd/system.py:1881
+#: ../src/spacecmd/system.py:1882
 #, python-format
 msgid "%i system(s) scheduled for removal"
 msgstr "%i개 시스템이 제거 예약됨"
 
-#: ../src/spacecmd/system.py:1901
+#: ../src/spacecmd/system.py:1902
 msgid "system_lock: Lock a system"
 msgstr "system_lock: 시스템 잠금"
 
-#: ../src/spacecmd/system.py:1902
+#: ../src/spacecmd/system.py:1903
 msgid "usage: system_lock <SYSTEMS>"
 msgstr "사용법: system_lock <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1943
+#: ../src/spacecmd/system.py:1944
 msgid "system_unlock: Unlock a system"
 msgstr "system_unlock: 시스템 잠금 해제"
 
-#: ../src/spacecmd/system.py:1944
+#: ../src/spacecmd/system.py:1945
 msgid "usage: system_unlock <SYSTEMS>"
 msgstr "사용법: system_unlock <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:1985
+#: ../src/spacecmd/system.py:1986
 msgid "system_rename: Rename a system profile"
 msgstr "system_rename: 시스템 프로파일 이름 변경"
 
-#: ../src/spacecmd/system.py:1986
+#: ../src/spacecmd/system.py:1987
 msgid "usage: system_rename OLDNAME NEWNAME"
 msgstr "사용법: system_rename OLDNAME NEWNAME"
 
-#: ../src/spacecmd/system.py:2032
+#: ../src/spacecmd/system.py:2033
 msgid "system_listcustomvalues: List the custom values for a system"
 msgstr "system_listcustomvalues: 시스템에 대한 사용자 정의 값 나열"
 
-#: ../src/spacecmd/system.py:2033
+#: ../src/spacecmd/system.py:2034
 msgid "usage: system_listcustomvalues <SYSTEMS>"
 msgstr "사용법: system_listcustomvalues <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:2088
+#: ../src/spacecmd/system.py:2089
 msgid "system_addcustomvalue: Set a custom value for a system"
 msgstr "system_addcustomvalue: 시스템에 대한 사용자 정의 값 설정"
 
-#: ../src/spacecmd/system.py:2089
+#: ../src/spacecmd/system.py:2090
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
 msgstr "사용법: system_addcustomvalue KEY VALUE <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:2144
+#: ../src/spacecmd/system.py:2145
 msgid "system_updatecustomvalue: Update a custom value for a system"
 msgstr "system_updatecustomvalue: 시스템에 대한 사용자 정의 값 업데이트"
 
-#: ../src/spacecmd/system.py:2145
+#: ../src/spacecmd/system.py:2146
 msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
 msgstr "사용법: system_updatecustomvalue KEY VALUE <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:2177
+#: ../src/spacecmd/system.py:2178
 msgid "system_removecustomvalues: Remove a custom value for a system"
 msgstr "system_removecustomvalues: 시스템에 대한 사용자 정의 값 제거"
 
-#: ../src/spacecmd/system.py:2178
+#: ../src/spacecmd/system.py:2179
 msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
 msgstr "사용법: system_removecustomvalues <SYSTEMS> <KEY ...>"
 
-#: ../src/spacecmd/system.py:2214
+#: ../src/spacecmd/system.py:2215
 msgid "Delete these values [y/N]:"
 msgstr "이 값 삭제 [y/N]:"
 
-#: ../src/spacecmd/system.py:2232
+#: ../src/spacecmd/system.py:2233
 msgid "system_addnote: Set a note for a system"
 msgstr "system_addnote: 시스템에 대한 메모 설정"
 
-#: ../src/spacecmd/system.py:2233
+#: ../src/spacecmd/system.py:2234
 msgid ""
 "usage: system_addnote <SYSTEM> [options]\n"
 "\n"
@@ -7153,84 +7153,84 @@ msgstr ""
 "  -s 제목\n"
 "  -b 본문"
 
-#: ../src/spacecmd/system.py:2268
+#: ../src/spacecmd/system.py:2269
 msgid "Subject of the Note:"
 msgstr "메모의 제목:"
 
-#: ../src/spacecmd/system.py:2270
+#: ../src/spacecmd/system.py:2271
 msgid "Note Body (ctrl-D to finish):"
 msgstr "메모 본문(종료하려면 ctrl-D):"
 
-#: ../src/spacecmd/system.py:2274
+#: ../src/spacecmd/system.py:2275
 msgid "A subject is required"
 msgstr "제목은 필수입니다."
 
-#: ../src/spacecmd/system.py:2278
+#: ../src/spacecmd/system.py:2279
 msgid "A body is required"
 msgstr "본문은 필수입니다."
 
-#: ../src/spacecmd/system.py:2297
+#: ../src/spacecmd/system.py:2298
 msgid "system_deletenotes: Delete notes from a system"
 msgstr "system_deletenotes: 시스템에서 메모 삭제"
 
-#: ../src/spacecmd/system.py:2298
+#: ../src/spacecmd/system.py:2299
 msgid "usage: system_deletenotes <SYSTEM> <ID|*>"
 msgstr "사용법: system_deletenotes <SYSTEM> <ID|*>"
 
-#: ../src/spacecmd/system.py:2330
+#: ../src/spacecmd/system.py:2331
 msgid "No notes to delete"
 msgstr "삭제할 메모 없음"
 
-#: ../src/spacecmd/system.py:2345
+#: ../src/spacecmd/system.py:2346
 #, python-format
 msgid "%s is not a valid note ID"
 msgstr "%s은(는) 유효한 메모 ID가 아닙니다."
 
-#: ../src/spacecmd/system.py:2357
+#: ../src/spacecmd/system.py:2358
 msgid "system_listnotes: List the available notes for a system"
 msgstr "system_listnotes: 시스템에서 사용할 수 있는 메모 나열"
 
-#: ../src/spacecmd/system.py:2358
+#: ../src/spacecmd/system.py:2359
 msgid "usage: system_listnotes <SYSTEM>"
 msgstr "사용법: system_listnotes <SYSTEM>"
 
-#: ../src/spacecmd/system.py:2416
+#: ../src/spacecmd/system.py:2417
 msgid "system_listfqdns: List the associated FQDNs for a system"
 msgstr "system_listfqdns: 시스템에 연결된 FQDN 나열"
 
-#: ../src/spacecmd/system.py:2417
+#: ../src/spacecmd/system.py:2418
 msgid "usage: system_listfqdns <SYSTEM>"
 msgstr "사용법: system_listfqdns <SYSTEM>"
 
-#: ../src/spacecmd/system.py:2469
+#: ../src/spacecmd/system.py:2470
 msgid "system_setbasechannel: Set a system's base software channel"
 msgstr "system_setbasechannel: 시스템의 기본 소프트웨어 채널 설정"
 
-#: ../src/spacecmd/system.py:2470
+#: ../src/spacecmd/system.py:2471
 msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
 msgstr "사용법: system_setbasechannel <SYSTEMS> CHANNEL"
 
-#: ../src/spacecmd/system.py:2519 ../src/spacecmd/system.py:2608
+#: ../src/spacecmd/system.py:2520 ../src/spacecmd/system.py:2609
 #, python-format
 msgid "System:           %s"
 msgstr "시스템:           %s"
 
-#: ../src/spacecmd/system.py:2520 ../src/spacecmd/system.py:2609
+#: ../src/spacecmd/system.py:2521 ../src/spacecmd/system.py:2610
 #, python-format
 msgid "Old Base Channel: %s"
 msgstr "오래된 기본 채널: %s"
 
-#: ../src/spacecmd/system.py:2521 ../src/spacecmd/system.py:2611
+#: ../src/spacecmd/system.py:2522 ../src/spacecmd/system.py:2612
 #, python-format
 msgid "New Base Channel: %s"
 msgstr "새 기본 채널: %s"
 
-#: ../src/spacecmd/system.py:2540
+#: ../src/spacecmd/system.py:2541
 msgid ""
 "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr "system_schedulechangechannels: 시스템의 소프트웨어 채널 변경 예약"
 
-#: ../src/spacecmd/system.py:2541
+#: ../src/spacecmd/system.py:2542
 msgid ""
 "usage: system_setbasechannel <SYSTEMS> [options]\n"
 "\n"
@@ -7246,56 +7246,56 @@ msgstr ""
 "  -c CHILD_CHANNEL 하위 채널 레이블(여러 번 사용 가능)\n"
 "  -s START_TIME 시간은 현재로 기본값이 설정됨"
 
-#: ../src/spacecmd/system.py:2610
+#: ../src/spacecmd/system.py:2611
 #, python-format
 msgid "Old Child Channels: %s"
 msgstr "오래된 하위 채널: %s"
 
-#: ../src/spacecmd/system.py:2612
+#: ../src/spacecmd/system.py:2613
 #, python-format
 msgid "New Child channels %s"
 msgstr "새 하위 채널 %s"
 
-#: ../src/spacecmd/system.py:2627 ../src/spacecmd/system.py:4494
+#: ../src/spacecmd/system.py:2628 ../src/spacecmd/system.py:4495
 #, python-format
 msgid "Scheduled action id: %s"
 msgstr "예약된 작업 ID: %s"
 
-#: ../src/spacecmd/system.py:2634
+#: ../src/spacecmd/system.py:2635
 msgid "system_listbasechannel: List the base channel for a system"
 msgstr "system_listbasechannel: 시스템에 대한 기본 채널 나열"
 
-#: ../src/spacecmd/system.py:2635
+#: ../src/spacecmd/system.py:2636
 msgid "usage: system_listbasechannel <SYSTEMS>"
 msgstr "사용법: system_listbasechannel <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:2689
+#: ../src/spacecmd/system.py:2690
 msgid "system_listchildchannels: List the child channels for a system"
 msgstr "system_listchildchannels: 시스템에 대한 하위 채널 나열"
 
-#: ../src/spacecmd/system.py:2690
+#: ../src/spacecmd/system.py:2691
 msgid "usage: system_listchildchannels <SYSTEMS>"
 msgstr "사용법: system_listchildchannels <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:2744
+#: ../src/spacecmd/system.py:2745
 msgid "system_addchildchannels: Add child channels to a system"
 msgstr "system_addchildchannels: 시스템에 하위 채널 추가"
 
-#: ../src/spacecmd/system.py:2745
+#: ../src/spacecmd/system.py:2746
 msgid "usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "사용법: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
 
-#: ../src/spacecmd/system.py:2770
+#: ../src/spacecmd/system.py:2771
 #, python-format
 msgid "This method was removed since API version %s"
 msgstr "이 메서드는 API 버전 %s 이후부터 제거되었습니다."
 
-#: ../src/spacecmd/system.py:2773
+#: ../src/spacecmd/system.py:2774
 #, python-format
 msgid "This method is deprecated and will be removed in API version %s"
 msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 제거될 예정입니다."
 
-#: ../src/spacecmd/system.py:2778
+#: ../src/spacecmd/system.py:2779
 msgid ""
 "system_listcrashedsystems: List all systems that have experienced a crash "
 "and reported by spacewalk-abrt"
@@ -7303,19 +7303,19 @@ msgstr ""
 "system_listcrashedsystems: 충돌이 발생하고 spacewalk-abrt로 보고된 모든 시스"
 "템 나열"
 
-#: ../src/spacecmd/system.py:2779
+#: ../src/spacecmd/system.py:2780
 msgid "usage: system_listcrashedsystems"
 msgstr "사용법: system_listcrashedsystems"
 
-#: ../src/spacecmd/system.py:2787
+#: ../src/spacecmd/system.py:2788
 msgid "Count | System ID | Profile Name"
 msgstr "카운트 | 시스템 ID | 프로파일 이름"
 
-#: ../src/spacecmd/system.py:2801
+#: ../src/spacecmd/system.py:2802
 msgid "system_deletecrashes: Delete crashes reported by spacewalk-abrt."
 msgstr "system_deletecrashes: spacewalk-abrt로 보고된 충돌을 삭제합니다."
 
-#: ../src/spacecmd/system.py:2802
+#: ../src/spacecmd/system.py:2803
 msgid ""
 "usage: Delete all crashes for all systems    : system_deletecrashes [--"
 "verbose]"
@@ -7323,7 +7323,7 @@ msgstr ""
 "사용법: 모든 시스템에 대한 모든 충돌 삭제    : system_deletecrashes [--"
 "verbose]"
 
-#: ../src/spacecmd/system.py:2803
+#: ../src/spacecmd/system.py:2804
 msgid ""
 "usage: Delete all crashes for a single system: system_deletecrashes -i "
 "sys_id [--verbose]"
@@ -7331,7 +7331,7 @@ msgstr ""
 "사용법: 단일 시스템에 대한 모든 충돌 삭제: system_deletecrashes -i sys_id [--"
 "verbose]"
 
-#: ../src/spacecmd/system.py:2804
+#: ../src/spacecmd/system.py:2805
 msgid ""
 "usage: Delete a single crash record          : system_deletecrashes -c "
 "crash_id [--verbose]"
@@ -7339,51 +7339,51 @@ msgstr ""
 "사용법: 단일 충돌 레코드 삭제         : system_deletecrashes -c crash_id [--"
 "verbose]"
 
-#: ../src/spacecmd/system.py:2824
+#: ../src/spacecmd/system.py:2825
 #, python-format
 msgid "Deleting crash with id %s."
 msgstr "ID가 %s인 충돌을 제거하는 중입니다."
 
-#: ../src/spacecmd/system.py:2831
+#: ../src/spacecmd/system.py:2832
 #, python-format
 msgid "Deleting all crashes from system with systemid %s [y/N]:"
 msgstr "시스템 ID가 %s인 시스템에서 모든 충돌 삭제 [y/N]:"
 
 #. all systems
-#: ../src/spacecmd/system.py:2833
+#: ../src/spacecmd/system.py:2834
 msgid "Deleting all crashes from all systems [y/N]:"
 msgstr "모든 시스템에서 모든 충돌 삭제 [y/N]:"
 
-#: ../src/spacecmd/system.py:2845
+#: ../src/spacecmd/system.py:2846
 #, python-format
 msgid "Deleting crash with id %s from system %s."
 msgstr "%s 시스템에서 ID가 %s인 충돌을 삭제하는 중입니다."
 
-#: ../src/spacecmd/system.py:2854
+#: ../src/spacecmd/system.py:2855
 msgid "system_listcrashesbysystem: List all reported crashes for a system."
 msgstr "system_listcrashesbysystem: 시스템에서 보고된 모든 충돌을 나열합니다."
 
-#: ../src/spacecmd/system.py:2855 ../src/spacecmd/system.py:2869
+#: ../src/spacecmd/system.py:2856 ../src/spacecmd/system.py:2870
 msgid "usage: system_listcrashesbysystem -i sys_id"
 msgstr "사용법: system_listcrashesbysystem -i sys_id"
 
-#: ../src/spacecmd/system.py:2868
+#: ../src/spacecmd/system.py:2869
 msgid "# System id must be provided."
 msgstr "# 시스템 ID를 입력해야 합니다."
 
-#: ../src/spacecmd/system.py:2874
+#: ../src/spacecmd/system.py:2875
 msgid "Crash ID | Crash Name"
 msgstr "충돌 ID | 충돌 이름"
 
-#: ../src/spacecmd/system.py:2885
+#: ../src/spacecmd/system.py:2886
 msgid "system_getcrashfiles: Download all files for a crash record."
 msgstr "system_getcrashfiles: 충돌 레코드에 대한 모든 파일을 다운로드합니다."
 
-#: ../src/spacecmd/system.py:2886
+#: ../src/spacecmd/system.py:2887
 msgid "usage: system_getcrashfiles -c crash_id [--verbose]"
 msgstr "사용법: system_getcrashfiles -c crash_id [--verbose]"
 
-#: ../src/spacecmd/system.py:2887 ../src/spacecmd/system.py:2903
+#: ../src/spacecmd/system.py:2888 ../src/spacecmd/system.py:2904
 msgid ""
 "usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
@@ -7391,104 +7391,104 @@ msgstr ""
 "사용법: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
 
-#: ../src/spacecmd/system.py:2902
+#: ../src/spacecmd/system.py:2903
 msgid "# Crash id must be provided."
 msgstr "# 충돌 ID를 입력해야 합니다."
 
-#: ../src/spacecmd/system.py:2929
+#: ../src/spacecmd/system.py:2930
 #, python-format
 msgid "# All files we downloaded to %s."
 msgstr "# %s(으)로 다운로드된 모드 파일입니다."
 
-#: ../src/spacecmd/system.py:2938
+#: ../src/spacecmd/system.py:2939
 msgid "system_removechildchannels: Remove child channels from a system"
 msgstr "system_removechildchannels: 시스템에서 하위 채널 제거"
 
-#: ../src/spacecmd/system.py:2939
+#: ../src/spacecmd/system.py:2940
 msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "사용법: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
 
-#: ../src/spacecmd/system.py:2962
+#: ../src/spacecmd/system.py:2963
 msgid "system_details: Show the details of a system profile"
 msgstr "system_details: 시스템 프로파일 세부 사항 표시"
 
-#: ../src/spacecmd/system.py:2963
+#: ../src/spacecmd/system.py:2964
 msgid "usage: system_details <SYSTEMS>"
 msgstr "사용법: system_details <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:3016
+#: ../src/spacecmd/system.py:3017
 #, python-format
 msgid "Name:          %s"
 msgstr "이름:          %s"
 
-#: ../src/spacecmd/system.py:3017
+#: ../src/spacecmd/system.py:3018
 #, python-format
 msgid "System ID:     %i"
 msgstr "시스템 ID:     %i"
 
-#: ../src/spacecmd/system.py:3020
+#: ../src/spacecmd/system.py:3021
 #, python-format
 msgid "UUID:          %s"
 msgstr "UUID:          %s"
 
-#: ../src/spacecmd/system.py:3022
+#: ../src/spacecmd/system.py:3023
 #, python-format
 msgid "Locked:        %s"
 msgstr "잠김:        %s"
 
-#: ../src/spacecmd/system.py:3023
+#: ../src/spacecmd/system.py:3024
 #, python-format
 msgid "Registered:    %s"
 msgstr "등록됨:    %s"
 
-#: ../src/spacecmd/system.py:3024
+#: ../src/spacecmd/system.py:3025
 #, python-format
 msgid "Last Checkin:  %s"
 msgstr "마지막 체크인:  %s"
 
-#: ../src/spacecmd/system.py:3025
+#: ../src/spacecmd/system.py:3026
 #, python-format
 msgid "OSA Status:    %s"
 msgstr "OSA 상태:    %s"
 
-#: ../src/spacecmd/system.py:3026
+#: ../src/spacecmd/system.py:3027
 #, python-format
 msgid "Last Boot:     %s"
 msgstr "마지막 부팅:     %s"
 
-#: ../src/spacecmd/system.py:3028
+#: ../src/spacecmd/system.py:3029
 #, python-format
 msgid "Contact Method:%s"
 msgstr "연락 방법:%s"
 
-#: ../src/spacecmd/system.py:3072
+#: ../src/spacecmd/system.py:3073
 #, python-format
 msgid "Hostname:      %s"
 msgstr "호스트 이름:      %s"
 
-#: ../src/spacecmd/system.py:3073
+#: ../src/spacecmd/system.py:3074
 #, python-format
 msgid "IP Address:    %s"
 msgstr "IP 주소:    %s"
 
-#: ../src/spacecmd/system.py:3074
+#: ../src/spacecmd/system.py:3075
 #, python-format
 msgid "Kernel:        %s"
 msgstr "커널:        %s"
 
-#: ../src/spacecmd/system.py:3115
+#: ../src/spacecmd/system.py:3116
 msgid "system_listerrata: List available errata for a system"
 msgstr "system_listerrata: 시스템에서 사용할 수 있는 오류 나열"
 
-#: ../src/spacecmd/system.py:3116
+#: ../src/spacecmd/system.py:3117
 msgid "usage: system_listerrata <SYSTEMS>"
 msgstr "사용법: system_listerrata <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:3170
+#: ../src/spacecmd/system.py:3171
 msgid "system_applyerrata: Apply errata to a system"
 msgstr "system_applyerrata: 시스템에 오류 적용"
 
-#: ../src/spacecmd/system.py:3171
+#: ../src/spacecmd/system.py:3172
 msgid ""
 "usage: system_applyerrata [options] <SYSTEMS>\n"
 "[ERRATA|search:XXX ...]\n"
@@ -7502,7 +7502,7 @@ msgstr ""
 "옵션:\n"
 "  -s START_TIME"
 
-#: ../src/spacecmd/system.py:3233 ../src/spacecmd/system.py:3256
+#: ../src/spacecmd/system.py:3234 ../src/spacecmd/system.py:3257
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_listeventhistory instead.\n"
@@ -7510,29 +7510,29 @@ msgstr ""
 "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다. 대"
 "신 system_listeventhistory를 사용하십시오.\n"
 
-#: ../src/spacecmd/system.py:3236
+#: ../src/spacecmd/system.py:3237
 msgid "system_listevents: List the event history for a system"
 msgstr "system_listevents: 시스템에 대한 이벤트 이력 나열"
 
-#: ../src/spacecmd/system.py:3237
+#: ../src/spacecmd/system.py:3238
 msgid "usage: system_listevents <SYSTEMS>"
 msgstr "사용법: system_listevents <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:3287
+#: ../src/spacecmd/system.py:3288
 #, python-format
 msgid "Summary:   %s"
 msgstr "요약:   %s"
 
-#: ../src/spacecmd/system.py:3289
+#: ../src/spacecmd/system.py:3290
 #, python-format
 msgid "Details:   %s"
 msgstr "세부 사항:   %s"
 
-#: ../src/spacecmd/system.py:3297
+#: ../src/spacecmd/system.py:3298
 msgid "system_listeventhistory: List the event history for a system"
 msgstr "system_listeventhistory: 시스템에 대한 이벤트 이력 나열"
 
-#: ../src/spacecmd/system.py:3298
+#: ../src/spacecmd/system.py:3299
 msgid ""
 "usage: system_listeventhistory <SYSTEMS> [options]\n"
 "\n"
@@ -7553,178 +7553,178 @@ msgstr ""
 "니다. [기본값: 0]\n"
 "  -l LIMIT는 결과를 지정된 이벤트 수로 제한합니다. [기본값: 제한 없음]"
 
-#: ../src/spacecmd/system.py:3351
+#: ../src/spacecmd/system.py:3352
 msgid "Invalid offset"
 msgstr "유효하지 않은 오프셋"
 
-#: ../src/spacecmd/system.py:3358
+#: ../src/spacecmd/system.py:3359
 msgid "Invalid limit"
 msgstr "유효하지 않은 제한"
 
-#: ../src/spacecmd/system.py:3383
+#: ../src/spacecmd/system.py:3384
 #, python-format
 msgid "Id:           %s"
 msgstr "Id:           %s"
 
-#: ../src/spacecmd/system.py:3384
+#: ../src/spacecmd/system.py:3385
 #, python-format
 msgid "History type: %s"
 msgstr "이력 유형: %s"
 
-#: ../src/spacecmd/system.py:3385
+#: ../src/spacecmd/system.py:3386
 #, python-format
 msgid "Status:       %s"
 msgstr "상태:       %s"
 
-#: ../src/spacecmd/system.py:3386
+#: ../src/spacecmd/system.py:3387
 #, python-format
 msgid "Summary:      %s"
 msgstr "요약:      %s"
 
-#: ../src/spacecmd/system.py:3387
+#: ../src/spacecmd/system.py:3388
 #, python-format
 msgid "Completed:    %s"
 msgstr "완료:    %s"
 
-#: ../src/spacecmd/system.py:3395
+#: ../src/spacecmd/system.py:3396
 msgid "system_eventdetails: Retrieve the details of an event for a system"
 msgstr "system_eventdetails: 시스템에 대한 이벤트 세부 사항 검색"
 
-#: ../src/spacecmd/system.py:3396
+#: ../src/spacecmd/system.py:3397
 msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
 msgstr "사용법: system_eventdetails <SYSTEM> <EVENT>"
 
-#: ../src/spacecmd/system.py:3435
+#: ../src/spacecmd/system.py:3436
 msgid "No event specified"
 msgstr "이벤트가 지정되지 않음"
 
-#: ../src/spacecmd/system.py:3441
+#: ../src/spacecmd/system.py:3442
 msgid "Invalid event id"
 msgstr "유효하지 않은 이벤트 id"
 
-#: ../src/spacecmd/system.py:3463
+#: ../src/spacecmd/system.py:3464
 #, python-format
 msgid "No event %s found in the history of system %s"
 msgstr "시스템 %s의 이력에서 %s 이벤트를 찾을 수 없습니다."
 
-#: ../src/spacecmd/system.py:3466
+#: ../src/spacecmd/system.py:3467
 #, python-format
 msgid "Id:              %s"
 msgstr "Id:              %s"
 
-#: ../src/spacecmd/system.py:3468
+#: ../src/spacecmd/system.py:3469
 #, python-format
 msgid "History type:    %s"
 msgstr "이력 유형:    %s"
 
-#: ../src/spacecmd/system.py:3469
+#: ../src/spacecmd/system.py:3470
 #, python-format
 msgid "Status:          %s"
 msgstr "상태:          %s"
 
-#: ../src/spacecmd/system.py:3470
+#: ../src/spacecmd/system.py:3471
 #, python-format
 msgid "Summary:         %s"
 msgstr "요약:         %s"
 
-#: ../src/spacecmd/system.py:3472
+#: ../src/spacecmd/system.py:3473
 #, python-format
 msgid "Created:         %s"
 msgstr "생성됨:         %s"
 
-#: ../src/spacecmd/system.py:3473
+#: ../src/spacecmd/system.py:3474
 #, python-format
 msgid "Picked up:       %s"
 msgstr "선택됨:        %s"
 
-#: ../src/spacecmd/system.py:3474
+#: ../src/spacecmd/system.py:3475
 #, python-format
 msgid "Completed:       %s"
 msgstr "완료됨:       %s"
 
-#: ../src/spacecmd/system.py:3478
+#: ../src/spacecmd/system.py:3479
 #, python-format
 msgid "Earliest action: %s"
 msgstr "가장 빠른 동작: %s"
 
-#: ../src/spacecmd/system.py:3479
+#: ../src/spacecmd/system.py:3480
 #, python-format
 msgid "Result message:  %s"
 msgstr "결과 메시지:  %s"
 
-#: ../src/spacecmd/system.py:3480
+#: ../src/spacecmd/system.py:3481
 #, python-format
 msgid "Result code:     %s"
 msgstr "결과 코드:     %s"
 
-#: ../src/spacecmd/system.py:3485
+#: ../src/spacecmd/system.py:3486
 msgid "Additional info:"
 msgstr "추가 정보:"
 
-#: ../src/spacecmd/system.py:3494
+#: ../src/spacecmd/system.py:3495
 #, python-format
 msgid "    Result:          %s"
 msgstr "    결과:          %s"
 
-#: ../src/spacecmd/system.py:3495
+#: ../src/spacecmd/system.py:3496
 #, python-format
 msgid "    Detail:          %s"
 msgstr "    세부 사항:              %s"
 
-#: ../src/spacecmd/system.py:3503
+#: ../src/spacecmd/system.py:3504
 msgid "system_listentitlements: List the entitlements for a system"
 msgstr "system_listentitlements: 시스템에 대한 권한 부여 나열"
 
-#: ../src/spacecmd/system.py:3504
+#: ../src/spacecmd/system.py:3505
 msgid "usage: system_listentitlements <SYSTEMS>"
 msgstr "사용법: system_listentitlements <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:3557
+#: ../src/spacecmd/system.py:3558
 msgid "system_addentitlements: Add entitlements to a system"
 msgstr "system_addentitlements: 시스템에 권한 부여 추가"
 
-#: ../src/spacecmd/system.py:3558
+#: ../src/spacecmd/system.py:3559
 msgid "usage: system_addentitlements <SYSTEMS> ENTITLEMENT"
 msgstr "사용법: system_addentitlements <SYSTEMS> ENTITLEMENT"
 
-#: ../src/spacecmd/system.py:3613
+#: ../src/spacecmd/system.py:3614
 msgid "system_removeentitlement: Remove an entitlement from a system"
 msgstr "system_removeentitlement: 시스템에서 권한 부여 제거"
 
-#: ../src/spacecmd/system.py:3614
+#: ../src/spacecmd/system.py:3615
 msgid "usage: system_removeentitlement <SYSTEMS> ENTITLEMENT"
 msgstr "사용법: system_removeentitlement <SYSTEMS> ENTITLEMENT"
 
-#: ../src/spacecmd/system.py:3669
+#: ../src/spacecmd/system.py:3670
 msgid "system_listpackageprofiles: List all package profiles"
 msgstr "system_listpackageprofiles: 모든 패키지 프로파일 나열"
 
-#: ../src/spacecmd/system.py:3670
+#: ../src/spacecmd/system.py:3671
 msgid "usage: system_listpackageprofiles"
 msgstr "사용법: system_listpackageprofiles"
 
-#: ../src/spacecmd/system.py:3689
+#: ../src/spacecmd/system.py:3690
 msgid "system_deletepackageprofile: Delete a package profile"
 msgstr "system_deletepackageprofile: 패키지 프로파일 삭제"
 
-#: ../src/spacecmd/system.py:3690
+#: ../src/spacecmd/system.py:3691
 msgid "usage: system_deletepackageprofile PROFILE"
 msgstr "사용법: system_deletepackageprofile PROFILE"
 
-#: ../src/spacecmd/system.py:3714
+#: ../src/spacecmd/system.py:3715
 msgid "Delete this profile [y/N]:"
 msgstr "이 프로파일 삭제 [y/N]:"
 
-#: ../src/spacecmd/system.py:3725
+#: ../src/spacecmd/system.py:3726
 #, python-format
 msgid "%s is not a valid profile"
 msgstr "%s은(는) 유효한 프로파일이 아님"
 
-#: ../src/spacecmd/system.py:3736
+#: ../src/spacecmd/system.py:3737
 msgid "system_createpackageprofile: Create a package profile"
 msgstr "system_createpackageprofile: 패키지 프로파일 생성"
 
-#: ../src/spacecmd/system.py:3737
+#: ../src/spacecmd/system.py:3738
 msgid ""
 "usage: system_createpackageprofile SYSTEM [options]\n"
 "\n"
@@ -7738,45 +7738,45 @@ msgstr ""
 "  -n 이름\n"
 "  -d 설명"
 
-#: ../src/spacecmd/system.py:3768
+#: ../src/spacecmd/system.py:3769
 msgid "Profile Label:"
 msgstr "프로파일 레이블:"
 
-#: ../src/spacecmd/system.py:3772
+#: ../src/spacecmd/system.py:3773
 msgid "A profile name is required"
 msgstr "프로파일 이름은 필수입니다."
 
-#: ../src/spacecmd/system.py:3776
+#: ../src/spacecmd/system.py:3777
 msgid "A profile description is required"
 msgstr "프로파일 설명은 필수입니다."
 
-#: ../src/spacecmd/system.py:3784
+#: ../src/spacecmd/system.py:3785
 #, python-format
 msgid "Created package profile '%s'"
 msgstr "생성된 패키지 프로파일 '%s'"
 
-#: ../src/spacecmd/system.py:3792
+#: ../src/spacecmd/system.py:3793
 msgid ""
 "system_comparepackageprofile: Compare a system against a package profile"
 msgstr "system_comparepackageprofile: 시스템과 패키지 프로파일 비교"
 
-#: ../src/spacecmd/system.py:3793
+#: ../src/spacecmd/system.py:3794
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
 msgstr "사용법: system_comparepackageprofile <SYSTEMS> PROFILE"
 
-#: ../src/spacecmd/system.py:3856
+#: ../src/spacecmd/system.py:3857
 msgid "system_comparepackages: Compare the packages between two systems"
 msgstr "system_comparepackages: 두 시스템 사이의 패키지 비교"
 
-#: ../src/spacecmd/system.py:3857
+#: ../src/spacecmd/system.py:3858
 msgid "usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
 msgstr "사용법: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
 
-#: ../src/spacecmd/system.py:3888
+#: ../src/spacecmd/system.py:3889
 msgid "system_syncpackages: Sync packages between two systems"
 msgstr "system_syncpackages: 두 시스템 사이에서 패키지 동기화"
 
-#: ../src/spacecmd/system.py:3889
+#: ../src/spacecmd/system.py:3890
 msgid ""
 "usage: system_syncpackages SOURCE TARGET [options]\n"
 "\n"
@@ -7788,85 +7788,85 @@ msgstr ""
 "옵션:\n"
 "    -s START_TIME"
 
-#: ../src/spacecmd/system.py:3937
+#: ../src/spacecmd/system.py:3938
 msgid "Sync packages [y/N]:"
 msgstr "패키지 동기화 [y/N]:"
 
-#: ../src/spacecmd/system.py:3979
+#: ../src/spacecmd/system.py:3980
 #, python-format
 msgid "Failed to filter package list, package %s"
 msgstr "패키지 목록을 필터링하지 못함, 패키지 %s"
 
-#: ../src/spacecmd/system.py:3980
+#: ../src/spacecmd/system.py:3981
 msgid "found with no arch or arch_label"
 msgstr "arch 또는 arch_label를 찾지 못함"
 
-#: ../src/spacecmd/system.py:4022
+#: ../src/spacecmd/system.py:4023
 msgid "System Version"
 msgstr "시스템 버전"
 
-#: ../src/spacecmd/system.py:4023
+#: ../src/spacecmd/system.py:4024
 msgid "Channel Version"
 msgstr "채널 버전"
 
-#: ../src/spacecmd/system.py:4045
+#: ../src/spacecmd/system.py:4046
 msgid "Channel_newer_than_system"
 msgstr "Channel_newer_than_system"
 
-#: ../src/spacecmd/system.py:4058
+#: ../src/spacecmd/system.py:4059
 msgid "System_newer_than_channel"
 msgstr "System_newer_than_channel"
 
-#: ../src/spacecmd/system.py:4067
+#: ../src/spacecmd/system.py:4068
 msgid "Missing_in_channel"
 msgstr "Missing_in_channel"
 
-#: ../src/spacecmd/system.py:4071
+#: ../src/spacecmd/system.py:4072
 msgid "system_comparewithchannel: Compare the installed packages on a"
 msgstr "system_comparewithchannel: 다음에 설치된 패키지 비교"
 
-#: ../src/spacecmd/system.py:4072
+#: ../src/spacecmd/system.py:4073
 msgid "                           system with those in the channels it is"
 msgstr "                           등록된 채널 내에 패키지가 있는 시스템"
 
-#: ../src/spacecmd/system.py:4073
+#: ../src/spacecmd/system.py:4074
 msgid "                           registerd to, or optionally some other"
 msgstr "                           또는 선택 사항으로 다른"
 
-#: ../src/spacecmd/system.py:4074
+#: ../src/spacecmd/system.py:4075
 msgid "                           channel"
 msgstr "                           일부 채널"
 
-#: ../src/spacecmd/system.py:4075
+#: ../src/spacecmd/system.py:4076
 msgid "usage: system_comparewithchannel <SYSTEMS> [options]"
 msgstr "사용법: system_comparewithchannel <SYSTEMS> [옵션]"
 
-#: ../src/spacecmd/system.py:4077
+#: ../src/spacecmd/system.py:4078
 msgid "         -c/--channel : Specific channel to compare against,"
 msgstr "         -c/--channel : 비교할 특정 채널,"
 
-#: ../src/spacecmd/system.py:4078
+#: ../src/spacecmd/system.py:4079
 msgid "                        default is those subscribed to, including"
 msgstr "                        기본값은 가입한 채널,"
 
-#: ../src/spacecmd/system.py:4079
+#: ../src/spacecmd/system.py:4080
 msgid "                        child channels"
 msgstr "                        하위 채널 포함"
 
-#: ../src/spacecmd/system.py:4130
+#: ../src/spacecmd/system.py:4131
 msgid "Specified channel does not exist"
 msgstr "지정된 채널이 없음"
 
-#: ../src/spacecmd/system.py:4141
+#: ../src/spacecmd/system.py:4142
 #, python-format
 msgid "system %s is not subscribed to any channel!"
 msgstr "%s 시스템은 채널에 가입하지 않았습니다!"
 
-#: ../src/spacecmd/system.py:4143
+#: ../src/spacecmd/system.py:4144
 msgid "Please subscribe to a channel, or specify achannel to compare with"
 msgstr "채널에 가입하거나 비교할 채널을 지정하십시오."
 
-#: ../src/spacecmd/system.py:4177
+#: ../src/spacecmd/system.py:4178
 #, python-format
 msgid ""
 "\n"
@@ -7875,12 +7875,12 @@ msgstr ""
 "\n"
 "시스템: %s"
 
-#: ../src/spacecmd/system.py:4203
+#: ../src/spacecmd/system.py:4204
 msgid ""
 "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
 msgstr "system_schedulehardwarerefresh: 시스템에 대한 하드웨어 새로 고침 예약"
 
-#: ../src/spacecmd/system.py:4204
+#: ../src/spacecmd/system.py:4205
 msgid ""
 "usage: system_schedulehardwarerefresh <SYSTEMS> [options]\n"
 "\n"
@@ -7892,14 +7892,14 @@ msgstr ""
 "옵션:\n"
 "  -s START_TIME"
 
-#: ../src/spacecmd/system.py:4266
+#: ../src/spacecmd/system.py:4267
 msgid ""
 "system_schedulepackagerefresh: Schedule a software package refresh for a "
 "system"
 msgstr ""
 "system_schedulepackagerefresh: 시스템에 대한 소프트웨어 패키지 새로 고침 예약"
 
-#: ../src/spacecmd/system.py:4267
+#: ../src/spacecmd/system.py:4268
 msgid ""
 "usage: system_schedulepackagerefresh <SYSTEMS> [options])\n"
 "\n"
@@ -7911,29 +7911,29 @@ msgstr ""
 "옵션:\n"
 "  -s START_TIME"
 
-#: ../src/spacecmd/system.py:4328
+#: ../src/spacecmd/system.py:4329
 msgid ""
 "system_show_packageversion: Shows version of installed package on given "
 "system(s)"
 msgstr "system_show_packageversion: 시정된 시스템에 설치된 패키지 버전 표시"
 
-#: ../src/spacecmd/system.py:4329
+#: ../src/spacecmd/system.py:4330
 msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
 msgstr "사용법: system_show_packageversion <SYSTEM> <PACKAGE>"
 
-#: ../src/spacecmd/system.py:4361
+#: ../src/spacecmd/system.py:4362
 msgid "Package\tVersion\tRelease\tEpoch\tArch\tSystem"
 msgstr "패키지\t버전\t릴리스\t에포크\t아키텍처 시스템"
 
-#: ../src/spacecmd/system.py:4381
+#: ../src/spacecmd/system.py:4382
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
 msgstr "system_setcontactmethod: 지정된 시스템에 연락 방법을 설정합니다."
 
-#: ../src/spacecmd/system.py:4383
+#: ../src/spacecmd/system.py:4384
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr "사용법: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 
-#: ../src/spacecmd/system.py:4432
+#: ../src/spacecmd/system.py:4433
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
@@ -7941,7 +7941,7 @@ msgstr ""
 "system_scheduleapplyconfigchannels: 시스템에 할당된 구성 파일 적용 예약"
 "(Minion 전용)"
 
-#: ../src/spacecmd/system.py:4434
+#: ../src/spacecmd/system.py:4435
 msgid ""
 "usage: scheduleapplyconfigchannels <SYSTEMS> [options]\n"
 "\n"
@@ -7953,11 +7953,11 @@ msgstr ""
 "    옵션:\n"
 "        -s START_TIME"
 
-#: ../src/spacecmd/system.py:4485
+#: ../src/spacecmd/system.py:4486
 msgid "Schedule applying config channels to these systems [y/N]:"
 msgstr "이 시스템에 구성 채널 적용 예약 [y/N]:"
 
-#: ../src/spacecmd/system.py:4502
+#: ../src/spacecmd/system.py:4503
 msgid ""
 "system_listmigrationtargets: List possible migration targets for given "
 "systems."
@@ -7965,54 +7965,54 @@ msgstr ""
 "system_listmigrationtargets: 지정된 시스템에서 가능한 마이그레이션 대상을 나"
 "열합니다."
 
-#: ../src/spacecmd/system.py:4503
+#: ../src/spacecmd/system.py:4504
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
 msgstr "사용법: system_listmigrationtargets <SYSTEMS>"
 
-#: ../src/spacecmd/system.py:4529
+#: ../src/spacecmd/system.py:4530
 msgid "WARN: Cannot find system "
 msgstr "경고: 시스템을 찾을 수 없음 "
 
-#: ../src/spacecmd/system.py:4532
+#: ../src/spacecmd/system.py:4533
 msgid "System "
 msgstr "시스템 "
 
-#: ../src/spacecmd/system.py:4536
+#: ../src/spacecmd/system.py:4537
 msgid "  No migration targets"
 msgstr "  마이그레이션 대상 없음"
 
-#: ../src/spacecmd/system.py:4539
+#: ../src/spacecmd/system.py:4540
 msgid "  Target #"
 msgstr "  대상 #"
 
-#: ../src/spacecmd/system.py:4540
+#: ../src/spacecmd/system.py:4541
 msgid "    IDs: "
 msgstr "    ID: "
 
-#: ../src/spacecmd/system.py:4541
+#: ../src/spacecmd/system.py:4542
 msgid "    Friendly names: "
 msgstr "    식별 이름: "
 
-#: ../src/spacecmd/system.py:4549 ../src/spacecmd/system.py:4565
+#: ../src/spacecmd/system.py:4550 ../src/spacecmd/system.py:4566
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
 msgstr ""
 "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다."
 
-#: ../src/spacecmd/system.py:4551 ../src/spacecmd/system.py:4567
+#: ../src/spacecmd/system.py:4552 ../src/spacecmd/system.py:4568
 msgid "This method is deprecated and will be removed in a future API version"
 msgstr ""
 "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다."
 
-#: ../src/spacecmd/system.py:4552
+#: ../src/spacecmd/system.py:4553
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 "system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니"
 "다."
 
-#: ../src/spacecmd/system.py:4553
+#: ../src/spacecmd/system.py:4554
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8036,14 +8036,14 @@ msgstr ""
 "        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
-#: ../src/spacecmd/system.py:4574
+#: ../src/spacecmd/system.py:4575
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr ""
 "system_scheduleproductmigration: 시스템에 대한 제품 마이그레이션을 예약합니"
 "다."
 
-#: ../src/spacecmd/system.py:4575
+#: ../src/spacecmd/system.py:4576
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8067,21 +8067,114 @@ msgstr ""
 "        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
-#: ../src/spacecmd/system.py:4625
+#: ../src/spacecmd/system.py:4626
 msgid "Cannot find system "
 msgstr "시스템을 찾을 수 없음 "
 
-#: ../src/spacecmd/system.py:4625
+#: ../src/spacecmd/system.py:4626
 msgid ". Skipping it."
 msgstr ". 건너뛰는 중입니다."
 
-#: ../src/spacecmd/system.py:4628
+#: ../src/spacecmd/system.py:4629
 msgid "Scheduling Product migration for system "
 msgstr "시스템에 대한 제품 마이그레이션 예약 중 "
 
-#: ../src/spacecmd/system.py:4633
+#: ../src/spacecmd/system.py:4634
 msgid "Scheduled action ID: "
 msgstr "예약된 작업 ID: "
+
+#: ../src/spacecmd/system.py:4644
+msgid ""
+"system_bootstrap: Bootstrap a system for management via either Salt or Salt "
+"SSH."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4645
+msgid ""
+"usage: bootstrap [options]\n"
+"\n"
+"    options:\n"
+"        -H HOSTNAME\n"
+"        -p SSH_PORT\n"
+"        -u SSH_USERNAME\n"
+"        -P SSH_PASSWORD\n"
+"        -k SSH_PRIVATEKEY_PATH\n"
+"        -S SSH_PRIVATEKEY_PASSWORD\n"
+"        -a ACTIVATION_KEY\n"
+"        -r REACTIVATION_KEY\n"
+"        --proxyid PROXY_SYSID\n"
+"        --saltssh\n"
+"        "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4679
+#, fuzzy
+msgid "Hostname:"
+msgstr "호스트 이름:      %s"
+
+#: ../src/spacecmd/system.py:4680
+msgid "Port [22]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4683
+#, fuzzy
+msgid "SSH User [root]:"
+msgstr "사용자 [루트]:"
+
+#: ../src/spacecmd/system.py:4686
+#, fuzzy
+msgid "SSH Password:"
+msgstr "비밀번호: "
+
+#: ../src/spacecmd/system.py:4688
+msgid "SSH Private Key File:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4689
+msgid "SSH Private Key Password:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4692
+#, fuzzy
+msgid "Activation Key:"
+msgstr "활성화 키"
+
+#: ../src/spacecmd/system.py:4695
+#, fuzzy
+msgid "Reactivation Key:"
+msgstr "활성화 키"
+
+#: ../src/spacecmd/system.py:4696
+#, fuzzy
+msgid "Proxy System ID:"
+msgstr "%s  시스템 ID"
+
+#: ../src/spacecmd/system.py:4698
+msgid "Manage with Salt SSH"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4703
+#, fuzzy
+msgid "Hostname must be provided"
+msgstr "# 시스템 ID를 입력해야 합니다."
+
+#: ../src/spacecmd/system.py:4706
+msgid "Either a SSH Password or a private key must be provided"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4714
+msgid "Server is not supporting reactivation keys at bootstrap time"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4721
+msgid "Bootstrapping '{}'. This may take a while."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4735
+msgid ""
+"Initial phase successfully finished. Check event history for actions still "
+"running"
+msgstr ""
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
