@@ -680,7 +680,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Verify the order of returned channels
         CVEAuditSystem result = findSystemRecord(server, results);
         assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, result.getPatchStatus());
-        Iterator<ChannelIdNameLabelTriple> it = result.getChannels().iterator();
+        Iterator<AuditChannelInfo> it = result.getChannels().iterator();
         assertEquals((Long) channelClone.getId(), (Long) it.next().getId());
     }
 
@@ -1159,7 +1159,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
         List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
-        List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
+        List<AuditChannelInfo> channels = new ArrayList<>(results.get(0).getChannels());
         assertEquals(1, channels.size());
         assertEquals(updateChannelSP2.getId().longValue() ,channels.get(0).getId());
     }
@@ -1713,7 +1713,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveNameKernelExclusive, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
 
-        Iterator<ChannelIdNameLabelTriple> it = results.get(0).getChannels().iterator();
+        Iterator<AuditChannelInfo> it = results.get(0).getChannels().iterator();
         assertEquals((Long) baseChannelClone.getId(), (Long) it.next().getId());
 
         Iterator<ErrataIdAdvisoryPair> eit = results.get(0).getErratas().iterator();

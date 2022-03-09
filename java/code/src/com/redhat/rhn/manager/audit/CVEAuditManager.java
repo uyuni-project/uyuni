@@ -950,7 +950,7 @@ public class CVEAuditManager {
             system.setSystemName(systemResults.get(0).getSystemName());
 
             // The relevant channels assigned to the system
-            Set<ChannelIdNameLabelTriple> assignedChannels = new HashSet<>();
+            Set<AuditChannelInfo> assignedChannels = new HashSet<>();
 
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
@@ -979,7 +979,7 @@ public class CVEAuditManager {
 
                 patchCandidateResult.ifPresent(result -> {
                     // The package is not patched. Keep a list of the missing patch and the top candidate channel
-                    ChannelIdNameLabelTriple channel = new ChannelIdNameLabelTriple(result.getChannelId().get(),
+                    AuditChannelInfo channel = new AuditChannelInfo(result.getChannelId().get(),
                             result.getChannelName(), result.getChannelLabel(), result.getChannelRank().orElse(0L));
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(result.getErrataId().get(),
                             result.getErrataAdvisory());
@@ -1002,7 +1002,7 @@ public class CVEAuditManager {
             // though it might not contain a patch for all the packages e.g. because some versions are to old to be
             // affected.
             if (patchInSuccessorProduct.get() && system.getChannels().size() > 1) {
-                Set<ChannelIdNameLabelTriple> filteredChannels = system.getChannels().stream().filter(channel ->
+                Set<AuditChannelInfo> filteredChannels = system.getChannels().stream().filter(channel ->
                         channel.getRank() < SUCCESSOR_PRODUCT_RANK_BOUNDARY).collect(Collectors.toSet());
                 if (!filteredChannels.isEmpty()) {
                     allChannelsForOneErrataAssigned = assignedChannels.containsAll(filteredChannels);
@@ -1169,7 +1169,7 @@ public class CVEAuditManager {
                     errata += " " + e.getId();
                 }
                 String channels = "";
-                for (ChannelIdNameLabelTriple c : s.getChannels()) {
+                for (AuditChannelInfo c : s.getChannels()) {
                     channels += " " + c.getId();
                 }
                 log.debug(s.getId() + ": " + s.getPatchStatus() +
