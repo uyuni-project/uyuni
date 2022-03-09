@@ -82,11 +82,11 @@ Feature: Redfish Power management
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
-    And I set power management value "ipmitool" for "powerType"
+    And I set power management value "ipmilan" for "powerType"
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_minion"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
 
   Scenario: Cleanup: tear down the Redfish host
     When the server stops mocking a Redfish host

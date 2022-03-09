@@ -27,7 +27,7 @@ Feature: IPMI Power management
     And the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_client"
     And the cobbler report should contain "Power Management Username      : ipmiusr" for "sle_client"
     And the cobbler report should contain "Power Management Password      : test" for "sle_client"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_client"
 
   Scenario: Test IPMI functions
     When I follow "Provisioning" in the content area
@@ -70,7 +70,7 @@ Feature: IPMI Power management
     And the cobbler report should contain "Power Management Username      : testing" for "sle_client"
     And the cobbler report should contain "Power Management Password      : qwertz" for "sle_client"
     And the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_client"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_client"
 
   Scenario: Check power management SSM operation
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -89,7 +89,7 @@ Feature: IPMI Power management
     Then the cobbler report should contain "Power Management Address       :" for "sle_client"
     And the cobbler report should contain "Power Management Username      :" for "sle_client"
     And the cobbler report should contain "Power Management Password      :" for "sle_client"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_client"
 
   Scenario: Cleanup: tear down the IPMI host
     When the server stops mocking an IPMI host

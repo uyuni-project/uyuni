@@ -11,7 +11,7 @@ Feature: IPMI Power management test for XMLRPC
     Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
     And I want to operate on this "sle_client"
     When I fetch power management values
-    Then power management results should have "ipmitool" for "powerType"
+    Then power management results should have "ipmilan" for "powerType"
 
   Scenario: Save power management values  for XMLRPC test
     Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
@@ -19,11 +19,11 @@ Feature: IPMI Power management test for XMLRPC
     When I set power management value "127.0.0.1" for "powerAddress"
     And I set power management value "ipmiusr" for "powerUsername"
     And I set power management value "test" for "powerPassword"
-    And I set power management value "ipmitool" for "powerType"
+    And I set power management value "ipmilan" for "powerType"
     Then the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_client"
     And the cobbler report should contain "Power Management Username      : ipmiusr" for "sle_client"
     And the cobbler report should contain "Power Management Password      : test" for "sle_client"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_client"
 
   Scenario: Test IPMI functions for XMLRPC test
     Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
@@ -44,7 +44,7 @@ Feature: IPMI Power management test for XMLRPC
     Then the cobbler report should contain "Power Management Address       :" for "sle_client"
     And the cobbler report should contain "Power Management Username      :" for "sle_client"
     And the cobbler report should contain "Power Management Password      :" for "sle_client"
-    And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
+    And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_client"
 
   Scenario: Cleanup: tear down the IPMI host for XMLRPC test
     When the server stops mocking an IPMI host
