@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-04 10:10+0000\n"
+"POT-Creation-Date: 2022-03-09 09:03+0000\n"
 "PO-Revision-Date: 2021-08-21 07:11+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -1290,16 +1290,16 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
-#: ../satellite_tools/reposync.py:114 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ 電子メールでログを送信 +++"
 
-#: ../satellite_tools/reposync.py:117
+#: ../satellite_tools/reposync.py:118
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同期。 %s からのレポート"
 
-#: ../satellite_tools/reposync.py:125 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
