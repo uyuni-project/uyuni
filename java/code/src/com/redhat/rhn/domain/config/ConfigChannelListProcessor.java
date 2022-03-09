@@ -161,12 +161,11 @@ public class ConfigChannelListProcessor {
             if (!user.hasRole(RoleFactory.ACTIVATION_KEY_ADMIN) &&
                         !cm.accessToChannel(user.getId(), cc.getId())) {
                 LocalizationService ls = LocalizationService.getInstance();
-                LookupException e = new LookupException(
-                           "Could not find config channel with id=" + cc.getId());
-                e.setLocalizedTitle(ls.getMessage("lookup.configchan.title"));
-                e.setLocalizedReason1(ls.getMessage("lookup.configchan.reason1"));
-                e.setLocalizedReason2(ls.getMessage("lookup.configchan.reason2"));
-                throw e;
+                throw new LookupException(
+                           "Could not find config channel with id=" + cc.getId(),
+                        ls.getMessage("lookup.configchan.title"),
+                        ls.getMessage("lookup.configchan.reason1"),
+                        ls.getMessage("lookup.configchan.reason2"));
             }
         }
     }

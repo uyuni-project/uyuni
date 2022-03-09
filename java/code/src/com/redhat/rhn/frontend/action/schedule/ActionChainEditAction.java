@@ -106,11 +106,10 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
         }
         catch (ObjectNotFoundException objectNotFoundException) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find action chain id: " +
-                    actionChainId);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.actionchain"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.actionchain.reason1"));
-            throw e;
+            throw new LookupException("Could not find action chain id: " + actionChainId,
+                    ls.getMessage("lookup.jsp.title.actionchain"),
+                    ls.getMessage("lookup.jsp.actionchain.reason1"),
+                    null);
         }
     }
 

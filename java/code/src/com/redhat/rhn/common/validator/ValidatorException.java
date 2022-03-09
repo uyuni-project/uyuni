@@ -34,7 +34,8 @@ public class ValidatorException extends RhnRuntimeException  {
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 5157860212794007766L;
-    private ValidatorResult result;
+    private final ValidatorResult result;
+
     /////////////////////////
     // Constructors
     /////////////////////////
@@ -44,7 +45,7 @@ public class ValidatorException extends RhnRuntimeException  {
      */
     public ValidatorException(String message) {
         super(message);
-        // begin member variable initialization
+        result = null;
     }
 
         /**
@@ -57,7 +58,7 @@ public class ValidatorException extends RhnRuntimeException  {
      */
     public ValidatorException(String message ,   Throwable cause) {
         super(message, cause);
-        // begin member variable initialization
+        result = null;
     }
 
     /**
@@ -75,7 +76,7 @@ public class ValidatorException extends RhnRuntimeException  {
      * @param msgArg message arguments
      */
     public ValidatorException(String message, String msgArg) {
-        super(LocalizationService.getInstance().getMessage(message, msgArg));
+        this(LocalizationService.getInstance().getMessage(message, msgArg));
     }
 
     /**
@@ -108,9 +109,4 @@ public class ValidatorException extends RhnRuntimeException  {
     public ValidatorResult getResult() {
         return result;
     }
-    /////////////////////////
-    // Getters/Setters
-    /////////////////////////
-
-
 }

@@ -1969,12 +1969,10 @@ public class ConfigurationManager extends BaseManager {
     public ConfigChannel lookupConfigChannel(User user, Long id) {
         if (!accessToChannel(user.getId(), id)) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config channel with id=" + id);
-            e.setLocalizedTitle(ls.getMessage("lookup.configchan.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configchan.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configchan.reason2"));
-            throw e;
+           throw new LookupException("Could not find config channel with id=" + id,
+                   ls.getMessage("lookup.configchan.title"),
+                   ls.getMessage("lookup.configchan.reason1"),
+                   ls.getMessage("lookup.configchan.reason2"));
         }
         return ConfigurationFactory.lookupConfigChannelById(id);
     }
@@ -2003,12 +2001,10 @@ public class ConfigurationManager extends BaseManager {
         log.debug("lookupConfigFile: " + id);
         if (!accessToFile(user.getId(), id)) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config file with id=" + id);
-            e.setLocalizedTitle(ls.getMessage("lookup.configfile.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configfile.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configfile.reason2"));
-            throw e;
+            throw new LookupException("Could not find config file with id=" + id,
+                    ls.getMessage("lookup.configfile.title"),
+                    ls.getMessage("lookup.configfile.reason1"),
+                    ls.getMessage("lookup.configfile.reason2"));
         }
         return ConfigurationFactory.lookupConfigFileById(id);
     }
@@ -2029,12 +2025,10 @@ public class ConfigurationManager extends BaseManager {
     public ConfigFile lookupConfigFile(User user, Long ccid, String path) {
         if (!accessToChannel(user.getId(), ccid)) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config file with id=" + ccid);
-            e.setLocalizedTitle(ls.getMessage("lookup.configfile.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configfile.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configfile.reason2"));
-            throw e;
+            throw new LookupException("Could not find config file with id=" + ccid,
+                    ls.getMessage("lookup.configfile.title"),
+                    ls.getMessage("lookup.configfile.reason1"),
+                    ls.getMessage("lookup.configfile.reason2"));
         }
         ConfigFileName cfn = ConfigurationFactory.lookupOrInsertConfigFileName(path);
         return ConfigurationFactory.lookupConfigFileByChannelAndName(ccid, cfn.getId());
@@ -2049,12 +2043,10 @@ public class ConfigurationManager extends BaseManager {
     public ConfigRevision lookupConfigRevision(User user, Long id) {
         if (!accessToRevision(user.getId(), id)) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config revision with id=" + id);
-            e.setLocalizedTitle(ls.getMessage("lookup.configrev.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configrev.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configrev.reason2"));
-            throw e;
+            throw new LookupException("Could not find config revision with id=" + id,
+                    ls.getMessage("lookup.configrev.title"),
+                    ls.getMessage("lookup.configrev.reason1"),
+                    ls.getMessage("lookup.configrev.reason2"));
         }
         return ConfigurationFactory.lookupConfigRevisionById(id);
     }
@@ -2077,13 +2069,10 @@ public class ConfigurationManager extends BaseManager {
 
         if (!accessToRevision(user.getId(), cr.getId())) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config revision with revision id=" +
-                            revId);
-            e.setLocalizedTitle(ls.getMessage("lookup.configrev.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configrev.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configrev.reason2"));
-            throw e;
+            throw new LookupException("Could not find config revision with revision id=" + revId,
+                    ls.getMessage("lookup.configrev.title"),
+                    ls.getMessage("lookup.configrev.reason1"),
+                    ls.getMessage("lookup.configrev.reason2"));
         }
 
         return cr;

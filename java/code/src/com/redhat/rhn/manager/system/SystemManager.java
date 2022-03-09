@@ -1856,12 +1856,9 @@ public class SystemManager extends BaseManager {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User does not have" +
-                    " permission to subscribe this server to this channel.");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.subscribechannel"));
-            pex.setLocalizedSummary(
+            throw new PermissionException("User does not have permission to subscribe this server to this channel.",
+                    ls.getMessage("permission.jsp.title.subscribechannel"),
                     ls.getMessage("permission.jsp.summary.subscribechannel"));
-            throw pex;
         }
 
         if (!verifyArchCompatibility(server, channel)) {
@@ -1953,12 +1950,9 @@ public class SystemManager extends BaseManager {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User does not have" +
-                    " permission to unsubscribe this server from this channel.");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.subscribechannel"));
-            pex.setLocalizedSummary(
+            throw new PermissionException("User does not have permission to unsubscribe this server from this channel.",
+                    ls.getMessage("permission.jsp.title.subscribechannel"),
                     ls.getMessage("permission.jsp.summary.subscribechannel"));
-            throw pex;
         }
 
         unsubscribeServerFromChannel(server, channel, flush);
@@ -2237,17 +2231,18 @@ public class SystemManager extends BaseManager {
      */
     public static void unlockServer(User user, Server server) {
         if (!isAvailableToUser(user, server.getId())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException(
-                    "Could not find server " + server.getId() +
-                    " for user " + user.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+           throw getNoServerException(server.getId(), user.getId());
         }
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
+    }
+
+    private static LookupException getNoServerException(Long sid, Long uid) {
+        LocalizationService ls = LocalizationService.getInstance();
+        return new LookupException("Could not find server " + sid + " for user " + uid,
+                ls.getMessage("lookup.jsp.title.system"),
+                ls.getMessage("lookup.jsp.reason1.system"),
+                ls.getMessage("lookup.jsp.reason2.system"));
     }
 
     /**
@@ -2267,14 +2262,7 @@ public class SystemManager extends BaseManager {
      */
     public static void lockServer(User locker, Server server, String reason) {
         if (!isAvailableToUser(locker, server.getId())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException(
-                    "Could not find server " + server.getId() +
-                    " for user " + locker.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+            throw getNoServerException(server.getId(), locker.getId());
         }
         ServerLock sl = new ServerLock(locker,
                 server,
@@ -2332,13 +2320,7 @@ public class SystemManager extends BaseManager {
      */
     public static void ensureAvailableToUser(User user, Long sid) {
         if (!isAvailableToUser(user, sid)) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find server " + sid +
-                    " for user " + user.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+            throw getNoServerException(sid, user.getId());
         }
     }
 

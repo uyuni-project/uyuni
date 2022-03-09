@@ -361,18 +361,12 @@ public class ActivationKeyManager {
         if (!canAdministerKeys(user, key)) {
             LocalizationService ls = LocalizationService.getInstance();
             LookupException e;
-            if (keyStr != null) {
-                e = new LookupException("Could not find activation key: " +
-                        keyStr);
-            }
-            else {
-                e = new LookupException("Could not find activation key");
-            }
+            String msg = keyStr != null ? "Could not find activation key: " + keyStr : "Could not find activation key";
 
-            e.setLocalizedTitle(ls.getMessage("lookup.activationkey.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.activationkey.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.activationkey.reason2"));
-            throw e;
+            throw new LookupException(msg,
+                    ls.getMessage("lookup.activationkey.title"),
+                    ls.getMessage("lookup.activationkey.reason1"),
+                    ls.getMessage("lookup.activationkey.reason2"));
         }
     }
 

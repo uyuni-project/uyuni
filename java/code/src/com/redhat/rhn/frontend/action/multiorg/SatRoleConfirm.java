@@ -48,11 +48,9 @@ public class SatRoleConfirm extends RhnAction {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-              new PermissionException("Only satellite admin's can assign Sat Admin roles");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orgdetail"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw new PermissionException("Only satellite admin's can assign Sat Admin roles",
+                    ls.getMessage("permission.jsp.title.orgdetail"),
+                    ls.getMessage("permission.jsp.summary.general"));
         }
 
         RequestContext requestContext = new RequestContext(request);

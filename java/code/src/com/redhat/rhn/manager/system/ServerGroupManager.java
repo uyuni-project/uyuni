@@ -149,13 +149,10 @@ public class ServerGroupManager {
                                     ServerGroup group, String groupIdentifier) {
         if (group == null || (group.isManaged() && !canAccess(user, group))) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                new LookupException("Unable to locate or access server group: " +
-                    groupIdentifier);
-            e.setLocalizedTitle(ls.getMessage("lookup.servergroup.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.servergroup.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.servergroup.reason2"));
-            throw e;
+            throw new LookupException("Unable to locate or access server group: " + groupIdentifier,
+                    ls.getMessage("lookup.servergroup.title"),
+                    ls.getMessage("lookup.servergroup.reason1"),
+                    ls.getMessage("lookup.servergroup.reason2"));
         }
     }
 
@@ -251,11 +248,10 @@ public class ServerGroupManager {
             User admin = UserFactory.lookupByLogin(login);
             if (admin == null || !loggedInUser.getOrg().equals(admin.getOrg())) {
                 LocalizationService ls = LocalizationService.getInstance();
-                LookupException e = new LookupException("Could not find user " + login);
-                e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.user"));
-                e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.user"));
-                e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.user"));
-                throw e;
+                throw new LookupException("Could not find user " + login,
+                        ls.getMessage("lookup.jsp.title.user"),
+                        ls.getMessage("lookup.jsp.reason1.user"),
+                        ls.getMessage("lookup.jsp.reason2.user"));
             }
             admins.add(admin);
         }

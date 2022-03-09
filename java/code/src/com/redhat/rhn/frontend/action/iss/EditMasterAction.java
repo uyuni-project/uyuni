@@ -58,11 +58,9 @@ public class EditMasterAction extends RhnAction {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(
-                            "Only satellite admins can modify masters");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.iss.master"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw new PermissionException("Only satellite admins can modify masters",
+                    ls.getMessage("permission.jsp.title.iss.master"),
+                    ls.getMessage("permission.jsp.summary.general"));
         }
 
         ActionForward retval = mapping.findForward(RhnHelper.DEFAULT_FORWARD);

@@ -112,6 +112,7 @@ import java.util.stream.Stream;
  * ChannelManager
  */
 public class ChannelManager extends BaseManager {
+    private static final String NO_ACCESS = "User %d does not have access to channel %s or the channel does not exist";
 
     private static final int LIMIT_CHANNELS_IN_MESSAGE = 3;
 
@@ -424,13 +425,12 @@ public class ChannelManager extends BaseManager {
         Channel channel = ChannelFactory.lookupByIdAndUser(cid, userIn);
         if (channel == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("User " + userIn.getId() +
-                    " does not have access to channel " + cid +
-                    " or the channel does not exist");
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.channel"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.channel"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.channel"));
-            throw e;
+
+            throw new LookupException(
+                    String.format(NO_ACCESS, userIn.getId(), cid.toString()),
+                    ls.getMessage("lookup.jsp.title.channel"),
+                    ls.getMessage("lookup.jsp.reason1.channel"),
+                    ls.getMessage("lookup.jsp.reason2.channel"));
         }
         return channel;
     }
@@ -445,13 +445,11 @@ public class ChannelManager extends BaseManager {
         Channel channel = ChannelFactory.lookupByLabelAndUser(label, userIn);
         if (channel == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("User " + userIn.getId() +
-                    " does not have access to channel " + label +
-                    " or the channel does not exist");
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.channel"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.channel"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.channel"));
-            throw e;
+            throw new LookupException(
+                    String.format(NO_ACCESS, userIn.getId(), label),
+                    ls.getMessage("lookup.jsp.title.channel"),
+                    ls.getMessage("lookup.jsp.reason1.channel"),
+                    ls.getMessage("lookup.jsp.reason2.channel"));
         }
         return channel;
     }
@@ -2298,10 +2296,9 @@ public class ChannelManager extends BaseManager {
             LocalizationService ls = LocalizationService.getInstance();
             String msg = "User: " + user.getLogin() + " does not have channel admin access to channel: " +
                     chan.getLabel();
-            PermissionException pex = new PermissionException(msg);
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
-            throw pex;
+            throw new PermissionException(msg,
+                    ls.getMessage("permission.jsp.title.channel"),
+                    ls.getMessage("permission.jsp.summary.channel"));
         }
 
         Map<String, Long> params = new HashMap<>();
@@ -2359,10 +2356,9 @@ public class ChannelManager extends BaseManager {
                 String msg = "User: " + user.getLogin() +
                         " does not have channel admin access to channel: " +
                         chan.getLabel();
-                PermissionException pex = new PermissionException(msg);
-                pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
-                pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
-                throw pex;
+                throw new PermissionException(msg,
+                        ls.getMessage("permission.jsp.title.channel"),
+                        ls.getMessage("permission.jsp.summary.channel"));
             }
         }
 

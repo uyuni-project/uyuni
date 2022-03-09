@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class ModuleDependencyException extends ModulemdApiException {
 
-    private List<Module> modules;
+    private final List<Module> modules;
 
     /**
      * Initialize a new instance

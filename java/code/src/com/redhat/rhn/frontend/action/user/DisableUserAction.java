@@ -54,10 +54,9 @@ public class DisableUserAction extends RhnAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("Missing Acl");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.disableuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.disableuser"));
-            throw pex;
+            throw new PermissionException("Missing Acl",
+                    ls.getMessage("permission.jsp.title.disableuser"),
+                    ls.getMessage("permission.jsp.summary.disableuser"));
         }
         Long uid = requestContext.getRequiredParam("uid");
         User loggedInUser = requestContext.getCurrentUser();

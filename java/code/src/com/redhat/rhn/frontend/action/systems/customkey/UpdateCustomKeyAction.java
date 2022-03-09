@@ -66,9 +66,8 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
 
         if (key == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException le = new LookupException("Unable to find key by id: " + cikid);
-            le.setLocalizedTitle(ls.getMessage("lookup.customkey.title"));
-            throw le;
+            throw new LookupException("Unable to find key by id: " + cikid,
+                    ls.getMessage("lookup.customkey.title"), null, null);
         }
 
         request.setAttribute(CIKID_PARAM, cikid);

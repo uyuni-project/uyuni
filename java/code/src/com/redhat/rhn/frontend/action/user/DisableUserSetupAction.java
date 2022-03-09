@@ -50,11 +50,9 @@ public class DisableUserSetupAction extends RhnAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException("Only Org Admins can disable users");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.disableuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.disableuser"));
-            throw pex;
+            throw new PermissionException("Only Org Admins can disable users",
+                    ls.getMessage("permission.jsp.title.disableuser"),
+                    ls.getMessage("permission.jsp.summary.disableuser"));
         }
         Long uid = requestContext.getRequiredParam("uid");
 

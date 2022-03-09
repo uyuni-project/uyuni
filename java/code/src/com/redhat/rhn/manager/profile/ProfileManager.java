@@ -1233,12 +1233,10 @@ public class ProfileManager extends BaseManager {
         Profile retval = ProfileFactory.lookupByIdAndOrg(prid, org);
         if (retval == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("The profile " + prid + "could not" +
-                    "be found for org " + org.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.profile"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.profile"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.profile"));
-            throw e;
+            throw new LookupException("The profile " + prid + "could not" + "be found for org " + org.getId(),
+                    ls.getMessage("lookup.jsp.title.profile"),
+                    ls.getMessage("lookup.jsp.reason1.profile"),
+                    ls.getMessage("lookup.jsp.reason2.profile"));
         }
         return retval;
     }
