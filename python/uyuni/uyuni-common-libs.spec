@@ -69,6 +69,7 @@ BuildRequires:  python2-devel
 %endif
 %if 0%{?suse_version} || 0%{?rhel} >= 8
 Recommends:     zchunk
+Recommends:     zstd
 %endif
 
 %description -n python2-%{name}
@@ -89,6 +90,7 @@ Requires:       python3-libs
 %endif
 %if 0%{?suse_version} || 0%{?rhel} >= 8
 Recommends:     zchunk
+Recommends:     zstd
 %endif
 
 Obsoletes:      python3-spacewalk-backend-libs
