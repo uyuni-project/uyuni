@@ -56,6 +56,8 @@ class YumSrcTest(unittest.TestCase):
         cs.repo.is_configured = True
         cs.repo.includepkgs = []
         cs.repo.exclude = []
+        cs.repo.root = os.path.dirname(__file__)
+        cs.channel_label = "."
 
         yum_src.ContentSource.setup_repo = real_setup_repo
 
@@ -167,11 +169,9 @@ class YumSrcTest(unittest.TestCase):
             self.assertEqual(grabber_spy.call_args[1]["timeout"],  42)
             self.assertEqual(grabber_spy.call_args[1]["minrate"],  42)
 
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.ZYPP_RAW_CACHE_PATH", "./")
     def test_get_comps_and_modules(self):
         cs = self._make_dummy_cs()
-
-        wdir = os.path.dirname(__file__)
-        cs._get_repodata_path = Mock(return_value=os.path.join(wdir, "repodata"))
 
         comps = cs.get_groups()
         self.assertTrue(comps.endswith('751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml'))
