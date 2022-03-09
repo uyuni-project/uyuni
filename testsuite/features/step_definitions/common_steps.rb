@@ -1015,7 +1015,9 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath)['for'].....C........W..C.............
+7
+
 
   case target_status
   when 'selected'
