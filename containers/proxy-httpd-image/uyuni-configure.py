@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-import base64
 import os
 import re
+import shutil
 import yaml
 
 config_path = "/etc/uyuni/"
@@ -11,21 +11,17 @@ config_path = "/etc/uyuni/"
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
     
-    # Save the systemid file
-    with open("/etc/sysconfig/rhn/systemid", "w") as file:
-        file.write(base64.b64decode(config['binary_system_id']).decode())
+    # copy the systemid file
+    shutil.copyfile(config_path + "system_id.xml", "/etc/sysconfig/rhn/systemid")
     
-    # Decode and install SSL CA certificate
-    with open("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w") as file:
-        file.write(base64.b64decode(config['binary_ca_certs']).decode())
+    # copy SSL CA certificate
+    shutil.copyfile(config_path + "ca.crt", "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT")
     os.symlink("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT")
     os.system("/usr/sbin/update-ca-certificates")
 
-    # Decode and install server certificate files
-    with open("/etc/apache2/ssl.crt/server.crt", "w") as file:
-        file.write(base64.b64decode(config['binary_server_crt']).decode())
-    with open("/etc/apache2/ssl.key/server.key", "w") as file:
-        file.write(base64.b64decode(config['binary_server_key']).decode())
+    # copy server certificate files
+    shutil.copyfile(config_path + "server.crt", "/etc/apache2/ssl.crt/server.crt")
+    shutil.copyfile(config_path + "server.key", "/etc/apache2/ssl.key/server.key")
 
     with open("/etc/apache2/httpd.conf", "r+") as file:
         file_content = file.read()

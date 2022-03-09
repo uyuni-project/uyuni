@@ -5,13 +5,13 @@ server: server.tf.local
 max_cache_size_mb: 20000
 
 ## httpd and WSGI
-binary_system_id: ""
+# system_id.xml:  provided as a file
 email: test@test.test
-binary_ca_certs: ""
-binary_server_crt: ""
-binary_server_key: ""
+# ca.certs: provided as a file
+# server.crt: provided as a file
+# server.key: provided as a file
 
 # ssh push keys
-binary_id_server_ssh_push:
-binary_id_server_ssh_push_pub:
-binary_id_server_ssh_key_pub:
+# server_ssh_push: provided as a file
+# server_ssh_push.pub: provided as a file
+# server_ssh_key.pub: provided.as a file

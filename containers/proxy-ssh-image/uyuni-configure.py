@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-import base64
 import os
 import re
+import shutil
 import yaml
 
 # read from file
@@ -24,11 +24,9 @@ with open("/etc/uyuni/config.yaml") as source:
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}')
     os.system(f'chmod 700 {SSH_PUSH_KEY_DIR}')
 
-    # Save the ssh push server/parent key files
-    with open(f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}", "w") as file:
-        file.write(base64.b64decode(config['binary_id_server_ssh_push']).decode())
-    with open(f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub", "w") as file:
-        file.write(base64.b64decode(config['binary_id_server_ssh_push_pub']).decode())
+    # copy the ssh push server/parent key files
+    shutil.copyfile("/etc/uyuni/server_ssh_push", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}")
+    shutil.copyfile("/etc/uyuni/server_ssh_push.pub", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub")
 
     
     # change owner to {SSH_PUSH_USER}
@@ -42,8 +40,7 @@ with open("/etc/uyuni/config.yaml") as source:
     # cp {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
 
     # Authorize the server to ssh into this container
-    with open(f"{SSH_PUSH_KEY_DIR}/authorized_keys", "w") as file:
-        file.write(base64.b64decode(config['binary_id_server_ssh_key_pub']).decode())
+    shutil.copyfile("/etc/uyuni/server_ssh_key.pub", f"{SSH_PUSH_KEY_DIR}/authorized_keys")
 
     # append to existing config file
     with open("/etc/ssh/sshd_config", "r+") as config_file:
