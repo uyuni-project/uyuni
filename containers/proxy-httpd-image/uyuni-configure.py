@@ -24,8 +24,6 @@ with open(config_path + "config.yaml") as source:
     # Decode and install server certificate files
     with open("/etc/apache2/ssl.crt/server.crt", "w") as file:
         file.write(base64.b64decode(config['binary_server_crt']).decode())
-    with open("/etc/apache2/ssl.csr/server.csr", "w") as file:
-        file.write(base64.b64decode(config['binary_server_csr']).decode())
     with open("/etc/apache2/ssl.key/server.key", "w") as file:
         file.write(base64.b64decode(config['binary_server_key']).decode())
 

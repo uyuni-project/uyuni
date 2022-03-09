@@ -9,7 +9,6 @@ binary_system_id: ""
 email: test@test.test
 binary_ca_certs: ""
 binary_server_crt: ""
-binary_server_csr: ""
 binary_server_key: ""
 
 # ssh push keys
