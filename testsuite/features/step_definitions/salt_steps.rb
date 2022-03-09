@@ -193,7 +193,7 @@ end
 
 When(/^I enter target "([^"]*)"$/) do |host|
   value =
-    if $provider== 'aws'
+    if $is_cloud_provider
       get_system_name(host)
     elsif host == 'ceos_minion'
       "*centos*"
