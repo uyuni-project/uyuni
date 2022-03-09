@@ -118,6 +118,14 @@ public class CVEAuditSystemBuilder {
     }
 
     /**
+     * Set the channels
+     * @param channelSetIn the channels
+     */
+    public void setChannels(Set<ChannelIdNameLabelTriple> channelSetIn) {
+        this.channels = channelSetIn;
+    }
+
+    /**
      * Return the set of erratas.
      * @return the erratas
      */
@@ -131,6 +139,14 @@ public class CVEAuditSystemBuilder {
      */
     public void addErrata(ErrataIdAdvisoryPair errataIn) {
         this.erratas.add(errataIn);
+    }
+
+    /**
+     * Set the erratas
+     * @param errataSetIn the erratas
+     */
+    public void setErratas(Set<ErrataIdAdvisoryPair> errataSetIn) {
+        this.erratas = errataSetIn;
     }
 
     /**
