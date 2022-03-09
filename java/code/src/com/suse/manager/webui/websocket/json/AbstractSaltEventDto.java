@@ -28,7 +28,7 @@ public abstract class AbstractSaltEventDto {
     /**
      * @param typeIn type of the event
      */
-    public AbstractSaltEventDto(String typeIn) {
+    protected AbstractSaltEventDto(String typeIn) {
         this.type = typeIn;
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractSaltEventDto {
      * @param typeIn type of the event
      * @param minionIn minion id
      */
-    public AbstractSaltEventDto(String typeIn, String minionIn) {
+    protected AbstractSaltEventDto(String typeIn, String minionIn) {
         this.type = typeIn;
         this.minion = minionIn;
     }
@@ -46,7 +46,7 @@ public abstract class AbstractSaltEventDto {
      * @param minionIn minion id
      * @param actionTypeIn action type
      */
-    public AbstractSaltEventDto(String typeIn, String minionIn, String actionTypeIn) {
+    protected AbstractSaltEventDto(String typeIn, String minionIn, String actionTypeIn) {
         this.type = typeIn;
         this.minion = minionIn;
         this.actionType = actionTypeIn;

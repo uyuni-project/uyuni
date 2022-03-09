@@ -33,34 +33,30 @@ import java.util.logging.Logger;
  */
 public class VelocityHelper {
 
-    private static VelocityEngine ve = null;
-    private VelocityContext context = null;
+    private final VelocityEngine ve;
+    private final VelocityContext context;
 
     /**
      * Constructor to be used when using a template file
      * @param templateDir the template directory
-     * @throws Exception e
      */
-    public VelocityHelper(String templateDir) throws Exception {
-        if (ve == null) {
-            Properties p = new Properties();
-            if (templateDir != null) {
-                p.setProperty("file.resource.loader.path", templateDir);
-            }
-            p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
-
-            // We want to avoid logging the INFO since it costs time
-            Logger.getLogger(JdkLogChute.DEFAULT_LOG_NAME).setLevel(Level.WARNING);
-            ve = new VelocityEngine(p);
+    public VelocityHelper(String templateDir) {
+        Properties p = new Properties();
+        if (templateDir != null) {
+            p.setProperty("file.resource.loader.path", templateDir);
         }
+        p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
+
+        // We want to avoid logging the INFO since it costs time
+        Logger.getLogger(JdkLogChute.DEFAULT_LOG_NAME).setLevel(Level.WARNING);
+        ve = new VelocityEngine(p);
         context = new VelocityContext();
     }
 
     /**
      * Constructor used when the template will be passed in
-     * @throws Exception e
      */
-    public VelocityHelper() throws Exception {
+    public VelocityHelper() {
         this(null);
     }
 
@@ -77,9 +73,8 @@ public class VelocityHelper {
      * render the template according to a template file
      * @param fileName the filename
      * @return the rendered template
-     * @throws Exception e
      */
-    public String renderTemplateFile(String fileName) throws Exception {
+    public String renderTemplateFile(String fileName) {
         Template t = ve.getTemplate(fileName);
         StringWriter writer = new StringWriter();
         Calendar cal = Calendar.getInstance();
@@ -97,9 +92,8 @@ public class VelocityHelper {
      * render the template according to what we've added to addMatch
      * @param template the template
      * @return the rendered template
-     * @throws Exception e
      */
-    public String renderTemplate(String template) throws Exception {
+    public String renderTemplate(String template) {
         StringWriter writer = new StringWriter();
         StringReader reader = new StringReader(template);
 

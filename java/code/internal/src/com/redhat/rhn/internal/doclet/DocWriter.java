@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Map;
  *
  * Base doc Writer
  */
+@SuppressWarnings("java:S106")
 public abstract class DocWriter {
 
 
@@ -35,7 +37,7 @@ public abstract class DocWriter {
     protected String templates;
     protected String product;
     protected String apiVersion;
-    private boolean debug = false;
+    private final boolean debug;
 
 
     /**
@@ -47,7 +49,7 @@ public abstract class DocWriter {
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
+    protected DocWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
         output = outputIn;
         templates = templatesIn;
         product = productIn;
@@ -55,26 +57,29 @@ public abstract class DocWriter {
         debug = debugIn;
     }
 
-    protected  void writeFile(String filePath, String contents) throws Exception {
-       FileWriter fileWrite = new FileWriter(filePath);
-       BufferedWriter bw = new BufferedWriter(fileWrite);
-       bw.write(contents);
-       bw.close();
-
-   }
-
-    protected String readFile(String filePath) throws Exception {
-        String toReturn = "";
-        FileReader input = new FileReader(filePath);
-        BufferedReader bufRead = new BufferedReader(input);
-        String line = bufRead.readLine();
-
-        while (line != null) {
-            toReturn += line + "\n";
-            line = bufRead.readLine();
+    protected void writeFile(String filePath, String contents) throws IOException {
+        try (
+                FileWriter fileWrite = new FileWriter(filePath);
+                BufferedWriter bw = new BufferedWriter(fileWrite)
+        ) {
+            bw.write(contents);
         }
-        bufRead.close();
-        return toReturn;
+    }
+
+    protected String readFile(String filePath) throws IOException {
+        StringBuilder toReturn = new StringBuilder();
+        try (
+                FileReader input = new FileReader(filePath);
+                BufferedReader bufRead = new BufferedReader(input)
+        ) {
+            String line = bufRead.readLine();
+
+            while (line != null) {
+                toReturn.append(line).append("\n");
+                line = bufRead.readLine();
+            }
+        }
+        return toReturn.toString();
    }
 
     /**
@@ -82,10 +87,8 @@ public abstract class DocWriter {
      * @param handlers list of the handlers
      * @param templateDir directory of the templates
      * @return a string representing the index
-     * @throws Exception e
      */
-    public  String generateIndex(List<Handler> handlers, String templateDir)
-                throws Exception {
+    public String generateIndex(List<Handler> handlers, String templateDir) {
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
         vh.addMatch("productName", product);
@@ -101,10 +104,9 @@ public abstract class DocWriter {
      * @param handler the handler in question
      * @param templateDir the directory of templates
      * @return a string that is the templated handler
-     * @throws Exception e
+     * @throws IOException e
      */
-    public String generateHandler(Handler handler, String templateDir)
-            throws Exception {
+    public String generateHandler(Handler handler, String templateDir) throws IOException {
         for (ApiCall call : handler.getCalls()) {
             log(String.format("Generating handler call %s.%s", handler.getName(), call.getName()));
             call.setReturnDoc(renderMacro(templateDir, call.getReturnDoc(),
@@ -135,10 +137,9 @@ public abstract class DocWriter {
      * @param input the input to macrotize
      * @param description a description to use in case something goes wrong
      * @return the macrotized input
-     * @throws Exception e
+     * @throws IOException e
      */
-    public String renderMacro(String templateDir, String input, String description)
-                    throws Exception {
+    public String renderMacro(String templateDir, String input, String description) throws IOException {
         log("Rendering macro: " + input + ", " + description);
         VelocityHelper macros = new VelocityHelper(templateDir);
         String macro = readFile(templateDir + ApiDoclet.API_MACROS_FILE);
@@ -146,8 +147,7 @@ public abstract class DocWriter {
         String productMacro = "#macro(product)" + product + "#end\n";
 
         try {
-            String toReturn = macros.renderTemplate(macro + productMacro + input + " \n ");
-            return toReturn;
+            return macros.renderTemplate(macro + productMacro + input + " \n ");
         }
         catch (Exception e) {
             String errrorFile = "/tmp/apidoc_error.txt";
@@ -166,25 +166,26 @@ public abstract class DocWriter {
      * render the serializers
      * @param templateDir the template directory for this writer
      * @param serializers Map of serializers
-     * @throws Exception e
+     * @throws IOException e
      */
-    public void renderSerializers(String templateDir, Map<String, String> serializers)
-                    throws Exception {
+    public void renderSerializers(String templateDir, Map<String, String> serializers) throws IOException {
 
         serializerRenderer = new VelocityHelper(templateDir);
 
-        //macrotize the serializers
-        for (String name : serializers.keySet()) {
+        // macrotize the serializers
+        for (Map.Entry<String, String> serializer : serializers.entrySet()) {
+            String name = serializer.getKey();
             log("Rendering serializer macro: " + name);
-            String temp = renderMacro(templateDir, serializers.get(name), name);
+            String temp = renderMacro(templateDir, serializer.getValue(), name);
             serializers.put(name, temp);
-            serializerRenderer.addMatch(name, serializers.get(name));
+            serializerRenderer.addMatch(name, serializer.getValue());
         }
 
         VelocityHelper tempRenderer = new VelocityHelper();
-        for (String name : serializers.keySet()) {
+        for (Map.Entry<String, String> serializer : serializers.entrySet()) {
+            String name = serializer.getKey();
             log("Rendering serializer: " + name);
-            String temp = serializerRenderer.renderTemplate(serializers.get(name));
+            String temp = serializerRenderer.renderTemplate(serializer.getValue());
             serializers.put(name, temp);
             tempRenderer.addMatch(name, temp);
         }
@@ -196,10 +197,10 @@ public abstract class DocWriter {
      * write the specified writer
      * @param handlers list of handlers
      * @param serializers a list of serializers to write with
-     * @throws Exception e
+     * @throws IOException e
      */
     public abstract void write(List<Handler> handlers,
-            Map<String, String> serializers) throws Exception;
+            Map<String, String> serializers) throws IOException;
 
 
     protected void log(String msg) {

@@ -627,13 +627,22 @@ if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
     ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
     ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
     echo "
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/ongres-stringprep_stringprep.jar
 %{_prefix}/share/rhn/search/lib/ongres-stringprep_saslprep.jar
     " > .mfiles-postgresql
 else
-    touch .mfiles-postgresql
+    echo "
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
+%{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
+    " > .mfiles-postgresql
 fi
 
 
@@ -926,10 +935,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
-%{_prefix}/share/rhn/search/lib/ongres-scram_client.jar
-%{_prefix}/share/rhn/search/lib/ongres-scram_common.jar
 
 %changelog

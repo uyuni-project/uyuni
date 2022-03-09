@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.internal.doclet;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +41,7 @@ public class SinglePageWriter extends DocWriter {
      *
      * {@inheritDoc}
      */
-    public void write(List<Handler> handlers,
-            Map<String, String> serializers) throws Exception {
+    public void write(List<Handler> handlers, Map<String, String> serializers) throws IOException {
         //First macro-tize the serializer's docs
         renderSerializers(templates, serializers);
 
@@ -64,10 +64,9 @@ public class SinglePageWriter extends DocWriter {
      * @param handlers list of the handlers
      * @param templateDir directory of the templates
      * @return a string representing the index
-     * @throws Exception e
      */
-    public  String generateIndex(List<Handler> handlers, String templateDir)
-                throws Exception {
+    @Override
+    public String generateIndex(List<Handler> handlers, String templateDir) {
 
         String out = "";
         VelocityHelper vh = new VelocityHelper(templateDir);

@@ -51,7 +51,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      * Constructor
      * @param userIn to associate with cmd.
      */
-    public BaseTreeEditOperation(User userIn) {
+    protected BaseTreeEditOperation(User userIn) {
         this.user = userIn;
     }
 
@@ -60,7 +60,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      * @param treeLabel to lookup
      * @param userIn who owns the tree
      */
-    public BaseTreeEditOperation(String treeLabel, User userIn) {
+    protected BaseTreeEditOperation(String treeLabel, User userIn) {
         this(userIn);
         this.tree = KickstartFactory.
             lookupKickstartTreeByLabel(treeLabel, userIn.getOrg());

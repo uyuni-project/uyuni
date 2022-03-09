@@ -30,7 +30,7 @@ public abstract class BaseSystemOperation extends BasePersistOperation {
      * lookup a Server
      * @param sid id of Server to operate on
      */
-    public BaseSystemOperation(Long sid) {
+    protected BaseSystemOperation(Long sid) {
         this.server = ServerFactory.lookupById(sid);
     }
 

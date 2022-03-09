@@ -72,7 +72,7 @@ public abstract class AbstractVirtualizationController {
      * @param virtManagerIn instance to manage virtualization
      * @param jadeTemplatesPathIn the path to the folder containing the Jade templates
      */
-    public AbstractVirtualizationController(VirtManager virtManagerIn, String jadeTemplatesPathIn) {
+    protected AbstractVirtualizationController(VirtManager virtManagerIn, String jadeTemplatesPathIn) {
         this.virtManager = virtManagerIn;
         this.jadeTemplatesPath = jadeTemplatesPathIn;
     }

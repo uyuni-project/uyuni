@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.internal.doclet;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class AsciidocWriter extends DocWriter {
      *
      * {@inheritDoc}
      */
-    public void write(List<Handler> handlers, Map<String, String> serializers) throws Exception {
+    public void write(List<Handler> handlers, Map<String, String> serializers) throws IOException {
 
         //First macro-tize the serializer's docs
         renderSerializers(templates, serializers);
