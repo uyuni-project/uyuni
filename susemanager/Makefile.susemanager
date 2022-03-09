@@ -15,14 +15,14 @@ unittest ::
         fi
 
 unittest_inside_docker ::
-	ln -fs /manager/susemanager/src /manager/backend/susemanager
+	ln -fs /manager/susemanager/src /manager/python/spacewalk/susemanager
 	nosetests --with-xunit --xunit-file src/reports/tests.xml -s src/test
-	rm /manager/backend/susemanager
+	rm /manager/python/spacewalk/susemanager
 
 pylint_inside_docker ::
-	ln -fs /manager/susemanager/src /manager/backend/susemanager
+	ln -fs /manager/susemanager/src /manager/python/spacewalk/susemanager
 	pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --reports=y src > src/reports/pylint.log || :
-	rm /manager/backend/susemanager
+	rm /manager/python/spacewalk/susemanager
 
 docker_tests ::
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/susemanager; make -f Makefile.susemanager unittest_inside_docker"

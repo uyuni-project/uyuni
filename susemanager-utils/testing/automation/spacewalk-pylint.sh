@@ -4,20 +4,18 @@ HERE=`dirname $0`
 . $HERE/VERSION
 GITROOT=`readlink -f $HERE/../../../`
 
-DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
+DOCKER_RUN_EXPORT="PYTHONPATH=/manager/python/:/manager/client/rhel/spacewalk-client-tools/src"
 
 SPACEWALK_FILES="
 susemanager/src/
 spacewalk/
-backend/
-client/rhel/rhnlib/rhn/
+python/
 proxy/proxy/
 proxy/installer/fetch-certificate.py
 proxy/installer/rhn-proxy-activate.py
 proxy/proxy/wsgi/xmlrpc.py
 proxy/proxy/wsgi/xmlrpc_redirect.py
 reporting/reports.py
-susemanager-utils/susemanager-sls/src/
 utils/apply_errata
 utils/cloneByDate.py
 utils/delete-old-systems-interactive
@@ -110,41 +108,12 @@ scripts/update_symlinks.py
 search-server/spacewalk-doc-indexes/create_urls_per_language.py
 search-server/spacewalk-search/scripts/search.py
 search-server/spacewalk-search/scripts/search.admin.updateIndex.test.py
-spacecmd/src/lib/activationkey.py
-spacecmd/src/lib/argumentparser.py
-spacecmd/src/lib/configchannel.py
-spacecmd/src/lib/distribution.py
-spacecmd/src/lib/kickstart.py
-spacecmd/src/lib/misc.py
-spacecmd/src/lib/package.py
-spacecmd/src/lib/api.py
-spacecmd/src/lib/cryptokey.py
-spacecmd/src/lib/custominfo.py
-spacecmd/src/lib/errata.py
-spacecmd/src/lib/filepreservation.py
-spacecmd/src/lib/org.py
-spacecmd/src/lib/repo.py
-spacecmd/src/lib/report.py
-spacecmd/src/lib/scap.py
-spacecmd/src/lib/schedule.py
-spacecmd/src/lib/shell.py
-spacecmd/src/lib/snippet.py
-spacecmd/src/lib/ssm.py
-spacecmd/src/lib/system.py
-spacecmd/src/lib/user.py
-spacecmd/src/lib/utils.py
-spacecmd/src/lib/group.py
-spacecmd/src/lib/softwarechannel.py
+spacecmd/src/spacecmd
 
 tftpsync/susemanager-tftpsync/sync_post_tftpd_proxies.py
 tftpsync/susemanager-tftpsync/MultipartPostHandler.py
-usix/
 susemanager-utils/performance/locust/00_Core_LoginAndSystemOverview.py
-susemanager-utils/susemanager-sls/modules/pillar/suma_minion.py
-susemanager-utils/susemanager-sls/modules/runners/mgrk8s.py
-susemanager-utils/susemanager-sls/modules/runners/kiwi-image-collect.py
-susemanager-utils/susemanager-sls/modules/runners/mgrutil.py
-susemanager-utils/susemanager-sls/modules/tops/mgr_master_tops.py
+susemanager-utils/susemanager-sls/modules/
 susemanager-utils/susemanager-sls/salt/channels/yum-susemanager-plugin/susemanagerplugin.py
 susemanager-utils/susemanager-sls/src/
 "
@@ -159,7 +128,5 @@ docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGS
 if [ $? -ne 0 ]; then
    EXIT=1
 fi
-
-rm -f $GITROOT/backend/common/usix.py*
 
 exit $EXIT

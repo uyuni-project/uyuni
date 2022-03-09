@@ -1,0 +1,55 @@
+# Makefile for the backend directory
+#
+SPACEWALK_FILES = __init__
+CODE_DIRS = common server upload_server satellite_tools satellite_exporter po wsgi cdn_tools
+PYLINT_DIRS = common upload_server satellite_tools satellite_exporter wsgi
+CONF_DIRS = apache-conf rhn-conf logrotate
+
+# We look for config files in "well known" locations (rhn-conf,
+# httpd-conf, logrotate)
+EXTRA_DIRS = /var/log/rhn /var/log/rhn/reposync /var/cache/rhn /var/cache/rhn/satsync /var/log/rhn/cdnsync
+
+# Docker tests variables
+DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
+DOCKER_REGISTRY       = registry.opensuse.org
+DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../../:/manager"
+
+
+all :: all-code all-conf
+
+%-code : Makefile.backend
+	@$(foreach d,$(CODE_DIRS), $(MAKE) -C $(d) $* || exit 1; )
+
+%-conf : Makefile.backend
+	@$(foreach d,$(CONF_DIRS), $(MAKE) -C $(d) $* || exit 1; )
+
+# now include some Macros
+include Makefile.defs
+
+__pylint ::
+	$(call update_pip_env)
+	pushd ..; pylint --rcfile=spacewalk/pylintrc spacewalk | tee spacewalk/reports/pylint.log || true ; popd
+
+install :: install-code install-conf
+
+clean :: clean-code clean-conf
+
+test    ::
+	pushd ..; $(PYTHON_BIN) -m pytest test/unit; popd
+
+docker_no_db_tests ::
+	mkdir -p $(CURDIR)/reports
+	@echo "Running satellite_tools unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-tools-tests.sh
+	@echo "Running common unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-common-tests.sh
+
+docker_pgsql_tests ::
+	mkdir -p $(CURDIR)/reports
+	@echo "Running Postgresql tests"
+	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /manager/python/test/docker-backend-pgsql-tests.sh
+
+docker_shell ::
+	docker run --rm=true -t -i -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
+

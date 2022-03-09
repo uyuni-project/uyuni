@@ -1,0 +1,30 @@
+# Makefile for the common libs directory
+#
+SPACEWALK_FILES = __init__
+CODE_DIRS = common 
+PYLINT_DIRS = common
+CONF_DIRS =
+
+# We look for config files in "well known" locations (rhn-conf,
+# httpd-conf, logrotate)
+EXTRA_DIRS =
+
+
+all :: all-code all-conf
+
+%-code : Makefile.common-libs
+	@$(foreach d,$(CODE_DIRS), $(MAKE) -C $(d) $* || exit 1; )
+
+%-conf : Makefile.common-libs
+	@$(foreach d,$(CONF_DIRS), $(MAKE) -C $(d) $* || exit 1; )
+
+# now include some Macros
+include Makefile.defs
+
+install :: install-code install-conf
+
+clean :: clean-code clean-conf
+
+test ::
+	mkdir -p $(CURDIR)/reports
+	cd ..; $(PYTHON_BIN) -m pytest test/unit/uyuni/
