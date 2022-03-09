@@ -513,6 +513,10 @@ def decompress_open(filename):
         file_obj = subprocess.Popen(["unzck", "-c", filename],
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL).stdout
+    elif filename.endswith('.zst'):
+        file_obj = subprocess.Popen(["zstd", "-d", "-c", filename],
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.DEVNULL).stdout
     else:
         file_obj = codecs.open(filename, 'r', encoding="utf8")
     if filename.endswith(('.gz', '.bz2', '.xz', '.zck')):
