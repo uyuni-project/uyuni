@@ -891,7 +891,7 @@
         <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-        <target>Ihre Login-Session ist abgelaufen.  Aus Sicherheitsgründen wird Ihre Login-Session von @@PRODUCT_NAME@@ bei fehlender Aktivität nach {0} Minuten abgebrochen. Um sich wieder anzumelden, klicken Sie &lt;a href="{1}"&gt;hier&lt;/a&gt;.</target>
+        <target>Ihre Login-Session ist abgelaufen. Aus Sicherheitsgründen wird Ihre Login-Session von @@PRODUCT_NAME@@ bei fehlender Aktivität nach {0} Minuten abgebrochen. Um sich wieder anzumelden, klicken Sie &lt;a href="{1}"&gt;hier&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
