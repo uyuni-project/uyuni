@@ -15,10 +15,10 @@
 package com.redhat.rhn.manager.audit;
 
 /**
- * Class encapsulating a channel's id, name and label.
+ * Class encapsulating a channel's id, name, label and rank.
  *
  */
-public class ChannelIdNameLabelTriple {
+public class AuditChannelInfo {
 
     private long id;
     private String name;
@@ -33,7 +33,7 @@ public class ChannelIdNameLabelTriple {
      * @param labelIn the channel label
      * @param rankIn the channel rank
      */
-    public ChannelIdNameLabelTriple(long idIn, String nameIn, String labelIn, long rankIn) {
+    public AuditChannelInfo(long idIn, String nameIn, String labelIn, long rankIn) {
         super();
         this.id = idIn;
         this.name = nameIn;
@@ -143,7 +143,7 @@ public class ChannelIdNameLabelTriple {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ChannelIdNameLabelTriple other = (ChannelIdNameLabelTriple) obj;
+        AuditChannelInfo other = (AuditChannelInfo) obj;
         if (id != other.id) {
             return false;
         }
