@@ -512,7 +512,7 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
 end
 
 When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version && PROVIDER != 'aws'
+  if $product == product_version && $provider!= 'aws'
     step %(I #{select} "#{product}" as a product)
   end
 end
@@ -542,7 +542,7 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
 end
 
 When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
-  if $product == product_version && PROVIDER != 'aws'
+  if $product == product_version && $provider!= 'aws'
     step %(I open the sub-list of the product "#{product}")
   end
 end
@@ -794,11 +794,11 @@ end
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
   # Distribution
-  repos = PROVIDER != 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
+  repos = $provider!= 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  if PROVIDER != 'aws'
+  if $provider!= 'aws'
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
@@ -806,13 +806,13 @@ When(/^I enable repositories before installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && PROVIDER != 'aws'
+  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && $provider!= 'aws'
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || PROVIDER == 'aws'
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $provider== 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -824,11 +824,11 @@ When(/^I disable repositories after installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
   # Distribution
-  repos = PROVIDER != 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
+  repos = $provider!= 'aws' ? "os_pool_repo os_update_repo" : OS_REPOS_BY_OS_VERSION[os_version].join(' ')
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  if PROVIDER != 'aws'
+  if $provider!= 'aws'
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
@@ -836,13 +836,13 @@ When(/^I disable repositories after installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && PROVIDER != 'aws'
+  if ( os_family =~ /^sles/ && os_version =~ /^15/ ) && $provider!= 'aws'
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || PROVIDER == 'aws'
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $provider== 'aws'
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
