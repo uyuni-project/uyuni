@@ -1,5 +1,6 @@
+- Adjust next_server cobbler settings for cobbler >= 3.3.1
 - drop the reporting DB when clear-db option is set
-  * Remove pylint according to Fedora package guidelines.
+- Remove pylint according to Fedora package guidelines.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:04:35 CET 2022 - jgonzalez@suse.com
