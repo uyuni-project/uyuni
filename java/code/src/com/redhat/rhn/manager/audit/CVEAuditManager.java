@@ -964,6 +964,7 @@ public class CVEAuditManager {
                     .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
 
             AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
+            Set<ErrataIdAdvisoryPair> successorErratas = new HashSet<>();
 
             // Loop through affected packages one by one
             for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
@@ -979,8 +980,10 @@ public class CVEAuditManager {
                 patchCandidateResult.ifPresent(result -> {
                     // The package is not patched. Keep a list of the missing patch and the top candidate channel
                     ChannelIdNameLabelTriple channel = new ChannelIdNameLabelTriple(result.getChannelId().get(),
-                            result.getChannelName(), result.getChannelLabel());
-                    system.addErrata(new ErrataIdAdvisoryPair(result.getErrataId().get(), result.getErrataAdvisory()));
+                            result.getChannelName(), result.getChannelLabel(), result.getChannelRank().orElse(0L));
+                    ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(result.getErrataId().get(),
+                            result.getErrataAdvisory());
+                    system.addErrata(errata);
                     system.addChannel(channel);
 
                     if (result.isChannelAssigned()) {
@@ -988,11 +991,32 @@ public class CVEAuditManager {
                     }
                     else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
                         patchInSuccessorProduct.set(true);
+                        successorErratas.add(errata);
                     }
                 });
             }
+
+            boolean allChannelsForOneErrataAssigned = assignedChannels.containsAll(system.getChannels());
+            // Filter out channels that are part of a successor or predecessor product. This is to make sure the
+            // current product is chosen as the most suitable candidate if there is a patch available for it, even
+            // though it might not contain a patch for all the packages e.g. because some versions are to old to be
+            // affected.
+            if (patchInSuccessorProduct.get() && system.getChannels().size() > 1) {
+                Set<ChannelIdNameLabelTriple> filteredChannels = system.getChannels().stream().filter(channel ->
+                        channel.getRank() < SUCCESSOR_PRODUCT_RANK_BOUNDARY).collect(Collectors.toSet());
+                if (!filteredChannels.isEmpty()) {
+                    allChannelsForOneErrataAssigned = assignedChannels.containsAll(filteredChannels);
+                    if (allChannelsForOneErrataAssigned) {
+                        // Don't display the patches and channels that belong to successor products
+                        system.setChannels(filteredChannels);
+                        system.setErratas(system.getErratas().stream().filter(errata ->
+                                !successorErratas.contains(errata)).collect(Collectors.toSet()));
+                    }
+                }
+            }
+
             system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
-                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty(),
+                    allChannelsForOneErrataAssigned, !resultsByPackage.isEmpty(),
                     patchInSuccessorProduct.get()));
 
             // Check if the patch status is contained in the filter
