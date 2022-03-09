@@ -1,3 +1,5 @@
+- Execute "cobbler mkloaders" when setting up cobbler
+- Adjust next_server cobbler settings for cobbler >= 3.3.1
 - fix prototype missmatch in idn_to_ascii
 
 -------------------------------------------------------------------
