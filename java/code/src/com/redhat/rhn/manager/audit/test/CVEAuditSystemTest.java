@@ -32,16 +32,16 @@ public class CVEAuditSystemTest extends TestCase {
      */
     public void testChannels() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
-        system.addChannel(new ChannelIdNameLabelTriple(1L, "foo", "f"));
-        system.addChannel(new ChannelIdNameLabelTriple(1L, "bar", "b"));
+        system.addChannel(new ChannelIdNameLabelTriple(1L, "foo", "f", 0L));
+        system.addChannel(new ChannelIdNameLabelTriple(1L, "bar", "b", 0L));
         assertEquals(1, system.getChannels().size());
         assertTrue(system.getChannels().contains(
-                new ChannelIdNameLabelTriple(1L, "xyz", "x")));
+                new ChannelIdNameLabelTriple(1L, "xyz", "x", 0L)));
 
-        system.addChannel(new ChannelIdNameLabelTriple(2L, "foo", "f"));
+        system.addChannel(new ChannelIdNameLabelTriple(2L, "foo", "f", 0L));
         assertEquals(2, system.getChannels().size());
         assertTrue(system.getChannels().contains(
-                new ChannelIdNameLabelTriple(2L, "xyz", "x")));
+                new ChannelIdNameLabelTriple(2L, "xyz", "x", 0L)));
     }
 
     /**
