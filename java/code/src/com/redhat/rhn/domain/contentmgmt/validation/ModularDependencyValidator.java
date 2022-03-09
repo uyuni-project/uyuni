@@ -102,11 +102,6 @@ public class ModularDependencyValidator implements ContentValidator {
                         loc.getMessage("contentmanagement.validation.moduleconflict",
                                 module.getFullName(), other.getFullName()), TYPE_ERROR));
             }
-            else if (e.getModule().isPresent()) {
-                messages.add(ContentValidationMessage.contentFiltersMessage(
-                        loc.getMessage("contentmanagement.validation.dependencyerror.formodule",
-                                e.getModule().get().getFullName()), TYPE_ERROR));
-            }
             else {
                 messages.add(ContentValidationMessage.contentFiltersMessage(
                         loc.getMessage("contentmanagement.validation.dependencyerror"), TYPE_ERROR));
