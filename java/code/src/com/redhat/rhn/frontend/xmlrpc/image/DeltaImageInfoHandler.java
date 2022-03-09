@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * ImageInfoHandler
- * @xmlrpc.namespace image
- * @xmlrpc.doc Provides methods to access and modify images.
+ * DeltaImageInfoHandler
+ * @xmlrpc.namespace image.delta
+ * @xmlrpc.doc Provides methods to access and modify delta images.
  */
 public class DeltaImageInfoHandler extends BaseHandler {
 
@@ -40,7 +40,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available DeltaImages
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $DeltaImageInfoSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $DeltaImageSerializer #array_end()
      */
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
