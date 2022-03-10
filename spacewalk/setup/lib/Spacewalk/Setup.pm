@@ -1120,7 +1120,8 @@ sub postgresql_clear_db {
 sub postgresql_drop_reportdb {
         my $answers = shift;
 
-        system_debug('/usr/bin/uyuni-setup-reportdb', '--db='.$answers->{'report-db-name'}, '--user='.$answers->{'report-db-user'});
+        system_debug('/usr/bin/uyuni-setup-reportdb', 'remove',
+            '--db='.$answers->{'report-db-name'}, '--user='.$answers->{'report-db-user'});
         return 1;
 }
 
