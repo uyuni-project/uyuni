@@ -35,7 +35,7 @@ delete_server                   :: rhn_channel.pks rhn_config.pks \
                                    rhnActionPackageRemovalFailure rhnCpu \
                                    rhnDevice \
                                    rhnProxyInfo rhnRam rhnRegToken \
-                                   rhnSatelliteInfo rhnServerAction \
+                                   suseMgrServerInfo rhnServerAction \
                                    rhnServerAction rhnServerActionPackageResult \
                                    rhnServerActionScriptResult rhnServerChannel \
                                    rhnServerActionVerifyResult rhnServerDMI \
