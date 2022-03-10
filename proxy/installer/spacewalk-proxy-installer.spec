@@ -117,6 +117,7 @@ install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certific
 %if 0%{?suse_version}
 if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 fi
 if [ -e /etc/squid/squid.conf ]; then
     sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
