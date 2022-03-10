@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { MessageType } from "components/messages";
+
 import Network from "utils/network";
 
 const msgMap = {
@@ -32,121 +34,106 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: Function;
+  onNewBaseChannel: ({
+    currentSelectedBaseId,
+    currentChildSelectedIds,
+  }: {
+    currentSelectedBaseId: number;
+    currentChildSelectedIds: number[];
+  }) => void;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 
-type ActivationKeyChannelsState = {
-  messages: Array<any>;
-  loading: boolean;
-  loadingChildren: boolean;
-  availableBaseChannels: Array<Channel>; //[base1, base2],
-  availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, Array<number>>;
-};
+const ActivationKeyChannelsApi = (props: ActivationKeyChannelsProps) => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [loadingChannels, setLoadingChannels] = useState(true);
+  const [loadingBaseChannels, setLoadingBaseChannels] = useState(true);
+  const [loadingChildren, setLoadingChildren] = useState(true);
+  const [availableBaseChannels, setAvailableBaseChannels] = useState<Channel[]>([]);
+  const [availableChannels, setAvailableChannels] = useState<availableChannelsType>([]);
+  const [fetchedData, setFetchedData] = useState<Map<number, Array<number>>>(new Map());
 
-class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
-  constructor(props: ActivationKeyChannelsProps) {
-    super(props);
-
-    this.state = {
-      messages: [],
-      loading: true,
-      loadingChildren: true,
-      availableBaseChannels: [], //[base1, base2],
-      availableChannels: [], //[{base : null, children: []}]
-      fetchedData: new Map(),
-    };
-  }
-
-  UNSAFE_componentWillMount() {
-    this.fetchActivationKeyChannels()
-      .then(this.fetchBaseChannels)
-      .then(() => this.fetchChildChannels(this.props.currentSelectedBaseId));
-  }
-
-  fetchBaseChannels = () => {
-    let future;
-    this.setState({ loading: true });
-
-    future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
-      .then((data) => {
-        this.setState({
-          availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
-          loading: false,
-        });
-      })
-      .catch(this.handleResponseError);
-    return future;
-  };
-
-  fetchActivationKeyChannels = () => {
-    let future: Promise<void>;
-    if (this.props.activationKeyId && !DEPRECATED_unsafeEquals(this.props.activationKeyId, -1)) {
-      this.setState({ loading: true });
-
-      future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
-        .then((data) => {
-          const currentSelectedBaseId = data.data.base ? data.data.base.id : this.props.defaultBaseId;
-          const currentChildSelectedIds = data.data.children ? data.data.children.map((c) => c.id) : [];
-          this.props.onNewBaseChannel({ currentSelectedBaseId, currentChildSelectedIds });
-          this.setState({
-            loading: false,
-          });
-        })
-        .catch(this.handleResponseError);
-    } else {
-      future = new Promise(function (resolve, reject) {
-        resolve();
-      });
-    }
-    return future;
-  };
-
-  fetchChildChannels = (baseId: number) => {
-    let future: Promise<void>;
-
-    const currentObject: any = this;
-    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      future = new Promise((resolve, reject) => {
-        resolve(
-          currentObject.setState({
-            availableChannels: currentObject.state.fetchedData.get(baseId),
-          })
-        );
-      });
-    } else {
-      this.setState({ loadingChildren: true });
-      future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
-        .then((data) => {
-          this.setState({
-            availableChannels: data.data,
-            fetchedData: this.state.fetchedData.set(baseId, data.data),
-            loadingChildren: false,
-          });
-        })
-        .catch(this.handleResponseError);
-    }
-    return future;
-  };
-
-  handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
-    this.setState((prevState) => ({
-      messages: prevState.messages.concat(msg),
-    }));
-  };
-
-  render() {
-    return this.props.children({
-      messages: this.state.messages,
-      loading: this.state.loading,
-      loadingChildren: this.state.loadingChildren,
-      availableBaseChannels: this.state.availableBaseChannels,
-      availableChannels: this.state.availableChannels,
-      fetchChildChannels: this.fetchChildChannels,
+  useEffect(() => {
+    setLoadingBaseChannels(true);
+    fetchBaseChannels().then(() => {
+      setLoadingBaseChannels(false);
     });
-  }
-}
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoadingChannels(true);
+    fetchActivationKeyChannels(props.activationKeyId)
+      .then((response) => {
+        if (!response || cancelled) return;
+
+        props.onNewBaseChannel(response);
+        setLoadingChildren(true);
+        return fetchChildChannels(props.currentSelectedBaseId);
+      })
+      .then((response) => {
+        if (!response || cancelled) return;
+        setLoadingChildren(false);
+        setAvailableChannels(response.availableChannels);
+        setFetchedData(response.fetchedData);
+        setLoadingChannels(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [props.currentSelectedBaseId]);
+
+  const fetchActivationKeyChannels = async (activationKeyId: number) => {
+    if (activationKeyId && activationKeyId !== -1) {
+      return Network.get(`/rhn/manager/api/activation-keys/${activationKeyId}/channels`)
+        .then((data) => {
+          const currentSelectedBaseId = data.data.base ? data.data.base.id : props.defaultBaseId;
+          const currentChildSelectedIds = data.data.children ? data.data.children.map((c) => c.id) : [];
+
+          return { currentSelectedBaseId, currentChildSelectedIds };
+        })
+        .catch(handleResponseError);
+    }
+  };
+
+  const fetchBaseChannels = () => {
+    return Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+      .then((data) => {
+        setAvailableBaseChannels(Array.from(data.data).map((channel: any) => channel.base));
+      })
+      .catch(handleResponseError);
+  };
+
+  const fetchChildChannels = async (baseId: number) => {
+    if (fetchedData && fetchedData.has(baseId)) {
+      // TODO: NB!! Either the types are wrong or the logic is wrong here, this comes from the old code but doesn't add up
+      // The `as any` cast needs to be removed, but which way the logic needs to be modified needs to be checked first
+      setAvailableChannels(fetchedData.get(baseId) as any);
+    } else {
+      return Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
+        .then((data) => {
+          return {
+            availableChannels: data.data,
+            fetchedData: new Map(fetchedData.set(baseId, data.data)),
+          };
+        })
+        .catch(handleResponseError);
+    }
+  };
+
+  const handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    setMessages(messages.concat(msg));
+  };
+
+  return props.children({
+    messages: messages,
+    loading: loadingChannels || loadingBaseChannels,
+    loadingChildren: loadingChildren,
+    availableBaseChannels: availableBaseChannels,
+    availableChannels: availableChannels,
+    fetchChildChannels: fetchChildChannels,
+  });
+};
 
 export default ActivationKeyChannelsApi;
