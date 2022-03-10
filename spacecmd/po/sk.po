@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-03-04 18:12+0000\n"
+"PO-Revision-Date: 2022-03-10 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -8227,6 +8227,8 @@ msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
+"system_bootstrap: Zaviesť systém na správu prostredníctvom Salt alebo Salt "
+"SSH."
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8247,9 +8249,8 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "Názov hostiteľa:      %s"
+msgstr "Názov hostiteľa:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
@@ -8261,9 +8262,8 @@ msgid "SSH User [root]:"
 msgstr "Používateľ [root]:"
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "Heslo: "
+msgstr "Heslo SSH:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
@@ -8274,28 +8274,24 @@ msgid "SSH Private Key Password:"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "Aktivačné kľúče"
+msgstr "Aktivačný kľúč:"
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "Aktivačné kľúče"
+msgstr "Reaktivačný kľúč:"
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  ID systému"
+msgstr "ID systému Proxy:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# Musí byť zadané id systému."
+msgstr "Musí byť zadaný názov hostiteľa"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
