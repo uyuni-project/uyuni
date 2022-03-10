@@ -1,3 +1,4 @@
+- Enable HSTS for Apache to force traffic to be in HTTPS
 - Expose release notes to www_path
 
 -------------------------------------------------------------------
