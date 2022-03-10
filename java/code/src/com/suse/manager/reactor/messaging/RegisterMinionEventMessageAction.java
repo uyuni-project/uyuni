@@ -413,6 +413,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                            Optional<String> activationKeyOverride,
                                            boolean isSaltSSH) {
         Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+        // take care that custom grains are deployed on the minion before we request them
+        saltApi.syncGrains(new MinionList(minionId));
         ValueMap grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
