@@ -1,4 +1,8 @@
-- Add proxy config generation subcommand
+-------------------------------------------------------------------
+Fri Mar 11 16:47:59 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Add proxy config generation subcommand
 
 -------------------------------------------------------------------
 Fri Mar 11 14:45:47 CET 2022 - jgonzalez@suse.com
