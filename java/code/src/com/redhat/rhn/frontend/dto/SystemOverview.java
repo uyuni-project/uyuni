@@ -65,7 +65,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private String name;
     private List status;
     private List actionId;
-    private boolean rhnSatellite;
+    private boolean mgrServer;
     private boolean proxy;
     private List entitlement;
     private List serverGroupTypeId;
@@ -165,16 +165,16 @@ public class SystemOverview extends BaseDto implements Serializable  {
         this.proxy = (serverId != null);
     }
     /**
-     * @return Returns the isRhnSatellite.
+     * @return Returns the isMgrServer.
      */
-    public boolean isRhnSatellite() {
-        return rhnSatellite;
+    public boolean isMgrServer() {
+        return mgrServer;
     }
     /**
-     * @param serverId The server id, null if not a satellite
+     * @param serverId The server id, null if not a uyuni server
      */
-    public void setIsRhnSatellite(Long serverId) {
-        this.rhnSatellite = (serverId != null);
+    public void setIsMgrServer(Long serverId) {
+        this.mgrServer = (serverId != null);
     }
     /**
      * @return Returns the bugErrata.

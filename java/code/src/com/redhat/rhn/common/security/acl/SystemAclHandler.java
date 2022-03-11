@@ -108,11 +108,11 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a satellite, false otherwise
      */
-    public boolean aclSystemIsSatellite(Object ctx, String[] params) {
+    public boolean aclSystemIsMgrServer(Object ctx, String[] params) {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
 
-        SelectMode m = ModeFactory.getMode("System_queries", "is_satellite");
+        SelectMode m = ModeFactory.getMode("System_queries", "is_mgr_server");
         Map queryParams = new HashMap();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);

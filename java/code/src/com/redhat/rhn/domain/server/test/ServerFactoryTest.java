@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ProvisionState;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -51,12 +53,12 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
-import com.redhat.rhn.domain.server.SatelliteServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -125,7 +127,7 @@ import java.util.stream.Collectors;
  */
 public class ServerFactoryTest extends BaseTestCaseWithUser {
     private Server server;
-    public static final int TYPE_SERVER_SATELLITE = 0;
+    public static final int TYPE_SERVER_MGR = 0;
     public static final int TYPE_SERVER_PROXY = 1;
     public static final int TYPE_SERVER_NORMAL = 2;
     public static final int TYPE_SERVER_VIRTUAL = 3;
@@ -740,13 +742,22 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setRam(1024);
         s.setContactMethod(ServerFactory.findContactMethodById(0L));
 
-        if (type == TYPE_SERVER_SATELLITE) {
-            SatelliteServer ss = (SatelliteServer) s;
-            ss.setProduct("SPACEWALK-001");
-            ss.setOwner("Spacewalk Test Cert");
-            ss.setIssued("2007-07-13 00:00:00");
-            ss.setExpiration("2020-07-13 00:00:00");
-            ss.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "4.0", "1", ss.getPackageType()));
+        if (type == TYPE_SERVER_MGR) {
+            // a Mgr Server is also a Minion
+            MinionServer minionServer = (MinionServer) s;
+            minionServer.setMinionId(s.getName());
+            minionServer.setOsFamily("RedHat");
+            minionServer.setMachineId(TestUtils.randomString());
+
+            MgrServerInfo info = new MgrServerInfo();
+            info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "2022.03", "0", s.getPackageType()));
+            info.setReportDbName("reportdb");
+            info.setReportDbCredentials(CredentialsFactory.createCredentials(
+                    "pythia", "secret", Credentials.TYPE_REPORT_CREDS, null));
+            info.setReportDbHost("localhost");
+            info.setReportDbPort(5432);
+            info.setServer(minionServer);
+            minionServer.setMgrServerInfo(info);
         }
         else if (type == TYPE_SERVER_PROXY) {
             ProxyInfo info = new ProxyInfo();
@@ -789,11 +800,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     private static Server createServer(int type) {
         switch(type) {
-            case TYPE_SERVER_SATELLITE:
-                return new SatelliteServer();
             case TYPE_SERVER_PROXY:
             case TYPE_SERVER_NORMAL:
                 return ServerFactory.createServer();
+            case TYPE_SERVER_MGR:
             case TYPE_SERVER_MINION:
                 return new MinionServer();
 
