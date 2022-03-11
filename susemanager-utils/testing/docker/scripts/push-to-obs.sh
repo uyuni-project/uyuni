@@ -67,6 +67,8 @@ fi
 # Build SRPMS
 echo "*************** BUILDING PACKAGES ***************"
 ./build-packages-for-obs.sh ${PACKAGES}
+echo "********** BUILDING CONTAINER IMAGES ************"
+./build-containers-for-obs.sh
 
 # Submit 
 for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
