@@ -1,6 +1,10 @@
-- Ensure configured http_proxy is used in reposync
-- enable check for client certificates in reposync
-- remove auto inherit of host entitlements for virtual guests
+-------------------------------------------------------------------
+Fri Mar 11 15:44:57 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Ensure configured http_proxy is used in reposync
+  * enable check for client certificates in reposync
+  * remove auto inherit of host entitlements for virtual guests
   * Fix reposync update notice formatting and date parsing (bsc#1194447)
   * supportconfig spacewalk-debug: extract task schedule data from db
   * Define report_db_sslroot default during package build.
