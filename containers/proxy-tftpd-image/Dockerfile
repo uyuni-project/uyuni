@@ -1,6 +1,7 @@
 #!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:%PKG_VERSION% uyuni/proxy-tftpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-tftpd:beta
 
-FROM registry.suse.com/suse/sle15:15.3
+ARG BASE=opensuse/leap:15.3
+FROM $ARG
 
 ARG PRODUCT_REPO
 
