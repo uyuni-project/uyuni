@@ -12,7 +12,6 @@ Before=container-proxy-httpd.service container-proxy-salt-broker.service contain
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-EnvironmentFile=/root/proxy-services.config
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/pod-proxy-pod.pid %t/pod-proxy-pod.pod-id
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/pod-proxy-pod.pid --pod-id-file %t/pod-proxy-pod.pod-id --name proxy-pod --publish 22:22 --publish 8080:8080 --publish 443:443 --publish 4505:4505 --publish 4506:4506 --replace
