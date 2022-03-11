@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 11 15:32:36 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
   * Set RHEL cert folder for reportdb if default folder does not exist. 
   * set default for registration batch size
   * Added gettext build requirement for RHEL.
