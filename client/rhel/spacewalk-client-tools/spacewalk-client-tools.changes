@@ -1,4 +1,8 @@
-  * Corrected source URLs in spec file.
+-------------------------------------------------------------------
+Fri Mar 11 14:49:48 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+    * Corrected source URLs in spec file.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:02:26 CET 2022 - jgonzalez@suse.com
