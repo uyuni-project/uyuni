@@ -1,8 +1,12 @@
-- fix direct mode when calling reportdb
-- Improve image management
-- Store delta image info in the database
-- fix advisory status migration (bsc#1195765)
-- Corrected source URLs in spec file.
+-------------------------------------------------------------------
+Fri Mar 11 15:42:02 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * fix direct mode when calling reportdb
+  * Improve image management
+  * Store delta image info in the database
+  * fix advisory status migration (bsc#1195765)
+  * Corrected source URLs in spec file.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:07:07 CET 2022 - jgonzalez@suse.com
