@@ -1,4 +1,8 @@
-- Fix modal footer misalignment
+-------------------------------------------------------------------
+Fri Mar 11 14:46:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Fix modal footer misalignment
 
 -------------------------------------------------------------------
 Tue Jan 18 13:50:49 CET 2022 - jgonzalez@suse.com
