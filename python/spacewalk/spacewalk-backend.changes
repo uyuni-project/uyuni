@@ -1,3 +1,4 @@
+- drop unused cert handler
 - implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
