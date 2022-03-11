@@ -12,9 +12,10 @@ After=pod-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=/root/proxy-services.config
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/container-proxy-httpd.pid %t/container-proxy-httpd.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-proxy-httpd.pid --cidfile %t/container-proxy-httpd.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-proxy-pod.pod-id -d --replace -dt -v /root/proxy-config:/etc/uyuni -v /root/proxy-rhn-cache:/var/cache/rhn -v /root/proxy-tftpboot:/srv/tftpboot --name proxy-httpd registry.tf.local/proxy-httpd
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-proxy-httpd.pid --cidfile %t/container-proxy-httpd.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-proxy-pod.pod-id -d --replace -dt -v ${CONFIG_DIR}:/etc/uyuni -v ${RHN_CACHE_DIR}:/var/cache/rhn -v ${TFTPBOOT_DIR}:/srv/tftpboot --name proxy-httpd ${REGISTRY}/proxy-httpd
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-proxy-httpd.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-proxy-httpd.ctr-id
 PIDFile=%t/container-proxy-httpd.pid
