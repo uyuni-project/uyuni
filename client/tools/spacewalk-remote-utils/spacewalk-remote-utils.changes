@@ -1,4 +1,8 @@
-- Adapt the package for changes in rhnlib
+-------------------------------------------------------------------
+Fri Mar 11 14:53:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Adapt the package for changes in rhnlib
 
 -------------------------------------------------------------------
 Tue Jan 18 13:58:29 CET 2022 - jgonzalez@suse.com
