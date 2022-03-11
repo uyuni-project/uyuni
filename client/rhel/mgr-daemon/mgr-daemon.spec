@@ -79,7 +79,9 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 BuildRequires:  systemd-units
 %else
+%if 0%{?rhel} >= 8
 BuildRequires:  systemd-rpm-macros
+%endif
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
