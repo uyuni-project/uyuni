@@ -1,4 +1,8 @@
-  * Remove pylint according to Fedora package guidelines.
+-------------------------------------------------------------------
+Fri Mar 11 14:52:27 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+    * Remove pylint according to Fedora package guidelines.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:03:51 CET 2022 - jgonzalez@suse.com
