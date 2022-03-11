@@ -54,8 +54,14 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
     with open(full_path) as settings_file:
         filecontent = yaml.safe_load(settings_file.read())
     filecontent["server"] = socket.getfqdn()
-    filecontent["next_server_v4"] = socket.getfqdn()
-    filecontent["next_server_v6"] = socket.getfqdn()
+    filecontent["next_server_v4"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET)[1][4][0]
+
+    # In case there is no IPv6 address, we get a OSError (socket.gaierror)
+    try:
+        filecontent["next_server_v6"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET6)[1][4][0]
+    except OSError:
+        filecontent["next_server_v6"] = ""
+
     filecontent["pxe_just_once"] = True
     filecontent["redhat_management_server"] = socket.getfqdn()
     yaml_dump = yaml.safe_dump(filecontent)
