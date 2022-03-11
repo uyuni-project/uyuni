@@ -32,7 +32,6 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -663,11 +662,6 @@ public class ServerFactory extends HibernateFactory {
      * @param serverIn Server to be stored in database.
      */
     public static void save(Server serverIn) {
-        if (serverIn.isSatellite()) {
-            SatelliteServer ss = (SatelliteServer) serverIn;
-            PackageEvrFactory.lookupOrCreatePackageEvr(ss.getVersion());
-        }
-
         SINGLETON.saveObject(serverIn);
         updateServerPerms(serverIn);
     }
@@ -885,7 +879,7 @@ public class ServerFactory extends HibernateFactory {
         if (error != null) {
             throw new ChannelSubscriptionException(error.getKey());
         }
-        return (Server) HibernateFactory.reload(server);
+        return HibernateFactory.reload(server);
     }
 
     /**
