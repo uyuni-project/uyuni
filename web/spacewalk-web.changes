@@ -1,10 +1,14 @@
-- Show image history, files and deltas in Image Overview
-- Provide a search box on section name for Formulas content
-- Add expand/collapse all button for formula sections
-- Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
-  to default rhn_web.conf
-- Improved large data support in channel selection
-- Provide link for CVEs
+-------------------------------------------------------------------
+Fri Mar 11 15:31:32 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Show image history, files and deltas in Image Overview
+  * Provide a search box on section name for Formulas content
+  * Add expand/collapse all button for formula sections
+  * Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
+    to default rhn_web.conf
+  * Improved large data support in channel selection
+  * Provide link for CVEs
 
 -------------------------------------------------------------------
 Tue Feb 15 10:05:28 CET 2022 - jgonzalez@suse.com
