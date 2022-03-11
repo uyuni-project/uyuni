@@ -12,9 +12,10 @@ After=pod-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=/root/proxy-services.config
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/container-proxy-squid.pid %t/container-proxy-squid.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-proxy-squid.pid --cidfile %t/container-proxy-squid.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-proxy-pod.pod-id --replace -d -v /root/proxy-config:/etc/uyuni -v /root/proxy-squid-cache:/var/cache/squid --name proxy-squid registry.tf.local/proxy-squid
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-proxy-squid.pid --cidfile %t/container-proxy-squid.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-proxy-pod.pod-id --replace -d -v ${CONFIG_DIR}:/etc/uyuni -v ${SQUID_CACHE_DIR}:/var/cache/squid --name proxy-squid ${REGISTRY}/proxy-squid
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-proxy-squid.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-proxy-squid.ctr-id
 PIDFile=%t/container-proxy-squid.pid
