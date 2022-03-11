@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,11 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,21 +23,20 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.Test;
+public class MgrServerTest extends RhnBaseTestCase {
 
-public class ProxyServerTest extends RhnBaseTestCase {
-
-    @Test
-    public void testProxyServer() throws Exception {
+    public void testSatServer() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
-                ServerFactoryTest.TYPE_SERVER_PROXY);
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MGR);
         //flushAndEvict(server);
         Server s = ServerFactory.lookupById(server.getId());
-        assertNotNull(s, "Server not found");
-        assertFalse(s.isMgrServer());
-        assertTrue(s.isProxy());
+        assertNotNull("Server not found", s);
+        assertTrue("Server object returned is NOT a MgrServer",
+                s instanceof MinionServer);
+        assertTrue(s.isMgrServer());
+        assertFalse(s.isProxy());
     }
 }
