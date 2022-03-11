@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-10 19:13+0000\n"
-"PO-Revision-Date: 2022-03-10 19:12+0000\n"
+"PO-Revision-Date: 2022-03-11 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -8247,6 +8247,20 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"usage: bootstrap [voľby]\n"
+"\n"
+"    voľby:\n"
+"        -H NÁZOV_HOSTITEĽA\n"
+"        -p SSH_PORT\n"
+"        -u SSH_POUŽÍVATEĽSKÉ_MENO\n"
+"        -P SSH_HESLO\n"
+"        -k SSH_SÚKROMNÝ_KĽÚČ_CESTA\n"
+"        -S SSH_SÚKROMNÝ_KĽÚČ_HESLO\n"
+"        -a AKTIVAČNÝ_KĽÚČ\n"
+"        -r REAKTIVAČNÝ_KĽÚČ\n"
+"        --proxyid PROXY_SYSID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
 msgid "Hostname:"
@@ -8254,12 +8268,11 @@ msgstr "Názov hostiteľa:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "Port [22]:"
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "Používateľ [root]:"
+msgstr "Používateľ SSH [root]:"
 
 #: ../src/spacecmd/system.py:4686
 msgid "SSH Password:"
@@ -8267,11 +8280,11 @@ msgstr "Heslo SSH:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "Súbor súkromného kľúča SSH:"
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "Heslo súkromného kľúča SSH:"
 
 #: ../src/spacecmd/system.py:4692
 msgid "Activation Key:"
@@ -8287,7 +8300,7 @@ msgstr "ID systému Proxy:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "Spravovať pomocou Salt SSH"
 
 #: ../src/spacecmd/system.py:4703
 msgid "Hostname must be provided"
@@ -8295,21 +8308,23 @@ msgstr "Musí byť zadaný názov hostiteľa"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "Je potrebné zadať buď heslo SSH, alebo súkromný kľúč"
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr ""
+msgstr "Server nepodporuje reaktivačné kľúče v čase zavádzania"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr ""
+msgstr "Zavádzanie '{}'. To môže chvíľu trvať."
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
 msgstr ""
+"Úvodná fáza bola úspešne ukončená. Skontrolujte históriu udalostí kvôli "
+"stále bežiacim akciám"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
