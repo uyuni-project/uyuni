@@ -1,3 +1,5 @@
+- Fixed use of update-ca-cert-trust.sh in RPM post script
+
 -------------------------------------------------------------------
 Fri Mar 11 14:46:51 CET 2022 - jgonzalez@suse.com
 
