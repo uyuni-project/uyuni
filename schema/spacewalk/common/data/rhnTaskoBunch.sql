@@ -126,4 +126,7 @@ Parameters:
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-update-reporting-bunch', 'Update Reporting DB with current data', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-update-reporting-hub-bunch', 'Update Reporting DB with data from other susemanager servers', null);
+
 commit;
