@@ -19,7 +19,7 @@ Name:           proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.0
+Version:        4.3.1
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
