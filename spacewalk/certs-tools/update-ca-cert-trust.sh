@@ -22,7 +22,10 @@
 # Optional argument: Certificate file name
 
 CERT_DIR=/usr/share/rhn
-CERT_FILE=${1:-RHN-ORG-TRUSTED-SSL-CERT}
+CERT_FILE=RHN-ORG-TRUSTED-SSL-CERT
+if [ -n "$1" -a -f "$CERT_DIR/$1" ]; then
+    CERT_FILE=$1
+fi
 CA_HTTP_DIR=/var/www/html/pub/
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
 UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
