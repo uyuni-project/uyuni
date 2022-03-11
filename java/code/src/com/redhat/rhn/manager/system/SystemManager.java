@@ -2127,7 +2127,7 @@ public class SystemManager extends BaseManager {
     public static void activateProxy(Server server, String version)
             throws ProxySystemIsSatelliteException, InvalidProxyVersionException {
 
-        if (server.isSatellite()) {
+        if (server.isMgrServer()) {
             throw new ProxySystemIsSatelliteException();
         }
 

@@ -66,8 +66,6 @@ public class ProxyInfo {
         return server;
     }
 
-
-
     /**
      * @param s the server to set
      */
