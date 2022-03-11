@@ -1,7 +1,11 @@
-- introduce local option for test usage
-- keep whitespaces in values when parsing rhn.conf
-- Use alternative certificate directory for RHEL.
-- remove possibility to change admin user
+-------------------------------------------------------------------
+Fri Mar 11 15:43:47 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * introduce local option for test usage
+  * keep whitespaces in values when parsing rhn.conf
+  * Use alternative certificate directory for RHEL.
+  * remove possibility to change admin user
 
 -------------------------------------------------------------------
 Tue Feb 15 10:10:05 CET 2022 - jgonzalez@suse.com
