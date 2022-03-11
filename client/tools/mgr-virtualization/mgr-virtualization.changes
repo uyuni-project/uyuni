@@ -1,8 +1,10 @@
+- Fix changelog format
+
 -------------------------------------------------------------------
 Fri Mar 11 14:45:24 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.3-1
-    * Corrected source URLs in spec file.
+  * Corrected source URLs in spec file.
 
 -------------------------------------------------------------------
 Tue Jan 18 13:36:18 CET 2022 - jgonzalez@suse.com
