@@ -1,4 +1,8 @@
-  * Remove pylint check according to Fedora package guidelines.
+-------------------------------------------------------------------
+Fri Mar 11 14:52:46 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+    * Remove pylint check according to Fedora package guidelines.
 
 -------------------------------------------------------------------
 Tue Feb 15 10:04:10 CET 2022 - jgonzalez@suse.com
