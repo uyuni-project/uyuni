@@ -1,4 +1,8 @@
-- Reuse certificate update code.
+-------------------------------------------------------------------
+Fri Mar 11 14:46:16 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Reuse certificate update code.
 
 -------------------------------------------------------------------
 Mon Feb 21 12:07:21 CET 2022 - jgonzalez@suse.com
