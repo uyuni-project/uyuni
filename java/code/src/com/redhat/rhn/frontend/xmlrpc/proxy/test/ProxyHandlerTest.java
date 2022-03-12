@@ -46,7 +46,6 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.junit.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -198,6 +197,6 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, server,
                 2048, email, "CACert", "CAKey", "CAPass", List.of("cname1", "cname2"),
                 "DE", "Bayern", "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab");
-        Assert.assertArrayEquals(dummyConfig, actual);
+        assertEquals(dummyConfig, actual);
     }
 }
