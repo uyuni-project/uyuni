@@ -71,6 +71,7 @@ docker pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
+    IMAGES=$(cd "$GITROOT"/containers; ls -d *-image)
 }
 echo "Starting building and submission at $(date)"
 date
@@ -91,6 +92,21 @@ for p in ${PACKAGES};do
         docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
+
+for p in ${IMAGES};do
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    if [ "$PARALLEL_BUILD" == "TRUE" ];then
+        echo "Building ${p} in parallel"
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        pid=${!}
+        PIDS="${PIDS} ${pid}"
+        ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
+    else
+        echo "Building ${p}"
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+    fi
+done
+
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
 
 # Turn off exiting on error because we want to wait for all subprocesses
