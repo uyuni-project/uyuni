@@ -15,7 +15,7 @@ grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
   cat <<EOF
 Usage: build-containers-for-obs.sh [CONTAINER]..
 Build container images for submission to OBS from the current HEAD. Without argument
-all containers/*-image are processed. Container image directories will be created in 
+all containers/*-image are processed. Container image directories will be created in
 \$WORKSPACE/SRPMS/<container> ($WORKSPACE).
 EOF
   exit 0
@@ -42,7 +42,27 @@ test $CONTAINER_PATH != "$GIT_DIR/containers/" || {
   CONTAINER_PATH=$(ls -d "$GIT_DIR/containers/"*image)
 }
 
+SUCCEED_CNT=0
+FAILED_CNT=0
+FAILED_PKG=
+
 for CONTAINER in $CONTAINER_PATH; do
   echo "=== Building container image [$(basename $CONTAINER)]"
-  cp -r "$CONTAINER" "$SRPM_DIR/"
+  if [ -d "$CONTAINER" ]; then
+    cp -r "$CONTAINER" "$SRPM_DIR/"
+    SUCCEED_CNT=$(($SUCCEED_CNT+1))
+  else
+    FAILED_CNT=$(($FAILED_CNT+1))
+    FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $(basename $CONTAINER)")"
+    echo "*** FAILED Building package [$(basename $CONTAINER)] - $CONTAINER does not exist"
+  fi
 done
+
+echo "======================================================================"
+echo "Built container images:  $SUCCEED_CNT"
+test $FAILED_CNT != 0 && {
+  echo "Failed container images: $FAILED_CNT$FAILED_PKG"
+}
+echo "======================================================================"
+
+exit $FAILED_CNT
