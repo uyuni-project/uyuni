@@ -8231,70 +8231,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="oneweek" xml:space="preserve">
         <source>within the past week</source>
-        <target/>
+        <target>za posledný týždeň</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="onemonth" xml:space="preserve">
         <source>within the past 30 days</source>
-        <target/>
+        <target>za posledných 30 dní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sixmonths" xml:space="preserve">
         <source>within the past 180 days</source>
-        <target/>
+        <target>za posledných 180 dní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oneyear" xml:space="preserve">
         <source>within the past year</source>
-        <target/>
+        <target>za posledný rok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="allregisteredsystems" xml:space="preserve">
         <source>All Systems</source>
-        <target/>
+        <target>Všetky systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
-        <target/>
+        <target>Vypnúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.start" xml:space="preserve">
         <source>Start</source>
-        <target/>
+        <target>Spustiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.suspend" xml:space="preserve">
         <source>Suspend</source>
-        <target/>
+        <target>Pozastaviť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.resume" xml:space="preserve">
         <source>Resume</source>
-        <target/>
+        <target>Pokračovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.reboot" xml:space="preserve">
         <source>Restart</source>
-        <target/>
+        <target>Reštartovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
