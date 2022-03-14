@@ -24,19 +24,24 @@ RUN sh prepare_target.sh
 ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE AS slim
 
+ARG PRODUCT=Uyuni
+ARG VENDOR="Uyuni project"
+ARG URL="https://www.uyuni-project.org/"
+ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
+
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML python3-pyzmq
 COPY --from=fat /target /
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-salt-broker
-LABEL org.opencontainers.image.title="Proxy salt-broker container"
-LABEL org.opencontainers.image.description="Image contains a Proxy component to forward Salt connections"
+LABEL org.opencontainers.image.title="${PROJECT} proxy salt-broker container"
+LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy component to forward Salt connections"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="Uyuni project"
-LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
+LABEL org.opencontainers.image.vendor="${VENDOR}"
+LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/uyuni/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
 # Salt
