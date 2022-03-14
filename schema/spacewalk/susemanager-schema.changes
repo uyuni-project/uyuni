@@ -1,3 +1,5 @@
+- drop rhnSatelliteInfo and replace it with suseMgrServerInfo to
+  store data about the reporting database settings
 - fix check on allowVendorChange
 - Store proxy SSH port in database
 
