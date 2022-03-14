@@ -1,3 +1,4 @@
+- detect MgrServer on bootstrap and store report database settings
 - Correctly notify the failed status for the report db update task.
 - Show image build log in UI
 - Build bundle less images and create pxe profile for pxe images
