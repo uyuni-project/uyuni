@@ -1,3 +1,6 @@
+- implement grains module for mgr_server to expose report database
+  settings and more
+
 -------------------------------------------------------------------
 Fri Mar 11 16:49:07 CET 2022 - jgonzalez@suse.com
 
