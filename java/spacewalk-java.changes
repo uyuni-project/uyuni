@@ -1,3 +1,5 @@
+- Provide link to Sync page when unsynced patches message show up
+  (bsc#1196094)
 - Optimize adding new products function (bsc#1193707)
 - Allow monitoring entitlement for debian 11 and 10
 - warning log when hardware refresh result is not serializable
