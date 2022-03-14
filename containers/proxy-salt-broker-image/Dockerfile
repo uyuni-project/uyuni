@@ -1,6 +1,6 @@
 #!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:%PKG_VERSION% uyuni/proxy-salt-broker:%PKG_VERSION%.%RELEASE% uyuni/proxy-salt-broker:beta
 
-ARG BASE=opensuse/leap:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE AS fat
 
 ARG PRODUCT_REPO
@@ -21,6 +21,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
+ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE AS slim
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML python3-pyzmq

@@ -1,6 +1,6 @@
 #!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:%PKG_VERSION% uyuni/proxy-tftpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-tftpd:beta
 
-ARG BASE=opensuse/leap:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE
 
 ARG PRODUCT_REPO

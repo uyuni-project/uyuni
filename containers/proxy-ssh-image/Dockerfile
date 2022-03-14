@@ -1,6 +1,6 @@
 #!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:%PKG_VERSION% uyuni/proxy-ssh:%PKG_VERSION%.%RELEASE% uyuni/proxy-ssh:beta
 
-ARG BASE=opensuse/leap:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE
 
 ARG PRODUCT_REPO
