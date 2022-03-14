@@ -1,7 +1,7 @@
 #!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:%PKG_VERSION% uyuni/proxy-squid:%PKG_VERSION%.%RELEASE% uyuni/proxy-squid:beta
 
 ARG BASE=opensuse/leap:15.3
-FROM $ARG
+FROM $BASE
 
 ARG PRODUCT_REPO
 

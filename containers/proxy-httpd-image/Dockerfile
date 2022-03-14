@@ -1,7 +1,7 @@
 #!BuildTag: uyuni/proxy-httpd:latest uyuni/proxy-httpd:%PKG_VERSION% uyuni/proxy-httpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-httpd:beta
 
 ARG BASE=opensuse/leap:15.3
-FROM $ARG
+FROM $BASE
 
 
 ARG PRODUCT_REPO
