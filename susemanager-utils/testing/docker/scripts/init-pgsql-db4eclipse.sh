@@ -26,14 +26,19 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 # this copy the latest schema from the git into the system
 ./build-schema.sh
 
-RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/spacewalk/susemanager-schema.spec | head -n 1`
-NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
+if [ -z "$NEXTVERSION" ]; then
 
-if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
-    export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
+    RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/spacewalk/susemanager-schema.spec | head -n 1`
+    NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
+        export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
+
+    else
+        export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
+    fi
 else
-    export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
+    export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
 fi
 
 # run the schema upgrade from git repo
