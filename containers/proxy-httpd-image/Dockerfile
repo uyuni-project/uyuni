@@ -5,6 +5,10 @@ FROM $BASE
 
 
 ARG PRODUCT_REPO
+ARG PRODUCT=Uyuni
+ARG VENDOR="Uyuni project"
+ARG URL="https://www.uyuni-project.org/"
+ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
@@ -12,14 +16,14 @@ RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-httpd
-LABEL org.opencontainers.image.title="Proxy httpd container"
-LABEL org.opencontainers.image.description="Image contains a Proxy component to serve http requests"
+LABEL org.opencontainers.image.title="${PRODUCT} proxy httpd container"
+LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy component to serve http requests"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="Uyuni project"
-LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
+LABEL org.opencontainers.image.vendor="${VENDOR}"
+LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="registry.opensuse.org/uyuni/proxy-httpd:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
 # http(s)
