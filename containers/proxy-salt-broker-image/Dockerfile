@@ -21,7 +21,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
-FROM registry.suse.com/suse/sle15:15.3 AS slim
+FROM $BASE AS slim
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML python3-pyzmq
 COPY --from=fat /target /
