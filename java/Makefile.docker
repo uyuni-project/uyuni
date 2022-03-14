@@ -7,6 +7,9 @@ DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 DOCKER_PG_PORTS       = -p 5432:5432
 DOCKER_COMMON_OPTS    = --interactive --tty --rm
+# set when you need to migrate to a specific schema version
+#DOCKER_ENV            = -e NEXTVERSION='4.3.10'
+DOCKER_ENV            =
 
 all :: dockerrun_pg
 
@@ -15,4 +18,4 @@ dockerpull ::
 
 dockerrun_pg ::
 	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
-	docker run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	docker run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
