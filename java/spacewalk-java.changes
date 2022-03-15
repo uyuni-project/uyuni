@@ -1,3 +1,4 @@
+- Added the server location information to reporting database
 - detect MgrServer on bootstrap and store report database settings
 - Correctly notify the failed status for the report db update task.
 - adapt for new c3p0 and mchange-commons package
