@@ -212,7 +212,7 @@ def isValid(startdate, enddate, subject):
 
     start = datetime.strptime(startdate, "%b %d %H:%M:%S %Y %Z")
     end = datetime.strptime(enddate, "%b %d %H:%M:%S %Y %Z")
-    now = datetime.now()
+    now = datetime.utcnow()
     if now < start:
         raise CertCheckError("Certificate '{}' not yet valid".format(subject))
     if now > end:
