@@ -45,22 +45,26 @@ def compute_image_filename
   end
 end
 
-def compute_image_name
+def compute_image_name_version
   case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
-    $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
+    $product == 'Uyuni' ? ['POS_Image_JeOS7_uyuni', '7.0.0'] : ['POS_Image_JeOS7_head', '7.0.0']
   when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
+    ['POS_Image_JeOS7_41', '7.0.0']
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
     # 'POS_Image_JeOS6_41' for 4.1 branch
     # 'POS_Image_JeOS6_42' for 4.2 branch
-    'POS_Image_JeOS6_head'
+    ['POS_Image_JeOS6_head', '6.0.0']
   else
     raise 'Is this a supported image version?'
   end
+end
+
+def compute_image_name
+  compute_image_name_version[0]
 end
 
 When(/^I enable repositories before installing branch server$/) do
@@ -528,9 +532,11 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
 end
 
 When(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
+  # after build, the name and version is updated from kiwi sources
+  name, version = compute_image_name_version
   steps %(
     When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
+    And I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version} scheduled by kiwikiwi" is completed
   )
 end
 
