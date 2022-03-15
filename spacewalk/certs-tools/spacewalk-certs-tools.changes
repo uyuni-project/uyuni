@@ -1,4 +1,8 @@
-- compare timestamps in the right timezone
+-------------------------------------------------------------------
+Tue Mar 15 16:30:36 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * compare timestamps in the right timezone
 
 -------------------------------------------------------------------
 Fri Mar 11 16:48:15 CET 2022 - jgonzalez@suse.com
