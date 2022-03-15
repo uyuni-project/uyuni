@@ -30,10 +30,20 @@
                      , rhnserverarch.name AS architecture
                      , web_customer.name AS organization
                      , get_hw_info_as_clob(rhnserver.id, '; ') AS hardware
+                     , rhnserverlocation.machine
+                     , rhnserverlocation.rack
+                     , rhnserverlocation.room
+                     , rhnserverlocation.building
+                     , rhnserverlocation.address1
+                     , rhnserverlocation.address2
+                     , rhnserverlocation.city
+                     , rhnserverlocation.state
+                     , rhnserverlocation.country
             FROM rhnserver
                      LEFT JOIN suseminioninfo ON rhnserver.id = suseminioninfo.server_id
                      LEFT JOIN web_contact ON rhnserver.creator_id = web_contact.id
                      LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
+                     LEFT JOIN rhnserverlocation ON rhnserver.id = rhnserverlocation.server_id
                      INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
                      INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
         ORDER BY system_id OFFSET :offset LIMIT :limit
