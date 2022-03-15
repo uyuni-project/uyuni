@@ -72,9 +72,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
-  $api_test.auth.login('admin', 'admin')
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
-  $api_test.auth.logout
   step %(I should see a "#{client_id.to_s}" text)
 end
 
@@ -436,7 +434,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
+When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   $server.run(command, timeout: 500)
@@ -520,7 +518,7 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
+When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
   # let the the select2js box filter open the hidden options
   xpath_query = "//div[@id='s2id_product-arch-filter']/ul/li/input"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
@@ -569,7 +567,7 @@ When(/^I select the addon "(.*?)"$/) do |addon|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
-And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
+Then(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
   xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
 end
@@ -581,7 +579,7 @@ Then(/^I should see the "(.*?)" selected$/) do |product|
   end
 end
 
-And(/^I wait until I see "(.*?)" product has been added$/) do |product|
+When(/^I wait until I see "(.*?)" product has been added$/) do |product|
   repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
@@ -946,7 +944,7 @@ Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do 
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
 
-And(/^I should see the toggler "([^"]*)"$/) do |target_status|
+Then(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
@@ -959,7 +957,7 @@ And(/^I should see the toggler "([^"]*)"$/) do |target_status|
   end
 end
 
-And(/^I click on the "([^"]*)" toggler$/) do |target_status|
+When(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
@@ -972,7 +970,7 @@ And(/^I click on the "([^"]*)" toggler$/) do |target_status|
   end
 end
 
-And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
+Then(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -988,7 +986,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   end
 end
 
-And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |target_channel, target_status, is_disabled|
+Then(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |target_channel, target_status, is_disabled|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -1005,7 +1003,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |ta
   end
 end
 
-And(/^I select the child channel "([^"]*)"$/) do |target_channel|
+When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -1015,7 +1013,7 @@ And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
-And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
+Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
   xpath = "//a[contains(text(), '#{target_channel}')]"
   channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
 
@@ -1040,7 +1038,7 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
   end
 end
 
-And(/^the notification badge and the table should count the same amount of messages$/) do
+Then(/^the notification badge and the table should count the same amount of messages$/) do
   table_notifications_count = count_table_items
 
   badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
@@ -1054,7 +1052,7 @@ And(/^the notification badge and the table should count the same amount of messa
   end
 end
 
-And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
+When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
   unless has_checked_field?(arg1)
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
@@ -1080,7 +1078,7 @@ Then(/^I check the first notification message$/) do
   end
 end
 
-And(/^I delete it via the "([^"]*)" button$/) do |target_button|
+When(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_delete_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
@@ -1089,7 +1087,7 @@ And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   end
 end
 
-And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
+When(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_read_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
@@ -1212,7 +1210,7 @@ When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
 end
 
-And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
+When(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
   key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
   ret_code = file_inject(
@@ -1378,7 +1376,7 @@ Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(dist
   raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
 end
 
-And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
+When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
   raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
