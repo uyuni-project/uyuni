@@ -21,6 +21,7 @@ import org.hibernate.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +49,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     private final List<String> stateNames;
     private final boolean forcePackageListRefresh;
     private final Transaction txn;
+    private final Map<String, Object> pillar;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -78,6 +80,20 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
      *
      * @param serverIdIn the server id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param pillarIn state specific pillar data
+     * @param stateNamesIn state module names to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, boolean forcePackageListRefreshIn,
+            Map<String, Object> pillarIn, List<String> stateNamesIn) {
+        this(serverIdIn, null, forcePackageListRefreshIn, pillarIn,
+                stateNamesIn.toArray(new String[stateNamesIn.size()]));
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
      * @param userIdIn the user id
      * @param forcePackageListRefreshIn set true to request a package list refresh
      * @param stateNamesIn state module names to be applied to the server
@@ -98,11 +114,27 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
             boolean forcePackageListRefreshIn, String... stateNamesIn) {
+        this(serverIdIn, userIdIn, forcePackageListRefreshIn, null, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param pillarIn state specific pillar data
+     * @param stateNamesIn state module names to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
+            boolean forcePackageListRefreshIn, Map<String, Object> pillarIn,
+            String... stateNamesIn) {
         serverId = serverIdIn;
         userId = userIdIn;
         stateNames = Arrays.asList(stateNamesIn);
         forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
+        pillar = pillarIn;
     }
 
     /**
@@ -121,6 +153,15 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public List<String> getStateNames() {
         return stateNames;
+    }
+
+    /**
+     * Return the state specific pillar data
+     *
+     * @return the pillar data
+     */
+    public Map<String, Object> getPillar() {
+        return pillar;
     }
 
     /**
