@@ -8301,70 +8301,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.destroy" xml:space="preserve">
         <source>Destroy</source>
-        <target/>
+        <target>Zlikvidovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.delete" xml:space="preserve">
         <source>Delete</source>
-        <target/>
+        <target>Vymazať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.setMemory" xml:space="preserve">
         <source>Set Memory ({0} MB)</source>
-        <target/>
+        <target>Nastaviť pamäť ({0} MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.setVCPUs" xml:space="preserve">
         <source>Set Virtual CPUs ({0})</source>
-        <target/>
+        <target>Nastaviť virtuálne CPU ({0})</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.running" xml:space="preserve">
         <source>This system is already running.</source>
-        <target/>
+        <target>Tento systém už beží.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.stopped" xml:space="preserve">
         <source>This system is already stopped.</source>
-        <target/>
+        <target>Tento systém je už zastavený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.paused" xml:space="preserve">
         <source>This system is already paused.</source>
-        <target/>
+        <target>Tento systém je už pozastavený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
-        <target/>
+        <target>Virtuálne CPU obmedzené na {0} na {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.exceeds.host.cpus" xml:space="preserve">
         <source>Exceeding the number of physical CPUs ({0}) on {1} may impact performance.</source>
-        <target/>
+        <target>Prekročenie počtu fyzických CPU ({0}) na {1} môže mať vplyv na výkon.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.increase.warning" xml:space="preserve">
         <source>{1} must be shutdown if last started with less than {0} vCPUs for changes to take effect.</source>
-        <target/>
+        <target>{1} musí byť vypnutý, ak bol naposledy spustený s menej ako {0} vCPU, aby sa zmeny prejavili.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
