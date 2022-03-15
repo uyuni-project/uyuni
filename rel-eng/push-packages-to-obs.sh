@@ -249,6 +249,18 @@ while read PKG_NAME; do
     continue
   }
 
+  if [ "${OSCAPI}" = "https://api.suse.de" -a -f "$SRPM_PKG_DIR/Dockerfile" -a "$SRPM_PKG_DIR/_service" ]; then
+    SERVICE="
+  <service name=\"docker_tags_helper\" mode=\"buildtime\">
+     <param name=\"buildtag_replace\">/uyuni/suse\/manager\/4.3/</param>
+     <param name=\"prefix_replace\">/org\.opensuse\.uyuni/com.suse.manager/</param>
+  </service>
+"
+    SERVICES_START=$(sed -n "0,/<services>/p" $SRPM_PKG_DIR/_service)
+    SERVICES_END=$(sed -n "/<service /,/<\/services>/p" $SRPM_PKG_DIR/_service)
+      echo "$SERVICES_START$SERVICE$SERVICES_END" >"$SRPM_PKG_DIR/_service"
+  fi
+
   # update from obs (create missing package on the fly)
   for tries in 1 2 3; do
     echo "Try: $tries"
