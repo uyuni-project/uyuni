@@ -1,5 +1,5 @@
 #
-# spec file for package proxy-systemd-services 
+# spec file for package uyuni-proxy-systemd-services 
 #
 # Copyright (c) 2022 SUSE LLC
 #
@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-Name:           proxy-systemd-services 
+Name:           uyuni-proxy-systemd-services 
 Summary:        Uyuni proxy server systemd services containers
 License:        GPL-2.0-only
 Group:          Applications/Internet
