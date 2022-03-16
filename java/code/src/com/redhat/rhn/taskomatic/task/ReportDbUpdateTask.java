@@ -128,14 +128,14 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             log.info("Reporting db updated successfully.");
         }
         catch (RuntimeException ex) {
-            log.warn("Unable to update reporting db", ex);
-
             try {
                 rh.rollbackTransaction();
             }
             catch (RuntimeException rollbackException) {
                 log.warn("Unable to rollback transaction", rollbackException);
             }
+
+            throw new JobExecutionException("Unable to update reporting db", ex);
         }
         finally {
             rh.closeSession();
