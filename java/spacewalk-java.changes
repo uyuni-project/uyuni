@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 16 12:11:47 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * Reapply the patch for  handle npe when syncing ubuntu errata (bsc#1196619)
+
+-------------------------------------------------------------------
 Fri Mar 11 16:48:29 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.14-1
