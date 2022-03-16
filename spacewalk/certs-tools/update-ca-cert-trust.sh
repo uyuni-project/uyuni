@@ -14,17 +14,24 @@
 # Scripts that adds/removes RHN-ORG-TRUSTED-SSL-CERT into/from system-wide
 # trusted certificates.
 # The script checks if RHN-ORG-TRUSTED-SSL-CERT is present
-# in /usr/share/rhn and HTTP dir. It checks, if they are the same.
-# If not both are copied, otherwise only the existing are copied. If it's not found
-# then it's ensured files do not exists. Finally the trust update
-# is run.
+# in /usr/share/rhn and HTTP dir.
+# The assumption: CA in HTTP dir is an own created CA and we are a Server or Proxy
+# This CA is copyied to the trust dir under the name LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+# If there is a CA in /usr/share/rhn it is expected to be the CA deployed by a
+# registration. It is copied into the trust dir as RHN-ORG-TRUSTED-SSL-CERT.
+# If the client is registered using salt, /usr/share/rhn might be empty the the state
+# is copying the CA directly to the trust dir as RHN-ORG-TRUSTED-SSL-CERT.
+# Finally the trust update is run.
 #
 # Optional argument: Certificate file name
 
 CERT_DIR=/usr/share/rhn
-CERT_FILE=RHN-ORG-TRUSTED-SSL-CERT
+CA_NAME="RHN-ORG-TRUSTED-SSL-CERT"
+LOCAL_CA_NAME="LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
 if [ -n "$1" -a -f "$CERT_DIR/$1" ]; then
     CERT_FILE=$1
+else
+    CERT_FILE=$CA_NAME
 fi
 CA_HTTP_DIR=/var/www/html/pub/
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
@@ -57,22 +64,15 @@ if [ ! -d $TRUST_DIR ]; then
     exit 0
 fi
 
-# cleanup
-rm -f $TRUST_DIR/$CERT_FILE
-rm -f $TRUST_DIR/OWN-$CERT_FILE
-
-if [ -f $CERT_DIR/$CERT_FILE -a -f $CA_HTTP_DIR/$CERT_FILE ]; then
-    # we are registered and have an own CA
-    # compare the CAs. In case they are not the the same link both
-    if cmp $CERT_DIR/$CERT_FILE $CA_HTTP_DIR/$CERT_FILE; then
-        cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
-    else
-        cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/OWN-$CERT_FILE
-        cp $CERT_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
-    fi
-elif [ -f $CA_HTTP_DIR/$CERT_FILE ]; then
-    cp $CA_HTTP_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
-elif [ -f $CERT_DIR/$CERT_FILE ]; then
+if [ -f $CA_HTTP_DIR/$CA_NAME ]; then
+    test ! -f $CERT_DIR/$CERT_FILE || ! cmp -s $CERT_DIR/$CERT_FILE $CA_HTTP_DIR/$CA_NAME && {
+        # this CA will be copied in the next step; we don't need it twice
+        cp $CA_HTTP_DIR/$CA_NAME $TRUST_DIR/$LOCAL_CA_NAME
+    }
+else
+    rm -f $TRUST_DIR/$LOCAL_CA_NAME
+fi
+if [ -f $CERT_DIR/$CERT_FILE ]; then
     cp $CERT_DIR/$CERT_FILE $TRUST_DIR/$CERT_FILE
 fi
 

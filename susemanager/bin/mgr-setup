@@ -392,7 +392,7 @@ report-db-host=$REPORT_DB_HOST
 report-db-port=$REPORT_DB_PORT
 report-db-user=$REPORT_DB_USER
 report-db-password=$REPORT_DB_PASS
-report-db-ca-cert=$CA_PATH/RHN-ORG-TRUSTED-SSL-CERT
+report-db-ca-cert=$CA_PATH/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 enable-tftp=$MANAGER_ENABLE_TFTP
 " > /root/spacewalk-answers
 

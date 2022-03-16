@@ -1,3 +1,6 @@
+- delopy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+
 -------------------------------------------------------------------
 Fri Mar 11 14:53:20 CET 2022 - jgonzalez@suse.com
 
