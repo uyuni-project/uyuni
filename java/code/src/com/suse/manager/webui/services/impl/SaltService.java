@@ -102,6 +102,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
@@ -1180,14 +1181,19 @@ public class SaltService implements SystemQuery, SaltApi {
                 .getFileAttributeView(dir,
                         PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
         try {
-            posixAttrs.setPermissions(PosixFilePermissions.fromString("rwxrwxr-x"));
+            Set<PosixFilePermission> wantedPers = PosixFilePermissions.fromString("rwxrwxr-x");
+            if (!posixAttrs.readAttributes().permissions().equals(wantedPers)) {
+                posixAttrs.setPermissions(wantedPers);
+            }
         }
         catch (IOException e) {
             LOG.warn(String.format("Could not set 'rwxrwxr-x' permissions on %s: %s",
                     dir, e.getMessage()));
         }
         try {
-            posixAttrs.setGroup(group);
+            if (!posixAttrs.readAttributes().group().equals(group)) {
+                posixAttrs.setGroup(group);
+            }
         }
         catch (IOException e) {
             LOG.warn(String.format("Could not set group on %s to %s: %s",
