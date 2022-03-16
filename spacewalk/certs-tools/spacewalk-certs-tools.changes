@@ -1,3 +1,6 @@
+- deploy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+
 -------------------------------------------------------------------
 Tue Mar 15 16:30:36 CET 2022 - jgonzalez@suse.com
 

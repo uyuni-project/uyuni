@@ -38,6 +38,7 @@ PG_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", "pg-" + SRV_KEY_NAME)
 JABBER_CRT_FILE = os.path.join(PKI_DIR, "spacewalk", "jabberd", "server.pem")
 
 ROOT_CA_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
+PKI_ROOT_CA_NAME = "LOCAL-" + ROOT_CA_NAME
 
 ROOT_CA_HTTP_DIR = "/srv/www/htdocs/pub/"
 if not os.path.exists(ROOT_CA_HTTP_DIR):
@@ -468,15 +469,15 @@ def deployCAUyuni(certData):
         if ca["root"]:
             if os.path.exists(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME)):
                 os.remove(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME))
-            if os.path.exists(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME)):
-                os.remove(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME))
             with open(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), "w") as f:
                 f.write(ca["content"])
             os.chmod(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), int("0644", 8))
-            # TODO: or symlink?
-            with open(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME), "w") as f:
+
+            if os.path.exists(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME)):
+                os.remove(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME))
+            with open(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), "w") as f:
                 f.write(ca["content"])
-            os.chmod(os.path.join(CA_TRUST_DIR, ROOT_CA_NAME), int("0644", 8))
+            os.chmod(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), int("0644", 8))
             break
     # in case a systemd timer try to do the same
     time.sleep(3)
