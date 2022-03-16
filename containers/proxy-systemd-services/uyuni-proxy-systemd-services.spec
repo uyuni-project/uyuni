@@ -15,6 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%define SERVICES container-proxy-httpd container-proxy-salt-broker container-proxy-squid container-proxy-ssh container-proxy-tftpd pod-proxy-pod
+
 Name:           uyuni-proxy-systemd-services 
 Summary:        Uyuni proxy server systemd services containers
 License:        GPL-2.0-only
@@ -45,37 +47,37 @@ done
 
 %pre
 %if !0%{?rhel}
-for service in $(ls *.service); do
-    %service_add_pre $service
+for service in %{SERVICES}; do
+    %service_add_pre ${service}.service
 done
 %endif
 
 %post
-for service in $(ls *.service); do
+for service in %{SERVICES}; do
     %if 0%{?rhel}
-        %systemd_post $service
+        %systemd_post ${service}.service
     %else
-    %service_add_post $service
+    %service_add_post ${service}.service
     %endif
-    systemctl enable $service > /dev/null 2>&1 || :
-    systemctl start $service > /dev/null 2>&1 || :
+    systemctl enable ${service}.service > /dev/null 2>&1 || :
+    systemctl start ${service}.service > /dev/null 2>&1 || :
 done
 
 %preun
-for service in $(ls *.service); do
+for service in %{SERVICES}; do
     %if 0%{?rhel}
-        %systemd_preun $service
+        %systemd_preun ${service}.service
     %else
-        %service_del_preun $service
+        %service_del_preun ${service}.service
     %endif
 done
 
 %postun
-for service in $(ls *.service); do
+for service in %{SERVICES}; do
     %if 0%{?rhel}
-        %systemd_postun $service
+        %systemd_postun ${service}.service
     %else
-        %service_del_postun $service
+        %service_del_postun ${service}.service
     %endif
 done
 
