@@ -474,6 +474,15 @@ public class SystemManager extends BaseManager {
         return m.execute(params);
     }
 
+    private static String createUniqueId(List<String> fields) {
+        // craft unique id based on given data
+        String delimiter = "_";
+        return delimiter + fields
+                .stream()
+                .reduce((i1, i2) -> i1 + delimiter + i2)
+                .orElseThrow();
+    }
+
     /**
      * Create an empty system profile with required values based on given data.
      *
@@ -504,13 +513,8 @@ public class SystemManager extends BaseManager {
             throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
         }
 
-        // craft unique id based on given data
-        String delimiter = "_";
-        String uniqueId = delimiter + Arrays.asList(hwAddress, hostname)
-                .stream()
-                .flatMap(Opt::stream)
-                .reduce((i1, i2) -> i1 + delimiter + i2)
-                .get();
+        String uniqueId = createUniqueId(
+                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).collect(Collectors.toList()));
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -2145,6 +2149,38 @@ public class SystemManager extends BaseManager {
         return () -> new RhnRuntimeException(message);
     }
 
+    private Server getOrCreateProxySystem(User creator, String fqdn) {
+        Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
+        if (existing.isPresent()) {
+            Server server = existing.get();
+            if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
+                return server;
+            }
+            throw new SystemsExistException(List.of(server.getId()));
+        }
+        Server server = ServerFactory.createServer();
+        server.setName(fqdn);
+        server.setHostname(fqdn);
+        server.setOrg(creator.getOrg());
+        server.setCreator(creator);
+
+        String uniqueId = createUniqueId(List.of(fqdn));
+        server.setDigitalServerId(uniqueId);
+        server.setMachineId(uniqueId);
+        server.setOs("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(System.currentTimeMillis() / 1000);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server.updateServerInfo();
+        ServerFactory.save(server);
+
+        systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
+        return server;
+    }
+
     /**
      * Create and provide proxy container configuration.
      *
@@ -2184,21 +2220,13 @@ public class SystemManager extends BaseManager {
         config.put("server", server);
         config.put("max_cache_size_mb", maxCache);
         config.put("email", email);
-        MinionServer minion = null;
-        try {
-            minion = createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
-        }
-        catch (SystemsExistException err) {
-            log.warn("Profile system already existing, generating proxy containers configuration for it");
-            minion = findMatchingEmptyProfiles(Optional.of(proxyName), null).get(0);
-
-        }
+        Server proxySystem = getOrCreateProxySystem(user, proxyName);
 
         zipOut.putNextEntry(new ZipEntry("config.yaml"));
         zipOut.write(YamlHelper.INSTANCE.dump(config).getBytes());
         zipOut.closeEntry();
 
-        ClientCertificate cert = SystemManager.createClientCertificate(minion);
+        ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
         zipOut.putNextEntry(new ZipEntry("system_id.xml"));
         zipOut.write(cert.asXml().getBytes());
         zipOut.closeEntry();
