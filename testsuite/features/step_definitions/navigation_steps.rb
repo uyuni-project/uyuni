@@ -1032,3 +1032,19 @@ When(/^I refresh the page$/) do
     # ignored
   end
 end
+
+When(/^I make a list of the existing systems$/) do
+  system_elements_list = find_all(:xpath, "//td[contains(@class, 'sortedCol')]")
+  $systems_list = []
+  system_elements_list.each { |el| $systems_list << el.text }
+end
+
+Given(/^I have "([^"]*)" with "([^"]*)" as "([^"]*)" property$/) do |host, property_value, property_name|
+  steps %(
+    Given I am on the Systems overview page of this "#{host}"
+    When I follow "Properties" in the content area
+    And I enter "#{property_value}" as "#{property_name}"
+    And I click on "Update Properties"
+    Then I should see a "System properties changed" text
+  )
+end

@@ -37,3 +37,4 @@ xmlrpc: --tags @scope_xmlrpc
 power_management: --tags @scope_power_management
 retracted_patches: --tags @scope_retracted_patches
 ansible: --tags @scope_ansible
+reportdb: --tags @scope_reportdb

@@ -215,3 +215,14 @@ def extract_logs_from_node(node)
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
   raise 'Download log archive failed' unless code.zero?
 end
+
+def reportdb_server_query(query)
+  "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
+end
+
+def get_variable_from_conf_file(host, file_path, variable_name)
+  node = get_target(host)
+  variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
+  raise "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
+  variable_value.strip!
+end

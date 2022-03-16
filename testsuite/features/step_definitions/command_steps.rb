@@ -4,6 +4,7 @@
 require 'xmlrpc/client'
 require 'timeout'
 require 'nokogiri'
+require 'pg'
 
 # Sanity checks
 
@@ -1575,4 +1576,119 @@ When(/^I regenerate the boot RAM disk on "([^"]*)" if necessary$/) do |host|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('mkinitrd')
   end
+end
+
+## ReportDB ##
+
+Given(/^I can connect to the ReportDB on the Server$/) do
+  # connect and quit database
+  _result, return_code = $server.run(reportdb_server_query('\\q'))
+  raise 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
+end
+
+Given(/^I have a user with admin access to the ReportDB$/) do
+  users_and_permissions, return_code = $server.run(reportdb_server_query('\\du'))
+  raise 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
+  # extract only the line for the suma user
+  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
+  raise 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
+    ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
+end
+
+When(/^I create a read-only user for the ReportDB$/) do
+  $reportdb_ro_user = 'test_user'
+  file = 'create_user_reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject($server, source, dest)
+  raise 'File injection in server failed' unless return_code.zero?
+  $server.run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+end
+
+Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
+  users_and_permissions, _code = $server.run(reportdb_server_query('\\du'))
+  raise 'Couldn\'t find the newly created user on the ReportDB' unless users_and_permissions.include? $reportdb_ro_user
+end
+
+When(/^I delete the read-only user for the ReportDB$/) do
+  file = 'delete_user_reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject($server, source, dest)
+  raise 'File injection in server failed' unless return_code.zero?
+  $server.run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+end
+
+Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/) do
+  users_and_permissions, _code = $server.run(reportdb_server_query('\\du'))
+  raise 'Created read-only user on the ReportDB remains listed' if users_and_permissions.include? $reportdb_ro_user
+end
+
+When(/^I connect to the ReportDB with read-only user from external machine$/) do
+  # connection from the controller to the reportdb in the server
+  $reportdb_ro_conn = PG.connect(host: $server.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+end
+
+Then(/^I should be able to query the ReportDB$/) do
+  query_result = $reportdb_ro_conn.exec('select * from system;')
+  # raises exception if the query wasn't successful
+  query_result.check
+  raise 'ReportDB System table is unexpectedly empty after query' unless query_result.ntuples.positive?
+end
+
+Then(/^I should find the systems from the UI in the ReportDB$/) do
+  reportdb_listed_systems = $reportdb_ro_conn.exec('select hostname from system;').values.flatten
+  raise "Listed systems from the UI #{$systems_list} don't match the ones from the ReportDB System table #{reportdb_listed_systems}" unless $systems_list.all? { |ui_system| reportdb_listed_systems.include? ui_system }
+end
+
+Then(/^I should not be able to "([^"]*)" data in a ReportDB "([^"]*)" as a read-only user$/) do |db_action, table_type|
+  table_and_views = { 'table' => 'system', 'view' => 'systeminactivityreport' }
+  assert_raises PG::InsufficientPrivilege do
+    case db_action
+    when 'insert'
+      $reportdb_ro_conn.exec("insert into #{table_and_views[table_type]} (mgm_id, system_id, synced_date) values (1, 1010101, current_timestamp);")
+    when 'update'
+      $reportdb_ro_conn.exec("update #{table_and_views[table_type]} set mgm_id = 2 where mgm_id = 1")
+    when 'delete'
+      $reportdb_ro_conn.exec("delete from #{table_and_views[table_type]} where mgm_id = 1")
+    else
+      raise 'Couldn\'t find command to manipulate the database'
+    end
+  end
+end
+
+Given(/^I know the ReportDB admin user credentials$/) do
+  $reportdb_admin_user = get_variable_from_conf_file('server', '/etc/rhn/rhn.conf', 'report_db_user')
+  $reportdb_admin_password = get_variable_from_conf_file('server', '/etc/rhn/rhn.conf', 'report_db_password')
+end
+
+Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$/) do
+  # connection from the controller to the reportdb in the server
+  reportdb_admin_conn = PG.connect(host: $server.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+  raise 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
+end
+
+Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
+  dbname = $product.delete(' ').downcase
+  assert_raises PG::ConnectionBad do
+    PG.connect(host: $server.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+  end
+end
+
+Given(/^I know the current synced_date for "([^"]*)"$/) do |host|
+  system_hostname = $node_by_host[host].full_hostname
+  query_result = $reportdb_ro_conn.exec("select synced_date from system where hostname = '#{system_hostname}'")
+  $initial_synced_date = Time.parse(query_result.tuple(0)[0])
+end
+
+Then(/^I should find the updated "([^"]*)" property as "([^"]*)" on the "([^"]*)", on ReportDB$/) do |property_name, property_value, host|
+  system_hostname = $node_by_host[host].full_hostname
+  property = property_name.split('/')[0].delete(' ').downcase
+  query_result = $reportdb_ro_conn.exec("select #{property}, synced_date from system where hostname = '#{system_hostname}'")
+
+  reportdb_property_value = query_result.tuple(0)[0]
+  raise "#{property_name}'s value not updated - database still presents #{reportdb_property_value} instead of #{property_value}" unless reportdb_property_value == property_value
+
+  final_synced_date = Time.parse(query_result.tuple(0)[1])
+  raise "Column synced_date not updated. Inital synced_date was #{$initial_synced_date} while current synced_date is #{final_synced_date}" unless final_synced_date > $initial_synced_date
 end

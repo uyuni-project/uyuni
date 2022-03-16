@@ -23,3 +23,4 @@ gem 'rubocop'
 # Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
 # or build and install from https://github.com/openSUSE/twopence
 gem 'twopence'
+gem 'pg'
