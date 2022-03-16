@@ -1,8 +1,30 @@
 #! /bin/sh
+SCRIPT=$(basename ${0})
+
+if [ -z ${PRODUCT+x} ];then
+    VPRODUCT="VERSION.Uyuni"
+else
+    VPRODUCT="VERSION.${PRODUCT}"
+fi
+
+while getopts 'P:h' option
+do
+    case ${option} in
+        P) VPRODUCT="VERSION.${OPTARG}" ;;
+        h) echo "Usage ${SCRIPT} [-P PRODUCT]";exit 2;;
+    esac
+done
 
 HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
+
+if [ ! -f ${HERE}/${VPRODUCT} ];then
+   echo "${VPRODUCT} does not exist"
+   exit 3
+fi
+
+echo "Loading ${VPRODUCT}"
+. ${HERE}/${VPRODUCT}
+GITROOT=`readlink -f ${HERE}/../../../`
 
 DOCKER_RUN_EXPORT="PYTHONPATH=/manager/python/:/manager/client/rhel/spacewalk-client-tools/src"
 
