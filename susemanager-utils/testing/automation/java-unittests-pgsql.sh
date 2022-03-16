@@ -2,9 +2,7 @@
 
 TARGET="test-pr"
 
-HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
+PRODUCT="Uyuni"
 
 help() {
   echo ""
@@ -12,16 +10,17 @@ help() {
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} [-t ant-target]"
+  echo "${SCRIPT} [-t ant-target] [-P PROJECT]"
   echo ""
   echo "Where: "
   echo "  -t  Ant target to run. Default: ${TARGET}"
   echo ""
 }
 
-while getopts "c:t:h" opts; do
+while getopts "c:t:P:h" opts; do
   case "${opts}" in
     t) TARGET=${OPTARG};;
+    P) PRODUCT=$OPTARG ;;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -29,6 +28,17 @@ while getopts "c:t:h" opts; do
   esac
 done
 shift $((OPTIND-1))
+HERE=`dirname $0`
+
+if [ ! -f $HERE/VERSION.${PRODUCT} ];then
+   echo "VERSION.${PRODUCT} does not exist"
+   exit -3
+fi
+
+echo "Loading VERSION.${PRODUCT}"
+. $HERE/VERSION.${PRODUCT}
+
+GITROOT=`readlink -f $HERE/../../../`
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CMD="/manager/java/scripts/docker-testing-pgsql.sh ${TARGET}"

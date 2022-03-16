@@ -1,17 +1,16 @@
 #! /bin/sh
 
-HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
+PRODUCT="Uyuni"
 
 help() {
   echo ""
   echo "Script to run a docker container to verify java code style"
-  echo ""
+  echo "Usage: $0 [-P PROJECT]"
 }
 
-while getopts "c:h" opts; do
+while getopts "c:P:h" opts; do
   case "${opts}" in
+    P) PRODUCT=$OPTARG ;;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -19,6 +18,17 @@ while getopts "c:h" opts; do
   esac
 done
 shift $((OPTIND-1))
+
+HERE=`dirname $0`
+
+if [ ! -f $HERE/VERSION.${PRODUCT} ];then
+   echo "VERSION.${PRODUCT} does not exist"
+   exit -3
+fi
+
+echo "Loading VERSION.${PRODUCT}"
+. $HERE/VERSION.${PRODUCT}
+GITROOT=`readlink -f $HERE/../../../`
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CMD="/manager/java/scripts/docker-checkstyle.sh"
