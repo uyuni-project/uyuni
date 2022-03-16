@@ -809,7 +809,7 @@ sub postgresql_get_reportdb_answers {
        -noninteractive => $opts->{"non-interactive"},
        -question => "Path to CA certificate to connect to the reporting database",
        -test => sub { return (-f shift) },
-       -default => "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
+       -default => "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
        -answer => \$answers->{'report-db-ca-cert'});
     $answers->{'report-db-ssl-enabled'} = '1';
     return;
