@@ -11,6 +11,7 @@
 
     <h2><rhn:icon type="header-proxy" /><bean:message key="sdc.details.proxyclients.header"/></h2>
 
+    <rhn:require acl="not system_has_foreign_entitlement()">
     <c:choose>
       <c:when test="${requestScope.version != null}">
         <p><bean:message key="sdc.details.proxy.licensed" arg0="${requestScope.version}" /></p>
@@ -19,6 +20,7 @@
         <p><bean:message key="sdc.details.proxy.unlicensed" /></p>
       </c:otherwise>
     </c:choose>
+    </rhn:require>
     <rl:listset name="systemListSet" legend="system">
       <c:set var="noAddToSsm" value="1" />
       <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
