@@ -2177,6 +2177,10 @@ public class SystemManager extends BaseManager {
         server.updateServerInfo();
         ServerFactory.save(server);
 
+        ProxyInfo info = new ProxyInfo();
+        info.setServer(server);
+        server.setProxyInfo(info);
+
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         return server;
     }
