@@ -515,7 +515,7 @@ public class SaltSSHService {
                         parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
                     minionOpts(parameters.getHost(), contactMethod),
-                    Optional.of(getSaltSSHPreflightScriptPath()),
+                    Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
                             bootstrapProxyPath.isEmpty() ?
                                     ConfigDefaults.get().getCobblerHost() :
