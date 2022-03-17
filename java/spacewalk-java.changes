@@ -1,3 +1,5 @@
+- Fix exception when image store is deleted before image
+
 -------------------------------------------------------------------
 Wed Mar 16 12:11:47 CET 2022 - jgonzalez@suse.com
 
