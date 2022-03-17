@@ -22,6 +22,7 @@ import org.hibernate.Transaction;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +51,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     private final List<String> stateNames;
     private final boolean forcePackageListRefresh;
     private final Transaction txn;
-    private final Map<String, Object> pillar;
+    private final Optional<Map<String, Object>> pillar;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -135,7 +136,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
         stateNames = Arrays.asList(stateNamesIn);
         forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
-        pillar = pillarIn;
+        pillar = Optional.ofNullable(pillarIn);
     }
 
     /**
@@ -161,7 +162,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      *
      * @return the pillar data
      */
-    public Map<String, Object> getPillar() {
+    public Optional<Map<String, Object>> getPillar() {
         return pillar;
     }
 

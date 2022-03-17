@@ -66,7 +66,7 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         scheduler,
                         Arrays.asList(server.getId()),
                         applyStatesEvent.getStateNames(),
-                        Optional.ofNullable(applyStatesEvent.getPillar()),
+                        applyStatesEvent.getPillar(),
                         new Date(), Optional.of(false));
                 TASKOMATIC_API.scheduleActionExecution(action,
                         applyStatesEvent.isForcePackageListRefresh());
