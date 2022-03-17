@@ -26,6 +26,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
 
@@ -107,7 +108,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
         sccRegistrationRequired = true;
         server = s;
         sccLogin = String.format("%s-%s", ContentSyncManager.getUUID(), s.getId().toString());
-        sccPasswd = RandomStringUtils.randomAlphanumeric(64);
+        sccPasswd = RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom());
     }
 
     /**
