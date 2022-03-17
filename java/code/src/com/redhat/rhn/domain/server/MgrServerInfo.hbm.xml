@@ -19,6 +19,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="reportDbName" type="string" column="report_db_name"/>
         <property name="reportDbHost" type="string" column="report_db_host"/>
         <property name="reportDbPort" type="int" column="report_db_port"/>
+        <property name="reportDbLastSynced" type="timestamp" column="report_db_last_synced"/>
         <many-to-one name="reportDbCredentials" column="report_db_cred_id" cascade="save-update,delete"
                      class="com.redhat.rhn.domain.credentials.Credentials" />
     </class>
