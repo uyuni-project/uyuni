@@ -33,6 +33,7 @@ import com.suse.manager.gatherer.HostJson;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -236,7 +237,7 @@ public class VirtualHostManagerProcessor {
         server.setOrg(virtualHostManager.getOrg());
         server.setCreated(new Date());
         server.setDigitalServerId(buildServerFullDigitalId(host.getHostIdentifier()));
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
 
         String serverDescription = "Initial Registration Parameters:\n";
         serverDescription += "OS: " + host.getOs() + "\n";
