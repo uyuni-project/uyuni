@@ -40,6 +40,8 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
@@ -52,6 +54,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -111,7 +114,9 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
@@ -130,6 +135,7 @@ import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -3813,5 +3819,80 @@ public class SystemManager extends BaseManager {
 
         StateFactory.save(stateRev);
         StatesAPI.generateServerPackageState(minion);
+    }
+
+    /**
+     * Update MgrServerInfo with current grains data
+     *
+     * @param minion the minion which is a Mgr Server
+     * @param grains grains from the minion
+     */
+    public static void updateMgrServerInfo(MinionServer minion, ValueMap grains) {
+        // Check for Uyuni Server and create basic info
+        if (grains.getOptionalAsBoolean("is_mgr_server").orElse(false)) {
+            MgrServerInfo serverInfo = Optional.ofNullable(minion.getMgrServerInfo()).orElse(new MgrServerInfo());
+            String oldHost = serverInfo.getReportDbHost();
+            String oldName = serverInfo.getReportDbName();
+
+            serverInfo.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null,
+                    grains.getOptionalAsString("version").orElse("0"),
+                    "1", minion.getPackageType()));
+            serverInfo.setReportDbName(grains.getValueAsString("report_db_name"));
+            serverInfo.setReportDbHost(grains.getValueAsString("report_db_host"));
+            serverInfo.setReportDbPort((grains.getValueAsLong("report_db_port").orElse(5432L)).intValue());
+            serverInfo.setServer(minion);
+            minion.setMgrServerInfo(serverInfo);
+
+            if (!StringUtils.isAnyBlank(oldHost, oldName) &&
+                    !(oldHost.equals(serverInfo.getReportDbHost()) &&
+                            oldName.equals(serverInfo.getReportDbName()))) {
+                // something changed, we better reset the user
+                setReportDbUser(minion, false);
+            }
+        }
+        else {
+            ServerFactory.dropMgrServerInfo(minion);
+            // Should we try to drop the credentials on the reportdb?
+        }
+    }
+
+    /**
+     * Set the User and Password for the report database in MgrServerInfo.
+     * It trigger also a state apply to set this user in the report database.
+     *
+     * @param minion the Mgr Server
+     * @param forcePwChange force a password change
+     */
+    public static void setReportDbUser(MinionServer minion, boolean forcePwChange) {
+        // Create a report db user when system is a mgr server
+        if (!minion.isMgrServer()) {
+            return;
+        }
+        // create default user with random password
+        MgrServerInfo mgrServerInfo = minion.getMgrServerInfo();
+        if (StringUtils.isAnyBlank(mgrServerInfo.getReportDbName(), mgrServerInfo.getReportDbHost())) {
+            // no reportdb configured
+            return;
+        }
+        Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
+                .orElse(CredentialsFactory.createCredentials(
+                        "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
+                        RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
+                        Credentials.TYPE_REPORT_CREDS, null));
+        if (forcePwChange) {
+            credentials.setPassword(RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()));
+        }
+        mgrServerInfo.setReportDbCredentials(credentials);
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("report_db_user", credentials.getUsername());
+        pillar.put("report_db_password", credentials.getPassword());
+
+        MessageQueue.publish(new ApplyStatesEventMessage(
+                minion.getId(),
+                minion.getCreator() != null ? minion.getCreator().getId() : null,
+                        false,
+                        pillar,
+                        ApplyStatesEventMessage.REPORTDB_USER
+                ));
     }
 }
