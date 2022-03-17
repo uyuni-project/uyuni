@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Date;
+
 /**
  * MgrServerInfo
  */
@@ -31,6 +33,7 @@ public class MgrServerInfo {
     private String reportDbHost;
     private Integer reportDbPort;
     private Credentials reportDbCredentials;
+    private Date reportDbLastSynced;
     private Long id;
 
     /**
@@ -129,6 +132,22 @@ public class MgrServerInfo {
      */
     public void setReportDbCredentials(Credentials reportDbCredentialsIn) {
         reportDbCredentials = reportDbCredentialsIn;
+    }
+
+
+    /**
+     * @return Returns the when the rport db was last synced.
+     */
+    public Date getReportDbLastSynced() {
+        return reportDbLastSynced;
+    }
+
+
+    /**
+     * @param lastSyncedIn The lastSynced to set.
+     */
+    public void setReportDbLastSynced(Date lastSyncedIn) {
+        reportDbLastSynced = lastSyncedIn;
     }
 
 
