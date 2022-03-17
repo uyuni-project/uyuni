@@ -9357,6 +9357,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="bootstrap.minion.error.salt">
         <source>Error during applying the bootstrap state, message: {0}</source>
       </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.unexpected">
+        <source>Error during applying the bootstrap state. Check the server logs.</source>
+      </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh">
         <source>Product data needs refresh.</source>
       </trans-unit>
