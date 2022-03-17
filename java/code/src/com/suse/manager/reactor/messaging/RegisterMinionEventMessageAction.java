@@ -32,11 +32,9 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -495,17 +493,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.updateServerInfo();
 
             // Check for Uyuni Server and create basic info
-            if (grains.getOptionalAsBoolean("is_mgr_server").orElse(false)) {
-                MgrServerInfo serverInfo = new MgrServerInfo();
-                serverInfo.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null,
-                        grains.getOptionalAsString("version").orElse("0"),
-                        "1", minion.getPackageType()));
-                serverInfo.setReportDbName(grains.getValueAsString("report_db_name"));
-                serverInfo.setReportDbHost(grains.getValueAsString("report_db_host"));
-                serverInfo.setReportDbPort((grains.getValueAsLong("report_db_port").orElse(5432L)).intValue());
-                serverInfo.setServer(minion);
-                minion.setMgrServerInfo(serverInfo);
-            }
+            SystemManager.updateMgrServerInfo(minion, grains);
 
             mapHardwareGrains(minion, grains);
 
