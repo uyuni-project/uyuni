@@ -84,6 +84,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -470,7 +471,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setOsFamily(osfamily);
             minion.setRelease(osrelease);
             minion.setRunningKernel(kernelrelease);
-            minion.setSecret(RandomStringUtils.randomAlphanumeric(64));
+            minion.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
             minion.setAutoUpdate("N");
             minion.setLastBoot(System.currentTimeMillis() / 1000);
             minion.setCreated(new Date());
