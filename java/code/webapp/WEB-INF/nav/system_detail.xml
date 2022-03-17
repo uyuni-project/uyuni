@@ -14,7 +14,7 @@
     <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()">
     </rhn-tab>
     <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="system_feature(ftr_agent_smith)"/>
-    <rhn-tab name="Hardware">
+    <rhn-tab name="Hardware" acl="not system_has_foreign_entitlement() or not system_is_proxy()">
       <rhn-tab-url>/rhn/systems/details/SystemHardware.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Transfer" acl="user_role(org_admin)" url="/rhn/systems/details/SystemMigrate.do" />
@@ -166,7 +166,7 @@
     <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
 
-  <rhn-tab name="Virtualization" acl="system_has_virtualization_entitlement() or system_has_foreign_entitlement()">
+  <rhn-tab name="Virtualization" acl="not system_is_proxy(); system_has_virtualization_entitlement() or system_has_foreign_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/virtualization/guests/${sid}</rhn-tab-url>
     <rhn-tab name="Guests" url="/rhn/manager/systems/details/virtualization/guests/${sid}"/>
     <rhn-tab name="Storage" url="/rhn/manager/systems/details/virtualization/storage/${sid}" acl="system_has_salt_entitlement()"/>

@@ -1910,8 +1910,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // For some reason duplicating the ORG_ADMIN role setting is required
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
-        systemManager.createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
+        createTestProxy(proxyName);
         testCreateProxyContainerConfig();
+    }
+
+    private void createTestProxy(String fqdn) {
+        Server proxy = ServerFactoryTest.createUnentitledTestServer(
+                user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
+        proxy.setName(fqdn);
+        proxy.setHostname(fqdn);
+        proxy.getProxyInfo().setVersion(null);
+
+        systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
     }
 
     private Map<String, String> readZipData(byte[] data) throws IOException {
