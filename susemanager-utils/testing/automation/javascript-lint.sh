@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-PRODUCT="Uyuni"
+if [ -z ${PRODUCT+x} ];then
+    PRODUCT="Uyuni"
+fi
 
 while getopts 'P:h' c
 do

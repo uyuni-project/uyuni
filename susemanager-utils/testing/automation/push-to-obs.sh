@@ -29,7 +29,9 @@ help() {
 }
 
 PARALLEL_BUILD="FALSE"
-PRODUCT="Uyuni"
+if [ -z ${PRODUCT+x} ];then
+    PRODUCT="Uyuni"
+fi
 
 while getopts ":d:c:p:P:n:vthex" opts; do
   case "${opts}" in

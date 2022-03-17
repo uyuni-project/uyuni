@@ -1,6 +1,8 @@
 #! /bin/sh
 
-PRODUCT="Uyuni"
+if [ -z ${PRODUCT+x} ];then
+    PRODUCT="Uyuni"
+fi
 
 help() {
   echo ""
