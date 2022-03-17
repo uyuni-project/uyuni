@@ -348,6 +348,21 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Uses the sid param to decide if a system is a proxy
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use (unused)
+     * @return true if a system is a proxy, false otherwise
+     */
+    public boolean aclSystemIsProxy(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+
+        return lookedUp.isProxy();
+    }
+
+    /**
      * Check if a system has a management entitlement
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
