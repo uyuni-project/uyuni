@@ -1,46 +1,30 @@
-log4j.appender.RootAppender=org.apache.log4j.RollingFileAppender
-log4j.appender.RootAppender.layout=org.apache.log4j.PatternLayout
-log4j.appender.RootAppender.layout.ConversionPattern=%d [%t] %-5p %c - %m%n
-log4j.appender.RootAppender.File=/var/log/rhn/rhn_taskomatic_daemon.log
-log4j.rootLogger=WARN,RootAppender
+appenders = RootAppender
 
-
-## Hibernate logging
-#log4j.appender.HibernateAppender=org.apache.log4j.FileAppender
-#log4j.appender.HibernateAppender.file=/var/log/rhn/rhn_web_hibernate.log
-#log4j.appender.HibernateAppender.layout=org.apache.log4j.PatternLayout
-#log4j.appender.HibernateAppender.layout.ConversionPattern=[%d] %-5p - %m%n
-#log4j.additivity.org.hibernate=false
-#log4j.additivity.net.rkbloom.logdriver=false
+appender.RootAppender.type = RollingFile
+appender.RootAppender.name = rootAppender
+appender.RootAppender.fileName = /var/log/rhn/rhn_taskomatic_daemon.log
+appender.RootAppender.layout.type=PatternLayout
+appender.RootAppender.layout.conversionPattern=%d [%t] %-5p %c - %m%n
+rootLogger.level = WARN
+rootLogger.appenderRef.RootAppender.ref = rootAppender
 
 # these are here to avoid spewing the logs when DEBUG is
 # turned on.  There are times DEBUG is useful to have without
 # seeing all of the acl and l10n stuff.
-log4j.logger.com.redhat.rhn.common.localization.LocalizationService=WARN,RootAppender
-log4j.logger.com.redhat.rhn.common.security.acl=WARN,RootAppender
+logger.com.redhat.rhn.common.localization.LocalizationService.level = WARN
+logger.com.redhat.rhn.common.localization.LocalizationService.appenderRef.RootAppender.ref = rootAppender
+logger.com.redhat.rhn.common.security.acl.level = WARN
+logger.com.redhat.rhn.common.security.acl.appenderRef.RootAppender.ref = rootAppender
 
 # NOTE:
 # this should shut up hibernate until this gets fixed upstream.
-log4j.logger.org.hibernate.engine.loading.LoadContexts=ERROR
-log4j.logger.org.hibernate.orm.deprecation=ERROR
+logger.org.hibernate.engine.loading.LoadContexts.level=ERROR
+logger.org.hibernate.orm.deprecation.level=ERROR
 
 # Turn this up to DEBUG to get detailed logging info
-log4j.logger.com.redhat.rhn.taskomatic.core.SchedulerKernel=INFO
-log4j.logger.com.redhat.rhn.taskomatic.task=INFO
-#log4j.logger.org.hibernate.SQL=debug,HibernateAppender
-#log4j.logger.org.hibernate=debug,HibernateAppender
-#log4j.logger.net.rkbloom.logdriver.LogPreparedStatement=DEBUG
-#log4j.logger.net.rkbloom.logdriver.LogStatement=DEBUG
-#log4j.logger.net.rkbloom.logdriver.LogCallableStatement=DEBUG
-#log4j.logger.net.rkbloom.logdriver.LogConnection=DEBUG,HibernateAppender
+logger.com.redhat.rhn.taskomatic.core.SchedulerKernel.level=INFO
+logger.com.redhat.rhn.taskomatic.task.level=INFO
 
 # this silences ehcache on Fedoras complaining about using default values
-log4j.logger.net.sf.ehcache.hibernate.AbstractEhcacheRegionFactory=ERROR
-log4j.logger.org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory=ERROR
-
-# HTTP debugging
-#log4j.logger.org.apache.http=DEBUG
-#log4j.logger.org.apache.http.wire=ERROR
-
-# General debug for everything.  Very noisy
-#log4j.logger.com.redhat.rhn=DEBUG
+logger.net.sf.ehcache.hibernate.AbstractEhcacheRegionFactory.level=ERROR
+logger.org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.level=ERROR
