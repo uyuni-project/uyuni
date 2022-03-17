@@ -62,6 +62,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -159,7 +160,7 @@ public class RegistrationUtils {
             MgrServerInfo mgrServerInfo = minion.getMgrServerInfo();
             Credentials credentials = CredentialsFactory.createCredentials(
                     "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
-                    RandomStringUtils.randomAlphanumeric(20),
+                    RandomStringUtils.random(20, 0, 0, true, true, null, new SecureRandom()),
                     Credentials.TYPE_REPORT_CREDS, null);
             mgrServerInfo.setReportDbCredentials(credentials);
             Map<String, Object> pillar = new HashMap<>();

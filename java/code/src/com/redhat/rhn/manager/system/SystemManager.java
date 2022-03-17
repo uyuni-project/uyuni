@@ -136,6 +136,7 @@ import org.hibernate.Session;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.IDN;
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
@@ -530,7 +531,7 @@ public class SystemManager extends BaseManager {
         server.setOs("(unknown)");
         server.setOsFamily("(unknown)");
         server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         server.setLastBoot(System.currentTimeMillis() / 1000);
