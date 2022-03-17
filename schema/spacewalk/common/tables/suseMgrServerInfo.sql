@@ -24,6 +24,7 @@ CREATE TABLE suseMgrServerInfo
     report_db_name     VARCHAR(128),
     report_db_host     VARCHAR(256),
     report_db_port     NUMERIC DEFAULT (5432) NOT NULL,
+    report_db_last_synced TIMESTAMPTZ,
     created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
     modified           TIMESTAMPTZ
