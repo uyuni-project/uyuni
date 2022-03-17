@@ -25,13 +25,10 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.credentials.Credentials;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -59,14 +56,11 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -154,27 +148,7 @@ public class RegistrationUtils {
         if (applyHighstate) {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
-        // Create a report db user when system is a mgr server
-        if (minion.isMgrServer()) {
-            // create default user with random password
-            MgrServerInfo mgrServerInfo = minion.getMgrServerInfo();
-            Credentials credentials = CredentialsFactory.createCredentials(
-                    "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
-                    RandomStringUtils.random(20, 0, 0, true, true, null, new SecureRandom()),
-                    Credentials.TYPE_REPORT_CREDS, null);
-            mgrServerInfo.setReportDbCredentials(credentials);
-            Map<String, Object> pillar = new HashMap<>();
-            pillar.put("report_db_user", credentials.getUsername());
-            pillar.put("report_db_password", credentials.getPassword());
-
-            MessageQueue.publish(new ApplyStatesEventMessage(
-                    minion.getId(),
-                    minion.getCreator() != null ? minion.getCreator().getId() : null,
-                    false,
-                    pillar,
-                    ApplyStatesEventMessage.REPORTDB_USER
-            ));
-        }
+        SystemManager.setReportDbUser(minion, false);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
