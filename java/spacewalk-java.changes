@@ -1,3 +1,4 @@
+- Hide useless fields for containerized proxies in UI
 - Keep virtualization notifications websocket alive
 - Fix NPE when accessing cancelled action via system history (bsc#1195762)
 - CVE Audit: Show patch as available in the currently installed product even if successor
