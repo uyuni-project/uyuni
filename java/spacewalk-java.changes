@@ -1,3 +1,4 @@
+- Fixed broken help link for system overview
 - Finding empty profiles by mac address must be case insensitive (bsc#1196407)
 - generate the system ssh key when bootstrapping a salt-ssh client
   (bsc#1194909)
