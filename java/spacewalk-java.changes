@@ -1,3 +1,4 @@
+- Fixed broken help link for system overview
 - send notifications for new or changed ubuntu errata (bsc#1196977)
 - Allow using a custom SSH port for proxies
 - Hide useless fields for containerized proxies in UI
