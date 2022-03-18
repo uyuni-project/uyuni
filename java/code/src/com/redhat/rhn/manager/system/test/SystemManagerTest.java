@@ -25,6 +25,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -1904,6 +1905,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(serverName, yaml.get("server"));
         assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
         assertEquals(email, yaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
     }
 
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
