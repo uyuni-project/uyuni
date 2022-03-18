@@ -1,3 +1,4 @@
+- Fixed broken help link for system overview
 - Provide link to Sync page when unsynced patches message show up
   (bsc#1196094)
 - fix class cast exception during action chains (bsc#1195772)
