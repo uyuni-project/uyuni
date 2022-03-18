@@ -20,13 +20,24 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
-import java.io.IOException;
 
 /**
  * Custom Quartz Job implementation which only allows one thread to
@@ -49,17 +60,22 @@ public abstract class RhnQueueJob implements RhnJob {
     }
 
     private void logToNewFile() {
-        PatternLayout pattern =
-            new PatternLayout(DEFAULT_LOGGING_LAYOUT);
-        try {
-            getLogger().removeAllAppenders();
-            FileAppender appender = new FileAppender(pattern,
-                    jobRun.buildStdOutputLogPath());
-            getLogger().addAppender(appender);
-        }
-        catch (IOException e) {
-            getLogger().warn("Logging to file disabled");
-        }
+
+        var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+
+        var layoutBuilder = builder
+                .newLayout("PatternLayout")
+                .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
+        var appenderName = this.getClass().getName()+"fileAppender";
+        var appenderBuilder = builder
+                .newAppender(appenderName, "File")
+                .addAttribute("fileName", jobRun.buildStdOutputLogPath())
+                .add(layoutBuilder);
+        builder.add(appenderBuilder);
+
+        var logger = builder.newLogger(this.getClass().getName(), Level.INFO);
+        builder.add(logger.add(builder.newAppenderRef(appenderName)));
+        Configurator.initialize(builder.build());
     }
 
     /**
