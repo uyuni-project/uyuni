@@ -16,10 +16,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:03+0000\n"
-"PO-Revision-Date: 2022-02-05 02:12+0000\n"
-"Last-Translator: Javier Llorente <javier@opensuse.org>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"PO-Revision-Date: 2022-03-19 20:12+0000\n"
+"Last-Translator: Matías Silva Bustos <matiasasb@gmail.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +44,7 @@ msgstr "autenticación de proxy declinada"
 #: ../server/apacheRequest.py:59
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr "Petición no válida recibida (%s)"
+msgstr "Petición no válida recibida (%s)."
 
 #: ../server/apacheRequest.py:120
 #, python-format
@@ -60,7 +60,9 @@ msgstr ""
 msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
-msgstr "Mientras corre ‘%s’: capturado %s : %s\n"
+msgstr ""
+"Mientras corre ‘%s’: capturado\n"
+"%s : %s\n"
 
 #: ../server/apacheRequest.py:606
 #, python-format
@@ -94,7 +96,7 @@ msgstr "ISS está deshabilitado en este servidor."
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Servidor “%s” no está habilitado para ISS"
+msgstr "Servidor “%s” no está habilitado para ISS."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -244,10 +246,10 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 "\n"
-"Combinación de Arquitectura y SO no válida (%s, %s). Su sistema ha sido "
-"registrado, pero no recibirá actualizaciones porque podría no estar suscrito "
-"a un canal base. Por favor contacte con el administrador de su organización "
-"para asistencia.\n"
+"Combinación de Arquitectura y SO no válida (%s, %s). \n"
+"Su sistema ha sido registrado, pero no recibirá actualizaciones \n"
+"porque podría no estar suscrito a un canal base. \n"
+"Por favor contacte con el administrador de su organización para asistencia.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -259,8 +261,9 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"Este sistema ha sido registrado con éxito, pero no todavía intitulado al "
-"servicio. Para titular este sistema al servicio, acceda al sitio web en "
+"  Este sistema ha sido registrado con éxito, pero sin titular para servir. \n"
+"Para titular este sistema para servir, acceda al sitio web en :\n"
+"\n"
 "%(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
@@ -274,8 +277,10 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"Este sistema ha sido registrado con éxito, pero no hay disponibles derechos "
-"al servicio. Para titular este sistema al servicio, acceda al sitio web en "
+"  Este sistema ha sido registrado con éxito, pero no hay disponibles "
+"derechos al servicio. \n"
+"Para titular este sistema al servicio, acceda al sitio web en \n"
+"\n"
 "%(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
@@ -684,9 +689,10 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"La Subida del Paquete Fallo debido a una violación de restricción singular. "
-"Asegúrese que el paquete no tiene ninguna dependencia duplicada o que no "
-"existe ya en el servidor"
+"     La subida del paquete falló debido a una violación de restricción de "
+"unicidad. Asegúrese que el paquete no tiene ninguna dependencia duplicada o "
+"que no existe ya en el servidor\n"
+"     "
 
 #: ../common/rhnException.py:134
 msgid ""
@@ -710,8 +716,10 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"La ficha de activación especificada podría no encontrarse en este servidor. "
-"Por favor reinténtelo con una clave válida."
+"     La ficha de activación especificada podría no encontrarse en este "
+"servidor. \n"
+"Por favor reinténtelo con una clave válida.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
@@ -745,8 +753,10 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Usted no tiene permiso de suscripción al cana designado. Por favor vaya a su "
-"canal de organización o administradores de organización para más detalles."
+"     Usted no tiene permiso de suscripción al cana designado. \n"
+"Por favor vaya a su canal de organización o administradores \n"
+"de organización para más detalles.\n"
+"     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
@@ -833,20 +843,22 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     ID del sistema SUSE Manager Proxy no coincide con un Spacewalk Proxy "
+"Server\n"
+"    en la base de datos.\n"
+"     "
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "La ficha de sesión de Proxy RHN no es válida."
+msgstr "La ficha de sesión para SUSE Manager Proxy no es válida."
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "La ficha de sesión de Proxy RHN ha expirado."
+msgstr "La ficha de sesión para SUSE Manager Proxy ha expirado."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -854,13 +866,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"La creación de un usuario de RHN Satellite no está permitida por medio de "
-"rhn_register (o up2date –register sonre Red Hat Enterprise Linux 3 o "
-"posteriores); por favor contacte con su administrador del sistema para tener "
-"su cuenta creada."
+"      La creación de un usuario no está permitida mediante rhn_register.\n"
+"Favor de contactar con su administrador del sistema para disponer de su "
+"cuenta creada.\n"
+"     "
 
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -868,18 +879,20 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Este servidor satélite no tiene permitido usar Inter Satellite Sync sobre "
-"este satélite"
+"     Este servidor SUSE Manager no tiene permitido usar Inter Satellite Sync "
+"sobre este servidor\n"
+"     "
 
 #: ../common/rhnException.py:209
-#, fuzzy
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"Inter Satellite Sync está deshabilitado sobre este satélite"
+"     Inter Satellite Sync está deshabilitado sobre este Servidor SUSE "
+"Manager\n"
+"     "
 
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:214
@@ -1003,22 +1016,22 @@ msgstr "No puedo comparar ficheros con tipo de fichero diferente"
 #: ../common/rhnException.py:247
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
+"La transferencia del archivo de resultados SCAP no es válida o es incompleta"
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
+"Error al componer la ruta al directorio para los resultados SCAP detallados"
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "Error al componer ruta de archivo para los resultados SCAP detallados"
 
 #: ../common/rhnException.py:250
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "Código de hito no válido"
+msgstr "Codificación de contenido, no válida"
 
 #: ../common/rhnException.py:297
-#, fuzzy
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1030,8 +1043,7 @@ msgstr ""
 "\n"
 "     Ha ocurrido un error mientras se procesaba su petición. Si este "
 "problema\n"
-"     persiste por favor introduzca un reporte de error en bugzilla.redhat."
-"com.\n"
+"     persiste por favor introduzca un reporte de error en scc.suse.com.\n"
 "     Si usted elige enviar el reporte de error, por favor asegúrese de "
 "incluir\n"
 "     detalles de lo que estaba intentando hacer cuando ocurrió el error y \n"
@@ -1075,7 +1087,7 @@ msgstr "TRAZA: %s"
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "el formato de %s debería ser al menos YYYYMMDD\n"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1084,6 +1096,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ERROR: al ejecutar el paso %s. El error es:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:31
 #, python-format
@@ -1095,6 +1110,13 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"ERROR: hubo un problema al acceder el canal de datos desde su repositorio\n"
+"        temporario. ¿Ha migrado todos los datos del ISO del canal a este\n"
+"        directorio?. Si es así, favor de verificar los ISO de canal, "
+"asegurar de\n"
+"        tenerlos todos para luego remontar y repoblar en forma iterativa\n"
+"        el repositorio temporario (%s).\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1103,6 +1125,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: hubo un problema al conciliar la información.\n"
+"       Mensaje de error: %s\n"
 
 #: ../satellite_tools/messages.py:44
 #, python-format
@@ -1114,6 +1139,13 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: Hubo un problema al comunicarse con el ISS Maestro.\n"
+"       Dependiendo de los detalles específicos, favor de rever su "
+"configuración,\n"
+"       conectividad básica de red y/o resolución de nombres, luego intente "
+"nuevamente.\n"
+"       Mensaje de error: %s\n"
 
 #: ../satellite_tools/messages.py:51
 #, python-format
@@ -1126,6 +1158,15 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"ERROR: un canal descendiente no puede ser conciliado sin su ascendente "
+"siendo conciliado\n"
+"        a su vez. Un ascendente necesita o bien (a) conciliado previamente o "
+"bien (b) conciliado\n"
+"        en tándem con el canal descendiente deseado. Ascendentes no "
+"encontrados para esta\n"
+"        transacción:\n"
+"        %s\n"
 
 #: ../satellite_tools/messages.py:59
 #, python-format
@@ -1135,36 +1176,41 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"ERROR: usted no está intitulado para conciliar un canal con este conjunto de "
+"canales.\n"
+"Favor de contactar su Administrador SUSE\n"
+"%s"
 
 #: ../satellite_tools/messages.py:64
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  ERROR: insuficiente espacio libre (%s KB) en el dispositivo."
 
 #: ../satellite_tools/messages.py:66
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s Búsqueda exitosa: %s (%s bytes)"
 
 #: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "Se esperaba un paquete, no: %s"
+msgstr "    Paquete extinto: %s"
 
 #: ../satellite_tools/messages.py:68
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Tamaño total: %s"
 
 #: ../satellite_tools/messages.py:69
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      Descargado %s de %s. Plazo estimado: %s"
 
 #: ../satellite_tools/messages.py:70
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    Búsqueda infructuosa: %s"
 
 #: ../satellite_tools/messages.py:71
 #, python-format
@@ -1174,17 +1220,17 @@ msgstr ""
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       éxito: %d"
 
 #: ../satellite_tools/messages.py:73
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       falló: %d"
 
 #: ../satellite_tools/messages.py:74
 #, python-format
 msgid "       extinct: %d"
-msgstr ""
+msgstr "       extinto: %d"
 
 #: ../satellite_tools/messages.py:76
 #, python-format
@@ -1213,12 +1259,11 @@ msgstr ""
 
 #: ../satellite_tools/messages.py:81
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * ADVERTENCIA: este puede ser un proceso lento."
 
 #: ../satellite_tools/messages.py:82
-#, fuzzy
 msgid "Linking packages to channels"
-msgstr "Canales base en conflicto"
+msgstr "Enlazando paquetes a canales"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
@@ -1241,7 +1286,7 @@ msgstr ""
 
 #: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ enviando registro como un email +++"
 
 #: ../satellite_tools/reposync.py:118
 #, python-format
@@ -1250,7 +1295,7 @@ msgstr ""
 
 #: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ email requerido, pero no hay nada que enviar +++"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1259,6 +1304,9 @@ msgid ""
 "could not be opened and read:\n"
 "%s"
 msgstr ""
+"«%s» (especificado en línea de comandos)\n"
+"no pudo ser abierto ni leído:\n"
+"%s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:205
 #, python-format
@@ -1267,25 +1315,28 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+"«%s» no pudo ser abierto\n"
+"ni/o escrito a:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
-msgstr ""
+msgstr "Sin manejador para el paso %s"
 
 #. Try one more time - this time it should be faster since
 #. everything should be cached
 #: ../satellite_tools/satsync.py:270
 msgid "Environment changed, trying again..."
-msgstr ""
+msgstr "Entorno cambiado, intentando nuevamente..."
 
 #: ../satellite_tools/satsync.py:277
 msgid "ERROR: Encountered IntegrityError: \n"
-msgstr ""
+msgstr "Error: IntegrityError encontrado: \n"
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Fallas repetidas"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format
@@ -1296,18 +1347,23 @@ msgid ""
 "        Elapsed:    %s\n"
 "          "
 msgstr ""
+"    Importación completa:\n"
+"       Data de inicio: %s\n"
+"       Data de finalización: %s\n"
+"       Transcurrido:   %s\n"
+"          "
 
 #: ../satellite_tools/satsync.py:311
 msgid "hours"
-msgstr ""
+msgstr "horas"
 
 #: ../satellite_tools/satsync.py:311
 msgid "minutes"
-msgstr ""
+msgstr "minutos"
 
 #: ../satellite_tools/satsync.py:311
 msgid "seconds"
-msgstr ""
+msgstr "segundo"
 
 #: ../satellite_tools/satsync.py:357
 msgid ""
@@ -1319,11 +1375,11 @@ msgstr ""
 #. won't sync the orgs
 #: ../satellite_tools/satsync.py:404
 msgid "The SUSE Manager master does not support syncing orgs data."
-msgstr ""
+msgstr "El SUSE Manager maestro no soporta datos orgs de conciliación."
 
 #: ../satellite_tools/satsync.py:404
 msgid "Skipping..."
-msgstr ""
+msgstr "Omitiendo..."
 
 #: ../satellite_tools/satsync.py:442
 #, python-format
@@ -1332,7 +1388,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
-msgstr ""
+msgstr " - conciliación de sistema de archivos"
 
 #: ../satellite_tools/satsync.py:532 ../satellite_tools/satsync.py:540
 msgid " - live synchronization"
@@ -1351,7 +1407,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:541
 #, python-format
 msgid "   url: %s"
-msgstr ""
+msgstr "   url: %s"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1360,141 +1416,142 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:552
 msgid "ERROR: this server must be registered with SUSE Manager."
-msgstr ""
+msgstr "ERROR: este servidor debe registrarse con SUSE Manager."
 
 #: ../satellite_tools/satsync.py:574
 #, python-format
 msgid "Retrieving / parsing %s data"
-msgstr ""
+msgstr "Recuperando/analizando datos de %s"
 
 #: ../satellite_tools/satsync.py:584 ../satellite_tools/satsync.py:599
 msgid "*** SYSTEM INTERRUPT CALLED ***"
-msgstr ""
+msgstr "*** INTERRUPCIÓN DE SISTEMA, LLAMADA ***"
 
 #: ../satellite_tools/satsync.py:592
 msgid "ERROR: fatal parser exception occurred "
-msgstr ""
+msgstr "ERROR: ocurrió una excepción fatal del análisis "
 
 #: ../satellite_tools/satsync.py:593
 #, python-format
 msgid "(line: %s, col: %s msg: %s)"
-msgstr ""
+msgstr "(línea: %s, columna: %s mensaje: %s)"
 
 #: ../satellite_tools/satsync.py:597
 #, python-format
 msgid "ERROR: parser exception occurred: %s"
-msgstr ""
+msgstr "ERROR: ocurrió una excepción de análisis: %s"
 
 #: ../satellite_tools/satsync.py:602
 msgid "ERROR: exception (during parse) occurred: "
-msgstr ""
+msgstr "ERROR: ocurrió una excepción (durante análisis): "
 
 #: ../satellite_tools/satsync.py:603
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
 msgstr ""
+"   Se encontraron algunos errores con datos de %s (consulte los registros "
+"(%s) para más información)"
 
 #: ../satellite_tools/satsync.py:605
 #, python-format
 msgid "   Encountered some errors with %s data:"
-msgstr ""
+msgstr "   Se encontraron algunos errores con los datos de %s:"
 
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- ERROR DE ANÁLISIS/IMPORTACIÓN %s -------"
 
 #: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
-msgstr ""
+msgstr "   ---------------------------------------"
 
 #: ../satellite_tools/satsync.py:611
 #, python-format
 msgid "%s data complete"
-msgstr ""
+msgstr "dato %s completo"
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Recuperando/analizando datos de canal"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr ""
+msgstr "Datos completos de canal"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s importado de %s"
 
 #: ../satellite_tools/satsync.py:738
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s importado de %s -%s"
 
 #: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:749
 msgid "p"
-msgstr ""
+msgstr "p"
 
 #: ../satellite_tools/satsync.py:751
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = canal previamente importado/conciliado"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = canal aún sin importar/conciliar"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = canal no más soportado (end-of-service)"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr ""
+msgstr "   ? = etiqueta de canal no válida. ¿Teclazo?"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
-#, fuzzy
 msgid "base-channels"
-msgstr "Canales base en conflicto"
+msgstr "Canales base"
 
 #: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
-msgstr ""
+msgstr "NINGUNA RELEVANTE"
 
 #: ../satellite_tools/satsync.py:807
 msgid "end-of-service"
-msgstr ""
+msgstr "fin-de-servicio"
 
 #: ../satellite_tools/satsync.py:808
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../satellite_tools/satsync.py:814
 msgid "   typos:"
-msgstr ""
+msgstr "   teclazo:"
 
 #: ../satellite_tools/satsync.py:815
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../satellite_tools/satsync.py:830
 #, python-format
@@ -1523,7 +1580,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:903
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
-msgstr ""
+msgstr "   Recuperando/analizando metadatos cortos de paquete: %s (%s)"
 
 #: ../satellite_tools/satsync.py:981
 #, python-format
@@ -1536,7 +1593,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1004
 msgid "ERROR: incremental dump skipped"
-msgstr ""
+msgstr "ERROR: volcado incremental omitido"
 
 #: ../satellite_tools/satsync.py:1095
 msgid "Downloading rpm packages"
@@ -1575,12 +1632,12 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1276
 msgid "Downloading source package metadata"
-msgstr ""
+msgstr "Descargando metadatos de paquete fuente"
 
 #: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2043
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to save file %s: %s"
-msgstr "Incapaz de titular sistema"
+msgstr "Incapaz de guardar archivo %s: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1617,49 +1674,49 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"
-msgstr ""
+msgstr "Descargando:"
 
 #: ../satellite_tools/satsync.py:1595
 msgid " - complete"
-msgstr ""
+msgstr " - completa"
 
 #: ../satellite_tools/satsync.py:1640
 msgid "Importing source package metadata"
-msgstr ""
+msgstr "Importando metadatos de paquete fuente"
 
 #: ../satellite_tools/satsync.py:1643
 msgid "Importing package metadata"
-msgstr ""
+msgstr "Importando metadatos de paquete"
 
 #: ../satellite_tools/satsync.py:1651
 msgid "Importing:  "
-msgstr ""
+msgstr "Importando:  "
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1719
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
-msgstr ""
+msgstr "Paquete no encontrado en caché. Limpie la caché para regenerarla."
 
 #: ../satellite_tools/satsync.py:1725
 msgid "Importing channel patches"
-msgstr ""
+msgstr "Importando parches de canal"
 
 #: ../satellite_tools/satsync.py:1730
 #, python-format
 msgid "Importing %s patches for channel %s."
-msgstr ""
+msgstr "Importando %s parches para el canal %s."
 
 #. Incomplete configuration
 #: ../satellite_tools/satsync.py:2129
 msgid "ERROR: server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "ERROR: server.mount_point no encontrada en el archivo de configuración"
 
 #: ../satellite_tools/satsync.py:2133
 #, python-format
 msgid "ERROR: server.mount_point %s do not exist"
-msgstr ""
+msgstr "ERROR: no existe server.mount_point %s"
 
 #: ../satellite_tools/satsync.py:2138
 #, python-format
@@ -1684,72 +1741,80 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2223
 msgid "process data for this channel only"
-msgstr ""
+msgstr "procesar datos para este canal solamente"
 
 #: ../satellite_tools/satsync.py:2225
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
+"volcado a disco se considerará una exportación completa; consultar «man mgr-"
+"inter-sync» para más información."
 
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
+"Los canales personalizados existentes también serán conciliados (al menos "
+"que se use -c)"
 
 #: ../satellite_tools/satsync.py:2230
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
+"Impone el nivel de debug establecido en /etc/rhn/rhn.conf (el cual está "
+"actualmente establecido en %s)."
 
 #: ../satellite_tools/satsync.py:2232
 #, python-format
 msgid "requested version of XML dump (default: %s)"
-msgstr ""
+msgstr "versión requerida para volcado XML (por defecto: %s)"
 
 #: ../satellite_tools/satsync.py:2234
 msgid "e-mail a report of what was synced/imported"
-msgstr ""
+msgstr "Enviar por e-mail un reporte sobre qué fue conciliado/importado"
 
 #: ../satellite_tools/satsync.py:2236
 msgid "forcibly process all (not a diff of) patch metadata"
-msgstr ""
+msgstr "procesar forzadamente todos (no un diff) los metadatos de parche"
 
 #: ../satellite_tools/satsync.py:2238
 msgid "Do not use an http proxy under any circumstances."
-msgstr ""
+msgstr "No usar un proxy http bajo ninguna circunstancia."
 
 #: ../satellite_tools/satsync.py:2240
 msgid "alternative http proxy (hostname:port)"
-msgstr ""
+msgstr "proxy http alternativo (hostname:port)"
 
 #: ../satellite_tools/satsync.py:2242
 msgid "alternative http proxy username"
-msgstr ""
+msgstr "nombre de usuario http proxy alternativo"
 
 #: ../satellite_tools/satsync.py:2244
 msgid "alternative http proxy password"
-msgstr ""
+msgstr "contraseña http proxy alternativa"
 
 #: ../satellite_tools/satsync.py:2246
 msgid "parent SUSE Manager to import content from"
-msgstr ""
+msgstr "asendente SUSE Manager del cual importar contenido"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "list all available channels and exit"
-msgstr ""
+msgstr "lista todos los canales disponibles y termina"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "help on all error codes mgr-inter-sync returns"
-msgstr ""
+msgstr "ayuda en todos los código de error que mgr-inter-sync devuelve"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "source mount point for import - disk update only"
 msgstr ""
+"punto de montaje de origen para importación - actualización de disco "
+"solamente"
 
 #: ../satellite_tools/satsync.py:2254
 msgid "do not process patch data"
-msgstr ""
+msgstr "no procesar datos de parche"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "do not process kickstart data (provisioning only)"
@@ -1757,28 +1822,27 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2258
 msgid "do not process full package metadata"
-msgstr ""
+msgstr "no procesar completamente los metadatos de paquete"
 
 #: ../satellite_tools/satsync.py:2260
 msgid "do not download, or process any RPMs"
-msgstr ""
+msgstr "no descargar o procesar ningún RPM"
 
 #: ../satellite_tools/satsync.py:2262
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2264
-#, fuzzy
 msgid "print the configuration and exit"
-msgstr "Configuración del canal no existe"
+msgstr "exponer la configuración y terminar"
 
 #: ../satellite_tools/satsync.py:2266
 msgid "alternative server with which to connect (hostname)"
-msgstr ""
+msgstr "servidor alternativo al cual conectar (nombre de anfitrión o hostname)"
 
 #: ../satellite_tools/satsync.py:2268
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr ""
+msgstr "conciliar con este paso («man mgr-inter-sync» para más información)"
 
 #: ../satellite_tools/satsync.py:2270
 msgid "write complete data to tempfile before streaming to remainder of app"
@@ -1791,10 +1855,12 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2274
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr ""
+"casilla(s) de email alternativa(s) para el resultado de conciliación (opción "
+"--email)"
 
 #: ../satellite_tools/satsync.py:2276
 msgid "do not remove rpms when importing from local dump"
-msgstr ""
+msgstr "abstenerse de eliminar rpms al importar del volcado local"
 
 #: ../satellite_tools/satsync.py:2278
 msgid ""
@@ -1806,21 +1872,23 @@ msgstr ""
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
+"ERROR: estos argumentos carecen de sentido en este contexto (intente --help):"
+" %s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2300
 #, python-format
 msgid "ERROR: Can't connect to the database: %s"
-msgstr ""
+msgstr "ERROR: Imposible conectar con la base de datos: %s"
 
 #: ../satellite_tools/satsync.py:2301
 msgid "ERROR: Check if your database is running."
-msgstr ""
+msgstr "ERROR: Verifique si su base de datos anda."
 
 #: ../satellite_tools/satsync.py:2334
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
-msgstr ""
+msgstr "ERROR: --debug-level toma un entero dentro del intervalo %s."
 
 #: ../satellite_tools/satsync.py:2336
 msgid "  0  - little logging/messaging."
@@ -1845,39 +1913,46 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2353
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr ""
+"ERROR: La opción --master solamente es válida con la opción --mount-point"
 
 #: ../satellite_tools/satsync.py:2363
-#, fuzzy, python-format
+#, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
-msgstr "Incapaz de buscar servidor"
+msgstr "ERROR: Incapaz de buscar Id Org %s"
 
 #: ../satellite_tools/satsync.py:2372
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
+"ADVERTENCIA: la opción --list-channels se impone a cualquier opción --step. "
+"Se ignora --step."
 
 #: ../satellite_tools/satsync.py:2387
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
+"ERROR: «%s» no es un paso válido. Consulte «man mgr-inter-sync» por más "
+"detalles."
 
 #: ../satellite_tools/satsync.py:2419
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
+"ERROR: Ningún canal está siendo importado ahora; intente «mgr-inter-sync "
+"--list-channels»; luego «mgr-inter-sync -c cnh0 -c chn1...»."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
 #: ../satellite_tools/satsync.py:2468 ../satellite_tools/satsync.py:2472
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
-msgstr ""
+msgstr "ERROR: --batch-size debe tener un valor dentro del intervalo 1..50"
 
 #: ../satellite_tools/satsync.py:2480
 #, python-format
 msgid "ERROR: no such directory %s"
-msgstr ""
+msgstr "ERROR: el directorio %s no es tal"
 
 #: ../satellite_tools/satsync.py:2485
 msgid "Error Codes: Returned codes means:"
