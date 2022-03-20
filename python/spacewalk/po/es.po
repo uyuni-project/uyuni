@@ -15,11 +15,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:03+0000\n"
+"POT-Creation-Date: 2022-03-20 20:13+0000\n"
 "PO-Revision-Date: 2022-03-19 20:12+0000\n"
 "Last-Translator: Matías Silva Bustos <matiasasb@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
-"\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
+">\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1872,8 +1872,8 @@ msgstr ""
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
-"ERROR: estos argumentos carecen de sentido en este contexto (intente --help):"
-" %s"
+"ERROR: estos argumentos carecen de sentido en este contexto (intente --"
+"help): %s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2300
@@ -1940,8 +1940,8 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"ERROR: Ningún canal está siendo importado ahora; intente «mgr-inter-sync "
-"--list-channels»; luego «mgr-inter-sync -c cnh0 -c chn1...»."
+"ERROR: Ningún canal está siendo importado ahora; intente «mgr-inter-sync --"
+"list-channels»; luego «mgr-inter-sync -c cnh0 -c chn1...»."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
