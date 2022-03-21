@@ -21,7 +21,12 @@ CREATE TABLE rhnProxyInfo
                           REFERENCES rhnServer (id),
     proxy_evr_id  NUMERIC
                       CONSTRAINT rhn_proxy_info_peid_fk
-                          REFERENCES rhnPackageEVR (id)
+                          REFERENCES rhnPackageEVR (id),
+    ssh_port      NUMERIC,
+    created             TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL,
+    modified            TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL
 )
 
 ;

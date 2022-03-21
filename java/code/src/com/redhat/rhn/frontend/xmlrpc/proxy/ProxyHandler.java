@@ -253,6 +253,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @param loggedInUser the current user
      * @param proxyName  the FQDN of the proxy
+     * @param proxyPort the SSH port the proxy listens on
      * @param server the FQDN of the server the proxy uses
      * @param maxCache the maximum memory cache size
      * @param email the email of proxy admin
@@ -265,6 +266,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.doc Compute and download the configuration for proxy containers
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @xmlrpc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
      * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
      * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
      * @xmlrpc.param #param("string", "email", "The proxy admin email")
@@ -274,7 +276,8 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "proxyKey", "proxy SSL private key in PEM format")
      *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
      */
-    public byte[] containerConfig(User loggedInUser, String proxyName, String server, Integer maxCache, String email,
+    public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
+                                  Integer maxCache, String email,
                                   String rootCA, List<String> intermediateCAs, String proxyCrt, String proxyKey) {
         try {
             SSLCertPair proxyCrtKey = new SSLCertPair(proxyCrt, proxyKey);
@@ -282,8 +285,8 @@ public class ProxyHandler extends BaseHandler {
                 throw new InvalidParameterException("Both proxyCrt and proxyKey need to be provided");
             }
 
-            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, server, maxCache.longValue(),
-                    email, rootCA, intermediateCAs, proxyCrtKey, null, null, null);
+            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
+                    maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null);
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);
@@ -304,6 +307,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @param loggedInUser the current user
      * @param proxyName  the FQDN of the proxy
+     * @param proxyPort the SSH port the proxy listens on
      * @param server the FQDN of the server the proxy uses
      * @param maxCache the maximum memory cache size
      * @param email the email of proxy admin
@@ -323,6 +327,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.doc Compute and download the configuration for proxy containers
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @xmlrpc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
      * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
      * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
      * @xmlrpc.param #param("string", "email", "The proxy admin email")
@@ -338,7 +343,8 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sslEmail", "The email to set in the SSL certificate")
      *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
      */
-    public byte[] containerConfig(User loggedInUser, String proxyName, String server, Integer maxCache, String email,
+    public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
+                                  Integer maxCache, String email,
                                   String caCrt, String caKey, String caPassword,
                                   List<String> cnames, String country, String state, String city,
                                   String org, String orgUnit, String sslEmail) {
@@ -350,8 +356,8 @@ public class ProxyHandler extends BaseHandler {
 
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
-            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, server, maxCache.longValue(),
-                    email, null, Collections.emptyList(), null, caCrtKey, caPassword, certData);
+            return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
+                    maxCache.longValue(), email, null, Collections.emptyList(), null, caCrtKey, caPassword, certData);
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);

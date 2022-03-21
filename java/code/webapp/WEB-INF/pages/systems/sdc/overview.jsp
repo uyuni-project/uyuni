@@ -88,6 +88,21 @@
             </c:choose>
             </td>
           </tr>
+          <rhn:require acl="system_is_proxy()">
+          <tr>
+            <td><bean:message key="sdc.details.overview.sshport"/></td>
+            <td>
+            <c:choose>
+              <c:when test="${system.proxyInfo.sshPort == null}">
+                <c:out value="22" />
+              </c:when>
+              <c:otherwise>
+                <c:out value="${system.proxyInfo.sshPort}" />
+              </c:otherwise>
+            </c:choose>
+            </td>
+          </tr>
+          </rhn:require>
           <rhn:require acl="not system_is_proxy() or not system_has_foreign_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.ipaddy"/></td>

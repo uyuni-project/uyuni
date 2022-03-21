@@ -1,3 +1,5 @@
+- Add parameter to set containerized proxy SSH port
+
 -------------------------------------------------------------------
 Fri Mar 11 16:47:59 CET 2022 - jgonzalez@suse.com
 
