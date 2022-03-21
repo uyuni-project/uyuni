@@ -4,10 +4,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-24 18:13+0000\n"
-"PO-Revision-Date: 2022-02-24 18:12+0000\n"
+"PO-Revision-Date: 2022-03-21 22:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
-"plugin/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
+"yum-rhn-plugin/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: ../rhnplugin.py:49
 #, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "Hi ha hagut un error de comunicació amb {PRODUCT_NAME}"
+msgstr "Hi ha hagut un error de comunicació amb {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:64
 #, python-brace-format
@@ -74,19 +74,20 @@ msgid "This system is not subscribed to any channels."
 msgstr "Aquest sistema no està subscrit a cap canal."
 
 #: ../rhnplugin.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
-"Aquest sistema pot no estar registrat a RHN Classic o Red Hat Satellite. No "
-"s'ha pogut adquirir el SystemId."
+"És possible que aquest sistema no estigui registrat a RHN Classic o "
+"{PRODUCT_NAME}. No s'ha pogut adquirir SystemId."
 
 #: ../rhnplugin.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
 msgstr ""
-"Aquest sistema rep actualitzacions des d'RHN Classic o Red Hat Satellite."
+"Aquest sistema està rebent actualitzacions de RHN Clàssic o de "
+"{PRODUCT_NAME}."
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
@@ -101,6 +102,7 @@ msgid "Please run rhn_register as root on this client"
 msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 
 #: ../rhnplugin.py:356
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
-msgstr "Falta la informació necessària per iniciar la sessió a RHN: %s"
+msgstr ""
+"Falta la informació d'inici de sessió necessària per a {PRODUCT_NAME}: %s"
