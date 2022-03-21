@@ -28,6 +28,7 @@ public class ProxyInfo {
     private Server server;
     private PackageEvr version;
     private Long id;
+    private Integer sshPort;
 
     /**
      * @return the id
@@ -74,6 +75,20 @@ public class ProxyInfo {
         this.server = s;
     }
 
+    /**
+     * @return value of sshPort
+     */
+    public Integer getSshPort() {
+        return sshPort;
+    }
+
+    /**
+     * @param sshPortIn value of sshPort
+     */
+    public void setSshPort(Integer sshPortIn) {
+        sshPort = sshPortIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,6 +104,7 @@ public class ProxyInfo {
         return new EqualsBuilder()
                 .append(server, proxyInfo.server)
                 .append(version, proxyInfo.version)
+                .append(sshPort, proxyInfo.sshPort)
                 .isEquals();
     }
 
@@ -97,6 +113,7 @@ public class ProxyInfo {
         return new HashCodeBuilder(17, 37)
                 .append(server)
                 .append(version)
+                .append(sshPort)
                 .toHashCode();
     }
 }

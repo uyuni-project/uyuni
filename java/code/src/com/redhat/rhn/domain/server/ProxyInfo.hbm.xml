@@ -11,6 +11,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <param name="property">server</param>
             </generator>
         </id>
+        <property name="sshPort" type="integer" column="ssh_port" />
         <one-to-one name="server"
             class="com.redhat.rhn.domain.server.Server"
             constrained="true"/>

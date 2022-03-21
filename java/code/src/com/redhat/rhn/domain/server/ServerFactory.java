@@ -312,8 +312,9 @@ public class ServerFactory extends HibernateFactory {
         Set<ServerPath> paths = new HashSet<>();
         for (ServerPath parentPath : proxyServer.getServerPaths()) {
             ServerPath path = findServerPath(server, parentPath.getId().getProxyServer()).orElseGet(() -> {
+                Server parentProxyServer = parentPath.getId().getProxyServer();
                 ServerPath newPath = new ServerPath();
-                newPath.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
+                newPath.setId(new ServerPathId(server, parentProxyServer));
                 newPath.setHostname(parentPath.getHostname());
                 return newPath;
             });

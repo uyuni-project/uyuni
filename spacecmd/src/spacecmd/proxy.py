@@ -42,6 +42,7 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -p, --ssh-port SSH port the proxy listens one. Default: 22
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
             certicate in PEM format. May be provided multiple times.
 
@@ -57,6 +58,7 @@ def do_proxy_container_config(self, args):
     arg_parser.add_argument('-c', '--certificate', default='')
     arg_parser.add_argument('-k', '--key', default='')
     arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
 
     args, options = parse_command_arguments(args, arg_parser)
 
@@ -72,7 +74,7 @@ def do_proxy_container_config(self, args):
     key = read_file(key)
 
     config = self.client.proxy.container_config(self.session,
-            proxy_fqdn, server_fqdn, int(max_cache), email,
+            proxy_fqdn, options.ssh_port, server_fqdn, int(max_cache), email,
             root_ca, intermediate_cas, cert, key,
     )
 
@@ -96,6 +98,7 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -p, --ssh-port SSH port the proxy listens one. Default: 22
   --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times
   --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.
   --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.
@@ -112,6 +115,7 @@ examples:
 def do_proxy_container_config_generate_cert(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
     arg_parser.add_argument('--ssl-cname', action='append', default=[])
     arg_parser.add_argument('--ssl-country', default='')
     arg_parser.add_argument('--ssl-state', default='')
@@ -132,7 +136,8 @@ def do_proxy_container_config_generate_cert(self, args):
     ca_key = read_file(ca_key)
     ca_password = read_file(ca_password)
 
-    config = self.client.proxy.container_config(self.session, proxy_fqdn, server_fqdn, int(max_cache), email,
+    config = self.client.proxy.container_config(self.session, proxy_fqdn, options.ssh_port,
+            server_fqdn, int(max_cache), email,
             ca_cert, ca_key, ca_password, options.ssl_cname, options.ssl_country, options.ssl_state,
             options.ssl_city, options.ssl_org, options.ssl_org_unit, options.ssl_email)
 

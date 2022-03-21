@@ -1889,8 +1889,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(apacheCert));
         }});
 
-        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, serverName, maxCache, email, rootCA,
-                otherCAs, new SSLCertPair(cert, key), null, null, null);
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
         Map<String, String> content = readZipData(actual);
         assertEquals(sshPushKey, content.get("server_ssh_push"));
         assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
