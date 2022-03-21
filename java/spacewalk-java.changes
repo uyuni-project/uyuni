@@ -1,3 +1,4 @@
+- send notifications for new or changed ubuntu errata (bsc#1196977)
 - change directory owner and permissions only when needed
 - Fixed broken help link for system overview
 - Provide link to Sync page when unsynced patches message show up
