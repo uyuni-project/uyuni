@@ -1,4 +1,8 @@
-- Fix exception when image store is deleted before image
+-------------------------------------------------------------------
+Mon Mar 21 13:51:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.16-1
+  * Fix exception when image store is deleted before image
 
 -------------------------------------------------------------------
 Wed Mar 16 12:11:47 CET 2022 - jgonzalez@suse.com
