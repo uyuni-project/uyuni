@@ -53,6 +53,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -226,6 +227,7 @@ public class UbuntuErrataManager {
                         .map(CveFactory::lookupOrInsertByName)
                         .collect(Collectors.toMap(Cve::getName, e -> e)));
 
+        Set<Errata> changedErrata = new HashSet<>();
         TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> ubuntuErrataInfo.stream()
                 .flatMap(entry -> {
 
@@ -289,9 +291,10 @@ public class UbuntuErrataManager {
                         .collect(Collectors.toSet());
                 if (errata.getPackages() == null) {
                     errata.setPackages(packages);
+                        changedErrata.add(errata);
                 }
-                else {
-                    errata.getPackages().addAll(packages);
+                else if (errata.getPackages().addAll(packages)) {
+                    changedErrata.add(errata);
                 }
 
                 Set<Channel> matchingChannels = e.getValue().entrySet().stream()
@@ -299,10 +302,22 @@ public class UbuntuErrataManager {
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toSet());
 
-                errata.getChannels().addAll(matchingChannels);
+                if (errata.getChannels().addAll(matchingChannels)) {
+                    changedErrata.add(errata);
+                }
 
+                if (errata.getId() == null) {
+                    changedErrata.add(errata);
+                }
                 return errata;
             });
         }).forEach(ErrataFactory::save));
+
+            // add changed errata to notification queue
+            changedErrata.stream()
+                .forEach(e -> {
+                    LOG.info("add errata to notification queue");
+                    e.addNotification(new Date());
+                });
     }
 }
