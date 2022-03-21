@@ -46,39 +46,6 @@ class CobblerTest
     result
   end
 
-  def profile_create(name, distro, location)
-    begin
-      profile_id = @server.call('new_profile', @token)
-    rescue
-      raise 'creating profile failed.' + $ERROR_INFO.to_s
-    end
-    begin
-      @server.call('modify_profile', profile_id, 'name', name, @token)
-      @server.call('modify_profile', profile_id, 'distro', distro, @token)
-      @server.call('modify_profile', profile_id, 'kickstart', location, @token)
-    rescue
-      raise 'modify profile failed.' + $ERROR_INFO.to_s
-    end
-    begin
-      @server.call('save_profile', profile_id, @token)
-    rescue
-      raise 'saving profile failed.' + $ERROR_INFO.to_s
-    end
-    profile_id
-  end
-
-  def profile_exists(name)
-    exists('profiles', 'name', name)
-  end
-
-  def system_exists(name)
-    exists('systems', 'name', name)
-  end
-
-  def distro_exists(name)
-    exists('distros', 'name', name)
-  end
-
   def distro_create(name, kernel, initrd, breed = 'suse')
     begin
       distro_id = @server.call('new_distro', @token)
@@ -91,6 +58,69 @@ class CobblerTest
       raise 'creating distribution failed.' + $ERROR_INFO.to_s
     end
     distro_id
+  end
+
+  def profile_create(name, distro, location)
+    begin
+      profile_id = @server.call('new_profile', @token)
+    rescue
+      raise 'creating profile failed.' + $ERROR_INFO.to_s
+    end
+    begin
+      @server.call('modify_profile', profile_id, 'name', name, @token)
+      @server.call('modify_profile', profile_id, 'distro', distro, @token)
+      @server.call('modify_profile', profile_id, 'kickstart', location, @token)
+    rescue
+      raise 'modifying profile failed.' + $ERROR_INFO.to_s
+    end
+    begin
+      @server.call('save_profile', profile_id, @token)
+    rescue
+      raise 'saving profile failed.' + $ERROR_INFO.to_s
+    end
+    profile_id
+  end
+
+  # every system needs at least a name and a profile
+  def system_create(name, profile)
+    begin
+      system_id = @server.call('new_system', @token)
+    rescue
+      raise 'creating system failed.' + $ERROR_INFO.to_s
+    end
+    begin
+      @server.call('modify_system', system_id, 'name', name, @token)
+      @server.call('modify_system', system_id, 'profile', profile, @token)
+    rescue
+      raise 'modifying system failed.' + $ERROR_INFO.to_s
+    end
+    begin
+      @server.call('save_system', system_id, @token)
+    rescue
+      raise 'saving system failed.' + $ERROR_INFO.to_s
+    end
+    system_id
+  end
+
+  def system_remove(name)
+    raise "system cannot be found. #{$ERROR_INFO}" unless system_exists(name)
+    begin
+      @server.call('remove_system', name, @token)
+    rescue
+      raise "deleting system failed. #{$ERROR_INFO}"
+    end
+  end
+
+  def distro_exists(name)
+    exists('distros', 'name', name)
+  end
+
+  def profile_exists(name)
+    exists('profiles', 'name', name)
+  end
+
+  def system_exists(name)
+    exists('systems', 'name', name)
   end
 
   def repo_exists(name)
