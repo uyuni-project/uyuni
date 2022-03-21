@@ -282,6 +282,13 @@ Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |
   ct.distro_create(distro, '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
+Then(/^create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |name, distro, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  raise 'profile ' + name + ' already exists' if ct.profile_exists(name)
+  ct.profile_create(name, distro, '/var/autoinstall/mock/empty.xml')
+end
+
 When(/^I trigger cobbler system record$/) do
   # not for SSH-push traditional client
   space = 'spacecmd -u admin -p admin'
@@ -306,11 +313,9 @@ Given(/^distro "([^"]*)" exists$/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
+Given(/^profile "([^"]*)" exists$/) do |profile|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
+  raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
 end
 
 When(/^I remove kickstart profiles and distros$/) do
