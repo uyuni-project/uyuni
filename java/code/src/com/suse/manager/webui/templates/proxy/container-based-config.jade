@@ -1,0 +1,17 @@
+#container-based-config
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('proxy/container-based-config')
+        .then(function(module) {
+            module.renderer(
+                'container-based-config', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin}
+                }
+            )
+        });
