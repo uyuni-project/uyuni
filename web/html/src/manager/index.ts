@@ -24,6 +24,7 @@ import MaintenanceWindows from "./maintenance";
 import Minion from "./minion";
 import Notifications from "./notifications";
 import Organizations from "./organizations";
+import Proxy from "./proxy";
 import Salt from "./salt";
 import Shared from "./shared";
 import Highstate from "./state";
@@ -45,6 +46,7 @@ const pages = {
   ...Minion,
   ...Notifications,
   ...Organizations,
+  ...Proxy,
   ...Salt,
   ...Shared,
   ...Systems,
