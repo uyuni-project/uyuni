@@ -61,7 +61,7 @@ def do_proxy_container_config(self, args):
     args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 7:
-        self.help_container_config()
+        self.help_proxy_container_config()
         return
 
     (proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key) = args
@@ -123,7 +123,7 @@ def do_proxy_container_config_generate_cert(self, args):
     args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 7:
-        self.help_container_config()
+        self.help_proxy_container_config_generate_cert()
         return
 
     (proxy_fqdn, server_fqdn, max_cache, email, ca_cert, ca_key, ca_password) = args
