@@ -23,6 +23,7 @@ if [ ! -f ${HERE}/${VPRODUCT} ];then
 fi
 
 echo "Loading ${VPRODUCT}"
+. ${HERE}/${VPRODUCT}
 GITROOT=`readlink -f ${HERE}/../../../`
 
 # File created by Gitarro with info about a PR, it only exists when we are testing a PR
