@@ -3,11 +3,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:13+0000\n"
+"POT-Creation-Date: 2022-03-21 22:13+0000\n"
 "PO-Revision-Date: 2022-03-21 22:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"yum-rhn-plugin/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
+"plugin/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -102,7 +102,7 @@ msgid "Please run rhn_register as root on this client"
 msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 
 #: ../rhnplugin.py:356
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
 msgstr ""
 "Falta la informació d'inici de sessió necessària per a {PRODUCT_NAME}: %s"
