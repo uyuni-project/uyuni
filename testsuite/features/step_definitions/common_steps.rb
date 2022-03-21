@@ -1351,3 +1351,34 @@ When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end
+
+Given(/^I prepare Cobbler for the buildiso command$/) do
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  $server.run("mkdir -p #{tmp_dir}")
+  # we need bootloaders for the buildiso command
+  $server.run("cobbler mkloaders")
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)"$/) do |distro|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}")
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_single.iso --distro=#{distro} --profile=#{profile}")
+end
+
+When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
+  # param can either be standalone or airgapped
+  # workaround to get the contents of the buildiso folder
+  step %(I run Cobbler buildiso for distro "#{distro}")
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  source_dir = "/var/cache/cobbler/source_#{param}"
+  $server.run("mv #{tmp_dir} #{source_dir}")
+  $server.run("mkdir -p #{tmp_dir}")
+  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}")
+end
