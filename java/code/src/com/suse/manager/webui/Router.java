@@ -15,6 +15,8 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
 import static spark.Spark.get;
@@ -43,6 +45,7 @@ import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
@@ -109,6 +112,7 @@ public class Router implements SparkApplication {
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
+        ProxyController proxyController = new ProxyController();
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
                 new NotificationMessageController(systemQuery, saltApi);
@@ -152,6 +156,9 @@ public class Router implements SparkApplication {
 
         // Systems API
         SystemsController.initRoutes(systemsController, jade);
+
+        // Proxy
+        ProxyController.initRoutes(proxyController, jade);
 
         //CSV API
         CSVDownloadController.initRoutes();
