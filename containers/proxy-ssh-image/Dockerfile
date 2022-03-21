@@ -36,6 +36,7 @@ VOLUME "/etc/uyuni"
 
 # Additional material
 COPY mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
+RUN chmod a+x /usr/sbin/mgr-proxy-ssh-force-cmd
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
