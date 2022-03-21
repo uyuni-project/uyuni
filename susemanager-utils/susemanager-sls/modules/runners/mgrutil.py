@@ -70,10 +70,11 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
     '''
     cmd = []
     for idx, hostname in enumerate(hosts):
+        host_port = hostname.split(":")
         key = clientkey if idx == 0 else proxykey
         opts = " ".join(["-o {}={}".format(opt, val) for opt, val in list(options.items())])
-        ssh = "/usr/bin/ssh -i {} {} -o User={} {}"\
-            .format(key, opts, user, hostname)
+        ssh = "/usr/bin/ssh -p {} -i {} {} -o User={} {}"\
+            .format(host_port[1] if len(host_port) > 1 else 22, key, opts, user, host_port[0])
         cmd.extend(shlex.split(ssh))
     cmd.append(command)
     ret = _cmd(cmd)
