@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-24 18:14+0000\n"
+"POT-Creation-Date: 2022-03-21 22:13+0000\n"
 "PO-Revision-Date: 2022-03-21 22:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -556,7 +556,7 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "S'està intentant de contactar amb el servidor d'Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
 msgstr "Estem intentant contactar amb el servidor de {PRODUCT_NAME} a %s."
 
@@ -707,7 +707,7 @@ msgid "{PRODUCT_NAME} Account"
 msgstr "Compte de {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
