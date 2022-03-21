@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 23 09:04:14 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Make /usr/sbin/mgr-proxy-ssh-force-cmd executable 
+
+-------------------------------------------------------------------
 Tue Mar 15 14:42:38 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Initial version
