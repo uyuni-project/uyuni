@@ -1,9 +1,31 @@
 #!/usr/bin/env bash
+SCRIPT=$(basename ${0})
+
+if [ -z ${PRODUCT+x} ];then
+    VPRODUCT="VERSION.Uyuni"
+else
+    VPRODUCT="VERSION.${PRODUCT}"
+fi
+
+while getopts 'P:h' options
+do
+    case ${option} in
+        P) VPRODUCT="VERSION.${OPTARG}" ;;
+        h) echo "Usage ${SCRIPT} [-P PRODUCT]";exit 2;;
+    esac
+done
 
 HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
-echo $HERE
+
+if [ ! -f ${HERE}/${VPRODUCT} ];then
+   echo "${VPRODUCT} does not exist"
+   exit 3
+fi
+
+echo "Loading ${VPRODUCT}"
+. ${HERE}/${VPRODUCT}
+GITROOT=`readlink -f ${HERE}/../../../`
+echo ${HERE}
 echo $GITROOT
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"

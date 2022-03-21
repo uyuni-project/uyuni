@@ -3,17 +3,15 @@
 # This way, we can add tee but be sure the result would be non zero if the command before has failed.
 set -o pipefail
 
-HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
 
+SCRIPT=$(basename ${0})
 help() {
   echo ""
   echo "Script to run a docker container to push SUSE Manager/Uyuni packages to IBS/OBS"
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
+  echo "${SCRIPT} [-P PRODUCT] -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
   echo ""
   echo "Where: "
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
@@ -27,15 +25,22 @@ help() {
   echo "      a separate project"
   echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links"
   echo "  -x  Enable parallel builds"
+  echo "  -P  Is the product name, for example Uyuni or SUSE-Manager. This is to load VERSION.Uyuni or VERSION.SUSE-Manager. By default is Uyuni."
   echo ""
 }
 
 PARALLEL_BUILD="FALSE"
+if [ -z ${PRODUCT+x} ];then
+    VPRODUCT="VERSION.Uyuni"
+else
+    VPRODUCT="VERSION.${PRODUCT}"
+fi
 
-while getopts ":d:c:p:n:vthex" opts; do
+while getopts ":d:c:p:P:n:vthex" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
+    P) VPRODUCT="VERSION.${OPTARG}" ;;
     c) CREDENTIALS=${OPTARG};;
     v) VERBOSE="-v";;
     t) TEST="-t";;
@@ -49,6 +54,17 @@ while getopts ":d:c:p:n:vthex" opts; do
   esac
 done
 shift $((OPTIND-1))
+
+HERE=`dirname $0`
+
+if [ ! -f ${HERE}/${VPRODUCT} ];then
+   echo "${VPRODUCT} does not exist"
+   exit 3
+fi
+
+echo "Loading ${VPRODUCT}"
+. ${HERE}/${VPRODUCT}
+GITROOT=`readlink -f ${HERE}/../../../`
 
 if [ "${DESTINATIONS}" == "" ]; then
   echo "ERROR: Mandatory parameter -d is missing!"
