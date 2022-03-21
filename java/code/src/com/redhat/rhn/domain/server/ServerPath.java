@@ -41,10 +41,12 @@ public class ServerPath extends BaseDomainHelper {
     }
 
     /**
+     * @param idIn the server path id
      * @param positionIn the server position in the path chain
      * @param hostnameIn the hostname of the server
      */
-    public ServerPath(Long positionIn, String hostnameIn) {
+    public ServerPath(ServerPathId idIn, Long positionIn, String hostnameIn) {
+        this.id = idIn;
         this.position = positionIn;
         this.hostname = hostnameIn;
     }

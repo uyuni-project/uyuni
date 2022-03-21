@@ -2149,7 +2149,7 @@ public class SystemManager extends BaseManager {
         return () -> new RhnRuntimeException(message);
     }
 
-    private Server getOrCreateProxySystem(User creator, String fqdn) {
+    private Server getOrCreateProxySystem(User creator, String fqdn, Integer port) {
         Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
         if (existing.isPresent()) {
             Server server = existing.get();
@@ -2179,6 +2179,7 @@ public class SystemManager extends BaseManager {
 
         ProxyInfo info = new ProxyInfo();
         info.setServer(server);
+        info.setSshPort(port);
         server.setProxyInfo(info);
 
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
@@ -2190,6 +2191,7 @@ public class SystemManager extends BaseManager {
      *
      * @param user the current user
      * @param proxyName  the FQDN of the proxy
+     * @param proxyPort  the SSH port the proxy listens on
      * @param server the FQDN of the server the proxy uses
      * @param maxCache the maximum memory cache size
      * @param email the email of proxy admin
@@ -2204,7 +2206,7 @@ public class SystemManager extends BaseManager {
      *               Can be omitted if proxyCertKey is not provided
      * @return the configuration file
      */
-    public byte[] createProxyContainerConfig(User user, String proxyName, String server,
+    public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
                                              Long maxCache, String email,
                                              String rootCA, List<String> intermediateCAs,
                                              SSLCertPair proxyCertKey,
@@ -2225,7 +2227,7 @@ public class SystemManager extends BaseManager {
         config.put("max_cache_size_mb", maxCache);
         config.put("email", email);
         config.put("server_version", ConfigDefaults.get().getProductVersion());
-        Server proxySystem = getOrCreateProxySystem(user, proxyName);
+        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
 
         zipOut.putNextEntry(new ZipEntry("config.yaml"));
         zipOut.write(YamlHelper.INSTANCE.dump(config).getBytes());
