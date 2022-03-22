@@ -978,58 +978,74 @@ public class SaltUtils {
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {
-                LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageBuildData");
+                LOG.error("Details not found while performing: " + action.getName() + " in handleImageBuildData");
                 return;
             }
             Long imageProfileId = details.getImageProfileId();
             if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.warn("Image Profile ID not found while performing: "  +
+                LOG.error("Image Profile ID not found while performing: " +
                         action.getName() + " in handleImageBuildData");
                 return;
             }
 
+            boolean isKiwiProfile = false;
             Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
-            profileOpt.ifPresentOrElse(p -> {
-                p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                        // Update the image info and download the built Kiwi image to SUSE Manager server
-                        OSImageBuildImageInfoResult buildInfo =
+            if (profileOpt.isPresent()) {
+                isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
+            }
+            else {
+                LOG.warn("Could not find any profile for profile ID " + imageProfileId);
+            }
+
+            if (isKiwiProfile) {
+                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                    // Update the image info and download the built Kiwi image to SUSE Manager server
+                    OSImageBuildImageInfoResult buildInfo =
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
-                        info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getBundles().get(0).getChecksum()));
-                        info.setName(buildInfo.getImage().getName());
-                        info.setVersion(buildInfo.getImage().getVersion());
+                    // TODO move to ImageFile
+                    //              info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    info.setName(buildInfo.getImage().getName());
+                    info.setVersion(buildInfo.getImage().getVersion());
 
-                        buildInfo.getBundles().stream().forEach(bundle -> {
-                            String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
-                            MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, bundle.getFilepath(), targetPath)
+                    ImageInfoFactory.updateRevision(info);
+
+                    List<List<String>> files = new ArrayList<>();
+                    files.add(List.of(buildInfo.getImage().getFilepath(), buildInfo.getImage().getFilename(), "image"));
+                    buildInfo.getBootImage().ifPresent(f -> {
+                        files.add(List.of(f.getKernel().getFilepath(), f.getKernel().getFilename(), "kernel"));
+                        files.add(List.of(f.getInitrd().getFilepath(), f.getInitrd().getFilename(), "initrd"));
+                    });
+                    files.stream().forEach(file -> {
+                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                                .collectKiwiImage(minionServer, file.get(0), targetPath)
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                            if (collectResult.getReturnCode() != 0) {
-                                 serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                 serverAction.setResultMsg(StringUtils
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
                                     .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                        1024));
-                            }
-                            else {
-                                ImageFile bundleFile = new ImageFile();
-                                bundleFile.setFile(bundle.getFilename());
-                                bundleFile.setType("bundle");
-                                bundleFile.setImageInfo(info);
-                                info.getImageFiles().add(bundleFile);
-                            }
-                        });
+                                            1024));
+                        } else {
+                            ImageFile imagefile = new ImageFile();
+                            imagefile.setFile(file.get(1));
+                            imagefile.setType(file.get(2));
+                            imagefile.setImageInfo(info);
+                            info.getImageFiles().add(imagefile);
+                        }
                     });
                 });
-            }, () -> LOG.warn("Could not find any profile for profile ID " + imageProfileId));
+            }
+            else {
+                ImageInfoFactory.updateRevision(info);
+                if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
+                    ImageInfoFactory.obsoletePreviousRevisions(info);
+                }
+            }
         }
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             // both building and uploading results succeeded
-            ImageInfoFactory.updateRevision(info);
-            if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
-                ImageInfoFactory.obsoletePreviousRevisions(info);
-            }
             info.setBuilt(true);
 
             try {

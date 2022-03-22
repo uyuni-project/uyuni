@@ -33,7 +33,8 @@ public class OSImageInspectSlsResult {
      */
     public static class Image {
 
-        private String hash;
+        @SerializedName("hash")
+        private Checksum checksum;
         private String compression;
         private String compressed_hash;
         private String name;
@@ -44,13 +45,14 @@ public class OSImageInspectSlsResult {
         private String version;
         private String filename;
         private String arch;
+        private String build_id;
         private Long size;
 
         /**
          * @return the hash
          */
-        public String getHash() {
-            return hash;
+        public Checksum getChecksum() {
+            return checksum;
         }
 
         /**
@@ -124,6 +126,13 @@ public class OSImageInspectSlsResult {
         }
 
         /**
+         * @return the build id
+         */
+        public String getId() {
+            return build_id;
+        }
+
+        /**
          * @return the image size
          */
         public Long getSize() {
@@ -147,8 +156,10 @@ public class OSImageInspectSlsResult {
          */
         public static class Kernel {
             private String version;
-            private String hash;
+            @SerializedName("hash")
+            private Checksum checksum;
             private String filename;
+            private String filepath;
             private Long size;
 
             /**
@@ -161,8 +172,8 @@ public class OSImageInspectSlsResult {
             /**
              * @return the hash
              */
-            public String getHash() {
-                return hash;
+            public Checksum getChecksum() {
+                return checksum;
             }
 
             /**
@@ -170,6 +181,13 @@ public class OSImageInspectSlsResult {
              */
             public String getFilename() {
                 return filename;
+            }
+
+            /**
+             * @return the filepath
+             */
+            public String getFilepath() {
+                return filepath;
             }
 
             /**
@@ -220,8 +238,10 @@ public class OSImageInspectSlsResult {
          */
         public static class Initrd {
             private String version;
-            private String hash;
+            @SerializedName("hash")
+            private Checksum checksum;
             private String filename;
+            private String filepath;
             private Long size;
 
             /**
@@ -234,8 +254,8 @@ public class OSImageInspectSlsResult {
             /**
              * @return the hash
              */
-            public String getHash() {
-                return hash;
+            public Checksum getChecksum() {
+                return checksum;
             }
 
             /**
@@ -243,6 +263,13 @@ public class OSImageInspectSlsResult {
              */
             public String getFilename() {
                 return filename;
+            }
+
+            /**
+             * @return the filepath
+             */
+            public String getFilepath() {
+                return filepath;
             }
 
             /**
@@ -387,8 +414,8 @@ public class OSImageInspectSlsResult {
     /**
      * @return the boot image
      */
-    public BootImage getBootImage() {
-        return bootImage;
+    public Optional<BootImage> getBootImage() {
+        return Optional.of(bootImage);
     }
 
     /**

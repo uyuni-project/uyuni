@@ -24,8 +24,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OSImageBuildSlsResult {
 
-    // used for old salt 2016.11 dockerng module
-    @SerializedName("mgrcompat_|-mgr_buildimage_info_|-kiwi_info.image_details_|-module_run")
+     @SerializedName("mgrcompat_|-mgr_buildimage_info_|-kiwi_info.build_info_|-module_run")
     private StateApplyResult<Ret<OSImageBuildImageInfoResult>> kiwiBuildInfo;
 
     /**
