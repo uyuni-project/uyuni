@@ -1356,19 +1356,22 @@ Given(/^I prepare Cobbler for the buildiso command$/) do
   tmp_dir = "/var/cache/cobbler/buildiso"
   $server.run("mkdir -p #{tmp_dir}")
   # we need bootloaders for the buildiso command
-  $server.run("cobbler mkloaders")
+  _out, code = $server.run("cobbler mkloaders")
+  raise 'error in cobbler mkloaders, check the Cobbler logs' if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)"$/) do |distro|
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
-  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}")
+  _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}")
+  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
-  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_single.iso --distro=#{distro} --profile=#{profile}")
+  _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}")
+  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
@@ -1380,5 +1383,18 @@ When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distr
   source_dir = "/var/cache/cobbler/source_#{param}"
   $server.run("mv #{tmp_dir} #{source_dir}")
   $server.run("mkdir -p #{tmp_dir}")
-  $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}")
+  _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}")
+  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
+end
+
+And(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
+  tmp_dir = "/var/cache/cobbler"
+  _out, code = $server.run("cat >#{tmp_dir}/test_image <<-EOF
+BIOS
+UEFI
+EOF")
+  _out, code = $server.run("xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null | awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}' >>#{tmp_dir}/xorriso_#{name}")
+  raise 'error while executing xorriso' if code.nonzero?
+  _out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
+  raise 'error in verifying Cobbler buildiso image with xorriso' if code.nonzero?
 end
