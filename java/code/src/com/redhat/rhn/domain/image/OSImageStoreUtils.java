@@ -48,7 +48,8 @@ public class OSImageStoreUtils {
         if (!image.getStore().getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
             throw new IllegalArgumentException("Image store is not OS Image Store");
         }
-        return getOSImageStorePathForOrg(image.getOrg());
+        return getOSImageStorePathForOrg(image.getOrg()) + "/" +
+                image.getName() + "-" + image.getVersion() + "-" + image.getRevisionNumber() + "/";
     }
 
     /**
@@ -81,7 +82,7 @@ public class OSImageStoreUtils {
     }
 
     /**
-     * Returns a OS Image Store URI relative to the server's domain name for an Org
+     * Returns an OS Image Store URI relative to the server's domain name for an Org
      *
      * @param org the org associated with the Image Store
      * @return the relative URI for the Org
@@ -113,7 +114,9 @@ public class OSImageStoreUtils {
         if (file.isExternal()) {
             return file.getFile();
         }
-        return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + file.getFile();
+        ImageInfo info = file.getImageInfo();
+        String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+        return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + imageDir + file.getFile();
     }
 
     /**

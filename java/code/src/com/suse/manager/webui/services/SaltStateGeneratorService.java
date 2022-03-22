@@ -34,6 +34,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.Org;
@@ -98,31 +99,30 @@ public enum SaltStateGeneratorService {
     /**
      * Generate OS Image specific pillar used in terminals
      * @param image the OS image resulting image from an inspection
-     * @param bundle the OS image bundle resulting image from an inspection
      * @param bootImage the OS image boot image resulting image from an inspection
      * @param imageInfo the image info
      */
-    public void generateOSImagePillar(OSImageInspectSlsResult.Image image, OSImageInspectSlsResult.Bundle bundle,
-                OSImageInspectSlsResult.BootImage bootImage, ImageInfo imageInfo) {
+    public void generateOSImagePillar(OSImageInspectSlsResult.Image image,
+                Optional<OSImageInspectSlsResult.BootImage> bootImage, ImageInfo imageInfo) {
             SaltPillar pillar = new SaltPillar();
-            String name = image.getName();
-            String version = image.getVersion();
+            String name = imageInfo.getName();
+            String version = imageInfo.getVersion();
             Integer revision = imageInfo.getRevisionNumber();
             String bootImageName = name + "-" + version;
-            String localPath = "image/" + bundle.getBasename() + "-" + bundle.getId();
-            String bootLocalPath = bundle.getBasename() + "-" + bundle.getId();
+            String localPath = "image/" + image.getBasename() + "-" + revision;
+            String bootLocalPath = image.getBasename() + "-" + revision;
+            Set<ImageFile> files = imageInfo.getImageFiles();
 
-            Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName,
-                                                                          localPath, bootLocalPath);
-
-            String urlBase = OSImageStoreUtils.getOSImageStoreURIForOrg(imageInfo.getOrg());
-            Map<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase,
-                                                                  name, version, revision, localPath);
-            pillar.add("boot_images", bootImagePillar);
+            Map<String, Object> imagePillar = generateImagePillar(image, imageInfo , name, version, revision, localPath);
             pillar.add("images", imagePillar);
+            if (bootImage.isPresent()) {
+                Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage.get(), bootImageName,
+                        imageInfo, localPath, bootLocalPath);
+                pillar.add("boot_images", bootImagePillar);
+            }
 
             for (File f : Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).toFile().listFiles()) {
-                if (f.getName().startsWith(PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + bundle.getBasename())) {
+                if (f.getName().startsWith(PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + image.getBasename())) {
                     f.delete();
                 }
             }
@@ -132,44 +132,42 @@ public enum SaltStateGeneratorService {
             imageInfo.setPillar(pillarEntry);
     }
 
-    private Map<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image,
-                                                    OSImageInspectSlsResult.Bundle bundle,
-                                                    OSImageInspectSlsResult.BootImage bootImage, String urlBase,
+    private Map<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image, ImageInfo imageInfo,
                                                     String name, String version, Integer revision, String localPath) {
         Map<String, Object> imagePillar = new TreeMap<>();
         Map<String, Object> imagePillarBase = new TreeMap<>();
         Map<String, Object> imagePillarDetails = new TreeMap<>();
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
-        imagePillarDetailsSync.put("bundle_hash", bundle.getChecksum().getChecksum());
-        imagePillarDetailsSync.put("bundle_url", urlBase + "/" + bundle.getFilename());
+        // TODO handle missing cases
+        ImageFile imageFile = imageInfo.getImageFiles().stream().filter(f -> f.getType() == "image").findFirst().get();
+
+        imagePillarDetailsSync.put("hash", image.getChecksum().getChecksum());
+        imagePillarDetailsSync.put("url", OSImageStoreUtils.getOSImageFileURI(imageFile));
         imagePillarDetailsSync.put("local_path", localPath);
 
         imagePillarDetails.put("arch", image.getArch());
-        imagePillarDetails.put("basename", image.getBasename());
         imagePillarDetails.put("boot_image", name + "-" + version);
         if (image.getCompression() != null) {
             imagePillarDetails.put("compressed", image.getCompression());
             imagePillarDetails.put("compressed_hash", image.getCompressedHash());
         }
-        imagePillarDetails.put("filename", image.getFilename());
-        imagePillarDetails.put("filepath", image.getFilepath());
+        imagePillarDetails.put("filename", imageFile.getFile());
         imagePillarDetails.put("fstype", image.getFstype());
-        imagePillarDetails.put("hash", image.getHash());
+        imagePillarDetails.put("hash", image.getChecksum().getChecksum());
         imagePillarDetails.put("inactive", Boolean.FALSE);
-        imagePillarDetails.put("name", image.getName());
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" + image.getFilename());
+        imagePillarDetails.put("url", "http://ftp/" + localPath + "/" + imageFile.getFile());
 
         imagePillarBase.put(version + "-" + revision, imagePillarDetails);
-        imagePillar.put(name, imagePillarBase);
+        imagePillar.put(imageInfo.getName(), imagePillarBase);
         return imagePillar;
     }
 
     private Map<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
-                                                        String bootImageName,
+                                                        String bootImageName, ImageInfo imageInfo,
                                                         String systemLocalPath, String bootLocalPath) {
         Map<String, Object> bootImagePillar = new TreeMap<>();
         Map<String, Object> bootImagePillarBase = new TreeMap<>();
@@ -177,26 +175,28 @@ public enum SaltStateGeneratorService {
         Map<String, Object> bootImagePillarKernel = new TreeMap<>();
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
+        // TODO handle missing cases
+        ImageFile kernelFile = imageInfo.getImageFiles().stream().filter(f -> f.getType() == "kernel").findFirst().get();
+        ImageFile initrdFile = imageInfo.getImageFiles().stream().filter(f -> f.getType() == "initrd").findFirst().get();
+
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());
         bootImagePillarBase.put("name", bootImage.getName());
 
         bootImagePillarInitrd.put("filename", bootImage.getInitrd().getFilename());
-        bootImagePillarInitrd.put("hash", bootImage.getInitrd().getHash());
+        bootImagePillarInitrd.put("hash", bootImage.getInitrd().getChecksum().getChecksum());
         bootImagePillarInitrd.put("size", bootImage.getInitrd().getSize());
         bootImagePillarInitrd.put("version", bootImage.getInitrd().getVersion());
-        bootImagePillarInitrd.put("url", "http://ftp/saltboot/boot/" + bootLocalPath + '/' +
-                bootImage.getInitrd().getFilename());
 
         bootImagePillarKernel.put("filename", bootImage.getKernel().getFilename());
-        bootImagePillarKernel.put("hash", bootImage.getKernel().getHash());
+        bootImagePillarKernel.put("hash", bootImage.getKernel().getChecksum().getChecksum());
         bootImagePillarKernel.put("size", bootImage.getKernel().getSize());
         bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
-        bootImagePillarKernel.put("url", "http://ftp/saltboot/boot/" + bootLocalPath + '/' +
-                bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
+        bootImagePillarSync.put("kernel_url", OSImageStoreUtils.getOSImageFileURI(kernelFile));
         bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' + bootImage.getKernel().getFilename());
+        bootImagePillarSync.put("initrd_url", OSImageStoreUtils.getOSImageFileURI(initrdFile));
         bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' + bootImage.getInitrd().getFilename());
 
         bootImagePillarBase.put("initrd", bootImagePillarInitrd);
