@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-21 22:13+0000\n"
+"POT-Creation-Date: 2022-03-22 20:13+0000\n"
 "PO-Revision-Date: 2022-03-22 20:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -916,7 +916,7 @@ msgid "Updates Configured"
 msgstr "Es van configurar les actualitzacions"
 
 #: ../src/up2date_client/rhnreg_constants.py:157
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "You may now run '%s update' from this system's command line to get the "
 "latest software updates from {PRODUCT_NAME}. You will need to run this "
@@ -945,7 +945,7 @@ msgid "Please review the subscription details below:"
 msgstr "Reviseu a sota els detalls de la subscripció:"
 
 #: ../src/up2date_client/rhnreg_constants.py:170
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "The installation number %s was activated during this system's initial "
 "connection to {PRODUCT_NAME}."
@@ -1113,7 +1113,7 @@ msgstr ""
 "tornar a connectar-lo a {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Universal default activation key detected\n"
 "A universal default activation key was detected in your account. This means "
@@ -1141,7 +1141,7 @@ msgid "Fatal Error"
 msgstr "Error fatal"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "We can't contact {PRODUCT_NAME}.\n"
 "\n"
@@ -1178,7 +1178,7 @@ msgstr ""
 "intentar amb un servidor més nou."
 
 #: ../src/up2date_client/rhnreg_constants.py:260
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
