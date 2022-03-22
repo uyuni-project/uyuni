@@ -77,6 +77,7 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -136,6 +137,10 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import org.cobbler.CobblerConnection;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -1232,10 +1237,19 @@ public class SaltUtils {
                 packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
                         Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                         Optional.of(pkg.getArch()), imageInfo));
-                if ("pxe".equals(ret.getImage().getType())) {
-                    // assuming there is only one file in the bundle
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundles().get(0),
-                            ret.getBootImage(), imageInfo);
+                SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
+                        ret.getBootImage(), imageInfo);
+                if (ret.getBootImage().isPresent()) {
+                    CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+                    String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
+                    String initrd = pathPrefix + "/" + ret.getBootImage().get().getInitrd().getFilename();
+                    String kernel = pathPrefix + "/" + ret.getBootImage().get().getKernel().getFilename();
+                    String name = ret.getImage().getName() + "-" + ret.getImage().getVersion() + "-" + imageInfo.getRevisionNumber();
+                    // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
+                    Distro cd = new Distro.Builder().setName(name)
+                            .setInitrd(initrd).setKernel(kernel)
+                            .setKernelOptions("panic=60 splash=silent")
+                            .setArch(ret.getImage().getArch()).setBreed("generic").build(con);
                 }
             }
             else {
