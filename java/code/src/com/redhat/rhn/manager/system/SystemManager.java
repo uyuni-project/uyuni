@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -2161,6 +2162,7 @@ public class SystemManager extends BaseManager {
         Server server = ServerFactory.createServer();
         server.setName(fqdn);
         server.setHostname(fqdn);
+        server.getFqdns().add(new ServerFQDN(server, fqdn));
         server.setOrg(creator.getOrg());
         server.setCreator(creator);
 
