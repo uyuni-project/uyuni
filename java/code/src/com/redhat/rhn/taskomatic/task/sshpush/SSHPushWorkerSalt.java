@@ -156,7 +156,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
 
         Optional<Map<String, String>> confValues = pendingResume.get(minion.getMinionId()).fold(err -> {
-                    log.error("mgractionchains.get_pending_resume failed: " + err.fold(
+                    log.error("mgractionchains.get_pending_resume failed for ssh minion: " + err.fold(
                             Object::toString,
                             Object::toString,
                             Object::toString,
