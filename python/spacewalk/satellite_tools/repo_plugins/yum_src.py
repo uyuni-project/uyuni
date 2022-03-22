@@ -80,6 +80,17 @@ RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-f
 APACHE_USER = 'wwwrun'
 APACHE_GROUP = 'www'
 
+
+# Monkey Patch 'urlgrabber.grabber' method 'find_proxy' to enforce type string for variable 'scheme'
+# Workaround due to wrong byte/string handling in 'urlgrabber' package
+# Required by reposync to connect through http_proxy as configured
+def find_proxy(self, url, scheme):
+    urlgrabber_find_proxy(self, url, scheme.decode('utf-8'))
+
+urlgrabber_find_proxy = urlgrabber.grabber.URLGrabberOptions.find_proxy
+urlgrabber.grabber.URLGrabberOptions.find_proxy = find_proxy
+
+
 class ZyppoSync:
     """
     This class prepares a environment for running Zypper inside a dedicated reposync root
