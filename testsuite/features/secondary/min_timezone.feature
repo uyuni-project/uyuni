@@ -4,7 +4,7 @@
 @sle_minion
 Feature: Correct timezone display 
 #  1) create a user and assign him a timezone different than the server's timezone
-#  2) test that the popups in some scheduling actions appear in users prefered timezone 
+#  2) test that the popups in some scheduling actions appear in user's prefered timezone 
 #  3) some scheduler tests based on previous bugs are unavoidable
 
   Scenario: Log in as admin user
@@ -38,9 +38,8 @@ Feature: Correct timezone display
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-#bsc#1195455, a P3 bug not fixed yet, 
   Scenario: Schedule a remote script in the future and see the correct timezone as a pop up
-		Given I am on the Systems overview page of this "sle_minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -49,15 +48,14 @@ Feature: Correct timezone display
       """
     And I enter "00:00" as "date_timepicker_widget_input"
     And I click on "Schedule"
-    #WORKAROUND If the below line gets red, they probably fixed the bug, then remove AM from the text
+    # WORKAROUND for bsc #1195455, If the below line gets red, they probably fixed the bug, then we should remove AM from the below text
     Then I should see a "12:00:00 AM MYT" text
     
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-#bsc#1195191, a P3 bug not fixed yet 
-  Scenario: Schuedule a remote script to run now  and see the correct timezone details in history
+  Scenario: Schedule a remote script to run now  and see the correct timezone details in history
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
@@ -66,12 +64,12 @@ Feature: Correct timezone display
       ls
       """
     And I click on "Schedule"
-    When I follow "Events" in the content area
+    And I follow "Events" in the content area
     And I follow "History" in the content area
-    When I follow first "scheduled by MalaysianUser"
+    And I follow first "scheduled by MalaysianUser"
     Then I should see a "MYT" text
-    #WORKAROUND remove the comment from the below line if its fixed
-    #And I should not see a "PM" text
+    # WORKAROUND for bsc #1195191, the below line is commented out but if the bug is fixed we should enable it. 
+    # And I should not see a "PM" text
     
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
