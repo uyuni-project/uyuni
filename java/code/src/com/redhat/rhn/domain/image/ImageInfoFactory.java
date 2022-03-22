@@ -30,6 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
@@ -512,7 +513,11 @@ public class ImageInfoFactory extends HibernateFactory {
     public static com.redhat.rhn.domain.common.Checksum convertChecksum(
             Checksum dockerChecksum) {
         String checksumType = "sha256";
-        if (dockerChecksum instanceof SHA1Checksum) {
+
+        if (dockerChecksum instanceof MD5Checksum) {
+            checksumType = "md5";
+        }
+        else if (dockerChecksum instanceof SHA1Checksum) {
             checksumType = "sha1";
         }
         else  if (dockerChecksum instanceof SHA256Checksum) {
@@ -535,6 +540,8 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
+        case "md5":
+            return new MD5Checksum(checksum.getChecksum());
         case "sha1":
             return new SHA1Checksum(checksum.getChecksum());
         case "sha256":

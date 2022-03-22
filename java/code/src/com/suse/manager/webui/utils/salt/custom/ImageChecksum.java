@@ -30,6 +30,26 @@ public class ImageChecksum {
     }
 
     /**
+     * MD5Checksum
+     */
+    public static class MD5Checksum implements Checksum {
+        private String checksum;
+
+        public MD5Checksum(String checksumIn) { checksum = checksumIn; }
+
+        @Override
+        public String getChecksum() { return checksum; }
+
+        /**
+         * @return checksum with type
+         */
+        @Override
+        public String toString() {
+            return "md5:" + checksum;
+        }
+    }
+
+    /**
      * SHA1Checksum
      */
     public static class SHA1Checksum implements Checksum {
