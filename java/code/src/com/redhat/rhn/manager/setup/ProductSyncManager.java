@@ -65,7 +65,8 @@ import java.util.stream.Collectors;
 public class ProductSyncManager {
 
     /** The logger. */
-    protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
+    private static final Logger LOGGER = Logger.getLogger(ProductSyncManager.class);
+    private static final LocalizationService L10NSERVICE = LocalizationService.getInstance();
 
     /**
      * Returns a list of base products.
@@ -107,6 +108,7 @@ public class ProductSyncManager {
      * @return a map of added products and an error message if any
      */
     public Map<String, Optional<? extends Exception>> addProducts(List<String> productIdents, User user) {
+        List<SetupWizardProductDto> baseProducts = getBaseProducts();
         // Extract the ids from the identifiers
         final List<Long> productsId = productIdents.stream().map(
             // Ident are in the form 'product_id-label'. If the product id is negative, the ident starts with a minus,
@@ -124,8 +126,14 @@ public class ProductSyncManager {
 
         return productIdents.stream().collect(Collectors.toMap(
             ident -> ident,
-            ident -> Exceptions.handleByReturning(() -> addProduct(ident, user, productTreeMap, conflictsMap)))
-        );
+            ident -> Exceptions.handleByReturning(() -> {
+                SetupWizardProductDto product = findProductByIdent(ident, baseProducts);
+                if (product == null) {
+                    throw new ProductSyncException(L10NSERVICE.getMessage("setup.product.error.notfound", ident));
+                }
+                addProduct(product, user, productTreeMap, conflictsMap);
+            })
+            ));
     }
 
     /**
@@ -170,31 +178,25 @@ public class ProductSyncManager {
 
     /**
      * Adds the product.
-     * @param productIdent the product ident
+     * @param product the SUSE Product as it is shown in the Setup Wizard UI
      * @param user the current user
      * @param productTreeMap the map representing the tree structure of the products
      * @param conflictsMap the map of conflicts
      * @throws ProductSyncException if an error occurred
      */
-    private void addProduct(String productIdent, User user, Map<Long, Long> productTreeMap,
+    private void addProduct(SetupWizardProductDto product, User user, Map<Long, Long> productTreeMap,
                             Map<Long, List<String>> conflictsMap) throws ProductSyncException {
-
-        SetupWizardProductDto product = findProductByIdent(productIdent);
-        LocalizationService l10nService = LocalizationService.getInstance();
-        if (product == null) {
-            throw new ProductSyncException(l10nService.getMessage("setup.product.error.notfound", productIdent));
-        }
 
         List<String> conflicts = conflictsMap.get(product.getId());
         if (conflicts != null) {
-            throw new ProductSyncException(l10nService.getMessage("setup.product.error.labelconflict", conflicts));
+            throw new ProductSyncException(L10NSERVICE.getMessage("setup.product.error.labelconflict", conflicts));
         }
         else {
             // Evaluate parent conflicts
             Long parentId = productTreeMap.get(product.getId());
             while (parentId != null) {
                 if (conflictsMap.containsKey(parentId)) {
-                    throw new ProductSyncException(l10nService.getMessage("setup.product.error.parentconflict"));
+                    throw new ProductSyncException(L10NSERVICE.getMessage("setup.product.error.parentconflict"));
                 }
 
                 parentId = productTreeMap.get(parentId);
@@ -206,13 +208,13 @@ public class ProductSyncManager {
             // Add the channels first
             ContentSyncManager csm = new ContentSyncManager();
             for (Channel channel : product.getMandatoryChannels()) {
-                LogMF.debug(logger, "Add channel: {}", channel.getLabel());
+                LogMF.debug(LOGGER, "Add channel: {}", channel.getLabel());
                 csm.addChannel(channel.getLabel(), null);
                 channelsToSync.add(channel.getLabel());
             }
 
             for (Channel iuc : product.getInstallerUpdateChannels()) {
-                LogMF.debug(logger, "Add installer update channel: {}", iuc.getLabel());
+                LogMF.debug(LOGGER, "Add installer update channel: {}", iuc.getLabel());
                 csm.addChannel(iuc.getLabel(), null);
                 channelsToSync.add(iuc.getLabel());
             }
@@ -221,7 +223,7 @@ public class ProductSyncManager {
             MessageQueue.publish(event);
         }
         catch (ContentSyncException ex) {
-            throw new ProductSyncException(l10nService.getMessage("setup.product.error.unknown"), ex);
+            throw new ProductSyncException(L10NSERVICE.getMessage("setup.product.error.unknown"), ex);
         }
     }
 
@@ -250,19 +252,19 @@ public class ProductSyncManager {
             }
 
             if (channelStatus.isNotMirrored()) {
-                logger.debug("Channel not mirrored: " + c.getLabel());
+                LOGGER.debug("Channel not mirrored: " + c.getLabel());
                 notMirroredCounter++;
             }
             else if (channelStatus.isFinished()) {
-                logger.debug("Channel finished: " + c.getLabel());
+                LOGGER.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
             else if (channelStatus.isFailed()) {
-                logger.debug("Channel failed: " + c.getLabel());
+                LOGGER.debug("Channel failed: " + c.getLabel());
                 failedCounter++;
             }
             else {
-                logger.debug("Channel in progress: " + c.getLabel());
+                LOGGER.debug("Channel in progress: " + c.getLabel());
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
@@ -343,8 +345,8 @@ public class ProductSyncManager {
 
                 // Set the status and debug info
                 String runStatus = run.getStatus();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Repo sync run found for channel " + c.getLabel() +
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Repo sync run found for channel " + c.getLabel() +
                             " (" + runStatus + ")");
                 }
 
@@ -420,7 +422,7 @@ public class ProductSyncManager {
             ret = Long.parseLong(channelIdString);
         }
         catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return ret;
     }
@@ -497,8 +499,8 @@ public class ProductSyncManager {
      * @param ident ident of a product
      * @return the {@link SetupWizardProductDto}
      */
-    private SetupWizardProductDto findProductByIdent(String ident) {
-        for (SetupWizardProductDto p : getBaseProducts()) {
+    private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> baseProduct) {
+        for (SetupWizardProductDto p : baseProduct) {
             if (p.getIdent().equals(ident)) {
                 return p;
             }
