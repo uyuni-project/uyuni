@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
+import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 
@@ -291,7 +292,7 @@ public class UbuntuErrataManager {
                         .collect(Collectors.toSet());
                 if (errata.getPackages() == null) {
                     errata.setPackages(packages);
-                        changedErrata.add(errata);
+                    changedErrata.add(errata);
                 }
                 else if (errata.getPackages().addAll(packages)) {
                     changedErrata.add(errata);
@@ -313,11 +314,13 @@ public class UbuntuErrataManager {
             });
         }).forEach(ErrataFactory::save));
 
-            // add changed errata to notification queue
-            changedErrata.stream()
-                .forEach(e -> {
-                    LOG.info("add errata to notification queue");
-                    e.addNotification(new Date());
-                });
+        // add changed errata to notification queue
+        Map<Long, List<Long>> errataToChannels = changedErrata.stream().collect(
+                Collectors.toMap(
+                        e -> e.getId(),
+                        e -> e.getChannels().stream().map(c -> c.getId()).collect(Collectors.toList())
+                        )
+                );
+        ErrataManager.bulkErrataNotification(errataToChannels, new Date());
     }
 }
