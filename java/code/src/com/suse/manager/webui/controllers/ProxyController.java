@@ -111,8 +111,8 @@ public class ProxyController {
      * @param jade Jade template engine
      */
     public static void initRoutes(ProxyController proxyController, JadeTemplateEngine jade) {
-        get("/manager/proxy/container-based-config",
-                withCsrfToken(withDocsLocale(withUser(proxyController::containerBasedConfig))), jade);
+        get("/manager/proxy/container-config",
+                withCsrfToken(withDocsLocale(withUser(proxyController::containerConfig))), jade);
     }
 
     /**
@@ -123,9 +123,8 @@ public class ProxyController {
      * @param userIn the user
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView containerBasedConfig(Request requestIn, Response responseIn, User userIn) {
+    public ModelAndView containerConfig(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
-        data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
-        return new ModelAndView(data, "templates/proxy/container-based-config.jade");
+        return new ModelAndView(data, "templates/proxy/container-config.jade");
     }
 }

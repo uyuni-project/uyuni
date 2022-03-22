@@ -1,3 +1,3 @@
 export default {
-  "proxy/container-based-config": () => import("./container-based-config"),
+  "proxy/container-config": () => import("./container-config.renderer"),
 };
