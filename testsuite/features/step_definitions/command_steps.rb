@@ -1553,7 +1553,7 @@ When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |chan
 end
 
 When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  $server.run("inter-server-sync exportconfig --labels=#{channel} --outputDir=#{path}")
+  $server.run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}")
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
