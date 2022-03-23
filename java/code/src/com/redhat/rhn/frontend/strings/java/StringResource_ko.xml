@@ -11049,134 +11049,134 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">선택적 OVAL  파일(쉼표로 구분)</target>
       </trans-unit>
-    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
         <source>Credentials successfully updated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
+        <target state="final">자격 증명 업데이트됨</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
         <source>Waiting to be processed.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
+        <target state="final">처리하기 위해 대기하는 중입니다.</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
         <source>Error getting instance data: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
+        <target state="final">인스턴스 데이터를 가져오는 중 오류: {0}</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve">
+        <target state="final">인증 데이터를 추출하는 동안 알 수 없는 오류가 발생했습니다. /var/log/rhn/에서 로그를 확인하십시오.</target>
+      </trans-unit>
+      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
         <source>Description is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve">
+        <target state="final">설명은 필수입니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
         <source>Description must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve">
+        <target state="final">설명은 255자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
         <source>Host is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve">
+        <target state="final">호스트는 필수입니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
         <source>Host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve">
+        <target state="final">호스트는 255자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve">
+        <target state="final">포트의 값이 잘못됨</target>
+      </trans-unit>
+      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve">
+        <target state="final">사용자 이름은 필수입니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve">
+        <target state="final">사용자 이름은 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve">
+        <target state="final">비밀번호는 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
+        <target state="final">SSH 개인 키 암호 구문은 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
         <source>Bastion host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve">
+        <target state="final">베스천은 255자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
         <source>Bastion host is required if any other bastion property is set.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
+        <target state="final">다른 베스천 속성이 설정된 경우 베스천 호스트는 필수입니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the bastion port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve">
+        <target state="final">베스천 포트의 값이 잘못됨</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
+        <target state="final">사용자 이름은 필수입니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
+        <target state="final">사용자 이름은 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
+        <target state="final">비밀번호는 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve">
+        <target state="final">베스천 SSH 개인 키 암호 구문은 32자 이하여야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve">
+        <target state="final">용량제 {0} 생성됨</target>
+      </trans-unit>
+      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go host already exists</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
+        <target state="final">용량제 호스트 이미 있음</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} deleted successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
+        <target state="final">용량제 {0} 삭제됨</target>
+      </trans-unit>
+      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <target state="final">다음에서 인증 데이터 업데이트 중 오류: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go authentication update</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <target state="final">용량제 인증 업데이트</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go update RMT hosts</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <target state="final">용량제 업데이트 RMT 호스트</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
         <source>Product data needs refresh.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <target state="final">제품 데이터를 새로 고쳐야 합니다.</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
         <source>Product cannot be found: missing identifier {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <target state="final">제품을 찾을 수 없음: {0} 식별자 누락.</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
         <source>There are conflicting channel labels {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <target state="final">충돌하는 채널 레이블 {0}이(가) 있습니다.</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
         <source>A parent product conflicts with existing channels.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <target state="final">상위 제품이 기존 채널과 충돌합니다.</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
         <source>Unexpected error while adding the product.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <target state="final">제품을 추가하는 동안 예기치 않은 오류가 발생했습니다.</target>
+      </trans-unit>
+      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">지정된 CVE 번호를 데이터베이스에서 찾을 수 없습니다. 이 CVE에 대한 자세한 내용은 아래에서 제공되는 링크에서 확인할 수 있습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
