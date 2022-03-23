@@ -6,22 +6,23 @@ echo "============================================================"
 echo "                      Migration test ReportDB               "
 echo "============================================================"
 
+SCRIPT=$(basename ${0})
 usage_and_exit() {
-    echo "Usage: $0 schema_rpms"
+    echo "Usage: ${1} schema_rpms"
     exit 2
 }
 
-if [ $# -ne 1 ];then
-    echo "Missing parameters: $1"
-    usage_and_exit
+if [ ${#} -ne 1 ];then
+    echo "Missing parameters"
+    usage_and_exit ${SCRIPT}
 fi
 
-schema_rpms=$1
+schema_rpms=${1}
 
 for i in ${schema_rpms};do
     if [ ! -f /root/${i} ];then
         echo "RPM /root/${i} does not exists"
-        usage_and_exit
+        usage_and_exit ${SCRIPT}
     fi
 done
 
