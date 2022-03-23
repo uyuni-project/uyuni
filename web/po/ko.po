@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-01-25 07:11+0000\n"
+"PO-Revision-Date: 2022-03-23 05:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -64,21 +64,19 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:265
 msgid "Expand All Sections"
-msgstr ""
+msgstr "전체 섹션 확장"
 
 #: ../html/src/components/FormulaForm.tsx:272
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "전체 섹션 축소"
 
 #: ../html/src/components/FormulaForm.tsx:337
-#, fuzzy
 msgid "Unnamed"
-msgstr "사용자 이름"
+msgstr "이름 없음"
 
 #: ../html/src/components/FormulaForm.tsx:346
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "수식 이름을 기준으로 필터링"
+msgstr "수식 그룹 이름을 기준으로 검색"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -906,11 +904,11 @@ msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:39
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "새 용량제 SSH 연결 데이터 추가"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "용량제 SSH 데이터 추가"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:47
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -932,9 +930,8 @@ msgid "Create"
 msgstr "만들기"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:68
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "제품 설명"
+msgstr "용량제 연결 설명"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:71
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -951,13 +948,12 @@ msgid "Description"
 msgstr "설명"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:75
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "인스턴스가 오래됨"
+msgstr "인스턴스 SSH 연결 데이터"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:80
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "베스천 SSH 연결 데이터"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:266
@@ -989,9 +985,8 @@ msgid "Status"
 msgstr "상태"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "데이터 상태 일치"
+msgstr "최신 업데이트 상태"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -1000,7 +995,7 @@ msgstr "안 함"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "용량제 추가"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1019,14 +1014,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "프로젝트 속성 업데이트됨"
+msgstr "용량제 속성 업데이트됨"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "추가 정보"
+msgstr "정보 편집"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -1034,18 +1027,16 @@ msgid "Editing properties.."
 msgstr "속성을 편집하는 중..."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "시작 날짜"
+msgstr "최신 상태 업데이트"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
-#, fuzzy
 msgid "Edit "
-msgstr "편집"
+msgstr "편집 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "SSH 연결 데이터 편집 중..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
@@ -1073,18 +1064,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "찾고 있는 프로젝트가 없거나 삭제되었습니다."
+msgstr "찾고 있는 인스턴스가 없거나 삭제되었습니다."
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "'{0}'용 인스턴스 세부 사항"
+msgstr "인스턴스 호스트 이름: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:74
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "용량제 삭제"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/content-management/project/project.tsx:113
@@ -1448,11 +1437,11 @@ msgstr "감사 이미지"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "MITRE CVE 링크"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "SUSE 보안 CVE 링크"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -2533,7 +2522,6 @@ msgid "Versions history"
 msgstr "버전 기록"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "새 기본 채널"
 
@@ -2556,14 +2544,12 @@ msgid "Clear Search"
 msgstr "검색 지우기"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "이 채널이 권장됩니다."
+msgstr "이 채널은 필수입니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "이 채널이 권장됩니다."
+msgstr "이 채널은 다음에서 필수입니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -3965,7 +3951,7 @@ msgstr "상태 적용 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "용량제 새로 고침 인증 데이터 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
