@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-23 05:14+0000\n"
-"PO-Revision-Date: 2021-11-09 09:11+0000\n"
+"PO-Revision-Date: 2022-03-23 09:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2199,7 +2199,7 @@ msgstr "发现缺少 %s 个组，正在终止"
 #. assume old backup, not in json format. Read complete file as string
 #: ../src/spacecmd/group.py:383
 msgid "Assuming group to be in old plain text format"
-msgstr ""
+msgstr "假设组采用旧的纯文本格式"
 
 #: ../src/spacecmd/group.py:395
 #, python-format
@@ -2221,12 +2221,12 @@ msgstr "正在更新组的说明：%s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
+msgstr "是否基于备份更新公式数据？[y/N]："
 
 #: ../src/spacecmd/group.py:416
-#, fuzzy, python-format
+#, python-format
 msgid "Updating data for group: %s"
-msgstr "正在更新组的说明：%s"
+msgstr "正在更新组 %s 的数据"
 
 #: ../src/spacecmd/group.py:424
 #, python-format
@@ -3642,12 +3642,10 @@ msgid "Miss"
 msgstr "小姐"
 
 #: ../src/spacecmd/org.py:128
-#, fuzzy
 msgid "org_createfirst: Create first organization and user after server setup"
-msgstr "org_create：创建组织"
+msgstr "org_createfirst：设置服务器后创建第一个组织并使用"
 
 #: ../src/spacecmd/org.py:129
-#, fuzzy
 msgid ""
 "usage: org_createfirst [options])\n"
 "\n"
@@ -3659,17 +3657,15 @@ msgid ""
 "  -e EMAIL\n"
 "  -p PASSWORD"
 msgstr ""
-"用法：org_create [选项])\n"
+"用法：org_createfirst [选项])\n"
 "\n"
 "选项：\n"
 "  -n 组织名称\n"
 "  -u 用户名\n"
-"  -P 前缀 (%s)\n"
 "  -f 名字\n"
 "  -l 姓氏\n"
 "  -e 电子邮件地址\n"
-"  -p 口令\n"
-"  --pam 启用 PAM 身份验证"
+"  -p 口令"
 
 #: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
@@ -8029,7 +8025,7 @@ msgstr "已安排操作 ID： "
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
-msgstr ""
+msgstr "system_bootstrap：引导系统以通过 Salt 或 Salt SSH 进行管理。"
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8048,75 +8044,82 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"用法：bootstrap [选项]\n"
+"\n"
+"    选项：\n"
+"        -H 主机名\n"
+"        -p SSH 端口\n"
+"        -u SSH 用户名\n"
+"        -P SSH 口令\n"
+"        -k SSH 私用密钥路径\n"
+"        -S SSH 私用密钥口令\n"
+"        -a 激活密钥\n"
+"        -r 重新激活密钥\n"
+"        --proxyid 代理系统 ID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "主机名：%s"
+msgstr "主机名："
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "端口 [22]："
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "用户 [root]："
+msgstr "SSH 用户 [root]："
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "口令： "
+msgstr "SSH 口令："
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "SSH 私用密钥文件："
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "SSH 私用密钥口令："
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "激活密钥"
+msgstr "激活密钥："
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "激活密钥"
+msgstr "重新激活密钥："
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  系统 ID"
+msgstr "代理系统 ID："
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "使用 Salt SSH 管理"
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# 必须提供系统 ID。"
+msgstr "必须提供主机名"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "必须提供 SSH 口令或私用密钥"
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr ""
+msgstr "服务器在引导时不支持重新激活密钥"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr ""
+msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
-msgstr ""
+msgstr "已成功完成初始阶段。对于仍在运行的操作，请查看事件历史记录"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
