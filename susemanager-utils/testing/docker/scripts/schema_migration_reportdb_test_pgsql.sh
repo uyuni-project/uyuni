@@ -6,6 +6,25 @@ echo "============================================================"
 echo "                      Migration test ReportDB               "
 echo "============================================================"
 
+usage_and_exit() {
+    echo "Usage: $0 schema_rpms"
+    exit 2
+}
+
+if [ $# -ne 1 ];then
+    echo "Missing parameters: $1"
+    usage_and_exit
+fi
+
+schema_rpms=$1
+
+for i in ${schema_rpms};do
+    if [ ! -f /root/${i} ];then
+        echo "RPM /root/${i} does not exists"
+        usage_and_exit
+    fi
+done
+
 cd /manager/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
@@ -16,9 +35,9 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/uyuni-reportdb-schema-4.3.1-1.3.uyuni1.noarch.rpm \
-	 /root/susemanager-schema-4.3.8-1.3.uyuni1.noarch.rpm \
-	 /root/susemanager-schema-utility-4.3.8-1.3.uyuni1.noarch.rpm
+for i in ${schema_rpms};do
+  rpm -ivh /root/${i}
+done
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
