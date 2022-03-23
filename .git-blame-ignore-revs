@@ -1,0 +1,4 @@
+# This file contains commit hashes to be ignored in git blame, such as purely cosmetic changes
+
+# Standardize frontend code style
+d2ac57c6085d10dd356e380347708cda8be44204
