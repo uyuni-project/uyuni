@@ -2,7 +2,11 @@ import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
 import { MessageType } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
 
@@ -14,8 +18,8 @@ enum SSLMode {
 type Props = {};
 
 type State = {
-  caCertificate?: File;
-  caKey?: File;
+  caCertificate: string;
+  caKey: string;
   caPassword: string;
   country: string;
   state: string;
@@ -23,10 +27,10 @@ type State = {
   org: string;
   orgUnit: string;
   sslEmail: string;
-  rootCA?: File;
-  intermediateCA?: File;
-  proxyCertificate?: File;
-  proxyKey?: File;
+  rootCA: string;
+  intermediateCAs: string[];
+  proxyCertificate: string;
+  proxyKey: string;
   email: string;
   sslMode: SSLMode;
   loading: boolean;
@@ -43,8 +47,8 @@ export class ProxyConfig extends React.Component<Props, State> {
     super(props);
 
     this.initState = {
-      caCertificate: undefined,
-      caKey: undefined,
+      caCertificate: "",
+      caKey: "",
       caPassword: "",
       country: "",
       state: "",
@@ -52,10 +56,10 @@ export class ProxyConfig extends React.Component<Props, State> {
       org: "",
       orgUnit: "",
       sslEmail: "",
-      rootCA: undefined,
-      intermediateCA: undefined,
-      proxyCertificate: undefined,
-      proxyKey: undefined,
+      rootCA: "",
+      intermediateCAs: [],
+      proxyCertificate: "",
+      proxyKey: "",
       email: "",
       sslMode: SSLMode.CreateSSL,
       loading: false,
@@ -87,14 +91,11 @@ export class ProxyConfig extends React.Component<Props, State> {
       formData["sslEmail"] = this.state.sslEmail;
     } else {
       formData["rootCA"] = this.state.rootCA;
-      formData["intermediateCA"] = this.state.intermediateCA;
+      formData["intermediateCAs"] = this.state.intermediateCAs;
       formData["proxyCertificate"] = this.state.proxyCertificate;
       formData["proxyKey"] = this.state.proxyKey;
     }
-    const request = Network.post(
-      "/rhn/manager/proxy/container-config",
-      formData
-    ).then(
+    const request = Network.post("/rhn/manager/api/proxy/container-config", formData).then(
       (data) => {
         this.setState({
           success: data.success,
@@ -111,12 +112,12 @@ export class ProxyConfig extends React.Component<Props, State> {
           });
         } catch (err) {
           var errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
-            ? [
+            ? MessagesUtils.error(
                 t(
                   "Request interrupted or invalid response received from the server. Please check if the config archive was generated correctly."
-                ),
-              ]
-            : [Network.errorMessageByStatus(xhr.status)];
+                )
+              )
+            : MessagesUtils.error(Network.errorMessageByStatus(xhr.status)[0]);
           this.setState({
             success: false,
             messages: errMessages,
@@ -156,16 +157,30 @@ export class ProxyConfig extends React.Component<Props, State> {
     });
   };
 
+  replaceCRLF = (fileString) => {
+    return fileString.replace(/\r\n/g, "\n");
+  };
+
   caCertificateChanged = (event) => {
-    this.setState({
-      caCertificate: event.target.value,
-    });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        caCertificate: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
   caKeyChanged = (event) => {
-    this.setState({
-      caKey: event.target.value,
-    });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        caKey: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
   caPasswordChanged = (event) => {
@@ -211,27 +226,59 @@ export class ProxyConfig extends React.Component<Props, State> {
   };
 
   rootCAChanged = (event) => {
-    this.setState({
-      rootCA: event.target.value,
-    });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        rootCA: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
-  intermediateCAChanged = (event) => {
-    this.setState({
-      intermediateCA: event.target.value,
-    });
+  // intermediateCAAdd= (event) => {
+  //   this.setState({
+  //     intermediateCAs: this.state.intermediateCAs.push(event.target.files[0]),
+  //   });
+  // };
+
+  // intermediateCARemove = (event) => {
+  //   this.setState({
+  //     intermediateCAs: this.state.intermediateCAs.filter((c) => c.name === event.target.files[0]),
+  //   });
+  // };
+
+  intermediateCAsChanged = (event) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        intermediateCAs: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
   proxyCertificateChanged = (event) => {
-    this.setState({
-      proxyCertificate: event.target.value,
-    });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        proxyCertificate: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
   proxyKeyChanged = (event) => {
-    this.setState({
-      proxyKey: event.target.value,
-    });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.setState({
+        // replace CRLF from Windows
+        proxyKey: this.replaceCRLF(e.target?.result),
+      });
+    };
+    reader.readAsText(event.target.files[0]);
   };
 
   render() {
@@ -371,11 +418,11 @@ export class ProxyConfig extends React.Component<Props, State> {
         </label>
         <div className="col-md-6">
           <input
-            name="intermediateCA"
+            name="intermediateCAs"
             className="form-control"
             type="file"
             value={undefined}
-            onChange={this.intermediateCAChanged}
+            onChange={this.intermediateCAsChanged}
           />
         </div>
       </div>,
