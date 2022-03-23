@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { cloneReactElement } from "components/utils";
+import { cloneReactElement, HelpLink } from "components/utils";
 
 type Props = {
   title: string;
@@ -9,9 +9,12 @@ type Props = {
   buttons?: React.ReactNode[];
   buttonsLeft?: React.ReactNode[];
   children: React.ReactNode;
+  summary?: React.ReactNode;
+  helpUrl?: string;
 };
 
 function InnerPanel(props: Props) {
+  const help = props.helpUrl ? <HelpLink url={props.helpUrl} /> : null;
   let toolbar: React.ReactNode = null;
 
   if (props.buttons?.length || props.buttonsLeft?.length) {
@@ -42,7 +45,10 @@ function InnerPanel(props: Props) {
       <h2>
         <i className={`fa ${props.icon}`} />
         {props.title}
+        &nbsp;
+        {help}
       </h2>
+      <p>{props.summary}</p>
       {toolbar}
       <div className="row">
         <div className="panel panel-default">
