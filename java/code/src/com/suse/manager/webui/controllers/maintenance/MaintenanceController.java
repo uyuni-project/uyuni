@@ -24,6 +24,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityNotExistsException;
 
@@ -51,6 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.Request;
@@ -174,7 +176,15 @@ public class MaintenanceController {
      * @return the date string in the user configured timezone
      */
     private static String applyTimezoneShift(User user, Long date) {
-        ZoneId zoneId = ZoneId.of(user.getTimeZone().getOlsonName());
+        RhnTimeZone timezone = user.getTimeZone();
+        ZoneId zoneId;
+        if (timezone == null) {
+            // Fallback to server timezone if no user timezone is configured
+            zoneId = TimeZone.getDefault().toZoneId();
+        }
+        else {
+            zoneId = ZoneId.of(timezone.getOlsonName());
+        }
        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), zoneId)
                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm z"));
     }
