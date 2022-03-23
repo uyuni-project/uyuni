@@ -68,8 +68,64 @@ export class ProxyConfig extends React.Component<Props, State> {
   }
 
   onSubmit = () => {
-    // this.setState({ messages: [], loading: true });
-    alert("TODO: let's do something on submit now");
+    this.setState({ messages: [], loading: true });
+    var formData: any = {};
+    formData["proxyFQDN"] = this.state.proxyFQDN;
+    formData["maxSquidCacheSize"] = this.state.maxSquidCacheSize;
+    formData["email"] = this.state.email;
+    formData["sslMode"] = this.state.sslMode;
+
+    if (this.state.sslMode === SSLMode.CreateSSL) {
+      formData["caCertificate"] = this.state.caCertificate;
+      formData["caKey"] = this.state.caKey;
+      formData["caPassword"] = this.state.caPassword;
+      formData["country"] = this.state.country;
+      formData["state"] = this.state.state;
+      formData["city"] = this.state.city;
+      formData["org"] = this.state.org;
+      formData["orgUnit"] = this.state.orgUnit;
+      formData["sslEmail"] = this.state.sslEmail;
+    } else {
+      formData["rootCA"] = this.state.rootCA;
+      formData["intermediateCA"] = this.state.intermediateCA;
+      formData["proxyCertificate"] = this.state.proxyCertificate;
+      formData["proxyKey"] = this.state.proxyKey;
+    }
+    const request = Network.post(
+      "/rhn/manager/proxy/container-config",
+      formData
+    ).then(
+      (data) => {
+        this.setState({
+          success: data.success,
+          messages: data.messages,
+          loading: false,
+        });
+      },
+      (xhr) => {
+        try {
+          this.setState({
+            success: false,
+            messages: [JSON.parse(xhr.responseText)],
+            loading: false,
+          });
+        } catch (err) {
+          var errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
+            ? [
+                t(
+                  "Request interrupted or invalid response received from the server. Please check if the config archive was generated correctly."
+                ),
+              ]
+            : [Network.errorMessageByStatus(xhr.status)];
+          this.setState({
+            success: false,
+            messages: errMessages,
+            loading: false,
+          });
+        }
+      }
+    );
+    return request;
   };
 
   clearFields = () => {
