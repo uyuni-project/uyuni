@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
-import { Messages, MessageType } from "components/messages";
+import { MessageType } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
+
+import { ContainerConfigMessages } from "./container-config-messages";
 
 enum SSLMode {
   UseSSL = "use-ssl",
@@ -74,49 +76,6 @@ export class ProxyConfig extends React.Component<Props, State> {
   };
 
   render() {
-    var messages: React.ReactNode = null;
-    if (this.state.success) {
-      messages = (
-        <Messages
-          items={[
-            {
-              severity: "success",
-              text: (
-                <p>
-                  {t(
-                    "The container based proxy configuration has been generated! The 'proxy-config.zip archive can be found at /bla/bla/bla on the server, or it can be"
-                  )}{" "}
-                  <a className="js-spa" href="/rhn/systems/SystemList.do">
-                    {t("downloaded")}
-                  </a>
-                  {"."}
-                </p>
-              ),
-            },
-          ]}
-        />
-      );
-    } else if (this.state.messages.length > 0) {
-      messages = (
-        <Messages
-          items={this.state.messages.map(function (msg) {
-            return { severity: "error", text: msg };
-          })}
-        />
-      );
-    } else if (this.state.loading) {
-      messages = (
-        <Messages
-          items={[
-            {
-              severity: "info",
-              text: <p>{t("Generation of the proxy configuration in progress: waiting for a response...")}</p>,
-            },
-          ]}
-        />
-      );
-    }
-
     var buttons = [
       <AsyncButton
         id="generate-btn"
@@ -310,7 +269,7 @@ export class ProxyConfig extends React.Component<Props, State> {
         helpUrl="reference/proxy/container-based-config.html"
       >
         <p>{t("TODO: some info text message about this page")}</p>
-        {messages}
+        {ContainerConfigMessages(this.state)}
         <div className="form-horizontal">
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Proxy FQDN")}:</label>
