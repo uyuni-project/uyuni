@@ -6,21 +6,22 @@ echo "============================================================"
 echo "                      Migration test                        "
 echo "============================================================"
 
+SCRIPT=$(basename ${0})
 usage_and_exit() {
-    echo "Usage: $0 schema_rpm"
+    echo "Usage: ${1} schema_rpms"
     exit 2
 }
 
-if [ $# -ne 1 ];then
+if [ ${#} -ne 1 ];then
     echo "Missing parameters"
-    usage_and_exit
+    usage_and_exit ${SCRIPT}
 fi
 
-schema_rpm=$1
+schema_rpm=${1}
 
 if [ ! -f /root/${schema_rpm} ];then
     echo "RPM /root/${schema_rpm} does not exists"
-    usage_and_exit
+    usage_and_exit ${SCRIPT}
 fi
 
 cd /manager/susemanager-utils/testing/docker/scripts/
