@@ -29756,28 +29756,28 @@ given channel.</source>
         </context-group>
         <target state="final">벤더 자문</target>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve" approved="yes">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <target state="final">용량제 클라우드 인스턴스 구성에서 인증 데이터 수집</target>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <target state="final">용량제</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve" approved="yes">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <target state="final">보고 데이터베이스 업데이트</target>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve" approved="yes">
         <source>Update Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">보고 데이터베이스 업데이트</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
