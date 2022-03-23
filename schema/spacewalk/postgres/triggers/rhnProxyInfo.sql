@@ -18,7 +18,5 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-DROP TRIGGER IF EXISTS rhn_proxy_info_mod_trig;
-
 CREATE TRIGGER rhn_proxy_info_mod_trig BEFORE INSERT OR UPDATE ON rhnProxyInfo
     FOR EACH ROW EXECUTE PROCEDURE rhn_proxy_info_mod_trig_fun();
