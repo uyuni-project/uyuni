@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-11 19:14+0000\n"
-"PO-Revision-Date: 2021-11-11 05:37+0000\n"
+"PO-Revision-Date: 2022-03-23 05:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2200,7 +2200,7 @@ msgstr "%s개의 누락된 그룹을 찾음, 종료 중"
 #. assume old backup, not in json format. Read complete file as string
 #: ../src/spacecmd/group.py:383
 msgid "Assuming group to be in old plain text format"
-msgstr ""
+msgstr "그룹 형식을 기존 일반 텍스트 형식으로 가정"
 
 #: ../src/spacecmd/group.py:395
 #, python-format
@@ -2222,12 +2222,12 @@ msgstr "다음 그룹에 대한 설명 업데이트: %s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
+msgstr "백업에서 수식 데이터를 업데이트하시겠습니까? [예/아니요]:"
 
 #: ../src/spacecmd/group.py:416
-#, fuzzy, python-format
+#, python-format
 msgid "Updating data for group: %s"
-msgstr "다음 그룹에 대한 설명 업데이트: %s"
+msgstr "다음 그룹에 대한 데이터 업데이트: %s"
 
 #: ../src/spacecmd/group.py:424
 #, python-format
@@ -3655,12 +3655,10 @@ msgid "Miss"
 msgstr "Miss"
 
 #: ../src/spacecmd/org.py:128
-#, fuzzy
 msgid "org_createfirst: Create first organization and user after server setup"
-msgstr "org_create: 조직 생성"
+msgstr "org_createfirst: 서버 설정 후 첫 번째 조직 및 사용자 생성"
 
 #: ../src/spacecmd/org.py:129
-#, fuzzy
 msgid ""
 "usage: org_createfirst [options])\n"
 "\n"
@@ -3675,14 +3673,12 @@ msgstr ""
 "사용법: org_create [옵션])\n"
 "\n"
 "옵션:\n"
-"  -n ORG_NAME\n"
+"  -n 조직 이름\n"
 "  -u 사용자 이름\n"
-"  -P 접두어(%s)\n"
-"  -f FIRST_NAME\n"
-"  -l LAST_NAME\n"
+"  -f 이름\n"
+"  -l 성\n"
 "  -e 이메일\n"
-"  -p 비밀번호\n"
-"  --pam은 PAM 인증을 활성화"
+"  -p 비밀번호"
 
 #: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
@@ -8087,7 +8083,7 @@ msgstr "예약된 작업 ID: "
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
-msgstr ""
+msgstr "system_bootstrap: Salt 또는 Salt SSH를 통한 관리용 시스템을 부트스트랩합니다."
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8106,75 +8102,82 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"사용법: bootstrap [옵션]\n"
+"\n"
+"    옵션:\n"
+"        -H 호스트 이름\n"
+"        -p SSH_포트\n"
+"        -u SSH_사용자이름\n"
+"        -P SSH_비밀번호\n"
+"        -k SSH_개인키_경로\n"
+"        -S SSH_개인키_비밀번호\n"
+"        -a 활성화_키\n"
+"        -r 재활성화_키\n"
+"        --proxyid 프록시_시스템ID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "호스트 이름:      %s"
+msgstr "호스트 이름:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "포트 [22]:"
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "사용자 [루트]:"
+msgstr "SSH 사용자 [루트]:"
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "비밀번호: "
+msgstr "SSH 비밀번호:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "SSH 개인 키 파일:"
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "SSH 개인 키 비밀번호:"
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "활성화 키"
+msgstr "활성화 키:"
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "활성화 키"
+msgstr "재활성화 키:"
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  시스템 ID"
+msgstr "프록시 시스템 ID:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "Salt SSH를 사용하여 관리"
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# 시스템 ID를 입력해야 합니다."
+msgstr "호스트 이름을 제공해야 합니다."
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "SSH 비밀번호 또는 개인 키를 제공해야 합니다."
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr ""
+msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않습니다."
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr ""
+msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
-msgstr ""
+msgstr "초기 단계가 완료되었습니다. 아직 실행 중인 작업에 대한 이벤트 기록을 확인하십시오."
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
