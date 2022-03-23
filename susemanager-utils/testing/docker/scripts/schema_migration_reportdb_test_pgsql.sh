@@ -16,9 +16,9 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/uyuni-reportdb-schema-4.3.1-1.3.uyuni1.noarch.rpm \
-	 /root/susemanager-schema-4.3.8-1.3.uyuni1.noarch.rpm \
-	 /root/susemanager-schema-utility-4.3.8-1.3.uyuni1.noarch.rpm
+rpm -ivh /root/uyuni-reportdb-schema-*.rpm \
+	 /root/susemanager-schema-*.rpm \
+	 /root/susemanager-schema-utility-*.rpm
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
