@@ -60,6 +60,21 @@ class RecurringStatesList extends React.Component<Props, State> {
         title={t("Recurring States")}
         icon="spacewalk-icon-salt"
         buttons={this.props.disableCreate ? [] : buttons}
+        summary={
+          <>
+            <p>{t("The following recurring actions have been created.")}</p>
+            {this.props.disableCreate ? (
+              <p>
+                {t(
+                  "To create new recurring actions head to the system, group or organization you want to create the action for."
+                )}
+              </p>
+            ) : null}
+          </>
+        }
+        // We only want to display the help icon in the 'Schedule > Recurring States' page so we use disableCreate as
+        // an indicator whether we currently render this page
+        helpUrl={this.props.disableCreate ? "reference/schedule/recurring-actions.html" : ""}
       >
         <div className="panel panel-default">
           <div className="panel-heading">
