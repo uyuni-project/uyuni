@@ -33,7 +33,9 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/${schema_rpm}
+pushd /root/
+rpm -ivh ${schema_rpm}
+popd
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
