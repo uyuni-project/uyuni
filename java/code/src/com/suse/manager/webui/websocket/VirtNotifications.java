@@ -107,7 +107,7 @@ public class VirtNotifications {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        Boolean didClientAbortedConnection = err instanceof EOFException ||
+        boolean didClientAbortedConnection = err instanceof EOFException ||
                 !session.isOpen() ||
                 err.getMessage().startsWith("Unexpected error [32]");
 
@@ -193,7 +193,7 @@ public class VirtNotifications {
      * @param message the message to be sent
      */
     public static void sendMessage(Session session, String message) {
-        synchronized (session) {
+        synchronized (LOCK) {
             try {
                 if (session.isOpen()) {
                     session.getBasicRemote().sendText(message);
