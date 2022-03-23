@@ -6,10 +6,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-22 20:13+0000\n"
-"PO-Revision-Date: 2022-03-22 20:12+0000\n"
+"PO-Revision-Date: 2022-03-23 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
-">\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -804,35 +804,34 @@ msgstr "No hi ha informació de drets vinculada al maquinari."
 
 #: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "El número d'instal·lació no hi dona dret."
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:182
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima del nom d'usuari"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima de la contrasenya"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Aquest usuari només té accés a l'API de lectura. Acció denegada."
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
-msgstr ""
+msgstr "El nom del sistema no pot tenir menys d'1 caràcter."
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr ""
+msgstr "Error del servidor intermediari de SUSE Manager."
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy va ser incapaç d'iniciar la sessió."
+msgstr "L'intermediari de SUSE Manager no pot iniciar la sessió."
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -842,20 +841,22 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     L'identificador del sistema de l'intermediari de SUSE Manager no "
+"coincideix\n"
+"     amb un servidor intermediari Spacewalk a la base de dades.\n"
+"     "
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "El testimoni de la sessió del RHN Proxy no és vàlid."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager no és vàlid."
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "El testimoni de la sessió del RHN Proxy ha vençut."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager ha caducat."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -863,14 +864,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     La creació de l'usuari del RHN Satellite no està permesa a través de "
-"rhn_register;\n"
-"     poseu-vos en contacte amb l'administrador del sistema perquè creï el "
-"vostre compte.\n"
+"      no es permet la creació d'usuaris mitjançant mgr_register;\n"
+"     poseu-vos en contacte amb l'administrador del sistema per crear el "
+"compte.\n"
 "     "
 
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -878,20 +877,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Aquest servidor de satellite no pot utilitzar la sincronització interna "
-"entre els satellite en aquest satellite\n"
+"     Aquest servidor de SUSE Manager no pot usar Inter Server Sync en aquest "
+"servidor.\n"
 "     "
 
 #: ../common/rhnException.py:209
-#, fuzzy
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     La sincronització interna entre els satellite està inhabilitada en "
-"aquest satellite.\n"
+"     La sincronització entre servidors està desactivada en aquest servidor "
+"de SUSE Manager.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -974,7 +972,7 @@ msgstr "Falta contingut per al fitxer de configuració"
 
 #: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Delimitadors de plantilla no especificats"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
@@ -986,23 +984,23 @@ msgstr "El canal de configuració ja existeix"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Falta el fitxer al canal de configuració."
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Es penja una revisió diferent d'aquest fitxer"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "El fitxer ja s'ha penjat al canal de configuració."
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "La mida del fitxer supera l'espai de quota restant."
 
 #: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Cal especificar el camí complet del fitxer."
 
 #: ../common/rhnException.py:243
 msgid "Invalid revision number"
@@ -1016,19 +1014,21 @@ msgstr "No es poden comparar els fitxers de diferent tipus de fitxer"
 #: ../common/rhnException.py:247
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
+"La transferència de fitxers de resultats SCAP no és vàlida o és incompleta."
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del directori per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del fitxer per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:250
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "El codi de l'element no és vàlid"
+msgstr "La codificació de contingut no és vàlida."
 
 #: ../common/rhnException.py:297
 msgid ""
@@ -1039,6 +1039,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     S'ha produït un error en processar la sol·licitud. Si aquest problema\n"
+"     persisteix, introduïu un informe d'error a scc.suse.com.\n"
+"     Si trieu enviar l'informe d'error, assegureu-vos d'incloure-hi\n"
+"     detalls del que s'estava intentant fer quan es va produir l'error i\n"
+"     detalls sobre com reproduir el problema.\n"
 
 #: ../common/rhnException.py:349
 #, python-format
@@ -1072,13 +1078,13 @@ msgstr "ERROR: %s %s: %s"
 #: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRAÇABILITAT: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "El format de %s hauria de ser com a mínim AAAAMMDD.\n"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1087,6 +1093,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ERROR: s'executa el pas %s. L'error és aquest:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:31
 #, python-format
@@ -1098,6 +1107,14 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"ERROR: s'ha produït un problema en accedir a les dades del canal des del\n"
+"       repositori temporal. Heu migrat totes les dades de les ISO del canal\n"
+"       a aquest directori? Si és així, torneu a comprovar les ISO dels "
+"canals, assegureu-vos\n"
+"       que les tingueu totes i després torneu a muntar i repoblar "
+"iterativament\n"
+"       el dipòsit temporal (%s).\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1106,6 +1123,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: hi ha hagut un problema en sincronitzar la informació.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:44
 #, python-format
@@ -1117,6 +1137,13 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: S'ha produït un problema en comunicar-se amb l'ISS mestre.\n"
+"       En funció dels detalls específics de l'error, reviseu la configuració,"
+"\n"
+"       la connectivitat bàsica de xarxa i / o la resolució de noms i torneu-"
+"ho a provar.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:51
 #, python-format
@@ -1129,6 +1156,13 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"ERROR: no es pot sincronitzar un canal secundari sense que el pare també\n"
+"        se sincronitzi . Un pare ha d'estar (a) sincronitzat prèviament o (b)"
+" sincronitzat\n"
+"       conjuntament amb el canal fill desitjat. Falten pares per a aquesta\n"
+"       transacció:\n"
+"       %s\n"
 
 #: ../satellite_tools/messages.py:59
 #, python-format
@@ -1138,6 +1172,10 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"ERROR: no teniu dret a sincronitzar un canal en aquest conjunt de canals.\n"
+"Poseu-vos en contacte amb el gestor de SUSE.\n"
+"%s"
 
 #: ../satellite_tools/messages.py:64
 #, python-format
