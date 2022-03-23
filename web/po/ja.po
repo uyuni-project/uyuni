@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-02-13 08:12+0000\n"
+"PO-Revision-Date: 2022-03-23 18:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -65,11 +65,11 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:265
 msgid "Expand All Sections"
-msgstr ""
+msgstr "すべてのセクションを展開"
 
 #: ../html/src/components/FormulaForm.tsx:272
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "すべてのセクションを折りたたむ"
 
 #: ../html/src/components/FormulaForm.tsx:337
 #, fuzzy
