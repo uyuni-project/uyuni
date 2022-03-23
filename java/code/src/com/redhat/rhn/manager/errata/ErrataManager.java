@@ -81,6 +81,8 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.utils.MinionServerUtils;
 
+import com.google.common.collect.Maps;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -1482,7 +1484,7 @@ public class ErrataManager extends BaseManager {
      * @param errataId the errata ID to send notifications about
      * @param channelId the channel ID with which to decide which systems
      *       and users to send errata for
-     * @param date  the date
+     * @param date the date
      */
     public static void addErrataNotification(long errataId, long channelId, Date date) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -1507,6 +1509,33 @@ public class ErrataManager extends BaseManager {
         m.executeUpdate(params);
     }
 
+    /**
+     * Send errata notifications for all errataids and channel
+     * @param errataToChannels map with errataids to list of channel ids
+     * @param date the date
+     */
+    public static void bulkErrataNotification(Map<Long, List<Long>> errataToChannels, Date date) {
+        List<Map<String, Object>> eidList = errataToChannels.entrySet().stream()
+                .map(entry -> Collections.singletonMap("eid", (Object)entry.getKey()))
+                .collect(Collectors.toList());
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries",  "clear_errata_notification");
+        m.executeUpdates(eidList);
+
+        java.sql.Date newDate = new java.sql.Date(date.getTime());
+        List<Map<String, Object>> notifyList = errataToChannels.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream().map(cid -> Maps.immutableEntry(cid, entry.getKey())))
+                .map(entry -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("cid", entry.getKey());
+                    params.put("eid", entry.getValue());
+                    params.put("datetime", newDate);
+                    return params;
+                })
+                .collect(Collectors.toList());
+
+        WriteMode w = ModeFactory.getWriteMode("Errata_queries",  "insert_errata_notification");
+        w.executeUpdates(notifyList);
+    }
     /**
      * delete any present and then enqueue a channel notification for the
      * given channel and erratum. This will trigger the taskomatic ErrataQueue
