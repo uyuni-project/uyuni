@@ -15,74 +15,31 @@
 
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
+import static spark.Spark.halt;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
-import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.utils.FlashScopeHelper;
-import com.suse.manager.webui.utils.PageControlHelper;
-import com.suse.manager.webui.utils.gson.ChannelsJson;
-import com.suse.manager.webui.utils.gson.PagedDataResultJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
-import com.suse.manager.webui.utils.gson.VirtualSystem;
+import com.suse.manager.webui.utils.gson.ProxyContainerConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -94,7 +51,16 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class ProxyController {
 
-    public ProxyController() { }
+    private final SystemManager systemManager;
+
+    /**
+     * Create a new controller instance
+     *
+     * @param systemManagerIn the system manager
+     */
+    public ProxyController(SystemManager systemManagerIn) {
+        systemManager = systemManagerIn;
+    }
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(ProxyController.class);
@@ -110,9 +76,10 @@ public class ProxyController {
      * @param proxyController instance to register.
      * @param jade Jade template engine
      */
-    public static void initRoutes(ProxyController proxyController, JadeTemplateEngine jade) {
+    public void initRoutes(ProxyController proxyController, JadeTemplateEngine jade) {
         get("/manager/proxy/container-config",
                 withCsrfToken(withDocsLocale(withUser(proxyController::containerConfig))), jade);
+        post("/manager/api/proxy/container-config", withUser(this::generateContainerConfig));
     }
 
     /**
@@ -126,5 +93,40 @@ public class ProxyController {
     public ModelAndView containerConfig(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "templates/proxy/container-config.jade");
+    }
+
+    /**
+     * Create the proxy containers configuration.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     *
+     * @return the config file
+     */
+    public byte[] generateContainerConfig(Request request, Response response, User user) {
+        ProxyContainerConfigJson data = GSON.fromJson(request.body(),
+                new TypeToken<ProxyContainerConfigJson>() { }.getType());
+        if (!data.isValid()) {
+            LOG.error("Invalid input data");
+            halt(HttpStatus.SC_BAD_REQUEST);
+        }
+        try {
+            byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
+                    data.getProxyPort(), data.getServerFqdn(), data.getMaxCache(), data.getEmail(),
+                    data.getRootCA(), data.getIntermediateCAs(), data.getProxyCertPair(),
+                    data.getCaPair(), data.getCaPassword(), data.getCertData());
+
+            String proxyName = data.getProxyFqdn().split("\\.")[0];
+            response.header("Content-Disposition", "attachment; filename=\"" + proxyName + "-config.zip\"");
+            response.header("Content-Length", Integer.toString(config.length));
+            response.type("application/zip");
+            return config;
+        }
+        catch (IOException | InstantiationException e) {
+            LOG.error("Failed to generate proxy container configuration", e);
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        }
+        return new byte[0];
     }
 }

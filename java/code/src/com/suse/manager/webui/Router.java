@@ -15,8 +15,6 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
 import static spark.Spark.get;
@@ -26,6 +24,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.kubernetes.KubernetesManager;
@@ -110,9 +109,10 @@ public class Router implements SparkApplication {
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
-        ProxyController proxyController = new ProxyController();
+        ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
                 new NotificationMessageController(systemQuery, saltApi);
@@ -158,7 +158,7 @@ public class Router implements SparkApplication {
         SystemsController.initRoutes(systemsController, jade);
 
         // Proxy
-        ProxyController.initRoutes(proxyController, jade);
+        proxyController.initRoutes(proxyController, jade);
 
         //CSV API
         CSVDownloadController.initRoutes();
