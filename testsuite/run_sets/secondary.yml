@@ -63,5 +63,5 @@
 - features/secondary/min_retracted_patches.feature
 - features/secondary/proxy_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
-
+- features/secondary/min_timezone.feature
 ## Secondary features END ##
