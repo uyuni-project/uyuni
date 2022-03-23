@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-01-24 10:13+0000\n"
+"PO-Revision-Date: 2022-03-23 09:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -61,21 +61,19 @@ msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。
 
 #: ../html/src/components/FormulaForm.tsx:265
 msgid "Expand All Sections"
-msgstr ""
+msgstr "展开所有部分"
 
 #: ../html/src/components/FormulaForm.tsx:272
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "折叠所有部分"
 
 #: ../html/src/components/FormulaForm.tsx:337
-#, fuzzy
 msgid "Unnamed"
-msgstr "用户名"
+msgstr "未命名"
 
 #: ../html/src/components/FormulaForm.tsx:346
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "按公式名称过滤"
+msgstr "按公式的组名称搜索"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -885,11 +883,11 @@ msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:39
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "添加新的 Pay-as-you-go SSH 连接数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "添加 Pay-as-you-go SSH 数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:47
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -911,9 +909,8 @@ msgid "Create"
 msgstr "创建"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:68
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "产品说明"
+msgstr "Pay-as-you-go 连接说明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:71
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -930,13 +927,12 @@ msgid "Description"
 msgstr "说明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:75
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "实例已过时"
+msgstr "实例 SSH 连接数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:80
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "堡垒 SSH 连接数据"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:266
@@ -968,9 +964,8 @@ msgid "Status"
 msgstr "状态"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "匹配数据状态"
+msgstr "上次更新状态"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -979,7 +974,7 @@ msgstr "从不"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "添加 Pay-as-you-go"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -996,14 +991,12 @@ msgstr "请求已中断，或者从服务器收到了无效响应。请重试。
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "已成功更新项目属性"
+msgstr "已成功更新 Pay-as-you-go 属性"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "其他信息"
+msgstr "编辑信息"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -1011,18 +1004,16 @@ msgid "Editing properties.."
 msgstr "正在编辑属性..."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "开始日期"
+msgstr "上次状态更新"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
-#, fuzzy
 msgid "Edit "
-msgstr "编辑"
+msgstr "编辑 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "正在编辑 SSH 连接数据..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
@@ -1050,18 +1041,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "您要查找的项目不存在或已删除"
+msgstr "您要查找的实例不存在或已删除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "'{0}' 的实例细节"
+msgstr "实例主机名：{0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:74
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "删除 Pay-as-you-go"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/content-management/project/project.tsx:113
@@ -1419,11 +1408,11 @@ msgstr "审计映像"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "MITRE CVE 链接"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "SUSE 安全 CVE 链接"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -2490,9 +2479,8 @@ msgid "Versions history"
 msgstr "版本历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
-msgstr "新建基础频道"
+msgstr "新基础频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
 msgid "New Base Channel"
@@ -2513,14 +2501,12 @@ msgid "Clear Search"
 msgstr "清除搜索"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "建议使用此频道"
+msgstr "此频道需要："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "建议使用此频道"
+msgstr "以下对象需要此频道："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -3894,7 +3880,7 @@ msgstr "状态应用失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
