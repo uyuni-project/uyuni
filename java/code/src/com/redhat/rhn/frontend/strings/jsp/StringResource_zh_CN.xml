@@ -29766,28 +29766,28 @@ given channel.</source>
         </context-group>
         <target state="final">供应商建议</target>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve" approved="yes">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <target state="final">从配置的 Pay-as-you-go 云实例收集身份验证数据</target>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
+        <target state="final">Pay-as-you-go</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve" approved="yes">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
+        <target state="final">更新报告数据库</target>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve" approved="yes">
         <source>Update Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">更新报告数据库</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
