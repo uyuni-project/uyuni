@@ -246,8 +246,11 @@ public class FormulaHandler extends BaseHandler {
      *   #array_end()
      */
     public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
-            List<Long> systemIds) {
-        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, systemIds, formulaName);
+            List<Integer> systemIds) {
+        List<Long> ids = systemIds.stream()
+                .map(Integer::longValue)
+                .collect(Collectors.toList());
+        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, ids, formulaName);
     }
 
     /**
