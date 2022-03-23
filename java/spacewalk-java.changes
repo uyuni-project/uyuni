@@ -1,4 +1,8 @@
-- Fix type casting for Prometheus SD
+-------------------------------------------------------------------
+Wed Mar 23 10:32:00 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Fix type casting for Prometheus SD
 
 -------------------------------------------------------------------
 Mon Mar 21 13:51:28 CET 2022 - jgonzalez@suse.com
