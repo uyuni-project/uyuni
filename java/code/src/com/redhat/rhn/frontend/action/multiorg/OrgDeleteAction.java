@@ -56,11 +56,9 @@ public class OrgDeleteAction extends RhnAction {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException("Only satellite admin's can delete organizations");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orgdetail"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw new PermissionException("Only satellite admin's can delete organizations",
+                    ls.getMessage("permission.jsp.title.orgdetail"),
+                    ls.getMessage("permission.jsp.summary.general"));
         }
 
         if (isSubmitted(dynaForm)) {

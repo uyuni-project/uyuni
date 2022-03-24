@@ -1,4 +1,5 @@
 #!/bin/sh -e
+set -x
 
 REL_ENG_FOLDER="/manager/rel-eng"
 
@@ -64,9 +65,27 @@ if [ "$(echo ${DESTINATIONS}|cut -d',' -f2)" != "" ]; then
   export KEEP_SRPMS=TRUE
 fi
 
+# separate packages and container images
+IMAGES=
+PKGS=
+for P in ${PACKAGES}; do
+    if [ -f packages/${P} ]; then
+        PKGS="${PKGS} ${P}"
+    else
+        IMAGES="${IMAGES} ${P}"
+    fi
+done
+
 # Build SRPMS
-echo "*************** BUILDING PACKAGES ***************"
-./build-packages-for-obs.sh ${PACKAGES}
+if [ -z "${PACKAGES}" -o -n "${PKGS}" ]; then
+  echo "*************** BUILDING PACKAGES ***************"
+  ./build-packages-for-obs.sh ${PKGS}
+fi
+
+if [ -z "${PACKAGES}" -o -n "${IMAGES}" ]; then
+  echo "********** BUILDING CONTAINER IMAGES ************"
+  ./build-containers-for-obs.sh ${IMAGES}
+fi
 
 # Submit 
 for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do

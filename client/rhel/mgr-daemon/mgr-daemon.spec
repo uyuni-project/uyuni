@@ -32,7 +32,7 @@
 %define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.3.2
+Version:        4.3.4
 Release:        1
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
@@ -79,6 +79,9 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 BuildRequires:  systemd-units
 %else
+%if 0%{?rhel} >= 8
+BuildRequires:  systemd-rpm-macros
+%endif
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service

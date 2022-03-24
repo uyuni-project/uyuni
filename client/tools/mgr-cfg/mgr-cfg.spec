@@ -69,7 +69,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.3.4
+Version:        4.3.5
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}

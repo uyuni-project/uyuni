@@ -50,6 +50,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ChannelInfoSerializer.class);
         SERIALIZER_CLASSES.add(ChannelSerializer.class);
         SERIALIZER_CLASSES.add(CpuSerializer.class);
+        SERIALIZER_CLASSES.add(DeltaImageSerializer.class);
         SERIALIZER_CLASSES.add(DeviceSerializer.class);
         SERIALIZER_CLASSES.add(DmiSerializer.class);
         SERIALIZER_CLASSES.add(EndpointInfoSerializer.class);
@@ -143,6 +144,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ImageStoreSerializer.class);
         SERIALIZER_CLASSES.add(ImageProfileSerializer.class);
         SERIALIZER_CLASSES.add(ImageInfoSerializer.class);
+        SERIALIZER_CLASSES.add(ImageFileSerializer.class);
         SERIALIZER_CLASSES.add(ImageOverviewSerializer.class);
         SERIALIZER_CLASSES.add(ContentProjectSerializer.class);
         SERIALIZER_CLASSES.add(ContentEnvironmentSerializer.class);

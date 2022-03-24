@@ -6,6 +6,9 @@ import shlex
 import os
 import shutil
 import salt.utils
+import tempfile
+
+import certs.mgr_ssl_cert_setup
 
 log = logging.getLogger(__name__)
 
@@ -28,18 +31,29 @@ def delete_rejected_key(minion):
     return {"retcode": 0}
 
 
-def ssh_keygen(path):
+def ssh_keygen(path=None):
     '''
     Generate SSH keys using the given path.
-    :param path: the path
-    :return: map containing retcode and stdout/stderr
+    :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.
+    :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided
     '''
-    if os.path.isfile(path):
-        return {"retcode": -1, "stderr": "Key file already exists"}
-    cmd = ['ssh-keygen', '-N', '', '-f', path, '-t', 'rsa', '-q']
-    # if not os.path.isdir(os.path.dirname(path)):
-    #     os.makedirs(os.path.dirname(path))
-    return _cmd(cmd)
+    temp_dir = None
+    with tempfile.TemporaryDirectory() as temp_dir:
+        out_path = os.path.join(temp_dir, "key") if path is None else path
+        result = {"retcode": 0}
+        if not path or not os.path.isfile(path):
+            cmd = ['ssh-keygen', '-N', '', '-f', out_path, '-t', 'rsa', '-q']
+            result = _cmd(cmd)
+        elif path:
+            out_path = path
+
+        if os.path.isfile(out_path) and result["retcode"] == 0:
+            with open(out_path, "r") as fd:
+                result["key"] = fd.read()
+            with open(out_path + ".pub", "r") as fd:
+                result["public_key"] = fd.read()
+
+    return result
 
 
 def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", options=None, command=None, outputfile=None):
@@ -56,10 +70,11 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
     '''
     cmd = []
     for idx, hostname in enumerate(hosts):
+        host_port = hostname.split(":")
         key = clientkey if idx == 0 else proxykey
         opts = " ".join(["-o {}={}".format(opt, val) for opt, val in list(options.items())])
-        ssh = "/usr/bin/ssh -i {} {} -o User={} {}"\
-            .format(key, opts, user, hostname)
+        ssh = "/usr/bin/ssh -p {} -i {} {} -o User={} {}"\
+            .format(host_port[1] if len(host_port) > 1 else 22, key, opts, user, host_port[0])
         cmd.extend(shlex.split(ssh))
     cmd.append(command)
     ret = _cmd(cmd)
@@ -117,3 +132,13 @@ def move_minion_uploaded_files(minion=None, dirtomove=None, basepath=None, actio
         return {False: str(err)}
     return {True: scapstorepath}
 
+
+def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
+    '''
+    Check that the provided certificates are valid and return the certificate and key to deploy.
+    '''
+    try:
+        cert = certs.mgr_ssl_cert_setup.getContainersSetup(root_ca, intermediate_cas, server_crt, server_key)
+        return {"cert": cert}
+    except certs.mgr_ssl_cert_setup.CertCheckError as err:
+        return {"error": str(err)}

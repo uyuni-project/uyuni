@@ -1,8 +1,32 @@
-- Do not generate Salt Bundle sections in bootstrap for traditional
-- Reuse certificate code.
-- Allow alternative certificate filenames for update-ca-cert-trust.sh.
-- Add dynamic version for bootstrap script header (bsc#1186336)
-- support checking proxy containers TLS certificates
+- Add randomness to first generated server serial
+
+-------------------------------------------------------------------
+Tue Mar 15 16:30:36 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * compare timestamps in the right timezone
+
+-------------------------------------------------------------------
+Fri Mar 11 16:48:15 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Generate openssl CA configuration if missing when creating server certificate
+
+-------------------------------------------------------------------
+Fri Mar 11 15:47:31 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Fixed use of update-ca-cert-trust.sh in RPM post script
+
+-------------------------------------------------------------------
+Fri Mar 11 14:46:51 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Do not generate Salt Bundle sections in bootstrap for traditional
+  * Reuse certificate code.
+  * Allow alternative certificate filenames for update-ca-cert-trust.sh.
+  * Add dynamic version for bootstrap script header (bsc#1186336)
+  * support checking proxy containers TLS certificates
 
 -------------------------------------------------------------------
 Tue Feb 15 10:02:00 CET 2022 - jgonzalez@suse.com

@@ -15,7 +15,7 @@ CREATE TABLE SystemConfigChannel
     system_id               NUMERIC NOT NULL,
     config_channel_id       NUMERIC NOT NULL,
     name                    VARCHAR(128),
-    "position"              NUMERIC,
+    position                NUMERIC,
     synced_date             TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 

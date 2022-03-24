@@ -1,3 +1,21 @@
+- Expose release notes to www_path
+
+-------------------------------------------------------------------
+Fri Mar 11 16:48:49 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Prepare the package for the proxy on containers
+
+-------------------------------------------------------------------
+Fri Mar 11 15:10:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Fix changelog format
+
+-------------------------------------------------------------------
+Fri Mar 11 14:52:27 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
   * Remove pylint according to Fedora package guidelines.
 
 -------------------------------------------------------------------

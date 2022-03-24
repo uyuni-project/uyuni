@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MultipleChannelsWithPackageException extends RhnRuntimeException {
 
-    private List<Long> channelIds;
+    private final List<Long> channelIds;
 
     /**
      * Constructor
@@ -43,16 +43,5 @@ public class MultipleChannelsWithPackageException extends RhnRuntimeException {
      */
     public List<Long> getChannelIds() {
         return channelIds;
-    }
-
-    /**
-     * Constructor
-     * @param cause the cause (which is saved for later retrieval
-     * by the Throwable.getCause() method). (A null value is
-     * permitted, and indicates that the cause is nonexistent or
-     * unknown.)
-     */
-    public MultipleChannelsWithPackageException(Throwable cause) {
-        super(cause);
     }
 }

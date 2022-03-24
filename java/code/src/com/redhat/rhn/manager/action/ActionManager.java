@@ -235,12 +235,10 @@ public class ActionManager extends BaseManager {
 
         if (returnedAction == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find action with id: " + aid);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.action"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.action"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.action"));
-            throw e;
+            throw new LookupException("Could not find action with id: " + aid,
+                            ls.getMessage("lookup.jsp.title.action"),
+                            ls.getMessage("lookup.jsp.reason1.action"),
+                            ls.getMessage("lookup.jsp.reason2.action"));
         }
 
         return returnedAction;

@@ -27,6 +27,8 @@ suseImageOverview
     build_server_id,
     curr_revision_num,
     external_image,
+    obsolete,
+    built,
     security_errata,
     bug_errata,
     enhancement_errata,
@@ -38,7 +40,7 @@ select
     i.org_id, i.id, i.name, i.version, i.image_type, i.checksum_id, i.modified,
     ( select name from rhnServerArch where id = i.image_arch_id), i.build_action_id,
     i.inspect_action_id, i.profile_id, i.store_id, i.build_server_id, i.curr_revision_num,
-    i.external_image,
+    i.external_image, i.obsolete, i.built,
     ( select count(*) from rhnImageErrataTypeView ietv
       where
             ietv.image_id = i.id

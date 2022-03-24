@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -673,11 +674,10 @@ public class ErrataManager extends BaseManager {
         // throw a lookup exception
         if (!notFoundIds.isEmpty()) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find errata: " + notFoundIds);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.errata"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.errata"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.errata"));
-            throw e;
+            throw new LookupException("Could not find errata: " + notFoundIds,
+                    ls.getMessage("lookup.jsp.title.errata"),
+                    ls.getMessage("lookup.jsp.reason1.errata"),
+                    ls.getMessage("lookup.jsp.reason2.errata"));
         }
 
         // The errata belongs to the users org
@@ -1480,7 +1480,7 @@ public class ErrataManager extends BaseManager {
      * @param errataId the errata ID to send notifications about
      * @param channelId the channel ID with which to decide which systems
      *       and users to send errata for
-     * @param date  the date
+     * @param date the date
      */
     public static void addErrataNotification(long errataId, long channelId, Date date) {
         Map<String, Object> params = new HashMap<>();
@@ -1505,6 +1505,33 @@ public class ErrataManager extends BaseManager {
         m.executeUpdate(params);
     }
 
+    /**
+     * Send errata notifications for all errataids and channel
+     * @param errataToChannels map with errataids to list of channel ids
+     * @param date the date
+     */
+    public static void bulkErrataNotification(Map<Long, List<Long>> errataToChannels, Date date) {
+        List<Map<String, Object>> eidList = errataToChannels.entrySet().stream()
+                .map(entry -> Collections.singletonMap("eid", (Object)entry.getKey()))
+                .collect(Collectors.toList());
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries",  "clear_errata_notification");
+        m.executeUpdates(eidList);
+
+        java.sql.Date newDate = new java.sql.Date(date.getTime());
+        List<Map<String, Object>> notifyList = errataToChannels.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream().map(cid -> new Tuple2<>(cid, entry.getKey())))
+                .map(entry -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("cid", entry.getA());
+                    params.put("eid", entry.getB());
+                    params.put("datetime", newDate);
+                    return params;
+                })
+                .collect(Collectors.toList());
+
+        WriteMode w = ModeFactory.getWriteMode("Errata_queries",  "insert_errata_notification");
+        w.executeUpdates(notifyList);
+    }
     /**
      * delete any present and then enqueue a channel notification for the
      * given channel and erratum. This will trigger the taskomatic ErrataQueue

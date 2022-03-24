@@ -33,6 +33,7 @@
 
 ## language imports
 from __future__ import print_function
+import copy
 import os
 import sys
 import glob
@@ -311,6 +312,15 @@ ERROR: a CA public certificate already exists:
         sys.stderr.write('ERROR: a CA password must be supplied.\n')
         sys.exit(errnoGeneralError)
 
+def genCaConf(d, verbosity=0):
+    """ generate the openssl ca config """
+    ca_openssl_cnf = os.path.join(d['--dir'], CA_OPENSSL_CNF_NAME)
+    configFile = ConfigFile(ca_openssl_cnf)
+    data = copy.deepcopy(d)
+    if '--set-hostname' in data:
+        del data['--set-hostname']
+    configFile.save(data, caYN=1, verbosity=verbosity)
+    return configFile
 
 def genPublicCaCert(password, d, verbosity=0, forceYN=0):
     """ public CA certificate (client-side) generation """
@@ -318,15 +328,10 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
     ca_key = os.path.join(d['--dir'], os.path.basename(d['--ca-key']))
     ca_cert_name = os.path.basename(d['--ca-cert'])
     ca_cert = os.path.join(d['--dir'], ca_cert_name)
-    ca_openssl_cnf = os.path.join(d['--dir'], CA_OPENSSL_CNF_NAME)
 
     genPublicCaCert_dependencies(password, d, forceYN)
 
-    configFile = ConfigFile(ca_openssl_cnf)
-    if '--set-hostname' in d:
-        del d['--set-hostname']
-    configFile.save(d, caYN=1, verbosity=verbosity)
-
+    configFile = genCaConf(d, verbosity)
     args = ("/usr/bin/openssl req -passin pass:%s -text -config %s "
             "-new -x509 -days %s -%s -key %s -out %s"
             % ('%s', repr(cleanupAbsPath(configFile.filename)),
@@ -504,7 +509,7 @@ def genServerCertReq(d, verbosity=0):
     os.chmod(server_cert_req, int('0600',8))
 
 
-def genServerCert_dependencies(password, d):
+def genServerCert_dependencies(password, d, verbosity=0):
     """ server cert generation and signing dependency check """
 
     if password is None:
@@ -522,7 +527,10 @@ def genServerCert_dependencies(password, d):
                                    os.path.basename(d['--server-cert-req']))
     ca_openssl_cnf = os.path.join(d['--dir'], CA_OPENSSL_CNF_NAME)
 
-    dependencyCheck(ca_openssl_cnf)
+    try:
+        dependencyCheck(ca_openssl_cnf)
+    except FailedFileDependencyException:
+        genCaConf(d, verbosity)
     dependencyCheck(ca_key)
     dependencyCheck(ca_cert)
     dependencyCheck(server_cert_req)
@@ -534,7 +542,7 @@ def genServerCert(password, d, verbosity=0):
     serverKeyPairDir = os.path.join(d['--dir'],
                                     getMachineName(d['--set-hostname']))
 
-    genServerCert_dependencies(password, d)
+    genServerCert_dependencies(password, d, verbosity)
 
     ca_key = os.path.join(d['--dir'], os.path.basename(d['--ca-key']))
     ca_cert = os.path.join(d['--dir'], os.path.basename(d['--ca-cert']))

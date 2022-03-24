@@ -1,19 +1,59 @@
-- fix class cast exception during action chains (bsc#1195772)
-- Finding empty profiles by mac address must be case insensitive (bsc#1196407)
-- prepare to use new postgresql-jdbc driver with stringprep and saslprep
-  support (bsc#1196693)
-- allow SCC to display the last check-in time for registered systems
-- generate the system ssh key when bootstrapping a salt-ssh client
-  (bsc#1194909)
-- Fix disappearing metadata key files after channel change (bsc#1192822)
-- New endpoint 'createFirst' added to 'org' xmlrpc api to allow initial organization and user creation
-- Corrected source URLs in spec file.
-- RHEL certificate compatibility.
-- Reuse existing certificate file detection.
-- Require rng-tools for EL8 to generate more entropy faster.
-- Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
-- Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
-- Provide link for CVEs
+- send notifications for new or changed ubuntu errata (bsc#1196977)
+- Allow using a custom SSH port for proxies
+- Hide useless fields for containerized proxies in UI
+- Keep virtualization notifications websocket alive
+- Fix NPE when accessing cancelled action via system history (bsc#1195762)
+- CVE Audit: Show patch as available in the currently installed product even if successor
+  patch affects additional packages (bsc#1196455)
+- Added the server location information to reporting database
+
+-------------------------------------------------------------------
+Wed Mar 23 10:32:00 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Fix type casting for Prometheus SD
+
+-------------------------------------------------------------------
+Mon Mar 21 13:51:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.16-1
+  * Fix exception when image store is deleted before image
+
+-------------------------------------------------------------------
+Wed Mar 16 12:11:47 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * Reapply the patch for  handle npe when syncing ubuntu errata (bsc#1196619)
+
+-------------------------------------------------------------------
+Fri Mar 11 16:48:29 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * Add XML-RPC API to generate proxy containers configuration
+
+-------------------------------------------------------------------
+Fri Mar 11 14:51:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.13-1
+  * Improved task to update the reporting database
+  * Improve image management
+  * Store delta image info in the database
+  * fix class cast exception during action chains (bsc#1195772)
+  * Finding empty profiles by mac address must be case insensitive (bsc#1196407)
+  * prepare to use new postgresql-jdbc driver with stringprep and saslprep
+    support (bsc#1196693)
+  * allow SCC to display the last check-in time for registered systems
+  * generate the system ssh key when bootstrapping a salt-ssh client
+    (bsc#1194909)
+  * Fix disappearing metadata key files after channel change (bsc#1192822)
+  * New endpoint 'createFirst' added to 'org' xmlrpc api to allow initial organization and user creation
+  * Corrected source URLs in spec file.
+  * RHEL certificate compatibility.
+  * Reuse existing certificate file detection.
+  * Require rng-tools for EL8 to generate more entropy faster.
+  * Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
+  * Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
+  * Provide link for CVEs
 
 -------------------------------------------------------------------
 Fri Feb 25 15:31:09 CET 2022 - jgonzalez@suse.com

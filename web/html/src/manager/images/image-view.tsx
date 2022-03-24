@@ -424,6 +424,7 @@ type ImageViewListState = {
   selectedItems: any;
   instancePopupContent: any;
   selected?: any;
+  showObsolete: boolean;
 };
 
 class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
@@ -432,6 +433,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     this.state = {
       selectedItems: [],
       instancePopupContent: {},
+      showObsolete: false,
     };
     this.props.onSelectCount(0);
   }
@@ -461,6 +463,12 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
       selectedItems: items,
     });
     this.props.onSelectCount(items.length);
+  };
+
+  showObsoleteChanged = (event) => {
+    this.setState({
+      showObsolete: event.target.checked,
+    });
   };
 
   renderUpdatesIcon(row) {
@@ -602,10 +610,22 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
       );
     }
 
+    const obsoleteFilter = (
+      <label>
+        <input
+          name="obsoleteFilter"
+          type="checkbox"
+          checked={this.state.showObsolete}
+          onChange={this.showObsoleteChanged}
+        />
+        <span>{t("Show obsolete")}</span>
+      </label>
+    );
+
     return (
       <div>
         <Table
-          data={this.props.data}
+          data={this.state.showObsolete ? this.props.data : this.props.data.filter((img) => !img.obsolete)}
           identifier={(img) => img.id}
           initialSortColumnKey="modified"
           initialSortDirection={-1}
@@ -613,6 +633,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
           selectable
           selectedItems={this.state.selectedItems}
           onSelect={this.handleSelectItems}
+          additionalFilters={[obsoleteFilter]}
         >
           <Column columnKey="type" comparator={Utils.sortByText} header={t("Type")} cell={(row) => typeMap[row.type]} />
           <Column columnKey="name" comparator={Utils.sortByText} header={t("Name")} cell={(row) => row.name} />
@@ -621,7 +642,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             columnKey="revision"
             header={t("Revision")}
             comparator={Utils.sortByNumber}
-            cell={(row) => (row.revision > 0 ? row.revision : "-")}
+            cell={(row) => (row.revision > 0 ? row.revision : "-") + (row.obsolete ? " " + t("(obsolete)") : "")}
           />
           <Column columnKey="updates" header={t("Updates")} cell={(row) => this.renderUpdatesIcon(row)} />
           <Column

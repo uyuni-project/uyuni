@@ -69,11 +69,10 @@ public class EditAddressAction extends RhnAction {
 
         if (targetUser == null) {
             LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find user");
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.user"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.user"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.user"));
-            throw e;
+            throw new LookupException("Could not find user",
+                    ls.getMessage("lookup.jsp.title.user"),
+                    ls.getMessage("lookup.jsp.reason1.user"),
+                    ls.getMessage("lookup.jsp.reason2.user"));
         }
         String addrType = (String) form.get("type");
         if (addrType == null) {

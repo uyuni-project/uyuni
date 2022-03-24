@@ -1,4 +1,8 @@
-- change centos 8 eol urls to vault which still work
+-------------------------------------------------------------------
+Fri Mar 11 15:42:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * change centos 8 eol urls to vault which still work
 
 -------------------------------------------------------------------
 Fri Dec 03 12:33:33 CET 2021 - jgonzalez@suse.com

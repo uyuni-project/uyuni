@@ -23,8 +23,10 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static com.suse.utils.Json.GSON;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -795,7 +797,7 @@ public class ImageBuildController {
             return json(res, ResultJson.error("not_found"));
         }
 
-        images.forEach(ImageInfoFactory::delete);
+        images.forEach(info -> ImageInfoFactory.deleteWithObsoletes(info, GlobalInstanceHolder.SALT_API));
         return json(res, ResultJson.success(images.size()));
     }
 
@@ -806,6 +808,7 @@ public class ImageBuildController {
         json.addProperty("version", imageOverview.getVersion());
         json.addProperty("type", imageOverview.getImageType());
         json.addProperty("external", imageOverview.isExternalImage());
+        json.addProperty("obsolete", imageOverview.isObsolete());
         json.addProperty("revision", imageOverview.getCurrRevisionNum());
         json.addProperty("modified", VIEW_HELPER.renderDate(imageOverview.getModified()));
 
@@ -828,7 +831,11 @@ public class ImageBuildController {
         }
 
         imageOverview.getBuildServerAction()
-                .ifPresent(ba -> json.addProperty("statusId", ba.getStatus().getId()));
+                .ifPresentOrElse(ba -> json.addProperty("statusId", ba.getStatus().getId()),
+                                 () -> json.addProperty("statusId",
+                                            imageOverview.isBuilt() ? ActionFactory.STATUS_COMPLETED.getId() :
+                                                                      ActionFactory.STATUS_FAILED.getId())
+                                 );
 
         return json;
     }

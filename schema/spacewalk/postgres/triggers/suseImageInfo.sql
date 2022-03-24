@@ -23,3 +23,12 @@ suse_imginfo_mod_trig
 before insert or update on suseImageInfo
 for each row
 execute procedure suse_imginfo_mod_trig_fun();
+
+CREATE OR REPLACE FUNCTION suse_image_info_image_removed_trig_fun() RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM suseSaltPillar WHERE id = OLD.pillar_id;
+  RETURN OLD;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER suse_image_info_image_removed_trig AFTER DELETE ON suseImageInfo
+  FOR EACH ROW EXECUTE PROCEDURE suse_image_info_image_removed_trig_fun();

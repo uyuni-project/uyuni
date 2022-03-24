@@ -17,7 +17,6 @@ CREATE TABLE SystemChannel
     name                        VARCHAR(256),
     description                 VARCHAR(4000),
     architecture_name           VARCHAR(64),
-    product_name                VARCHAR(128),
     parent_channel_id           NUMERIC,
     parent_channel_name         VARCHAR(256),
     synced_date                 TIMESTAMPTZ DEFAULT (current_timestamp)

@@ -19,6 +19,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -58,6 +59,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -110,6 +112,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertGenerationException;
+import com.suse.manager.ssl.SSLCertManager;
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -117,7 +123,9 @@ import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
@@ -125,6 +133,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
@@ -142,7 +152,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * SystemManager
@@ -462,6 +475,15 @@ public class SystemManager extends BaseManager {
         return m.execute(params);
     }
 
+    private static String createUniqueId(List<String> fields) {
+        // craft unique id based on given data
+        String delimiter = "_";
+        return delimiter + fields
+                .stream()
+                .reduce((i1, i2) -> i1 + delimiter + i2)
+                .orElseThrow();
+    }
+
     /**
      * Create an empty system profile with required values based on given data.
      *
@@ -492,13 +514,8 @@ public class SystemManager extends BaseManager {
             throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
         }
 
-        // craft unique id based on given data
-        String delimiter = "_";
-        String uniqueId = delimiter + Arrays.asList(hwAddress, hostname)
-                .stream()
-                .flatMap(Opt::stream)
-                .reduce((i1, i2) -> i1 + delimiter + i2)
-                .get();
+        String uniqueId = createUniqueId(
+                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).collect(Collectors.toList()));
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -1856,12 +1873,9 @@ public class SystemManager extends BaseManager {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User does not have" +
-                    " permission to subscribe this server to this channel.");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.subscribechannel"));
-            pex.setLocalizedSummary(
+            throw new PermissionException("User does not have permission to subscribe this server to this channel.",
+                    ls.getMessage("permission.jsp.title.subscribechannel"),
                     ls.getMessage("permission.jsp.summary.subscribechannel"));
-            throw pex;
         }
 
         if (!verifyArchCompatibility(server, channel)) {
@@ -1953,12 +1967,9 @@ public class SystemManager extends BaseManager {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User does not have" +
-                    " permission to unsubscribe this server from this channel.");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.subscribechannel"));
-            pex.setLocalizedSummary(
+            throw new PermissionException("User does not have permission to unsubscribe this server from this channel.",
+                    ls.getMessage("permission.jsp.title.subscribechannel"),
                     ls.getMessage("permission.jsp.summary.subscribechannel"));
-            throw pex;
         }
 
         unsubscribeServerFromChannel(server, channel, flush);
@@ -2134,6 +2145,149 @@ public class SystemManager extends BaseManager {
         }
     }
 
+    private Supplier<RhnRuntimeException> raiseAndLog(String message) {
+        log.error(message);
+        return () -> new RhnRuntimeException(message);
+    }
+
+    private Server getOrCreateProxySystem(User creator, String fqdn, Integer port) {
+        Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
+        if (existing.isPresent()) {
+            Server server = existing.get();
+            if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
+                return server;
+            }
+            throw new SystemsExistException(List.of(server.getId()));
+        }
+        Server server = ServerFactory.createServer();
+        server.setName(fqdn);
+        server.setHostname(fqdn);
+        server.getFqdns().add(new ServerFQDN(server, fqdn));
+        server.setOrg(creator.getOrg());
+        server.setCreator(creator);
+
+        String uniqueId = createUniqueId(List.of(fqdn));
+        server.setDigitalServerId(uniqueId);
+        server.setMachineId(uniqueId);
+        server.setOs("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(System.currentTimeMillis() / 1000);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server.updateServerInfo();
+        ServerFactory.save(server);
+
+        ProxyInfo info = new ProxyInfo();
+        info.setServer(server);
+        info.setSshPort(port);
+        server.setProxyInfo(info);
+
+        systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
+        return server;
+    }
+
+    /**
+     * Create and provide proxy container configuration.
+     *
+     * @param user the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param proxyPort  the SSH port the proxy listens on
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey proxy CRT and key pair
+     * @param caPair the CA certificate and key used to sign the certificate to generate.
+     *               Can be omitted if proxyCertKey is not provided
+     * @param caPassword the CA private key password.
+     *               Can be omitted if proxyCertKey is not provided
+     * @param certData the data needed to generate the new proxy SSL certificate.
+     *               Can be omitted if proxyCertKey is not provided
+     * @return the configuration file
+     */
+    public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
+                                             Long maxCache, String email,
+                                             String rootCA, List<String> intermediateCAs,
+                                             SSLCertPair proxyCertKey,
+                                             SSLCertPair caPair, String caPassword, SSLCertData certData)
+            throws IOException, InstantiationException, SSLCertGenerationException {
+        SSLCertPair proxyPair = proxyCertKey;
+        String rootCaCert = rootCA;
+        if (proxyCertKey == null || !proxyCertKey.isComplete()) {
+            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
+            rootCaCert = caPair.getCertificate();
+        }
+
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ZipOutputStream zipOut = new ZipOutputStream(bytesOut);
+
+        Map<String, Object> config = new HashMap<>();
+        config.put("server", server);
+        config.put("max_cache_size_mb", maxCache);
+        config.put("email", email);
+        config.put("server_version", ConfigDefaults.get().getProductVersion());
+        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
+
+        zipOut.putNextEntry(new ZipEntry("config.yaml"));
+        zipOut.write(YamlHelper.INSTANCE.dump(config).getBytes());
+        zipOut.closeEntry();
+
+        ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
+        zipOut.putNextEntry(new ZipEntry("system_id.xml"));
+        zipOut.write(cert.asXml().getBytes());
+        zipOut.closeEntry();
+
+        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
+                .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
+        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+            throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
+        }
+
+        zipOut.putNextEntry(new ZipEntry("server_ssh_key.pub"));
+        zipOut.write(result.getPublicKey().getBytes());
+        zipOut.closeEntry();
+
+        // Create the proxy SSH keys
+        result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+            throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
+        }
+        // Add the SSH keys to the zip
+        zipOut.putNextEntry(new ZipEntry("server_ssh_push"));
+        zipOut.write(result.getKey().getBytes());
+        zipOut.closeEntry();
+
+        zipOut.putNextEntry(new ZipEntry("server_ssh_push.pub"));
+        zipOut.write(result.getPublicKey().getBytes());
+        zipOut.closeEntry();
+
+        // Check the SSL files using mgr-ssl-cert-setup
+        try {
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair, intermediateCAs);
+            zipOut.putNextEntry(new ZipEntry("server.crt"));
+            zipOut.write(certificate.getBytes());
+            zipOut.closeEntry();
+
+            zipOut.putNextEntry(new ZipEntry("server.key"));
+            zipOut.write(proxyPair.getKey().getBytes());
+            zipOut.closeEntry();
+        }
+        catch (IllegalArgumentException err) {
+            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
+        }
+
+        zipOut.putNextEntry(new ZipEntry("ca.crt"));
+        zipOut.write(rootCaCert.getBytes());
+        zipOut.closeEntry();
+
+        zipOut.close();
+
+        return bytesOut.toByteArray();
+    }
+
     /**
      * Returns a DataResult containing the systems subscribed to a particular channel.
      *      but returns a DataResult of SystemOverview objects instead of maps
@@ -2237,17 +2391,18 @@ public class SystemManager extends BaseManager {
      */
     public static void unlockServer(User user, Server server) {
         if (!isAvailableToUser(user, server.getId())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException(
-                    "Could not find server " + server.getId() +
-                    " for user " + user.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+           throw getNoServerException(server.getId(), user.getId());
         }
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
+    }
+
+    private static LookupException getNoServerException(Long sid, Long uid) {
+        LocalizationService ls = LocalizationService.getInstance();
+        return new LookupException("Could not find server " + sid + " for user " + uid,
+                ls.getMessage("lookup.jsp.title.system"),
+                ls.getMessage("lookup.jsp.reason1.system"),
+                ls.getMessage("lookup.jsp.reason2.system"));
     }
 
     /**
@@ -2267,14 +2422,7 @@ public class SystemManager extends BaseManager {
      */
     public static void lockServer(User locker, Server server, String reason) {
         if (!isAvailableToUser(locker, server.getId())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException(
-                    "Could not find server " + server.getId() +
-                    " for user " + locker.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+            throw getNoServerException(server.getId(), locker.getId());
         }
         ServerLock sl = new ServerLock(locker,
                 server,
@@ -2332,13 +2480,7 @@ public class SystemManager extends BaseManager {
      */
     public static void ensureAvailableToUser(User user, Long sid) {
         if (!isAvailableToUser(user, sid)) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find server " + sid +
-                    " for user " + user.getId());
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.system"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.system"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.system"));
-            throw e;
+            throw getNoServerException(sid, user.getId());
         }
     }
 

@@ -15,25 +15,10 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
-import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
-
-import java.util.Optional;
-
 /**
  * Exception thrown when CLM dependency resolution fails
  */
 public class DependencyResolutionException extends Exception {
-
-    private Module module;
-
-    /**
-     * Initialize exception with a message
-     *
-     * @param message the exception message
-     */
-    public DependencyResolutionException(String message) {
-        super(message);
-    }
 
     /**
      * Initialize exception with a message and a cause
@@ -43,23 +28,5 @@ public class DependencyResolutionException extends Exception {
      */
     public DependencyResolutionException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    /**
-     * Initialize exception with a module object
-     *
-     * @param moduleIn the problematic module object
-     */
-    public DependencyResolutionException(Module moduleIn) {
-        this.module = moduleIn;
-    }
-
-    /**
-     * Get the problematic module, if any exists
-     *
-     * @return the module instance
-     */
-    public Optional<Module> getModule() {
-        return Optional.ofNullable(module);
     }
 }

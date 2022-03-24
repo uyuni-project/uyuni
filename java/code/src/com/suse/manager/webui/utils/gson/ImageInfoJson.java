@@ -17,10 +17,14 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.image.DeltaImageInfo;
+import com.redhat.rhn.domain.image.ImageFile;
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -47,6 +51,7 @@ public class ImageInfoJson {
     private Integer revision;
     private String checksum;
     private boolean external;
+    private boolean obsolete;
     private JsonObject profile;
     private JsonObject store;
     private JsonObject buildServer;
@@ -58,6 +63,9 @@ public class ImageInfoJson {
     private JsonObject patches;
     private Integer packages;
     private Integer installedPackages;
+    private List<JsonObject> imageFiles;
+    private List<JsonObject> deltaSourceFor;
+    private List<JsonObject> deltaTargetFor;
 
     /**
      * @return the id
@@ -151,10 +159,24 @@ public class ImageInfoJson {
     }
 
     /**
+     * @return true if the image is obsolete
+     */
+    public boolean isObsolete() {
+        return obsolete;
+    }
+
+    /**
      * @param externalIn the external boolean
      */
     public void setExternal(boolean externalIn) {
         this.external = externalIn;
+    }
+
+    /**
+     * @param obsoleteIn the obsolete boolean
+     */
+    public void setObsolete(boolean obsoleteIn) {
+        this.obsolete = obsoleteIn;
     }
 
     /**
@@ -353,6 +375,69 @@ public class ImageInfoJson {
     }
 
     /**
+     * @return the image files
+     */
+    public List<JsonObject> getImageFiles() {
+        return imageFiles;
+    }
+
+    /**
+     * @param imageFilesIn set of image files
+     */
+    public void setImageFiles(Set<ImageFile> imageFilesIn) {
+        this.imageFiles = imageFilesIn.stream().map(file -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("name", file.getFile());
+            json.addProperty("url", OSImageStoreUtils.getOSImageFileURI(file));
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * @return the delta images that have this image as a source
+     */
+    public List<JsonObject> getDeltaSourceFor() {
+        return deltaSourceFor;
+    }
+
+    /**
+     * @param deltaSourceForIn set of delta images that have this image as a source
+     */
+    public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {
+        this.deltaSourceFor = deltaSourceForIn.stream().map(delta -> {
+            JsonObject json = new JsonObject();
+            ImageInfo target = delta.getTargetImageInfo();
+            json.addProperty("id", target.getId());
+            json.addProperty("name", target.getName() + "-" +
+                                     target.getVersion() + "-" +
+                                     target.getRevisionNumber());
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * @return the delta images that have this image as a target
+     */
+    public List<JsonObject> getDeltaTargetFor() {
+        return deltaTargetFor;
+    }
+
+    /**
+     * @param deltaTargetForIn  set of delta images that have this image as a target
+     */
+    public void setDeltaTargetFor(Set<DeltaImageInfo> deltaTargetForIn) {
+        this.deltaTargetFor = deltaTargetForIn.stream().map(delta -> {
+            JsonObject json = new JsonObject();
+            ImageInfo source = delta.getSourceImageInfo();
+            json.addProperty("id", source.getId());
+            json.addProperty("name", source.getName() + "-" +
+                                     source.getVersion() + "-" +
+                                     source.getRevisionNumber());
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    /**
      * Creates a JSON object from an image overview object
      *
      * @param imageOverview the image overview
@@ -368,6 +453,7 @@ public class ImageInfoJson {
         json.setRevision(imageOverview.getCurrRevisionNum());
         json.setChecksum(c != null ? c.getChecksum() : "");
         json.setExternal(imageOverview.isExternalImage());
+        json.setObsolete(imageOverview.isObsolete());
         json.setProfile(imageOverview.getProfile());
         json.setStore(imageOverview.getStore());
         json.setBuildServer(imageOverview.getBuildServer());
@@ -386,6 +472,9 @@ public class ImageInfoJson {
                         collect.get(false).stream().map(ImageInfoJson::getProductName).collect(Collectors.toSet())));
         json.setInstalledProducts(installedProductsJson.orElse(null));
         json.setCustomData(imageOverview.getCustomDataValues());
+        json.setImageFiles(imageOverview.getImageFiles());
+        json.setDeltaSourceFor(imageOverview.getDeltaSourceFor());
+        json.setDeltaTargetFor(imageOverview.getDeltaTargetFor());
 
         return json;
     }

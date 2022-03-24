@@ -65,11 +65,9 @@ public class EnableConfirmSetupAction extends RhnListAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException("Only org admin's can reactivate users");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.enableuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.enableuser"));
-            throw pex;
+            throw new PermissionException("Only org admin's can reactivate users",
+                    ls.getMessage("permission.jsp.title.enableuser"),
+                    ls.getMessage("permission.jsp.summary.enableuser"));
         }
 
         RhnListSetHelper helper = new RhnListSetHelper(request);
@@ -118,11 +116,9 @@ public class EnableConfirmSetupAction extends RhnListAction {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException("Only org admin's can reactivate users");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.enableuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.enableuser"));
-            throw pex;
+            throw new PermissionException("Only org admin's can reactivate users",
+                    ls.getMessage("permission.jsp.title.enableuser"),
+                    ls.getMessage("permission.jsp.summary.enableuser"));
         }
 
         Iterator users = UserManager.usersInSet(user, "user_list", null).iterator();

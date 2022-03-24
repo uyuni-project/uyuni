@@ -355,6 +355,24 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>-</td>
               )}
             </tr>
+            {data.imageFiles.length ? (
+              <tr>
+                <td>Files:</td>
+                <td>
+                  <ul>
+                    {data.imageFiles.map((f) => (
+                      <li>
+                        <a href={f.url} target="_blank" rel="noopener noreferrer">
+                          {f.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
             <tr>
               <td>Build Host:</td>
               {data.buildServer ? (
@@ -412,6 +430,34 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>-</td>
               )}
             </tr>
+            {data.deltaSourceFor.length ? (
+              <tr>
+                <td>This image is used as delta source for:</td>
+                <td>
+                  <ul>
+                    {data.deltaSourceFor.map((d) => (
+                      <li>{d.name}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
+            {data.deltaTargetFor.length ? (
+              <tr>
+                <td>This image is used as delta target for:</td>
+                <td>
+                  <ul>
+                    {data.deltaTargetFor.map((d) => (
+                      <li>{d.name}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
           </tbody>
         </table>
         <PopUp

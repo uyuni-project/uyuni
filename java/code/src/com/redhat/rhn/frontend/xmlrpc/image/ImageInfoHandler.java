@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.image;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -92,6 +93,27 @@ public class ImageInfoHandler extends BaseHandler {
             throw new NoSuchImageException();
         }
         return opt.get();
+    }
+
+    /**
+     * Get Image Pillar
+     * @param loggedInUser The Current User
+     * @param imageId the Image id
+     * @return the pillar
+     *
+     * @xmlrpc.doc Get pillar of an Image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype struct
+     */
+    public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        return opt.get().getPillar().getPillar();
     }
 
     /**
@@ -311,7 +333,7 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        ImageInfoFactory.delete(opt.get());
+        ImageInfoFactory.deleteWithObsoletes(opt.get(), GlobalInstanceHolder.SALT_API);
         return 1;
     }
 

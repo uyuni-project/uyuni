@@ -107,7 +107,7 @@ public class VirtNotifications {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        Boolean didClientAbortedConnection = err instanceof EOFException ||
+        boolean didClientAbortedConnection = err instanceof EOFException ||
                 !session.isOpen() ||
                 err.getMessage().startsWith("Unexpected error [32]");
 
@@ -193,7 +193,7 @@ public class VirtNotifications {
      * @param message the message to be sent
      */
     public static void sendMessage(Session session, String message) {
-        synchronized (session) {
+        synchronized (LOCK) {
             try {
                 if (session.isOpen()) {
                     session.getBasicRemote().sendText(message);
@@ -357,5 +357,20 @@ public class VirtNotifications {
                 HibernateFactory.closeSession();
             }
         }, 30, 30, TimeUnit.SECONDS);
+    }
+
+    private static ScheduledExecutorService keepaliveExecutorService;
+    static {
+        keepaliveExecutorService = Executors.newScheduledThreadPool(1);
+        keepaliveExecutorService.scheduleWithFixedDelay(() -> {
+            synchronized (LOCK) {
+                // Notify sessions waiting for this action
+                wsSessions.forEach((session, requests) -> {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("keepalive", "yes");
+                    sendMessage(session, GSON.toJson(data));
+                });
+            }
+        }, 15, 15, TimeUnit.SECONDS);
     }
 }

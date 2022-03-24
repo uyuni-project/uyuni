@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Fri Mar 18 09:17:29 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Add spacewalk-proxy-html package
+
+-------------------------------------------------------------------
+Tue Mar 15 14:39:46 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Initial version

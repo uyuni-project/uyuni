@@ -16,9 +16,15 @@ package com.suse.manager.reactor.messaging.test;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.Call;
+import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.Return;
+import com.suse.salt.netapi.utils.ClientUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,11 +36,12 @@ import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Provides utility functions to use in salt-related unit tests.
@@ -75,8 +82,8 @@ public class SaltTestUtils {
     public static <T> Optional<T> getSaltResponse(String filename, Map<String, String> placeholders,
                                                   TypeToken<T> type) {
         try {
-            Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
-            String content = Files.lines(path).collect(Collectors.joining("\n"));
+            String path = new File(TestUtils.findTestData(filename).getPath()).getAbsolutePath();
+            String content = FileUtils.readStringFromFile(path);
 
             if (placeholders != null) {
                 for (Map.Entry<String, String> entry : placeholders.entrySet()) {
@@ -91,32 +98,70 @@ public class SaltTestUtils {
             return Optional.of(target);
         }
         catch (IOException | ClassNotFoundException e) {
-           throw new RuntimeException(e);
+           throw new RhnRuntimeException(e);
         }
     }
 
     /**
-     * Function to use in expectations to match a salt call.
+     * Compute a salt call response from a data file for use with a SaltClient mock.
      *
-     * Example usage matching <code>virt.network_info</code> calls:
+     * Here is an example of how to use this function:
      *
      * <pre>{@code
      *   context().checking(new Expectations() {{
-     *       oneOf(saltServiceMock).callSync(
-     *               with(SaltTestUtils.functionEquals("virt", "network_info")),
-     *               with(host.asMinionServer().get().getMinionId()));
-     *       will(returnValue(SaltTestUtils.getSaltResponse(
-     *               "/com/suse/manager/webui/controllers/test/virt.net.info.json",
-     *               null, new TypeToken<Map<String, JsonElement>>() { }.getType())));
+     *       oneOf(saltClient).call(with(SaltTestUtils.functionEquals("mgrutil", "ssh_keygen")),
+     *                              with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+     *                              with(any(TypeToken.class)), with(any(AuthMethod.class)));
+     *       will(returnValue(SaltTestUtils.getCompletionStage(
+     *                              "/com/suse/manager/webui/services/impl/test/service/ssh_keygen.json",
+     *                              new TypeToken<MgrUtilRunner.SshKeygenResult>() { }.getType())));
+     *   }});
+     * }</pre>
+     *
+     * @param filename the path to the data file
+     * @param type type of the result.
+     * @param <T> type of the result
+     *
+     * @return the mocked up salt response
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> CompletionStage<Return<List<T>>> getCompletionStage(String filename, Type type) {
+        try {
+            String path = new File(TestUtils.findTestData(filename).getPath()).getAbsolutePath();
+            String content = FileUtils.readStringFromFile(path);
+
+            Type resultType = ClientUtils.parameterizedType(null, Result.class, type);
+            Type listType = ClientUtils.parameterizedType(null, List.class, resultType);
+            Type returnType = ClientUtils.parameterizedType(null, Return.class, listType);
+            TypeToken<Return<List<T>>> token = (TypeToken<Return<List<T>>>) TypeToken.get(returnType);
+            Return<List<T>> ret = new JsonParser<>(token).parse(content);
+            return CompletableFuture.completedStage(ret);
+        }
+        catch (IOException | ClassNotFoundException e) {
+            throw new RhnRuntimeException(e);
+        }
+    }
+
+    /**
+     * Function to use in expectations to match a salt runner call.
+     *
+     * Example usage matching <code>mgrutil.ssh_keygen</code> calls:
+     *
+     * <pre>{@code
+     *   context().checking(new Expectations() {{
+     *       oneOf(saltClient).call(with(SaltTestUtils.functionEquals("mgrutil", "ssh_keygen")),
+     *                              with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+     *                              with(any(TypeToken.class)), with(any(AuthMethod.class)));
      *   }});
      * }</pre>
      *
      * @param module salt module to match
      * @param func salt function to match
+     * @param <T> the type to match
      *
      * @return the matcher for the expectations.
      */
-    public static Matcher<LocalCall<Object>> functionEquals(String module, String func) {
+    public static <T> Matcher<Call<T>> functionEquals(String module, String func) {
         return Matchers.allOf(
                 Matchers.hasProperty("moduleName", equalTo(module)),
                 Matchers.hasProperty("functionName", equalTo(func)));

@@ -20,10 +20,7 @@
     "test": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation\" BABEL_ENV=test jest",
     "test:watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation\" BABEL_ENV=test jest --watch",
     "storybook": "styleguidist server",
-    "tsc": "tsc",
-    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
-    "prettier": "prettier --config .prettierrc.js --write",
-    "migrate": "node build/migrate-ts/index.js"
+    "tsc": "tsc"
   },
   "engines": {
     "yarn": ">=1.0.0"

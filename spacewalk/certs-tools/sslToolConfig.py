@@ -24,6 +24,7 @@ import os
 import sys
 import copy
 import time
+import random
 import socket
 
 ## local imports
@@ -496,8 +497,9 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     # REMEMBER: openssl will incremented the serial number each time
     # as well.
     if serial <= caSerial:
-        serial = incSerial(hex(caSerial))
-        serial = eval('0x' + serial)
+        random.seed()
+        max_serial = eval("0x" + "F" * 40)
+        serial = random.randrange(1, max_serial - caSerial / 2)
     serial = fixSerial(hex(serial))
 
     # create the serial file if it doesn't exist

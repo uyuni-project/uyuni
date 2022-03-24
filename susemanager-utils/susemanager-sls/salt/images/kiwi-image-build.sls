@@ -57,14 +57,18 @@ mgr_buildimage_prepare_activation_key_in_source:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log --shared-cache-dir={{ cache_dir }} {{ kiwi_options }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
+    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS"
+    - hide_output: True
+    - env:
+      - GLOBAL_PARAMS: "--logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }}"
+      - PARAMS:  "--description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
       - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log --shared-cache-dir={{ cache_dir }} {{ kiwi_options }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }} {{ kiwi_options }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
@@ -168,3 +172,9 @@ mgr_buildimage_info:
 {%- else %}
       - mgr_buildimage_kiwi_bundle
 {%- endif %}
+
+mgr_buildimage_kiwi_collect_logs:
+  mgrcompat.module_run:
+    - name: cp.push
+    - path: {{ root_dir }}/build.log
+    - order: last

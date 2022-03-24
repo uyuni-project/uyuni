@@ -38,6 +38,12 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
         title={t("Maintenance") + " " + (type === "schedule" ? t("Schedules") : t("Calendars"))}
         icon="spacewalk-icon-schedule"
         buttons={buttons}
+        helpUrl="reference/schedule/maintenance-windows.html"
+        summary={
+          type === "schedule"
+            ? t("Below is a list of Maintenance Schedules available to the current user.")
+            : t("Below is a list of Maintenance Calendars available to the current user.")
+        }
       >
         <div className="panel panel-default">
           <div className="panel-heading">

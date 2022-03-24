@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.server.ProxyInfo"
         table="rhnProxyInfo" >
@@ -11,6 +11,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <param name="property">server</param>
             </generator>
         </id>
+        <property name="sshPort" type="integer" column="ssh_port" />
         <one-to-one name="server"
             class="com.redhat.rhn.domain.server.Server"
             constrained="true"/>

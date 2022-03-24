@@ -28,8 +28,8 @@ package com.redhat.rhn.common.db;
 public class ConstraintViolationException extends DatabaseException  {
 
     private static final long serialVersionUID = 8280712690008736370L;
-    protected int constraintType;
-    protected String constraint;
+    protected final int constraintType;
+    protected final String constraint;
 
     /////////////////////////
     // Constructors
@@ -78,27 +78,10 @@ public class ConstraintViolationException extends DatabaseException  {
     }
 
     /**
-     * Sets the constraintType to the given value.
-     * @param type constraint type
-     */
-    public void setConstraintType(int type) {
-        this.constraintType = type;
-    }
-
-    /**
      * Returns the value of constraint
      * @return String constraint
      */
     public String getConstraint() {
         return constraint;
     }
-
-    /**
-     * Sets the constraint to the given value.
-     * @param name constraint name
-     */
-    public void setConstraint(String name) {
-        this.constraint = name;
-    }
-
 }

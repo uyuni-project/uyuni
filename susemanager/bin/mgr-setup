@@ -197,6 +197,16 @@ cleanup_hostname() {
     fi;
 }
 
+exists_db() {
+    PGNAME=$1
+    EXISTS=$(runuser - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+    if [ "x$EXISTS" == "x $PGNAME" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 setup_db_postgres() {
     DATADIR="/var/lib/pgsql/data" 
     systemctl --quiet enable postgresql 2>&1
@@ -238,23 +248,25 @@ setup_db_postgres() {
         fi
     fi
     systemctl start postgresql
-    # required for postgresql <= 13 before creating the user
-    echo "password_encryption = 'scram-sha-256'" >> /var/lib/pgsql/data/postgresql.conf
-    systemctl restart postgresql
-    su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
-    # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
-    # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
+    if ! exists_db $MANAGER_DB_NAME; then
+        # required for postgresql <= 13 before creating the user
+        echo "password_encryption = 'scram-sha-256'" >> /var/lib/pgsql/data/postgresql.conf
+        systemctl restart postgresql
+        su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
-    echo "local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
+        echo "local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
 " > /tmp/pg_hba.conf
-    cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
-    mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
-    mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
-    chmod 600 /var/lib/pgsql/data/pg_hba.conf
-    chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
-    systemctl restart postgresql
+        cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
+        mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
+        mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
+        chmod 600 /var/lib/pgsql/data/pg_hba.conf
+        chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
+        systemctl restart postgresql
+    else
+        echo "Database exists. Preparing for resetup. All data will be removed."
+    fi
 }
 
 check_mksubvolume() {

@@ -1,4 +1,10 @@
+# If you want to test with the head container, you can do it withç
+# PRODUCT=SUSE-Manager make
+ifeq ($(PRODUCT), SUSE-Manager)
+DOCKER_CONTAINER = registry.suse.de/devel/galaxy/manager/head/docker/containers/suma-head-cobbler
+else
 DOCKER_CONTAINER = registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-cobbler
+endif
 
 all :: cobbler_tests
 

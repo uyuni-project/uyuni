@@ -59,7 +59,7 @@ class SpacewalkShell(Cmd):
     __module_list = ['activationkey', 'configchannel', 'cryptokey',
                      'custominfo', 'distribution', 'errata',
                      'filepreservation', 'group', 'kickstart',
-                     'misc', 'org', 'package', 'repo', 'report', 'schedule',
+                     'misc', 'org', 'package', 'proxy', 'repo', 'report', 'schedule',
                      'snippet', 'softwarechannel', 'ssm', 'api',
                      'system', 'user', 'utils', 'scap']
 

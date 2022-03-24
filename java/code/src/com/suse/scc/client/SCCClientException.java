@@ -19,15 +19,15 @@ package com.suse.scc.client;
  */
 public class SCCClientException extends Exception {
 
-    private int httpStatusCode = 0;
-    private String httpRequestURI;
+    private final int httpStatusCode;
+    private final String httpRequestURI;
 
     /**
      * Constructor expecting a custom cause.
      * @param cause the cause
      */
     public SCCClientException(Throwable cause) {
-        super(cause);
+        this(0, null, cause);
     }
 
     /**
@@ -36,8 +36,7 @@ public class SCCClientException extends Exception {
      * @param cause the cause
      */
     public SCCClientException(int statusCode, Throwable cause) {
-        this(cause);
-        httpStatusCode = statusCode;
+        this(statusCode, null, cause);
     }
 
     /**
@@ -47,7 +46,8 @@ public class SCCClientException extends Exception {
      * @param cause the cause
      */
     public SCCClientException(int statusCode, String uri, Throwable cause) {
-        this(statusCode, cause);
+        super(cause);
+        httpStatusCode = statusCode;
         httpRequestURI = uri;
     }
 
@@ -56,7 +56,7 @@ public class SCCClientException extends Exception {
      * @param message the message
      */
     public SCCClientException(String message) {
-        super(message);
+        this(0, null, message);
     }
 
     /**
@@ -65,8 +65,7 @@ public class SCCClientException extends Exception {
      * @param message the message
      */
     public SCCClientException(int statusCode, String message) {
-        this(message);
-        httpStatusCode = statusCode;
+        this(statusCode, null, message);
     }
 
     /**
@@ -76,7 +75,8 @@ public class SCCClientException extends Exception {
      * @param message the message
      */
     public SCCClientException(int statusCode, String uri, String message) {
-        this(statusCode, message);
+        super(message);
+        httpStatusCode = statusCode;
         httpRequestURI = uri;
     }
 

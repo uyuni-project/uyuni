@@ -439,10 +439,6 @@ public class MasterHandler extends BaseHandler {
 
     private void fail(String msg, String titleKey, String reasonKey, String arg) {
         LocalizationService ls = LocalizationService.getInstance();
-        LookupException e = new LookupException(msg);
-        e.setLocalizedTitle(ls.getMessage(titleKey));
-        e.setLocalizedReason1(ls.getMessage(reasonKey, arg));
-        throw e;
-
+        throw new LookupException(msg, ls.getMessage(titleKey), ls.getMessage(reasonKey, arg), null);
     }
 }

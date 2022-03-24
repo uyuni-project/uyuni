@@ -1,0 +1,27 @@
+name: Run schema migration tests for reportdb
+
+on:
+  pull_request:
+    paths:
+      - 'schema/reportdb/**/*'
+      - 'schema/spacewalk/spacewalk-schema-upgrade'
+
+jobs:
+  schema_migration_reportdb_test_pgsql:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-ruby@v1
+      - id: files
+        uses: Ana06/get-changed-files@v2.0.0
+        with:
+          filter: '*.sql'
+      - name: Run json generator
+        run: |
+          ruby .github/scripts/gitarro_json_gen.rb ${{ steps.files.outputs.added_modified }}
+
+      - name: Run schema migration tests for reportdb
+        run: |
+          susemanager-utils/testing/automation/schema-migration-reportdb-test-pgsql.sh

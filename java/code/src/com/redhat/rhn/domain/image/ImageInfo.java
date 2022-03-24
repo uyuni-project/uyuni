@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerArch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -71,10 +72,16 @@ public class ImageInfo extends BaseDomainHelper {
     private Set<Channel> channels = new HashSet<>();
     private Set<ImagePackage> packages = new HashSet<>();
     private Set<InstalledProduct> installedProducts = new HashSet<>();
-    private Set<ImageBuildHistory> buildHistory = new HashSet<>();
+    private Set<ImageRepoDigest> repoDigests = new HashSet<>();
     private Org org;
     private ServerArch imageArch;
     private boolean externalImage;
+    private boolean obsolete;
+    private boolean built;
+    private Set<ImageFile> imageFiles = new HashSet<>();
+    private Pillar pillar;
+    private Set<DeltaImageInfo> deltaSourceFor = new HashSet<>();
+    private Set<DeltaImageInfo> deltaTargetFor = new HashSet<>();
 
     /**
      * @return the id
@@ -253,11 +260,58 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
-     * @return the build history
+     * @return true if the image is obsolete (has been replaced in the store)
+     */
+    @Column(name = "obsolete")
+    @Type(type = "yes_no")
+    public boolean isObsolete() {
+        return obsolete;
+    }
+
+    /**
+     * @return true if the image has been successfully built
+     */
+    @Column(name = "built")
+    @Type(type = "yes_no")
+    public boolean isBuilt() {
+        return built;
+    }
+
+    /**
+     * @return the repo digests
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
-    public Set<ImageBuildHistory> getBuildHistory() {
-        return buildHistory;
+    public Set<ImageRepoDigest> getRepoDigests() {
+        return repoDigests;
+    }
+
+    /**
+     * @return the files
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
+    public Set<ImageFile> getImageFiles() {
+        return imageFiles;
+    }
+
+    /**
+     * @return the pillar
+     */
+    @OneToOne
+    @JoinColumn(name = "pillar_id")
+    public Pillar getPillar() {
+        return pillar;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "source_image_id")
+    public Set<DeltaImageInfo> getDeltaSourceFor() {
+        return deltaSourceFor;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "target_image_id")
+    public Set<DeltaImageInfo> getDeltaTargetFor() {
+        return deltaTargetFor;
     }
 
     /**
@@ -352,10 +406,10 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
-     * @param buildHistoryIn the build history
+     * @param repoDigestsIn the repo digests
      */
-    public void setBuildHistory(Set<ImageBuildHistory> buildHistoryIn) {
-        this.buildHistory = buildHistoryIn;
+    public void setRepoDigests(Set<ImageRepoDigest> repoDigestsIn) {
+        this.repoDigests = repoDigestsIn;
     }
 
     /**
@@ -379,9 +433,46 @@ public class ImageInfo extends BaseDomainHelper {
         this.externalImage = externalImageIn;
     }
 
+    /**
+     * @param obsoleteIn the obsolete flag
+     */
+    public void setObsolete(boolean obsoleteIn) {
+        this.obsolete = obsoleteIn;
+    }
+
+    /**
+     * @param builtIn the built flag
+     */
+    public void setBuilt(boolean builtIn) {
+        this.built = builtIn;
+    }
+
     @Transient
     public PackageType getPackageType() {
         return getImageArch().getArchType().getPackageType();
+    }
+
+
+    /**
+     * @param imageFilesIn the image files
+     */
+    public void setImageFiles(Set<ImageFile> imageFilesIn) {
+        this.imageFiles = imageFilesIn;
+    }
+
+    /**
+     * @param pillarIn file to set
+     */
+    public void setPillar(Pillar pillarIn) {
+        this.pillar = pillarIn;
+    }
+
+    public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {
+        deltaSourceFor = deltaSourceForIn;
+    }
+
+    public void setDeltaTargetFor(Set<DeltaImageInfo> deltaTargetForIn) {
+        deltaTargetFor = deltaTargetForIn;
     }
 
     /**
@@ -394,10 +485,7 @@ public class ImageInfo extends BaseDomainHelper {
         }
         ImageInfo castOther = (ImageInfo) other;
         return new EqualsBuilder()
-                .append(name, castOther.name)
-                .append(version, castOther.version)
-                .append(checksum, castOther.checksum)
-                .append(store, castOther.store)
+                .append(id, castOther.id)
                 .isEquals();
     }
 
@@ -407,10 +495,7 @@ public class ImageInfo extends BaseDomainHelper {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(name)
-                .append(version)
-                .append(checksum)
-                .append(store)
+                .append(id)
                 .toHashCode();
     }
 

@@ -56,11 +56,9 @@ public class SlaveAction extends RhnAction {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-              new PermissionException("Only satellite admins can work with known masters");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.iss.master"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw new PermissionException("Only satellite admins can work with known masters",
+                    ls.getMessage("permission.jsp.title.iss.master"),
+                    ls.getMessage("permission.jsp.summary.general"));
         }
 
         RequestContext requestContext = new RequestContext(request);

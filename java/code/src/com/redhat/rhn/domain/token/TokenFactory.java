@@ -80,11 +80,10 @@ public class TokenFactory extends HibernateFactory {
         if (id == null || org == null) {
             LocalizationService ls = LocalizationService.getInstance();
             String msg = "Null value provided id=[%s] , org = [%s]";
-            LookupException e = new LookupException(String.format(msg, id, org));
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.token"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.token"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.token"));
-            throw e;
+            throw new LookupException(String.format(msg, id, org),
+                    ls.getMessage("lookup.jsp.title.token"),
+                    ls.getMessage("lookup.jsp.reason1.token"),
+                    ls.getMessage("lookup.jsp.reason2.token"));
         }
         Token t;
         Session session = null;

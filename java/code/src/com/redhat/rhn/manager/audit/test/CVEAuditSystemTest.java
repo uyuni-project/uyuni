@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
-import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
 import junit.framework.TestCase;
@@ -32,16 +32,16 @@ public class CVEAuditSystemTest extends TestCase {
      */
     public void testChannels() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
-        system.addChannel(new ChannelIdNameLabelTriple(1L, "foo", "f"));
-        system.addChannel(new ChannelIdNameLabelTriple(1L, "bar", "b"));
+        system.addChannel(new AuditChannelInfo(1L, "foo", "f", 0L));
+        system.addChannel(new AuditChannelInfo(1L, "bar", "b", 0L));
         assertEquals(1, system.getChannels().size());
         assertTrue(system.getChannels().contains(
-                new ChannelIdNameLabelTriple(1L, "xyz", "x")));
+                new AuditChannelInfo(1L, "xyz", "x", 0L)));
 
-        system.addChannel(new ChannelIdNameLabelTriple(2L, "foo", "f"));
+        system.addChannel(new AuditChannelInfo(2L, "foo", "f", 0L));
         assertEquals(2, system.getChannels().size());
         assertTrue(system.getChannels().contains(
-                new ChannelIdNameLabelTriple(2L, "xyz", "x")));
+                new AuditChannelInfo(2L, "xyz", "x", 0L)));
     }
 
     /**

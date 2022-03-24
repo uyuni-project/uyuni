@@ -33,7 +33,7 @@
                       LEFT JOIN rhnchannelarch ON rhnchannel.channel_arch_id = rhnchannelarch.id
                       LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
                       LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
-          order by channel_id offset :offset limit :limit
+        ORDER BY channel_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
@@ -66,13 +66,13 @@
                       LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
                       LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
                       LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id
-          order by errata_id offset :offset limit :limit
+        ORDER BY errata_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 
 <mode name="Package" class="">
     <query params="offset, limit">
-          SELECT distinct rhnpackage.id AS package_id
+          SELECT rhnpackage.id AS package_id
                       , rhnpackagename.name
                       , rhnpackageevr.epoch
                       , rhnpackageevr.version
@@ -88,24 +88,8 @@
                       LEFT JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
                       LEFT JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
                       LEFT JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
-                      LEFT JOIN rhnchannelpackage ON rhnpackage.id = rhnchannelpackage.package_id
-                      LEFT JOIN rhnchannel ON rhnchannelpackage.channel_id = rhnchannel.id
                       LEFT JOIN web_customer ON rhnpackage.org_id = web_customer.id
-          order by package_id offset :offset limit :limit
-  </query>
-</mode>
-
-<mode name="SystemErrata" class="">
-    <query params="offset, limit">
-          SELECT rhnserverneedederratacache.server_id AS system_id
-                      , rhnserverneedederratacache.errata_id
-                      , rhnserver.hostname
-                      , rhnerrata.advisory_name
-                      , rhnerrata.advisory_type
-           FROM rhnserverneedederratacache
-                      LEFT JOIN rhnserver ON rhnserverneedederratacache.server_id = rhnserver.id
-                      LEFT JOIN rhnerrata ON rhnserverneedederratacache.errata_id = rhnerrata.id
-          order by system_id, errata_id offset :offset limit :limit
+        ORDER BY package_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
 

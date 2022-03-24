@@ -95,6 +95,7 @@ def processCommandline():
     parser.add_argument(
         "-k", "--server-key-file", help="Path to the Server Private Key"
     )
+    parser.add_argument("--check-only", "-c", action="store_true")
     parser.add_argument("--verbose", "-v", action="count", default=0)
 
     options = parser.parse_args()
@@ -211,7 +212,7 @@ def isValid(startdate, enddate, subject):
 
     start = datetime.strptime(startdate, "%b %d %H:%M:%S %Y %Z")
     end = datetime.strptime(enddate, "%b %d %H:%M:%S %Y %Z")
-    now = datetime.now()
+    now = datetime.utcnow()
     if now < start:
         raise CertCheckError("Certificate '{}' not yet valid".format(subject))
     if now > end:
@@ -525,6 +526,10 @@ def _main():
         options.server_key_file,
         options.intermediate_ca_file,
     )
+    if options.check_only:
+        getContainersSetup(files_content.root_ca, files_content.intermediate_cas, files_content.server_cert, files_content.server_key)
+        sys.exit(0)
+
     certData = prepareData(
             files_content.root_ca,
             files_content.server_cert,

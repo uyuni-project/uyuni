@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class SystemsExistException extends RuntimeException {
 
-    private List<Long> systemIds;
+    private final List<Long> systemIds;
 
     /**
      * Standard constructor

@@ -1,0 +1,17 @@
+## salt-broker
+server: server.tf.local
+
+## squid
+max_cache_size_mb: 20000
+
+## httpd and WSGI
+# system_id.xml:  provided as a file
+email: test@test.test
+# ca.certs: provided as a file
+# server.crt: provided as a file
+# server.key: provided as a file
+
+# ssh push keys
+# server_ssh_push: provided as a file
+# server_ssh_push.pub: provided as a file
+# server_ssh_key.pub: provided.as a file

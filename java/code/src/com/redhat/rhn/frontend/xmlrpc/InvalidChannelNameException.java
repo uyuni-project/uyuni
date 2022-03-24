@@ -29,38 +29,12 @@ public class InvalidChannelNameException extends FaultException {
     /**
      * Name the user attempted to give the channel.
      */
-    private String name;
+    private final String name;
 
     /**
      * Indicates why the channel name is invalid.
      */
-    private Reason reason;
-
-    /**
-     * Creates a new indication of a channel name issue that does not specify the reason
-     * for the error.
-     * <p>
-     * Ideally, this won't be used frequently. This was kept in to support current uses
-     * that don't fit into the idea of validating if a name can be used in a channel
-     * creation/edit.
-     */
-    public InvalidChannelNameException() {
-        super(1200, "invalidChannelName", "Invalid channel name");
-    }
-
-    /**
-     * Creates a new indication that a given channel name is invalid.
-     *
-     * @param nameIn   name the user attempted to give the channel
-     * @param reasonIn flag indicating why the channel name is invalid; cannot be
-     *                 <code>null</code>
-     */
-    public InvalidChannelNameException(String nameIn, Reason reasonIn) {
-        super(1200, "invalidChannelName", "Invalid channel name");
-
-        this.name = nameIn;
-        this.reason = reasonIn;
-    }
+    private final Reason reason;
 
     /**
      * Creates a new indication that a given channel name is invalid.

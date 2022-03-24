@@ -1,8 +1,30 @@
 #! /bin/sh
+SCRIPT=$(basename ${0})
+
+if [ -z ${PRODUCT+x} ];then
+    VPRODUCT="VERSION.Uyuni"
+else
+    VPRODUCT="VERSION.${PRODUCT}"
+fi
+
+while getopts 'P:h' option
+do
+    case ${option} in
+        P) VPRODUCT="VERSION.${OPTARG}" ;;
+        h) echo "Usage ${SCRIPT} [-P PRODUCT]";exit 2;;
+    esac
+done
 
 HERE=`dirname $0`
-. $HERE/VERSION
-GITROOT=`readlink -f $HERE/../../../`
+
+if [ ! -f ${HERE}/${VPRODUCT} ];then
+   echo "${VPRODUCT} does not exist"
+   exit 3
+fi
+
+echo "Loading ${VPRODUCT}"
+. ${HERE}/${VPRODUCT}
+GITROOT=`readlink -f ${HERE}/../../../`
 
 # File created by Gitarro with info about a PR, it only exists when we are testing a PR
 GITARRO_JSON="${GITROOT}/../.gitarro_pr.json"
@@ -24,7 +46,7 @@ else
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-MIGRATION_TEST='/manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql.sh'
+MIGRATION_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql.sh ${SCHEMA_PACKAGES}"
 IDEMPOTENCY_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_idempotency_test_pgsql.py ${IDEMPOTENCY_PARAMS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 

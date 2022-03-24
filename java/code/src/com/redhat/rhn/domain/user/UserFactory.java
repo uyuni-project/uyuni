@@ -232,14 +232,17 @@ public  class UserFactory extends HibernateFactory {
         User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
                 "User.findByIdandOrgId", params);
         if (returnedUser == null || !user.getOrg().equals(returnedUser.getOrg())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find user " + id);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.user"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.user"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.user"));
-            throw e;
+            throw getNoUserException(id.toString());
         }
         return returnedUser;
+    }
+
+    private static LookupException getNoUserException(String user) {
+        LocalizationService ls = LocalizationService.getInstance();
+        return new LookupException("Could not find user " + user,
+                ls.getMessage("lookup.jsp.title.user"),
+                ls.getMessage("lookup.jsp.reason1.user"),
+                ls.getMessage("lookup.jsp.reason2.user"));
     }
 
     /**
@@ -254,12 +257,7 @@ public  class UserFactory extends HibernateFactory {
                 .lookupObjectByNamedQuery("User.findByLogin", params);
 
         if (user == null) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find user " + login);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.user"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.user"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.user"));
-            throw e;
+            throw getNoUserException(login);
         }
         return user;
     }
@@ -278,12 +276,7 @@ public  class UserFactory extends HibernateFactory {
                 "User.findByLoginAndOrgId", params);
 
         if (returnedUser == null) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Could not find user " + login);
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.user"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.user"));
-            e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.user"));
-            throw e;
+            throw getNoUserException(login);
         }
         return returnedUser;
     }

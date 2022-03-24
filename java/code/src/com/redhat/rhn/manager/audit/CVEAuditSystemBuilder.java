@@ -32,7 +32,7 @@ public class CVEAuditSystemBuilder {
     private PatchStatus patchStatus;
 
     // LinkedHashSet is used to preserve insertion order when iterating
-    private Set<ChannelIdNameLabelTriple> channels =
+    private Set<AuditChannelInfo> channels =
             new LinkedHashSet<>();
     private Set<ErrataIdAdvisoryPair> erratas = new LinkedHashSet<>();
 
@@ -105,7 +105,7 @@ public class CVEAuditSystemBuilder {
      * Return the set of channels.
      * @return the channels
      */
-    public Set<ChannelIdNameLabelTriple> getChannels() {
+    public Set<AuditChannelInfo> getChannels() {
         return channels;
     }
 
@@ -113,8 +113,16 @@ public class CVEAuditSystemBuilder {
      * Add a single channel.
      * @param channelIn a channel
      */
-    public void addChannel(ChannelIdNameLabelTriple channelIn) {
+    public void addChannel(AuditChannelInfo channelIn) {
         this.channels.add(channelIn);
+    }
+
+    /**
+     * Set the channels
+     * @param channelSetIn the channels
+     */
+    public void setChannels(Set<AuditChannelInfo> channelSetIn) {
+        this.channels = channelSetIn;
     }
 
     /**
@@ -134,14 +142,22 @@ public class CVEAuditSystemBuilder {
     }
 
     /**
+     * Set the erratas
+     * @param errataSetIn the erratas
+     */
+    public void setErratas(Set<ErrataIdAdvisoryPair> errataSetIn) {
+        this.erratas = errataSetIn;
+    }
+
+    /**
      * Return the closest channel as {@link String} for CSV file download.
      * @return closest channel name
      */
     public String getChannelName() {
         String ret = "";
-        Iterator<ChannelIdNameLabelTriple> it = channels.iterator();
+        Iterator<AuditChannelInfo> it = channels.iterator();
         if (it.hasNext()) {
-            ChannelIdNameLabelTriple c = it.next();
+            AuditChannelInfo c = it.next();
             ret = c.getName();
         }
         return ret;

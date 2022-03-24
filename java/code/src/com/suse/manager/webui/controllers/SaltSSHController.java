@@ -20,13 +20,9 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 
 import spark.Request;
@@ -59,29 +55,29 @@ public class SaltSSHController {
     public synchronized byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
 
-        Optional<MgrUtilRunner.ExecResult> res = saltApi
+        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi
                 .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
-        if (!res.isPresent()) {
+        res.ifPresentOrElse(result -> {
+            if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
+                LOG.error("Generating salt-ssh public key failed: " + result.getStderr());
+                halt(500, result.getStderr());
+            }
+        }, () -> {
             LOG.error("Could not generate salt-ssh public key.");
             halt(500, "Could not generate salt-ssh public key.");
-        }
-        if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
-            halt(500, res.get().getStderr());
-        }
+        });
 
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
 
-        try (InputStream fin = new FileInputStream(pubKey)) {
-            return IOUtils.toByteArray(fin);
+        String key = res.orElseThrow().getPublicKey();
+        if (key != null) {
+            return key.getBytes();
         }
-        catch (IOException e) {
-            LOG.error("Could not read salt-ssh public key " + pubKey, e);
-            halt(500, e.getMessage());
-        }
-        return null;
+        LOG.error("Could not read salt-ssh public key " + pubKey);
+        halt(500, "Could not read salt-ssh public key");
+        return new byte[0];
     }
 
 }

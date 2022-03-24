@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
+# Idempotency note:
 # This feature depends on a JeOS image present on the proxy
 # Please make sure that the feature
 #     features/buildhost_osimage_build_image.feature

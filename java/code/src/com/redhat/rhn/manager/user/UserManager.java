@@ -400,12 +400,9 @@ public class UserManager extends BaseManager {
             if (rolesToRemove.contains(ORG_ADMIN_LABEL)) {
                 if (usr.getOrg().numActiveOrgAdmins() <= 1) {
                     LocalizationService ls = LocalizationService.getInstance();
-                    PermissionException pex = new PermissionException("Last org admin");
-                    pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.removerole"));
-                    pex.setLocalizedSummary(
-                            ls.getMessage("permission.jsp.summary.removerole",
-                            ls.getMessage(ORG_ADMIN_LABEL)));
-                    throw pex;
+                    throw new PermissionException("Last org admin",
+                            ls.getMessage("permission.jsp.title.removerole"),
+                            ls.getMessage("permission.jsp.summary.removerole", ls.getMessage(ORG_ADMIN_LABEL)));
                 }
             }
         }
@@ -610,11 +607,9 @@ public class UserManager extends BaseManager {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
             LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex =
-                new PermissionException("Deleting a user requires an Org Admin.");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.deleteuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.deleteuser"));
-            throw pex;
+            throw new PermissionException("Deleting a user requires an Org Admin.",
+                    ls.getMessage("permission.jsp.title.deleteuser"),
+                    ls.getMessage("permission.jsp.summary.deleteuser"));
         }
 
         // Do not allow deletion of the last Satellite Administrator:
@@ -653,11 +648,9 @@ public class UserManager extends BaseManager {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
-            PermissionException pex =
-                new PermissionException("Lookup user requires Org Admin");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.lookupuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.lookupuser"));
-            throw pex;
+            throw new PermissionException("Lookup user requires Org Admin",
+                    ls.getMessage("permission.jsp.title.lookupuser"),
+                    ls.getMessage("permission.jsp.summary.lookupuser"));
         }
 
         return UserFactory.lookupById(user, uid);
@@ -699,11 +692,9 @@ public class UserManager extends BaseManager {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
-            PermissionException pex =
-                new PermissionException("Lookup user requires Org Admin");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.lookupuser"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.lookupuser"));
-            throw pex;
+            throw new PermissionException("Lookup user requires Org Admin",
+                    ls.getMessage("permission.jsp.title.lookupuser"),
+                    ls.getMessage("permission.jsp.summary.lookupuser"));
         }
 
         returnedUser = UserFactory.lookupByLogin(user, login);
@@ -717,14 +708,7 @@ public class UserManager extends BaseManager {
      */
     public static List<User> usersInOrg(User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be an" +
-                    " Org Admin to access the user list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.userlist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
-            throw pex;
+            throw getNoAdminError();
         }
         return UserFactory.getInstance().findAllUsers(of(user.getOrg()));
     }
@@ -765,14 +749,7 @@ public class UserManager extends BaseManager {
     private static DataResult getUsersInOrg(User user,
                                                 PageControl pc, SelectMode m) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be an" +
-                    " Org Admin to access the user list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.userlist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
-            throw pex;
+            throw getNoAdminError();
         }
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
@@ -787,14 +764,7 @@ public class UserManager extends BaseManager {
      */
     public static DataResult activeInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be an" +
-                    " Org Admin to access the user list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.userlist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
-            throw pex;
+            throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "active_in_org");
         Map<String, Object> params = new HashMap<>();
@@ -824,19 +794,21 @@ public class UserManager extends BaseManager {
      */
     public static DataResult disabledInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be an" +
-                    " Org Admin to access the user list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.userlist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.userlist"));
-            throw pex;
+            throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "disabled_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         return makeDataResult(params, new HashMap(), pc, m);
+    }
+
+    private static PermissionException getNoAdminError() {
+        //Throw an exception with a nice error message so the user
+        //knows what went wrong.
+        LocalizationService ls = LocalizationService.getInstance();
+        return new PermissionException("User must be an Org Admin to access the user list",
+                ls.getMessage("permission.jsp.title.userlist"),
+                ls.getMessage("permission.jsp.summary.userlist"));
     }
 
     /**

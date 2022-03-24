@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
@@ -141,7 +142,7 @@ public class HandlerFactory {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper);
+        ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
                 systemManager, serverGroupManager);
 
@@ -163,6 +164,7 @@ public class HandlerFactory {
         factory.addHandler("distchannel", new DistChannelHandler());
         factory.addHandler("errata", new ErrataHandler());
         factory.addHandler("formula", new FormulaHandler(formulaManager, saltApi));
+        factory.addHandler("image.delta", new DeltaImageInfoHandler());
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
         factory.addHandler("image", new ImageInfoHandler());

@@ -1,3 +1,13 @@
+-------------------------------------------------------------------
+Fri Mar 11 15:12:16 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * Fix changelog format
+
+-------------------------------------------------------------------
+Fri Mar 11 14:52:46 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
   * Remove pylint check according to Fedora package guidelines.
 
 -------------------------------------------------------------------

@@ -16,6 +16,7 @@ package com.suse.manager.webui.services.iface;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
@@ -133,7 +134,7 @@ public interface SaltApi {
      * @param path of the key files
      * @return the result of the runner call as a map
      */
-    Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path);
+    Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path);
 
     /**
      * Chain ssh calls over one or more hops to run a command on the last host in the chain.
@@ -448,4 +449,17 @@ public interface SaltApi {
      * @param minionList minion list
      */
     void refreshPillar(MinionList minionList);
+
+    /**
+     * Check SSL certificates before deploying them.
+     *
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param serverCertKey server CRT an Key pair
+     * @return the certificate to deploy
+     *
+     * @throws IllegalArgumentException if the cert check fails due to erroneous certificates
+     */
+     String checkSSLCert(String rootCA, SSLCertPair serverCertKey, List<String> intermediateCAs)
+             throws IllegalArgumentException;
 }

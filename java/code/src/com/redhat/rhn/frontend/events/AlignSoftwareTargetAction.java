@@ -96,7 +96,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
 
     private class AlignSoftwareTargetException extends RuntimeException {
 
-        private SoftwareEnvironmentTarget target;
+        private final SoftwareEnvironmentTarget target;
 
         AlignSoftwareTargetException(SoftwareEnvironmentTarget targetIn, Throwable cause) {
             super(cause);

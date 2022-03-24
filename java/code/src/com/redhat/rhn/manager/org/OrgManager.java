@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
@@ -45,6 +46,8 @@ import java.util.Map;
  * OrgManager - Manages MultiOrg tasks
  */
 public class OrgManager extends BaseManager {
+
+    private static final String ORG_LIST = "org list";
 
     private OrgManager() {
     }
@@ -80,18 +83,20 @@ public class OrgManager extends BaseManager {
      */
     public static DataList<OrgDto> activeOrgs(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.SAT_ADMIN.getName() + " to access the org list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "orgs_in_satellite");
 
         return DataList.getDataList(m, Collections.EMPTY_MAP,
                 Collections.EMPTY_MAP);
+    }
+
+    private static PermissionException getNoAdminError(Role role, String list) {
+        // Throw an exception w/error msg so the user knows what went wrong.
+        LocalizationService ls = LocalizationService.getInstance();
+        return new PermissionException("User must be a " + role.getName() + " to access the " + list,
+                ls.getMessage("permission.jsp.title.orglist"),
+                ls.getMessage("permission.jsp.summary.general"));
     }
 
     /**
@@ -101,13 +106,7 @@ public class OrgManager extends BaseManager {
      */
     public static DataList<TrustedOrgDto> trustedOrgs(User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.ORG_ADMIN.getName() + " to access the trusted org list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(ORG_ADMIN, "trusted org list");
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "trusted_orgs");
 
@@ -128,13 +127,7 @@ public class OrgManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static DataList<OrgTrustOverview> orgTrusts(User user, Long orgIdIn) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.SAT_ADMIN.getName() + " to access the trusted org list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, "trusted org list");
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "trust_overview");
         Map<String, Object> params = new HashMap<>();
@@ -187,13 +180,7 @@ public class OrgManager extends BaseManager {
      */
     public static Long getTotalOrgCount(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.SAT_ADMIN.getName() + " to access the org list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
 
         return OrgFactory.getTotalOrgCount();
@@ -208,13 +195,7 @@ public class OrgManager extends BaseManager {
      */
     public static Date getTrustedSince(User user, Org org, Org trustOrg) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.ORG_ADMIN.getName() + " to access the trusted since data");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.ORG_ADMIN, "trusted since data");
         }
 
         return OrgFactory.getTrustedSince(org.getId(), trustOrg.getId());
@@ -244,13 +225,7 @@ public class OrgManager extends BaseManager {
      */
     public static Long getMigratedSystems(User user, Org orgTo, Org orgFrom) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-              RoleFactory.ORG_ADMIN.getName() + " to access the system migration data");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.ORG_ADMIN, "system migration data");
         }
 
         return OrgFactory.getMigratedSystems(orgTo.getId(), orgFrom.getId());
@@ -265,13 +240,7 @@ public class OrgManager extends BaseManager {
      */
     public static Long getSharedChannels(User user, Org org, Org orgTrust) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-              RoleFactory.ORG_ADMIN.getName() + " to access the system migration data");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.ORG_ADMIN, "system migration data");
         }
 
         return OrgFactory.getSharedChannels(org.getId(), orgTrust.getId());
@@ -286,13 +255,7 @@ public class OrgManager extends BaseManager {
      */
     public static Long getSharedSubscribedSys(User user, Org org, Org orgTrust) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-              RoleFactory.ORG_ADMIN.getName() + " to access the system channel data");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.ORG_ADMIN, "system channel data");
         }
 
         return OrgFactory.getSharedSubscribedSys(org.getId(), orgTrust.getId());
@@ -304,13 +267,7 @@ public class OrgManager extends BaseManager {
      */
     public static List<Org> allOrgs(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            // Throw an exception w/error msg so the user knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException("User must be a " +
-                    RoleFactory.SAT_ADMIN.getName() + " to access the org list");
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.orglist"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.general"));
-            throw pex;
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
 
         return OrgFactory.lookupAllOrgs();

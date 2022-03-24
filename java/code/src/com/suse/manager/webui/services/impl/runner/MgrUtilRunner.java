@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl.runner;
 
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.salt.netapi.calls.RunnerCall;
 
 import com.google.gson.annotations.SerializedName;
@@ -37,7 +38,7 @@ public class MgrUtilRunner {
     public static class ExecResult {
 
         @SerializedName("retcode")
-        private int returnCode;
+        protected int returnCode;
         @SerializedName("stdout")
         private String stdout;
         @SerializedName("stderr")
@@ -76,6 +77,49 @@ public class MgrUtilRunner {
     }
 
     /**
+     * ssh-keygen result
+     */
+    public static class SshKeygenResult extends ExecResult {
+        private String key;
+
+        @SerializedName("public_key")
+        private String publicKey;
+
+        /**
+         * Create a result with key pair, mostly for testing purpose
+         *
+         * @param keyIn the ssh key
+         * @param pubKeyIn the ssh public key
+         */
+        public SshKeygenResult(String keyIn, String pubKeyIn) {
+            key = keyIn;
+            publicKey = pubKeyIn;
+            returnCode = 0;
+        }
+
+        /**
+         * Create an empty result with return code 0
+         * @return a result with return code 0.
+         */
+        public static SshKeygenResult success() {
+            return new SshKeygenResult(null, null);
+        }
+        /**
+         * @return value of key
+         */
+        public String getKey() {
+            return key;
+        }
+
+        /**
+         * @return value of publicKey
+         */
+        public String getPublicKey() {
+            return publicKey;
+        }
+    }
+
+    /**
      * Result of removing a hostname from the ~/.ssh/known_hosts file
      */
     public static class RemoveKnowHostResult {
@@ -85,12 +129,6 @@ public class MgrUtilRunner {
 
         @SerializedName("comment")
         private String comment;
-
-        /**
-         * Constructor.
-         */
-        public RemoveKnowHostResult() {
-        }
 
         /**
          * Only needed for unit tests.
@@ -125,26 +163,18 @@ public class MgrUtilRunner {
     public static RunnerCall<ExecResult> deleteRejectedKey(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("minion", minionId);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.delete_rejected_key", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
      * Generate a ssh key pair.
-     * @param path path where to generate the keys
+     * @param path path where to generate the keys or null to return them
      * @return the execution result
      */
-    public static RunnerCall<ExecResult> generateSSHKey(String path) {
+    public static RunnerCall<SshKeygenResult> generateSSHKey(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -157,11 +187,7 @@ public class MgrUtilRunner {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("user", user);
         args.put("hostname", hostname);
-        RunnerCall<RemoveKnowHostResult> call =
-                new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -191,11 +217,7 @@ public class MgrUtilRunner {
         args.put("options", options);
         args.put("command", command);
         args.put("outputfile", outputfile);
-        RunnerCall<ExecResult> call =
-                new RunnerCall<>("mgrutil.chain_ssh_cmd", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.chain_ssh_cmd", Optional.of(args), new TypeToken<>() { });
     }
 
     /**
@@ -216,10 +238,24 @@ public class MgrUtilRunner {
         args.put("dirtomove", dirToMove);
         args.put("basepath", basePath);
         args.put("actionpath", actionPath);
-        RunnerCall<Map<Boolean, String>> call =
-                new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args), new TypeToken<>() { });
+    }
+
+    /**
+     * Check SSL certificates before deploying them.
+     *
+     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param serverCrtKey server CRT and Key pair
+     * @return the certificate and key to deploy
+     */
+    public static RunnerCall<Map<String, String>> checkSSLCert(String rootCA, SSLCertPair serverCrtKey,
+                                                            List<String> intermediateCAs) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("root_ca", rootCA);
+        args.put("server_crt", serverCrtKey.getCertificate());
+        args.put("server_key", serverCrtKey.getKey());
+        args.put("intermediate_cas", intermediateCAs);
+        return new RunnerCall<>("mgrutil.check_ssl_cert", Optional.of(args), new TypeToken<>() { });
     }
 }

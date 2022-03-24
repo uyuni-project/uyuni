@@ -85,10 +85,9 @@ public class ChannelEditor {
             LocalizationService ls = LocalizationService.getInstance();
             String msg = "User: " + user.getLogin() + " does not have channel admin access to channel: " +
                     channel.getLabel();
-            PermissionException pex = new PermissionException(msg);
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
-            throw pex;
+            throw new PermissionException(msg,
+                    ls.getMessage("permission.jsp.title.channel"),
+                    ls.getMessage("permission.jsp.summary.channel"));
         }
 
         // make sure we work with long ids
