@@ -273,8 +273,9 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     private static void removeImageFile(String path, SaltApi saltApi) {
-        saltApi.removeFile(Paths.get(path))
-                .orElseThrow(() -> new IllegalStateException("Can't remove image file " + path));
+        if (saltApi.removeFile(Paths.get(path)).isEmpty()) {
+            throw new IllegalStateException("Can't remove image file " + path);
+        }
     }
 
     /**

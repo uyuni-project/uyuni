@@ -71,7 +71,7 @@ public class SaltSSHController {
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
 
-        String key = res.get().getPublicKey();
+        String key = res.orElseThrow().getPublicKey();
         if (key != null) {
             return key.getBytes();
         }
