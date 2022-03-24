@@ -2,9 +2,12 @@ import * as React from "react";
 
 import { Messages } from "components/messages";
 
-export const ContainerConfigMessages = (stateIn) => {
+type SuccessType = boolean | undefined;
+type MessagesType = React.ReactNode[];
+
+export const ContainerConfigMessages = (success: SuccessType, messagesIn: MessagesType, loading: boolean) => {
   var messages: React.ReactNode = null;
-  if (stateIn.success) {
+  if (success) {
     messages = (
       <Messages
         items={[
@@ -25,15 +28,15 @@ export const ContainerConfigMessages = (stateIn) => {
         ]}
       />
     );
-  } else if (stateIn.messages.length > 0) {
+  } else if (messagesIn.length > 0) {
     messages = (
       <Messages
-        items={stateIn.messages.map(function (msg) {
-          return { severity: "error", text: msg };
+        items={messagesIn.map(function (msg) {
+          return Messages.error(msg);
         })}
       />
     );
-  } else if (stateIn.loading) {
+  } else if (loading) {
     messages = (
       <Messages
         items={[
