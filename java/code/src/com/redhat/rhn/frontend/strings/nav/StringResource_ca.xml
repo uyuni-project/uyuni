@@ -1201,48 +1201,48 @@
         <source>Image List</source>
         <target>Llista d'imatges</target>
       </trans-unit>
-    <trans-unit id="Ansible" xml:space="preserve">
+      <trans-unit id="Ansible" xml:space="preserve">
         <source>Ansible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Responible</target>
+      </trans-unit>
       <trans-unit id="Ansible Control Node" xml:space="preserve">
         <source>Control Node</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Node de control</target>
+      </trans-unit>
       <trans-unit id="Playbooks" xml:space="preserve">
         <source>Playbooks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Playbooks</target>
+      </trans-unit>
       <trans-unit id="Inventories" xml:space="preserve">
         <source>Inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Inventaris</target>
+      </trans-unit>
       <trans-unit id="configchannel.nav.systems.appstream" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">AppStreams</target>
+      </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">AppStreams</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
