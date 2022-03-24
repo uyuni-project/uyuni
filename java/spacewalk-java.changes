@@ -1,3 +1,4 @@
+- Hide private methods in XMLRPC handlers
 - update last checkin only if job is successful (bsc#1197007)
 - Fixed broken help link for system overview
 - send notifications for new or changed ubuntu errata (bsc#1196977)
