@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-23 05:14+0000\n"
+"POT-Creation-Date: 2022-03-24 04:13+0000\n"
 "PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -8263,7 +8263,9 @@ msgstr "スケジュールアクション ID: "
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
-msgstr "system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートストラップ。"
+msgstr ""
+"system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートスト"
+"ラップ。"
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8347,17 +8349,22 @@ msgstr "SSHパスワードまたは機密鍵のいずれかを指定する必要
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr "サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
+msgstr ""
+"サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があります。"
+msgstr ""
+"「{}」をブートストラップしています。 これにはしばらく時間がかかる場合がありま"
+"す。"
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
-msgstr "初期段階は正常に終了しました。まだ実行中のアクションのイベント履歴を確認します"
+msgstr ""
+"初期段階は正常に終了しました。まだ実行中のアクションのイベント履歴を確認しま"
+"す"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
