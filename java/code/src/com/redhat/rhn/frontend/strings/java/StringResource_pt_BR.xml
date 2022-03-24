@@ -11179,6 +11179,10 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+        <source>Error during applying the bootstrap state. Check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
