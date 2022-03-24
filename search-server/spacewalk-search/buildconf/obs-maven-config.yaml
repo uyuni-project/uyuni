@@ -39,9 +39,6 @@ artifacts:
   - artifact: log4j
     package: log4j12
     repository: Leap
-  - artifact: nutch-core
-    jar: nutch-core
-    repository: Uyuni_Other
   - artifact: c3p0
     repository: Uyuni_Other
   - artifact: mchange-commons-java
