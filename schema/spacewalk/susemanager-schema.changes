@@ -1,3 +1,4 @@
+- fix check on allowVendorChange
 - fix advisory status migration (bsc#1195765)
 - FIX error when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
