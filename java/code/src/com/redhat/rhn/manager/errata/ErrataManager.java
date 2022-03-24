@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -81,8 +82,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.utils.MinionServerUtils;
-
-import com.google.common.collect.Maps;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -1520,11 +1519,11 @@ public class ErrataManager extends BaseManager {
 
         java.sql.Date newDate = new java.sql.Date(date.getTime());
         List<Map<String, Object>> notifyList = errataToChannels.entrySet().stream()
-                .flatMap(entry -> entry.getValue().stream().map(cid -> Maps.immutableEntry(cid, entry.getKey())))
+                .flatMap(entry -> entry.getValue().stream().map(cid -> new Tuple2<>(cid, entry.getKey())))
                 .map(entry -> {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("cid", entry.getKey());
-                    params.put("eid", entry.getValue());
+                    params.put("cid", entry.getA());
+                    params.put("eid", entry.getB());
                     params.put("datetime", newDate);
                     return params;
                 })
