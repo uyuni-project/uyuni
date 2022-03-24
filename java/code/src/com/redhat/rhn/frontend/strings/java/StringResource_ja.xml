@@ -11059,7 +11059,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-        <target state="final">認証データの抽出中に不明なエラーが発生しました。 /var/log/rhn/のログを確認してください</target>
+        <target state="final">認証データの抽出中に不明なエラーが発生しました。/var/log/rhn/のログを確認してください</target>
       </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
         <source>Description is required.</source>
@@ -11159,11 +11159,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
         <source>There are conflicting channel labels {0}.</source>
-        <target state="final">競合するチャネルラベル {0} があります。</target>
+        <target state="final">競合するチャンネルラベル {0} があります。</target>
       </trans-unit>
       <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
         <source>A parent product conflicts with existing channels.</source>
-        <target state="final">親製品が既存のチャネルと競合しています。</target>
+        <target state="final">親製品が既存のチャンネルと競合しています。</target>
       </trans-unit>
       <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
         <source>Unexpected error while adding the product.</source>
@@ -11171,7 +11171,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、以下のリンクを参照してください。</target>
+        <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、次のリンクを参照してください。</target>
       </trans-unit>
     </body>
   </file>
