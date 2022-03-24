@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-23 05:14+0000\n"
-"PO-Revision-Date: 2021-11-10 09:12+0000\n"
+"PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2243,7 +2243,7 @@ msgstr "%s 個のグループが見つかりませんでした。中止してい
 #. assume old backup, not in json format. Read complete file as string
 #: ../src/spacecmd/group.py:383
 msgid "Assuming group to be in old plain text format"
-msgstr ""
+msgstr "グループが古いプレーンテキスト形式であると仮定しています"
 
 #: ../src/spacecmd/group.py:395
 #, python-format
@@ -2265,12 +2265,12 @@ msgstr "グループに対する説明を更新しています: %s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
+msgstr "バックアップから数式データを更新しますか? [y/N]:"
 
 #: ../src/spacecmd/group.py:416
-#, fuzzy, python-format
+#, python-format
 msgid "Updating data for group: %s"
-msgstr "グループに対する説明を更新しています: %s"
+msgstr "グループのデータを更新しています: %s"
 
 #: ../src/spacecmd/group.py:424
 #, python-format
@@ -3747,12 +3747,10 @@ msgid "Miss"
 msgstr "Miss"
 
 #: ../src/spacecmd/org.py:128
-#, fuzzy
 msgid "org_createfirst: Create first organization and user after server setup"
-msgstr "org_create: 組織を作成"
+msgstr "org_createfirst: サーバのセットアップ後に最初の組織とユーザを作成"
 
 #: ../src/spacecmd/org.py:129
-#, fuzzy
 msgid ""
 "usage: org_createfirst [options])\n"
 "\n"
@@ -3769,12 +3767,10 @@ msgstr ""
 "オプション:\n"
 "  -n (組織名)\n"
 "  -u (ユーザ名)\n"
-"  -P (プレフィクス) (%s)\n"
 "  -f (名)\n"
 "  -l (姓)\n"
 "  -e (電子メールアドレス)\n"
-"  -p (パスワード)\n"
-"  --pam PAM 認証を有効にする"
+"  -p (パスワード)"
 
 #: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
@@ -8267,7 +8263,7 @@ msgstr "スケジュールアクション ID: "
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
-msgstr ""
+msgstr "system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートストラップ。"
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8286,75 +8282,82 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"使用方法: ブートストラップ[オプション]\n"
+"\n"
+"    オプション:\n"
+"        -H (ホスト名)\n"
+"        -p (SSHポート)\n"
+"        -u (SSHユーザ名)\n"
+"        -P (SSHパスワード)\n"
+"        -k (SSH機密鍵パス)\n"
+"        -S (SSH機密鍵パスワード)\n"
+"        -a (アクティベーションキー)\n"
+"        -r (再アクティベーションキー)\n"
+"        --proxyidプロキシSYSID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "ホスト名:      %s"
+msgstr "ホスト名:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "ポート[22]:"
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "ユーザ [root]:"
+msgstr "SSHユーザ[root]:"
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "パスワード: "
+msgstr "SSHパスワード:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "SSH機密鍵ファイル:"
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "SSH機密鍵パスワード:"
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "アクティベーションキー"
+msgstr "アクティベーションキー:"
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "アクティベーションキー"
+msgstr "再アクティベーションキー:"
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  システム ID"
+msgstr "プロキシシステムID:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "Salt SSHで管理"
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# システム ID を指定しなければなりません。"
+msgstr "ホスト名を指定する必要があります"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "SSHパスワードまたは機密鍵のいずれかを指定する必要があります"
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr ""
+msgstr "サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr ""
+msgstr "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があります。"
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
-msgstr ""
+msgstr "初期段階は正常に終了しました。まだ実行中のアクションのイベント履歴を確認します"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
