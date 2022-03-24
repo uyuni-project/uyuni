@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-24 10:56+0000\n"
-"PO-Revision-Date: 2022-03-04 18:12+0000\n"
+"PO-Revision-Date: 2022-03-24 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3349,7 +3349,7 @@ msgstr "Beh programu"
 
 #: ../html/src/manager/images/image-view.tsx:621
 msgid "Show obsolete"
-msgstr ""
+msgstr "Zobraziť zastarané"
 
 #: ../html/src/manager/images/image-view.tsx:643
 msgid "Revision"
@@ -3357,7 +3357,7 @@ msgstr "Revízia"
 
 #: ../html/src/manager/images/image-view.tsx:645
 msgid "(obsolete)"
-msgstr ""
+msgstr "(zastarané)"
 
 #: ../html/src/manager/images/image-view.tsx:647
 #: ../html/src/manager/systems/virtual-list.tsx:90
@@ -3685,10 +3685,14 @@ msgstr "Kalendáre"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
+"Nižšie je uvedený zoznam plánov údržby, ktoré sú k dispozícii aktuálnemu "
+"používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
+"Nižšie je uvedený zoznam kalendárov údržby, ktoré sú k dispozícii aktuálnemu "
+"používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -4432,13 +4436,15 @@ msgstr "Opakujúce sa stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Boli vytvorené nasledujúce opakujúce sa akcie."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Ak chcete vytvoriť nové opakujúce sa akcie, prejdite do systému, skupiny "
+"alebo organizácie, pre ktorú chcete akciu vytvoriť."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
