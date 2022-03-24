@@ -1,3 +1,4 @@
+- Fix reposync update notice formatting and date parsing (bsc#1194447)
 - implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
