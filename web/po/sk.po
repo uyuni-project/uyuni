@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-01-09 17:13+0000\n"
+"PO-Revision-Date: 2022-03-04 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5692,6 +5692,18 @@ msgstr "Zdroj sa nenašiel."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#~ msgid "Expand All Sections"
+#~ msgstr "Rozbaliť všetky sekcie"
+
+#~ msgid "Collapse All Sections"
+#~ msgstr "Zbaliť všetky sekcie"
+
+#~ msgid "Unnamed"
+#~ msgstr "Bez názvu"
+
+#~ msgid "Search by formula's group name"
+#~ msgstr "Hľadať podľa názvu skupiny vzorca"
+
 #~ msgid "Sunday"
 #~ msgstr "Nedeľa"
 
@@ -5713,6 +5725,63 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Saturday"
 #~ msgstr "Sobota"
 
+#~ msgid "Add new pay-as-you-go ssh connection data"
+#~ msgstr "Pridať nové priebežne platené dáta pripojení ssh"
+
+#~ msgid "Add pay-as-you-go ssh data"
+#~ msgstr "Pridať nové priebežne platené dáta ssh"
+
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "Popis priebežne plateného pripojenia"
+
+#~ msgid "Instance SSH connection data"
+#~ msgstr "Dáta pripojenia inštancie SSH"
+
+#~ msgid "Bastion SSH connection data"
+#~ msgstr "Dáta pripojenia bašty SSH"
+
+#~ msgid "Host"
+#~ msgstr "Hostiteľ"
+
+#~ msgid "Last Update Status"
+#~ msgstr "Stav poslednej aktualizácie"
+
+#~ msgid "never"
+#~ msgstr "nikdy"
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "Pridať priebežnú platbu"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "Úspešne aktualizované vlastnosti priebežnej platby"
+
+#~ msgid "Edit Information"
+#~ msgstr "Upraviť informácie"
+
+#~ msgid "Last Status Update"
+#~ msgstr "Posledná aktualizácia stavu"
+
+#~ msgid "Edit "
+#~ msgstr "Upraviť "
+
+#~ msgid "Editing ssh connection data.."
+#~ msgstr "Úprava údajov pripojenia ssh.."
+
+#~ msgid "SSH Port"
+#~ msgstr "Port SSH"
+
+#~ msgid "User"
+#~ msgstr "Používateľ"
+
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "Hľadaný inštancia neexistuje alebo bola vymazaná"
+
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "Názov hostiteľa inštancie: {0}"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "Vymazať priebežnú platbu"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
 
@@ -5727,6 +5796,12 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Patched"
 #~ msgstr "Opravené"
+
+#~ msgid "MITRE CVE link"
+#~ msgstr "Odkaz MITRE CVE"
+
+#~ msgid "SUSE Security CVE link"
+#~ msgstr "Odkaz SUSE Security CVE"
 
 #~ msgid "No action required"
 #~ msgstr "Nevyžaduje sa žiadna akcia"
@@ -5764,9 +5839,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Last Build"
 #~ msgstr "Posledné zostavenie"
-
-#~ msgid "never"
-#~ msgstr "nikdy"
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "obsahuje balík, ktorý poskytuje rovnaký názov"
@@ -5810,6 +5882,15 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "Toto prostredie nemožno odstrániť, pretože sa používa v {0}distribúcii s "
 #~ "automatickou inštaláciou{1}."
+
+#~ msgid "New base channel"
+#~ msgstr "Nový základný kanál"
+
+#~ msgid "This channel requires:"
+#~ msgstr "Tento kanál vyžaduje:"
+
+#~ msgid "This channel is required by:"
+#~ msgstr "Tento kanál je vyžadovaný:"
 
 #~ msgid "This channel is mandatory"
 #~ msgstr "Tento kanál je povinný"
@@ -5877,6 +5958,9 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Clear the fact cache for every host in inventory"
 #~ msgstr "Vymazať vyrovnávaciu pamäť faktov pre každého hostiteľa v inventári"
 
+#~ msgid "Pay-as-you-go refresh authentication data failed"
+#~ msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
+
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
 #~ "time will be the server time."
@@ -5889,15 +5973,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid "Host"
-#~ msgstr "Hostiteľ"
-
-#~ msgid "SSH Port"
-#~ msgstr "Port SSH"
-
-#~ msgid "User"
-#~ msgstr "Používateľ"
 
 #~ msgid "Authentication Method"
 #~ msgstr "Metóda overenia"

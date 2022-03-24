@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-01-25 07:11+0000\n"
+"PO-Revision-Date: 2022-03-23 05:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -5641,6 +5641,18 @@ msgstr "리소스를 찾을 수 없음"
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
 
+#~ msgid "Expand All Sections"
+#~ msgstr "전체 섹션 확장"
+
+#~ msgid "Collapse All Sections"
+#~ msgstr "전체 섹션 축소"
+
+#~ msgid "Unnamed"
+#~ msgstr "이름 없음"
+
+#~ msgid "Search by formula's group name"
+#~ msgstr "수식 그룹 이름을 기준으로 검색"
+
 #~ msgid "Sunday"
 #~ msgstr "일요일"
 
@@ -5662,6 +5674,63 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Saturday"
 #~ msgstr "토요일"
 
+#~ msgid "Add new pay-as-you-go ssh connection data"
+#~ msgstr "새 용량제 SSH 연결 데이터 추가"
+
+#~ msgid "Add pay-as-you-go ssh data"
+#~ msgstr "용량제 SSH 데이터 추가"
+
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "용량제 연결 설명"
+
+#~ msgid "Instance SSH connection data"
+#~ msgstr "인스턴스 SSH 연결 데이터"
+
+#~ msgid "Bastion SSH connection data"
+#~ msgstr "베스천 SSH 연결 데이터"
+
+#~ msgid "Host"
+#~ msgstr "호스트"
+
+#~ msgid "Last Update Status"
+#~ msgstr "최신 업데이트 상태"
+
+#~ msgid "never"
+#~ msgstr "안 함"
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "용량제 추가"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "용량제 속성 업데이트됨"
+
+#~ msgid "Edit Information"
+#~ msgstr "정보 편집"
+
+#~ msgid "Last Status Update"
+#~ msgstr "최신 상태 업데이트"
+
+#~ msgid "Edit "
+#~ msgstr "편집 "
+
+#~ msgid "Editing ssh connection data.."
+#~ msgstr "SSH 연결 데이터 편집 중..."
+
+#~ msgid "SSH Port"
+#~ msgstr "SSH 포트"
+
+#~ msgid "User"
+#~ msgstr "사용자"
+
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "찾고 있는 인스턴스가 없거나 삭제되었습니다."
+
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "인스턴스 호스트 이름: {0}"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "용량제 삭제"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
@@ -5676,6 +5745,12 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Patched"
 #~ msgstr "패치됨"
+
+#~ msgid "MITRE CVE link"
+#~ msgstr "MITRE CVE 링크"
+
+#~ msgid "SUSE Security CVE link"
+#~ msgstr "SUSE 보안 CVE 링크"
 
 #~ msgid "No action required"
 #~ msgstr "동작이 필요하지 않음"
@@ -5713,9 +5788,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Last Build"
 #~ msgstr "마지막 빌드"
-
-#~ msgid "never"
-#~ msgstr "안 함"
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "동일한 이름을 제공하는 패키지 포함"
@@ -5758,6 +5830,15 @@ msgstr "HTTP 오류 코드 "
 #~ "autoinstallation distribution{1}."
 #~ msgstr ""
 #~ "이 환경은 {0}자동 설치 배포{1}에서 사용 중이므로 삭제할 수 없습니다."
+
+#~ msgid "New base channel"
+#~ msgstr "새 기본 채널"
+
+#~ msgid "This channel requires:"
+#~ msgstr "이 채널은 필수입니다."
+
+#~ msgid "This channel is required by:"
+#~ msgstr "이 채널은 다음에서 필수입니다."
 
 #~ msgid "This channel is mandatory"
 #~ msgstr "이 채널은 필수입니다."
@@ -5823,6 +5904,9 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Clear the fact cache for every host in inventory"
 #~ msgstr "인벤토리의 모든 호스트에 대한 팩트 캐시 지우기"
 
+#~ msgid "Pay-as-you-go refresh authentication data failed"
+#~ msgstr "용량제 새로 고침 인증 데이터 실패"
+
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
 #~ "time will be the server time."
@@ -5835,15 +5919,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid "Host"
-#~ msgstr "호스트"
-
-#~ msgid "SSH Port"
-#~ msgstr "SSH 포트"
-
-#~ msgid "User"
-#~ msgstr "사용자"
 
 #~ msgid "Authentication Method"
 #~ msgstr "인증 방법"

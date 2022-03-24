@@ -5666,6 +5666,14 @@ msgstr "Zdroj nebyl nalezen."
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
+#, fuzzy
+#~ msgid "Unnamed"
+#~ msgstr "Uživatelské jméno"
+
+#, fuzzy
+#~ msgid "Search by formula's group name"
+#~ msgstr "Filtrovat podle názvu vzorce"
+
 #~ msgid "Sunday"
 #~ msgstr "Neděle"
 
@@ -5686,6 +5694,57 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Saturday"
 #~ msgstr "Sobota"
+
+#, fuzzy
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "Popis výrobku"
+
+#, fuzzy
+#~ msgid "Instance SSH connection data"
+#~ msgstr "Instance je zastaralá"
+
+#, fuzzy
+#~ msgid "Host"
+#~ msgstr "Hostitelé"
+
+#, fuzzy
+#~ msgid "Last Update Status"
+#~ msgstr "Stav shody dat"
+
+#~ msgid "never"
+#~ msgstr "nikdy"
+
+#, fuzzy
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "Vlastnosti projektu aktualizovány úspěšně"
+
+#, fuzzy
+#~ msgid "Edit Information"
+#~ msgstr "Další informace"
+
+#, fuzzy
+#~ msgid "Last Status Update"
+#~ msgstr "Počáteční datum"
+
+#, fuzzy
+#~ msgid "Edit "
+#~ msgstr "Upravit"
+
+#, fuzzy
+#~ msgid "SSH Port"
+#~ msgstr "Port"
+
+#, fuzzy
+#~ msgid "User"
+#~ msgstr "Uživatelé"
+
+#, fuzzy
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "Hledaný projekt neexistuje nebo byl odstraněn"
+
+#, fuzzy
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "Podrobnosti instance pro '{0}'"
 
 #, fuzzy
 #~ msgid "Patched"
@@ -5709,9 +5768,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Last Build"
 #~ msgstr "Poslední sestavení"
-
-#~ msgid "never"
-#~ msgstr "nikdy"
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "obsahuje balíček poskytující shodný název"
@@ -5759,6 +5815,18 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "Toto prostředí nelze odstranit, protože se používá v {0}autoinstalační "
 #~ "distribuci{1}."
+
+#, fuzzy
+#~ msgid "New base channel"
+#~ msgstr "Nový základní kanál"
+
+#, fuzzy
+#~ msgid "This channel requires:"
+#~ msgstr "Tento kanál je doporučen"
+
+#, fuzzy
+#~ msgid "This channel is required by:"
+#~ msgstr "Tento kanál je doporučen"
 
 #~ msgid "This channel is mandatory"
 #~ msgstr "Tento kanál je povinný"
@@ -5840,18 +5908,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
-
-#, fuzzy
-#~ msgid "Host"
-#~ msgstr "Hostitelé"
-
-#, fuzzy
-#~ msgid "SSH Port"
-#~ msgstr "Port"
-
-#, fuzzy
-#~ msgid "User"
-#~ msgstr "Uživatelé"
 
 #, fuzzy
 #~ msgid "Reactivation Key"
