@@ -29792,6 +29792,13 @@ given channel.</source>
         <source>Update Reporting Database</source>
         <target state="final">レポーティングデータベースの更新</target>
       </trans-unit>
-    </body>
+    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+        <source>SSH Port:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
