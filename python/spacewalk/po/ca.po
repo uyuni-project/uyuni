@@ -5,11 +5,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-23 18:13+0000\n"
+"POT-Creation-Date: 2022-03-24 04:13+0000\n"
 "PO-Revision-Date: 2022-03-23 22:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
-"\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
+">\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1246,7 +1246,8 @@ msgstr "   Recuperant / analitzant les dades de Kickstart: %s (%s)"
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   Recuperant / analitzant els fitxers de l'arbre de Kickstart: %s (%s)"
+msgstr ""
+"   Recuperant / analitzant els fitxers de l'arbre de Kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:80
 #, python-format
