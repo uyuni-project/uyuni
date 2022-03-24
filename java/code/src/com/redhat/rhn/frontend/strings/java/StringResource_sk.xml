@@ -8651,7 +8651,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.ext_auth_disable" xml:space="preserve">
         <source>No default organization</source>
-        <target/>
+        <target>Žiadna predvolená organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
@@ -11139,10 +11139,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
