@@ -171,7 +171,8 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isRedHat6() ||
-                isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8();
+                isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
+                isDebian11() || isDebian10();
     }
 
     /**
@@ -219,6 +220,14 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isUbuntu2004() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
+    }
+
+    private boolean isDebian11() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
+    }
+
+    private boolean isDebian10() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
     }
 
     /**
