@@ -1,5 +1,62 @@
 [
     {
+        "id" : -32,
+        "name" : "Debian 11",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "11",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 11",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -380,
+                "url" : "http://deb.debian.org/debian/dists/bullseye/main/binary-amd64/",
+                "name" : "debian-11-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -381,
+                "url" : "http://deb.debian.org/debian/dists/bullseye-updates/main/binary-amd64/",
+                "name" : "debian-11-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -382,
+                "url" : "http://security.debian.org/debian-security/dists/bullseye-security/updates/main/binary-amd64/",
+                "name" : "debian-11-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -31,
         "name" : "CentOS 7",
         "identifier" : "centos",
