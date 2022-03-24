@@ -38,6 +38,7 @@ type State = {
   messages: MessageType[];
   proxyFQDN: string;
   proxyPort: number;
+  serverFQDN: string;
   success?: any;
 };
 
@@ -68,6 +69,7 @@ export class ProxyConfig extends React.Component<Props, State> {
       messages: [],
       proxyFQDN: "",
       proxyPort: 8022,
+      serverFQDN: "",
     };
 
     this.state = this.initState;
@@ -78,6 +80,7 @@ export class ProxyConfig extends React.Component<Props, State> {
     var formData: any = {};
     formData["proxyFQDN"] = this.state.proxyFQDN;
     formData["proxyPort"] = this.state.proxyPort ? this.state.proxyPort : 8022;
+    formData["serverFQDN"] = this.state.serverFQDN;
     formData["maxSquidCacheSize"] = this.state.maxSquidCacheSize;
     formData["email"] = this.state.email;
     formData["sslMode"] = this.state.sslMode;
@@ -145,6 +148,12 @@ export class ProxyConfig extends React.Component<Props, State> {
   proxyPortChanged = (event) => {
     this.setState({
       proxyPort: event.target.value,
+    });
+  };
+
+  serverFQDNChanged = (event) => {
+    this.setState({
+      serverFQDN: event.target.value,
     });
   };
 
@@ -522,6 +531,19 @@ export class ProxyConfig extends React.Component<Props, State> {
                 placeholder={t("e.g., proxy.admin@mycompany.com")}
                 value={this.state.email}
                 onChange={this.emailChanged}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Server FQDN")}:</label>
+            <div className="col-md-6">
+              <input
+                name="serverFQDN"
+                className="form-control"
+                type="text"
+                placeholder={t("e.g., server.domain.com")}
+                value={this.state.serverFQDN}
+                onChange={this.serverFQDNChanged}
               />
             </div>
           </div>
