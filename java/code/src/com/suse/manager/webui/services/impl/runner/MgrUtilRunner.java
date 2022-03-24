@@ -102,8 +102,7 @@ public class MgrUtilRunner {
          * @return a result with return code 0.
          */
         public static SshKeygenResult success() {
-            SshKeygenResult res = new SshKeygenResult(null, null);
-            return res;
+            return new SshKeygenResult(null, null);
         }
         /**
          * @return value of key
