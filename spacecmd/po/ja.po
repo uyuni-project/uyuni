@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-11-10 09:12+0000\n"
+"PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8382,6 +8382,41 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 #~ msgid "Status:     %s"
 #~ msgstr "ステータス:     %s"
 
+#~ msgid "Assuming group to be in old plain text format"
+#~ msgstr "グループが古いプレーンテキスト形式であると仮定しています"
+
+#~ msgid "Update formula data from backup? [y/N]:"
+#~ msgstr "バックアップから数式データを更新しますか? [y/N]:"
+
+#, python-format
+#~ msgid "Updating data for group: %s"
+#~ msgstr "グループのデータを更新しています: %s"
+
+#~ msgid ""
+#~ "org_createfirst: Create first organization and user after server setup"
+#~ msgstr "org_createfirst: サーバのセットアップ後に最初の組織とユーザを作成"
+
+#~ msgid ""
+#~ "usage: org_createfirst [options])\n"
+#~ "\n"
+#~ "options:\n"
+#~ "  -n ORG_NAME\n"
+#~ "  -u USERNAME\n"
+#~ "  -f FIRST_NAME\n"
+#~ "  -l LAST_NAME\n"
+#~ "  -e EMAIL\n"
+#~ "  -p PASSWORD"
+#~ msgstr ""
+#~ "使用方法: org_create [オプション])\n"
+#~ "\n"
+#~ "オプション:\n"
+#~ "  -n (組織名)\n"
+#~ "  -u (ユーザ名)\n"
+#~ "  -f (名)\n"
+#~ "  -l (姓)\n"
+#~ "  -e (電子メールアドレス)\n"
+#~ "  -p (パスワード)"
+
 #, python-format
 #~ msgid "Name:      %s"
 #~ msgstr "名前:       %s"
@@ -8602,6 +8637,97 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 #, python-format
 #~ msgid "    Detail:          %s"
 #~ msgstr "    詳細:          %s"
+
+#~ msgid ""
+#~ "system_bootstrap: Bootstrap a system for management via either Salt or "
+#~ "Salt SSH."
+#~ msgstr ""
+#~ "system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートス"
+#~ "トラップ。"
+
+#~ msgid ""
+#~ "usage: bootstrap [options]\n"
+#~ "\n"
+#~ "    options:\n"
+#~ "        -H HOSTNAME\n"
+#~ "        -p SSH_PORT\n"
+#~ "        -u SSH_USERNAME\n"
+#~ "        -P SSH_PASSWORD\n"
+#~ "        -k SSH_PRIVATEKEY_PATH\n"
+#~ "        -S SSH_PRIVATEKEY_PASSWORD\n"
+#~ "        -a ACTIVATION_KEY\n"
+#~ "        -r REACTIVATION_KEY\n"
+#~ "        --proxyid PROXY_SYSID\n"
+#~ "        --saltssh\n"
+#~ "        "
+#~ msgstr ""
+#~ "使用方法: ブートストラップ[オプション]\n"
+#~ "\n"
+#~ "    オプション:\n"
+#~ "        -H (ホスト名)\n"
+#~ "        -p (SSHポート)\n"
+#~ "        -u (SSHユーザ名)\n"
+#~ "        -P (SSHパスワード)\n"
+#~ "        -k (SSH機密鍵パス)\n"
+#~ "        -S (SSH機密鍵パスワード)\n"
+#~ "        -a (アクティベーションキー)\n"
+#~ "        -r (再アクティベーションキー)\n"
+#~ "        --proxyidプロキシSYSID\n"
+#~ "        --saltssh\n"
+#~ "        "
+
+#~ msgid "Hostname:"
+#~ msgstr "ホスト名:"
+
+#~ msgid "Port [22]:"
+#~ msgstr "ポート[22]:"
+
+#~ msgid "SSH User [root]:"
+#~ msgstr "SSHユーザ[root]:"
+
+#~ msgid "SSH Password:"
+#~ msgstr "SSHパスワード:"
+
+#~ msgid "SSH Private Key File:"
+#~ msgstr "SSH機密鍵ファイル:"
+
+#~ msgid "SSH Private Key Password:"
+#~ msgstr "SSH機密鍵パスワード:"
+
+#~ msgid "Activation Key:"
+#~ msgstr "アクティベーションキー:"
+
+#~ msgid "Reactivation Key:"
+#~ msgstr "再アクティベーションキー:"
+
+#~ msgid "Proxy System ID:"
+#~ msgstr "プロキシシステムID:"
+
+#~ msgid "Manage with Salt SSH"
+#~ msgstr "Salt SSHで管理"
+
+#~ msgid "Hostname must be provided"
+#~ msgstr "ホスト名を指定する必要があります"
+
+#~ msgid "Either a SSH Password or a private key must be provided"
+#~ msgstr "SSHパスワードまたは機密鍵のいずれかを指定する必要があります"
+
+#~ msgid "Server is not supporting reactivation keys at bootstrap time"
+#~ msgstr ""
+#~ "サーバは、ブートストラップ時に再アクティベーションキーをサポートしていませ"
+#~ "ん"
+
+#~ msgid "Bootstrapping '{}'. This may take a while."
+#~ msgstr ""
+#~ "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があ"
+#~ "ります。"
+
+#~ msgid ""
+#~ "Initial phase successfully finished. Check event history for actions "
+#~ "still running"
+#~ msgstr ""
+#~ "初期段階は正常に終了しました。まだ実行中のアクションのイベント履歴を確認し"
+#~ "ます"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search: 指定した条件に合致するパッケージを検索"

@@ -7581,3 +7581,7 @@ msgstr ""
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Hostname must be provided"
+#~ msgstr "Nessuno script passato"

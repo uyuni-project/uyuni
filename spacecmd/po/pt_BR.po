@@ -7582,3 +7582,7 @@ msgstr ""
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Proxy System ID:"
+#~ msgstr "Sistemas"
