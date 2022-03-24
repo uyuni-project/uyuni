@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-03-23 18:12+0000\n"
+"PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -72,14 +72,12 @@ msgid "Collapse All Sections"
 msgstr "すべてのセクションを折りたたむ"
 
 #: ../html/src/components/FormulaForm.tsx:337
-#, fuzzy
 msgid "Unnamed"
-msgstr "ユーザ名"
+msgstr "名前なし"
 
 #: ../html/src/components/FormulaForm.tsx:346
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "Formula 名でフィルタ"
+msgstr "数式のグループ名で検索"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -911,11 +909,11 @@ msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:39
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "新しい従量課金制のssh接続データを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "従量課金制のsshデータを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:47
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -937,9 +935,8 @@ msgid "Create"
 msgstr "作成"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:68
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "製品説明"
+msgstr "従量課金制の接続の説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:71
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -956,13 +953,12 @@ msgid "Description"
 msgstr "説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:75
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "インスタンスは古くなっています"
+msgstr "インスタンスSSH接続データ"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:80
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:266
@@ -994,9 +990,8 @@ msgid "Status"
 msgstr "状態"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "マッチングデータの状態"
+msgstr "最終更新ステータス"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -1005,7 +1000,7 @@ msgstr "なし"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "従量課金制を追加"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1024,14 +1019,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "プロジェクトのプロパティを更新しました"
+msgstr "従量課金制のプロパティが正常に更新されました"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "追加情報"
+msgstr "情報を編集"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -1039,18 +1032,16 @@ msgid "Editing properties.."
 msgstr "プロパティを編集しています.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "開始日"
+msgstr "最終ステータス更新"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
-#, fuzzy
 msgid "Edit "
-msgstr "編集"
+msgstr "編集 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "ssh接続データを編集しています.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
@@ -1078,18 +1069,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "SSH 機密鍵のパスフレーズ"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "お探しのプロジェクトは存在していないか、削除されています"
+msgstr "お探しのインスタンスは存在していないか、削除されています"
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "'{0}' に対するインスタンスの詳細"
+msgstr "インスタンスホスト名: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:74
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "従量課金制を削除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/content-management/project/project.tsx:113
@@ -1457,11 +1446,11 @@ msgstr "監査イメージ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "MITRE CVEリンク"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "SUSEセキュリティCVEリンク"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -2558,7 +2547,6 @@ msgid "Versions history"
 msgstr "バージョン履歴"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "新しいベースチャンネル"
 
@@ -2581,14 +2569,12 @@ msgid "Clear Search"
 msgstr "検索の消去"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "このチャンネルは推奨チャンネルです"
+msgstr "このチャンネル には次のものが必要です:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "このチャンネルは推奨チャンネルです"
+msgstr "このチャンネルは次によって必要とされます:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -4015,7 +4001,7 @@ msgstr "状態の適用に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "従量課金制の認証データの更新が失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
