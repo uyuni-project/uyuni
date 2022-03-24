@@ -1,3 +1,4 @@
+- fix check on allowVendorChange
 - Store proxy SSH port in database
 
 -------------------------------------------------------------------
