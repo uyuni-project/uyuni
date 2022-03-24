@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:04+0000\n"
+"POT-Creation-Date: 2022-03-24 10:56+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -134,8 +134,8 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:786
-#: ../html/src/manager/images/image-view.tsx:788
+#: ../html/src/manager/images/image-view.tsx:807
+#: ../html/src/manager/images/image-view.tsx:809
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -224,10 +224,10 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
-#: ../html/src/manager/images/image-view-overview.tsx:695
-#: ../html/src/manager/images/image-view-overview.tsx:696
-#: ../html/src/manager/images/image-view-overview.tsx:768
-#: ../html/src/manager/images/image-view-overview.tsx:769
+#: ../html/src/manager/images/image-view-overview.tsx:741
+#: ../html/src/manager/images/image-view-overview.tsx:742
+#: ../html/src/manager/images/image-view-overview.tsx:814
+#: ../html/src/manager/images/image-view-overview.tsx:815
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:78
 #: ../html/src/manager/systems/delete-system.tsx:79
@@ -248,7 +248,7 @@ msgstr "Annulla"
 #: ../html/src/manager/images/image-stores.tsx:204
 #: ../html/src/manager/images/image-view.tsx:347
 #: ../html/src/manager/images/image-view.tsx:357
-#: ../html/src/manager/images/image-view.tsx:673
+#: ../html/src/manager/images/image-view.tsx:694
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -257,7 +257,7 @@ msgstr "Annulla"
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
-#: ../html/src/manager/state/recurring-states-list.tsx:132
+#: ../html/src/manager/state/recurring-states-list.tsx:147
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -524,7 +524,7 @@ msgstr ""
 #: ../html/src/components/picker/recurring-event-picker.tsx:325
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:91
+#: ../html/src/manager/state/recurring-states-list.tsx:106
 msgid "Schedule Name"
 msgstr ""
 
@@ -582,7 +582,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:151
 #: ../html/src/manager/state/recurring-states-details.tsx:153
-#: ../html/src/manager/state/recurring-states-list.tsx:124
+#: ../html/src/manager/state/recurring-states-list.tsx:139
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -1081,10 +1081,10 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:664
+#: ../html/src/manager/images/image-view.tsx:685
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:116
+#: ../html/src/manager/state/recurring-states-list.tsx:131
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
@@ -1414,7 +1414,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:618
+#: ../html/src/manager/images/image-view.tsx:639
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
@@ -1430,11 +1430,11 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:658
+#: ../html/src/manager/images/image-view.tsx:679
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:195
-#: ../html/src/manager/state/recurring-states-list.tsx:111
+#: ../html/src/manager/state/recurring-states-list.tsx:126
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
@@ -1465,7 +1465,7 @@ msgid "If you see this report a bug."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
-#: ../html/src/manager/images/image-view-overview.tsx:595
+#: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr ""
 
@@ -1924,7 +1924,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:619
+#: ../html/src/manager/images/image-view.tsx:640
 msgid "Version"
 msgstr ""
 
@@ -2248,9 +2248,9 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:134
 #: ../html/src/manager/images/image-build.tsx:402
 #: ../html/src/manager/images/image-profiles.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:580
-#: ../html/src/manager/images/image-view-overview.tsx:679
-#: ../html/src/manager/images/image-view.tsx:646
+#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:725
+#: ../html/src/manager/images/image-view.tsx:667
 msgid "Build"
 msgstr "Crea"
 
@@ -2341,13 +2341,13 @@ msgid "Generating repositories data"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
-#: ../html/src/manager/images/image-view.tsx:495
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Built"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:497
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Failed"
 msgstr ""
 
@@ -2519,7 +2519,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:617
+#: ../html/src/manager/images/image-view.tsx:638
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2622,14 +2622,14 @@ msgid "Systems"
 msgstr "Sistemi"
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:642
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:663
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Packages"
 msgstr "Pacchetti"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:629
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:650
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Patches"
 msgstr "Patch"
 
@@ -2947,17 +2947,17 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:94
 #: ../html/src/manager/images/image-view-overview.tsx:253
 #: ../html/src/manager/images/image-view-overview.tsx:254
-#: ../html/src/manager/images/image-view-overview.tsx:467
-#: ../html/src/manager/images/image-view-overview.tsx:468
+#: ../html/src/manager/images/image-view-overview.tsx:513
+#: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:470
-#: ../html/src/manager/images/image-view.tsx:519
+#: ../html/src/manager/images/image-view.tsx:478
+#: ../html/src/manager/images/image-view.tsx:527
 msgid "No information"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:491
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Queued"
 msgstr ""
 
@@ -2994,7 +2994,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:489
+#: ../html/src/manager/images/image-view.tsx:497
 msgid "Built externally"
 msgstr ""
 
@@ -3007,37 +3007,37 @@ msgid "Picked Up"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:545
+#: ../html/src/manager/images/image-view.tsx:553
 msgid "Cluster"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:546
-#: ../html/src/manager/images/image-view.tsx:598
+#: ../html/src/manager/images/image-view.tsx:554
+#: ../html/src/manager/images/image-view.tsx:606
 msgid "Instances"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:507
-#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:515
+#: ../html/src/manager/images/image-view.tsx:564
 msgid "Waiting for update ..."
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:573
+#: ../html/src/manager/images/image-view.tsx:581
 msgid "View cluster summary"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:515
+#: ../html/src/manager/images/image-view.tsx:523
 msgid "All instances are consistent with SUSE Manager"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:521
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "Outdated instances found"
 msgstr ""
 
@@ -3049,92 +3049,92 @@ msgstr ""
 msgid "Edit store"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:419
-#: ../html/src/manager/images/image-view.tsx:726
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view.tsx:747
 msgid "Instance Details for '{0}'"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:474
-#: ../html/src/manager/images/image-view-overview.tsx:475
-#: ../html/src/manager/images/image-view.tsx:472
+#: ../html/src/manager/images/image-view-overview.tsx:520
+#: ../html/src/manager/images/image-view-overview.tsx:521
+#: ../html/src/manager/images/image-view.tsx:480
 msgid "Critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:481
-#: ../html/src/manager/images/image-view-overview.tsx:482
-#: ../html/src/manager/images/image-view.tsx:475
+#: ../html/src/manager/images/image-view-overview.tsx:527
+#: ../html/src/manager/images/image-view-overview.tsx:528
+#: ../html/src/manager/images/image-view.tsx:483
 msgid "Non-critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:488
-#: ../html/src/manager/images/image-view-overview.tsx:489
-#: ../html/src/manager/images/image-view.tsx:478
+#: ../html/src/manager/images/image-view-overview.tsx:534
+#: ../html/src/manager/images/image-view-overview.tsx:535
+#: ../html/src/manager/images/image-view.tsx:486
 msgid "Package updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:495
-#: ../html/src/manager/images/image-view-overview.tsx:496
-#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view-overview.tsx:541
+#: ../html/src/manager/images/image-view-overview.tsx:542
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Image is up to date"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:564
+#: ../html/src/manager/images/image-view-overview.tsx:610
 msgid "Image Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:567
+#: ../html/src/manager/images/image-view-overview.tsx:613
 msgid "Image Info"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:578
+#: ../html/src/manager/images/image-view-overview.tsx:624
 msgid "Build Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:586
-#: ../html/src/manager/images/image-view-overview.tsx:758
+#: ../html/src/manager/images/image-view-overview.tsx:632
+#: ../html/src/manager/images/image-view-overview.tsx:804
 msgid "Inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:596
+#: ../html/src/manager/images/image-view-overview.tsx:642
 msgid "Reschedule the build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:604
+#: ../html/src/manager/images/image-view-overview.tsx:650
 msgid "Reinspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:605
+#: ../html/src/manager/images/image-view-overview.tsx:651
 msgid "Reschedule the inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:618
+#: ../html/src/manager/images/image-view-overview.tsx:664
 msgid "Custom Image Information"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:632
+#: ../html/src/manager/images/image-view-overview.tsx:678
 #: ../html/src/manager/images/image-view.tsx:358
-#: ../html/src/manager/images/image-view.tsx:695
+#: ../html/src/manager/images/image-view.tsx:716
 msgid "Delete Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:635
-#: ../html/src/manager/images/image-view.tsx:698
+#: ../html/src/manager/images/image-view-overview.tsx:681
+#: ../html/src/manager/images/image-view.tsx:719
 msgid "Are you sure you want to delete image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:680
+#: ../html/src/manager/images/image-view-overview.tsx:726
 msgid "Schedule build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:722
+#: ../html/src/manager/images/image-view-overview.tsx:768
 msgid "Rebuild Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:759
+#: ../html/src/manager/images/image-view-overview.tsx:805
 msgid "Schedule inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:795
+#: ../html/src/manager/images/image-view-overview.tsx:841
 msgid "Reinspect Image"
 msgstr ""
 
@@ -3235,48 +3235,56 @@ msgstr ""
 msgid "Images"
 msgstr "Immagini"
 
-#: ../html/src/manager/images/image-view.tsx:493
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Building"
 msgstr "Creazione"
 
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:507
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:593
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:601
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Runtime"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:622
+#: ../html/src/manager/images/image-view.tsx:621
+msgid "Show obsolete"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.tsx:643
 msgid "Revision"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:626
+#: ../html/src/manager/images/image-view.tsx:645
+msgid "(obsolete)"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.tsx:647
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:650
+#: ../html/src/manager/images/image-view.tsx:671
 msgid "Last Modified"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:711
+#: ../html/src/manager/images/image-view.tsx:732
 msgid "Delete Selected Image(s)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:715
+#: ../html/src/manager/images/image-view.tsx:736
 msgid "Are you sure you want to delete the selected image?"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:717
+#: ../html/src/manager/images/image-view.tsx:738
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:785
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr ""
@@ -3383,7 +3391,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:145
+#: ../html/src/manager/state/recurring-states-list.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
@@ -3560,7 +3568,15 @@ msgstr ""
 msgid "Calendars"
 msgstr ""
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
+msgid "Below is a list of Maintenance Schedules available to the current user."
+msgstr ""
+
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
+msgid "Below is a list of Maintenance Calendars available to the current user."
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
 msgstr ""
 
@@ -4228,7 +4244,7 @@ msgid "State:"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:100
-#: ../html/src/manager/state/recurring-states-list.tsx:82
+#: ../html/src/manager/state/recurring-states-list.tsx:97
 msgid "Active"
 msgstr ""
 
@@ -4265,7 +4281,7 @@ msgid "Quartz format string"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:173
-#: ../html/src/manager/state/recurring-states-list.tsx:144
+#: ../html/src/manager/state/recurring-states-list.tsx:159
 msgid "Delete Recurring State Schedule"
 msgstr ""
 
@@ -4293,15 +4309,25 @@ msgstr ""
 msgid "Recurring States"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:77
+#: ../html/src/manager/state/recurring-states-list.tsx:65
+msgid "The following recurring actions have been created."
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.tsx:69
+msgid ""
+"To create new recurring actions head to the system, group or organization "
+"you want to create the action for."
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:98
+#: ../html/src/manager/state/recurring-states-list.tsx:113
 msgid "Frequency"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:105
+#: ../html/src/manager/state/recurring-states-list.tsx:120
 msgid "Target Type"
 msgstr ""
 
