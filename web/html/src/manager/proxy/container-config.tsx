@@ -37,6 +37,7 @@ type State = {
   maxSquidCacheSize: string;
   messages: MessageType[];
   proxyFQDN: string;
+  proxyPort: number;
   success?: any;
 };
 
@@ -66,6 +67,7 @@ export class ProxyConfig extends React.Component<Props, State> {
       maxSquidCacheSize: "",
       messages: [],
       proxyFQDN: "",
+      proxyPort: 8022,
     };
 
     this.state = this.initState;
@@ -75,6 +77,7 @@ export class ProxyConfig extends React.Component<Props, State> {
     this.setState({ messages: [], loading: true });
     var formData: any = {};
     formData["proxyFQDN"] = this.state.proxyFQDN;
+    formData["proxyPort"] = this.state.proxyPort ? this.state.proxyPort : 8022;
     formData["maxSquidCacheSize"] = this.state.maxSquidCacheSize;
     formData["email"] = this.state.email;
     formData["sslMode"] = this.state.sslMode;
@@ -136,6 +139,12 @@ export class ProxyConfig extends React.Component<Props, State> {
   proxyFQDNChanged = (event) => {
     this.setState({
       proxyFQDN: event.target.value,
+    });
+  };
+
+  proxyPortChanged = (event) => {
+    this.setState({
+      proxyPort: event.target.value,
     });
   };
 
@@ -471,6 +480,21 @@ export class ProxyConfig extends React.Component<Props, State> {
                 placeholder={t("e.g., proxy.domain.com")}
                 value={this.state.proxyFQDN}
                 onChange={this.proxyFQDNChanged}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Porxy SSH (to container) port")}:</label>
+            <div className="col-md-3">
+              <input
+                name="proxyPort"
+                className="form-control numeric"
+                type="text"
+                placeholder={t("default value is 8022")}
+                value={this.state.proxyPort}
+                onChange={this.proxyPortChanged}
+                onKeyPress={window.numericValidate}
+                title={t("Port range: 1 - 65535")}
               />
             </div>
           </div>
