@@ -43,7 +43,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -84,16 +86,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      */
     @Override
     public Object invoke(String methodCalled, List params) throws XmlRpcFault {
-        Class myClass = this.getClass();
-        Method[] methods;
-        try {
-            methods = myClass.getMethods();
-        }
-        catch (SecurityException e) {
-            // This should _never_ happen, because the Handler classes must
-            // have public classes if they're expected to work.
-            throw new XmlRpcFault(-1, "no public methods in class " + myClass);
-        }
+        Class<? extends BaseHandler> myClass = this.getClass();
+        Method[] methods = Arrays.stream(myClass.getDeclaredMethods())
+                .filter(m -> Modifier.isPublic(m.getModifiers()))
+                .toArray(Method[]::new);
 
         String[] byNamespace = methodCalled.split("\\.");
         String beanifiedMethod = StringUtil.beanify(byNamespace[byNamespace.length - 1]);

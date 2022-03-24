@@ -1,3 +1,4 @@
+- Hide private methods in XMLRPC handlers
 - Warning log when hardware refresh result is not serializable
 - Optimize adding new products function (bsc#1193707)
 
