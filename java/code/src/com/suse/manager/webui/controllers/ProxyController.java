@@ -15,11 +15,11 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
-import static spark.Spark.halt;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
@@ -108,8 +108,7 @@ public class ProxyController {
         ProxyContainerConfigJson data = GSON.fromJson(request.body(),
                 new TypeToken<ProxyContainerConfigJson>() { }.getType());
         if (!data.isValid()) {
-            LOG.error("Invalid input data");
-            halt(HttpStatus.SC_BAD_REQUEST);
+            return json(response, HttpStatus.SC_BAD_REQUEST, "Invalid Input Data").getBytes();
         }
         try {
             byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
@@ -125,8 +124,8 @@ public class ProxyController {
         }
         catch (IOException | InstantiationException e) {
             LOG.error("Failed to generate proxy container configuration", e);
-            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    "Failed to generate proxy container configuration").getBytes();
         }
-        return new byte[0];
     }
 }
