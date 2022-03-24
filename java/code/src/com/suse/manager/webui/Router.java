@@ -76,11 +76,11 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
@@ -225,18 +225,21 @@ public class Router implements SparkApplication {
         httpApiRegistry.initRoutes();
     }
 
-    private void  initNotFoundRoutes(JadeTemplateEngine jade) {
+    private void initNotFoundRoutes(JadeTemplateEngine jade) {
         notFound((request, response) -> {
-            Map<String, Object> data = new HashMap<>();
-            data.put("currentUrl", request.pathInfo());
+            if (SparkApplicationHelper.isJson(response)) {
+                return SparkApplicationHelper.json(response, Collections.singletonMap("message", "404 Not found"));
+            }
+            var data = Collections.singletonMap("currentUrl", request.pathInfo());
             return jade.render(new ModelAndView(data, "templates/errors/404.jade"));
         });
 
         exception(NotFoundException.class, (exception, request, response) -> {
             response.status(HttpStatus.SC_NOT_FOUND);
-            Map<String, Object> data = new HashMap<>();
-            data.put("currentUrl", request.pathInfo());
-            response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
+            if (!SparkApplicationHelper.isJson(response)) {
+                var data = Collections.singletonMap("currentUrl", request.pathInfo());
+                response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
+            }
         });
     }
 

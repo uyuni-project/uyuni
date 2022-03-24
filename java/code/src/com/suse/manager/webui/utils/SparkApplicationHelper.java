@@ -402,6 +402,15 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Returns true if the response content type is application/json
+     * @param response the response
+     * @return true if the content type is application/json
+     */
+    public static boolean isJson(Response response) {
+        return response.type().contains("application/json");
+    }
+
+    /**
      * Sets up this application and the Jade engine.
      * @return the jade template engine
      */
@@ -414,9 +423,14 @@ public class SparkApplicationHelper {
             FlashScopeHelper.handleFlashData(request, response);
         });
 
+        // Override content type for API routes
+        Spark.before("/manager/api/*", (request, response) -> {
+            response.type("application/json");
+        });
+
         // capture json endpoint exceptions, let others pass (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
-            if (request.headers("accept").contains("json")) {
+            if (request.headers("accept").contains("json") || isJson(response)) {
                 Map<String, Object> exc = new HashMap<>();
                 exc.put("message", e.getMessage());
                 response.type("application/json");
