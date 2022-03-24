@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-03-04 18:12+0000\n"
+"POT-Creation-Date: 2022-03-24 10:56+0000\n"
+"PO-Revision-Date: 2022-03-11 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -4148,6 +4148,94 @@ msgstr "Názov balíka: %s"
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "Závislosť: %s Typ: %s Modifikátor: %s"
 
+#: ../src/spacecmd/proxy.py:32
+msgid ""
+"proxy_container_config: create a proxy system and return its configuration "
+"file"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:33
+#, python-format
+msgid ""
+"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
+"EMAIL ROOT_CA CRT KEY\n"
+"\n"
+"parameters:\n"
+"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to "
+"proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
+"value.\n"
+"  EMAIL       the email of the proxy administrator\n"
+"  CA          path to the root CA used to sign the proxy certificate in PEM "
+"format\n"
+"  CRT         path to the proxy certificate in PEM format\n"
+"  KEY         path to the proxy certificate private key in PEM format\n"
+"\n"
+"options:\n"
+"  -o, --output Path where to create the generated configuration. Default: "
+"'config.zip'\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
+"            certicate in PEM format. May be provided multiple times.\n"
+"\n"
+"examples:\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
+"org root_ca.crt proxy.crt proxy.key\n"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:88
+msgid ""
+"proxy_container_config_generate_cert: create a proxy system and return its "
+"configuration file"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:89
+#, python-format
+msgid ""
+"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
+"EMAIL\n"
+"\n"
+"parameters:\n"
+"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to "
+"proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
+"value.\n"
+"  EMAIL       the email of the proxy administrator\n"
+"\n"
+"options:\n"
+"  -o, --output Path where to create the generated configuration. Default: "
+"'config.zip'\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  --ca-crt path to the certificate of the CA to use to generate a new proxy "
+"certificate.\n"
+"           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
+"  --ca-key path to the private key of the CA to use to generate a new proxy "
+"certificate.\n"
+"           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
+"  --ca-pass path to a file containing the password of the CA private key, "
+"will be prompted if not passed.\n"
+"  --ssl-cname alternate name of the proxy to set in the certificate. Can be "
+"provided multiple times\n"
+"  --ssl-country country code to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-state state name to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-city the city name to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-org the organization name to set in the certificate. If omitted, "
+"default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org-unit the organization unit name to set in the certificate. If "
+"omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-email the email to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"\n"
+"examples:\n"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass "
+"password-file\n"
+msgstr ""
+
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
 msgstr ""
@@ -8227,6 +8315,8 @@ msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
+"system_bootstrap: Zaviesť systém na správu prostredníctvom Salt alebo Salt "
+"SSH."
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8245,75 +8335,84 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"usage: bootstrap [voľby]\n"
+"\n"
+"    voľby:\n"
+"        -H NÁZOV_HOSTITEĽA\n"
+"        -p SSH_PORT\n"
+"        -u SSH_POUŽÍVATEĽSKÉ_MENO\n"
+"        -P SSH_HESLO\n"
+"        -k SSH_SÚKROMNÝ_KĽÚČ_CESTA\n"
+"        -S SSH_SÚKROMNÝ_KĽÚČ_HESLO\n"
+"        -a AKTIVAČNÝ_KĽÚČ\n"
+"        -r REAKTIVAČNÝ_KĽÚČ\n"
+"        --proxyid PROXY_SYSID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "Názov hostiteľa:      %s"
+msgstr "Názov hostiteľa:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "Port [22]:"
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "Používateľ [root]:"
+msgstr "Používateľ SSH [root]:"
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "Heslo: "
+msgstr "Heslo SSH:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "Súbor súkromného kľúča SSH:"
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "Heslo súkromného kľúča SSH:"
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "Aktivačné kľúče"
+msgstr "Aktivačný kľúč:"
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "Aktivačné kľúče"
+msgstr "Reaktivačný kľúč:"
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  ID systému"
+msgstr "ID systému Proxy:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "Spravovať pomocou Salt SSH"
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# Musí byť zadané id systému."
+msgstr "Musí byť zadaný názov hostiteľa"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "Je potrebné zadať buď heslo SSH, alebo súkromný kľúč"
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
-msgstr ""
+msgstr "Server nepodporuje reaktivačné kľúče v čase zavádzania"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
-msgstr ""
+msgstr "Zavádzanie '{}'. To môže chvíľu trvať."
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
 msgstr ""
+"Úvodná fáza bola úspešne ukončená. Skontrolujte históriu udalostí kvôli "
+"stále bežiacim akciám"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"

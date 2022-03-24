@@ -8231,420 +8231,420 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="oneweek" xml:space="preserve">
         <source>within the past week</source>
-        <target/>
+        <target>za posledný týždeň</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="onemonth" xml:space="preserve">
         <source>within the past 30 days</source>
-        <target/>
+        <target>za posledných 30 dní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sixmonths" xml:space="preserve">
         <source>within the past 180 days</source>
-        <target/>
+        <target>za posledných 180 dní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oneyear" xml:space="preserve">
         <source>within the past year</source>
-        <target/>
+        <target>za posledný rok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="allregisteredsystems" xml:space="preserve">
         <source>All Systems</source>
-        <target/>
+        <target>Všetky systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
-        <target/>
+        <target>Vypnúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.start" xml:space="preserve">
         <source>Start</source>
-        <target/>
+        <target>Spustiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.suspend" xml:space="preserve">
         <source>Suspend</source>
-        <target/>
+        <target>Pozastaviť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.resume" xml:space="preserve">
         <source>Resume</source>
-        <target/>
+        <target>Pokračovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.reboot" xml:space="preserve">
         <source>Restart</source>
-        <target/>
+        <target>Reštartovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.destroy" xml:space="preserve">
         <source>Destroy</source>
-        <target/>
+        <target>Zlikvidovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.delete" xml:space="preserve">
         <source>Delete</source>
-        <target/>
+        <target>Vymazať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.setMemory" xml:space="preserve">
         <source>Set Memory ({0} MB)</source>
-        <target/>
+        <target>Nastaviť pamäť ({0} MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.setVCPUs" xml:space="preserve">
         <source>Set Virtual CPUs ({0})</source>
-        <target/>
+        <target>Nastaviť virtuálne CPU ({0})</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.running" xml:space="preserve">
         <source>This system is already running.</source>
-        <target/>
+        <target>Tento systém už beží.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.stopped" xml:space="preserve">
         <source>This system is already stopped.</source>
-        <target/>
+        <target>Tento systém je už zastavený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.already.paused" xml:space="preserve">
         <source>This system is already paused.</source>
-        <target/>
+        <target>Tento systém je už pozastavený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
-        <target/>
+        <target>Virtuálne CPU obmedzené na {0} na {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.exceeds.host.cpus" xml:space="preserve">
         <source>Exceeding the number of physical CPUs ({0}) on {1} may impact performance.</source>
-        <target/>
+        <target>Prekročenie počtu fyzických CPU ({0}) na {1} môže mať vplyv na výkon.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.increase.warning" xml:space="preserve">
         <source>{1} must be shutdown if last started with less than {0} vCPUs for changes to take effect.</source>
-        <target/>
+        <target>{1} musí byť vypnutý, ak bol naposledy spustený s menej ako {0} vCPU, aby sa zmeny prejavili.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.memory.warning" xml:space="preserve">
         <source>{0} must be shutdown for max memory settings to take effect.</source>
-        <target/>
+        <target>{0} musí byť vypnutý, aby sa prejavili nastavenia maximálnej pamäte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.memory.check.host" xml:space="preserve">
         <source>Ensure the host system has sufficient free memory if increasing guest memory allocation. Otherwise the guest may refuse to boot the next time it is started.</source>
-        <target/>
+        <target>Uistite sa, že hostiteľský systém má dostatok voľnej pamäte, ak zvyšujete alokáciu pamäte hosťa. V opačnom prípade sa môže stať, že hosť pri ďalšom spustení odmietne spustiť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virtualsystems.none" xml:space="preserve">
         <source>No virtual systems selected.</source>
-        <target/>
+        <target>Nie sú vybrané žiadne virtuálne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.no.actions.scheduled" xml:space="preserve">
         <source>No actions scheduled.</source>
-        <target/>
+        <target>Nie sú naplánované žiadne akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.one.actions.scheduled" xml:space="preserve">
         <source>Scheduled one action, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
-        <target/>
+        <target>Naplánovaná jedna akcia, pozrite si &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;čakajúce akcie&lt;/strong&gt;&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.actions.scheduled" xml:space="preserve">
         <source>Scheduled {0} actions, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
-        <target/>
+        <target>Naplánované {0} akcie, pozrite si &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;čakajúce akcie&lt;/strong&gt;&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.no.virt.deleted" xml:space="preserve">
         <source>No virtual systems deleted.</source>
-        <target/>
+        <target>Nevymazali sa žiadne virtuálne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.one.virt.deleted" xml:space="preserve">
         <source>Deleted one virtual system.</source>
-        <target/>
+        <target>Vymazaný jeden virtuálny systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.virt.deleted" xml:space="preserve">
         <source>Deleted {0} virtual systems.</source>
-        <target/>
+        <target>Vymazaných {0} virtuálnych systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
-        <target/>
+        <target>Vypnúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.start" xml:space="preserve">
         <source>Start</source>
-        <target/>
+        <target>Spustiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.suspend" xml:space="preserve">
         <source>Suspend</source>
-        <target/>
+        <target>Pozastaviť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.resume" xml:space="preserve">
         <source>Resume</source>
-        <target/>
+        <target>Pokračovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.reboot" xml:space="preserve">
         <source>Restart</source>
-        <target/>
+        <target>Reštartovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.destroy" xml:space="preserve">
         <source>Destroy</source>
-        <target/>
+        <target>Zlikvidovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.delete" xml:space="preserve">
         <source>Delete</source>
-        <target/>
+        <target>Vymazať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.create" xml:space="preserve">
         <source>Create</source>
-        <target/>
+        <target>Vytvoriť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.update" xml:space="preserve">
         <source>Updates a virtual domain</source>
-        <target/>
+        <target>Aktualizuje virtuálnu doménu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.manager.system.VirtualizationActionCommand</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.setMemory" xml:space="preserve">
         <source>Set Memory ({0} MB)</source>
-        <target/>
+        <target>Nastaviť pamäť ({0} MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.setVCPUs" xml:space="preserve">
         <source>Set Virtual CPUs ({0})</source>
-        <target/>
+        <target>Nastaviť virtuálne CPU ({0})</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_refresh" xml:space="preserve">
         <source>Virtual storage pool refresh</source>
-        <target/>
+        <target>Obnova virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_start" xml:space="preserve">
         <source>Virtual storage pool start</source>
-        <target/>
+        <target>Spustenie virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_stop" xml:space="preserve">
         <source>Virtual storage pool stop</source>
-        <target/>
+        <target>Zastavenie virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_delete" xml:space="preserve">
         <source>Virtual storage pool delete</source>
-        <target/>
+        <target>Vymazanie virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_create" xml:space="preserve">
         <source>Virtual storage pool creation</source>
-        <target/>
+        <target>Vytvorenie virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.pool_update" xml:space="preserve">
         <source>Virtual storage pool update</source>
-        <target/>
+        <target>Aktualizácia virtuálneho úložného fondu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
-        <target/>
+        <target>Vymazanie virtuálneho úložného zväzku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.network_start" xml:space="preserve">
         <source>Virtual network start</source>
-        <target/>
+        <target>Spustenie virtuálnej siete</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.network_stop" xml:space="preserve">
         <source>Virtual network stop</source>
-        <target/>
+        <target>Zastavenie virtuálnej siete</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.network_delete" xml:space="preserve">
         <source>Virtual network deletion</source>
-        <target/>
+        <target>Vymazanie virtuálnej siete</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribers.updated" xml:space="preserve">
         <source>{0} channel subscriber(s) successfully updated.</source>
-        <target/>
+        <target>{0} predplatiteľ(ia) kanálov úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Subscribers.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.managers.updated" xml:space="preserve">
         <source>{0} channel manager(s) successfully updated.</source>
-        <target/>
+        <target>{0} správca(ovia) kanálov úspešne aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
         <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Prebieha sedenie kickstart pre tento systém. Úprava tohto aktivačného kľúča pravdepodobne spôsobí, že systém sa po dokončení sedenia kickstart opätovne nezaregistruje. Ručné použitie tohto kľúča by mohlo spôsobiť nežiaduce vedľajšie efekty.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve">
         <source>System's Base Channel has been updated.</source>
-        <target/>
+        <target>Základný kanál systému bol aktualizovaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.child_channels_updated" xml:space="preserve">
         <source>Child channel subscriptions updated.</source>
-        <target/>
+        <target>Aktualizované predplatné kanálov potomkov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.failed_channels" xml:space="preserve">
         <source>Note:  Some channel subscriptions could not be updated because there were no available subscriptions.</source>
-        <target/>
+        <target>Poznámka:  Niektoré predplatné kanálov nebolo možné aktualizovať, pretože neboli k dispozícii žiadne predplatné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.changed" xml:space="preserve">
         <source>System Group membership changed.</source>
-        <target/>
+        <target>Členstvo v systémovej skupine sa zmenilo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/Manage.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selinux.java.invalid_mode" xml:space="preserve">
         <source>Invalid SE Linux mode "{0}" specified. Valid values are {1}.</source>
-        <target/>
+        <target>Zadaný neplatný režim SE Linux "{0}". Platné hodnoty sú {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage" xml:space="preserve">
         <source>Updated entitlement count for '{0}'</source>
-        <target/>
+        <target>Aktualizovaný počet oprávnení pre '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgsizelimit.invalid" xml:space="preserve">
         <source>Size limit modification must be a valid non negative number.</source>
-        <target/>
+        <target>Zmena limitu veľkosti musí byť platné nezáporné číslo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -11139,6 +11139,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+        <source>Error during applying the bootstrap state. Check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -10950,7 +10950,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target> Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (*) versehen sind, sind Pflichtfelder. </target>
+        <target>Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden. Einträge, die mit einem Sternchen (*) versehen sind, sind Pflichtfelder.</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.summary1" xml:space="preserve">
         <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
@@ -29269,6 +29269,13 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Update Reporting Database</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+        <source>SSH Port:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
