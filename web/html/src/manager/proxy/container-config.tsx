@@ -191,7 +191,7 @@ export class ProxyConfig extends React.Component<Props, State> {
 
   countryChanged = (event) => {
     this.setState({
-      country: event.target.value,
+      country: event.target.value.toUpperCase(),
     });
   };
 
