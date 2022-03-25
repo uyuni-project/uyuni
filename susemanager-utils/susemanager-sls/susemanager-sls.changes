@@ -1,3 +1,5 @@
+- Handle salt bundle in set_proxy.sls
+
 -------------------------------------------------------------------
 Tue Mar 29 14:23:29 CEST 2022 - jmassaguerpla@suse.de
 
