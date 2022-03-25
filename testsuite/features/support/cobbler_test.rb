@@ -102,6 +102,15 @@ class CobblerTest
     system_id
   end
 
+  def system_remove(name)
+    raise "system cannot be found. #{$ERROR_INFO}" unless system_exists(name)
+    begin
+      @server.call('remove_system', name, @token)
+    rescue
+      raise "deleting system failed. #{$ERROR_INFO}"
+    end
+  end
+
   def distro_exists(name)
     exists('distros', 'name', name)
   end

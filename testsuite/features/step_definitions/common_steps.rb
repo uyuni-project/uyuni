@@ -296,6 +296,12 @@ Then(/^create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with pass
   ct.system_create(system, profile)
 end
 
+Then(/^remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  ct.system_remove(system)
+end
+
 When(/^I trigger cobbler system record$/) do
   # not for SSH-push traditional client
   space = 'spacecmd -u admin -p admin'
@@ -1438,14 +1444,14 @@ end
 
 # item is a Cobbler item and could be distro/profile/system
 # For the parameter have a look at the Cobbler docs or man page
-Then(/^I add the parameter "([^"]*)" with value "([^"]*)" to item "([^"]*)" with name "([^"]*)"$/) do |param, value, item, name|
+Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "([^"]*)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}")
   puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
   raise 'error in adding parameter and value to Cobbler distro/profile/system' if code.nonzero?
 end
 
 # For the parameter have a look at the Cobbler docs or man page
-And(/^I check the parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
+And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
   raise 'error during veryfying isolinux.cfg parameter for Cobbler buildiso' if code.nonzero?
