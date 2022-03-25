@@ -1,3 +1,4 @@
+- Fix unselectable table header and row rendering
 - Provide link to Sync page when unsynced patches message show up
   (bsc#1196094)
 - susemanager-nodejs-sdk-devel is now provided by spacewalk-web
