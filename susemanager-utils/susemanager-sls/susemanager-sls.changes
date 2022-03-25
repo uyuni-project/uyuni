@@ -1,3 +1,4 @@
+- Handle salt bundle in set_proxy.sls
 - Accept non standard proxy SSH port
 
 -------------------------------------------------------------------
