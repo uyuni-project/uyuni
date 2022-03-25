@@ -1,3 +1,4 @@
+- Remove doc search functionality
 - adapt for new c3p0 and mchange-commons package
 
 -------------------------------------------------------------------
