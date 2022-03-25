@@ -26,7 +26,7 @@ parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_direc
                     help='The directory where the Apache config file "cobbler.conf" is in.')
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
-COBBLER_CONFIG_FILES = ["modules.conf", "settings"]
+COBBLER_CONFIG_FILES = ["modules.conf", "settings.yaml"]
 HTTPD_CONFIG_DIRECTORY = "/etc/httpd/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
 
