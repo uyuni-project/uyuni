@@ -19,14 +19,21 @@ def upload_file_from_minion(minion, minion_ip, filetoupload, targetdir):
     res = None
     while(tries > 0):
         res = __salt__['salt.cmd'](
-        'rsync.rsync',
-        src, targetdir,
-        rsh="ssh -o IdentityFile=/srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(ssh_port)
+            'rsync.rsync',
+            src, targetdir,
+            rsh="ssh -o IdentityFile=/srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(ssh_port)
         )
         # In case of unexplained error, try again (can be dns failure, networking failure, ...)
         if res.get('retcode', 0) != 255:
             break
         tries -= 1
+    if res.get('retcode') == 0:
+        filename = os.path.basename(filetoupload)
+        # Check and set correct permission for uploaded file. We need it world readable
+        __salt__['salt.cmd'](
+            'file.check_perms',
+            os.path.join(targetdir, filename), 'salt', 'salt', 644
+        )
     return res
 
 def move_file_from_minion_cache(minion, filetomove, targetdir):
