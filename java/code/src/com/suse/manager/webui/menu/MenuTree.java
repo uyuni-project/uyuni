@@ -483,8 +483,7 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
-            )
-            .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"));
+            );
     }
 
     private MenuItem getAboutNode(String docsLocale) {
@@ -507,8 +506,7 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
-            )
-            .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"));
+            );
     }
 
     private MenuItem getExternalLinksNode() {
