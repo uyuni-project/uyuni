@@ -189,11 +189,6 @@ public class ScheduleManager implements Startable {
              BuilderFactory.XCCDF_IDENT_TYPE.equals(indexName)) {
             return true;
         }
-        else if (BuilderFactory.DOCS_TYPE.equals(indexName)) {
-            log.info("Index updates for " + BuilderFactory.DOCS_TYPE +
-                    " are not supported.");
-            return false;
-        }
         log.info("Unknown index: " + indexName);
         return false;
     }

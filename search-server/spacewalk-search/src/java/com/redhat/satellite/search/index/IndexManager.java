@@ -15,19 +15,12 @@
 
 package com.redhat.satellite.search.index;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import com.redhat.satellite.search.config.Configuration;
+import com.redhat.satellite.search.index.builder.BuilderFactory;
+import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
+import com.redhat.satellite.search.index.ngram.NGramQueryParser;
+import com.redhat.satellite.search.rpc.handlers.IndexHandler;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
@@ -47,17 +40,16 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
-import org.apache.nutch.analysis.AnalyzerFactory;
-import org.apache.nutch.searcher.FetchedSegments;
-import org.apache.nutch.searcher.HitDetails;
-import org.apache.nutch.searcher.Summary;
-import org.apache.nutch.util.NutchConfiguration;
 
-import com.redhat.satellite.search.config.Configuration;
-import com.redhat.satellite.search.index.builder.BuilderFactory;
-import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
-import com.redhat.satellite.search.index.ngram.NGramQueryParser;
-import com.redhat.satellite.search.rpc.handlers.IndexHandler;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Indexing workhorse class
@@ -77,12 +69,9 @@ public class IndexManager {
     private int max_ngram;
     private boolean filterDocResults = false;
     private boolean explainResults = false;
-    private AnalyzerFactory nutchAnalyzerFactory;
     // Name conflict with our Configuration class and Hadoop's
-    private org.apache.hadoop.conf.Configuration nutchConf;
     private Map<String, String> docLocaleLookUp = new TreeMap<String, String>
                                                                                                 (String.CASE_INSENSITIVE_ORDER);
-    private Map<String, FetchedSegments> docSegments;
     /**
      * Constructor
      *
@@ -105,10 +94,8 @@ public class IndexManager {
             config.getDouble("search.errata.advisory_score_threshold", .30);
         min_ngram = config.getInt("search.min_ngram", 1);
         max_ngram = config.getInt("search.max_ngram", 5);
-        initDocLocaleLookup();
         filterDocResults = config.getBoolean("search.doc.limit_results");
         explainResults = config.getBoolean("search.log.explain.results");
-        initDocSummary();
     }
 
 
@@ -395,14 +382,7 @@ public class IndexManager {
 
     private IndexReader getIndexReader(String indexName, String locale)
             throws CorruptIndexException, IOException {
-        String path = "";
-        if (indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) {
-            path = indexWorkDir + File.separator +
-                getDocIndexPath(locale);
-        }
-        else {
-            path = indexWorkDir + indexName;
-        }
+        String path = indexWorkDir + indexName;
         log.info("IndexManager::getIndexReader(" + indexName + ", " + locale +
                 ") path = " + path);
         File f = new File(path);
@@ -412,14 +392,7 @@ public class IndexManager {
 
     private IndexSearcher getIndexSearcher(String indexName, String locale)
             throws CorruptIndexException, IOException {
-        String path = "";
-        if (indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) {
-            path = indexWorkDir + File.separator +
-                getDocIndexPath(locale);
-        }
-        else {
-            path = indexWorkDir + indexName;
-        }
+        String path = indexWorkDir + indexName;
         log.info("IndexManager::getIndexSearcher(" + indexName + ", " + locale +
                 ") path = " + path);
         IndexSearcher retval = new IndexSearcher(path);
@@ -432,14 +405,8 @@ public class IndexManager {
             log.debug("getQueryParser(" + indexName + ", " + lang + ", " +
                     isFineGrained + ")");
         }
-        QueryParser qp;
         Analyzer analyzer = getAnalyzer(indexName, lang);
-        if (indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) {
-            qp = new QueryParser("content", analyzer);
-        }
-        else {
-            qp = new NGramQueryParser("name", analyzer, isFineGrained);
-        }
+        QueryParser qp = new NGramQueryParser("name", analyzer, isFineGrained);
         qp.setDateResolution(DateTools.Resolution.MINUTE);
         return qp;
     }
@@ -449,10 +416,7 @@ public class IndexManager {
         if (log.isDebugEnabled()) {
             log.debug("getAnalyzer(" + indexName + ", " + lang + ")");
         }
-        if (indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) {
-            return getDocAnalyzer(lang);
-        }
-        else if (indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) {
+        if (indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) {
             return getServerAnalyzer();
         }
         else if (indexName.compareTo(BuilderFactory.ERRATA_TYPE) == 0) {
@@ -482,13 +446,6 @@ public class IndexManager {
             Result pr = null;
             if (!isScoreAcceptable(indexName, hits, x, query)) {
                 break;
-            }
-            if (indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) {
-                pr = new DocResult(x, hits.score(x), doc);
-                String summary = lookupDocSummary(doc, query, lang);
-                if (summary != null) {
-                    ((DocResult)pr).setSummary(summary);
-                }
             }
             else if (indexName.compareTo(BuilderFactory.HARDWARE_DEVICE_TYPE) == 0) {
                 pr = new HardwareDeviceResult(x, hits.score(x), doc);
@@ -553,10 +510,6 @@ public class IndexManager {
         throws IOException {
         String guessMainQueryTerm = MatchingField.getFirstFieldName(queryIn);
 
-        if ((indexName.compareTo(BuilderFactory.DOCS_TYPE) == 0) &&
-                (!filterDocResults)) {
-            return true;
-        }
         /**
          * Dropping matches which are a poor fit.
          * system searches are filtered based on "system_score_threshold"
@@ -698,44 +651,6 @@ public class IndexManager {
         }
     }
 
-    private String getDocIndexPath(String lang) throws IOException {
-        String l = lookupLocale(lang);
-        if (!StringUtils.isBlank(l)) {
-            return BuilderFactory.DOCS_TYPE + File.separator + l;
-        }
-        log.error("Unable to find docs index dir for language " + lang);
-        throw new IOException("Unable to find docs index dir for language: " + lang);
-    }
-
-    private String lookupLocale(String lang) {
-        String ret = docLocaleLookUp.get(lang.toLowerCase());
-        if (StringUtils.isBlank(ret)) {
-            Locale l = new Locale(lang);
-            ret = docLocaleLookUp.get(l.getLanguage().toLowerCase());
-        }
-        return ret;
-    }
-
-    private Analyzer getDocAnalyzer(String lang) {
-        /**
-         * We want to use the same Analyzer nutch is using when the indexes are
-         * generated
-         * */
-        Analyzer analyzer = null;
-        try {
-            analyzer = nutchAnalyzerFactory.get(lang);
-        }
-        catch (Exception e) {
-            log.info("Caught exception, nutch is most likely not installed");
-            log.info("Defaulting to generic analyzer for Documentation Search");
-            log.info("Install nutch package to get summary info and better matches.");
-            analyzer = new StandardAnalyzer();
-        }
-        log.info("Language choice is " + lang + ", analyzer chosen is " +
-                analyzer);
-        return analyzer;
-    }
-
     private Analyzer getServerAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
                 NGramAnalyzer(min_ngram, max_ngram));
@@ -806,84 +721,6 @@ public class IndexManager {
         analyzer.addAnalyzer("release", new KeywordAnalyzer());
         analyzer.addAnalyzer("filename", new KeywordAnalyzer());
         return analyzer;
-    }
-
-    private boolean initDocSummary() {
-        /**
-         * NOTE:  NutchConfiguration is expecting "nutch-default.xml" and "nutch-site.xml"
-         * to be available in the CLASSPATH
-         */
-        try {
-            nutchConf = NutchConfiguration.create();
-            nutchAnalyzerFactory = new AnalyzerFactory(nutchConf);
-            FileSystem fs = FileSystem.get(nutchConf);
-            docSegments = new TreeMap<String, FetchedSegments>
-                                                                (String.CASE_INSENSITIVE_ORDER);
-            for (String key : docLocaleLookUp.keySet()) {
-                String segmentsDir = indexWorkDir + File.separator +
-                    getDocIndexPath(key) + File.separator + "segments";
-                FetchedSegments segments = new FetchedSegments(fs, segmentsDir, nutchConf);
-                if (segments == null) {
-                    log.info("Unable to create docSegments for language: " + key);
-                    docSegments.put(key, null);
-                }
-                String[] segNames = segments.getSegmentNames();
-                if (segNames == null || segNames.length == 0) {
-                    log.info("Unable to find any segments for language: " + key);
-                    docSegments.put(key, null);
-                }
-                log.info("Adding Documentation segments for language: " + key);
-                docSegments.put(key, segments);
-            }
-        }
-        catch (Exception e) {
-            log.error("ignoring exception - most likely Nutch isn't present, so" +
-            " doc summaries will be empty");
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-    private String lookupDocSummary(Document doc, String queryString, String lang) {
-        if (docSegments == null) {
-            log.info("docSegments is null, doc summary not possible");
-            log.info("nutch is probably not installed, install nutch to get summary info");
-            return "";
-        }
-        if (!docSegments.containsKey(lang)) {
-            log.info("Couldn't find segments info for " + lang);
-            log.info("Summary info will be missing for " + lang);
-            return "";
-        }
-        FetchedSegments segments = docSegments.get(lang);
-        if (segments == null) {
-            log.info("Segments info for " + lang + " is null");
-            return "";
-        }
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("Attempting lookupDocSummary<" + lang + "> for " + doc);
-            }
-            HitDetails hd = new HitDetails(doc.getField("segment").stringValue(),
-                doc.getField("url").stringValue());
-            // NOTE: Name conflict with Nutch's Query versus Lucene Query
-            org.apache.nutch.searcher.Query query =
-                org.apache.nutch.searcher.Query.parse(queryString, nutchConf);
-            Summary sum = segments.getSummary(hd, query);
-            if (log.isDebugEnabled()) {
-                log.debug("Will return summary<" + lang + "> = " + sum.toString());
-            }
-            return sum.toString();
-        }
-        catch (Exception e) {
-            log.info("Failed to lookupDocSummary<" + lang + ">, caught Exception: " + e);
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    private void initDocLocaleLookup() {
-        docLocaleLookUp.put("en", "en");
     }
 
 }
