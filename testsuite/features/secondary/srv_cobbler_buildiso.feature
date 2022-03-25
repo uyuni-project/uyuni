@@ -32,7 +32,7 @@ Feature: Cobbler buildiso
     Given cobblerd is running
     And profile "orchid" exists
     Then create system "testsystem" for profile "orchid" as user "testing" with password "testing"
-    Then I add the parameter "name-servers" with value "9.9.9.9" to item "system" with name "testsystem"
+    Then I add the Cobbler parameter "name-servers" with value "9.9.9.9" to item "system" with name "testsystem"
 
   Scenario: Prepare the cobbler buildiso context
     Given cobblerd is running
@@ -42,16 +42,16 @@ Feature: Cobbler buildiso
     Given cobblerd is running
     When I run Cobbler buildiso for distro "testdistro" and all profiles
     And I check Cobbler buildiso ISO "profile_all" with xorriso
-    And I check the parameter "nameserver" with value "9.9.9.9" in the isolinux.cfg
+    And I check the Cobbler parameter "nameserver" with value "9.9.9.9" in the isolinux.cfg
 
   Scenario: Run Cobbler buildiso with selected profile in the cobbler buildiso context
     When I run Cobbler buildiso for distro "testdistro" and profile "orchid"
     And I check Cobbler buildiso ISO "orchid" with xorriso
 
-  # TODO: Enable when https://github.com/cobbler/cobbler/issues/2995 is fixed
-#  Scenario: Run Cobbler buildiso with selected profile and without dns entries in the cobbler buildiso context
-#    When I run Cobbler buildiso for distro "testdistro" and profile "orchid" without dns entries
-#    And I check Cobbler buildiso ISO "orchid" with xorriso
+  # TODO: Fails unless https://github.com/cobbler/cobbler/issues/2995 is fixed
+  Scenario: Run Cobbler buildiso with selected profile and without dns entries in the cobbler buildiso context
+    When I run Cobbler buildiso for distro "testdistro" and profile "orchid" without dns entries
+    And I check Cobbler buildiso ISO "orchid" with xorriso
 
   Scenario: Run Cobbler buildiso airgapped with all profiles in the cobbler buildiso context
     When I run Cobbler buildiso "airgapped" for distro "testdistro"
@@ -63,7 +63,7 @@ Feature: Cobbler buildiso
 
   Scenario: Cleanup: delete test distro and profiles in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
-    # FIXME: Remove system before removing profile
+    Then remove system "testsystem" as user "testing" with password "testing"
     When I remove kickstart profiles and distros
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should not see a "testdistro" text
