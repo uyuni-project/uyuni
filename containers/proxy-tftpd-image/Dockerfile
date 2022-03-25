@@ -28,10 +28,11 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:%PKG_VERSION%.%REL
 # tftp
 EXPOSE 69/udp
 
-VOLUME "/etc/uyuni"
+VOLUME [ "/etc/uyuni", "/srv/tftpboot" ]
 
-# TODO: check installation
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses tftp python3-PyYAML
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses tftp
+COPY uyuni-configure.py /usr/bin/uyuni-configure.py
+RUN chmod +x /usr/bin/uyuni-configure.py
 
-# TODO: add RUN directive
+CMD uyuni-configure.py && ( source /etc/sysconfig/tftp; /usr/sbin/in.tftpd -L -u "$TFTP_USER" -s "$TFTP_DIRECTORY" $TFTP_OPTIONS )
