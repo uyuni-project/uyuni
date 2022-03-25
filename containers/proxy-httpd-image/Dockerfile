@@ -39,7 +39,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
  python3-rhnlib spacewalk-proxy-broker \
  spacewalk-proxy-common spacewalk-proxy-package-manager \
- spacewalk-proxy-redirect spacewalk-ssl-cert-check
+ spacewalk-proxy-redirect spacewalk-ssl-cert-check spacewalk-proxy-html
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
 

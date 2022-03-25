@@ -17,6 +17,7 @@
 #
 # Copyright (c) 2022 SUSE LLC
 
+import getpass
 import gettext
 import logging
 from spacecmd.utils import *
@@ -42,6 +43,7 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -p, --ssh-port SSH port the proxy listens one. Default: 22
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
             certicate in PEM format. May be provided multiple times.
 
@@ -57,11 +59,12 @@ def do_proxy_container_config(self, args):
     arg_parser.add_argument('-c', '--certificate', default='')
     arg_parser.add_argument('-k', '--key', default='')
     arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
 
     args, options = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 7:
-        self.help_container_config()
+    if len(args) != 4:
+        self.help_proxy_container_config()
         return
 
     (proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key) = args
@@ -72,7 +75,7 @@ def do_proxy_container_config(self, args):
     key = read_file(key)
 
     config = self.client.proxy.container_config(self.session,
-            proxy_fqdn, server_fqdn, int(max_cache), email,
+            proxy_fqdn, options.ssh_port, server_fqdn, int(max_cache), email,
             root_ca, intermediate_cas, cert, key,
     )
 
@@ -83,19 +86,22 @@ def do_proxy_container_config(self, args):
 
 def help_proxy_container_config_generate_cert(self):
     print(_('proxy_container_config_generate_cert: create a proxy system and return its configuration file'))
-    print(_('''usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL CA_CRT CA_KEY CA_PASSWORD
+    print(_('''usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL
 
 parameters:
   PROXY_FQDN  the fully qualified domain name of the proxy to create.
   SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
-  CA_CRT path to the certificate of the CA to use to generate a new proxy certificate
-  CA_KEY path to the private key of the CA to use to generate a new proxy certificate
-  CA_PASSWORD path to a file containing the password of the CA private key
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -p, --ssh-port SSH port the proxy listens one. Default: 22
+  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.
+           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.
+  --ca-key path to the private key of the CA to use to generate a new proxy certificate.
+           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.
+  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.
   --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times
   --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.
   --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.
@@ -105,13 +111,17 @@ options:
   --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.
 
 examples:
-  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org ssl-build/RHN-ORG-TRUSTED-SSL-CERT ssl-build/RHN-ORG-PRIVATE-SSL-KEY ca-password.txt
+  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file
 '''))
 
 
 def do_proxy_container_config_generate_cert(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
+    arg_parser.add_argument('--ca-cert', default='/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT')
+    arg_parser.add_argument('--ca-key', default='/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY')
+    arg_parser.add_argument('--ca-pass')
     arg_parser.add_argument('--ssl-cname', action='append', default=[])
     arg_parser.add_argument('--ssl-country', default='')
     arg_parser.add_argument('--ssl-state', default='')
@@ -122,17 +132,21 @@ def do_proxy_container_config_generate_cert(self, args):
 
     args, options = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 7:
-        self.help_container_config()
+    if len(args) != 4:
+        self.help_proxy_container_config_generate_cert()
         return
 
-    (proxy_fqdn, server_fqdn, max_cache, email, ca_cert, ca_key, ca_password) = args
+    (proxy_fqdn, server_fqdn, max_cache, email) = args
 
-    ca_cert = read_file(ca_cert)
-    ca_key = read_file(ca_key)
-    ca_password = read_file(ca_password)
+    ca_cert = read_file(options.ca_cert)
+    ca_key = read_file(options.ca_key)
+    if options.ca_pass:
+        ca_password = read_file(options.ca_pass)
+    else:
+        ca_password = getpass.getpass("SSL CA private key password: ")
 
-    config = self.client.proxy.container_config(self.session, proxy_fqdn, server_fqdn, int(max_cache), email,
+    config = self.client.proxy.container_config(self.session, proxy_fqdn, options.ssh_port,
+            server_fqdn, int(max_cache), email,
             ca_cert, ca_key, ca_password, options.ssl_cname, options.ssl_country, options.ssl_state,
             options.ssl_city, options.ssl_org, options.ssl_org_unit, options.ssl_email)
 

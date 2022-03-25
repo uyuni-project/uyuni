@@ -1,4 +1,12 @@
 - update last checkin only if job is successful (bsc#1197007)
+- Fixed broken help link for system overview
+- send notifications for new or changed ubuntu errata (bsc#1196977)
+- Allow using a custom SSH port for proxies
+- Hide useless fields for containerized proxies in UI
+- Keep virtualization notifications websocket alive
+- Fix NPE when accessing cancelled action via system history (bsc#1195762)
+- CVE Audit: Show patch as available in the currently installed product even if successor
+  patch affects additional packages (bsc#1196455)
 - Added the server location information to reporting database
 
 -------------------------------------------------------------------

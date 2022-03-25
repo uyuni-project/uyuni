@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
-import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
 import java.io.IOException;
@@ -67,9 +67,9 @@ public class CVEAuditServerSerializer extends RhnXmlRpcCustomSerializer {
             XmlRpcSerializer serializer) throws XmlRpcException, IOException {
 
         CVEAuditServer system = (CVEAuditServer) value;
-        Collection<ChannelIdNameLabelTriple> channels = system.getChannels();
+        Collection<AuditChannelInfo> channels = system.getChannels();
         List<String> channelLabels = new ArrayList<>(channels.size());
-        for (ChannelIdNameLabelTriple channel : channels) {
+        for (AuditChannelInfo channel : channels) {
             channelLabels.add(channel.getLabel());
         }
         Collection<ErrataIdAdvisoryPair> erratas = system.getErratas();

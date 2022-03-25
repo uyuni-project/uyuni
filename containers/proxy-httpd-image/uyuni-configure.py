@@ -1,16 +1,31 @@
 #!/usr/bin/python3
 
 import os
+import subprocess
 import re
 import shutil
 import yaml
+import sys
 
 config_path = "/etc/uyuni/"
 
 # read from file
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
+   
+    server_version = config.get("server_version")
+    # Only check version for SUSE Manager, not Uyuni
+    matcher = re.fullmatch(r"([0-9]+\.[0-9]+\.)[0-9]+", server_version)
+    if matcher:
+        major_version = matcher.group(1)
+        container_version = subprocess.run(["rpm", "-q", "--queryformat", "%{version}", "spacewalk-proxy-common"],
+                stdout=subprocess.PIPE, universal_newlines=True).stdout
+        if not container_version.startswith(major_version):
+            print("FATAL: Proxy container image version (%s) doesn't match server major version (%s)".format(
+                container_version, major_version), file=sys.stderr)
+            sys.exit(1)
     
+
     # copy the systemid file
     shutil.copyfile(config_path + "system_id.xml", "/etc/sysconfig/rhn/systemid")
     

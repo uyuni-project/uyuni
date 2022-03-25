@@ -47,6 +47,8 @@ import java.util.Map;
  */
 public class OrgManager extends BaseManager {
 
+    private static final String ORG_LIST = "org list";
+
     private OrgManager() {
     }
 
@@ -81,7 +83,7 @@ public class OrgManager extends BaseManager {
      */
     public static DataList<OrgDto> activeOrgs(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw getNoAdminError(RoleFactory.SAT_ADMIN, "org list");
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "orgs_in_satellite");
 
@@ -178,7 +180,7 @@ public class OrgManager extends BaseManager {
      */
     public static Long getTotalOrgCount(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw getNoAdminError(RoleFactory.SAT_ADMIN, "org list");
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
 
         return OrgFactory.getTotalOrgCount();
@@ -265,7 +267,7 @@ public class OrgManager extends BaseManager {
      */
     public static List<Org> allOrgs(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw getNoAdminError(RoleFactory.SAT_ADMIN, "org list");
+            throw getNoAdminError(RoleFactory.SAT_ADMIN, ORG_LIST);
         }
 
         return OrgFactory.lookupAllOrgs();

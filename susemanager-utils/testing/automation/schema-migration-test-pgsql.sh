@@ -46,7 +46,7 @@ else
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-MIGRATION_TEST='/manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql.sh'
+MIGRATION_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql.sh ${SCHEMA_PACKAGES}"
 IDEMPOTENCY_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_idempotency_test_pgsql.py ${IDEMPOTENCY_PARAMS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 

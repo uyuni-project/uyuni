@@ -42,7 +42,6 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
@@ -214,13 +213,11 @@ public abstract class AbstractMinionBootstrapper {
                     }
             );
         }
-        catch (SaltException e) {
+        catch (Exception e) {
             LOG.error("Exception during bootstrap: " + e.getMessage(), e);
             return new BootstrapResult(false, Optional.empty(),
-                    LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()));
-        }
-        catch (Exception e) {
-            return new BootstrapResult(false, Optional.empty(), e.getMessage());
+                    e.getMessage() != null ? LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()) :
+                            LOC.getMessage("bootstrap.minion.error.salt.unexpected"));
         }
     }
 

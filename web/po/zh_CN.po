@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2022-01-24 10:13+0000\n"
+"POT-Creation-Date: 2022-03-24 10:56+0000\n"
+"PO-Revision-Date: 2022-03-23 09:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -61,21 +61,19 @@ msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。
 
 #: ../html/src/components/FormulaForm.tsx:265
 msgid "Expand All Sections"
-msgstr ""
+msgstr "展开所有部分"
 
 #: ../html/src/components/FormulaForm.tsx:272
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "折叠所有部分"
 
 #: ../html/src/components/FormulaForm.tsx:337
-#, fuzzy
 msgid "Unnamed"
-msgstr "用户名"
+msgstr "未命名"
 
 #: ../html/src/components/FormulaForm.tsx:346
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "按公式名称过滤"
+msgstr "按公式的组名称搜索"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -139,8 +137,8 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr "未指派状态。请使用搜索来查找并指派状态。"
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:786
-#: ../html/src/manager/images/image-view.tsx:788
+#: ../html/src/manager/images/image-view.tsx:807
+#: ../html/src/manager/images/image-view.tsx:809
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -229,10 +227,10 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
-#: ../html/src/manager/images/image-view-overview.tsx:695
-#: ../html/src/manager/images/image-view-overview.tsx:696
-#: ../html/src/manager/images/image-view-overview.tsx:768
-#: ../html/src/manager/images/image-view-overview.tsx:769
+#: ../html/src/manager/images/image-view-overview.tsx:741
+#: ../html/src/manager/images/image-view-overview.tsx:742
+#: ../html/src/manager/images/image-view-overview.tsx:814
+#: ../html/src/manager/images/image-view-overview.tsx:815
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:78
 #: ../html/src/manager/systems/delete-system.tsx:79
@@ -253,7 +251,7 @@ msgstr "取消"
 #: ../html/src/manager/images/image-stores.tsx:204
 #: ../html/src/manager/images/image-view.tsx:347
 #: ../html/src/manager/images/image-view.tsx:357
-#: ../html/src/manager/images/image-view.tsx:673
+#: ../html/src/manager/images/image-view.tsx:694
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -262,7 +260,7 @@ msgstr "取消"
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
-#: ../html/src/manager/state/recurring-states-list.tsx:132
+#: ../html/src/manager/state/recurring-states-list.tsx:147
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -530,7 +528,7 @@ msgstr "星期六"
 #: ../html/src/components/picker/recurring-event-picker.tsx:325
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:91
+#: ../html/src/manager/state/recurring-states-list.tsx:106
 msgid "Schedule Name"
 msgstr "日程安排名称"
 
@@ -588,7 +586,7 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:151
 #: ../html/src/manager/state/recurring-states-details.tsx:153
-#: ../html/src/manager/state/recurring-states-list.tsx:124
+#: ../html/src/manager/state/recurring-states-list.tsx:139
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -885,11 +883,11 @@ msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:39
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "添加新的 Pay-as-you-go SSH 连接数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "添加 Pay-as-you-go SSH 数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:47
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -911,9 +909,8 @@ msgid "Create"
 msgstr "创建"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:68
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "产品说明"
+msgstr "Pay-as-you-go 连接说明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:71
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -930,13 +927,12 @@ msgid "Description"
 msgstr "说明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:75
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "实例已过时"
+msgstr "实例 SSH 连接数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:80
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "堡垒 SSH 连接数据"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:266
@@ -968,9 +964,8 @@ msgid "Status"
 msgstr "状态"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "匹配数据状态"
+msgstr "上次更新状态"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -979,7 +974,7 @@ msgstr "从不"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "添加 Pay-as-you-go"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -996,14 +991,12 @@ msgstr "请求已中断，或者从服务器收到了无效响应。请重试。
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "已成功更新项目属性"
+msgstr "已成功更新 Pay-as-you-go 属性"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "其他信息"
+msgstr "编辑信息"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -1011,18 +1004,16 @@ msgid "Editing properties.."
 msgstr "正在编辑属性..."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "开始日期"
+msgstr "上次状态更新"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
-#, fuzzy
 msgid "Edit "
-msgstr "编辑"
+msgstr "编辑 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "正在编辑 SSH 连接数据..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
@@ -1050,18 +1041,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "您要查找的项目不存在或已删除"
+msgstr "您要查找的实例不存在或已删除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "'{0}' 的实例细节"
+msgstr "实例主机名：{0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:74
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "删除 Pay-as-you-go"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/content-management/project/project.tsx:113
@@ -1096,10 +1085,10 @@ msgstr "操作不成功：服务器返回了空答复"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:664
+#: ../html/src/manager/images/image-view.tsx:685
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:116
+#: ../html/src/manager/state/recurring-states-list.tsx:131
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "细节"
@@ -1419,11 +1408,11 @@ msgstr "审计映像"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "MITRE CVE 链接"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "SUSE 安全 CVE 链接"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -1433,7 +1422,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:618
+#: ../html/src/manager/images/image-view.tsx:639
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
@@ -1449,11 +1438,11 @@ msgstr "名称"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:658
+#: ../html/src/manager/images/image-view.tsx:679
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:195
-#: ../html/src/manager/state/recurring-states-list.tsx:111
+#: ../html/src/manager/state/recurring-states-list.tsx:126
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
@@ -1484,7 +1473,7 @@ msgid "If you see this report a bug."
 msgstr "如果您看到此情况，请报告 Bug。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
-#: ../html/src/manager/images/image-view-overview.tsx:595
+#: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr "重构建"
 
@@ -1947,7 +1936,7 @@ msgstr "纪元"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:619
+#: ../html/src/manager/images/image-view.tsx:640
 msgid "Version"
 msgstr "版本"
 
@@ -2270,9 +2259,9 @@ msgstr "构建 ({0})"
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:134
 #: ../html/src/manager/images/image-build.tsx:402
 #: ../html/src/manager/images/image-profiles.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:580
-#: ../html/src/manager/images/image-view-overview.tsx:679
-#: ../html/src/manager/images/image-view.tsx:646
+#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:725
+#: ../html/src/manager/images/image-view.tsx:667
 msgid "Build"
 msgstr "构建"
 
@@ -2363,13 +2352,13 @@ msgid "Generating repositories data"
 msgstr "生成储存库数据"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
-#: ../html/src/manager/images/image-view.tsx:495
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Built"
 msgstr "已构建"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:497
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Failed"
 msgstr "失败"
 
@@ -2490,9 +2479,8 @@ msgid "Versions history"
 msgstr "版本历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
-msgstr "新建基础频道"
+msgstr "新基础频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
 msgid "New Base Channel"
@@ -2513,14 +2501,12 @@ msgid "Clear Search"
 msgstr "清除搜索"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "建议使用此频道"
+msgstr "此频道需要："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "建议使用此频道"
+msgstr "以下对象需要此频道："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -2544,7 +2530,7 @@ msgstr "无子频道"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:617
+#: ../html/src/manager/images/image-view.tsx:638
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2647,14 +2633,14 @@ msgid "Systems"
 msgstr "系统"
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:642
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:663
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Packages"
 msgstr "软件包"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:629
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:650
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Patches"
 msgstr "补丁"
 
@@ -2972,17 +2958,17 @@ msgstr "您确定要删除选定的存储区吗？（已选择 {0} 个存储区�
 #: ../html/src/manager/images/image-view-overview.tsx:94
 #: ../html/src/manager/images/image-view-overview.tsx:253
 #: ../html/src/manager/images/image-view-overview.tsx:254
-#: ../html/src/manager/images/image-view-overview.tsx:467
-#: ../html/src/manager/images/image-view-overview.tsx:468
+#: ../html/src/manager/images/image-view-overview.tsx:513
+#: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:470
-#: ../html/src/manager/images/image-view.tsx:519
+#: ../html/src/manager/images/image-view.tsx:478
+#: ../html/src/manager/images/image-view.tsx:527
 msgid "No information"
 msgstr "无信息"
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:491
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Queued"
 msgstr "已排队"
 
@@ -3019,7 +3005,7 @@ msgstr " 失败"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:489
+#: ../html/src/manager/images/image-view.tsx:497
 msgid "Built externally"
 msgstr "已在外部构建"
 
@@ -3032,37 +3018,37 @@ msgid "Picked Up"
 msgstr "已提取"
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:545
+#: ../html/src/manager/images/image-view.tsx:553
 msgid "Cluster"
 msgstr "群集"
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:546
-#: ../html/src/manager/images/image-view.tsx:598
+#: ../html/src/manager/images/image-view.tsx:554
+#: ../html/src/manager/images/image-view.tsx:606
 msgid "Instances"
 msgstr "实例"
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:507
-#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:515
+#: ../html/src/manager/images/image-view.tsx:564
 msgid "Waiting for update ..."
 msgstr "正在等待更新..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:573
+#: ../html/src/manager/images/image-view.tsx:581
 msgid "View cluster summary"
 msgstr "查看群集摘要"
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:515
+#: ../html/src/manager/images/image-view.tsx:523
 msgid "All instances are consistent with SUSE Manager"
 msgstr "所有实例与 SUSE Manager 相一致"
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:521
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "Outdated instances found"
 msgstr "找到已过时的实例"
 
@@ -3074,92 +3060,92 @@ msgstr "编辑配置文件"
 msgid "Edit store"
 msgstr "编辑储存"
 
-#: ../html/src/manager/images/image-view-overview.tsx:419
-#: ../html/src/manager/images/image-view.tsx:726
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view.tsx:747
 msgid "Instance Details for '{0}'"
 msgstr "'{0}' 的实例细节"
 
-#: ../html/src/manager/images/image-view-overview.tsx:474
-#: ../html/src/manager/images/image-view-overview.tsx:475
-#: ../html/src/manager/images/image-view.tsx:472
+#: ../html/src/manager/images/image-view-overview.tsx:520
+#: ../html/src/manager/images/image-view-overview.tsx:521
+#: ../html/src/manager/images/image-view.tsx:480
 msgid "Critical updates available"
 msgstr "有关键更新可用"
 
-#: ../html/src/manager/images/image-view-overview.tsx:481
-#: ../html/src/manager/images/image-view-overview.tsx:482
-#: ../html/src/manager/images/image-view.tsx:475
+#: ../html/src/manager/images/image-view-overview.tsx:527
+#: ../html/src/manager/images/image-view-overview.tsx:528
+#: ../html/src/manager/images/image-view.tsx:483
 msgid "Non-critical updates available"
 msgstr "有非关键更新可用"
 
-#: ../html/src/manager/images/image-view-overview.tsx:488
-#: ../html/src/manager/images/image-view-overview.tsx:489
-#: ../html/src/manager/images/image-view.tsx:478
+#: ../html/src/manager/images/image-view-overview.tsx:534
+#: ../html/src/manager/images/image-view-overview.tsx:535
+#: ../html/src/manager/images/image-view.tsx:486
 msgid "Package updates available"
 msgstr "有软件包更新可用"
 
-#: ../html/src/manager/images/image-view-overview.tsx:495
-#: ../html/src/manager/images/image-view-overview.tsx:496
-#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view-overview.tsx:541
+#: ../html/src/manager/images/image-view-overview.tsx:542
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Image is up to date"
 msgstr "映像是最新的"
 
-#: ../html/src/manager/images/image-view-overview.tsx:564
+#: ../html/src/manager/images/image-view-overview.tsx:610
 msgid "Image Status"
 msgstr "映像状态"
 
-#: ../html/src/manager/images/image-view-overview.tsx:567
+#: ../html/src/manager/images/image-view-overview.tsx:613
 msgid "Image Info"
 msgstr "映像信息"
 
-#: ../html/src/manager/images/image-view-overview.tsx:578
+#: ../html/src/manager/images/image-view-overview.tsx:624
 msgid "Build Status"
 msgstr "构建状态"
 
-#: ../html/src/manager/images/image-view-overview.tsx:586
-#: ../html/src/manager/images/image-view-overview.tsx:758
+#: ../html/src/manager/images/image-view-overview.tsx:632
+#: ../html/src/manager/images/image-view-overview.tsx:804
 msgid "Inspect"
 msgstr "检查"
 
-#: ../html/src/manager/images/image-view-overview.tsx:596
+#: ../html/src/manager/images/image-view-overview.tsx:642
 msgid "Reschedule the build"
 msgstr "重安排构建"
 
-#: ../html/src/manager/images/image-view-overview.tsx:604
+#: ../html/src/manager/images/image-view-overview.tsx:650
 msgid "Reinspect"
 msgstr "重新检查"
 
-#: ../html/src/manager/images/image-view-overview.tsx:605
+#: ../html/src/manager/images/image-view-overview.tsx:651
 msgid "Reschedule the inspect"
 msgstr "重安排检查"
 
-#: ../html/src/manager/images/image-view-overview.tsx:618
+#: ../html/src/manager/images/image-view-overview.tsx:664
 msgid "Custom Image Information"
 msgstr "自定义映像信息"
 
-#: ../html/src/manager/images/image-view-overview.tsx:632
+#: ../html/src/manager/images/image-view-overview.tsx:678
 #: ../html/src/manager/images/image-view.tsx:358
-#: ../html/src/manager/images/image-view.tsx:695
+#: ../html/src/manager/images/image-view.tsx:716
 msgid "Delete Image"
 msgstr "删除映像"
 
-#: ../html/src/manager/images/image-view-overview.tsx:635
-#: ../html/src/manager/images/image-view.tsx:698
+#: ../html/src/manager/images/image-view-overview.tsx:681
+#: ../html/src/manager/images/image-view.tsx:719
 msgid "Are you sure you want to delete image"
 msgstr "您确定要删除映像吗"
 
-#: ../html/src/manager/images/image-view-overview.tsx:680
+#: ../html/src/manager/images/image-view-overview.tsx:726
 msgid "Schedule build"
 msgstr "安排构建"
 
-#: ../html/src/manager/images/image-view-overview.tsx:722
+#: ../html/src/manager/images/image-view-overview.tsx:768
 msgid "Rebuild Image"
 msgstr "重构建映像"
 
-#: ../html/src/manager/images/image-view-overview.tsx:759
+#: ../html/src/manager/images/image-view-overview.tsx:805
 msgid "Schedule inspect"
 msgstr "安排检查"
 
-#: ../html/src/manager/images/image-view-overview.tsx:795
+#: ../html/src/manager/images/image-view-overview.tsx:841
 msgid "Reinspect Image"
 msgstr "重新检查映像"
 
@@ -3260,48 +3246,56 @@ msgstr "已安排映像构建。"
 msgid "Images"
 msgstr "映像"
 
-#: ../html/src/manager/images/image-view.tsx:493
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Building"
 msgstr "正在构建"
 
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:507
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr "未知"
 
-#: ../html/src/manager/images/image-view.tsx:593
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:601
+#: ../html/src/manager/images/image-view.tsx:785
 msgid "Runtime"
 msgstr "运行时"
 
-#: ../html/src/manager/images/image-view.tsx:622
+#: ../html/src/manager/images/image-view.tsx:621
+msgid "Show obsolete"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.tsx:643
 msgid "Revision"
 msgstr "修订版"
 
-#: ../html/src/manager/images/image-view.tsx:626
+#: ../html/src/manager/images/image-view.tsx:645
+msgid "(obsolete)"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.tsx:647
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-view.tsx:650
+#: ../html/src/manager/images/image-view.tsx:671
 msgid "Last Modified"
 msgstr "上次修改时间"
 
-#: ../html/src/manager/images/image-view.tsx:711
+#: ../html/src/manager/images/image-view.tsx:732
 msgid "Delete Selected Image(s)"
 msgstr "删除选定的映像"
 
-#: ../html/src/manager/images/image-view.tsx:715
+#: ../html/src/manager/images/image-view.tsx:736
 msgid "Are you sure you want to delete the selected image?"
 msgstr "您确定要删除选定的映像吗？"
 
-#: ../html/src/manager/images/image-view.tsx:717
+#: ../html/src/manager/images/image-view.tsx:738
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "您确定要删除选定的映像吗？（已选择 {0} 个映像）"
 
-#: ../html/src/manager/images/image-view.tsx:764
+#: ../html/src/manager/images/image-view.tsx:785
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "概览"
@@ -3409,7 +3403,7 @@ msgstr "删除维护日历"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:145
+#: ../html/src/manager/state/recurring-states-list.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
@@ -3586,7 +3580,15 @@ msgstr "日程安排"
 msgid "Calendars"
 msgstr "日历"
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
+msgid "Below is a list of Maintenance Schedules available to the current user."
+msgstr ""
+
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
+msgid "Below is a list of Maintenance Calendars available to the current user."
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
 msgstr "日程安排"
 
@@ -3894,7 +3896,7 @@ msgstr "状态应用失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:141
 msgid "Filter by type"
@@ -4252,7 +4254,7 @@ msgid "State:"
 msgstr "状态："
 
 #: ../html/src/manager/state/recurring-states-details.tsx:100
-#: ../html/src/manager/state/recurring-states-list.tsx:82
+#: ../html/src/manager/state/recurring-states-list.tsx:97
 msgid "Active"
 msgstr "活动"
 
@@ -4289,7 +4291,7 @@ msgid "Quartz format string"
 msgstr "Quartz 格式字符串"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:173
-#: ../html/src/manager/state/recurring-states-list.tsx:144
+#: ../html/src/manager/state/recurring-states-list.tsx:159
 msgid "Delete Recurring State Schedule"
 msgstr "删除重复性状态日程安排"
 
@@ -4317,15 +4319,25 @@ msgstr "安排重复 Highstate"
 msgid "Recurring States"
 msgstr "重复性状态"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:77
+#: ../html/src/manager/state/recurring-states-list.tsx:65
+msgid "The following recurring actions have been created."
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.tsx:69
+msgid ""
+"To create new recurring actions head to the system, group or organization "
+"you want to create the action for."
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
 msgstr "未创建日程安排。"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:98
+#: ../html/src/manager/state/recurring-states-list.tsx:113
 msgid "Frequency"
 msgstr "频率"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:105
+#: ../html/src/manager/state/recurring-states-list.tsx:120
 msgid "Target Type"
 msgstr "目标类型"
 

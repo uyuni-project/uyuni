@@ -79,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target>Hola,
+
+S'ha creat un inici de sessió @@PRODUCT_NAME@@. El vostre
+Inici de sessió @@PRODUCT_NAME@@, en combinació amb una subscripció activa @@VENDOR_NAME@@,
+us ofereix accés per gestionar sistemes a @@PRODUCT_NAME@@.
+
+  Inici de sessió @@PRODUCT_NAME@@: {0}
+       Contrasenya: {1}
+         correu electrònic: {2}
+
+  {3}
+
+Important: si us plau, canvieu la contrasenya en iniciar sessió.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -349,6 +365,21 @@ click the "Details" tab.
 {1}
 {2}
     </source>
+        <target>
+Canvi de les preferències de notificació
+----------------------------------
+Per activar/desactivar les vostres preferències d'alerta de pedaços globalment, inicieu sessió a @@PRODUCT_NAME@@
+i navegueu des de "Visió general" / "El meu compte" a la pestanya "Preferències".
+
+        URL: {0}
+
+També podeu activar/desactivar la notificació segons el sistema seleccionant un
+sistema individual de la "Llista de sistemes". Des de la vista individual del sistema
+feu clic a la pestanya "Detalls".
+
+{1}
+{2}
+    </target>
         <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
@@ -362,6 +393,7 @@ click the "Details" tab.
       </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <target>@@PRODUCT_NAME@@ Informe diari d'estat de {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -392,6 +424,26 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
+        <target>Aquest és l'informe d'estat @@PRODUCT_NAME@@ del vostre compte {0}, a partir del dia {1}.
+
+Aquest correu electrònic s'enviarà quan s'apliqui alguna de les condicions següents:
+
+1. El sistema no pot registrar-se amb @@PRODUCT_NAME@@ en un període de 24 hores.
+2. El sistema registra l'activitat d'acció programada.
+
+{2}
+{3}
+S'està desactivant aquest correu electrònic:
+-----------------------
+
+Per desactivar aquest correu electrònic per als sistemes, visiteu la pàgina Preferències a
+https://{4}/rhn/account/UserPreferences.do
+
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{5}
+{6}
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">
@@ -422,6 +474,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0} a petició vostra. ]
+
+S'ha fet una sol·licitud per restablir la contrasenya de @@PRODUCT_NAME@@ per iniciar sessió {2}.
+
+Per continuar el procés de restabliment, procediu a:
+
+{1}
+
+Si no voleu restablir la vostra contrasenya, podeu ignorar aquest correu electrònic.
+
+Si teniu més dificultats amb el procés de restabliment,
+poseu-vos en contacte amb el vostre administrador de @@PRODUCT_NAME@@ per obtenir més ajuda.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -451,6 +519,25 @@ If you did not request this email be sent, please disregard this message.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0} a petició vostra. ]
+
+Heu sol·licitat una llista de tots els inicis de sessió de @@PRODUCT_NAME@@ associats
+amb l'adreça electrònica {0}.
+
+Inicis de sessió existents:
+
+{1}
+Podeu restablir les contrasenyes de qualsevol dels inicis de sessió de @@PRODUCT_NAME@@ anteriors a:
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+Si continueu tenint dificultats per iniciar sessió, poseu-vos en contacte
+el vostre administrador de @@PRODUCT_NAME@@ per obtenir més ajuda.
+Si no heu sol·licitat que s'enviï aquest correu electrònic, no tingueu en compte aquest missatge.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -471,6 +558,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0}. ]
+
+La contrasenya @@PRODUCT_NAME@@ per iniciar sessió {1} s'ha restablert en resposta a una sol·licitud de restabliment
+fet a les {2}
+
+Si no heu iniciat aquest restabliment de la contrasenya, poseu-vos en contacte IMMEDIATAMENT amb @@PRODUCT_NAME@@
+administrador a {2} per obtenir més ajuda.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">

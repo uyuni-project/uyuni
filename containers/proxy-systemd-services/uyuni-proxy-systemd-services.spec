@@ -47,7 +47,7 @@ install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-rhn-cache
 install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-tftpboot
 install -d -m 755 %{buildroot}%{_sbindir}
 
-%if 0%{?sle_version}
+%if !0%{?is_opensuse}
 sed 's/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/4.3/' -i uyuni-container-proxy-services.config
 %endif
 install -D -m 644 uyuni-container-proxy-services.config %{buildroot}%{_fillupdir}/sysconfig.%{name}

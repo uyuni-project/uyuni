@@ -25,6 +25,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -1888,8 +1889,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(apacheCert));
         }});
 
-        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, serverName, maxCache, email, rootCA,
-                otherCAs, new SSLCertPair(cert, key), null, null, null);
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
         Map<String, String> content = readZipData(actual);
         assertEquals(sshPushKey, content.get("server_ssh_push"));
         assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
@@ -1904,14 +1905,25 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(serverName, yaml.get("server"));
         assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
         assertEquals(email, yaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
     }
 
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
         // For some reason duplicating the ORG_ADMIN role setting is required
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
-        systemManager.createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
+        createTestProxy(proxyName);
         testCreateProxyContainerConfig();
+    }
+
+    private void createTestProxy(String fqdn) {
+        Server proxy = ServerFactoryTest.createUnentitledTestServer(
+                user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
+        proxy.setName(fqdn);
+        proxy.setHostname(fqdn);
+        proxy.getProxyInfo().setVersion(null);
+
+        systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
     }
 
     private Map<String, String> readZipData(byte[] data) throws IOException {

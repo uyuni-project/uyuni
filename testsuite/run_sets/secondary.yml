@@ -19,7 +19,8 @@
 - features/secondary/srv_delete_channel_with_tool.feature
 - features/secondary/srv_test_maintenance_windows.feature
 - features/secondary/srv_user_configuration_salt_states.feature
-- features/secondary/srv_handle_channels_with_ISS_v2.feature
+- features/secondary/srv_handle_software_channels_with_ISS_v2.feature
+- features/secondary/srv_handle_config_channels_with_ISS_v2.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature

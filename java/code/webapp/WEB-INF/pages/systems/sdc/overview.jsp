@@ -8,6 +8,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
+  <rhn:require acl="not system_is_proxy() or not system_has_foreign_entitlement()">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4><bean:message key="sdc.details.overview.systemstatus"/></h4>
@@ -63,6 +64,7 @@
       </c:choose>
     </div>
   </div>
+  </rhn:require>
 
   <div class="row-0">
     <div class="col-md-6">
@@ -86,6 +88,22 @@
             </c:choose>
             </td>
           </tr>
+          <rhn:require acl="system_is_proxy()">
+          <tr>
+            <td><bean:message key="sdc.details.overview.sshport"/></td>
+            <td>
+            <c:choose>
+              <c:when test="${system.proxyInfo.sshPort == null}">
+                <c:out value="22" />
+              </c:when>
+              <c:otherwise>
+                <c:out value="${system.proxyInfo.sshPort}" />
+              </c:otherwise>
+            </c:choose>
+            </td>
+          </tr>
+          </rhn:require>
+          <rhn:require acl="not system_is_proxy() or not system_has_foreign_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.ipaddy"/></td>
             <td>
@@ -158,6 +176,7 @@
               </c:if>
             </td>
           </tr>
+          </rhn:require>
           <tr>
             <td><bean:message key="sdc.details.overview.sysid"/></td>
             <td><c:out value="${system.id}" /></td>

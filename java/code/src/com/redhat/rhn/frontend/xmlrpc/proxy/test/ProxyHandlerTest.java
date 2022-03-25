@@ -46,7 +46,6 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.junit.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -167,14 +166,14 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         context().checking(new Expectations() {{
-            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, server, 2048L, email,
+            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, 8022, server, 2048L, email,
                     "ROOT_CA", List.of("CA1", "CA2"), new SSLCertPair("PROXY_CERT", "PROXY_KEY"),
                     null, null, null);
             will(returnValue(dummyConfig));
         }});
 
-        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, server,
-                2048, email, "ROOT_CA", List.of("CA1", "CA2"), "PROXY_CERT", "PROXY_KEY");
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, 8022,
+                server, 2048, email, "ROOT_CA", List.of("CA1", "CA2"), "PROXY_CERT", "PROXY_KEY");
         assertEquals(dummyConfig, actual);
     }
 
@@ -187,7 +186,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         context().checking(new Expectations() {{
-            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, server, 2048L, email,
+            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, 22, server, 2048L, email,
                     null, Collections.emptyList(), null,
                     new SSLCertPair("CACert", "CAKey"), "CAPass",
                     new SSLCertData(proxy, List.of("cname1", "cname2"), "DE", "Bayern", "Nurnberg",
@@ -195,9 +194,9 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
             will(returnValue(dummyConfig));
         }});
 
-        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, server,
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager).containerConfig(user, proxy, 22, server,
                 2048, email, "CACert", "CAKey", "CAPass", List.of("cname1", "cname2"),
                 "DE", "Bayern", "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab");
-        Assert.assertArrayEquals(dummyConfig, actual);
+        assertEquals(dummyConfig, actual);
     }
 }
