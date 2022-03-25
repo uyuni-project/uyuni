@@ -2229,6 +2229,7 @@ public class SystemManager extends BaseManager {
         config.put("max_cache_size_mb", maxCache);
         config.put("email", email);
         config.put("server_version", ConfigDefaults.get().getProductVersion());
+        config.put("proxy_fqdn", proxyName);
         Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
 
         zipOut.putNextEntry(new ZipEntry("config.yaml"));
