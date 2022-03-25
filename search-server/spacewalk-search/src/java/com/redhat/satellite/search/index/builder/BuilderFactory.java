@@ -24,7 +24,6 @@ public class BuilderFactory {
     public static final String ERRATA_TYPE = "errata";
     public static final String PACKAGES_TYPE = "packages";
     public static final String SERVER_TYPE = "server";
-    public static final String DOCS_TYPE = "docs";
     public static final String HARDWARE_DEVICE_TYPE = "hwdevice";
     public static final String SNAPSHOT_TAG_TYPE = "snapshotTag";
     public static final String SERVER_CUSTOM_INFO_TYPE = "serverCustomInfo";
