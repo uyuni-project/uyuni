@@ -17,24 +17,31 @@ Feature: Cobbler buildiso
   Scenario: Create dummy profiles in the cobbler buildiso context
     Given cobblerd is running
     And distro "testdistro" exists
-    Then create profile "testprofile" for distro "testdistro" as user "testing" with password "testing"
+    Then create profile "orchid" for distro "testdistro" as user "testing" with password "testing"
+    Then create profile "flame" for distro "testdistro" as user "testing" with password "testing"
+    Then create profile "pearl" for distro "testdistro" as user "testing" with password "testing"
 
+  Scenario: Create dummy system in the Cobbler buildiso context
+    Given cobblerd is running
+    Then create system "testsystem" for profile "orchid" as user "testing" with password "testing"
 
   Scenario: Check cobbler created a distro and profiles in the cobbler buildiso context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "testdistro" text
-    And I should see a "testprofile" text
+    And I should see a "orchid" text
+    And I should see a "flame" text
+    And I should see a "pearl" text
 
   Scenario: Prepare the cobbler buildiso context
     Given I prepare Cobbler for the buildiso command
 
-  Scenario: Run Cobbler buildiso with all profiles in the cobbler buildiso context
-    When I run Cobbler buildiso for distro "testdistro"
-    And I check Cobbler buildiso ISO "profile_all" with xorriso
+  Scenario: Run Cobbler buildiso with all profiles and check isolinux config file in the cobbler buildiso context
+    When I run Cobbler buildiso for distro "testdistro" and all profiles
+     And I check Cobbler buildiso ISO "profile_all" with xorriso
 
   Scenario: Run Cobbler buildiso with selected profile in the cobbler buildiso context
-    When I run Cobbler buildiso for distro "testdistro" and profile "testprofile"
-    And I check Cobbler buildiso ISO "testprofile" with xorriso
+    When I run Cobbler buildiso for distro "testdistro" and profile "orchid"
+    And I check Cobbler buildiso ISO "orchid" with xorriso
 
   Scenario: Run Cobbler buildiso airgapped with all profiles in the cobbler buildiso context
     When I run Cobbler buildiso "airgapped" for distro "testdistro"
@@ -49,7 +56,9 @@ Feature: Cobbler buildiso
     When I remove kickstart profiles and distros
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should not see a "testdistro" text
-    And I should not see a "testprofile" text
+    And I should not see a "orchid" text
+    And I should not see a "flame" text
+    And I should not see a "flame" text
 
   Scenario: Cleanup: Remove buildiso tmpdir and built ISO file in the cobbler buildiso context
     Then I run "rm -Rf /var/cache/cobbler" on "server"
