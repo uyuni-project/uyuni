@@ -52,14 +52,6 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getActualForward().startsWith("/channels/software/Search.do"));
     }
 
-    public void testDocRedirect() throws Exception {
-        addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        addRequestParameter("search_string", "test search");
-        addRequestParameter("search_type", "docs");
-        actionPerform();
-        assertTrue(getActualForward().startsWith("/help/Search.do"));
-    }
-
     public void testFaultySubmit() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
