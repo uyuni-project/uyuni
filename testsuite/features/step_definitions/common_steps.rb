@@ -1364,7 +1364,7 @@ When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   step %(I enter "#{react_key}" as "reactivationKey")
 end
 
-Given(/^I prepare Cobbler for the buildiso command$/) do
+When(/^I prepare Cobbler for the buildiso command$/) do
   tmp_dir = "/var/cache/cobbler/buildiso"
   $server.run("mkdir -p #{tmp_dir}")
   # we need bootloaders for the buildiso command
@@ -1377,7 +1377,6 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
   iso_dir = "/var/cache/cobbler"
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}")
   raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
-  # TODO Check for nameserver entry and all profiles in isolinux.cfg
   profiles = ["orchid", "flame", "pearl"]
   isolinux_profiles = []
   cobbler_profiles = []
@@ -1407,12 +1406,15 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns")
   raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
   # TODO Check for missing nameserver entry in isolinux.cfg
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver")
+  # we have to fail here if the command suceeds
+  raise 'error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found' if code.zero?
 end
 
 When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
   # param can either be standalone or airgapped
   # workaround to get the contents of the buildiso folder
-  step %(I run Cobbler buildiso for distro "#{distro}")
+  step %(I run Cobbler buildiso for distro "#{distro}" and all profiles)
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
   source_dir = "/var/cache/cobbler/source_#{param}"
@@ -1432,4 +1434,19 @@ EOF")
   raise 'error while executing xorriso' if code.nonzero?
   _out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
   raise 'error in verifying Cobbler buildiso image with xorriso' if code.nonzero?
+end
+
+# item is a Cobbler item and could be distro/profile/system
+# For the parameter have a look at the Cobbler docs or man page
+Then(/^I add the parameter "([^"]*)" with value "([^"]*)" to item "([^"]*)" with name "([^"]*)"$/) do |param, value, item, name|
+  result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}")
+  puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
+  raise 'error in adding parameter and value to Cobbler distro/profile/system' if code.nonzero?
+end
+
+# For the parameter have a look at the Cobbler docs or man page
+And(/^I check the parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
+  raise 'error during veryfying isolinux.cfg parameter for Cobbler buildiso' if code.nonzero?
 end
