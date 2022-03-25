@@ -40,14 +40,14 @@ for proxy in $@; do
     fi
 done
 
-cp /etc/cobbler/settings /etc/cobbler/settings.bak
+cp /etc/cobbler/settings.yaml /etc/cobbler/settings.yaml.bak
 # remove proxies section from conf
-cat /etc/cobbler/settings.bak | awk '{if(/^proxies:/) x=1; else if (x == 1 && /^[[:space:]]*-/) x=1; else print }' > /etc/cobbler/settings
+cat /etc/cobbler/settings.yaml.bak | awk '{if(/^proxies:/) x=1; else if (x == 1 && /^[[:space:]]*-/) x=1; else print }' > /etc/cobbler/settings.yaml
 
 # create new proxies section
-echo "proxies:" >> /etc/cobbler/settings
+echo "proxies:" >> /etc/cobbler/settings.yaml
 for proxy in $@; do
-    echo " - \"$proxy\"" >> /etc/cobbler/settings
+    echo " - \"$proxy\"" >> /etc/cobbler/settings.yaml
 done
 
 # remove cache file to push all files again
