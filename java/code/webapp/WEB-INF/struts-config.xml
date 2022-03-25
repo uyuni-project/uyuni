@@ -1331,7 +1331,6 @@
       <forward name="systems" path="/systems/Search.do" redirect="true" />
       <forward name="errata"  path="/errata/Search.do" redirect="true" />
       <forward name="packages" path="/channels/software/Search.do" redirect="true" />
-      <forward name="docs" path="/help/Search.do" redirect="true" />
     </action>
 
 
@@ -7755,15 +7754,6 @@
                  path="/WEB-INF/pages/help/forgotcredentials.jsp"/>
         <forward name="success"
                  path="/help/ForgotCredentials.do" redirect="true"/>
-    </action>
-
-    <action path="/help/Search"
-        scope="request"
-        name="combinedSearchForm"
-        input="/WEB-INF/pages/help/docsearch.jsp"
-        type="com.redhat.rhn.frontend.action.help.DocSearchSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <forward name="default" path="/WEB-INF/pages/help/docsearch.jsp" />
     </action>
 
     <action path="/help/about"
