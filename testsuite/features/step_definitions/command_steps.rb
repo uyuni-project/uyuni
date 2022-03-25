@@ -21,11 +21,12 @@ end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  initial_time = Time.now
-  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
-  end_time = Time.now
-  resolution_time = end_time - initial_time
-  result.delete!("\n")
+  result, return_code = node.run("date +%s; getent hosts #{node.full_hostname}; date +%s", check_errors: false)
+  lines = result.split("\n")
+  initial_time = lines[0]
+  result = lines[1]
+  end_time = lines[2]
+  resolution_time = end_time.to_i - initial_time.to_i
   raise 'cannot do reverse resolution' unless return_code.zero?
   raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
