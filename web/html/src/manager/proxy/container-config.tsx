@@ -254,27 +254,17 @@ export class ProxyConfig extends React.Component<Props, State> {
     reader.readAsText(event.target.files[0]);
   };
 
-  // intermediateCAAdd= (event) => {
-  //   this.setState({
-  //     intermediateCAs: this.state.intermediateCAs.push(event.target.files[0]),
-  //   });
-  // };
-
-  // intermediateCARemove = (event) => {
-  //   this.setState({
-  //     intermediateCAs: this.state.intermediateCAs.filter((c) => c.name === event.target.files[0]),
-  //   });
-  // };
-
   intermediateCAsChanged = (event) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.setState({
+    const arr: string[] = [];
+    event.target.files.forEach((f: any) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
         // replace CRLF from Windows
-        intermediateCAs: this.replaceCRLF(e.target?.result),
-      });
-    };
-    reader.readAsText(event.target.files[0]);
+        arr.push(this.replaceCRLF(e.target?.result));
+      };
+      reader.readAsText(f);
+    });
+    this.setState({ intermediateCAs: arr });
   };
 
   proxyCertificateChanged = (event) => {
@@ -324,13 +314,7 @@ export class ProxyConfig extends React.Component<Props, State> {
           {t("CA certificate to use to sign the SSL certificate in PEM format")}:
         </label>
         <div className="col-md-6">
-          <input
-            name="caCertificate"
-            className="form-control"
-            type="file"
-            value={undefined}
-            onChange={this.caCertificateChanged}
-          />
+          <input name="caCertificate" className="form-control" type="file" onChange={this.caCertificateChanged} />
         </div>
       </div>,
       <div className="form-group">
@@ -338,7 +322,7 @@ export class ProxyConfig extends React.Component<Props, State> {
           {t("CA private key to use to sign the SSL certificate in PEM format")}:
         </label>
         <div className="col-md-6">
-          <input name="caKey" className="form-control" type="file" value={undefined} onChange={this.caKeyChanged} />
+          <input name="caKey" className="form-control" type="file" onChange={this.caKeyChanged} />
         </div>
       </div>,
       <div className="form-group">
@@ -427,45 +411,33 @@ export class ProxyConfig extends React.Component<Props, State> {
           {t("The root CA used to sign the SSL certificate in PEM format")}:
         </label>
         <div className="col-md-6">
-          <input name="rootCA" className="form-control" type="file" value={undefined} onChange={this.rootCAChanged} />
+          <input name="rootCA" className="form-control" type="file" onChange={this.rootCAChanged} />
         </div>
       </div>,
       <div className="form-group">
         <label className="col-md-3 control-label">
-          {t("intermediate CA used to sign the SSL certificate in PEM format")}:
+          {t("intermediate CAs used to sign the SSL certificate in PEM format (select multiple if any)")}:
         </label>
         <div className="col-md-6">
           <input
             name="intermediateCAs"
             className="form-control"
             type="file"
-            value={undefined}
             onChange={this.intermediateCAsChanged}
+            multiple={true}
           />
         </div>
       </div>,
       <div className="form-group">
         <label className="col-md-3 control-label">{t("Proxy CRT content in PEM format")}:</label>
         <div className="col-md-6">
-          <input
-            name="proxyCertificate"
-            className="form-control"
-            type="file"
-            value={undefined}
-            onChange={this.proxyCertificateChanged}
-          />
+          <input name="proxyCertificate" className="form-control" type="file" onChange={this.proxyCertificateChanged} />
         </div>
       </div>,
       <div className="form-group">
         <label className="col-md-3 control-label">{t("Proxy SSL private key in PEM format")}:</label>
         <div className="col-md-6">
-          <input
-            name="proxyKey"
-            className="form-control"
-            type="file"
-            value={undefined}
-            onChange={this.proxyKeyChanged}
-          />
+          <input name="proxyKey" className="form-control" type="file" onChange={this.proxyKeyChanged} />
         </div>
       </div>,
     ];
@@ -578,7 +550,8 @@ export class ProxyConfig extends React.Component<Props, State> {
               </div>
             </div>
           </div>
-          {this.state.sslMode === SSLMode.CreateSSL ? createSSLFields : useSSLFields}
+          {this.state.sslMode === SSLMode.UseSSL ? <div style={{ display: "none" }} >createSSLFields</div> : createSSLFields}
+          {this.state.sslMode === SSLMode.CreateSSL ? <div style={{ display: "none" }} >useSSLFields</div> : useSSLFields}
           <div className="form-group">
             <br />
             <div className="col-md-offset-3 col-md-6">{buttons}</div>
