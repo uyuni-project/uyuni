@@ -249,7 +249,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (minion.isPresent()) {
             MinionServer m = minion.get();
             if (jobResult.isEmpty()) {
-                LOG.error("Do not update server info since job=" +  jobReturnEvent.getJobId() + " in minion=" +
+                LOG.warn("Do not update server info since job=" +  jobReturnEvent.getJobId() + " in minion=" +
                         jobReturnEvent.getMinionId() + " is empty");
                 return;
             }
