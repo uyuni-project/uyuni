@@ -5750,6 +5750,17 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Overview</context>
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+          <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
+          <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.up2date" xml:space="preserve">
         <source>System is up to date</source>
         <context-group name="ctx">
