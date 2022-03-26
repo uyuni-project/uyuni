@@ -1,0 +1,26 @@
+include ../system-common.jade
+#systems-mgr-server
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/details/mgr-server-info')
+        .then(function(module) {
+            module.renderer(
+                'systems-mgr-server', '#{docsLocale}',
+                {
+                  serverId: "#{server.id}",
+                  name: "#{name}",
+                  version: "#{version}",
+                  reportDbName: "#{reportDbName}",
+                  reportDbHost: "#{reportDbHost}",
+                  reportDbPort: "#{reportDbPort}",
+                  reportDbUser: "#{reportDbUser}",
+                  reportDbLastSynced: "#{reportDbLastSynced}",
+                  isAdmin: #{is_admin}
+                }
+            )
+        });
