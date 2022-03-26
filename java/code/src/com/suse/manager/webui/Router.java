@@ -155,7 +155,7 @@ public class Router implements SparkApplication {
         minionsAPI.initRoutes();
 
         // Systems API
-        SystemsController.initRoutes(systemsController, jade);
+        systemsController.initRoutes(jade);
 
         // Proxy
         proxyController.initRoutes(proxyController, jade);
