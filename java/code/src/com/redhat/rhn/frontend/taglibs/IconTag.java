@@ -100,6 +100,7 @@ public class IconTag extends TagSupport {
         icons.put("header-power", "fa fa-power-off");
         icons.put("header-preferences", "fa fa-cogs");
         icons.put("header-proxy", "fa spacewalk-icon-proxy");
+        icons.put("header-mgr-server", "fa spacewalk-icon-suse-manager");
         icons.put("header-refresh", "fa fa-refresh");
         icons.put("header-reloading", "fa fa-refresh fa-spin");
         icons.put("header-sandbox", "fa spacewalk-icon-sandbox");
