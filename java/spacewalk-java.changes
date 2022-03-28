@@ -1,4 +1,4 @@
-- Optimize adding new product functions (bsc#1193707)
+- Optimize adding new products function (bsc#1193707)
 - warning log when hardware refresh result is not serializable
 - Hide private methods in XMLRPC handlers
 - update last checkin only if job is successful (bsc#1197007)
