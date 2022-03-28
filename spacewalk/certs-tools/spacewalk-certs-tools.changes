@@ -1,3 +1,4 @@
+- Adapted openssl call in mgr_ssl_cert_setup.py to work on Python 3.9.
 - Add randomness to first generated server serial
 
 -------------------------------------------------------------------
