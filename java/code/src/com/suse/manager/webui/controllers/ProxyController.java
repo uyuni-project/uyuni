@@ -80,6 +80,7 @@ public class ProxyController {
         get("/manager/proxy/container-config",
                 withCsrfToken(withDocsLocale(withUser(proxyController::containerConfig))), jade);
         post("/manager/api/proxy/container-config", withUser(this::generateContainerConfig));
+        get("/manager/api/proxy/container-config/:filename", withUser(proxyController::containerConfigFile));
     }
 
     /**
@@ -102,30 +103,55 @@ public class ProxyController {
      * @param response the response object
      * @param user the user
      *
-     * @return the config file
+     * @return the config file name
      */
-    public byte[] generateContainerConfig(Request request, Response response, User user) {
+    public String generateContainerConfig(Request request, Response response, User user) {
         ProxyContainerConfigJson data = GSON.fromJson(request.body(),
                 new TypeToken<ProxyContainerConfigJson>() { }.getType());
         if (!data.isValid()) {
-            return json(response, HttpStatus.SC_BAD_REQUEST, "Invalid Input Data").getBytes();
+            return json(response, HttpStatus.SC_BAD_REQUEST, "Invalid Input Data");
         }
         try {
             byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
                     data.getProxyPort(), data.getServerFqdn(), data.getMaxCache(), data.getEmail(),
                     data.getRootCA(), data.getIntermediateCAs(), data.getProxyCertPair(),
                     data.getCaPair(), data.getCaPassword(), data.getCertData());
+            String filename = data.getProxyFqdn().split("\\.")[0];
+            request.session().attribute(filename + "-config.zip", config);
 
-            String proxyName = data.getProxyFqdn().split("\\.")[0];
-            response.header("Content-Disposition", "attachment; filename=\"" + proxyName + "-config.zip\"");
-            response.header("Content-Length", Integer.toString(config.length));
-            response.type("application/zip");
-            return config;
+            return json(response, filename + "-config.zip");
         }
         catch (IOException | InstantiationException e) {
             LOG.error("Failed to generate proxy container configuration", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    "Failed to generate proxy container configuration").getBytes();
+                    "Failed to generate proxy container configuration");
         }
+    }
+
+    /**
+     * Return the config file stored in the session
+     *
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     *
+     * @return the config file
+     */
+    public byte[] containerConfigFile(Request request, Response response, User user) {
+        String filename = request.params("filename");
+        if (!request.session().attributes().contains(filename) || !filename.endsWith("-config.zip")) {
+            return json(response, HttpStatus.SC_BAD_REQUEST, "Configuration file wasn't generated").getBytes();
+        }
+        Object config = request.session().attribute(filename);
+        if (config instanceof byte[]) {
+            byte[] data = (byte[]) config;
+            request.session().removeAttribute(filename);
+            response.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+            response.header("Content-Length", Integer.toString(data.length));
+            response.type("application/zip");
+            return data;
+        }
+        return json(response, HttpStatus.SC_BAD_REQUEST, "Invalid configuration file data").getBytes();
     }
 }

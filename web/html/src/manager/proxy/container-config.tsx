@@ -114,6 +114,7 @@ export function ProxyConfig() {
           setSuccess(data.success);
           setMessages([]);
           setLoading(false);
+          window.location.assign("/rhn/manager/api/proxy/container-config/" + data);
         },
         (xhr) => {
           try {
