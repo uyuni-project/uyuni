@@ -162,7 +162,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
                            'debian11_minion' => 'debian-11-pool',
                            'debian11_ssh_minion' => 'debian-11-pool',
-                           'opensuse153arm_minion' => 'openSUSE Leap 15.3 (aarch64)' }.freeze
+                           'opensuse153arm_minion' => 'openSUSE-Leap-15.3-Pool for aarch64' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
                           'SLES11-SP3-Pool' => 'sles11-sp3-pool-i586',
