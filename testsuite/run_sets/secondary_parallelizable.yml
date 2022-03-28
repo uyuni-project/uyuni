@@ -14,6 +14,7 @@
 - features/secondary/srv_manage_activationkey.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
 - features/secondary/srv_distro_cobbler.feature
+- features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_xmlrpc_user.feature
 - features/secondary/srv_salt_download_endpoint.feature
