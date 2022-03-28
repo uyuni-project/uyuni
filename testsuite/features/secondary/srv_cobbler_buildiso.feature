@@ -1,8 +1,9 @@
 # Copyright (c) 2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@scope_cobbler @scope_iso
+@scope_cobbler
 Feature: Cobbler buildiso
+  Builds several ISOs with Cobbler and checks the configuration files and ISOs afterwards.
 
   Scenario: Log in as testing user in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
@@ -15,11 +16,10 @@ Feature: Cobbler buildiso
     Then create distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Create dummy profiles in the cobbler buildiso context
-    Given cobblerd is running
-    And distro "testdistro" exists
+    Given distro "testdistro" exists
     Then create profile "orchid" for distro "testdistro" as user "testing" with password "testing"
-    Then create profile "flame" for distro "testdistro" as user "testing" with password "testing"
-    Then create profile "pearl" for distro "testdistro" as user "testing" with password "testing"
+    And create profile "flame" for distro "testdistro" as user "testing" with password "testing"
+    And create profile "pearl" for distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Check cobbler created a distro and profiles in the cobbler buildiso context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -29,17 +29,14 @@ Feature: Cobbler buildiso
     And I should see a "pearl" text
 
   Scenario: Create dummy system in the Cobbler buildiso context
-    Given cobblerd is running
-    And profile "orchid" exists
+    Given profile "orchid" exists
     Then create system "testsystem" for profile "orchid" as user "testing" with password "testing"
-    Then I add the Cobbler parameter "name-servers" with value "9.9.9.9" to item "system" with name "testsystem"
+    And I add the Cobbler parameter "name-servers" with value "9.9.9.9" to item "system" with name "testsystem"
 
   Scenario: Prepare the cobbler buildiso context
-    Given cobblerd is running
     When I prepare Cobbler for the buildiso command
 
   Scenario: Run Cobbler buildiso with all profiles and check isolinux config file in the cobbler buildiso context
-    Given cobblerd is running
     When I run Cobbler buildiso for distro "testdistro" and all profiles
     And I check Cobbler buildiso ISO "profile_all" with xorriso
     And I check the Cobbler parameter "nameserver" with value "9.9.9.9" in the isolinux.cfg
@@ -72,4 +69,4 @@ Feature: Cobbler buildiso
     And I should not see a "flame" text
 
   Scenario: Cleanup: Remove buildiso tmpdir and built ISO file in the cobbler buildiso context
-    Then I run "rm -Rf /var/cache/cobbler" on "server"
+    When I cleanup after Cobbler buildiso
