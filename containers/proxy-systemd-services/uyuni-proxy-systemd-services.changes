@@ -1,3 +1,4 @@
+- Adapted to work on Enterprise Linux.
 - Add package to SLE and Client tools (jsc#SLE-24145)
 
 -------------------------------------------------------------------
