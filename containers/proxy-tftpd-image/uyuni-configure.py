@@ -28,9 +28,9 @@ with open(config_path + "config.yaml") as source:
     tftp_root = "/srv/tftpboot"
     with open(tftp_config, "w") as file:
         file.write(f'''# Automatically generated Uyuni Proxy Server configuration file.
-        TFTP_USER="tftp"
-        TFTP_OPTIONS="{config.get('tftp_options', '')} "
-        TFTP_DIRECTORY="{tftp_root}"''')
+TFTP_USER="tftp"
+TFTP_OPTIONS="{config.get('tftp_options', '')} "
+TFTP_DIRECTORY="{tftp_root}"''')
 
     os.system("chown root:tftp {}".format(tftp_config))
     os.system("chmod 640 {}".format(tftp_config))
