@@ -1436,7 +1436,10 @@ When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
 BIOS
 UEFI
 EOF")
-  _out, code = $server.run("xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null | awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}' >>#{tmp_dir}/xorriso_#{name}")
+  xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
+  iso_filter = "awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}'"
+  iso_file = "#{tmp_dir}/xorriso_#{name}"
+  _out, code = $server.run("#{xorriso} | #{iso_filter} >> #{iso_file}")
   raise 'error while executing xorriso' if code.nonzero?
   _out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
   raise 'error in verifying Cobbler buildiso image with xorriso' if code.nonzero?
