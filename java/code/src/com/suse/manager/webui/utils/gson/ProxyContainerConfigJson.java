@@ -55,7 +55,7 @@ public class ProxyContainerConfigJson {
     private String org;
     private String orgUnit;
     private String sslEmail;
-    @SerializedName("ssl-mode")
+    @SerializedName("sslMode")
     private String sslMode;
 
     /**
