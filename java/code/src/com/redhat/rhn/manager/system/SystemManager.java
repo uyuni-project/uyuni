@@ -2267,7 +2267,8 @@ public class SystemManager extends BaseManager {
 
         // Check the SSL files using mgr-ssl-cert-setup
         try {
-            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair, intermediateCAs);
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
+                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
             zipOut.putNextEntry(new ZipEntry("server.crt"));
             zipOut.write(certificate.getBytes());
             zipOut.closeEntry();
