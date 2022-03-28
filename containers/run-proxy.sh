@@ -23,6 +23,7 @@ done
 
 podman pod create --name proxy-pod \
   --publish 22:22 \
+  --publish 69:69 \
   --publish 8080:8080 \
   --publish 443:443 \
   --publish 4505:4505 \
@@ -54,5 +55,6 @@ podman run --rm=true -d --pod proxy-pod \
 
 podman run --rm=true -dt --pod proxy-pod \
   -v $CONFIG_DIR:/etc/uyuni \
+  -v $TFTPBOOT_DIR:/srv/tftpboot:ro \
   --name proxy-tftpd \
   $REGISTRY/proxy-tftpd
