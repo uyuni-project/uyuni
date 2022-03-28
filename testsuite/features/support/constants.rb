@@ -180,7 +180,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-prod
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
                           'debian-11-pool' => 'debian-11-pool-amd64',
-                          'openSUSE Leap 15.3 (aarch64)' => 'opensuse_leap15_3-aarch64' }.freeze
+                          'openSUSE-Leap-15.3-Pool for aarch64' => 'opensuse_leap15_3-aarch64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'SUMA-41-PROXY-x86_64',
                                     'SLES11-SP3-Pool' => 'SLE-11-SP3-i586',
@@ -198,7 +198,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' =>
                                     'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
-                                    'openSUSE Leap 15.3 (aarch64)' => 'openSUSE-Leap-15.3-aarch64' }.freeze
+                                    'openSUSE-Leap-15.3-Pool for aarch64' => 'openSUSE-Leap-15.3-aarch64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
@@ -216,7 +216,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-P
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
                                            'debian-11-pool' => 'debian-11-pool-amd64',
-                                           'openSUSE Leap 15.3 (aarch64)' => nil }.freeze
+                                           'openSUSE-Leap-15.3-Pool for aarch64' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
