@@ -190,7 +190,7 @@ def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
 
 def isCA(cert):
     out = subprocess.run(
-        ["openssl", "x509", "-noout", "-ext", "basicConstraints", "-in", "-"],
+        ["openssl", "x509", "-noout", "-ext", "basicConstraints"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=cert.encode("utf-8"),
@@ -233,8 +233,6 @@ def getCertData(cert):
             "-issuer",
             "-issuer_hash",
             "-modulus",
-            "-in",
-            "-",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -272,7 +270,7 @@ def getCertData(cert):
 
 def getCertWithText(cert):
     out = subprocess.run(
-        ["openssl", "x509", "-text", "-in", "-"],
+        ["openssl", "x509", "-text"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=cert.encode("utf-8"),
@@ -286,7 +284,7 @@ def getCertWithText(cert):
 def getRsaKey(key):
     # set an invalid password to prevent asking in case of an encrypted one
     out = subprocess.run(
-        ["openssl", "rsa", "-passin", "pass:invalid", "-in", "-"],
+        ["openssl", "rsa", "-passin", "pass:invalid"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=key.encode("utf-8")
@@ -299,7 +297,7 @@ def getRsaKey(key):
 
 def checkKeyBelongToCert(key, cert):
     out = subprocess.run(
-        ["openssl", "rsa", "-noout", "-modulus", "-in", "-"],
+        ["openssl", "rsa", "-noout", "-modulus"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=key.encode("utf-8"),
@@ -309,7 +307,7 @@ def checkKeyBelongToCert(key, cert):
         raise CertCheckError("Invalid Key")
     keyModulus = out.stdout.decode("utf-8")
     out = subprocess.run(
-        ["openssl", "x509", "-noout", "-modulus", "-in", "-"],
+        ["openssl", "x509", "-noout", "-modulus"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=cert.encode("utf-8"),
