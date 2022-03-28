@@ -28,20 +28,32 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl stop salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion stop', check_errors: false)
+  else
+    node.run('systemctl stop salt-minion', check_errors: false)
+  end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion start', check_errors: false)
+  else
+    node.run('systemctl start salt-minion', check_errors: false)
+  end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion restart', check_errors: false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', check_errors: false) if %w[ceos_minion ubuntu_minion kvm_server xen_server].include?(minion)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/ && os_version =~ /^11/
+    node.run('rcsalt-minion restart', check_errors: false)
+  else
+    node.run('systemctl restart salt-minion', check_errors: false)
+  end
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -160,37 +172,17 @@ When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
 
-Then(/^I should see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
-Then(/^I should see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
-end
-
 When(/^I expand the results for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   find("div[id='#{system_name}']").click
 end
 
 When(/^I enter command "([^"]*)"$/) do |cmd|
-  fill_in 'command', with: cmd
+  fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
 When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in 'target', with: minion
+  fill_in('target', with: minion, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|

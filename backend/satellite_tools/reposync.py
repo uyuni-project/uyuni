@@ -40,6 +40,7 @@ import errno
 import multiprocessing
 
 from rhn.connections import idn_puny_to_unicode
+from rhn.i18n import ustr
 
 from uyuni.common.usix import raise_with_tb
 
@@ -369,14 +370,34 @@ def clear_ssl_cache():
     shutil.rmtree(ssldir, True)
 
 
+def verify_certificates_dates(certs):
+    cert = ""
+    is_cert = False
+    has_valid_certs = False
+    for line in certs.split('\n'):
+        if not is_cert and line.startswith("-----BEGIN CERTIFICATE"):
+            is_cert = True
+        if is_cert:
+            cert += line + '\n'
+        if is_cert and line.startswith("-----END CERTIFICATE"):
+            if not verify_certificate_dates(cert):
+                return False
+            cert = ""
+            is_cert = False
+            has_valid_certs = True
+    return has_valid_certs
+
+
 def get_single_ssl_set(keys, check_dates=False):
     """Picks one of available SSL sets for given repository."""
     if check_dates:
         for ssl_set in keys:
-            if verify_certificate_dates(str(ssl_set['ca_cert'])) and \
+            if verify_certificates_dates(ustr(ssl_set['ca_cert'])) and \
                 (not ssl_set['client_cert'] or
-                 verify_certificate_dates(str(ssl_set['client_cert']))):
+                 verify_certificates_dates(ustr(ssl_set['client_cert']))):
                 return ssl_set
+            else:
+                log(0, "++ Invalid Certificate found ++")
     # Get first
     else:
         return keys[0]
@@ -389,7 +410,7 @@ class RepoSync(object):
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
                  log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
-                 check_ssl_dates=False, force_null_org_content=False, show_packages_only=False,
+                 check_ssl_dates=True, force_null_org_content=False, show_packages_only=False,
                  noninteractive=False, deep_verify=False):
         self.regen = False
         self.fail = fail
@@ -1502,7 +1523,12 @@ class RepoSync(object):
         if not date:
             ret = datetime.utcnow()
         elif date.isdigit():
-            ret = datetime.fromtimestamp(float(date))
+            try:
+                ret = datetime.fromtimestamp(float(date))
+            except ValueError:
+                # For the case when date is specified in milliseconds
+                # fromtimestamp raises the ValueError as the year is out of range
+                ret = datetime.fromtimestamp(float(date)/1000)
         else:
             ret = parse_date(date)
             try:
@@ -1517,17 +1543,11 @@ class RepoSync(object):
             new_version = 0
             for n in notice['version'].split('.'):
                 new_version = (new_version + int(n)) * 100
-            try:
-                notice['version'] = new_version / 100
-            except TypeError: # yum in RHEL5 does not have __setitem__
-                notice._md['version'] = new_version / 100
+            notice['version'] = new_version / 100
         if RepoSync._is_old_suse_style(notice):
             # old suse style; we need to append the version to id
             # to get a seperate patch for every issue
-            try:
-                notice['update_id'] = notice['update_id'] + '-' + notice['version']
-            except TypeError: # yum in RHEL5 does not have __setitem__
-                notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
+            notice['update_id'] = "%s-%s" % (notice['update_id'], notice['version'])
         return notice
 
     def get_errata(self, update_id):

@@ -18,6 +18,7 @@ const FadeTransition = cssTransition({
   enter: "toast-enter",
   exit: "toast-exit",
   duration: 0,
+  collapseDuration: 0,
 });
 
 function show(message: React.ReactNode, notify: (arg0: React.ReactNode) => void) {

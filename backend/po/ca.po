@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"PO-Revision-Date: 2022-03-23 22:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
 ">\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/configFilesHandler.py:129
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -28,6 +28,10 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   El compte %s s'ha desactivat en aquest servidor.\n"
+"                   Poseu-vos en contacte amb l'administrador de "
+"l'organització per obtenir més ajuda."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -35,11 +39,13 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"El compte no té accés a cap canal que coincideixi (release=%(release)s, arch="
+"%(arch)s)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Permisos de subscripció insuficients per al llançament (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -47,7 +53,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Sistema registrat però inactiu"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -58,6 +64,12 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Combinació d'arquitectura i versió del sistema operatiu no vàlida (%s, %s).\n"
+"El vostre sistema s'ha registrat, però no rebrà actualitzacions\n"
+"perquè no es podia subscriure a un canal de base.\n"
+"Poseu-vos en contacte amb l'administrador de la vostra organització per "
+"obtenir ajuda.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -68,6 +80,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Aquest sistema s'ha registrat correctament, però encara no té dret al\n"
+"  servei. Perquè aquest sistema tingui dret al servei, inicieu sessió al "
+"lloc web a\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -79,66 +97,72 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Aquest sistema s'ha registrat correctament, però no hi ha drets de servei\n"
+"  disponibles. Perquè aquest sistema tingui dret al servei, inicieu sessió "
+"al lloc web a\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Combinació de nom d'usuari i contrasenya no vàlida"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "El nom d'usuari %s no s'ha reservat."
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:473
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Adreça de correu electrònic no especificada"
 
 #: ../server/rhnUser.py:509
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
 #: ../server/rhnUser.py:512
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir menys de %d caràcters."
 
 #: ../server/rhnUser.py:523
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "nom d'usuari = %s, caràcter no vàlid: %s"
 
 #: ../server/rhnUser.py:542
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "Limiteu l'adreça de correu electrònic a %s caràcters."
 
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "la contrasenya ha de tenir com a mínim %d caràcters"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "La contrasenya ha de tenir menys de %d caràcters."
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "la contrasenya conté el caràcter %s"
 
 #: ../server/rhnUser.py:651
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "No es poden registrar els noms d'usuari que acaben en %s."
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -195,12 +219,16 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               El compte %s s'ha desactivat en aquest servidor.\n"
+"               Poseu-vos en contacte amb l'administrador de l'organització "
+"per obtenir més ajuda."
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
@@ -215,55 +243,59 @@ msgstr "testimoni incomplet del servidor intermediari: %s"
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr ""
+"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "s'ha rebutjat l'autenticació d'intermediari"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Falten les dades necessàries"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
-msgstr ""
+msgstr "Membres obligatoris desapareguts"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
 
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
+"ipaddr ni ip6addr."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Declaració de privacitat de la Red Hat Network"
+msgstr "Declaració de privacitat"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "S'esperava un diccionari com a argument de producte."
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "El valor %s no és vàlid per a %s (%s)"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
+"El servei d'intermediari de SUSE Manager no està habilitat per al perfil del "
+"servidor: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -271,16 +303,16 @@ msgstr "la clau de sessió no és vàlida"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr "Aquest id. de servidor ja no existeix"
+msgstr "Aquest ID de servidor ja no existeix"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr ""
+msgstr "Parell system_id / action_id no vàlid."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "S'esperava un nom de paquet, no %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
@@ -290,7 +322,7 @@ msgstr "S'esperava un paquet, no: %s"
 #: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
@@ -305,12 +337,11 @@ msgstr "Valor no vàlid %s (%s)"
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
-msgstr "ISS està inhabilitat en aquest satellite."
+msgstr "ISS està desactivat en aquest servidor."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -324,23 +355,25 @@ msgstr "El testimoni `%s' té més d'un canal base assignat"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Canals bàsics conflictius"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "No s'ha pogut afegir el servidor al grup %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "S'ha assolit el recompte màxim d'ús de %s"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
+"base."
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
@@ -350,21 +383,21 @@ msgstr "No es va poder tovar el testimoni '%s'"
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Testimonis d'organitzacions que no coincideixen"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "La sessió de Kickstart no coincideix"
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "No s'admet l'apilament de testimonis de reregistre."
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "L'arquitectura %s no és compatible."
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
@@ -373,7 +406,7 @@ msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -383,20 +416,20 @@ msgstr "ERROR: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRAÇABILITAT: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Aquest no sembla un nom d'usuari vàlid."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Combinació de nom d'usuari i contrasenya no vàlida."
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Aquest inici de sessió ja s'ha fet o la contrasenya és incorrecta."
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
@@ -408,15 +441,15 @@ msgstr "Objecte no trobat."
 
 #: ../common/rhnException.py:58
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "ID digital del sistema no vàlid."
 
 #: ../common/rhnException.py:59
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Credencials del sistema no vàlides."
 
 #: ../common/rhnException.py:60
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "No s'han pogut recuperar les dades d'usuari de la base de dades."
 
 #: ../common/rhnException.py:61
 msgid "Valid username required."
@@ -428,11 +461,11 @@ msgstr "Es requereix una contrasenya vàlida."
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Incompliment de la longitud mínima del nom d'usuari."
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Incompliment de la longitud mínima de la contrasenya."
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
@@ -445,18 +478,19 @@ msgstr "Fitxer no trobat."
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
 msgstr ""
+"La combinació d'arquitectura i versió del sistema operatiu no és compatible."
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "No s'han pogut recuperar les dades del sistema de la base de dades."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "S'han passat arguments no vàlids a la funció."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "No es pot recuperar l'entrada sol·licitada."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
@@ -479,10 +513,21 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     La funcionalitat del servidor anònim ja no està disponible.\n"
+"\n"
+"     Si us plau, torneu a registrar aquest sistema executant mgr_register "
+"com a root.\n"
+"     Visiteu https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     o inicieu sessió a https://%(hostname)s i des de la pestanya Visió "
+"general,\n"
+"     seleccioneu Gestió de subscripcions, per habilitar el servei per a "
+"aquest sistema.\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
-msgstr ""
+msgstr "Registre no disponible a la base de dades."
 
 #: ../common/rhnException.py:82
 msgid "Invalid value for entry."
@@ -499,6 +544,14 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     Aquest sistema no té un dret vàlid per a SUSE Manager.\n"
+"     Visiteu https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     o inicieu sessió a https://%(hostname)s i des de la pestanya Visió "
+"general,\n"
+"     seleccioneu Gestió de subscripcions, per habilitar el servei per a "
+"aquest sistema.\n"
+"     "
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
@@ -514,7 +567,7 @@ msgstr "El testimoni de la sessió del client ha vençut."
 
 #: ../common/rhnException.py:92
 msgid "You are not authorized to retrieve the requested object."
-msgstr ""
+msgstr "No esteu autoritzat per recuperar l'objecte sol·licitat."
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
@@ -555,6 +608,16 @@ msgid ""
 "     to be changed.\n"
 "     "
 msgstr ""
+"\n"
+"     S'han superat els límits de pertinença a grups d'usuaris.\n"
+"\n"
+"     La configuració actual del compte no us permet afegir-hi un altre\n"
+"     compte d'usuari. Si us plau, consulteu amb l'administrador de "
+"l'organització\n"
+"     compte si el nombre màxim d'usuaris autoritzats a subscriure's al "
+"servidor necessita\n"
+"     canvis.\n"
+"     "
 
 #: ../common/rhnException.py:108
 msgid ""
@@ -569,9 +632,18 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     S'han superat els límits de pertinença al grup del sistema.\n"
+"\n"
+"     La configuració actual del compte no us permet afegir-hi un altre\n"
+"     perfil del sistema. Si us plau, consulteu amb l'administrador de "
+"l'organització\n"
+"     la modificació del nombre màxim de perfils de sistema que hi poden "
+"haver\n"
+"     subscrits al compte.\n"
+"     "
 
 #: ../common/rhnException.py:116
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -582,7 +654,7 @@ msgstr ""
 "\n"
 "     Arquitectura no vàlida.\n"
 "\n"
-"     L'arquitectura del paquet no està admesa per la Red Hat Network\n"
+"     L'arquitectura del paquet no és compatible amb\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -598,6 +670,12 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Aquest sistema ja està registrat com a Salt Minion. Si el voleu "
+"registrar com a client tradicional\n"
+"    si us plau, suprimiu-lo primer mitjançant la interfície d'usuari web o "
+"l'API i després registreu-lo amb les eines tradicionals.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:127
@@ -617,6 +695,12 @@ msgid ""
 "     does not already exists on the server\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha pogut carregar el paquet a causa d'una infracció de la "
+"restricció d'unicitat.\n"
+"     Assegureu-vos que el paquet no tingui cap dependència duplicada o\n"
+"    si ja no existeix al servidor.\n"
+"     "
 
 #: ../common/rhnException.py:134
 msgid ""
@@ -625,6 +709,11 @@ msgid ""
 "     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
+"\n"
+"     L'opció --force mgrpush està desactivada en aquest servidor.\n"
+"     Poseu-vos en contacte amb l'administrador de SUSE Manager per obtenir "
+"més ajuda.\n"
+"     "
 
 #. 60-70: token errors
 #: ../common/rhnException.py:140
@@ -634,6 +723,10 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha pogut trobar el testimoni d'activació especificat al servidor.\n"
+"     Torneu-ho a provar amb una clau vàlida.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
@@ -656,6 +749,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha trobat cap canal de base coincident per al vostre sistema.\n"
+"     "
 
 #: ../common/rhnException.py:152
 msgid ""
@@ -665,6 +761,11 @@ msgid ""
 "     administrators for further details.\n"
 "     "
 msgstr ""
+"\n"
+"     No teniu permís de subscripció al canal designat.\n"
+"     Consulteu el canal de l'organització o els administradors\n"
+"     per a més detalls.\n"
+"     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
@@ -672,12 +773,12 @@ msgstr "No us podeu de-subscriure del canal base."
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "No es pot subscriure al canal SUSE Manager o Proxy."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
+msgstr "S'ha produït un error en intentar afegir el sistema als seus grups."
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:164
@@ -687,11 +788,11 @@ msgstr "No es pot donar el dret al sistema"
 #. 100-109: e-mail and uuid related faults
 #: ../common/rhnException.py:167
 msgid "Maximum e-mail length violation."
-msgstr ""
+msgstr "Incompliment de la longitud màxima del correu electrònic."
 
 #: ../common/rhnException.py:168
 msgid "This system has been previously registered."
-msgstr ""
+msgstr "Aquest sistema s'ha registrat prèviament."
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
@@ -700,49 +801,48 @@ msgstr "El nom d'usuari no és vàlid"
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
 msgid "Unable to look up server"
-msgstr ""
+msgstr "No es pot cercar el servidor."
 
 #. 160-179: OSAD errors
 #: ../common/rhnException.py:175
 msgid "Required argument is missing"
-msgstr ""
+msgstr "Falta l'argument obligatori"
 
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:178
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "No hi ha informació de drets vinculada al maquinari."
 
 #: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "El número d'instal·lació no hi dona dret."
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:182
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima del nom d'usuari"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima de la contrasenya"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Aquest usuari només té accés a l'API de lectura. Acció denegada."
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
-msgstr ""
+msgstr "El nom del sistema no pot tenir menys d'1 caràcter."
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr ""
+msgstr "Error del servidor intermediari de SUSE Manager."
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy va ser incapaç d'iniciar la sessió."
+msgstr "L'intermediari de SUSE Manager no pot iniciar la sessió."
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -752,20 +852,22 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     L'identificador del sistema de l'intermediari de SUSE Manager no "
+"coincideix\n"
+"     amb un servidor intermediari Spacewalk a la base de dades.\n"
+"     "
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "El testimoni de la sessió del RHN Proxy no és vàlid."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager no és vàlid."
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "El testimoni de la sessió del RHN Proxy ha vençut."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager ha caducat."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -773,14 +875,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     La creació de l'usuari del RHN Satellite no està permesa a través de "
-"rhn_register;\n"
-"     poseu-vos en contacte amb l'administrador del sistema perquè creï el "
-"vostre compte.\n"
+"      no es permet la creació d'usuaris mitjançant mgr_register;\n"
+"     poseu-vos en contacte amb l'administrador del sistema per crear el "
+"compte.\n"
 "     "
 
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -788,20 +888,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Aquest servidor de satellite no pot utilitzar la sincronització interna "
-"entre els satellite en aquest satellite\n"
+"     Aquest servidor de SUSE Manager no pot usar Inter Server Sync en aquest "
+"servidor.\n"
 "     "
 
 #: ../common/rhnException.py:209
-#, fuzzy
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     La sincronització interna entre els satellite està inhabilitada en "
-"aquest satellite.\n"
+"     La sincronització entre servidors està desactivada en aquest servidor "
+"de SUSE Manager.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -884,7 +983,7 @@ msgstr "Falta contingut per al fitxer de configuració"
 
 #: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Delimitadors de plantilla no especificats"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
@@ -896,23 +995,23 @@ msgstr "El canal de configuració ja existeix"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Falta el fitxer al canal de configuració."
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Es penja una revisió diferent d'aquest fitxer"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "El fitxer ja s'ha penjat al canal de configuració."
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "La mida del fitxer supera l'espai de quota restant."
 
 #: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Cal especificar el camí complet del fitxer."
 
 #: ../common/rhnException.py:243
 msgid "Invalid revision number"
@@ -926,19 +1025,21 @@ msgstr "No es poden comparar els fitxers de diferent tipus de fitxer"
 #: ../common/rhnException.py:247
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
+"La transferència de fitxers de resultats SCAP no és vàlida o és incompleta."
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del directori per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del fitxer per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:250
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "El codi de l'element no és vàlid"
+msgstr "La codificació de contingut no és vàlida."
 
 #: ../common/rhnException.py:297
 msgid ""
@@ -949,6 +1050,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     S'ha produït un error en processar la sol·licitud. Si aquest problema\n"
+"     persisteix, introduïu un informe d'error a scc.suse.com.\n"
+"     Si trieu enviar l'informe d'error, assegureu-vos d'incloure-hi\n"
+"     detalls del que s'estava intentant fer quan es va produir l'error i\n"
+"     detalls sobre com reproduir el problema.\n"
 
 #: ../common/rhnException.py:349
 #, python-format
@@ -991,7 +1098,7 @@ msgstr ""
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "El format de %s hauria de ser com a mínim AAAAMMDD.\n"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1016,6 +1123,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ERROR: s'executa el pas %s. L'error és aquest:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:31
 #, python-format
@@ -1027,6 +1137,14 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"ERROR: s'ha produït un problema en accedir a les dades del canal des del\n"
+"       repositori temporal. Heu migrat totes les dades de les ISO del canal\n"
+"       a aquest directori? Si és així, torneu a comprovar les ISO dels "
+"canals, assegureu-vos\n"
+"       que les tingueu totes i després torneu a muntar i repoblar "
+"iterativament\n"
+"       el dipòsit temporal (%s).\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1035,6 +1153,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: hi ha hagut un problema en sincronitzar la informació.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:44
 #, python-format
@@ -1046,6 +1167,13 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: S'ha produït un problema en comunicar-se amb l'ISS mestre.\n"
+"       En funció dels detalls específics de l'error, reviseu la "
+"configuració,\n"
+"       la connectivitat bàsica de xarxa i / o la resolució de noms i torneu-"
+"ho a provar.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:51
 #, python-format
@@ -1058,6 +1186,13 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"ERROR: no es pot sincronitzar un canal secundari sense que el pare també\n"
+"        se sincronitzi . Un pare ha d'estar (a) sincronitzat prèviament o "
+"(b) sincronitzat\n"
+"       conjuntament amb el canal fill desitjat. Falten pares per a aquesta\n"
+"       transacció:\n"
+"       %s\n"
 
 #: ../satellite_tools/messages.py:59
 #, python-format
@@ -1067,108 +1202,114 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"ERROR: no teniu dret a sincronitzar un canal en aquest conjunt de canals.\n"
+"Poseu-vos en contacte amb el gestor de SUSE.\n"
+"%s"
 
 #: ../satellite_tools/messages.py:64
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  ERROR: no hi ha prou espai lliure (%s KB) al dispositiu."
 
 #: ../satellite_tools/messages.py:66
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s Obtenció correcta: %s (%s bytes)"
 
 #: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "S'esperava un paquet, no: %s"
+msgstr "    Paquet extingit: %s"
 
 #: ../satellite_tools/messages.py:68
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Mida total: %s"
 
 #: ../satellite_tools/messages.py:69
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      S'ha baixat %s de %s. Temps restant estimat: %s"
 
 #: ../satellite_tools/messages.py:70
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    L'obtenció no s'ha fet correctament: %s"
 
 #: ../satellite_tools/messages.py:71
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   Resum de l'obtenció d'RPM: %s"
 
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       correcte: %d"
 
 #: ../satellite_tools/messages.py:73
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       ha fallat:  %d"
 
 #: ../satellite_tools/messages.py:74
 #, python-format
 msgid "       extinct: %d"
-msgstr ""
+msgstr "       extingit: %d"
 
 #: ../satellite_tools/messages.py:76
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr ""
+"   Recuperant / analitzant les metadades del paquet *rellevant*: %s (%s)"
 
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   Recuperant / analitzant dades d'errates: %s (%s)"
 
 #: ../satellite_tools/messages.py:78
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   Recuperant / analitzant les dades de Kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr ""
+"   Recuperant / analitzant els fitxers de l'arbre de Kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Importació de metadades del paquet *rellevant*: %s (%s)"
 
 #: ../satellite_tools/messages.py:81
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * ADVERTÈNCIA: aquest pot ser un procés lent."
 
 #: ../satellite_tools/messages.py:82
 msgid "Linking packages to channels"
-msgstr ""
+msgstr "Enllaç de paquets a canals"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Important errates *rellevants*: %s (%s)"
 
 #: ../satellite_tools/messages.py:84
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   No hi ha cap arbre de taula d'inici nou per importar."
 
 #: ../satellite_tools/messages.py:85
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importació d'arbres de taules d'inici (%d)"
 
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "Arbres de taules d'inici importats (%d)"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format

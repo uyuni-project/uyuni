@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$(readlink /proc/1/exe)" = "/sbin/init" ]; then
    # SysV, use pid ctime as service start time
-   T0=$(date -d "$(stat -c '%z' /var/run/salt-minion.pid | sed -E 's/(.*) (\+|\-)(.*)/\1/g')" "+%s")
+   T0=$(stat -c '%Z' /var/run/salt-minion.pid)
    RESTART_MINION="/usr/sbin/rcsalt-minion restart"
 else
    # systemd

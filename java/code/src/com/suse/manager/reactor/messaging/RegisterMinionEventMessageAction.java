@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -469,17 +470,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
 
-            minion.setServerArch(
-                    ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            //ToDo Just a hacked version for ubuntu
-            if (osfamily.equals("Debian")) {
-                minion.setServerArch(
-                        ServerFactory.lookupServerArchByLabel(osarch + "-debian-linux"));
+            String serverArch = String.format("%s-%s", osarch,
+                    osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
+            ServerArch arch = ServerFactory.lookupServerArchByLabel(serverArch);
+            if (arch == null) {
+                LOG.error(String.format("Unable to find the server architecture for " +
+                        "osfamily: '%s' and osarch: '%s'", osfamily, osarch));
+                throw new IllegalArgumentException("Unable to get the server architecture");
             }
-            else {
-                minion.setServerArch(
-                        ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            }
+            minion.setServerArch(arch);
 
             RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
                     activationKeyLabel);
@@ -575,6 +574,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .get("hwaddr_interfaces").orElse(Collections.emptyMap());
         return hwInterfaces.values().stream()
                 .filter(hwAddress -> !hwAddress.equalsIgnoreCase("00:00:00:00:00:00"))
+                .map(String::toLowerCase)
                 .collect(Collectors.toSet());
     }
 

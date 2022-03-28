@@ -90,6 +90,7 @@ public abstract class AbstractVirtualizationController {
             return Long.parseLong(request.params("sid"));
         }
         catch (NumberFormatException e) {
+            LOG.error("Invalid server id: " + request.params("sid"), e);
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Invalid server id: " + request.params("sid"));
         }
     }
@@ -156,6 +157,7 @@ public abstract class AbstractVirtualizationController {
             return json(response, result);
         }
         catch (Exception e) {
+            LOG.error("Bad Request", e);
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
     }

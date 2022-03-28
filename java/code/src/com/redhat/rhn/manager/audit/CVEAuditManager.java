@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,6 +88,11 @@ public class CVEAuditManager {
     private static final String KERNEL_DEFAULT_NAME = "kernel-default";
 
     private static final String KERNEL_XEN_NAME = "kernel-xen";
+
+    /** Magic number signalling a patch present in a product migration channel */
+    private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
+    /** Magic number signalling a patch present in a product predecessor channel */
+    private static final int PREDECESSOR_PRODUCT_RANK_BOUNDARY = 100_000;
 
     /**
      * Not to be instantiated.
@@ -503,7 +509,8 @@ public class CVEAuditManager {
                 .collect(Collectors.toList());
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
-        int currentRank = maxRank;
+
+        int currentRank = SUCCESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
@@ -537,7 +544,7 @@ public class CVEAuditManager {
         }
 
         // Increase the rank for indication of older products (previous SPs)
-        currentRank = 99999;
+        currentRank = PREDECESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
@@ -927,7 +934,7 @@ public class CVEAuditManager {
      * @return list of system records with patch status
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
-    public static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
+    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
             EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
@@ -943,7 +950,7 @@ public class CVEAuditManager {
             system.setSystemName(systemResults.get(0).getSystemName());
 
             // The relevant channels assigned to the system
-            Set<ChannelIdNameLabelTriple> assignedChannels = new HashSet<>();
+            Set<AuditChannelInfo> assignedChannels = new HashSet<>();
 
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
@@ -955,6 +962,9 @@ public class CVEAuditManager {
             Set<String> livePatchedPackages = resultsByPackage.keySet().stream()
                     .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
                     .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
+
+            AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
+            Set<ErrataIdAdvisoryPair> successorErratas = new HashSet<>();
 
             // Loop through affected packages one by one
             for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
@@ -969,19 +979,45 @@ public class CVEAuditManager {
 
                 patchCandidateResult.ifPresent(result -> {
                     // The package is not patched. Keep a list of the missing patch and the top candidate channel
-                    ChannelIdNameLabelTriple channel = new ChannelIdNameLabelTriple(result.getChannelId().get(),
-                            result.getChannelName(), result.getChannelLabel());
-                    system.addErrata(new ErrataIdAdvisoryPair(result.getErrataId().get(), result.getErrataAdvisory()));
+                    AuditChannelInfo channel = new AuditChannelInfo(result.getChannelId().get(),
+                            result.getChannelName(), result.getChannelLabel(), result.getChannelRank().orElse(0L));
+                    ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(result.getErrataId().get(),
+                            result.getErrataAdvisory());
+                    system.addErrata(errata);
                     system.addChannel(channel);
 
                     if (result.isChannelAssigned()) {
                         assignedChannels.add(channel);
                     }
+                    else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
+                        patchInSuccessorProduct.set(true);
+                        successorErratas.add(errata);
+                    }
                 });
             }
 
+            boolean allChannelsForOneErrataAssigned = assignedChannels.containsAll(system.getChannels());
+            // Filter out channels that are part of a successor or predecessor product. This is to make sure the
+            // current product is chosen as the most suitable candidate if there is a patch available for it, even
+            // though it might not contain a patch for all the packages e.g. because some versions are to old to be
+            // affected.
+            if (patchInSuccessorProduct.get() && system.getChannels().size() > 1) {
+                Set<AuditChannelInfo> filteredChannels = system.getChannels().stream().filter(channel ->
+                        channel.getRank() < SUCCESSOR_PRODUCT_RANK_BOUNDARY).collect(Collectors.toSet());
+                if (!filteredChannels.isEmpty()) {
+                    allChannelsForOneErrataAssigned = assignedChannels.containsAll(filteredChannels);
+                    if (allChannelsForOneErrataAssigned) {
+                        // Don't display the patches and channels that belong to successor products
+                        system.setChannels(filteredChannels);
+                        system.setErratas(system.getErratas().stream().filter(errata ->
+                                !successorErratas.contains(errata)).collect(Collectors.toSet()));
+                    }
+                }
+            }
+
             system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
-                    assignedChannels.containsAll(system.getChannels()), !resultsByPackage.isEmpty()));
+                    allChannelsForOneErrataAssigned, !resultsByPackage.isEmpty(),
+                    patchInSuccessorProduct.get()));
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(system.getPatchStatus())) {
@@ -1005,7 +1041,8 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() && r.getChannelRank().orElse(null) < 100000)
+                .filter(r -> r.isPackageInstalled() &&
+                        r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
@@ -1073,17 +1110,21 @@ public class CVEAuditManager {
      * @param allChannelsForOneErrataAssigned the true if system has all
      * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
+     * @param patchInSuccessorProduct if the patch is present in a successor product (requires product migration)
      * @return the patch status
      */
     public static PatchStatus getPatchStatus(
             boolean allPackagesForAllErrataInstalled,
-            boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
+            boolean allChannelsForOneErrataAssigned, boolean hasErrata, boolean patchInSuccessorProduct) {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
             }
             else if (allChannelsForOneErrataAssigned) {
                 return PatchStatus.AFFECTED_PATCH_APPLICABLE;
+            }
+            else if (patchInSuccessorProduct) {
+                return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE;
@@ -1128,7 +1169,7 @@ public class CVEAuditManager {
                     errata += " " + e.getId();
                 }
                 String channels = "";
-                for (ChannelIdNameLabelTriple c : s.getChannels()) {
+                for (AuditChannelInfo c : s.getChannels()) {
                     channels += " " + c.getId();
                 }
                 log.debug(s.getId() + ": " + s.getPatchStatus() +

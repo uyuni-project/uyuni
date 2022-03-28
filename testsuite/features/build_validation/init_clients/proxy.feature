@@ -75,6 +75,7 @@ Feature: Setup SUSE Manager proxy
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I check include forwarders box
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field

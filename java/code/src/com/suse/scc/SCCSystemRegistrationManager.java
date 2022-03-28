@@ -14,7 +14,10 @@
  */
 package com.suse.scc;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -28,11 +31,13 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
+import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.Optional.ofNullable;
 
@@ -55,6 +61,41 @@ public class SCCSystemRegistrationManager {
      */
     public SCCSystemRegistrationManager(SCCClient sccClientIn) {
         this.sccClient = sccClientIn;
+    }
+
+    /**
+     * Update last_seen field in SCC for all registered clients
+     */
+    public void updateLastSeen() {
+        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+        Credentials primCred = credentials.stream()
+                .filter(c -> c.isPrimarySCCCredential())
+                .findFirst().orElseThrow();
+        List<Map<String, Object>> candidates = SCCCachingFactory.listUpdateLastSeenCandidates(primCred);
+
+        List<SCCUpdateSystemJson> sysList = candidates.stream()
+                .map(c -> new SCCUpdateSystemJson(
+                        c.get("scc_login").toString(),
+                        c.get("scc_passwd").toString(),
+                        (Date) c.get("checkin")))
+                .collect(Collectors.toList());
+
+        ArrayList<List<SCCUpdateSystemJson>> batches = new ArrayList<>(
+                IntStream.range(0, sysList.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(e->sysList.get(e), Collectors.toList())
+                                )).values());
+        for (List<SCCUpdateSystemJson> batch: batches) {
+            try {
+                sccClient.updateBulkLastSeen(batch, primCred.getUsername(), primCred.getPassword());
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating systems", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating systems", e);
+            }
+        }
     }
 
     /**
@@ -170,6 +211,7 @@ public class SCCSystemRegistrationManager {
             return pw;
         });
 
-        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products);
+        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products,
+                srv.getServerInfo().getCheckin());
     }
 }

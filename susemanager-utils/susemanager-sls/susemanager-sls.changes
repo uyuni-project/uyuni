@@ -1,3 +1,11 @@
+- Improve `pkgset` beacon with using `salt.cache`
+  to notify about the changes made while the minion was stopped
+- Align the code of pkgset beacon to prevent warnings (bsc#1194464)
+- fixing how the return code is returned in mgrutil runner (bsc#1194909)
+- Fix errors on calling sed -E ... by force_restart_minion
+  with action chains
+- Avoid using lscpu -J option in grains (bsc#1195920)
+- Postgres exporter package was renamed
 - fix deprecation warnings
 
 -------------------------------------------------------------------

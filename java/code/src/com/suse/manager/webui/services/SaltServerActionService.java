@@ -2565,7 +2565,7 @@ public class SaltServerActionService {
 
                 if (!result.isPresent()) {
                     LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
-                            " probablly minion is down or could not be contacted.");
+                            " probably minion is down or could not be contacted.");
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());

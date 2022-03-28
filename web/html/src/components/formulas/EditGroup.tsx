@@ -2,6 +2,8 @@ import "./formula-form.css";
 
 import * as React from "react";
 
+import { SectionState } from "components/FormulaForm";
+import { Highlight } from "components/table/Highlight";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
@@ -10,6 +12,7 @@ import {
   ElementDefinition,
   generateFormulaComponent,
   generateFormulaComponentForId,
+  isFiltered,
 } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
 
@@ -27,6 +30,10 @@ type EditGroupProps = {
   value: any;
   formulaForm: any;
   element: ElementDefinition;
+  sectionsExpanded: SectionState;
+  setSectionsExpanded: (SectionState) => void;
+  isVisibleByCriteria?: () => boolean;
+  criteria: string;
 };
 
 type EditGroupState = {
@@ -41,8 +48,17 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   constructor(props: EditGroupProps) {
     super(props);
     this.state = {
-      visible: true,
+      visible: props.sectionsExpanded !== SectionState.Collapsed,
     };
+  }
+
+  componentDidUpdate(prevProps: Readonly<EditGroupProps>) {
+    if (
+      this.props.sectionsExpanded !== SectionState.Mixed &&
+      this.props.sectionsExpanded !== prevProps.sectionsExpanded
+    ) {
+      this.setState({ visible: this.props.sectionsExpanded === SectionState.Expanded });
+    }
   }
 
   isDisabled = () => {
@@ -56,6 +72,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   handleAddItem = (event) => {
     if (this.props.element.$maxItems! <= this.props.value.length || this.isDisabled()) return;
 
+    this.props.setSectionsExpanded(SectionState.Mixed);
     let newValueProps = this.props.value;
     let newValue = deepCopy(this.props.element.$newItemValue);
 
@@ -84,6 +101,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   setVisible = (index, visible) => {
     // index not needed here
     this.setState({ visible: visible });
+    this.props.setSectionsExpanded(SectionState.Mixed);
   };
 
   render() {
@@ -99,14 +117,20 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
       Component = EditDictionaryGroup;
     }
 
-    return (
+    return this.props.isVisibleByCriteria?.() ? (
       <div
         id={this.props.id}
         className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
       >
         <div className="group-heading">
           <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
-            <h4>{this.props.element.$name}</h4>
+            <h4>
+              <Highlight
+                enabled={isFiltered(this.props.criteria)}
+                text={this.props.element.$name}
+                highlight={this.props.criteria}
+              />
+            </h4>
           </SectionToggle>
           <i
             className="fa fa-plus"
@@ -130,13 +154,15 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
                 key={this.props.key}
                 element={this.props.element}
                 value={this.props.value}
+                sectionsExpanded={this.props.sectionsExpanded}
+                setSectionsExpanded={this.props.setSectionsExpanded}
                 formulaForm={this.props.formulaForm}
               />
             </React.Fragment>
           ) : null}
         </div>
       </div>
-    );
+    ) : null;
   }
 }
 
@@ -289,6 +315,8 @@ type EditDictionaryGroupProps = {
   value: any;
   isDisabled?: boolean;
   formulaForm: any;
+  sectionsExpanded: SectionState;
+  setSectionsExpanded: (SectionState) => void;
   handleRemoveItem: (...args: any[]) => any;
 };
 
@@ -306,6 +334,15 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
     this.state = {
       visibility: new Map(),
     };
+  }
+
+  componentDidUpdate(prevProps: Readonly<EditDictionaryGroupProps>) {
+    if (
+      this.props.sectionsExpanded !== SectionState.Mixed &&
+      this.props.sectionsExpanded !== prevProps.sectionsExpanded
+    ) {
+      this.setAllVisible(this.props.sectionsExpanded === SectionState.Expanded);
+    }
   }
 
   wrapKeyGroup(element_name, required, innerHTML) {
@@ -333,14 +370,23 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
   }
 
   isVisible = (index) => {
-    return this.state.visibility.get(index) === undefined || this.state.visibility.get(index) === true;
+    return this.state.visibility.get(index) === undefined || this.state.visibility.get(index) !== false;
   };
 
   setVisible = (index, visible) => {
     const { visibility } = this.state;
     visibility.set(index, visible);
+    this.props.setSectionsExpanded(SectionState.Mixed);
     this.setState({ visibility });
   };
+
+  setAllVisible(visible) {
+    const { visibility } = this.state;
+    for (let i in this.props.value) {
+      visibility.set(i, visible);
+      this.setState({ visibility });
+    }
+  }
 
   render() {
     let elements: React.ReactNode[] = [];
@@ -385,9 +431,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
               disabled={this.props.element.$minItems! >= this.props.value.length || this.props.isDisabled}
             />
           </div>
-          <div>
-            {this.state.visibility.get(i) === undefined || this.state.visibility.get(i) === true ? item_elements : null}
-          </div>
+          <div>{this.state.visibility.get(i) !== false ? item_elements : null}</div>
         </div>
       );
     }

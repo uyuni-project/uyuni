@@ -19,9 +19,9 @@ keyboard us
 mouse none
 skipx
 
-# TODO pre script for eth1 and other complications?
+# root password is 'linux'
 network --device eth0 --bootproto dhcp
-#rootpw --iscrypted $1$mumble
+rootpw --iscrypted $6$LdF0Ddaf5q/wqYk6$x04erFOijr7U82EB2GL24Ko4yWvyVo4S91bg9Yp08PLDcLBwmxwJpfKox1vlZ/faFED.dbfAe5ofgoJtHCkia.
 authconfig --enableshadow --enablemd5
 
 firewall --enabled --ssh

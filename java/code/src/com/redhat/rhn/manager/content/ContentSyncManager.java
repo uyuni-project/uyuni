@@ -495,7 +495,7 @@ public class ContentSyncManager {
                         .orElse(false);
 
                 MgrSyncProductDto productDto = new MgrSyncProductDto(
-                        ext.getFriendlyName(), ext.getProductId(), ext.getVersion(), isRecommended,
+                        ext.getFriendlyName(), ext.getProductId(), ext.getId(), ext.getVersion(), isRecommended,
                         baseChannel, extChildChannels, Collections.emptySet()
                 );
 
@@ -504,7 +504,7 @@ public class ContentSyncManager {
 
 
             MgrSyncProductDto rootProductDto = new MgrSyncProductDto(
-                    root.getFriendlyName(), root.getProductId(), root.getVersion(), false,
+                    root.getFriendlyName(), root.getProductId(), root.getId(), root.getVersion(), false,
                     baseChannel, allChannels, extensions
             );
 

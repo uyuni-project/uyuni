@@ -5671,6 +5671,46 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
+#~ msgid "Unnamed"
+#~ msgstr "Nombre de usuario"
+
+#, fuzzy
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "Descripción de producto"
+
+#, fuzzy
+#~ msgid "never"
+#~ msgstr "Gravedad"
+
+#, fuzzy
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "Se actualizaron las propiedades del proyecto correctamente"
+
+#, fuzzy
+#~ msgid "Edit Information"
+#~ msgstr "Información adicional"
+
+#, fuzzy
+#~ msgid "Last Status Update"
+#~ msgstr "Fecha de inicio"
+
+#, fuzzy
+#~ msgid "Edit "
+#~ msgstr "Editar"
+
+#, fuzzy
+#~ msgid "User"
+#~ msgstr "Usuarios"
+
+#, fuzzy
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "El proyecto que buscaba no existe o se ha eliminado"
+
+#, fuzzy
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "Detalles de ejemplar para «{0}»"
+
+#, fuzzy
 #~ msgid "Patched"
 #~ msgstr "Parches"
 
@@ -5687,10 +5727,6 @@ msgstr ""
 #~ msgstr "Última modificación"
 
 #, fuzzy
-#~ msgid "never"
-#~ msgstr "Gravedad"
-
-#, fuzzy
 #~ msgid "greater"
 #~ msgstr "Crear"
 
@@ -5701,6 +5737,18 @@ msgstr ""
 #, fuzzy
 #~ msgid "provides name"
 #~ msgstr "Tipo de fuente"
+
+#, fuzzy
+#~ msgid "New base channel"
+#~ msgstr "Canal de base nuevo"
+
+#, fuzzy
+#~ msgid "This channel requires:"
+#~ msgstr "Este canal está recomendado"
+
+#, fuzzy
+#~ msgid "This channel is required by:"
+#~ msgstr "Este canal está recomendado"
 
 #, fuzzy
 #~ msgid "This channel is mandatory"
@@ -5721,10 +5769,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "${defaultChannelName}"
 #~ msgstr "Nombre del canal"
-
-#, fuzzy
-#~ msgid "User"
-#~ msgstr "Usuarios"
 
 #, fuzzy
 #~ msgid "Reactivation Key"

@@ -11068,33 +11068,6 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
-        <source> </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
-        <source>Cluster Administrator</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
-        <source>Clusters</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
-        <source>Overview</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
-        <source>Add</source>
-      <target state="new"/>
-  </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
       <target state="new"/>
@@ -11171,12 +11144,71 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Pay-as-you-go {0} deleted successfully</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
-        <source>Package {0} not found in subscribed channels</source>
-      <target state="new"/>
-  </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <source>Pay-as-you-go authentication update</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <source>Pay-as-you-go update RMT hosts</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <source>Product data needs refresh.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <source>Product cannot be found: missing identifier {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <source>There are conflicting channel labels {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <source>A parent product conflicts with existing channels.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <source>Unexpected error while adding the product.</source>
+      <target state="new"/>
+  </trans-unit>
+    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
+        <source> </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="cluster_admin" xml:space="preserve">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="clusters.nav.title" xml:space="preserve">
+        <source>Clusters</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="clusters.nav.overview" xml:space="preserve">
+        <source>Overview</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="clusters.nav.add" xml:space="preserve">
+        <source>Add</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
+        <source>Package {0} not found in subscribed channels</source>
       <target state="new"/>
   </trans-unit>
       </body>

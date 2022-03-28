@@ -51,6 +51,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Add Item" in CNAME section of example.org zone
     And I enter "ftp" in first CNAME alias field of example.org zone
     And I enter "proxy" in first CNAME name field of example.org zone
@@ -58,13 +59,17 @@ Feature: PXE boot a Retail terminal
     And I enter "tftp" in second CNAME alias field of example.org zone
     And I enter "proxy" in second CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter the hostname of "proxy" in third CNAME name field of example.org zone
+    And I enter "salt" in third CNAME alias field of example.org zone
+    And I enter "proxy" in third CNAME name field of example.org zone
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
 
 @pxeboot_minion
   Scenario: Configure PXE part of DHCP on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
     And I click on "Save Formula"
@@ -74,6 +79,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Tftpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
@@ -83,6 +89,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Vsftpd" in the content area
+    And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in vsftpd internal network address field
     And I enter "/srv/saltboot" in FTP server directory field
     And I click on "Save Formula"
@@ -136,6 +143,10 @@ Feature: PXE boot a Retail terminal
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
     Then I should see a "System group SERVERS created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to SERVERS server group." text
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
@@ -151,6 +162,7 @@ Feature: PXE boot a Retail terminal
     When I follow "HWTYPE:Intel-Genuine" in the content area
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
+    And I click on "Expand All Sections"
     And I enter "disk1" in disk id field
     And I enter "/dev/vda" in disk device field
     And I select "msdos" in disk label field
@@ -177,7 +189,8 @@ Feature: PXE boot a Retail terminal
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
-    And I wait until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    # Workaround: Increase timeout temporarily get rid of timeout issues
+    And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "Test-Channel-x86_64" is checked, refreshing the page
@@ -188,7 +201,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
@@ -236,6 +249,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     And I press "Remove Item" in salt CNAME of example.org zone section
     And I press "Remove Item" in tftp CNAME of example.org zone section
     And I press "Remove Item" in ftp CNAME of example.org zone section
@@ -299,7 +313,8 @@ Feature: PXE boot a Retail terminal
   Scenario: Bootstrap the PXE boot minion
     When I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
-    And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    # Workaround: Increase timeout temporarily get rid of timeout issues
+    And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
     Then I follow the left menu "Systems > Overview"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
@@ -366,6 +381,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
+    And I click on "Expand All Sections"
     # direct zone example.org:
     And I press "Remove Item" in salt CNAME of example.org zone section
     And I press "Remove Item" in tftp CNAME of example.org zone section
@@ -394,6 +410,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
+    And I click on "Expand All Sections"
     And I enter "example" in branch id field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text

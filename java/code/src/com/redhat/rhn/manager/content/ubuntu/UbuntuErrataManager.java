@@ -14,12 +14,6 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -36,7 +30,17 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
+import com.redhat.rhn.manager.errata.ErrataManager;
+
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -50,6 +54,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -223,6 +228,7 @@ public class UbuntuErrataManager {
                         .map(e -> CveFactory.lookupOrInsertByName(e))
                         .collect(Collectors.toMap(e -> e.getName(), e -> e)));
 
+        Set<Errata> changedErrata = new HashSet<>();
         TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> {
             ubuntuErrataInfo.stream().flatMap(entry -> {
 
@@ -290,18 +296,38 @@ public class UbuntuErrataManager {
                     Set<Package> packages = e.getValue().entrySet().stream()
                             .flatMap(x -> x.getValue().stream())
                             .collect(Collectors.toSet());
-                    errata.getPackages().addAll(packages);
+                    if (errata.getPackages() == null) {
+                        errata.setPackages(packages);
+                        changedErrata.add(errata);
+                    }
+                    else if (errata.getPackages().addAll(packages)) {
+                        changedErrata.add(errata);
+                    }
 
                     Set<Channel> matchingChannels = e.getValue().entrySet().stream()
                             .filter(c -> !c.getValue().isEmpty())
                             .map(c -> c.getKey())
                             .collect(Collectors.toSet());
 
-                    errata.getChannels().addAll(matchingChannels);
+                    if (errata.getChannels().addAll(matchingChannels)) {
+                        changedErrata.add(errata);
+                    }
 
+                    if (errata.getId() == null) {
+                        changedErrata.add(errata);
+                    }
                     return errata;
                 });
             }).forEach(ErrataFactory::save);
         });
+
+        // add changed errata to notification queue
+        Map<Long, List<Long>> errataToChannels = changedErrata.stream().collect(
+                Collectors.toMap(
+                        e -> e.getId(),
+                        e -> e.getChannels().stream().map(c -> c.getId()).collect(Collectors.toList())
+                        )
+                );
+        ErrataManager.bulkErrataNotification(errataToChannels, new Date());
     }
 }

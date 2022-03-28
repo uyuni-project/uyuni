@@ -1,10 +1,38 @@
 - Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
+- update last checkin only if job is successful (bsc#1197007)
+- Fix NPE when accessing cancelled action via system history (bsc#1195762)
+- CVE Audit: Show patch as available in the currently installed product even if successor
+  patch affects additional packages (bsc#1196455)
+- send notifications for new or changed ubuntu errata (bsc#1196977)
+- change directory owner and permissions only when needed
+- Fixed broken help link for system overview
+- Provide link to Sync page when unsynced patches message show up
+  (bsc#1196094)
+- fix class cast exception during action chains (bsc#1195772)
+- Finding empty profiles by mac address must be case insensitive (bsc#1196407)
+- prepare to use new postgresql-jdbc driver with stringprep and saslprep
+  support (bsc#1196693)
+- allow SCC to display the last check-in time for registered systems
+- generate the system ssh key when bootstrapping a salt-ssh client
+  (bsc#1194909)
+- Provide link for CVEs
+- Fix lock/unlock scheduling on page Software -> Packages -> Lock (bsc#1195271)
+- When adding a product, check if the new vendor channels conflicts
+  with any of the existing custom channel (bsc#1193448)
+- Fix disappearing metadata key files after channel change (bsc#1192822)
+- Suggest Product Migration when patch for CVE is in a successor Product (bsc#1191360)
+- Add store info to Equals and hash methods to fix CVE audit process (bsc#1195282)
 - Fix virtualization list rendering for foreign systems (bsc#1195712)
 - FIX errors when an image profile / store is deleted
   during build / inspect action (bsc#1191597, bsc#1192150)
-- Improvements on list packages query processing by using query elaborator (bsc#1187333)
 - Remove verbose token log (bsc#1195666)
 - fix ClassCastException during action processing (bsc#1195043)
+
+-------------------------------------------------------------------
+Wed Mar 02 14:10:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.2.33-1
+  * handle npe when syncing ubuntu errata (bsc#1196619)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:50:23 CET 2022 - jmassaguerpla@suse.de

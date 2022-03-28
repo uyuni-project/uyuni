@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target>Hola,
+
+{0} {1} ha creat un inici de sessió de @@PRODUCT_NAME@@. El teu
+Inici de sessió @@PRODUCT_NAME@@, en combinació amb una subscripció activa @@VENDOR_NAME@@,
+us ofereix accés per gestionar sistemes a @@PRODUCT_NAME@@.
+
+  Inici de sessió de @@PRODUCT_NAME@@: {2}
+       Contrasenya: {3}
+         correu electrònic: {4}
+
+  {5}
+
+Important: si us plau, canvieu la contrasenya en iniciar sessió.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -63,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target>Hola,
+
+S'ha creat un inici de sessió @@PRODUCT_NAME@@. El vostre
+Inici de sessió @@PRODUCT_NAME@@, en combinació amb una subscripció activa @@VENDOR_NAME@@,
+us ofereix accés per gestionar sistemes a @@PRODUCT_NAME@@.
+
+  Inici de sessió @@PRODUCT_NAME@@: {0}
+       Contrasenya: {1}
+         correu electrònic: {2}
+
+  {3}
+
+Important: si us plau, canvieu la contrasenya en iniciar sessió.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -121,6 +153,7 @@ Gràcies per utilitzar @@PRODUCT_NAME@@.
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <target>@@PRODUCT_NAME@@ Creat per l'usuari: {0} ({1}, {2} &lt;{3}&gt;)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -146,6 +179,19 @@ please visit:
 
 Thank you for using @@PRODUCT_NAME@@.
 {2}</source>
+        <target>Hola,
+
+S'ha afegit un usuari nou al vostre compte.
+
+{0}
+
+Per veure tots els usuaris actius i els inicis de sessió de @@PRODUCT_NAME@@ associats al vostre compte,
+si us plau, visiteu
+
+  {1}
+
+Gràcies per usar @@PRODUCT_NAME@@.
+{2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -176,7 +222,23 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </source>
-          <context-group name="ctx">
+        <target>
+@@PRODUCT_NAME@@ ha determinat que l'avís següent és aplicable a
+un o més dels sistemes que heu registrat:
+
+La informació completa sobre aquest pedaç es pot trobar a la ubicació següent:
+     {0}
+
+{1} - {2}
+-------------------------------------------------- -----------------------------
+Resum:
+{3}
+
+{4} {5} {6}
+{7}
+-------------------------------------------------- -----------------------------
+    </target>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -191,8 +253,8 @@ Summary:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -203,25 +265,43 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
+        <target>
+----------------------
+Llista de sistemes afectats
+----------------------
+Aquest Avís de Pedaços pot aplicar-se als sistemes que s'indiquen a continuació. Si sabeu
+aquest pedaç no s'aplica a un sistema llistat, és possible que el
+el perfil del paquet per a aquest servidor no estigui actualitzat. En aquest cas, hauríeu d'executar
+"up2date -p" (RHEL 4 i posterior) o "rhn-profile-sync" (SLES, RHEL 5 i posterior)
+com a root al sistema en qüestió per actualitzar el perfil de programari.
+    </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
+        <target>
+Hi ha 1 sistema afectat registrat a la Visió general (es mostren només
+sistemes per a què heu activat explícitament les alertes de pedaços).
+    </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <context-group name="ctx">
+        <target>
+Hi ha {0} sistemes afectats registrats a la Visió general (només es mostren 
+sistemes per a què heu activat explícitament alertes de pedaços).
+    </target>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
@@ -229,8 +309,8 @@ which you have explicitly enabled Patch Alerts are shown).
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -245,7 +325,21 @@ You may address the issues outlined in this advisory in two ways:
 
      - run the Update Agent on each affected server.
     </source>
-          <context-group name="ctx">
+        <target>
+Allibera el nom del perfil d'Arc
+---------- ---------- ------------------------------ ---------------
+{0}
+
+Podeu abordar els problemes descrits en aquest assessorament de dues maneres:
+
+     - seleccioneu el nom del vostre servidor fent clic al nom de la llista
+       disponible a la ubicació següent i, a continuació, programeu una
+       actualització del pedaç:
+           {1}
+
+     - executeu l'agent d'actualització a cada servidor afectat.
+    </target>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
@@ -254,8 +348,8 @@ You may address the issues outlined in this advisory in two ways:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -271,7 +365,22 @@ click the "Details" tab.
 {1}
 {2}
     </source>
-          <context-group name="ctx">
+        <target>
+Canvi de les preferències de notificació
+----------------------------------
+Per activar/desactivar les vostres preferències d'alerta de pedaços globalment, inicieu sessió a @@PRODUCT_NAME@@
+i navegueu des de "Visió general" / "El meu compte" a la pestanya "Preferències".
+
+        URL: {0}
+
+També podeu activar/desactivar la notificació segons el sistema seleccionant un
+sistema individual de la "Llista de sistemes". Des de la vista individual del sistema
+feu clic a la pestanya "Detalls".
+
+{1}
+{2}
+    </target>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
@@ -281,9 +390,10 @@ click the "Details" tab.
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <target>@@PRODUCT_NAME@@ Informe diari d'estat de {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -314,6 +424,26 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
+        <target>Aquest és l'informe d'estat @@PRODUCT_NAME@@ del vostre compte {0}, a partir del dia {1}.
+
+Aquest correu electrònic s'enviarà quan s'apliqui alguna de les condicions següents:
+
+1. El sistema no pot registrar-se amb @@PRODUCT_NAME@@ en un període de 24 hores.
+2. El sistema registra l'activitat d'acció programada.
+
+{2}
+{3}
+S'està desactivant aquest correu electrònic:
+-----------------------
+
+Per desactivar aquest correu electrònic per als sistemes, visiteu la pàgina Preferències a
+https://{4}/rhn/account/UserPreferences.do
+
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+{5}
+{6}
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">
@@ -344,6 +474,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0} a petició vostra. ]
+
+S'ha fet una sol·licitud per restablir la contrasenya de @@PRODUCT_NAME@@ per iniciar sessió {2}.
+
+Per continuar el procés de restabliment, procediu a:
+
+{1}
+
+Si no voleu restablir la vostra contrasenya, podeu ignorar aquest correu electrònic.
+
+Si teniu més dificultats amb el procés de restabliment,
+poseu-vos en contacte amb el vostre administrador de @@PRODUCT_NAME@@ per obtenir més ajuda.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -373,6 +519,25 @@ If you did not request this email be sent, please disregard this message.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0} a petició vostra. ]
+
+Heu sol·licitat una llista de tots els inicis de sessió de @@PRODUCT_NAME@@ associats
+amb l'adreça electrònica {0}.
+
+Inicis de sessió existents:
+
+{1}
+Podeu restablir les contrasenyes de qualsevol dels inicis de sessió de @@PRODUCT_NAME@@ anteriors a:
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+Si continueu tenint dificultats per iniciar sessió, poseu-vos en contacte
+el vostre administrador de @@PRODUCT_NAME@@ per obtenir més ajuda.
+Si no heu sol·licitat que s'enviï aquest correu electrònic, no tingueu en compte aquest missatge.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -393,6 +558,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ Aquest és un correu electrònic automàtic enviat a {0}. ]
+
+La contrasenya @@PRODUCT_NAME@@ per iniciar sessió {1} s'ha restablert en resposta a una sol·licitud de restabliment
+fet a les {2}
+
+Si no heu iniciat aquest restabliment de la contrasenya, poseu-vos en contacte IMMEDIATAMENT amb @@PRODUCT_NAME@@
+administrador a {2} per obtenir més ajuda.
+
+Gràcies per utilitzar @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">

@@ -9,17 +9,26 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
+  initial_time = Time.now
   result, return_code = node.run('hostname -f', check_errors: false)
+  end_time = Time.now
+  resolution_time = end_time - initial_time
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
+  raise "FQDN resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise 'hostname is not fully qualified' unless result == node.full_hostname
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("getent hosts #{node.full_hostname}", check_errors: false)
-  result.delete!("\n")
+  result, return_code = node.run("date +%s; getent hosts #{node.full_hostname}; date +%s", check_errors: false)
+  lines = result.split("\n")
+  initial_time = lines[0]
+  result = lines[1]
+  end_time = lines[2]
+  resolution_time = end_time.to_i - initial_time.to_i
   raise 'cannot do reverse resolution' unless return_code.zero?
+  raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
@@ -32,7 +41,8 @@ end
 Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
   node = get_target(host)
   node.run_until_fail("ping -c 1 -I #{node.private_interface} #{$server.public_ip}")
-  $server.run_until_fail("ping -c 1 #{node.private_ip}")
+  # commented out as a machine with the same IP address might exist somewhere in our engineering network
+  # $server.run_until_fail("ping -c 1 #{node.private_ip}")
 end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
@@ -1416,6 +1426,14 @@ When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   $server.run(command)
 end
 
+When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  next unless host.include? 'ceos'
+
+  node.run('yum -y clean all')
+  node.run('yum -y makecache')
+end
+
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   round_minute = 60 # spacecmd uses timestamps with precision to minutes only
   long_wait_delay = 600
@@ -1526,8 +1544,12 @@ And(/^I copy vCenter configuration file on server$/) do
   raise 'File injection failed' unless return_code.zero?
 end
 
-When(/^I export "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
+When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
   $server.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+end
+
+When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
+  $server.run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}")
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|

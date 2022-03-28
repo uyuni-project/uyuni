@@ -20,7 +20,7 @@ export const renderer = (id: string, { cluster, showUpgradePlan, flashMessage }:
   try {
     clusterObj = JSON.parse(cluster || "");
   } catch (error) {
-    console.error(error);
+    Loggerhead.error(error);
   }
 
   SpaRenderer.renderNavigationReact(

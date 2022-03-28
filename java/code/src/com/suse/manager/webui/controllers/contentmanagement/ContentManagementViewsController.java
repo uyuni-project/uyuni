@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTempl
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -113,9 +114,19 @@ public class ContentManagementViewsController {
 
             Set<SoftwareProjectSource> sourcesWithUnsyncedPatches =
                     ContentManager.listActiveSwSourcesWithUnsyncedPatches(user, project);
+            Map<Long, Long> sourceTagetChannelIds = new HashMap<>();
+            if (!contentEnvironments.isEmpty() && !sourcesWithUnsyncedPatches.isEmpty()) {
+                ContentEnvironment first = contentEnvironments.get(0);
+                sourcesWithUnsyncedPatches.forEach(swsource -> {
+                    Channel sChan = swsource.getChannel();
+                    Optional<Long> tgtChanId = ContentManager.lookupTargetByChannel(sChan, first, user)
+                            .map(target -> target.getChannel().getId());
+                    sourceTagetChannelIds.put(sChan.getId(), tgtChanId.orElse(null));
+                });
+            }
 
             data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments,
-                    sourcesWithUnsyncedPatches)));
+                    sourcesWithUnsyncedPatches, sourceTagetChannelIds)));
         });
         if (!projectToEdit.isEmpty()) {
             data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));

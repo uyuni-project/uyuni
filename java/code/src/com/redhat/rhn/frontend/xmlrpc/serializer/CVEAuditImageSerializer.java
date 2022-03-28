@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import com.redhat.rhn.manager.audit.AuditChannelInfo;
+import com.redhat.rhn.manager.audit.CVEAuditImage;
+import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -22,11 +27,6 @@ import java.util.List;
 
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.manager.audit.CVEAuditImage;
-import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
-import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
 /**
  * CVEAuditImageSerializer
@@ -68,9 +68,9 @@ public class CVEAuditImageSerializer extends RhnXmlRpcCustomSerializer {
 
         // FIXME: change to new class
         CVEAuditImage image = (CVEAuditImage) value;
-        Collection<ChannelIdNameLabelTriple> channels = image.getChannels();
+        Collection<AuditChannelInfo> channels = image.getChannels();
         List<String> channelLabels = new ArrayList<String>(channels.size());
-        for (ChannelIdNameLabelTriple channel : channels) {
+        for (AuditChannelInfo channel : channels) {
             channelLabels.add(channel.getLabel());
         }
         Collection<ErrataIdAdvisoryPair> erratas = image.getErratas();

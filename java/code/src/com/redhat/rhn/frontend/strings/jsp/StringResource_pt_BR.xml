@@ -29269,6 +29269,17 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+      <target state="new"/>
+  </trans-unit>
       <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
         <source>Virtual Systems</source>
         <context-group name="ctx">
@@ -29345,17 +29356,6 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
-            <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
       <target state="new"/>
   </trans-unit>
       </body>

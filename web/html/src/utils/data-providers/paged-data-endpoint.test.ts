@@ -1,4 +1,4 @@
-import { mocked } from "ts-jest/utils";
+import { mocked } from "jest-mock";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";

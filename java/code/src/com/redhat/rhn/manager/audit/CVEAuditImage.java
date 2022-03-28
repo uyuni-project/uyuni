@@ -28,7 +28,7 @@ public class CVEAuditImage implements CVEAuditSystem {
     private String name;
     private PatchStatus patchStatus;
 
-    private Set<ChannelIdNameLabelTriple> channels;
+    private Set<AuditChannelInfo> channels;
     private Set<ErrataIdAdvisoryPair> erratas;
 
     /**
@@ -40,7 +40,7 @@ public class CVEAuditImage implements CVEAuditSystem {
      * @param erratasIn errata
      */
     public CVEAuditImage(long idIn, String nameIn, PatchStatus statusIn,
-                         Set<ChannelIdNameLabelTriple> channelsIn,
+                         Set<AuditChannelInfo> channelsIn,
                          Set<ErrataIdAdvisoryPair> erratasIn) {
         this.id = idIn;
         this.name = nameIn;
@@ -77,7 +77,7 @@ public class CVEAuditImage implements CVEAuditSystem {
      * Return the set of channels.
      * @return the channels
      */
-    public Set<ChannelIdNameLabelTriple> getChannels() {
+    public Set<AuditChannelInfo> getChannels() {
         return channels;
     }
 

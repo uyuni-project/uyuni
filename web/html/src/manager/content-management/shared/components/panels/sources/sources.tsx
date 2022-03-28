@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useMemo } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -23,6 +24,11 @@ type SourcesProps = {
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
+  const initialSelectedSources = useMemo(
+    () => softwareSources.filter((source) => !statesEnum.isDeletion(source.state)),
+    [softwareSources]
+  );
+
   return (
     <form className="form-horizontal">
       <div className="row">
@@ -37,11 +43,9 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}
-        initialSelectedIds={softwareSources
-          .filter((source) => !statesEnum.isDeletion(source.state))
-          .map((source) => source.channelId)}
-        onChange={(selectedChannels) => {
-          onChange(selectedChannels.map((c) => c.label));
+        initialSelectedSources={initialSelectedSources}
+        onChange={(selectedChannelLabels) => {
+          onChange(selectedChannelLabels);
         }}
       />
     </form>
@@ -49,7 +53,16 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
 };
 
 const renderSourceEntry = (source) => {
-  const unsyncedPatches = source.hasUnsyncedPatches ? "(" + t("has unsynchronized patches") + ")" : "";
+  const unsyncedPatches = source.hasUnsyncedPatches ? (
+    <a
+      target="_blank"
+      href={"/rhn/channels/manage/errata/SyncErrata.do?cid=" + source.targetChannelId}
+      rel="noopener noreferrer"
+    >
+      ( {t("has unsynchronized patches")} )
+    </a>
+  ) : null;
+
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
       // TODO: If you touch this code, please make sure the `href` property here is obsolete and remove it

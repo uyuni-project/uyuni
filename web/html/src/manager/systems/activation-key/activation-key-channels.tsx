@@ -7,7 +7,7 @@ import { Utils as MessagesUtils } from "components/messages";
 import { Loading } from "components/utils/Loading";
 
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
-import { availableChannelsType, ChannelDto } from "./activation-key-channels-api";
+import { availableChannelsType, Channel } from "./activation-key-channels-api";
 import ChildChannels from "./child-channels";
 
 type ActivationKeyChannelsProps = {
@@ -28,7 +28,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     };
   }
 
-  getDefaultBase(): ChannelDto {
+  getDefaultBase(): Channel {
     return { id: -1, name: t("SUSE Manager Default"), custom: false, subscribable: true, recommended: false };
   }
 

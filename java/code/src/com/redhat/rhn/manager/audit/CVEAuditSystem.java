@@ -44,7 +44,7 @@ public interface CVEAuditSystem {
      * Return the set of channels.
      * @return the channels
      */
-    Set<ChannelIdNameLabelTriple> getChannels();
+    Set<AuditChannelInfo> getChannels();
 
     /**
      * Return the set of erratas.
@@ -58,9 +58,9 @@ public interface CVEAuditSystem {
      */
     default String getChannelName() {
         String ret = "";
-        Iterator<ChannelIdNameLabelTriple> it = getChannels().iterator();
+        Iterator<AuditChannelInfo> it = getChannels().iterator();
         if (it.hasNext()) {
-            ChannelIdNameLabelTriple c = it.next();
+            AuditChannelInfo c = it.next();
             ret = c.getName();
         }
         return ret;

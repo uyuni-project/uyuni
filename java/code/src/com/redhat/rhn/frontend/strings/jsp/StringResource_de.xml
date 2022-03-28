@@ -867,7 +867,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.userlist" xml:space="preserve">
           <source>You must be an organization administrator to view this page. Contact your organization administrator to get information on the users in this system.</source>
-        <target>Sie müssen ein Organisations-Administrator sein, um diese Seite ansehen zu können.  Kontaktieren Sie Ihren Organisations-Administrator, um Informationen über die Benutzer in diesem System zu erhalten.</target>
+        <target>Sie müssen ein Organisations-Administrator sein, um diese Seite ansehen zu können. Kontaktieren Sie Ihren Organisations-Administrator, um Informationen über die Benutzer in diesem System zu erhalten.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -891,7 +891,7 @@
         <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-        <target>Ihre Login-Session ist abgelaufen.  Aus Sicherheitsgründen wird Ihre Login-Session von @@PRODUCT_NAME@@ bei fehlender Aktivität nach {0} Minuten abgebrochen. Um sich wieder anzumelden, klicken Sie &lt;a href="{1}"&gt;hier&lt;/a&gt;.</target>
+        <target>Ihre Login-Session ist abgelaufen. Aus Sicherheitsgründen wird Ihre Login-Session von @@PRODUCT_NAME@@ bei fehlender Aktivität nach {0} Minuten abgebrochen. Um sich wieder anzumelden, klicken Sie &lt;a href="{1}"&gt;hier&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -2092,7 +2092,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>Verwenden Sie PAM zur Authentifizierung für LDAP, Kerberos und andere Netzwerk-basierte Authentifizierungssysteme.</target>
+        <target>Verwenden Sie PAM zur Authentifizierung für LDAP, Kerberos und andere Netzwerk-basierte Authentifizierungssysteme. </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
@@ -10403,7 +10403,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
           <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
-        <target>Profile, die nicht @@PRODUCT_NAME@@-verwaltet sind, registrieren Systeme nach dem Kickstart nicht unbedingt bei @@PRODUCT_NAME@@. Sie sollten ggf. diese Kickstarts daraufhin überprüfen (klicken Sie dazu auf den Profilnamen), ob die ausgewählten Systeme nach dem Kickstart wieder in der @@PRODUCT_NAME@@-Systemliste erscheinen werden.</target>
+        <target> Profile, die nicht @@PRODUCT_NAME@@-verwaltet sind, registrieren Systeme nach dem Kickstart nicht unbedingt bei @@PRODUCT_NAME@@. Sie sollten ggf. diese Kickstarts daraufhin überprüfen (klicken Sie dazu auf den Profilnamen), ob die ausgewählten Systeme nach dem Kickstart wieder in der @@PRODUCT_NAME@@-Systemliste erscheinen werden.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -10950,7 +10950,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target> Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden.  Einträge, die mit einem Sternchen (*) versehen sind, sind Pflichtfelder. </target>
+        <target>Diese Benutzerinformation kann bearbeitet werden, indem Sie das unten zur Verfügung gestellte Formular verwenden. Einträge, die mit einem Sternchen (*) versehen sind, sind Pflichtfelder.</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.summary1" xml:space="preserve">
         <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
@@ -29240,6 +29240,17 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </context-group>
         <target state="new"/>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Pay-as-you-go" xml:space="preserve">
+        <source>Pay-as-you-go</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
         <source>Virtual Systems</source>
         <context-group name="ctx">
@@ -29316,17 +29327,6 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
-            <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
       <target state="new"/>
   </trans-unit>
       </body>

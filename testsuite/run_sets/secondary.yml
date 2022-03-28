@@ -19,7 +19,8 @@
 - features/secondary/srv_delete_channel_with_tool.feature
 - features/secondary/srv_test_maintenance_windows.feature
 - features/secondary/srv_user_configuration_salt_states.feature
-- features/secondary/srv_handle_channels_with_ISS_v2.feature
+- features/secondary/srv_handle_software_channels_with_ISS_v2.feature
+- features/secondary/srv_handle_config_channels_with_ISS_v2.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
@@ -28,6 +29,8 @@
 - features/secondary/min_centos_remote-command.feature
 - features/secondary/min_centos_ssh.feature
 - features/secondary/trad_centos_client.feature
+# temporarily disabled by the RRTGs
+#- features/secondary/trad_centos_migrate_to_min.feature
 - features/secondary/min_ubuntu_openscap_audit.feature
 - features/secondary/min_ubuntu_remote-command.feature
 - features/secondary/min_ubuntu_ssh.feature
@@ -48,6 +51,8 @@
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
+# temporarily disabled by the RRTGs
+#- features/secondary/trad_deleted_migrate_to_minion.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
@@ -59,5 +64,5 @@
 - features/secondary/min_retracted_patches.feature
 - features/secondary/proxy_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
-
+- features/secondary/min_timezone.feature
 ## Secondary features END ##

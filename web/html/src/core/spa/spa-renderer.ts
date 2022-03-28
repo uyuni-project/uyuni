@@ -69,7 +69,7 @@ function afterNavigationTransition() {
     try {
       (navigationRenderer as any).clean();
     } catch (error) {
-      console.error(error);
+      Loggerhead.error(error);
     }
   });
   if (window.pageRenderers?.spa) {

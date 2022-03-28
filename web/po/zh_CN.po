@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-01-24 10:13+0000\n"
+"PO-Revision-Date: 2022-03-23 09:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -5550,6 +5550,18 @@ msgstr "未找到资源。"
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
+#~ msgid "Expand All Sections"
+#~ msgstr "展开所有部分"
+
+#~ msgid "Collapse All Sections"
+#~ msgstr "折叠所有部分"
+
+#~ msgid "Unnamed"
+#~ msgstr "未命名"
+
+#~ msgid "Search by formula's group name"
+#~ msgstr "按公式的组名称搜索"
+
 #~ msgid "Sunday"
 #~ msgstr "星期日"
 
@@ -5571,6 +5583,63 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Saturday"
 #~ msgstr "星期六"
 
+#~ msgid "Add new pay-as-you-go ssh connection data"
+#~ msgstr "添加新的 Pay-as-you-go SSH 连接数据"
+
+#~ msgid "Add pay-as-you-go ssh data"
+#~ msgstr "添加 Pay-as-you-go SSH 数据"
+
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "Pay-as-you-go 连接说明"
+
+#~ msgid "Instance SSH connection data"
+#~ msgstr "实例 SSH 连接数据"
+
+#~ msgid "Bastion SSH connection data"
+#~ msgstr "堡垒 SSH 连接数据"
+
+#~ msgid "Host"
+#~ msgstr "主机"
+
+#~ msgid "Last Update Status"
+#~ msgstr "上次更新状态"
+
+#~ msgid "never"
+#~ msgstr "从不"
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "添加 Pay-as-you-go"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "已成功更新 Pay-as-you-go 属性"
+
+#~ msgid "Edit Information"
+#~ msgstr "编辑信息"
+
+#~ msgid "Last Status Update"
+#~ msgstr "上次状态更新"
+
+#~ msgid "Edit "
+#~ msgstr "编辑 "
+
+#~ msgid "Editing ssh connection data.."
+#~ msgstr "正在编辑 SSH 连接数据..."
+
+#~ msgid "SSH Port"
+#~ msgstr "SSH 端口"
+
+#~ msgid "User"
+#~ msgstr "用户"
+
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "您要查找的实例不存在或已删除"
+
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "实例主机名：{0}"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "删除 Pay-as-you-go"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "受影响，频道中有可用补丁，但未指派"
 
@@ -5585,6 +5654,12 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Patched"
 #~ msgstr "已修补"
+
+#~ msgid "MITRE CVE link"
+#~ msgstr "MITRE CVE 链接"
+
+#~ msgid "SUSE Security CVE link"
+#~ msgstr "SUSE 安全 CVE 链接"
 
 #~ msgid "No action required"
 #~ msgstr "不需要采取措施"
@@ -5621,9 +5696,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Last Build"
 #~ msgstr "上次构建"
-
-#~ msgid "never"
-#~ msgstr "从不"
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "包含所提供名称等于以下值的软件包"
@@ -5665,6 +5737,15 @@ msgstr "HTTP 错误代码 "
 #~ "This environment cannot be deleted since it is being used in an {0}"
 #~ "autoinstallation distribution{1}."
 #~ msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
+
+#~ msgid "New base channel"
+#~ msgstr "新基础频道"
+
+#~ msgid "This channel requires:"
+#~ msgstr "此频道需要："
+
+#~ msgid "This channel is required by:"
+#~ msgstr "以下对象需要此频道："
 
 #~ msgid "This channel is mandatory"
 #~ msgstr "必须使用此频道"
@@ -5722,6 +5803,9 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Clear the fact cache for every host in inventory"
 #~ msgstr "为正在库存的每个主机清除事实缓存"
 
+#~ msgid "Pay-as-you-go refresh authentication data failed"
+#~ msgstr "Pay-as-you-go 刷新身份验证数据失败"
+
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
 #~ "time will be the server time."
@@ -5732,15 +5816,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid "Host"
-#~ msgstr "主机"
-
-#~ msgid "SSH Port"
-#~ msgstr "SSH 端口"
-
-#~ msgid "User"
-#~ msgstr "用户"
 
 #~ msgid "Authentication Method"
 #~ msgstr "身份验证方法"

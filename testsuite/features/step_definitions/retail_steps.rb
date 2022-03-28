@@ -28,7 +28,7 @@ end
 
 # determine image for PXE boot tests
 def compute_image_filename
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     'Kiwi/POS_Image-JeOS7_42'
     # $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head' for HEAD branch
@@ -46,7 +46,7 @@ def compute_image_filename
 end
 
 def compute_image_name
-  case ENV['PXEBOOT_IMAGE']
+  case $pxeboot_image
   when 'sles15sp3', 'sles15sp3o'
     'POS_Image_JeOS7_42'
     # $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head' for HEAD branch
@@ -358,7 +358,7 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
     'internal network address'        => 'tftpd#listen_ip',
     'vsftpd internal network address' => 'vsftpd_config#listen_address'
   }
-  fill_in fieldids[field], with: net_prefix + ADDRESSES[host]
+  fill_in(fieldids[field], with: net_prefix + ADDRESSES[host], fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
@@ -409,7 +409,7 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
     'third partition password'     => 'partitioning#0#partitions#2#luks_pass',
     'FTP server directory'         => 'vsftpd_config#anon_root'
   }
-  fill_in fieldids[field], with: value
+  fill_in(fieldids[field], with: value, fill_options: { clear: :backspace })
 end
 
 When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
@@ -440,11 +440,6 @@ When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
   find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
 end
 
-When(/^I enter the hostname of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  system_name = get_system_name(host)
-  step %(I enter "#{system_name}." in #{field} field of #{zone} zone)
-end
-
 When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
   node = get_target(host)
   step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
@@ -466,8 +461,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run('ip link show dev eth1')
     mac = output.split("\n")[1].split[1]
   end
-
-  fill_in FIELD_IDS[field], with: 'ethernet ' + mac
+  fill_in(FIELD_IDS[field], with: 'ethernet ' + mac, fill_options: { clear: :backspace })
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
@@ -493,7 +487,7 @@ end
 
 When(/^I enter the image name in (.*) field$/) do |field|
   name = compute_image_name
-  fill_in FIELD_IDS[field], with: name
+  fill_in(FIELD_IDS[field], with: name, fill_options: { clear: :backspace })
 end
 
 When(/^I press "Add Item" in (.*) section$/) do |section|

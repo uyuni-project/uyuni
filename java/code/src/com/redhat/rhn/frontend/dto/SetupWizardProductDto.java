@@ -215,6 +215,12 @@ public class SetupWizardProductDto implements Selectable,
         }
     };
 
+    /** The product id */
+    private Long productId;
+
+    /** The database id */
+    private Long id;
+
     /** The architecture. */
     private String arch;
 
@@ -256,6 +262,8 @@ public class SetupWizardProductDto implements Selectable,
     /**
      * Instantiates a new product.
      *
+     * @param productIdIn  the product id
+     * @param idIn the database id
      * @param archIn the architecture
      * @param identIn the ident ID
      * @param nameIn the name
@@ -264,15 +272,33 @@ public class SetupWizardProductDto implements Selectable,
      * @param mandatoryChannelsIn the mandatory channels in
      * @param optionalChannelsIn the optional channels in
      */
-    public SetupWizardProductDto(String archIn, String identIn, String nameIn,
-            String baseProductIdent, MandatoryChannels mandatoryChannelsIn,
-            OptionalChannels optionalChannelsIn) {
+    public SetupWizardProductDto(Long productIdIn, Long idIn, String archIn, String identIn, String nameIn,
+                                 String baseProductIdent, MandatoryChannels mandatoryChannelsIn,
+                                 OptionalChannels optionalChannelsIn) {
+        productId = productIdIn;
+        id = idIn;
         arch = archIn;
         ident = identIn;
         name = nameIn;
         parentProduct = baseProductIdent;
         mandatoryChannels = mandatoryChannelsIn;
         optionalChannels = optionalChannelsIn;
+    }
+
+    /**
+     * Gets the product id.
+     * @return the product id
+     */
+    public Long getProductId() {
+        return productId;
+    }
+
+    /**
+     * Gets the database id.
+     * @return the database id
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -479,6 +505,22 @@ public class SetupWizardProductDto implements Selectable,
      */
     public SyncStatus getSyncStatus() {
         return this.syncStatus;
+    }
+
+    /**
+     * Sets the product id
+     * @param productIdIn the product id
+     */
+    public void setProductId(Long productIdIn) {
+        this.productId = productIdIn;
+    }
+
+    /**
+     * Sets the database id
+     * @param idIn the database id
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-01-25 03:12+0000\n"
+"PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1262,7 +1262,7 @@ msgstr "名前"
 #: ../html/src/manager/virtualization/ListTab.js:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
-msgstr "動作"
+msgstr "アクション"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:50
 msgid "Match data status"
@@ -5714,6 +5714,18 @@ msgstr "リソースが見つかりませんでした。"
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 
+#~ msgid "Expand All Sections"
+#~ msgstr "すべてのセクションを展開"
+
+#~ msgid "Collapse All Sections"
+#~ msgstr "すべてのセクションを折りたたむ"
+
+#~ msgid "Unnamed"
+#~ msgstr "名前なし"
+
+#~ msgid "Search by formula's group name"
+#~ msgstr "数式のグループ名で検索"
+
 #~ msgid "Sunday"
 #~ msgstr "日曜"
 
@@ -5735,6 +5747,63 @@ msgstr "HTTP エラーコード "
 #~ msgid "Saturday"
 #~ msgstr "土曜"
 
+#~ msgid "Add new pay-as-you-go ssh connection data"
+#~ msgstr "新しい従量課金制のssh接続データを追加"
+
+#~ msgid "Add pay-as-you-go ssh data"
+#~ msgstr "従量課金制のsshデータを追加"
+
+#~ msgid "Pay-as-you-go connection Description"
+#~ msgstr "従量課金制の接続の説明"
+
+#~ msgid "Instance SSH connection data"
+#~ msgstr "インスタンスSSH接続データ"
+
+#~ msgid "Bastion SSH connection data"
+#~ msgstr "要塞SSH接続データ"
+
+#~ msgid "Host"
+#~ msgstr "ホスト"
+
+#~ msgid "Last Update Status"
+#~ msgstr "最終更新ステータス"
+
+#~ msgid "never"
+#~ msgstr "なし"
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "従量課金制を追加"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "従量課金制のプロパティが正常に更新されました"
+
+#~ msgid "Edit Information"
+#~ msgstr "情報を編集"
+
+#~ msgid "Last Status Update"
+#~ msgstr "最終ステータス更新"
+
+#~ msgid "Edit "
+#~ msgstr "編集 "
+
+#~ msgid "Editing ssh connection data.."
+#~ msgstr "ssh接続データを編集しています.."
+
+#~ msgid "SSH Port"
+#~ msgstr "SSHポート"
+
+#~ msgid "User"
+#~ msgstr "ユーザ"
+
+#~ msgid "The instance you are looking for does not exist or has been deleted"
+#~ msgstr "お探しのインスタンスは存在していないか、削除されています"
+
+#~ msgid "Instance Hostname: {0}"
+#~ msgstr "インスタンスホスト名: {0}"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "従量課金制を削除"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "影響を受ける、割り当てられていないチャンネルで利用可能なパッチ"
 
@@ -5750,6 +5819,12 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Patched"
 #~ msgstr "パッチ適用済み"
+
+#~ msgid "MITRE CVE link"
+#~ msgstr "MITRE CVEリンク"
+
+#~ msgid "SUSE Security CVE link"
+#~ msgstr "SUSEセキュリティCVEリンク"
 
 #~ msgid "No action required"
 #~ msgstr "アクションは必要ありません"
@@ -5789,9 +5864,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Last Build"
 #~ msgstr "前回のビルド"
-
-#~ msgid "never"
-#~ msgstr "なし"
 
 #~ msgid "contains package which provides name equal"
 #~ msgstr "指定した名前が等しいパッケージ"
@@ -5835,6 +5907,15 @@ msgstr "HTTP エラーコード "
 #~ msgstr ""
 #~ "この環境は {0}自動インストールディストリビューション{1} で使用されているた"
 #~ "め、削除できません。"
+
+#~ msgid "New base channel"
+#~ msgstr "新しいベースチャンネル"
+
+#~ msgid "This channel requires:"
+#~ msgstr "このチャンネル には次のものが必要です:"
+
+#~ msgid "This channel is required by:"
+#~ msgstr "このチャンネルは次によって必要とされます:"
 
 #~ msgid "This channel is mandatory"
 #~ msgstr "このチャンネルは必須チャンネルです"
@@ -5901,6 +5982,9 @@ msgstr "HTTP エラーコード "
 #~ msgid "Clear the fact cache for every host in inventory"
 #~ msgstr "インベントリ内のすべてのホストのファクトキャッシュをクリアする"
 
+#~ msgid "Pay-as-you-go refresh authentication data failed"
+#~ msgstr "従量課金制の認証データの更新が失敗しました"
+
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
 #~ "time will be the server time."
@@ -5913,15 +5997,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid "Host"
-#~ msgstr "ホスト"
-
-#~ msgid "SSH Port"
-#~ msgstr "SSHポート"
-
-#~ msgid "User"
-#~ msgstr "ユーザ"
 
 #~ msgid "Authentication Method"
 #~ msgstr "認証メソッド"

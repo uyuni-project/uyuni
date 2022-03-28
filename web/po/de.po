@@ -5546,16 +5546,20 @@ msgstr ""
 #~ msgstr "Samstag"
 
 #, fuzzy
+#~ msgid "Edit "
+#~ msgstr "Bearbeiten"
+
+#, fuzzy
+#~ msgid "User"
+#~ msgstr "Benutzer"
+
+#, fuzzy
 #~ msgid "No action required"
 #~ msgstr "notwendig"
 
 #, fuzzy
 #~ msgid "Documentation"
 #~ msgstr "Dokumentation"
-
-#, fuzzy
-#~ msgid "User"
-#~ msgstr "Benutzer"
 
 #, fuzzy
 #~ msgid "system selected"

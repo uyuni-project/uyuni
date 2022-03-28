@@ -5563,16 +5563,28 @@ msgid "HTTP Error code "
 msgstr ""
 
 #, fuzzy
-#~ msgid "Provides Name"
-#~ msgstr "Primeiro Nome"
+#~ msgid "Edit Information"
+#~ msgstr "Editar Canal de Configuração"
 
 #, fuzzy
-#~ msgid "${defaultChannelName}"
-#~ msgstr "Nome do Canal"
+#~ msgid "Edit "
+#~ msgstr "Editar"
 
 #, fuzzy
 #~ msgid "User"
 #~ msgstr "Usuários"
+
+#, fuzzy
+#~ msgid "Provides Name"
+#~ msgstr "Primeiro Nome"
+
+#, fuzzy
+#~ msgid "New base channel"
+#~ msgstr "Canal de configuração de estado"
+
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "Nome do Canal"
 
 #, fuzzy
 #~ msgid "Change Proxy"

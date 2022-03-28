@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,6 +78,7 @@ public class ChannelsApiController {
                             .filter(c -> !filterOutIds.contains(c.getBase().getId()))
                             .collect(Collectors.toList()
             );
+            jsonChannelsFiltered.sort(Comparator.comparing(cIn -> cIn.getBase().getId()));
 
             return json(res, ResultJson.success(jsonChannelsFiltered));
         });

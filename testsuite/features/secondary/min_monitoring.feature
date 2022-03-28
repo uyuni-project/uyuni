@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
@@ -31,6 +31,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   Scenario: Configure Prometheus formula
     When I follow "Formulas" in the content area
     And I follow "Prometheus" in the content area
+    And I click on "Expand All Sections"
     And I enter "admin" as "Username"
     And I enter "admin" as "Password"
     And I click on "Save Formula"
@@ -39,6 +40,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   Scenario: Configure Prometheus exporter formula
     When I follow "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
+    And I click on "Expand All Sections"
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
     And I check "apache" exporter
@@ -53,9 +55,13 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Visit monitoring endpoints on the minion
-    When I visit "Prometheus" endpoint of this "sle_minion"
+    When I wait until "prometheus" service is active on "sle_minion"
+    And I visit "Prometheus" endpoint of this "sle_minion"
+    And I wait until "prometheus-node_exporter" service is active on "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"
+    And I wait until "prometheus-apache_exporter" service is active on "sle_minion"
     And I visit "Prometheus apache exporter" endpoint of this "sle_minion"
+    And I wait until "prometheus-postgres_exporter" service is active on "sle_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
