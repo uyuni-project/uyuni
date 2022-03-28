@@ -269,6 +269,7 @@ public class SPMigrationAction extends RhnAction {
                 }
             }
             request.setAttribute(TARGET_PRODUCTS, targetProducts);
+            setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
 
             // Get the base channel
             Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
@@ -301,7 +302,7 @@ public class SPMigrationAction extends RhnAction {
         else if (forward.getName().equals(CONFIRM)) {
             // Put product data
             SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
-
+            setMissingSuccessorsInfo(request,  server.getInstalledProductSet(), List.of(targetProductSet));
             request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
@@ -345,6 +346,21 @@ public class SPMigrationAction extends RhnAction {
         }
 
         return forward;
+    }
+
+    /**
+     * Identify the extensions which don't have successors and set that information in the request.
+     * OUT: MISSING_SUCESSOR_EXTENSIONS
+     * @param request
+     * @param sourceProducts installed or selected products
+     * @param targetProducts target products
+     */
+    private void setMissingSuccessorsInfo(HttpServletRequest request, Optional<SUSEProductSet> sourceProducts,
+                                          List<SUSEProductSet> targetProducts) {
+        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
+        DistUpgradeManager.removeIncompatibleTargets(sourceProducts,
+                targetProducts, missingSuccessorExtensions);
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<String>()));
     }
 
     /**
@@ -480,13 +496,8 @@ public class SPMigrationAction extends RhnAction {
                                                      User user) {
         List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, channelArch, user);
-
-        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<>());
-        List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
-                allMigrationTargets, missingSuccessorExtensions);
-        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
-                missingSuccessorExtensions.orElse(new HashSet<>()));
-        return migrationTargets;
+        setMissingSuccessorsInfo(request, installedProducts, allMigrationTargets);
+        return allMigrationTargets;
     }
 
     /**

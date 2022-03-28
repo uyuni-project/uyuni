@@ -65,6 +65,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -627,6 +628,7 @@ public class DistUpgradeManager extends BaseManager {
             boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
+        List<String>  missingSuccessors = new ArrayList<>();
 
         // Add product upgrades
         // Note: product upgrades are relevant for SLE 10 only!
@@ -640,10 +642,17 @@ public class DistUpgradeManager extends BaseManager {
 
             // Find matching targets for every addon
             for (SUSEProduct addon : installedProducts.getAddonProducts()) {
-                upgrade = new SUSEProductUpgrade(addon,
-                        DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
-                details.addProductUpgrade(upgrade);
+                SUSEProduct match = DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts());
+                if (Objects.nonNull(match)) {
+                    upgrade = new SUSEProductUpgrade(addon,
+                            DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
+                    details.addProductUpgrade(upgrade);
+                }
+                else {
+                    missingSuccessors.add(addon.getName());
+               }
             }
+            details.setMissingSuccessors(String.join(",", missingSuccessors));
         }
 
         // Add individual channel tasks
