@@ -1,3 +1,4 @@
+- Added new XML-RPC mathod: configchannel.syncSaltFilesOnDisk
 - update last checkin only if job is successful (bsc#1197007)
 - Fix NPE when accessing cancelled action via system history (bsc#1195762)
 - CVE Audit: Show patch as available in the currently installed product even if successor
