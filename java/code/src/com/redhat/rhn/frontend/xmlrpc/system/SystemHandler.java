@@ -7239,9 +7239,32 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
+    public List<Map<String, Object>> listMigrationTargets(User loggedInUser, Integer serverId) {
+        return listMigrationTargets(loggedInUser, serverId, true);
+
+    }
+    /**
+     * List possible migration targets for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @param excludeTargetWhereMissingSuccessors exclude target if any extension has missing successor
+     * @return Array of migration targets for given system
+     *
+     * @xmlrpc.doc List possible migration targets for a system
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("boolean", "excludeTargetWhereMissingSuccessors")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("migrationtarget")
+     *                 #prop("string", "ident")
+     *                 #prop("string", "friendly")
+     *          #struct_end()
+     *      #array_end()
+     */
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
-            Integer serverId) {
-        List<Map<String, Object>> returnList = new ArrayList<>();
+            Integer serverId, boolean excludeTargetWhereMissingSuccessors) {
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         if (!installedProducts.isPresent()) {
@@ -7251,10 +7274,10 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
-
-        migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
-                installedProducts, migrationTargets, Optional.empty());
-
+        if (excludeTargetWhereMissingSuccessors) {
+            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
+                    installedProducts, migrationTargets,  Optional.empty());
+        }
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
                 continue;
@@ -7355,7 +7378,7 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
-                optionalChildChannels, dryRun, allowVendorChange, earliest);
+                optionalChildChannels, dryRun, allowVendorChange, false, earliest);
     }
 
     /**
@@ -7388,7 +7411,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
+     * - User listMigrationTargets to list the identifiers ")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7399,7 +7423,7 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
                                     String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                     Date earliest) {
-        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
+       return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
     }
 
@@ -7434,7 +7458,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
+     * - Use listMigrationTargets to list the identifiers ")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7551,7 +7576,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "targetIdent", "identifier for the selected migration target
+     *  - Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7590,7 +7616,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
+     * - Use listMigrationTargets to list the identifiers "))
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7601,6 +7628,52 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
                                          String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                          Boolean allowVendorChange, Date earliest) {
+       return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels, dryRun,
+                allowVendorChange, false, earliest);
+
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param removeProductsWithNoSuccessorAfterMigration set to remove products which have no successors
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
+     * - User listMigrationTargets to list the identifiers "))
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("boolean", "removeProductsWithNoSuccessorAfterMigration", "set to remove products which
+     * have no successors. This flag will only have effect if targetIdent will also be specified")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         boolean allowVendorChange,
+                                         boolean removeProductsWithNoSuccessorAfterMigration, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -7626,7 +7699,11 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
                 installedProducts, arch, loggedInUser);
-        targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+        // Consider the targets where some extensions have missing successors but only if user explicitly mention
+        // targetIdent && set the flag removeProductsWithNoSuccessorAfterMigration as true
+        if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
+            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+        }
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {

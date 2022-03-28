@@ -1,3 +1,4 @@
+- Allow migration where target products have no successor
 - require new salt-netapi-client version
 - Fix PXEEvent string comparision
 - Make TERMINALS group optional for saltbooted machines

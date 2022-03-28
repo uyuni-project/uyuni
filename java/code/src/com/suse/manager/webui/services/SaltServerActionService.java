@@ -200,6 +200,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
@@ -1610,6 +1611,9 @@ public class SaltServerActionService {
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
+        if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
+            pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
+        }
 
         if (commitTransaction) {
             HibernateFactory.commitTransaction();

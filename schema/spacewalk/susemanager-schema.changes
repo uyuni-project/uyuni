@@ -1,3 +1,4 @@
+- Add missing_successors column to hold products without successors
 - Added Perl requirements.
 
 -------------------------------------------------------------------
