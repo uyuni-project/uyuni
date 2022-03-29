@@ -1,5 +1,9 @@
-- implement system.bootstrap (bsc#1194909)
-- Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
+-------------------------------------------------------------------
+Tue Mar 29 14:22:46 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.16-1
+  * implement system.bootstrap (bsc#1194909)
+  * Fix interactive mode for "system_applyerrata" and "errata_apply" (bsc#1194363)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:47:48 CET 2022 - jmassaguerpla@suse.de
