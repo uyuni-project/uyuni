@@ -78,15 +78,13 @@ Then(/^the system name for "([^"]*)" should be correct$/) do |host|
   step %(I should see a "#{system_name}" text)
 end
 
-# rubocop:disable Metrics/BlockLength
 Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
-  # TODO remove extra logging information once debugged
   node = get_target(host)
-  uptime_seconds, _return_code = node.run("awk '{print $1}' /proc/uptime") # run code on node only once, to get uptime in seconds
-  uptime_minutes = (uptime_seconds.to_f / 60.0) # 60 seconds; the .0 forces a float division
+  uptime, _return_code = node.run('cat /proc/uptime') # run code on node only once, to get uptime
+  uptime_seconds = uptime.split[0].to_f # return only the uptime in seconds, as a float
+  uptime_minutes = (uptime_seconds / 60.0) # 60 seconds; the .0 forces a float division
   uptime_hours = (uptime_minutes / 60.0) # 60 minutes
   uptime_days = (uptime_hours / 24.0) # 24 hours
-  log "Uptime in\nseconds: #{uptime_seconds}\nminutes: #{uptime_minutes}\nhours: #{uptime_hours}\ndays: #{uptime_days}"
 
   # rounded values to nearest integer number
   rounded_uptime_minutes = uptime_minutes.round
@@ -94,37 +92,27 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
 
   # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
   eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
-  rounded_uptime_days = ((uptime_seconds.to_f + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
-  log "Rounded uptime in\nminutes: #{rounded_uptime_minutes}\nhours: #{rounded_uptime_hours}\ndays: #{rounded_uptime_days}"
+  rounded_uptime_days = ((uptime_seconds + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime_days >= 1 && rounded_uptime_days < 2) || (uptime_days < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
-    log "Expecting 'a day ago'"
     step %(I should see a "a day ago" text)
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
-    log "Expecting '#{rounded_uptime_hours} hours ago'"
     step %(I should see a "#{rounded_uptime_hours} hours ago" text)
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
-    log "Expecting 'an hour ago'"
     step %(I should see a "an hour ago" text)
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
-    log "Expecting '#{rounded_uptime_minutes} minutes ago'"
     step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
   elsif uptime_seconds >= 45 && rounded_uptime_minutes == 1
-    log "Expecting 'a minute ago'"
     step %(I should see a "a minute ago" text)
   elsif uptime_seconds < 45
-    log "Expecting 'a few seconds ago'"
     step %(I should see a "a few seconds ago" text)
   elsif rounded_uptime_days < 25
-    log "Expecting '#{rounded_uptime_days} days ago'"
     step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
   else
-    log "Expecting 'a month ago'"
     step %(I should see a "a month ago" text)
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^I should see several text fields for "([^"]*)"$/) do |host|
   node = get_target(host)
