@@ -1,3 +1,4 @@
+- Container proxy configuration handler
 - Hibernate: set a non-singleton ehcache
 - change directory owner and permissions only when needed
 - Provide link to Sync page when unsynced patches message show up
