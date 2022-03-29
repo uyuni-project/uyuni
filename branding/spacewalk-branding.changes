@@ -1,4 +1,8 @@
-- Fix modal footer misalignment
+-------------------------------------------------------------------
+Tue Mar 29 14:22:52 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.13-1
+  * Fix modal footer misalignment
 
 -------------------------------------------------------------------
 Wed Feb 02 13:48:51 CET 2022 - jmassaguerpla@suse.de
