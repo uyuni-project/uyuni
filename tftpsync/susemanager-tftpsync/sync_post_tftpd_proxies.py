@@ -189,7 +189,7 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
     if key is None:
         if os.path.exists(fn):
             cmd = '/usr/bin/sha1sum %s'%fn
-            key = utils.subprocess_get(None,cmd).split(' ')[0]
+            key = utils.subprocess_get(cmd).split(' ')[0]
 
     if _DEBUG:
         logger.debug("push(%s) ? %s" % (fn, needpush))
