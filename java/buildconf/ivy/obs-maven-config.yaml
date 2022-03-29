@@ -153,6 +153,9 @@ artifacts:
     repository: Leap
   - artifact: jsch
     repository: Uyuni_Other
+  - artifact: mchange-commons-java
+    package: mchange-commons
+    repository: Uyuni_Other
   - artifact: netty-buffer
     package: netty
     repository: Uyuni_Other
