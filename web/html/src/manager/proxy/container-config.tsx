@@ -7,6 +7,7 @@ import { Radio } from "components/input/Radio";
 import { Text } from "components/input/Text";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
+import Validation from "components/validation";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -183,6 +184,7 @@ export function ProxyConfig() {
           name="proxyPort"
           label={t("Proxy SSH port")}
           hint={t("Port range: 1 - 65535")}
+          validators={[Validation.isInt({ gt: 0, lt: 65536 })]}
           defaultValue="8022"
           labelClass="col-md-3"
           divClass="col-md-6"
@@ -191,6 +193,7 @@ export function ProxyConfig() {
           name="maxSquidCacheSize"
           label={t("Max Squid cache size (MB)")}
           required
+          validators={[Validation.isInt({ gt: 0 })]}
           placeholder={t("e.g., 2048")}
           labelClass="col-md-3"
           divClass="col-md-6"
@@ -247,6 +250,7 @@ export function ProxyConfig() {
               <Text
                 name="country"
                 label={t("2-letter country code")}
+                validators={[Validation.matches(/^[A-Z]{2}$/)]}
                 maxLength={2}
                 labelClass="col-md-3"
                 divClass="col-md-1"
