@@ -6,7 +6,6 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
 
 jobs:
   frontend_lint_fix_pr:
@@ -36,7 +35,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     # Run lint with fixes
     - name: Run lint

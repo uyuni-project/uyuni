@@ -6,11 +6,9 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
 
 jobs:
   javascript_unit_tests:
@@ -45,7 +43,7 @@ jobs:
     # `--prefer-offline` means we prefer the cache over fetching things from the network.
     # See: https://stackoverflow.com/a/62244232/1470607
     - name: Install dependencies
-      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     - name: Run tests
       run: yarn --cwd web/html/src test --no-cache
