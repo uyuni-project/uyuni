@@ -110,6 +110,9 @@
 
   <available file="${java.lib.dir}/hibernate-core-5.jar" type="file" property="hibernate" value="${hibernate5deps}" />
 
+  <property name="c3p0" value="c3p0"/>
+  <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
+
   <condition property="jmock-jars"
                 value="jmock jmock-cglib"
                  else="">
@@ -160,7 +163,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -182,7 +185,7 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
@@ -198,7 +201,7 @@
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
-      value="antlr objectweb-asm/asm bcel c3p0 ${cglib-jar}
+      value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
