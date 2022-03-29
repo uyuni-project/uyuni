@@ -10,13 +10,14 @@ require 'pg'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  initial_time = Time.now
-  result, return_code = node.run('hostname -f', check_errors: false)
-  end_time = Time.now
-  resolution_time = end_time - initial_time
-  result.delete!("\n")
+  result, return_code = node.run('date +%s; hostname -f; date +%s', check_errors: false)
+  lines = result.split("\n")
+  initial_time = lines[0]
+  result = lines[1]
+  end_time = lines[2]
+  resolution_time = end_time.to_i - initial_time.to_i
   raise 'cannot determine hostname' unless return_code.zero?
-  raise "FQDN resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
+  raise "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise 'hostname is not fully qualified' unless result == node.full_hostname
 end
 
