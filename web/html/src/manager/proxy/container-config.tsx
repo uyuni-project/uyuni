@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { SubmitButton } from "components/buttons";
@@ -11,7 +12,6 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
@@ -47,11 +47,11 @@ function replaceCRLF(content: string | undefined | null) {
 }
 
 export function ProxyConfig() {
-  const [messages, setMessages] = React.useState<string[]>([]);
-  const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState<boolean | undefined>();
-  const [model, setModel] = React.useState(initialModel);
-  const [invalid, setInvalid] = React.useState(false);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<boolean | undefined>();
+  const [model, setModel] = useState(initialModel);
+  const [isValidated, setIsValidated] = useState(false);
 
   const onSubmit = () => {
     setMessages([]);
@@ -74,7 +74,7 @@ export function ProxyConfig() {
       })
       .map((fieldName) => {
         const field = document.getElementById(fieldName);
-        if (field != null && field instanceof HTMLInputElement && field.files != null) {
+        if (field !== null && field instanceof HTMLInputElement && field.files != null) {
           const file = field.files[0];
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -91,7 +91,7 @@ export function ProxyConfig() {
         }
         return undefined;
       })
-      .filter((promise) => promise != null);
+      .filter((promise) => promise !== undefined);
     Promise.all(fileReaders).then((values) => {
       const commonData = {
         proxyFQDN: model.proxyFQDN,
@@ -133,9 +133,10 @@ export function ProxyConfig() {
             setMessages([JSON.parse(xhr.responseText)]);
             setLoading(false);
           } catch (err) {
-            const errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
-              ? t("Request interrupted or invalid response received from the server.")
-              : Network.errorMessageByStatus(xhr.status)[0];
+            const errMessages =
+              xhr.status === 0
+                ? t("Request interrupted or invalid response received from the server.")
+                : Network.errorMessageByStatus(xhr.status)[0];
             setSuccess(false);
             setMessages([errMessages]);
             setLoading(false);
@@ -149,8 +150,8 @@ export function ProxyConfig() {
     setModel(initialModel);
   };
 
-  const onValidate = (isValid: boolean) => {
-    setInvalid(!isValid);
+  const onValidate = (isValidated: boolean) => {
+    setIsValidated(isValidated);
   };
 
   const onChange = (newModel: any) => {
@@ -175,7 +176,11 @@ export function ProxyConfig() {
       icon="fa fa-cogs"
       helpUrl="reference/proxy/container-based-config.html"
     >
-      <p>{t("TODO: some info text message about this page")}</p>
+      <p>
+        {t(
+          "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .zip archive to download."
+        )}
+      </p>
       {ContainerConfigMessages(success, messages, loading)}
       <Form
         className="form-horizontal"
@@ -210,6 +215,7 @@ export function ProxyConfig() {
           defaultValue="8022"
           labelClass="col-md-3"
           divClass="col-md-6"
+          type="number"
         />
         <Text
           name="maxSquidCacheSize"
@@ -219,10 +225,13 @@ export function ProxyConfig() {
           placeholder={t("e.g., 2048")}
           labelClass="col-md-3"
           divClass="col-md-6"
+          type="number"
         />
         <Text
           name="proxyAdminEmail"
           label={t("Proxy administrator email")}
+          validators={[Validation.matches(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]}
+          invalidHint={t("Check the format of the email address")}
           placeholder={t("e.g., proxy.admin@mycompany.com")}
           required
           labelClass="col-md-3"
@@ -344,7 +353,7 @@ export function ProxyConfig() {
         )}
 
         <div className="col-md-offset-3 col-md-6">
-          <SubmitButton id="submit-btn" className="btn-success" text={t("Generate")} disabled={invalid} />
+          <SubmitButton id="submit-btn" className="btn-success" text={t("Generate")} disabled={!isValidated} />
           <AsyncButton
             id="clear-btn"
             defaultType="btn-default pull-right"
