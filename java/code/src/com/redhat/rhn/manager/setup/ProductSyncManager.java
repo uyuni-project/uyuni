@@ -69,8 +69,8 @@ public class ProductSyncManager {
     private static final LocalizationService L10NSERVICE = LocalizationService.getInstance();
 
     /**
-     * Returns a list of base products.
-     * @return the products list
+     * Returns a list of base products and addons.
+     * @return the products list with addOns
      */
     public List<SetupWizardProductDto> getBaseAndAddonProducts() {
         ContentSyncManager csm = new ContentSyncManager();
@@ -492,6 +492,7 @@ public class ProductSyncManager {
      * Find a product for any given ident by looking through base and their addons.
      *
      * @param ident ident of a product
+     * @param productsWithAddons the products list with addOns
      * @return the {@link SetupWizardProductDto}
      */
     private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> productsWithAddons) {
