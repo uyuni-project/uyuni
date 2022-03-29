@@ -1,4 +1,4 @@
-package com.redhat.rhn.domain.image;
+package com.suse.manager.saltboot;
 
 public class SaltbootException extends RuntimeException {
 

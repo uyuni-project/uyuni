@@ -13,20 +13,20 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.image;
+package com.suse.manager.saltboot;
 
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 
-import java.util.Optional;
-
 public class SaltbootUtils {
     private SaltbootUtils() { }
 
-    public static void createSaltbootDistro(ImageInfo imageInfo,  BootImage bootImage) {
+    public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
         String initrd = pathPrefix + "/" + bootImage.getInitrd().getFilename();

@@ -55,7 +55,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.redhat.rhn.domain.image.SaltbootUtils;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
