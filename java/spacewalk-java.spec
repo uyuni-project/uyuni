@@ -769,6 +769,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/antlr.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/bcel.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/c3p0*.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/mchange-commons*.jar
 %if 0%{?fedora} || 0%{?sle_version} >= 150200 || 0%{?rhel}
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/cglib_cglib.jar
 %else
