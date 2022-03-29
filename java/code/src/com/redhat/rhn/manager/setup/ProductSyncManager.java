@@ -424,7 +424,7 @@ public class ProductSyncManager {
      * {@link SetupWizardProductDto} for further display.
      *
      * @param products collection of {@link MgrSyncProductDto}
-     * @return List of {@link SetupWizardProductDto} with addOn
+     * @return List of {@link SetupWizardProductDto} with addons
      */
     private List<SetupWizardProductDto> convertProducts(
             Collection<MgrSyncProductDto> products) {
