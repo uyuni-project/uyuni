@@ -1,4 +1,8 @@
-- Expose release notes to www_path
+-------------------------------------------------------------------
+Tue Mar 29 14:23:18 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.3-1
+  * Expose release notes to www_path
 
 -------------------------------------------------------------------
 Thu Feb 25 12:07:46 CET 2021 - jgonzalez@suse.com
