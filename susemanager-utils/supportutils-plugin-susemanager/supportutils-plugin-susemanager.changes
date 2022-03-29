@@ -1,4 +1,8 @@
-- Get version of bootstrap scripts for supportconfig (bsc#1186336)
+-------------------------------------------------------------------
+Tue Mar 29 14:23:22 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.4-1
+  * Get version of bootstrap scripts for supportconfig (bsc#1186336)
 
 -------------------------------------------------------------------
 Wed Oct 06 09:37:47 CEST 2021 - jgonzalez@suse.com
