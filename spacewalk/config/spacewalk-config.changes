@@ -1,4 +1,8 @@
-- Upgrade build tooling, and corresponding cache configuration
+-------------------------------------------------------------------
+Tue Mar 29 14:23:11 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.6-1
+  * Upgrade build tooling, and corresponding cache configuration
 
 -------------------------------------------------------------------
 Wed Feb 02 13:50:12 CET 2022 - jmassaguerpla@suse.de
