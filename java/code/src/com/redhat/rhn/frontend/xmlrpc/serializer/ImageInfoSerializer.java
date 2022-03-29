@@ -51,6 +51,7 @@ public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
         ImageStore store = image.getStore();
         helper.add("id", image.getId());
         helper.add("name", image.getName());
+        helper.add("type", image.getImageType());
         helper.add("version", image.getVersion());
         helper.add("revision", image.getRevisionNumber());
         helper.add("arch", image.getImageArch().getLabel());

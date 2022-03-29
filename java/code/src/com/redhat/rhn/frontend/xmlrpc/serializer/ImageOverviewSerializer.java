@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -33,6 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * #struct_begin("Image Overview information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")
+ *   #prop_desc("string", "type", "image type")
  *   #prop_desc("string", "version", "image tag/version")
  *   #prop_desc("int", "revision", "image build revision number")
  *   #prop_desc("string", "arch", "image architecture")
@@ -40,6 +42,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          false otherwise")
  *   #prop("string", "checksum")
  *   #prop("string", "profileLabel")
+ *   #prop("string", "storeLabel")
  *   #prop_desc("string", "buildStatus", "One of:")
  *            #options()
  *              #item("queued")
@@ -60,6 +63,8 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("int", "enhancementErrata")
  *   #prop("int", "outdatedPackages")
  *   #prop("int", "installedPackages")
+ *   #prop_desc("boolean", "obsolete", "true if the image has been replaced in the store")
+ *   #prop_desc("struct", "files", "image files")
  * #struct_end()
  */
 public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
@@ -76,6 +81,7 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
 
         helper.add("id", image.getId());
         helper.add("name", image.getName());
+        helper.add("type", image.getImageType());
         helper.add("version", image.getVersion());
         helper.add("revision", image.getCurrRevisionNum());
         helper.add("arch", image.getArch());
@@ -89,11 +95,16 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("enhancementErrata", image.getEnhancementErrata());
         helper.add("outdatedPackages", image.getOutdatedPackages());
         helper.add("installedPackages", image.getInstalledPackages());
-        image.getBuildServerAction().ifPresent(
-                ba -> helper.add("buildStatus", ba.getStatus().getName().toLowerCase()));
+        image.getBuildServerAction().ifPresentOrElse(
+                ba -> helper.add("buildStatus", ba.getStatus().getName().toLowerCase()),
+                () -> helper.add("buildStatus",
+                        (image.isBuilt() ? ActionFactory.STATUS_COMPLETED : ActionFactory.STATUS_FAILED)
+                        .getName().toLowerCase()));
+
         image.getInspectServerAction().ifPresent(
                 ia -> helper.add("inspectStatus", ia.getStatus().getName().toLowerCase()));
         helper.add("files", image.getImageFiles());
+        helper.add("obsolete", image.isObsolete());
 
         helper.writeTo(writer);
     }

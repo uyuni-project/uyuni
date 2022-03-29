@@ -290,6 +290,20 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Delete a {@link ImageFile}.
+     *
+     * @param file the file to delete
+     * @param saltApi the SaltApi used to delete the related file
+     */
+    public static void deleteImageFile(ImageFile file, SaltApi saltApi) {
+        file.getImageInfo().getImageFiles().remove(file);
+        if (!file.isExternal()) {
+            removeImageFile(OSImageStoreUtils.getOSImageFilePath(file), saltApi);
+        }
+        instance.removeObject(file);
+    }
+
+    /**
      * Delete a {@link ImageInfo}.
      *
      * @param imageInfo the image info to delete
@@ -651,4 +665,39 @@ public class ImageInfoFactory extends HibernateFactory {
         instance.saveObject(info);
         return info;
     }
+
+    /**
+     * Lookup an ImageFile by file name
+     * @param org the the organization
+     * @param file the file name
+     * @return the image file
+     */
+    public static Optional<ImageFile> lookupImageFile(Org org, String file) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageFile> query = builder.createQuery(ImageFile.class);
+
+        Root<ImageFile> root = query.from(ImageFile.class);
+        query.where(builder.and(
+                builder.equal(root.get("file"), file),
+                builder.equal(root.join("imageInfo").get("org"), org)));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup an DeltaImageInfo by file name
+     * @param org the the organization
+     * @param file the file name
+     * @return the delta image info
+     */
+    public static Optional<DeltaImageInfo> lookupDeltaImageFile(Org org, String file) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<DeltaImageInfo> query = builder.createQuery(DeltaImageInfo.class);
+
+        Root<DeltaImageInfo> root = query.from(DeltaImageInfo.class);
+        query.where(builder.and(
+                builder.equal(root.get("file"), file),
+                builder.equal(root.join("sourceImageInfo").get("org"), org)));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
 }
