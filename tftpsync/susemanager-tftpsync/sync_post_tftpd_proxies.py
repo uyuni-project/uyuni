@@ -179,7 +179,7 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
                 logger.debug("mtime differ - old: %s new: %s" % (db[fn][0], mtime))
             if os.path.exists(fn):
                 cmd = '/usr/bin/sha1sum %s'%fn
-                key = utils.subprocess_get(None,cmd).split(' ')[0]
+                key = utils.subprocess_get(cmd).split(' ')[0]
                 if _DEBUG:
                     logger.debug("checking checksum - old: %s new: %s" % (db[fn][1], key))
                 if key == db[fn][1]:
