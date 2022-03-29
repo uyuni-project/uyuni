@@ -1,7 +1,11 @@
-- Fix reposync update notice formatting and date parsing (bsc#1194447)
-- implement more decompression algorithms for reposync (bsc#1196704)
-- enable check for client certificates in reposync
-- remove auto inherit of host entitlements for virtual guests
+-------------------------------------------------------------------
+Tue Mar 29 14:22:50 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.20-1
+  * Fix reposync update notice formatting and date parsing (bsc#1194447)
+  * implement more decompression algorithms for reposync (bsc#1196704)
+  * enable check for client certificates in reposync
+  * remove auto inherit of host entitlements for virtual guests
 
 -------------------------------------------------------------------
 Wed Feb 02 13:48:17 CET 2022 - jmassaguerpla@suse.de
