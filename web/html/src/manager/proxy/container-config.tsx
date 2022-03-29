@@ -3,6 +3,8 @@ import * as React from "react";
 import { AsyncButton } from "components/buttons";
 import { SubmitButton } from "components/buttons";
 import { Form } from "components/input/Form";
+import { unflattenModel } from "components/input/form-utils";
+import { FormMultiInput } from "components/input/FormMultiInput";
 import { Radio } from "components/input/Radio";
 import { Text } from "components/input/Text";
 import { Panel } from "components/panels/Panel";
@@ -30,7 +32,6 @@ const initialModel = {
   orgUnit: "",
   sslEmail: "",
   rootCA: "",
-  intermediateCAs: [],
   proxyCertificate: "",
   proxyKey: "",
   proxyAdminEmail: "",
@@ -65,9 +66,13 @@ export function ProxyConfig() {
       proxyKey: SSLMode.UseSSL,
     };
 
-    const fileReaders = Object.entries(fileFields)
-      .filter(([fieldName, mode]) => mode === model.sslMode)
-      .map(([fieldName, mode]) => {
+    const fileReaders = Object.keys(model)
+      .filter((key) => {
+        const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
+        const fieldName = matcher ? matcher[1] : key;
+        return fileFields[fieldName] === model.sslMode;
+      })
+      .map((fieldName) => {
         const field = document.getElementById(fieldName);
         if (field != null && field instanceof HTMLInputElement && field.files != null) {
           const file = field.files[0];
@@ -97,19 +102,24 @@ export function ProxyConfig() {
         sslMode: model.sslMode,
       };
 
+      const cnamesData = Object.fromEntries(Object.entries(model).filter(([key]) => key.startsWith("cnames")));
       const extraData =
         model.sslMode === SSLMode.CreateSSL
-          ? {
-              caPassword: model.caPassword,
-              country: model.country,
-              state: model.state,
-              city: model.city,
-              org: model.org,
-              orgUnit: model.orgUnit,
-              sslEmail: model.sslEmail,
-            }
+          ? Object.assign(
+              {},
+              {
+                caPassword: model.caPassword,
+                country: model.country,
+                state: model.state,
+                city: model.city,
+                org: model.org,
+                orgUnit: model.orgUnit,
+                sslEmail: model.sslEmail,
+              },
+              cnamesData
+            )
           : {};
-      const formData = Object.assign({}, commonData, extraData, ...values);
+      const formData = unflattenModel(Object.assign({}, commonData, extraData, ...values));
       Network.post("/rhn/manager/api/proxy/container-config", formData).then(
         (data) => {
           setSuccess(data.success);
@@ -145,6 +155,18 @@ export function ProxyConfig() {
 
   const onChange = (newModel: any) => {
     setModel(Object.assign({}, newModel));
+  };
+
+  const onAddField = (fieldName: string) => {
+    return (index: number) => setModel(Object.assign({}, model, { [fieldName + index]: "" }));
+  };
+
+  const onRemoveField = (fieldName: string) => {
+    return (index: number) => {
+      var newModel = model;
+      delete newModel[`${fieldName}${index}`];
+      setModel(newModel);
+    };
   };
 
   return (
@@ -247,6 +269,17 @@ export function ProxyConfig() {
               divClass="col-md-6"
             />
             <Panel key="ssl-certificate" title={t("SSL Certificate data")} headingLevel="h2">
+              <FormMultiInput
+                id="cnames"
+                title={t("Alternate CNAMEs")}
+                prefix="cnames"
+                onAdd={onAddField("cnames")}
+                onRemove={onRemoveField("cnames")}
+              >
+                {(index) => (
+                  <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
+                )}
+              </FormMultiInput>
               <Text
                 name="country"
                 label={t("2-letter country code")}
@@ -273,14 +306,24 @@ export function ProxyConfig() {
               labelClass="col-md-3"
               divClass="col-md-6"
             />
-            <Text
-              name="intermediateCAs"
-              label={t("intermediate CA used to sign the SSL certificate in PEM format")}
-              required
-              type="file"
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
+            <FormMultiInput
+              id="intermediateCAs"
+              title={t("Intermediate CAs")}
+              prefix="intermediateCAs"
+              onAdd={onAddField("intermediateCAs")}
+              onRemove={onRemoveField("intermediateCAs")}
+            >
+              {(index) => (
+                <Text
+                  name={`intermediateCAs${index}`}
+                  label={t("CA file in PEM format")}
+                  required
+                  type="file"
+                  labelClass="col-md-3"
+                  divClass="col-md-6"
+                />
+              )}
+            </FormMultiInput>
             <Text
               name="proxyCertificate"
               label={t("Proxy CRT content in PEM format")}
