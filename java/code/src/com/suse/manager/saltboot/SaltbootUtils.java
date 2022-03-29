@@ -19,9 +19,15 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
+import org.cobbler.SystemRecord;
+import org.cobbler.Network;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SaltbootUtils {
     private SaltbootUtils() { }
@@ -38,7 +44,14 @@ public class SaltbootUtils {
                 .setKernelOptions("panic=60 splash=silent")
                 .setArch(imageInfo.getImageArch().getName()).setBreed("generic").build(con);
 
-        // Check if cobbler default distro is present and update if so. Otherwise create it
+        // Each distro have its own private profile for individual system records
+        // SystemRecords need to be decoupled from saltboot group default profiles
+        Profile profile = Profile.create(con, name, cd);
+        profile.setEnableMenu(false);
+        profile.setComment("Distro " + name + " private profile");
+        profile.save();
+
+        // Check if cobbler default distro is present and update if so. Otherwise, create it
         Distro defaultDistro = Distro.lookupByName(con,"default-latest");
         if (defaultDistro == null) {
             new Distro.Builder().setName("default-latest")
@@ -74,15 +87,39 @@ public class SaltbootUtils {
             gp = Profile.create(con, saltbootGroup, d);
         }
         gp.setKernelOptions(kernelOptions);
+        gp.setComment("Saltboot group " + saltbootGroup + " default profile");
         gp.save();
     }
 
     public static void deleteSaltbootProfile(String saltbootGroup) {
-
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        Profile p = Profile.lookupByName(con, saltbootGroup);
+        if (p != null) {
+            p.remove();
+        }
     }
 
-    public void createSaltbootSystem() {
+    public static void createSaltbootSystem(String minionId, String bootImage,
+                                            List<String> hwAddresses, String kernelParams) throws SaltbootException {
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
+        Profile profile = Profile.lookupByName(con, bootImage);
+        if (profile == null) {
+            throw new SaltbootException("Unable to find Cobbler profile for specified boot image " + bootImage);
+        }
+
+        SystemRecord system = SystemRecord.lookupByName(con, minionId);
+        if (system == null) {
+            system = SystemRecord.create(con, minionId, profile);
+        }
+        system.setKernelOptions(kernelParams);
+        List<Network> networks = hwAddresses.stream().map(hw -> {
+            Network k = new Network(con, hw);
+            k.setMacAddress(hw);
+            return k;
+        }).collect(Collectors.toList());
+        system.setNetworkInterfaces(networks);
+        system.save();
     }
 
     public void deleteSaltbootSystem() {
