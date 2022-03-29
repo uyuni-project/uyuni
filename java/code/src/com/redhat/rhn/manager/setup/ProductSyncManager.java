@@ -492,7 +492,7 @@ public class ProductSyncManager {
      * Find a product for any given ident by looking through base and their addons.
      *
      * @param ident ident of a product
-     * @param productsWithAddons the products list with addOns
+     * @param productsWithAddons the products list with addons
      * @return the {@link SetupWizardProductDto}
      */
     private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> productsWithAddons) {
