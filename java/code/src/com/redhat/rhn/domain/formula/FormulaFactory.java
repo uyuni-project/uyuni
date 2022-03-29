@@ -21,6 +21,8 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.EndpointInfo;
 import com.redhat.rhn.domain.dto.FormulaData;
+import com.redhat.rhn.domain.image.SaltbootException;
+import com.redhat.rhn.domain.image.SaltbootUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
@@ -72,6 +74,9 @@ public class FormulaFactory {
     /** This formula is coupled with the monitoring system type */
     public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
     public static final String PREFIX = "formula-";
+
+    /** Saltboot group deployment formula */
+    public static final String SALTBOOT_GROUP = "saltboot-group";
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
@@ -257,6 +262,43 @@ public class FormulaFactory {
                     systemEntitlementManager.grantMonitoringEntitlement(minion);
                 }
             });
+        }
+
+        // Handle Saltboot group - create Cobbler profile
+        if (SALTBOOT_GROUP.equals(formulaName)) {
+            Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
+            String kernelOptions = "MINION_ID_PREFIX=" + saltboot.get("branch_id");
+            if ((Boolean)saltboot.get("disable_id_prefix")){
+                kernelOptions += " DISABLE_ID_PREFIX=1";
+            }
+            if ((Boolean)saltboot.get("disable_unique_suffix")){
+                kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
+            }
+            if (saltboot.get("minion_id_naming") == "FQDN") {
+                kernelOptions += " USE_FQDN_MINION_ID=1";
+            }
+            else if (saltboot.get("minion_id_naming") == "HWType") {
+                kernelOptions += " DISABLE_HOSTNAME_ID=1";
+            }
+            if (!((String)saltboot.get("default_kernel_parameters")).isEmpty()) {
+                kernelOptions += " " + saltboot.get("default_kernel_parameters");
+            }
+            String bootImage = (String)saltboot.get("default_boot_image");
+            if (bootImage.isEmpty()) {
+                bootImage = "default";
+            }
+            String bootImageVersion = (String)saltboot.get("default_boot_image_version");
+            if (bootImageVersion.isEmpty()) {
+                bootImageVersion = "latest";
+            }
+
+            try {
+                SaltbootUtils.createSaltbootProfile((String)saltboot.get("branch_id"), kernelOptions, bootImage, bootImageVersion);
+            } catch (SaltbootException e) {
+                // TODO create and display error message
+                throw e;
+            }
+
         }
     }
 
