@@ -1,4 +1,8 @@
-- Fix installation problem for SLE15SP4 due missing python-selinux
+-------------------------------------------------------------------
+Tue Mar 29 14:22:42 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.7-1
+  * Fix installation problem for SLE15SP4 due missing python-selinux
 
 -------------------------------------------------------------------
 Wed Feb 02 13:42:23 CET 2022 - jmassaguerpla@suse.de
