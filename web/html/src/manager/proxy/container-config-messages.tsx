@@ -3,12 +3,10 @@ import * as React from "react";
 import { Messages } from "components/messages";
 
 type SuccessType = boolean | undefined;
-type MessagesType = React.ReactNode[];
 
-export const ContainerConfigMessages = (success: SuccessType, messagesIn: MessagesType, loading: boolean) => {
-  var messages: React.ReactNode = null;
+export const ContainerConfigMessages = (success: SuccessType, messagesIn: string[], loading: boolean) => {
   if (success) {
-    messages = (
+    return (
       <Messages
         items={[
           {
@@ -29,7 +27,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: Messag
       />
     );
   } else if (messagesIn.length > 0) {
-    messages = (
+    return (
       <Messages
         items={messagesIn.map(function (msg) {
           return Messages.error(msg);
@@ -37,7 +35,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: Messag
       />
     );
   } else if (loading) {
-    messages = (
+    return (
       <Messages
         items={[
           {
@@ -48,5 +46,5 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: Messag
       />
     );
   }
-  return messages;
+  return null;
 };
