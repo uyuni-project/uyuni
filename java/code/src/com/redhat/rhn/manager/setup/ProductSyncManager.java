@@ -72,33 +72,25 @@ public class ProductSyncManager {
      * Returns a list of base products.
      * @return the products list
      */
-    public List<SetupWizardProductDto> getBaseProducts() {
+    public List<SetupWizardProductDto> getBaseAndAddonProducts() {
         ContentSyncManager csm = new ContentSyncManager();
         // Convert the listed products to objects we can display
         Collection<MgrSyncProductDto> products = csm.listProducts();
-        List<SetupWizardProductDto> result = convertProducts(products);
+        List<SetupWizardProductDto> productsWithAddons = convertProducts(products);
 
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = ChannelFactory.listVendorChannels()
                 .stream().collect(Collectors.toMap(com.redhat.rhn.domain.channel.Channel::getLabel, c -> c));
 
         // Determine their product sync status separately
-        for (SetupWizardProductDto p : result) {
+        for (SetupWizardProductDto p : productsWithAddons) {
             if (p.isProvided()) {
                 p.setSyncStatus(getProductSyncStatus(p, channelByLabel));
             }
             else {
                 p.setStatusNotMirrored();
             }
-            for (SetupWizardProductDto addon : p.getAddonProducts()) {
-                if (addon.isProvided()) {
-                    addon.setSyncStatus(getProductSyncStatus(addon, channelByLabel));
-                }
-                else {
-                    addon.setStatusNotMirrored();
-                }
-            }
         }
-        return result;
+        return productsWithAddons;
     }
 
     /**
@@ -108,7 +100,7 @@ public class ProductSyncManager {
      * @return a map of added products and an error message if any
      */
     public Map<String, Optional<? extends Exception>> addProducts(List<String> productIdents, User user) {
-        List<SetupWizardProductDto> baseProducts = getBaseProducts();
+        List<SetupWizardProductDto> productsWithAddons = getBaseAndAddonProducts();
         // Extract the ids from the identifiers
         final List<Long> productsId = productIdents.stream().map(
             // Ident are in the form 'product_id-label'. If the product id is negative, the ident starts with a minus,
@@ -127,7 +119,7 @@ public class ProductSyncManager {
         return productIdents.stream().collect(Collectors.toMap(
             ident -> ident,
             ident -> Exceptions.handleByReturning(() -> {
-                SetupWizardProductDto product = findProductByIdent(ident, baseProducts);
+                SetupWizardProductDto product = findProductByIdent(ident, productsWithAddons);
                 if (product == null) {
                     throw new ProductSyncException(L10NSERVICE.getMessage("setup.product.error.notfound", ident));
                 }
@@ -432,7 +424,7 @@ public class ProductSyncManager {
      * {@link SetupWizardProductDto} for further display.
      *
      * @param products collection of {@link MgrSyncProductDto}
-     * @return List of {@link SetupWizardProductDto}
+     * @return List of {@link SetupWizardProductDto} with addOn
      */
     private List<SetupWizardProductDto> convertProducts(
             Collection<MgrSyncProductDto> products) {
@@ -442,6 +434,9 @@ public class ProductSyncManager {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 SetupWizardProductDto displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
+                for (SetupWizardProductDto addOnProduct : displayProduct.getAddonProducts()) {
+                    displayProducts.add(addOnProduct);
+                }
             }
         }
         return displayProducts;
