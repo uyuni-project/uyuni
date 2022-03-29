@@ -1,4 +1,8 @@
-- Add dynamic version for bootstrap script header (bsc#1186336)
+-------------------------------------------------------------------
+Tue Mar 29 14:22:55 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.15-1
+  * Add dynamic version for bootstrap script header (bsc#1186336)
 
 -------------------------------------------------------------------
 Wed Nov 17 12:36:29 CET 2021 - jmassaguerpla@suse.de
