@@ -1,7 +1,11 @@
-- fix check on allowVendorChange
-- fix advisory status migration (bsc#1195765)
-- FIX error when an image profile / store is deleted
-  during build / inspect action (bsc#1191597, bsc#1192150)
+-------------------------------------------------------------------
+Tue Mar 29 14:23:27 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.21-1
+  * fix check on allowVendorChange
+  * fix advisory status migration (bsc#1195765)
+  * FIX error when an image profile / store is deleted
+    during build / inspect action (bsc#1191597, bsc#1192150)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:54:00 CET 2022 - jmassaguerpla@suse.de
