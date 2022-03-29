@@ -494,8 +494,8 @@ public class ProductSyncManager {
      * @param ident ident of a product
      * @return the {@link SetupWizardProductDto}
      */
-    private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> baseProduct) {
-        for (SetupWizardProductDto p : baseProduct) {
+    private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> productsWithAddons) {
+        for (SetupWizardProductDto p : productsWithAddons) {
             if (p.getIdent().equals(ident)) {
                 return p;
             }
