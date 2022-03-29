@@ -1,5 +1,9 @@
-- Upgrade Yarn to 1.22.17, upgrade Babel and related dependencies
-- Add react-select-async-paginate 0.6.0, add react-virtuoso 2.5.1.
+-------------------------------------------------------------------
+Tue Mar 29 14:23:26 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.18-1
+  * Upgrade Yarn to 1.22.17, upgrade Babel and related dependencies
+  * Add react-select-async-paginate 0.6.0, add react-virtuoso 2.5.1.
 
 -------------------------------------------------------------------
 Wed Feb 02 13:53:44 CET 2022 - jmassaguerpla@suse.de

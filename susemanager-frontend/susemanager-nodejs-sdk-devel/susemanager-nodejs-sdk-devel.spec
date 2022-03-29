@@ -24,7 +24,7 @@ AutoReqProv: no
 %global debug_package %{nil}
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.2.17
+Version:        4.2.18
 Release:        1%{?dist}
 
 License:        Apache-2.0 and 0BSD and BSD-2-Clause and BSD-3-Clause and MIT and CC-BY-3.0 and ISC and SUSE-Public-Domain and WTFPL and MPL-2.0
