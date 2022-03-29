@@ -48,7 +48,6 @@ mgr_bootstrap_data.py
 # Frontend
 web/ @uyuni-project/frontend
 branding/ @uyuni-project/frontend
-susemanager-frontend/ @uyuni-project/frontend
 *.jsp @uyuni-project/frontend
 *.jspf @uyuni-project/frontend
 .github/workflows/javascript-build.yml @uyuni-project/frontend

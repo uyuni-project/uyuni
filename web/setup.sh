@@ -1,15 +1,8 @@
 set -euxo pipefail
-# This lock is shared with susemanager-frontend/susemanager-nodejs-sdk-devel/setup.sh
-(
-    # Only run the below block if we're the first to acquire the lock
-    if flock -x -n 200 ; then
-        cd susemanager-frontend/susemanager-nodejs-sdk-devel;
-        yarn install --force --ignore-optional --frozen-lockfile;
-        yarn autoclean --force;
-    else
-        # Wait for the lock to be released and then continue
-        flock -x 200;
-    fi
-) 200>/tmp/setup_yarn.lock
-(cd web/html/src; yarn build:novalidate)
-echo ""
+
+cd web/html/src;
+yarn install --force --ignore-optional --frozen-lockfile;
+yarn autoclean --force;
+yarn zip;
+mv node-modules.tar.gz ../../node-modules.tar.gz;
+echo "node-modules.tar.gz"
