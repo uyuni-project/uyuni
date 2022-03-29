@@ -70,7 +70,7 @@ public class ProductSyncManager {
 
     /**
      * Returns a list of base products and addons.
-     * @return the products list with addOns
+     * @return the products list with addons
      */
     public List<SetupWizardProductDto> getBaseAndAddonProducts() {
         ContentSyncManager csm = new ContentSyncManager();
