@@ -1,0 +1,14 @@
+set user [lindex $argv 0]
+
+spawn /usr/bin/uyuni-setup-reportdb-user
+match_max 100000
+expect -exact "Report DB Name is: reportdb\r
+\[a\]dd/\[m\]odify/\[d\]elete user (case insensitive). Default is  \[m\]: "
+send -- "d\r"
+expect -exact "d\r
+User: \[\]: "
+send -- "$user\r"
+expect -exact "$user\r
+Confirm? \[y/n\] \[y\]: "
+send -- "y\r"
+expect eof

@@ -1,2 +1,3 @@
 dist/**/*
 vendors/**/*
+build/yarn/**/*

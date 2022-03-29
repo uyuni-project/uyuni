@@ -6,11 +6,9 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
 
 jobs:
   frontend_lint:
@@ -40,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     # Run lint without fixes so the job fails if there are fixes to be applied
     - name: Run lint

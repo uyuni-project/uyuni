@@ -1346,3 +1346,14 @@ When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end
+
+When(/^I schedule a task to update ReportDB$/) do
+  steps %(
+    When I follow the left menu "Admin > Task Schedules"
+    And I follow "update-reporting-default"
+    And I follow "mgr-update-reporting-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+  )
+end

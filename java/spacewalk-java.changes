@@ -1,4 +1,5 @@
 - Optimize adding new products function (bsc#1193707)
+- Allow monitoring entitlement for debian 11 and 10
 - warning log when hardware refresh result is not serializable
 - Hide private methods in XMLRPC handlers
 - update last checkin only if job is successful (bsc#1197007)
