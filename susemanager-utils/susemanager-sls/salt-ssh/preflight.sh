@@ -235,16 +235,8 @@ if [ -n "${VENV_SOURCE}" ]; then
             mkdir -p "${VENV_TMP_DIR}"
             pushd "${VENV_TMP_DIR}" > /dev/null
             if [ "${VENV_PKG_FILE##*\.}" = "deb" ]; then
-                DEB_DATA=$(ar -t "${TEMP_DIR}/${VENV_PKG_FILE}" | grep '^data\.')
-                DATA_EXT="${DEB_DATA##*\.}"
-                if [ "${DATA_EXT}" = "xz" ]; then
-                    TAR_CMD="Jx"
-                elif [ "${DATA_EXT}" = "bzip" ]; then
-                    TAR_CMD="jx"
-                elif [ "${DATA_EXT}" = "gz" ]; then
-                    TAR_CMD="zx"
-                fi
-                ar -p "${TEMP_DIR}/${VENV_PKG_FILE}" "${DEB_DATA}" | tar "${TAR_CMD}" ./usr/lib/venv-salt-minion
+                dpkg-deb -x "${TEMP_DIR}/${VENV_PKG_FILE}" .
+                rm -rf etc lib var usr/bin usr/sbin usr/share usr/lib/tmpfiles.d
             else
                 rpm2cpio "${TEMP_DIR}/${VENV_PKG_FILE}" | cpio -idm '*/lib/venv-salt-minion/*' >> /dev/null 2>&1
             fi
