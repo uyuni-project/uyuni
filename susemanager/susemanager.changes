@@ -1,4 +1,8 @@
-- set default for registration batch size
+-------------------------------------------------------------------
+Tue Mar 29 14:23:24 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.28-1
+  * set default for registration batch size
 
 -------------------------------------------------------------------
 Wed Feb 02 13:53:27 CET 2022 - jmassaguerpla@suse.de
