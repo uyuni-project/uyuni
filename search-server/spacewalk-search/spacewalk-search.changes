@@ -1,3 +1,5 @@
+- adapt for new c3p0 and mchange-commons package
+
 -------------------------------------------------------------------
 Tue Jan 18 13:59:26 CET 2022 - jgonzalez@suse.com
 

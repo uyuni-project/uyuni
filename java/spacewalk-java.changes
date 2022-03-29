@@ -1,3 +1,4 @@
+- adapt for new c3p0 and mchange-commons package
 - Set default image download protocol to http
 - Container proxy configuration handler
 - Hibernate: set a non-singleton ehcache
