@@ -1,3 +1,4 @@
+- Hibernate: set a non-singleton ehcache
 - Allow monitoring entitlement for debian 11 and 10
 - warning log when hardware refresh result is not serializable
 - Hide private methods in XMLRPC handlers
