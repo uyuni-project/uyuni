@@ -36,7 +36,7 @@
 %global __python /usr/bin/python2 
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150400) || 0%{?ubuntu} || 0%{?debian}
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150000) || 0%{?ubuntu} || 0%{?debian}
 %global build_py2   1
 %endif
 

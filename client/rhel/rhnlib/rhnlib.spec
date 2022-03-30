@@ -26,7 +26,7 @@
 %endif
 %endif
 
-%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150400 )
+%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150000 )
 %global build_py2   1
 %{!?__python2:%global __python2 /usr/bin/python2}
 %if %{undefined python2_sitelib}
