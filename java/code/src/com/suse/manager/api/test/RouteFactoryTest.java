@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.HttpApiResponse;
 import com.suse.manager.api.RouteFactory;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.utils.SparkTestUtils;
@@ -28,12 +29,15 @@ import com.suse.manager.webui.utils.SparkTestUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.ToNumberPolicy;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -83,7 +87,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/withUser");
         Response res = createResponse();
         authorizeRequest(req, res);
-        assertEquals(user.getId(), GSON.fromJson((String) route.handle(req, res), Long.class));
+        assertEquals(user.getId(), getResult((String) route.handle(req, res), Long.class));
     }
 
     /**
@@ -96,8 +100,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, String> queryParams = Map.of("myInteger", "1", "myString", "$tr:ng", "myBoolean", "true");
         Request req = createRequest("/manager/api/test/basicTypes", queryParams);
         Response res = createResponse();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("$tr:ng", result.get("myString"));
@@ -114,8 +117,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, String> queryParams = Map.of("myInteger", "1", "myString", "", "myBoolean", "true");
         Request req = createRequest("/manager/api/test/basicTypes", queryParams);
         Response res = createResponse();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("-empty-", result.get("myString"));
@@ -133,8 +135,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> bodyParams = Map.of("myString", "bar", "myBoolean", "true");
         Request req = createRequest("/manager/api/test/basicTypes", queryParams, GSON.toJson(bodyParams));
         Response res = createResponse();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("bar", result.get("myString")); // value in body should take precedence
@@ -171,8 +172,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> bodyParams = Map.of("myInteger", 1, "myString", "$tr:ng", "myBoolean", true);
         Request req = createRequest("/manager/api/test/basicTypes", GSON.toJson(bodyParams));
         Response res = createResponse();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("$tr:ng", result.get("myString"));
@@ -188,9 +188,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         Request req = createRequest("/manager/api/test/basicDate", Collections.singletonMap("myDate", "2022-04-01"));
         Response res = createResponse();
-        Date result = GSON.fromJson((String) route.handle(req, res), Date.class);
+        String result = getResult((String) route.handle(req, res), String.class);
 
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("2022-04-01"), result);
+        assertEquals("Apr 1, 2022, 12:00:00 AM", result);
     }
 
     /**
@@ -203,9 +203,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/basicDate",
                 GSON.toJson(Collections.singletonMap("myDate", "2022-04-01")));
         Response res = createResponse();
-        Date result = GSON.fromJson((String) route.handle(req, res), Date.class);
+        String result = getResult((String) route.handle(req, res), String.class);
 
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("2022-04-01"), result);
+        assertEquals("Apr 1, 2022, 12:00:00 AM", result);
     }
 
     /**
@@ -218,7 +218,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/basicDate",
                 Collections.singletonMap("myDate", "2022-04-01T12:00:05Z"));
         Response res = createResponse();
-        Date result = GSON.fromJson((String) route.handle(req, res), Date.class);
+        Date result = getResult((String) route.handle(req, res), Date.class);
 
         assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("2022-04-01T12:00:05Z"), result);
     }
@@ -254,10 +254,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> bodyParams = Collections.singletonMap("myList", List.of(3, 2, 5));
         Request req = createRequest("/manager/api/test/sortIntegerList", GSON.toJson(bodyParams));
         Response res = createResponse();
-        List<Integer> result = GSON.fromJson((String) route.handle(req, res),
-                TypeToken.getParameterized(List.class, Integer.class).getType());
+        List<?> result = getResult((String) route.handle(req, res), List.class);
 
-        assertEquals(List.of(2, 3, 5), result);
+        assertEquals(List.of(2L, 3L, 5L), result);
     }
 
     /**
@@ -270,7 +269,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> bodyParams = Collections.singletonMap("myList", List.of(3L, 2L, 5L));
         Request req = createRequest("/manager/api/test/sortLongList", GSON.toJson(bodyParams));
         Response res = createResponse();
-        List<Long> result = GSON.fromJson((String) route.handle(req, res),
+        List<Long> result = getResult((String) route.handle(req, res),
                 TypeToken.getParameterized(List.class, Long.class).getType());
 
         assertEquals(List.of(2L, 3L, 5L), result);
@@ -287,7 +286,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
                 Collections.singletonMap("myList", List.of("foo", "bar", "baz", "$tr:ng"));
         Request req = createMultiValueRequest("/manager/api/test/sortStringList", queryParams);
         Response res = createResponse();
-        List<String> result = GSON.fromJson((String) route.handle(req, res),
+        List<String> result = getResult((String) route.handle(req, res),
                 TypeToken.getParameterized(List.class, String.class).getType());
 
         assertEquals(List.of("$tr:ng", "bar", "baz", "foo"), result);
@@ -303,7 +302,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> bodyParams = Collections.singletonMap("myList", List.of("foo", "bar", "baz", "$tr:ng"));
         Request req = createRequest("/manager/api/test/sortStringList", GSON.toJson(bodyParams));
         Response res = createResponse();
-        List<String> result = GSON.fromJson((String) route.handle(req, res),
+        List<String> result = getResult((String) route.handle(req, res),
                 TypeToken.getParameterized(List.class, String.class).getType());
 
         assertEquals(List.of("$tr:ng", "bar", "baz", "foo"), result);
@@ -320,13 +319,13 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/overloadedEndpoint", Map.of("myInteger1", "1"));
         Response res = createResponse();
 
-        int result = GSON.fromJson((String) route.handle(req, res), Integer.class);
+        int result = getResult((String) route.handle(req, res), Integer.class);
         assertEquals(1, result);
 
         req = createRequest("/manager/api/test/overloadedEndpoint", Map.of("myInteger1", "1", "myInteger2", "2"));
         res = createResponse();
 
-        result = GSON.fromJson((String) route.handle(req, res), Integer.class);
+        result = getResult((String) route.handle(req, res), Integer.class);
         assertEquals(2, result);
     }
 
@@ -343,8 +342,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/mapKeysToSet", GSON.toJson(bodyArgs));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        Set<String> result = GSON.fromJson((String) route.handle(req, res), Set.class);
+        Set<String> result = getResult((String) route.handle(req, res), Set.class);
         assertEquals(Set.of("foo", "bar", "baz"), result);
     }
 
@@ -362,8 +360,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
                 GSON.toJson(Collections.singletonMap("myList", list)));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        List<Object> result = GSON.fromJson((String) route.handle(req, res), List.class);
+        List<Object> result = getResult((String) route.handle(req, res), List.class);
         assertTrue(result.containsAll(List.of(1L, "two", "3")));
     }
 
@@ -408,13 +405,8 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/failing");
         Response res = createResponse();
 
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with status 500.");
-        }
-        catch (HaltException e) {
-            assertEquals(500, e.statusCode());
-        }
+        String result = getExceptionResult((String) route.handle(req, res));
+        assertEquals("Test API exception", result);
     }
 
     /**
@@ -456,8 +448,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/customResponse", Map.of("myInteger", "1", "myString", "foo"));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertFalse(result.containsKey("isCustomSerialized"));
         assertEquals(1L, result.get("myInteger"));
@@ -475,8 +466,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/customResponse", Map.of("myInteger", "1", "myString", "foo"));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
         assertEquals(1L, result.get("myInteger"));
@@ -496,8 +486,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
                 Map.of("myInteger", "1", "myString", "foo"));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
         assertEquals(1L, result.get("myInteger"));
@@ -522,8 +511,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
                         )));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = GSON.fromJson((String) route.handle(req, res), Map.class);
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         // Parent object
         assertEquals(true, result.get("isCustomSerialized"));
@@ -589,10 +577,36 @@ public class RouteFactoryTest extends BaseControllerTestCase {
                 Map.of("myList", List.of("3", "5", "2")));
         Response res = createResponse();
 
-        @SuppressWarnings("unchecked")
-        List<Long> result = GSON.fromJson((String) route.handle(req, res), List.class);
+        List<Long> result = getResult((String) route.handle(req, res), List.class);
 
         assertEquals(List.of(2L, 3L, 5L), result);
+    }
+
+    /**
+     * Unwraps the result object from the JSON response
+     * @param response the JSON response
+     * @param resultType the result type
+     * @param <T> the result type
+     * @return the result object
+     */
+    private <T> T getResult(String response, Type resultType) {
+        JsonObject obj = JsonParser.parseString(response).getAsJsonObject();
+
+        boolean isSuccess = obj.getAsJsonPrimitive("success").getAsBoolean();
+        assertTrue(isSuccess);
+
+        return GSON.fromJson(obj.get("result"), resultType);
+    }
+
+    /**
+     * Unwraps the error message from an unsuccessful JSON response
+     * @param response the JSON response
+     * @return the response message
+     */
+    private String getExceptionResult(String response) {
+        HttpApiResponse responseObj = GSON.fromJson(response, HttpApiResponse.class);
+        assertFalse(responseObj.isSuccess());
+        return responseObj.getMessage();
     }
 
     /**

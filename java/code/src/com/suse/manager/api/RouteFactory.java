@@ -113,12 +113,14 @@ public class RouteFactory {
      * The created {@link Route} will parse the request body as a JSON object and combine its properties together with
      * the query parameters and the authorized {@link User}, and match the list of parameters to the parameters of the
      * provided method. If there is a match, it invokes the method from the specified handler. The return value is
-     * serialized to JSON using a matching serializer and sent as the response.
+     * wrapped into a {@link HttpApiResponse} object and serialized to JSON using a matching serializer. The resulting
+     * JSON string is returned as the {@link Route}'s return value.
      *
      * If the method does not match, or if a parameter can't be parsed, a 400 response is returned.
      *
-     * If the invoked method throws a {@link FaultException}, a 500 response is returned and the exception message is
-     * sent as the response body.
+     * If the invoked method throws a {@link FaultException}, an {@link HttpApiResponse} is created with
+     * <code>success:false</code>, and it contains the exception message as the JSON object's <code>result</code>
+     * property.
      * @param method the method to be matched with the specific route
      * @param handler the API handler from which the matched method will be invoked
      * @return the {@link Route}
@@ -133,12 +135,14 @@ public class RouteFactory {
      * The created {@link Route} will parse the request body as a JSON object and combine its properties together with
      * the query parameters and the authorized {@link User}, and match the list of parameters to the parameters of the
      * provided methods. If there is a match, it invokes the method from the specified handler. The return value is
-     * serialized to JSON using a matching serializer and sent as the response.
+     * wrapped into a {@link HttpApiResponse} object and serialized to JSON using a matching serializer. The resulting
+     * JSON string is returned as the {@link Route}'s return value.
      *
      * If no matching method is found, or if a parameter can't be parsed, a 400 response is returned.
      *
-     * If the invoked method throws a {@link FaultException}, a 500 response is returned and the exception message is
-     * sent as the response body.
+     * If the invoked method throws a {@link FaultException}, an {@link HttpApiResponse} is created with
+     * <code>success:false</code>, and it contains the exception message as the JSON object's <code>result</code>
+     * property.
      * @param methods the pool of methods to be matched with the specific route
      * @param handler the API handler from which the matched method will be invoked
      * @return the {@link Route}
@@ -159,7 +163,8 @@ public class RouteFactory {
             try {
                 // Find an overload matching the parameter names and types
                 MethodCall call = findMethod(methods, requestParams, user);
-                return SparkApplicationHelper.json(gson, res, call.invoke(handler));
+                HttpApiResponse response = HttpApiResponse.success(call.invoke(handler));
+                return SparkApplicationHelper.json(gson, res, response);
             }
             catch (NoSuchMethodException e) {
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
@@ -171,7 +176,8 @@ public class RouteFactory {
             catch (InvocationTargetException e) {
                 Throwable exceptionInMethod = e.getCause();
                 if (exceptionInMethod instanceof FaultException) {
-                    throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, exceptionInMethod.getLocalizedMessage());
+                    return SparkApplicationHelper.json(gson, res,
+                            HttpApiResponse.error(exceptionInMethod.getMessage()));
                 }
                 throw new RuntimeException(exceptionInMethod);
             }
