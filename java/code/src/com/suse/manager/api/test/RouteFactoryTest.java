@@ -21,13 +21,14 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.api.HttpApiResponse;
+import com.suse.manager.api.ListDeserializer;
+import com.suse.manager.api.MapDeserializer;
 import com.suse.manager.api.RouteFactory;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.ToNumberPolicy;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -53,7 +54,10 @@ import spark.Route;
 
 public class RouteFactoryTest extends BaseControllerTestCase {
     private static final Gson GSON = new GsonBuilder()
-            .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
+            .registerTypeAdapter(Map.class, new MapDeserializer())
+            .registerTypeAdapter(List.class, new ListDeserializer())
+            .create();
+    private final JsonParser parser = new JsonParser();
     private RouteFactory routeFactory;
     private TestHandler handler;
 
@@ -91,6 +95,26 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     }
 
     /**
+     * Tests handling of different types of numbers
+     */
+    public void testNumbers() throws Exception {
+        Method numbers = handler.getClass().getMethod("numbers", Integer.class, Long.class, Double.class);
+        Route route = routeFactory.createRoute(numbers, handler);
+
+        Map<String, String> queryParams = Map.of(
+                "myInteger", "1",
+                "myLong", Long.toString(Integer.MAX_VALUE + 1L),
+                "myDouble", "3.14");
+        Request req = createRequest("/manager/api/test/numbers", queryParams);
+        Response res = createResponse();
+
+        String result = (String) route.handle(req, res);
+        assertTrue(result.contains("\"myInteger\":1"));
+        assertTrue(result.contains("\"myLong\":" + (Integer.MAX_VALUE + 1L)));
+        assertTrue(result.contains("\"myDouble\":3.14"));
+    }
+
+    /**
      * Tests handling of primitive parameter types in query string
      */
     public void testBasicTypes() throws Exception {
@@ -102,7 +126,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1L, result.get("myInteger"));
         assertEquals("$tr:ng", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -531,7 +555,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      * @return the result object
      */
     private <T> T getResult(String response, Type resultType) {
-        JsonObject obj = JsonParser.parseString(response).getAsJsonObject();
+        JsonObject obj = parser.parse(response).getAsJsonObject();
 
         boolean isSuccess = obj.getAsJsonPrimitive("success").getAsBoolean();
         assertTrue(isSuccess);
