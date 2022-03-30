@@ -15,7 +15,7 @@ spmigration:
 
 {% if not salt['pillar.get']('susemanager:distupgrade:dryrun') %}
 {% if pillar.get('missing_successors', [])%}
-pkg_removed:
+mgr_release_pkg_removed:
   pkg.removed:
     -   pkgs:
 {%- for missing_successor in pillar.get('missing_successors', [])%}
