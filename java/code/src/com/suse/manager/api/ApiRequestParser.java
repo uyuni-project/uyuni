@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  */
 public class ApiRequestParser {
     private final Gson gson;
+    private final JsonParser parser = new JsonParser();
 
     /**
      * Constructs a parser with a {@link Gson} instance
@@ -48,7 +49,7 @@ public class ApiRequestParser {
      * @return the JSON object properties as key-value pairs
      */
     public Map<String, JsonElement> parseBody(String body) throws ParseException {
-        JsonElement bodyElement = JsonParser.parseString(body);
+        JsonElement bodyElement = parser.parse(body);
 
         if (bodyElement.isJsonNull()) {
             return Collections.emptyMap();
@@ -114,11 +115,11 @@ public class ApiRequestParser {
         JsonElement element;
         try {
             // Try to parse the literal value
-            element = JsonParser.parseString(value);
+            element = parser.parse(value);
         }
         catch (JsonSyntaxException e) {
             // Invalid syntax, try as string
-            element = JsonParser.parseString('"' + value + '"');
+            element = parser.parse('"' + value + '"');
         }
 
         if (element.isJsonPrimitive() || element.isJsonNull()) {

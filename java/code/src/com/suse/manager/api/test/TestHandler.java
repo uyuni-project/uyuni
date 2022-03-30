@@ -57,6 +57,22 @@ public class TestHandler extends BaseHandler {
     }
 
     /**
+     * Gets the values of input parameters of different {@link Number} types in a map to check if they are parsed
+     * correctly
+     * @param myInteger the integer parameter
+     * @param myLong the long parameter
+     * @param myDouble the double parameter
+     * @return the map of the input parameters
+     */
+    @ReadOnly
+    public Map<String, Object> numbers(Integer myInteger, Long myLong, Double myDouble) {
+        return Map.of(
+                "myInteger", myInteger,
+                "myLong", myLong,
+                "myDouble", myDouble);
+    }
+
+    /**
      * Echoes the date in the input
      * @param myDate the date parameter
      * @return the date

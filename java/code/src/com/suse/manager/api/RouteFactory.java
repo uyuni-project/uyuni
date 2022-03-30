@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
-import com.google.gson.ToNumberPolicy;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -237,9 +236,9 @@ public class RouteFactory {
      * @return the {@link Gson} instance
      */
     private Gson initGsonWithSerializers() {
-        //TODO: Update GSON to >= 2.8.9 for below to work, otherwise GSON parses every number as double
         GsonBuilder builder = new GsonBuilder()
-                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE);
+                .registerTypeAdapter(Map.class, new MapDeserializer())
+                .registerTypeAdapter(List.class, new ListDeserializer());
 
         for (XmlRpcCustomSerializer serializer : serializerFactory.getSerializers()) {
             if (serializer instanceof JsonSerializer) {
