@@ -160,7 +160,7 @@ export function ProxyConfig() {
 
   const onRemoveField = (fieldName: string) => {
     return (index: number) => {
-      var newModel = model;
+      const newModel = { ...model };
       delete newModel[`${fieldName}${index}`];
       setModel(newModel);
     };
