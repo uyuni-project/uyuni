@@ -32,7 +32,7 @@ def upload_file_from_minion(minion, minion_ip, filetoupload, targetdir):
         # Check and set correct permission for uploaded file. We need it world readable
         __salt__['salt.cmd'](
             'file.check_perms',
-            os.path.join(targetdir, filename), 'salt', 'salt', 644
+            os.path.join(targetdir, filename), None, 'salt', 'salt', 644
         )
     return res
 
