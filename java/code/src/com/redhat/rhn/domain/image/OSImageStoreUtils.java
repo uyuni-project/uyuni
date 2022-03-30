@@ -115,8 +115,7 @@ public class OSImageStoreUtils {
             return file.getFile();
         }
         ImageInfo info = file.getImageInfo();
-        String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-        return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + imageDir + file.getFile();
+        return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
 
     /**

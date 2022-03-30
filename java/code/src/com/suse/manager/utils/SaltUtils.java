@@ -1012,10 +1012,11 @@ public class SaltUtils {
                     ImageInfoFactory.updateRevision(info);
 
                     List<List<String>> files = new ArrayList<>();
-                    files.add(List.of(buildInfo.getImage().getFilepath(), buildInfo.getImage().getFilename(), "image"));
+                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+                    files.add(List.of(buildInfo.getImage().getFilepath(), imageDir + buildInfo.getImage().getFilename(), "image"));
                     buildInfo.getBootImage().ifPresent(f -> {
-                        files.add(List.of(f.getKernel().getFilepath(), f.getKernel().getFilename(), "kernel"));
-                        files.add(List.of(f.getInitrd().getFilepath(), f.getInitrd().getFilename(), "initrd"));
+                        files.add(List.of(f.getKernel().getFilepath(), imageDir + f.getKernel().getFilename(), "kernel"));
+                        files.add(List.of(f.getInitrd().getFilepath(), imageDir + f.getInitrd().getFilename(), "initrd"));
                     });
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);

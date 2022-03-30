@@ -108,7 +108,7 @@ public enum SaltStateGeneratorService {
             String name = imageInfo.getName();
             String version = imageInfo.getVersion();
             Integer revision = imageInfo.getRevisionNumber();
-            String bootImageName = name + "-" + version;
+            String bootImageName = name + "-" + version + "-" + revision;
             String localPath = "image/" + image.getBasename() + "-" + revision;
             String bootLocalPath = image.getBasename() + "-" + revision;
             Set<ImageFile> files = imageInfo.getImageFiles();
@@ -147,7 +147,7 @@ public enum SaltStateGeneratorService {
         imagePillarDetailsSync.put("local_path", localPath);
 
         imagePillarDetails.put("arch", image.getArch());
-        imagePillarDetails.put("boot_image", name + "-" + version);
+        imagePillarDetails.put("boot_image", name + "-" + version + "-" + revision);
         if (image.getCompression() != null) {
             imagePillarDetails.put("compressed", image.getCompression());
             imagePillarDetails.put("compressed_hash", image.getCompressedHash());
