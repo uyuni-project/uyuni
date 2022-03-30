@@ -431,11 +431,11 @@ PKGLIST15_TRAD = [
     "python3-asn1crypto",
     "python3-cffi",
     "python3-cryptography",
-    "python-dmidecode",
+    "python3-dmidecode",
     "python3-dbus-python",
     "python3-dmidecode",
     "python3-gobject",
-    "python3-libxml2-python",
+    "python3-libxml2|python3-libxml2-python", # was renamed - old name was python3-libxml2-python
     "python3-netifaces",
     "python3-newt",
     "python3-pyasn1",
