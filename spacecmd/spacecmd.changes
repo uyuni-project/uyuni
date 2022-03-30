@@ -1,3 +1,4 @@
+- parse boolean paramaters correctly (bsc#1197689)
 - Add parameter to set containerized proxy SSH port
 
 -------------------------------------------------------------------
