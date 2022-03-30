@@ -65,7 +65,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
          */
         Logger log = Logger.getLogger(BadParameterExceptionHandler.class);
         Level origLevel = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail");
         try {
@@ -109,7 +109,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             if (mail != null) {
                 c.setString("web.traceback_mail", mail);
             }
-            log.setLevel(origLevel);
+            Configurator.setLevel(this.getClass().getName(), origLevel);
         }
     }
 

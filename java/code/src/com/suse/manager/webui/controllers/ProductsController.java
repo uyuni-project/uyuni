@@ -246,7 +246,7 @@ public class ProductsController {
             )));
         }
 
-        LogMF.debug(log, "Add/Sync products: {}", identifiers);
+        log.debug("Add/Sync products: {}", identifiers);
 
         ProductSyncManager psm = new ProductSyncManager();
         Map<String, Optional<? extends Exception>> productStatusMap = psm.addProducts(identifiers, user);

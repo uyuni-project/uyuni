@@ -200,13 +200,13 @@ public class ProductSyncManager {
             // Add the channels first
             ContentSyncManager csm = new ContentSyncManager();
             for (Channel channel : product.getMandatoryChannels()) {
-                LogMF.debug(LOGGER, "Add channel: {}", channel.getLabel());
+                logger.debug("Add channel: {}", channel.getLabel());
                 csm.addChannel(channel.getLabel(), null);
                 channelsToSync.add(channel.getLabel());
             }
 
             for (Channel iuc : product.getInstallerUpdateChannels()) {
-                LogMF.debug(LOGGER, "Add installer update channel: {}", iuc.getLabel());
+                logger.debug("Add installer update channel: {}", iuc.getLabel());
                 csm.addChannel(iuc.getLabel(), null);
                 channelsToSync.add(iuc.getLabel());
             }
