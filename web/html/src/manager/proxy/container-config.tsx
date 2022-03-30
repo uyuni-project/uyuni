@@ -226,8 +226,6 @@ export function ProxyConfig() {
         <Text
           name="proxyAdminEmail"
           label={t("Proxy administrator email")}
-          validators={[Validation.matches(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]}
-          invalidHint={t("Check the format of the email address")}
           placeholder={t("e.g., proxy.admin@mycompany.com")}
           required
           labelClass="col-md-3"
