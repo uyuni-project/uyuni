@@ -52,6 +52,12 @@ type Props = {
 
   /** CSS class for the row containing the fields of one item */
   rowClass?: string;
+
+  /** HTML tag name containing the panel header text */
+  panelHeading?: keyof JSX.IntrinsicElements;
+
+  /** CSS class for the wrapping Panel */
+  panelClassName?: string;
 };
 
 /**
@@ -129,7 +135,7 @@ export function FormMultiInput(props: Props) {
     <Panel
       key={props.id}
       title={props.title}
-      headingLevel="h2"
+      headingLevel={props.panelHeading || "h2"}
       buttons={
         <Button
           icon="fa-plus"
@@ -139,6 +145,7 @@ export function FormMultiInput(props: Props) {
           handler={() => props.onAdd(new_index)}
         />
       }
+      className={props.panelClassName}
     >
       {props.header}
       {items.map((index) => {

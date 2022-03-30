@@ -273,18 +273,27 @@ export function ProxyConfig() {
               labelClass="col-md-3"
               divClass="col-md-6"
             />
-            <Panel key="ssl-certificate" title={t("SSL Certificate data")} headingLevel="h2">
-              <FormMultiInput
-                id="cnames"
-                title={t("Alternate CNAMEs")}
-                prefix="cnames"
-                onAdd={onAddField("cnames")}
-                onRemove={onRemoveField("cnames")}
-              >
-                {(index) => (
-                  <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
-                )}
-              </FormMultiInput>
+            <Panel
+              key="ssl-certificate"
+              title={t("SSL Certificate data")}
+              headingLevel="h2"
+              className="panel-default col-md-6 col-md-offset-3 no-padding"
+            >
+              <div className="row">
+                <FormMultiInput
+                  id="cnames"
+                  title={t("Alternate CNAMEs")}
+                  prefix="cnames"
+                  onAdd={onAddField("cnames")}
+                  onRemove={onRemoveField("cnames")}
+                  panelHeading="label"
+                  panelClassName="panel-default col-md-8 col-md-offset-1 no-padding"
+                >
+                  {(index) => (
+                    <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
+                  )}
+                </FormMultiInput>
+              </div>
               <Text
                 name="country"
                 label={t("2-letter country code")}
@@ -311,24 +320,28 @@ export function ProxyConfig() {
               labelClass="col-md-3"
               divClass="col-md-6"
             />
-            <FormMultiInput
-              id="intermediateCAs"
-              title={t("Intermediate CAs")}
-              prefix="intermediateCAs"
-              onAdd={onAddField("intermediateCAs")}
-              onRemove={onRemoveField("intermediateCAs")}
-            >
-              {(index) => (
-                <Text
-                  name={`intermediateCAs${index}`}
-                  label={t("CA file in PEM format")}
-                  required
-                  type="file"
-                  labelClass="col-md-3"
-                  divClass="col-md-6"
-                />
-              )}
-            </FormMultiInput>
+            <div className="row">
+              <FormMultiInput
+                id="intermediateCAs"
+                title={t("Intermediate CAs")}
+                prefix="intermediateCAs"
+                onAdd={onAddField("intermediateCAs")}
+                onRemove={onRemoveField("intermediateCAs")}
+                panelClassName="panel-default col-md-8 col-md-offset-1 no-padding"
+                panelHeading="label"
+              >
+                {(index) => (
+                  <Text
+                    name={`intermediateCAs${index}`}
+                    label={t("CA file in PEM format")}
+                    required
+                    type="file"
+                    labelClass="col-md-3"
+                    divClass="col-md-6"
+                  />
+                )}
+              </FormMultiInput>
+            </div>
             <Text
               name="proxyCertificate"
               label={t("Proxy CRT content in PEM format")}
