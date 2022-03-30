@@ -491,6 +491,8 @@ class TestSCUtils:
         """
         assert spacecmd.utils.parse_str("1234567", int) == 1234567
         assert spacecmd.utils.parse_str("1234567") == 1234567
+        assert spacecmd.utils.parse_str("True") == True
+        assert spacecmd.utils.parse_str("False") == False
         assert spacecmd.utils.parse_str("ABC1234567") == "ABC1234567"
         assert spacecmd.utils.parse_str('{"foo": "bar"}') == {"foo": "bar"}
         assert spacecmd.utils.parse_str('{"number": 123}') == {"number": 123}
@@ -524,6 +526,12 @@ class TestSCUtils:
         assert i == 1234567
         assert s == "abcXYZ012"
         assert d["channelLabel"] == "foo-i386-5"
+
+        i, b, s, b2 = spacecmd.utils.parse_api_args('1234,True,abc1234,False')
+        assert i == 1234
+        assert b == True
+        assert s == "abc1234"
+        assert b2 == False
 
     def test_json_dump_to_file(self):
         """
