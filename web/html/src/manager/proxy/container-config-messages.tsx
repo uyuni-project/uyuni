@@ -11,17 +11,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: string
         items={[
           {
             severity: "success",
-            text: (
-              <p>
-                {t(
-                  "The container based proxy configuration has been generated! The 'proxy-config.zip archive can be found at /bla/bla/bla on the server, or it can be"
-                )}{" "}
-                <a className="js-spa" href="/rhn/systems/SystemList.do">
-                  {t("downloaded")}
-                </a>
-                {"."}
-              </p>
-            ),
+            text: <p>{t("The container based proxy configuration has been generated correctly.")}</p>,
           },
         ]}
       />
