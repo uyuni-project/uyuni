@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%define SERVICES container-proxy-httpd container-proxy-salt-broker container-proxy-squid container-proxy-ssh container-proxy-tftpd proxy-pod
+%define SERVICES proxy-httpd proxy-salt-broker proxy-squid proxy-ssh proxy-tftpd proxy-pod
 
 Name:           uyuni-proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
@@ -50,12 +50,13 @@ install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-tftpboot
 install -d -m 755 %{buildroot}%{_sbindir}
 
 %if !0%{?is_opensuse}
-sed 's/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/4.3/' -i uyuni-container-proxy-services.config
+PRODUCT_VERSION=$(echo %{version} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
+sed "s/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/${PRODUCT_VERSION}/" -i uyuni-proxy-services.config
 %endif
 %if 0%{?rhel}
-install -D -m 644 uyuni-container-proxy-services.config %{buildroot}%{_sysconfdir}/sysconfig/uyuni-container-proxy-services.config
+install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_sysconfdir}/sysconfig/uyuni-proxy-systemd-services.config
 %else
-install -D -m 644 uyuni-container-proxy-services.config %{buildroot}%{_fillupdir}/sysconfig.%{name}
+install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_fillupdir}/sysconfig.%{name}
 %endif
 
 for service in %{SERVICES}; do
@@ -107,7 +108,7 @@ done
 %{_unitdir}/*.service
 %{_sbindir}/rcuyuni-*
 %if 0%{?rhel}
-%{_sysconfdir}/sysconfig/uyuni-container-proxy-services.config
+%{_sysconfdir}/sysconfig/uyuni-proxy-systemd-services.config
 %else
 %{_fillupdir}/sysconfig.%{name}
 %endif
