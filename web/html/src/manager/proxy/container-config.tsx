@@ -42,10 +42,6 @@ const initialModel = {
   proxyPort: "8022",
 };
 
-function replaceCRLF(content: string | undefined | null) {
-  return content != null ? content.replace(/\r\n/g, "\n") : content;
-}
-
 export function ProxyConfig() {
   const [messages, setMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -83,7 +79,7 @@ export function ProxyConfig() {
                 // Should never happen since we call readAsText, just quiets tsc
                 resolve(undefined);
               } else {
-                resolve({ [fieldName]: replaceCRLF(e.target?.result) });
+                resolve({ [fieldName]: e.target?.result });
               }
             };
             reader.readAsText(file);
