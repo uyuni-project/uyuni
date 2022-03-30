@@ -183,10 +183,5 @@ public class RhnServletListener implements ServletContextListener {
                 log.warn("Error deregistering driver " + driver);
             }
         }
-
-
-        // shutdown the logger to avoid ThreadDeath exception during
-        // webapp reload.
-        LogManager.shutdown();
     }
 }

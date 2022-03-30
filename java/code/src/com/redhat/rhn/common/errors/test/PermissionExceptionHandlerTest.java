@@ -58,7 +58,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
          */
         Logger log = Logger.getLogger(PermissionExceptionHandler.class);
         Level orig = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail", "");
         try {
@@ -93,7 +93,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
             // Turn tracebacks and logging back on
             Thread.sleep(1000); // wait for message to be sent
             c.setString("web.traceback_mail", mail);
-            log.setLevel(orig);
+            Configurator.setLevel(this.getClass().getName(), orig);
         }
     }
 

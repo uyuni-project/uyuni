@@ -24,8 +24,8 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -252,8 +252,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      * test cases that make calls with dummy string IDs.
      */
     public static void disableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(LocalizationService.class.getName(), Level.OFF);
     }
 
     /**
@@ -261,8 +260,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      * test cases that make calls with dummy string IDs.
      */
     public static void enableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.ERROR);
+        Configurator.setLevel(LocalizationService.class.getName(), Level.ERROR);
     }
 
     protected static void createDirIfNotExists(File dir) {
