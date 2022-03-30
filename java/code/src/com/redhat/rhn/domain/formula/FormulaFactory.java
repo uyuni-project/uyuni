@@ -268,6 +268,7 @@ public class FormulaFactory {
         if (SALTBOOT_GROUP.equals(formulaName)) {
             Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
             String kernelOptions = "MINION_ID_PREFIX=" + saltboot.get("branch_id");
+            kernelOptions += " MASTER=" + saltboot.get("download_server");
             if ((Boolean)saltboot.get("disable_id_prefix")){
                 kernelOptions += " DISABLE_ID_PREFIX=1";
             }
