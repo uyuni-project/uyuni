@@ -1,5 +1,9 @@
-- Fix the condition for preventing building python 2 subpackage
-  for SLE15
+-------------------------------------------------------------------
+Wed Mar 30 16:22:25 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.6-1
+  * Fix the condition for preventing building python 2 subpackage
+    for SLE15
 
 -------------------------------------------------------------------
 Wed Feb 02 13:47:08 CET 2022 - jmassaguerpla@suse.de
