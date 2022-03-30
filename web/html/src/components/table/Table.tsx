@@ -163,6 +163,7 @@ export function Table(props: TableProps) {
     </TableDataHandler>
   );
 }
+
 Table.defaultProps = {
-  selectable: () => false,
+  selectable: false,
 };
