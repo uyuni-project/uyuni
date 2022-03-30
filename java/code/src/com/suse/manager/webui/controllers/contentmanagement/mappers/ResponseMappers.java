@@ -106,10 +106,11 @@ public class ResponseMappers {
      *
      * @param sourcesDB the list of db envs
      * @param swSourcesWithUnsyncedPatches
+     * @param sourceTagetChannelIds
      * @return the List&lt;EnvironmentResponse&gt; view beans
      */
     public static List<ProjectSoftwareSourceResponse> mapSourcesFromDB(List<SoftwareProjectSource> sourcesDB,
-            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches) {
+            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches, Map<Long, Long> sourceTagetChannelIds) {
         return sourcesDB
                 .stream()
                 .map(sourceDb -> {
@@ -120,6 +121,8 @@ public class ResponseMappers {
                     projectSourceResponse.setType(ProjectSource.Type.SW_CHANNEL.getLabel());
                     projectSourceResponse.setState(sourceDb.getState().name());
                     projectSourceResponse.setHasUnsyncedPatches(swSourcesWithUnsyncedPatches.contains(sourceDb));
+                    projectSourceResponse.setTargetChannelId(sourceTagetChannelIds
+                            .getOrDefault(sourceDb.getChannel().getId(), null));
                     return projectSourceResponse;
                 })
                 .collect(Collectors.toList());
@@ -164,10 +167,11 @@ public class ResponseMappers {
      * @param projectDB the project db entity
      * @param envsDB the list of db envs
      * @param swSourcesWithUnsyncedPatches set of {@link SoftwareProjectSource}s with patches out of sync
+     * @param sourceTagetChannelIds mapping source to target channel ids
      * @return full project view response bean
      */
     public static ProjectResponse mapProjectFromDB(ContentProject projectDB, List<ContentEnvironment> envsDB,
-            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches) {
+            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches, Map<Long, Long> sourceTagetChannelIds) {
 
         ProjectResponse project = new ProjectResponse();
 
@@ -177,7 +181,7 @@ public class ResponseMappers {
                         .stream()
                         .flatMap(source -> stream(source.asSoftwareSource()))
                         .collect(Collectors.toList()),
-                swSourcesWithUnsyncedPatches
+                swSourcesWithUnsyncedPatches, sourceTagetChannelIds
         ));
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));

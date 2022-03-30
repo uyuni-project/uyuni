@@ -17,6 +17,7 @@ export type ProjectSoftwareSourceType = {
   state: string;
   type: string;
   hasUnsyncedPatches: boolean;
+  targetChannelId: number | null | undefined;
 };
 
 export type ProjectEnvironmentType = {
