@@ -77,7 +77,7 @@ else
 fi
 
 if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
-    ARCH=$(rpm --eval "%{_arch}")
+    ARCH=$(rpm --eval "%{_host_cpu}")
 else
     ARCH=$(dpkg --print-architecture)
 fi
