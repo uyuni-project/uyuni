@@ -1,3 +1,4 @@
+- Ensure "cobbler mkloaders" is executed after restarting services
 - Reuse certificate update code.
 
 -------------------------------------------------------------------
