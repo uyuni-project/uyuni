@@ -2,6 +2,13 @@
 - Accept non standard proxy SSH port
 
 -------------------------------------------------------------------
+Thu Mar 31 15:55:44 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Use _arch instead of _host_cpu macro to detect the arch
+    of the Salt Bundle to be deployed (bsc#1197759)
+
+-------------------------------------------------------------------
 Thu Mar 31 12:22:55 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1
