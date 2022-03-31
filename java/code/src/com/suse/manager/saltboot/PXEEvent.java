@@ -15,11 +15,13 @@
 
 package com.suse.manager.saltboot;
 
+import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.parser.JsonParser;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.datatypes.Event;
-import com.suse.salt.netapi.parser.JsonParser;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -69,6 +71,11 @@ public class PXEEvent {
         return data.getAsJsonObject().get("root").getAsString();
     }
 
+    /**
+     * The device where salt configuration files are stored on the terminal
+     *
+     * @return Optional of salt device string
+     */
     public Optional<String> getSaltDevice() {
         JsonElement sd = data.getAsJsonObject().get("salt_device");
         if (sd == null) {
@@ -77,6 +84,11 @@ public class PXEEvent {
         return Optional.of(sd.getAsString());
     }
 
+    /**
+     * Additional kernel parameters terminal wants to be booted with
+     *
+     * @return Optional of kernel parameters string
+     */
     public Optional<String> getKernelParameters() {
         JsonElement kp = data.getAsJsonObject().get("terminal_kernel_parameters");
         if (kp == null) {
@@ -89,10 +101,15 @@ public class PXEEvent {
         return data.getAsJsonObject().get("boot_image").getAsString();
     }
 
+    /**
+     * List of MAC addresses of the terminal excluding localhost interface
+     *
+     * @return List of string of MAC addresses
+     */
     public List<String> getHwAddresses() {
-        Set<Map.Entry<String, JsonElement>> mac_grains = data.getAsJsonObject().get("hwaddr_interfaces")
+        Set<Map.Entry<String, JsonElement>> macGrains = data.getAsJsonObject().get("hwaddr_interfaces")
                 .getAsJsonObject().entrySet();
-        return mac_grains.stream()
+        return macGrains.stream()
                 .filter(e -> e.getKey() != "lo")
                 .map(e -> e.getValue().getAsString())
                 .collect(Collectors.toList());

@@ -18,13 +18,14 @@ package com.suse.manager.saltboot;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.cobbler.Network;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,12 @@ import java.util.stream.Collectors;
 public class SaltbootUtils {
     private SaltbootUtils() { }
 
+    /**
+     * Create saltboot distribution based on provided image and boot image info
+     * For each distribution, new profile is created as well
+     * @param imageInfo image info
+     * @param bootImage boot image info relevant to provided image obtained from image inspect
+     */
     public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
@@ -52,7 +59,7 @@ public class SaltbootUtils {
         profile.save();
 
         // Check if cobbler default distro is present and update if so. Otherwise, create it
-        Distro defaultDistro = Distro.lookupByName(con,"default-latest");
+        Distro defaultDistro = Distro.lookupByName(con, "default-latest");
         if (defaultDistro == null) {
             new Distro.Builder().setName("default-latest")
               .setInitrd(initrd).setKernel(kernel)
@@ -66,19 +73,34 @@ public class SaltbootUtils {
         }
     }
 
+    /**
+     * Delete saltboot distribution
+     * If distribution is not found, does nothing
+     * @param info
+     */
     public static void deleteSaltbootDistro(ImageInfo info) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        Distro d = Distro.lookupByName( con,info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber());
+        Distro d = Distro.lookupByName(con, info.getName() + "-" + info.getVersion() + "-" +
+                info.getRevisionNumber());
         if (d != null) {
             d.remove();
         }
     }
 
+    /**
+     * Create saltboot profile
+     * Saltboot profile is tied with particular saltboot group and contains default boot instructions for new terminals
+     * @param saltbootGroup
+     * @param kernelOptions
+     * @param bootImage Name of the image, used for saltboot distro lookup
+     * @param bootImageVersion Version of the image (including revision number), used for saltboot distro lookup
+     * @throws SaltbootException
+     */
     public static void createSaltbootProfile(String saltbootGroup, String kernelOptions,
-                                     String bootImage, String bootImageVersion) throws SaltbootException{
+                                     String bootImage, String bootImageVersion) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
-        Distro d = Distro.lookupByName(con,bootImage + "-" + bootImageVersion);
+        Distro d = Distro.lookupByName(con, bootImage + "-" + bootImageVersion);
         if (d == null) {
             throw new SaltbootException("Unable to find Cobbler distribution for specified image and version");
         }
@@ -91,6 +113,11 @@ public class SaltbootUtils {
         gp.save();
     }
 
+    /**
+     * Delete saltboot profile
+     * If profile is not found, does nothing
+     * @param saltbootGroup
+     */
     public static void deleteSaltbootProfile(String saltbootGroup) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         Profile p = Profile.lookupByName(con, saltbootGroup);
@@ -99,6 +126,16 @@ public class SaltbootUtils {
         }
     }
 
+    /**
+     * Create saltboot system record
+     * System record is tied with one particular terminal and contains boot instructions for this terminal
+     * @param minionId
+     * @param bootImage Image name including version and revision, used for image profile lookup
+     * @param saltbootGroup
+     * @param hwAddresses
+     * @param kernelParams
+     * @throws SaltbootException
+     */
     public static void createSaltbootSystem(String minionId, String bootImage, String saltbootGroup,
                                             List<String> hwAddresses, String kernelParams) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
@@ -130,7 +167,17 @@ public class SaltbootUtils {
         system.save();
     }
 
-    public void deleteSaltbootSystem() {
-
+    /**
+     * Delete saltboot system record
+     * If not found, does nothing
+     *
+     * @param minionId
+     */
+    public void deleteSaltbootSystem(String minionId) {
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        SystemRecord sr = SystemRecord.lookupByName(con, minionId);
+        if (sr != null) {
+            sr.remove();
+        }
     }
 }

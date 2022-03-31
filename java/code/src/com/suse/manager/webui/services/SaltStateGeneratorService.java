@@ -113,7 +113,8 @@ public enum SaltStateGeneratorService {
             String bootLocalPath = image.getBasename() + "-" + revision;
             Set<ImageFile> files = imageInfo.getImageFiles();
 
-            Map<String, Object> imagePillar = generateImagePillar(image, imageInfo , name, version, revision, localPath);
+            Map<String, Object> imagePillar = generateImagePillar(image, imageInfo , name, version,
+                    revision, localPath);
             pillar.add("images", imagePillar);
             if (bootImage.isPresent()) {
                 Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage.get(), bootImageName,
@@ -140,7 +141,8 @@ public enum SaltStateGeneratorService {
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
         // TODO handle missing cases
-        ImageFile imageFile = imageInfo.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
+        ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("image")).findFirst().get();
 
         imagePillarDetailsSync.put("hash", image.getChecksum().getChecksum());
         imagePillarDetailsSync.put("url", OSImageStoreUtils.getOSImageFileURI(imageFile));
@@ -176,8 +178,10 @@ public enum SaltStateGeneratorService {
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
         // TODO handle missing cases
-        ImageFile kernelFile = imageInfo.getImageFiles().stream().filter(f -> f.getType().equals("kernel")).findFirst().get();
-        ImageFile initrdFile = imageInfo.getImageFiles().stream().filter(f -> f.getType().equals("initrd")).findFirst().get();
+        ImageFile kernelFile = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("kernel")).findFirst().get();
+        ImageFile initrdFile = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("initrd")).findFirst().get();
 
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());

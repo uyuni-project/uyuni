@@ -45,5 +45,7 @@ public class OSImageBuildImageInfoResult {
     /**
      * @return the boot image info
      */
-    public Optional<OSImageInspectSlsResult.BootImage> getBootImage() { return Optional.of(boot_image); }
+    public Optional<OSImageInspectSlsResult.BootImage> getBootImage() {
+        return Optional.of(boot_image);
+    }
 }

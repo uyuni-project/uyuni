@@ -55,7 +55,6 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
-import com.suse.manager.saltboot.SaltbootUtils;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
@@ -89,6 +88,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -1005,7 +1005,7 @@ public class SaltUtils {
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
                     // TODO move to ImageFile
-                    //              info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    // info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
                     info.setName(buildInfo.getImage().getName());
                     info.setVersion(buildInfo.getImage().getVersion());
 
@@ -1013,10 +1013,13 @@ public class SaltUtils {
 
                     List<List<String>> files = new ArrayList<>();
                     String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                    files.add(List.of(buildInfo.getImage().getFilepath(), imageDir + buildInfo.getImage().getFilename(), "image"));
+                    files.add(List.of(buildInfo.getImage().getFilepath(),
+                            imageDir + buildInfo.getImage().getFilename(), "image"));
                     buildInfo.getBootImage().ifPresent(f -> {
-                        files.add(List.of(f.getKernel().getFilepath(), imageDir + f.getKernel().getFilename(), "kernel"));
-                        files.add(List.of(f.getInitrd().getFilepath(), imageDir + f.getInitrd().getFilename(), "initrd"));
+                        files.add(List.of(f.getKernel().getFilepath(),
+                                imageDir + f.getKernel().getFilename(), "kernel"));
+                        files.add(List.of(f.getInitrd().getFilepath(),
+                                imageDir + f.getInitrd().getFilename(), "initrd"));
                     });
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
@@ -1029,7 +1032,8 @@ public class SaltUtils {
                             serverAction.setResultMsg(StringUtils
                                     .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
                                             1024));
-                        } else {
+                        }
+                        else {
                             ImageFile imagefile = new ImageFile();
                             imagefile.setFile(file.get(1));
                             imagefile.setType(file.get(2));

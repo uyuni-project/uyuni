@@ -21,8 +21,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.EndpointInfo;
 import com.redhat.rhn.domain.dto.FormulaData;
-import com.suse.manager.saltboot.SaltbootException;
-import com.suse.manager.saltboot.SaltbootUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
@@ -33,6 +31,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
+import com.suse.manager.saltboot.SaltbootException;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
@@ -269,10 +269,10 @@ public class FormulaFactory {
             Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
             String kernelOptions = "MINION_ID_PREFIX=" + saltboot.get("branch_id");
             kernelOptions += " MASTER=" + saltboot.get("download_server");
-            if ((Boolean)saltboot.get("disable_id_prefix")){
+            if ((Boolean)saltboot.get("disable_id_prefix")) {
                 kernelOptions += " DISABLE_ID_PREFIX=1";
             }
-            if ((Boolean)saltboot.get("disable_unique_suffix")){
+            if ((Boolean)saltboot.get("disable_unique_suffix")) {
                 kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
             }
             if (saltboot.get("minion_id_naming") == "FQDN") {
@@ -294,8 +294,10 @@ public class FormulaFactory {
             }
 
             try {
-                SaltbootUtils.createSaltbootProfile((String)saltboot.get("branch_id"), kernelOptions, bootImage, bootImageVersion);
-            } catch (SaltbootException e) {
+                SaltbootUtils.createSaltbootProfile((String)saltboot.get("branch_id"), kernelOptions,
+                        bootImage, bootImageVersion);
+            }
+            catch (SaltbootException e) {
                 // TODO create and display error message
                 throw e;
             }

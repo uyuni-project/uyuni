@@ -35,10 +35,18 @@ public class ImageChecksum {
     public static class MD5Checksum implements Checksum {
         private String checksum;
 
-        public MD5Checksum(String checksumIn) { checksum = checksumIn; }
+        /**
+         * Constructor for MD5 checksum
+         * @param checksumIn checksum
+         */
+        public MD5Checksum(String checksumIn) {
+            checksum = checksumIn;
+        }
 
         @Override
-        public String getChecksum() { return checksum; }
+        public String getChecksum() {
+            return checksum;
+        }
 
         /**
          * @return checksum with type

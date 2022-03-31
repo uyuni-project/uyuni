@@ -17,7 +17,9 @@ package com.suse.manager.saltboot;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
+
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
+
 import org.apache.log4j.Logger;
 
 public class PXEEventMessageAction implements MessageAction {
@@ -28,7 +30,8 @@ public class PXEEventMessageAction implements MessageAction {
         PXEEvent pxeEvent = ((PXEEventMessage) msg).getPXEEventMessage();
 
         if (pxeEvent.getRoot().isEmpty()) {
-            LOG.error("Root device not specified in PXE event for minion " + pxeEvent.getMinionId() + ". Ignoring event");
+            LOG.error("Root device not specified in PXE event for minion " +
+                    pxeEvent.getMinionId() + ". Ignoring event");
             return;
         }
         String kernelParameters = "root=" + pxeEvent.getRoot();

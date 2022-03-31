@@ -16,6 +16,7 @@
 package com.suse.manager.saltboot;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class PXEEventMessage implements EventMessage {
@@ -25,10 +26,10 @@ public class PXEEventMessage implements EventMessage {
     /**
      * Standard constructor.
      *
-     * @param PXEEventIn - 'Saltboot PXE' event
+     * @param pxeEventIn - 'Saltboot PXE' event
      */
-    public PXEEventMessage(PXEEvent PXEEventIn) {
-        this.PXEEvent = PXEEventIn;
+    public PXEEventMessage(PXEEvent pxeEventIn) {
+        this.PXEEvent = pxeEventIn;
     }
 
     /**
