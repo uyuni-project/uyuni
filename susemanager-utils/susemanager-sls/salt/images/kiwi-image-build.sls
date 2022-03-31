@@ -10,9 +10,12 @@
 {%- set source_dir = root_dir + '/source' %}
 {%- set chroot_dir = root_dir + '/chroot/' %}
 {%- set dest_dir   = root_dir + '/images.build' %}
+{%- set bundle_dir = root_dir + '/images/' %}
 # cache dir is used only with Kiwi-ng
 {%- set cache_dir  = root_dir + '/cache/' %}
+{%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
+{%- set use_bundle_build = pillar.get('use_bundle_build', False) %}
 
 # on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
 {%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
@@ -70,10 +73,18 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+mgr_buildimage_kiwi_bundle:
+  cmd.run:
+    - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ bundle_id }} --bundle-dir {{ bundle_dir }}"
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
 
 {%- else %}
 # KIWI Legacy
 #
+
+{%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
+{%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
@@ -107,16 +118,52 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+{%- if have_bundle_build %}
+mgr_buildimage_kiwi_bundle:
+  cmd.run:
+    - name: "{{ kiwi }} --nocolor --yes --bundle-build {{ dest_dir }} --bundle-id {{ bundle_id }} --destdir {{ bundle_dir }}"
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
+
+{%- else %}
+
+# SLE11 Kiwi does not have --bundle-build option, we have to create the bundle tarball ourselves:
+
+mgr_buildimage_kiwi_bundle_dir:
+  file.directory:
+    - name: {{ bundle_dir }}
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
+
+mgr_buildimage_kiwi_bundle_tarball:
+  cmd.run:
+    - name: "cd '{{ dest_dir }}' && tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `find . -maxdepth 1 -type f`"
+    - require:
+      - file: mgr_buildimage_kiwi_bundle_dir
+
+mgr_buildimage_kiwi_bundle:
+  cmd.run:
+    - name: "cd '{{ bundle_dir }}' && sha256sum *.tgz > `echo *.tgz`.sha256"
+    - require:
+      - cmd: mgr_buildimage_kiwi_bundle_tarball
+
 {%- endif %}
 
+{%- endif %}
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
   mgrcompat.module_run:
     - name: cp.push_dir
+    {%- if use_bundle_build %}
+    - path: {{ bundle_dir }}
+    - require:
+      - cmd: mgr_buildimage_kiwi_bundle
+    {%- else %}
     - path: {{ dest_dir }}
     - require:
       - cmd: mgr_buildimage_kiwi_create
+    {%- endif %}
 {%- endif %}
 
 mgr_buildimage_info:
@@ -124,11 +171,18 @@ mgr_buildimage_info:
     - name: kiwi_info.build_info
     - dest: {{ dest_dir }}
     - build_id: {{ pillar.get('build_id') }}
+    {%- if use_bundle_build %}
+    - bundle_dest: {{ bundle_dir }}
+    {%- endif %}
     - require:
 {%- if pillar.get('use_salt_transport') %}
       - mgr_buildimage_kiwi_collect_image
 {%- else %}
+    {%- if use_bundle_build %}
+    - mgr_buildimage_kiwi_bundle
+    {%- else %}
       - mgr_buildimage_kiwi_create
+    {%- endif %}
 {%- endif %}
 
 mgr_buildimage_kiwi_collect_logs:

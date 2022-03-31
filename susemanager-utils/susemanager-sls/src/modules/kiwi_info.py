@@ -150,7 +150,7 @@ _compression_types = [
     { 'suffix': '',    'compression': None }
     ]
 
-def image_details(dest: str) -> dict:
+def image_details(dest: str, bundle_dest: str = None) -> dict:
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -197,10 +197,13 @@ def image_details(dest: str) -> dict:
 
     res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5'), compression is not None))
 
+    if bundle_dest is not None:
+      res['bundles'] = inspect_bundles(bundle_dest, basename)
+
     return res
 
-def inspect_image(dest: str, build_id: str) -> dict:
-    res = image_details(dest)
+def inspect_image(dest: str, build_id: str, bundle_dest: str = None) -> dict:
+    res = image_details(dest, bundle_dest)
     if not res:
       return None
 
@@ -298,8 +301,38 @@ def inspect_boot_image(dest: str) -> dict:
 
     return res
 
+
+def inspect_bundles(dest: str, basename: str) -> dict:
+    res = []
+    files = __salt__['file.readdir'](dest)
+
+    pattern = re.compile(r"^(?P<basename>" + re.escape(basename) + r")-(?P<id>[^.]*)\.(?P<suffix>.*)\.sha256$")
+    for f in files:
+        match = pattern.match(f)
+        if match:
+            res1 = match.groupdict()
+            sha256_file = f
+            sha256_str = __salt__['cp.get_file_str'](os.path.join(dest, sha256_file))
+            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
+            match = pattern2.match(sha256_str)
+            if match:
+                d = match.groupdict()
+                d['hash'] = 'sha256:{0}'.format(d['hash'])
+                res1.update(d)
+                res1['filepath'] = os.path.join(dest, res1['filename'])
+            else:
+                # only hash without file name
+                pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
+                match = pattern2.match(sha256_str)
+                if match:
+                    res1['hash'] = 'sha256:{0}'.format(match.groupdict()['hash'])
+                    res1['filename'] = sha256_file[0:-len('.sha256')]
+                    res1['filepath'] = os.path.join(dest, res1['filename'])
+            res.append(res1)
+    return res
+
 # TODO consider adding checksum to validate upload
-def build_info(dest: str, build_id: str) -> dict:
+def build_info(dest: str, build_id: str, bundle_dir: str = None) -> dict:
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -347,5 +380,8 @@ def build_info(dest: str, build_id: str) -> dict:
                 'hash': r['kernel']['hash']
             }
         }
+
+    if bundle_dir is not None:
+        res['bundles'] = inspect_bundles(bundle_dir, basename)
 
     return res

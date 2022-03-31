@@ -23,8 +23,17 @@ import java.util.Optional;
  */
 public class OSImageBuildImageInfoResult {
 
+    private OSImageInspectSlsResult.Bundle bundle;
+    private List<OSImageInspectSlsResult.Bundle> bundles;
     private OSImageInspectSlsResult.Image image;
     private OSImageInspectSlsResult.BootImage boot_image;
+
+    /**
+     * @return the bundle info
+     */
+    public List<OSImageInspectSlsResult.Bundle> getBundles() {
+        return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
+    }
 
     /**
      * @return the image info

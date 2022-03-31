@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OSImageBuildSlsResult {
 
-     @SerializedName("mgrcompat_|-mgr_buildimage_info_|-kiwi_info.build_info_|-module_run")
+    @SerializedName("mgrcompat_|-mgr_buildimage_info_|-kiwi_info.build_info_|-module_run")
     private StateApplyResult<Ret<OSImageBuildImageInfoResult>> kiwiBuildInfo;
 
     /**
