@@ -1,3 +1,4 @@
+- Fix virtFileSize type after cobbler upgrade
 - Container proxy configuration handler
 - Hibernate: set a non-singleton ehcache
 - change directory owner and permissions only when needed
