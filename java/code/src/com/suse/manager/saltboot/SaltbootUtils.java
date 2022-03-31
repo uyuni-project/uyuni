@@ -99,7 +99,7 @@ public class SaltbootUtils {
         }
     }
 
-    public static void createSaltbootSystem(String minionId, String bootImage,
+    public static void createSaltbootSystem(String minionId, String bootImage, String saltbootGroup,
                                             List<String> hwAddresses, String kernelParams) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
@@ -107,6 +107,14 @@ public class SaltbootUtils {
         if (profile == null) {
             throw new SaltbootException("Unable to find Cobbler profile for specified boot image " + bootImage);
         }
+
+        Profile group = Profile.lookupByName(con, saltbootGroup);
+        if (group == null) {
+            throw new SaltbootException("Unable to find Cobbler profile for saltboot group " + saltbootGroup);
+        }
+
+        // We need to append associated saltboot group settings, particularly MASTER
+        kernelParams += group.getKernelOptions();
 
         SystemRecord system = SystemRecord.lookupByName(con, minionId);
         if (system == null) {

@@ -40,7 +40,7 @@ public class PXEEventMessageAction implements MessageAction {
             kernelParameters += " " + pxeEvent.getKernelParameters().get();
         }
 
-        SaltbootUtils.createSaltbootSystem(pxeEvent.getMinionId(), pxeEvent.getBootImage(),
+        SaltbootUtils.createSaltbootSystem(pxeEvent.getMinionId(), pxeEvent.getBootImage(), pxeEvent.getSaltbootGroup(),
                 pxeEvent.getHwAddresses(), kernelParameters);
     }
 
