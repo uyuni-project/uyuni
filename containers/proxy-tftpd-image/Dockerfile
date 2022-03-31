@@ -30,9 +30,12 @@ EXPOSE 69/udp
 
 VOLUME [ "/etc/uyuni", "/srv/tftpboot" ]
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses tftp python3-PyYAML
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML python3-fbtftp
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
-CMD uyuni-configure.py && ( source /etc/sysconfig/tftp; /usr/sbin/in.tftpd -L -u "$TFTP_USER" -s "$TFTP_DIRECTORY" $TFTP_OPTIONS )
+COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
+RUN chmod +x /usr/bin/tftp_wrapper.py
+
+CMD uyuni-configure.py && /usr/bin/tftp_wrapper.py
