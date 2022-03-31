@@ -1,3 +1,4 @@
+- Fix uyuni-check-database.service during migration
 - hide test result from terminal output
 
 -------------------------------------------------------------------
