@@ -311,7 +311,7 @@ function test_venv_enabled() {
     elif [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
         local repourl="$CLIENT_REPO_URL"
         if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
-            ARCH=$(rpm --eval "%{_host_cpu}")
+            ARCH=$(rpm --eval "%{_arch}")
         else
             ARCH=$(dpkg --print-architecture)
         fi
