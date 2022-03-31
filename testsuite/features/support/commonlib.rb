@@ -200,3 +200,13 @@ def extract_logs_from_node(node)
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
   raise 'Download log archive failed' unless code.zero?
 end
+
+def get_uptime_from_host(host)
+  node = get_target(host)
+  uptime, _return_code = node.run('cat /proc/uptime') # run code on node only once, to get uptime
+  seconds = Float(uptime.split[0]) # return only the uptime in seconds, as a float
+  minutes = (seconds / 60.0) # 60 seconds; the .0 forces a float division
+  hours = (minutes / 60.0) # 60 minutes
+  days = (hours / 24.0) # 24 hours
+  { seconds: seconds, minutes: minutes, hours: hours, days: days }
+end
