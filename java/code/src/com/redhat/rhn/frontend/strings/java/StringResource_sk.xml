@@ -8658,52 +8658,52 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.ext_auth_updated" xml:space="preserve">
         <source>External Authentication settings were successfully updated.</source>
-        <target/>
+        <target>Nastavenia externého overenia boli úspešne aktualizované.</target>
       </trans-unit>
       <trans-unit id="message.extgroup.created" xml:space="preserve">
         <source>External Authentication Group '{0}' was successfully created.</source>
-        <target/>
+        <target>Skupina externého overenia '{0}' bola úspešne vytvorená.</target>
       </trans-unit>
       <trans-unit id="message.extgroup.updated" xml:space="preserve">
         <source>External Authentication Group '{0}' was successfully updated.</source>
-        <target/>
+        <target>Skupina externého overenia '{0}' bola úspešne aktualizovaná.</target>
       </trans-unit>
       <trans-unit id="message.extgroup.deleted" xml:space="preserve">
         <source>External Authentication Group '{0}' was successfully deleted.</source>
-        <target/>
+        <target>Skupina externého overenia '{0}' bola úspešne vymazaná.</target>
       </trans-unit>
       <trans-unit id="message.sg.configupdated" xml:space="preserve">
         <source>System Group Configuration was successfully updated.</source>
-        <target/>
+        <target>Konfigurácia systémových skupín bola úspešne aktualizovaná.</target>
       </trans-unit>
       <trans-unit id="extgrouplabel.already.exists" xml:space="preserve">
         <source>External Authentication Group name '{0}' is already used. Please choose another one.</source>
-        <target/>
+        <target>Názov skupiny externého overenia '{0}' sa už používa. Zvoľte si, prosím, iný.</target>
       </trans-unit>
       <trans-unit id="message.org_name_updated" xml:space="preserve">
         <source>Organization {0} was successfully updated.</source>
-        <target/>
+        <target>Organizácia {0} bola úspešne aktualizovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.org_name_not_updated" xml:space="preserve">
         <source>Organization {0} was not updated due to identical name.</source>
-        <target/>
+        <target>Organizácia {0} nebola aktualizovaná z dôvodu rovnakého názvu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.org_deleted" xml:space="preserve">
         <source>Organization {0} was successfully deleted.</source>
-        <target/>
+        <target>Organizácia {0} bola úspešne vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.error.file-exists" xml:space="preserve">
         <source>A file named "{0}" already exists in this channel.</source>
-        <target/>
+        <target>V tomto kanáli už existuje súbor s názvom "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
