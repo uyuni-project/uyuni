@@ -1,5 +1,9 @@
-- Use dpkg-deb to extract deb files instead of ar
-  with salt ssh preflight on Debian based distros
+-------------------------------------------------------------------
+Thu Mar 31 12:22:55 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Use dpkg-deb to extract deb files instead of ar
+    with salt ssh preflight on Debian based distros
 
 -------------------------------------------------------------------
 Fri Mar 11 16:49:07 CET 2022 - jgonzalez@suse.com
