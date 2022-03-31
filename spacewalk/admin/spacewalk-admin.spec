@@ -124,6 +124,7 @@ fi
 %{_unitdir}/spacewalk-wait-for-jabberd.service
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/salt-secrets-config.service
+%{_unitdir}/cobbler-refresh-mkloaders.service
 %{_unitdir}/mgr-websockify.service
 %{_unitdir}/uyuni-check-database.service
 %{_unitdir}/uyuni-update-config.service

@@ -1,0 +1,9 @@
+[Unit]
+Description=Refresh Cobbler bootloaders
+After=cobblerd.service
+After=taskomatic.service
+
+[Service]
+ExecStart=/usr/bin/cobbler mkloaders
+Type=oneshot
+RemainAfterExit=yes
