@@ -16,15 +16,13 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -37,31 +35,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class UserExtGroupSerializer extends RhnXmlRpcCustomSerializer {
+public class UserExtGroupSerializer extends ApiResponseSerializer<UserExtGroup> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<UserExtGroup> getSupportedClass() {
         return UserExtGroup.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        UserExtGroup g = (UserExtGroup) value;
-
-        helper.add("name", g.getLabel());
-
+    @Override
+    public SerializedApiResponse serialize(UserExtGroup src) {
         List<String> roleList = new ArrayList<>();
-        for (Role role : g.getRoles()) {
+        for (Role role : src.getRoles()) {
             roleList.add(role.getLabel());
         }
-        helper.add("roles", roleList);
 
-        helper.writeTo(output);
+        return new SerializationBuilder()
+                .add("name", src.getLabel())
+                .add("roles", roleList)
+                .build();
     }
 }

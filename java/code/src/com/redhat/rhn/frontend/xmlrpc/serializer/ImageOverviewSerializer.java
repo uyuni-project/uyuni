@@ -20,13 +20,10 @@ import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ImageOverviewSerializer
@@ -67,50 +64,47 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("struct", "files", "image files")
  * #struct_end()
  */
-public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class ImageOverviewSerializer extends ApiResponseSerializer<ImageOverview> {
 
     @Override
-    protected void doSerialize(Object value, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ImageOverview image = (ImageOverview) value;
-        Checksum chk = image.getChecksum();
-        ImageProfile prof = image.getProfile();
-        ImageStore store = image.getStore();
-        MinionServer buildhost = image.getBuildServer();
-
-        helper.add("id", image.getId());
-        helper.add("name", image.getName());
-        helper.add("type", image.getImageType());
-        helper.add("version", image.getVersion());
-        helper.add("revision", image.getCurrRevisionNum());
-        helper.add("arch", image.getArch());
-        helper.add("external", image.isExternalImage());
-        helper.add("checksum", chk != null ? chk.getChecksum() : "");
-        helper.add("profileLabel", prof != null ? prof.getLabel() : "");
-        helper.add("storeLabel", store != null ? store.getLabel() : "");
-        helper.add("buildServerId", buildhost != null ? buildhost.getId() : 0);
-        helper.add("securityErrata", image.getSecurityErrata());
-        helper.add("bugErrata", image.getBugErrata());
-        helper.add("enhancementErrata", image.getEnhancementErrata());
-        helper.add("outdatedPackages", image.getOutdatedPackages());
-        helper.add("installedPackages", image.getInstalledPackages());
-        image.getBuildServerAction().ifPresentOrElse(
-                ba -> helper.add("buildStatus", ba.getStatus().getName().toLowerCase()),
-                () -> helper.add("buildStatus",
-                        (image.isBuilt() ? ActionFactory.STATUS_COMPLETED : ActionFactory.STATUS_FAILED)
-                        .getName().toLowerCase()));
-
-        image.getInspectServerAction().ifPresent(
-                ia -> helper.add("inspectStatus", ia.getStatus().getName().toLowerCase()));
-        helper.add("files", image.getImageFiles());
-        helper.add("obsolete", image.isObsolete());
-
-        helper.writeTo(writer);
+    public Class<ImageOverview> getSupportedClass() {
+        return ImageOverview.class;
     }
 
     @Override
-    public Class getSupportedClass() {
-        return ImageOverview.class;
+    public SerializedApiResponse serialize(ImageOverview src) {
+        Checksum chk = src.getChecksum();
+        ImageProfile prof = src.getProfile();
+        ImageStore store = src.getStore();
+        MinionServer buildhost = src.getBuildServer();
+
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("type", src.getImageType())
+                .add("version", src.getVersion())
+                .add("revision", src.getCurrRevisionNum())
+                .add("arch", src.getArch())
+                .add("external", src.isExternalImage())
+                .add("checksum", chk != null ? chk.getChecksum() : "")
+                .add("profileLabel", prof != null ? prof.getLabel() : "")
+                .add("storeLabel", store != null ? store.getLabel() : "")
+                .add("buildServerId", buildhost != null ? buildhost.getId() : 0)
+                .add("securityErrata", src.getSecurityErrata())
+                .add("bugErrata", src.getBugErrata())
+                .add("enhancementErrata", src.getEnhancementErrata())
+                .add("outdatedPackages", src.getOutdatedPackages())
+                .add("installedPackages", src.getInstalledPackages());
+        src.getBuildServerAction().ifPresentOrElse(
+                ba -> builder.add("buildStatus", ba.getStatus().getName().toLowerCase()),
+                () -> builder.add("buildStatus",
+                        (src.isBuilt() ? ActionFactory.STATUS_COMPLETED : ActionFactory.STATUS_FAILED)
+                                .getName().toLowerCase()));
+        src.getInspectServerAction().ifPresent(
+                ia -> builder.add("inspectStatus", ia.getStatus().getName().toLowerCase()));
+        builder.add("files", src.getImageFiles());
+        builder.add("obsolete", src.isObsolete());
+
+        return builder.build();
     }
 }

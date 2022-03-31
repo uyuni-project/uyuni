@@ -16,14 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Date;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -43,37 +41,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
  * #struct_end()
  */
-public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class SystemOverviewSerializer extends ApiResponseSerializer<SystemOverview> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<SystemOverview> getSupportedClass() {
         return SystemOverview.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SystemOverview system = (SystemOverview) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", system.getId());
-        helper.add("name", system.getName());
-        helper.add("last_checkin", system.getLastCheckinDate());
+    @Override
+    public SerializedApiResponse serialize(SystemOverview src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("last_checkin", src.getLastCheckinDate());
 
-        Date regDate = system.getCreated();
+        Date regDate = src.getCreated();
         if (regDate != null) {
-            helper.add("created", regDate);
+            builder.add("created", regDate);
         }
 
-        Date lastBoot = system.getLastBootAsDate();
+        Date lastBoot = src.getLastBootAsDate();
         if (lastBoot != null) {
-            helper.add("last_boot", lastBoot);
+            builder.add("last_boot", lastBoot);
         }
-        helper.add("extra_pkg_count", system.getExtraPkgCount());
-        helper.add("outdated_pkg_count", system.getOutdatedPackages());
-        helper.writeTo(output);
+        builder.add("extra_pkg_count", src.getExtraPkgCount());
+        builder.add("outdated_pkg_count", src.getOutdatedPackages());
+        return builder.build();
     }
 }

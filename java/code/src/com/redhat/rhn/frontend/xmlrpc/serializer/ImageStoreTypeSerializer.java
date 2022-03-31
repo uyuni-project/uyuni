@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.ImageStoreType;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -34,26 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "name")
  * #struct_end()
  */
-public class ImageStoreTypeSerializer extends RhnXmlRpcCustomSerializer {
+public class ImageStoreTypeSerializer extends ApiResponseSerializer<ImageStoreType> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-       throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ImageStoreType type = (ImageStoreType) value;
-        helper.add("id", type.getId());
-        helper.add("label", type.getLabel());
-        helper.add("name", type.getName());
-        helper.writeTo(output);
+    @Override
+    public Class<ImageStoreType> getSupportedClass() {
+        return ImageStoreType.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
-        return ImageStoreType.class;
+    @Override
+    public SerializedApiResponse serialize(ImageStoreType src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .build();
     }
 }

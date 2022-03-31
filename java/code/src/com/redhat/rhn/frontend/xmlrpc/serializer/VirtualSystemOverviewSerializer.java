@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -40,28 +37,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #struct_end()
  *
  */
-public class VirtualSystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class VirtualSystemOverviewSerializer extends ApiResponseSerializer<VirtualSystemOverview> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<VirtualSystemOverview> getSupportedClass() {
         return VirtualSystemOverview.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        VirtualSystemOverview system = (VirtualSystemOverview) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("uuid", system.getUuid());
-        helper.add("id", system.getVirtualSystemId());
-        helper.add("guest_name", system.getName());
-        helper.add("name", system.getServerName());
-        helper.add("last_checkin", system.getLastCheckinDate());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(VirtualSystemOverview src) {
+        return new SerializationBuilder()
+                .add("uuid", src.getUuid())
+                .add("id", src.getVirtualSystemId())
+                .add("guest_name", src.getName())
+                .add("name", src.getServerName())
+                .add("last_checkin", src.getLastCheckinDate())
+                .build();
     }
 }

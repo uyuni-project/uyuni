@@ -31,8 +31,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * that when it happens, so we can fix it.
  *
  * @author ggainey
- *
+ * @deprecated in favor of {@link com.suse.manager.api.ApiResponseSerializer}
  */
+@Deprecated
 public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerializer {
 
     /**

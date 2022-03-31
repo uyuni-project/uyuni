@@ -14,19 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * CVEAuditServerSerializer
@@ -51,38 +49,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * #struct_end()
  *
  */
-public class CVEAuditServerSerializer extends RhnXmlRpcCustomSerializer {
+public class CVEAuditServerSerializer extends ApiResponseSerializer<CVEAuditServer> {
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Class<CVEAuditServer> getSupportedClass() {
         return CVEAuditServer.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException, IOException {
-
-        CVEAuditServer system = (CVEAuditServer) value;
-        Collection<AuditChannelInfo> channels = system.getChannels();
+    @Override
+    public SerializedApiResponse serialize(CVEAuditServer src) {
+        Collection<AuditChannelInfo> channels = src.getChannels();
         List<String> channelLabels = new ArrayList<>(channels.size());
         for (AuditChannelInfo channel : channels) {
             channelLabels.add(channel.getLabel());
         }
-        Collection<ErrataIdAdvisoryPair> erratas = system.getErratas();
+        Collection<ErrataIdAdvisoryPair> erratas = src.getErratas();
         List<String> errataAdvisories = new ArrayList<>(erratas.size());
         for (ErrataIdAdvisoryPair errata : erratas) {
             errataAdvisories.add(errata.getAdvisory());
         }
 
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("system_id", system.getId());
-        helper.add("patch_status", system.getPatchStatus().toString());
-        helper.add("channel_labels", channelLabels);
-        helper.add("errata_advisories", errataAdvisories);
-        helper.writeTo(output);
+        return new SerializationBuilder()
+                .add("system_id", src.getId())
+                .add("patch_status", src.getPatchStatus().toString())
+                .add("channel_labels", channelLabels)
+                .add("errata_advisories", errataAdvisories)
+                .build();
     }
 }

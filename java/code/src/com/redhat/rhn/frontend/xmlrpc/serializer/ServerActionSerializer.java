@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -62,50 +59,45 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *                                       executes at the client machine. (optional)")
  *      #struct_end()
  */
-public class ServerActionSerializer extends RhnXmlRpcCustomSerializer {
+public class ServerActionSerializer extends ApiResponseSerializer<ServerAction> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ServerAction> getSupportedClass() {
         return ServerAction.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ServerAction sAct = (ServerAction) value;
-        Action act = sAct.getParentAction();
-        SerializerHelper helper = new SerializerHelper(serializer);
+    @Override
+    public SerializedApiResponse serialize(ServerAction src) {
+        Action act = src.getParentAction();
 
-        helper.add("failed_count", act.getFailedCount());
-        helper.add("modified", act.getModified().toString());
-        helper.add("created", act.getCreated().toString());
-        helper.add("action_type", act.getActionType().getName());
-        helper.add("successful_count", act.getSuccessfulCount());
-        helper.add("earliest_action", act.getEarliestAction().toString());
-        helper.add("archived", act.getArchived());
-        helper.add("scheduler_user", act.getSchedulerUser().getLogin());
-        helper.add("prerequisite", act.getPrerequisite());
-        helper.add("name", act.getName());
-        helper.add("id", act.getId());
-        helper.add("version", act.getVersion().toString());
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("failed_count", act.getFailedCount())
+                .add("modified", act.getModified().toString())
+                .add("created", act.getCreated().toString())
+                .add("action_type", act.getActionType().getName())
+                .add("successful_count", act.getSuccessfulCount())
+                .add("earliest_action", act.getEarliestAction().toString())
+                .add("archived", act.getArchived())
+                .add("scheduler_user", act.getSchedulerUser().getLogin())
+                .add("prerequisite", act.getPrerequisite())
+                .add("name", act.getName())
+                .add("id", act.getId())
+                .add("version", act.getVersion().toString());
 
-        if (sAct.getCompletionTime() != null) {
-            helper.add("completion_time", sAct.getCompletionTime().toString());
+        if (src.getCompletionTime() != null) {
+            builder.add("completion_time", src.getCompletionTime().toString());
         }
-        if (sAct.getPickupTime() != null) {
-            helper.add("pickup_time", sAct.getPickupTime().toString());
+        if (src.getPickupTime() != null) {
+            builder.add("pickup_time", src.getPickupTime().toString());
         }
 
-        helper.add("modified_date", act.getModified());
-        helper.add("created_date", act.getCreated());
-        helper.add("completed_date", sAct.getCompletionTime());
-        helper.add("pickup_date", sAct.getPickupTime());
+        builder.add("modified_date", act.getModified())
+                .add("created_date", act.getCreated())
+                .add("completed_date", src.getCompletionTime())
+                .add("pickup_date", src.getPickupTime())
+                .add("result_msg", src.getResultMsg());
 
-        helper.add("result_msg", sAct.getResultMsg());
-
-        helper.writeTo(output);
+        return builder.build();
     }
 
 }

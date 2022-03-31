@@ -15,15 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.PackageOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * PackageOverviewSerializer
@@ -41,37 +38,28 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "provider")
  *   #struct_end()
  */
-public class PackageOverviewSerializer extends RhnXmlRpcCustomSerializer {
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+public class PackageOverviewSerializer extends ApiResponseSerializer<PackageOverview> {
+
+    @Override
+    public Class<PackageOverview> getSupportedClass() {
         return PackageOverview.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        PackageOverview pO = (PackageOverview)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", pO.getId());
-        helper.add("name", pO.getPackageName());
-        helper.add("summary", pO.getSummary());
-        helper.add("description", StringUtils.defaultString(pO.getDescription()));
-        helper.add("version", pO.getVersion());
-        helper.add("release", pO.getRelease());
-        String epoch = pO.getEpoch();
-        if (epoch == null) {
-            epoch = "";
-        }
-        helper.add("epoch", epoch);
-        helper.add("arch", pO.getPackageArch());
-
-
-        helper.add("nvre", pO.getPackageNvre());
-        helper.add("nvrea", pO.getNvrea());
-        helper.add("packageChannels", pO.getPackageChannels());
-        helper.add("provider", pO.getProvider());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageOverview src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getPackageName())
+                .add("summary", src.getSummary())
+                .add("description", StringUtils.defaultString(src.getDescription()))
+                .add("version", src.getVersion())
+                .add("release", src.getRelease())
+                .add("epoch", StringUtils.defaultString(src.getEpoch()))
+                .add("arch", src.getPackageArch())
+                .add("nvre", src.getPackageNvre())
+                .add("nvrea", src.getNvrea())
+                .add("packageChannels", src.getPackageChannels())
+                .add("provider", src.getProvider())
+                .build();
     }
 }

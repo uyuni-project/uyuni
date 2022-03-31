@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.OrgTrustOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -36,22 +33,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #struct_end()
  *   #array_end()
  */
-public class OrgTrustOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class OrgTrustOverviewSerializer extends ApiResponseSerializer<OrgTrustOverview> {
 
-    /** {@inheritDoc} */
+    @Override
     public Class<OrgTrustOverview> getSupportedClass() {
         return OrgTrustOverview.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        OrgTrustOverview tr = (OrgTrustOverview) value;
-        helper.add("orgId", tr.getId());
-        helper.add("orgName", tr.getName());
-        helper.add("trustEnabled", tr.getTrusted());
-        helper.writeTo(output);
-
+    @Override
+    public SerializedApiResponse serialize(OrgTrustOverview src) {
+        return new SerializationBuilder()
+                .add("orgId", src.getId())
+                .add("orgName", src.getName())
+                .add("trustEnabled", src.getTrusted())
+                .build();
     }
 }

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -53,23 +50,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *       #options_end()
  *   #struct_end()
  */
-public class ActivationKeySerializer extends RhnXmlRpcCustomSerializer {
+public class ActivationKeySerializer extends ApiResponseSerializer<ActivationKey> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ActivationKey> getSupportedClass() {
         return ActivationKey.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ActivationKey key = (ActivationKey)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        TokenSerializer.populateTokenInfo(key.getToken(), helper);
-        helper.add("key", key.getKey());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ActivationKey src) {
+        SerializationBuilder builder = new SerializationBuilder();
+        TokenSerializer.populateTokenInfo(src.getToken(), builder);
+        builder.add("key", src.getKey());
+        return builder.build();
     }
-
 }

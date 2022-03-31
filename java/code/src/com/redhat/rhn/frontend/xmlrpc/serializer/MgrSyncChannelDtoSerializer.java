@@ -16,14 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Optional;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link MgrSyncChannelDto} objects.
@@ -47,37 +45,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("boolean", "installer_updates", "is an installer update channel")
  *   #struct_end()
  */
-public class MgrSyncChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class MgrSyncChannelDtoSerializer extends ApiResponseSerializer<MgrSyncChannelDto> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<MgrSyncChannelDto> getSupportedClass() {
         return MgrSyncChannelDto.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        MgrSyncChannelDto channel = (MgrSyncChannelDto) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("arch", channel.getArch().orElse(PackageFactory.lookupPackageArchByLabel("noarch")).getLabel());
-        helper.add("description", channel.getDescription());
-        helper.add("family", channel.getFamily());
-        helper.add("is_signed", channel.isSigned());
-        helper.add("label", channel.getLabel());
-        helper.add("name", channel.getName());
-        helper.add("optional", !channel.isMandatory());
-        helper.add("parent", Optional.ofNullable(channel.getParentLabel()).orElse("BASE"));
-        helper.add("product_name", channel.getProductName());
-        helper.add("product_version", channel.getProductVersion());
-        helper.add("source_url", channel.getSourceUrl());
-        helper.add("status", channel.getStatus().name());
-        helper.add("summary", channel.getSummary());
-        helper.add("update_tag", channel.getUpdateTag());
-        helper.add("installer_updates", channel.isInstallerUpdates());
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(MgrSyncChannelDto src) {
+        return new SerializationBuilder()
+                .add("arch", src.getArch().orElse(PackageFactory.lookupPackageArchByLabel("noarch")).getLabel())
+                .add("description", src.getDescription())
+                .add("family", src.getFamily())
+                .add("is_signed", src.isSigned())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("optional", src.isMandatory())
+                .add("parent", Optional.ofNullable(src.getParentLabel()).orElse("BASE"))
+                .add("product_name", src.getProductName())
+                .add("product_version", src.getProductVersion())
+                .add("source_url", src.getSourceUrl())
+                .add("status", src.getStatus().name())
+                .add("summary", src.getSummary())
+                .add("update_tag", src.getUpdateTag())
+                .add("installer_updates", src.isInstallerUpdates())
+                .build();
     }
 }

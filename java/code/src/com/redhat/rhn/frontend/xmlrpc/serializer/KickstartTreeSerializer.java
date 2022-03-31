@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -36,31 +33,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("int", "channel_id")
  * #struct_end()
  */
-public class KickstartTreeSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartTreeSerializer extends ApiResponseSerializer<KickstartableTree> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartableTree> getSupportedClass() {
         return KickstartableTree.class;
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output,
-                          XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        KickstartableTree tree = (KickstartableTree)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", tree.getId());
-        helper.add("label", tree.getLabel());
-        helper.add("base_path", tree.getBasePath());
-        helper.add("channel_id", tree.getChannel().getId());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartableTree src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("base_path", src.getBasePath())
+                .add("channel_id", src.getChannel().getId())
+                .build();
     }
-
 }

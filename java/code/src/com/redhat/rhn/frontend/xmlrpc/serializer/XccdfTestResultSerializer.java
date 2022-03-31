@@ -20,13 +20,10 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfProfile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -50,48 +47,42 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("boolean", "deletable", "Indicates whether the scan can be deleted.")
  * #struct_end()
  */
-public class XccdfTestResultSerializer extends RhnXmlRpcCustomSerializer {
+public class XccdfTestResultSerializer extends ApiResponseSerializer<XccdfTestResult> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<XccdfTestResult> getSupportedClass() {
         return XccdfTestResult.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException, IOException {
-        XccdfTestResult testResult = (XccdfTestResult) value;
-        ScapActionDetails actionDetails = testResult.getScapActionDetails();
-        XccdfBenchmark benchmark = testResult.getBenchmark();
-        XccdfProfile profile = testResult.getProfile();
+    @Override
+    public SerializedApiResponse serialize(XccdfTestResult src) {
+        ScapActionDetails actionDetails = src.getScapActionDetails();
+        XccdfBenchmark benchmark = src.getBenchmark();
+        XccdfProfile profile = src.getProfile();
         Action parentAction = actionDetails.getParentAction();
 
-        SerializerHelper helper = new SerializerHelper(serializer);
-        addToHelper(helper, "xid", testResult.getId());
-        addToHelper(helper, "sid", testResult.getServer().getId());
-        addToHelper(helper, "path", actionDetails.getPath());
-        addToHelper(helper, "ovalfiles", actionDetails.getOvalfiles());
-        addToHelper(helper, "oscap_parameters", actionDetails.getParametersContents());
-        addToHelper(helper, "test_result", testResult.getIdentifier());
-        addToHelper(helper, "benchmark", benchmark.getIdentifier());
-        addToHelper(helper, "benchmark_version", benchmark.getVersion());
-        addToHelper(helper, "profile", profile.getIdentifier());
-        addToHelper(helper, "profile_title", profile.getTitle());
-        addToHelper(helper, "start_time", testResult.getStartTime());
-        addToHelper(helper, "end_time", testResult.getEndTime());
-        addToHelper(helper, "errors", testResult.getErrrosContents());
-        addToHelper(helper, "action_id", parentAction.getId());
-        addToHelper(helper, "deletable", testResult.getDeletable());
-        helper.writeTo(output);
+        SerializationBuilder builder = new SerializationBuilder();
+        add(builder, "xid", src.getId());
+        add(builder, "sid", src.getServer().getId());
+        add(builder, "path", actionDetails.getPath());
+        add(builder, "ovalfiles", actionDetails.getOvalfiles());
+        add(builder, "oscap_parameters", actionDetails.getParametersContents());
+        add(builder, "test_result", src.getIdentifier());
+        add(builder, "benchmark", benchmark.getIdentifier());
+        add(builder, "benchmark_version", benchmark.getVersion());
+        add(builder, "profile", profile.getIdentifier());
+        add(builder, "profile_title", profile.getTitle());
+        add(builder, "start_time", src.getStartTime());
+        add(builder, "end_time", src.getEndTime());
+        add(builder, "errors", src.getErrrosContents());
+        add(builder, "action_id", parentAction.getId());
+        add(builder, "deletable", src.getDeletable());
+        return builder.build();
     }
 
-    private static void addToHelper(SerializerHelper helper, String label, Object value) {
+    private static void add(SerializationBuilder builder, String label, Object value) {
         if (value != null) {
-            helper.add(label, value);
+            builder.add(label, value);
         }
     }
 }

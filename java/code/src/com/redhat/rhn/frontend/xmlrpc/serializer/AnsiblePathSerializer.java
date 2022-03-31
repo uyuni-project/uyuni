@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * XMLRPC Serializer for AnsiblePath
@@ -35,24 +32,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop("string", "local path to inventory or playbook")
  *   #struct_end()
  */
-public class AnsiblePathSerializer extends RhnXmlRpcCustomSerializer {
+public class AnsiblePathSerializer extends ApiResponseSerializer<AnsiblePath> {
 
     @Override
-    public Class getSupportedClass() {
+    public Class<AnsiblePath> getSupportedClass() {
         return AnsiblePath.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        AnsiblePath path = (AnsiblePath) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", path.getId());
-        helper.add("type", path.getEntityType().getLabel());
-        helper.add("server_id", path.getMinionServer().getId());
-        helper.add("path", path.getPath().toString());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(AnsiblePath src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("type", src.getEntityType().getLabel())
+                .add("server_id", src.getMinionServer().getId())
+                .add("path", src.getPath().toString())
+                .build();
     }
 }

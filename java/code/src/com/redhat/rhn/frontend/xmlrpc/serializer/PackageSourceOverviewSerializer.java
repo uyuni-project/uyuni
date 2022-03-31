@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.PackageSourceOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * PackageSourceOverviewSerializer
@@ -32,21 +29,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "name")
  *   #struct_end()
  */
-public class PackageSourceOverviewSerializer extends RhnXmlRpcCustomSerializer {
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+public class PackageSourceOverviewSerializer extends ApiResponseSerializer<PackageSourceOverview> {
+
+    @Override
+    public Class<PackageSourceOverview> getSupportedClass() {
         return PackageSourceOverview.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        PackageSourceOverview pO = (PackageSourceOverview)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", pO.getId());
-        helper.add("name", pO.getNvrea());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageSourceOverview src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getNvrea())
+                .build();
     }
 }

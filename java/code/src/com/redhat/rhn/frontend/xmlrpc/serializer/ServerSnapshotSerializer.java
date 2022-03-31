@@ -20,15 +20,13 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -54,38 +52,29 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *                  reason (optional).")
  *  #struct_end()
  */
-public class ServerSnapshotSerializer extends RhnXmlRpcCustomSerializer {
+public class ServerSnapshotSerializer extends ApiResponseSerializer<ServerSnapshot> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ServerSnapshot> getSupportedClass() {
         return ServerSnapshot.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        ServerSnapshot snap = (ServerSnapshot)value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", snap.getId());
-        helper.add("reason", snap.getReason());
-        helper.add("created", snap.getCreated());
-
+    @Override
+    public SerializedApiResponse serialize(ServerSnapshot src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("reason", src.getReason())
+                .add("created", src.getCreated());
 
         Set<String> channels = new HashSet<>();
-        for (Channel chan : snap.getChannels()) {
+        for (Channel chan : src.getChannels()) {
             channels.add(chan.getLabel());
         }
-        helper.add("channels", channels);
+        builder.add("channels", channels);
 
         Set<String> entGroups = new HashSet<>();
         Set<String> mgmtGroups = new HashSet<>();
-        for (ServerGroup grp : snap.getGroups()) {
+        for (ServerGroup grp : src.getGroups()) {
             if (grp instanceof EntitlementServerGroup) {
                 entGroups.add(grp.getName());
             }
@@ -93,26 +82,26 @@ public class ServerSnapshotSerializer extends RhnXmlRpcCustomSerializer {
                 mgmtGroups.add(grp.getName());
             }
         }
-        helper.add("groups", mgmtGroups);
-        helper.add("entitlements", entGroups);
+        builder.add("groups", mgmtGroups);
+        builder.add("entitlements", entGroups);
 
         Set<String> cfgChans = new HashSet<>();
-        for (ConfigChannel grp : snap.getConfigChannels()) {
+        for (ConfigChannel grp : src.getConfigChannels()) {
             cfgChans.add(grp.getLabel());
         }
-        helper.add("config_channels", cfgChans);
+        builder.add("config_channels", cfgChans);
 
-        if (snap.getInvalidReason() != null) {
-            helper.add("Invalid_reason", snap.getInvalidReason().getName());
+        if (src.getInvalidReason() != null) {
+            builder.add("Invalid_reason", src.getInvalidReason().getName());
         }
 
         Set<String> tags = new HashSet();
-        for (SnapshotTag tag : snap.getTags()) {
+        for (SnapshotTag tag : src.getTags()) {
             tags.add(tag.getName().getName());
         }
-        helper.add("tags", tags);
+        builder.add("tags", tags);
 
-        helper.writeTo(output);
+        return builder.build();
     }
 
 

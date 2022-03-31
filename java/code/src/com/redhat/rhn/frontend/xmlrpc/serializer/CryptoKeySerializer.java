@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializes instances of
@@ -35,29 +32,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("string", "content")
  *      #struct_end()
  */
-public class CryptoKeySerializer extends RhnXmlRpcCustomSerializer {
+public class CryptoKeySerializer extends ApiResponseSerializer<CryptoKey> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CryptoKey> getSupportedClass() {
         return CryptoKey.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object o, Writer writer, XmlRpcSerializer xmlRpcSerializer)
-        throws XmlRpcException, IOException {
-
-        if (!(o instanceof CryptoKey)) {
-            throw new XmlRpcException("Object of incorrect type to be serialized. " +
-                "Expected: CryptoKeyDetails, Found: " +
-                (o != null ? o.getClass() : null));
-        }
-
-        CryptoKey key = (CryptoKey) o;
-
-        SerializerHelper serializer = new SerializerHelper(xmlRpcSerializer);
-        serializer.add("description", key.getDescription());
-        serializer.add("type", key.getCryptoKeyType().getLabel());
-        serializer.add("content", key.getKeyString());
-        serializer.writeTo(writer);
+    @Override
+    public SerializedApiResponse serialize(CryptoKey src) {
+        return new SerializationBuilder()
+                .add("description", src.getDescription())
+                .add("type", src.getCryptoKeyType().getLabel())
+                .add("content", src.getKeyString())
+                .build();
     }
 }

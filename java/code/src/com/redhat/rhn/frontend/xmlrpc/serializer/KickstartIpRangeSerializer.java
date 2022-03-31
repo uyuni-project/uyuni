@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -34,25 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "min", "The min ip of the range")
  *   #struct_end()
  */
-public class KickstartIpRangeSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartIpRangeSerializer extends ApiResponseSerializer<KickstartIpRange> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartIpRange> getSupportedClass() {
         return KickstartIpRange.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        KickstartIpRange range = (KickstartIpRange)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("ksLabel", range.getKsdata().getLabel());
-        helper.add("min", range.getMinString());
-        helper.add("max", range.getMaxString());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartIpRange src) {
+        return new SerializationBuilder()
+                .add("ksLabel", src.getKsdata().getLabel())
+                .add("min", src.getMinString())
+                .add("max", src.getMaxString())
+                .build();
     }
-
 }
