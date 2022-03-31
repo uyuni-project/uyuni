@@ -219,7 +219,11 @@ if [ -n "${VENV_SOURCE}" ]; then
         VENV_HASH=$(dpkg -s venv-salt-minion | sha256sum | tr -d '\- ')
     fi
     if [ -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}" ]; then
-        PRE_VENV_HASH=$(cat "${VENV_TMP_DIR}/${VENV_HASH_FILE}")
+        if [ -x "${VENV_TMP_DIR}/bin/python" ]; then
+            PRE_VENV_HASH=$(cat "${VENV_TMP_DIR}/${VENV_HASH_FILE}")
+        else
+            rm -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
+        fi
     fi
     if [ "${VENV_HASH}" != "${PRE_VENV_HASH}" ]; then
         if [ "${VENV_SOURCE}" = "bootstrap" ]; then
@@ -235,16 +239,8 @@ if [ -n "${VENV_SOURCE}" ]; then
             mkdir -p "${VENV_TMP_DIR}"
             pushd "${VENV_TMP_DIR}" > /dev/null
             if [ "${VENV_PKG_FILE##*\.}" = "deb" ]; then
-                DEB_DATA=$(ar -t "${TEMP_DIR}/${VENV_PKG_FILE}" | grep '^data\.')
-                DATA_EXT="${DEB_DATA##*\.}"
-                if [ "${DATA_EXT}" = "xz" ]; then
-                    TAR_CMD="Jx"
-                elif [ "${DATA_EXT}" = "bzip" ]; then
-                    TAR_CMD="jx"
-                elif [ "${DATA_EXT}" = "gz" ]; then
-                    TAR_CMD="zx"
-                fi
-                ar -p "${TEMP_DIR}/${VENV_PKG_FILE}" "${DEB_DATA}" | tar "${TAR_CMD}" ./usr/lib/venv-salt-minion
+                dpkg-deb -x "${TEMP_DIR}/${VENV_PKG_FILE}" .
+                rm -rf etc lib var usr/bin usr/sbin usr/share usr/lib/tmpfiles.d
             else
                 rpm2cpio "${TEMP_DIR}/${VENV_PKG_FILE}" | cpio -idm '*/lib/venv-salt-minion/*' >> /dev/null 2>&1
             fi
@@ -254,6 +250,10 @@ if [ -n "${VENV_SOURCE}" ]; then
         else
             cp -r "${VENV_INST_DIR}" "${VENV_TMP_DIR}"
             pushd "${VENV_TMP_DIR}" > /dev/null
+        fi
+        if [ -x bin/python ]; then
+            rm -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
+            exit_with_message_code "Error: Unable to extract the bundle from ${TEMP_DIR}/${VENV_PKG_FILE}!" 6
         fi
         grep -m1 -r "^#\!${VENV_INST_DIR}" bin/ | sed 's/:.*//' | sort | uniq | xargs -I '{}' sed -i "1s=^#!${VENV_INST_DIR}/bin/.*=#!${VENV_TMP_DIR}/bin/python=" {}
         sed -i "s#${VENV_INST_DIR}#${VENV_TMP_DIR}#g" bin/python
