@@ -1,5 +1,3 @@
-- Use _arch instead of _host_cpu macro to detect the arch
-  of the Salt Bundle to be deployed (bsc#1197759)
 - Handle salt bundle in set_proxy.sls
 - Accept non standard proxy SSH port
 
