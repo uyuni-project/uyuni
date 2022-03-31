@@ -150,7 +150,7 @@ export function ProxyConfig() {
     setIsValidated(isValidated);
   };
 
-  const onChange = (newModel: any) => {
+  const onChange = (newModel) => {
     setModel(Object.assign({}, newModel));
   };
 
