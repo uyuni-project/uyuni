@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.CryptoKeyDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializes instances of {@link com.redhat.rhn.frontend.dto.CryptoKeyDto}.
@@ -34,28 +31,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("string", "type")
  *      #struct_end()
  */
-public class CryptoKeyDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class CryptoKeyDtoSerializer extends ApiResponseSerializer<CryptoKeyDto> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CryptoKeyDto> getSupportedClass() {
         return CryptoKeyDto.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object o, Writer writer, XmlRpcSerializer xmlRpcSerializer)
-        throws XmlRpcException, IOException {
-        if (!(o instanceof CryptoKeyDto)) {
-            throw new XmlRpcException("Object of incorrect type to be serialized. " +
-                "Expected: CryptoKeyDetails, Found: " +
-                (o != null ? o.getClass() : null));
-        }
-
-        CryptoKeyDto key = (CryptoKeyDto) o;
-
-        SerializerHelper serializer = new SerializerHelper(xmlRpcSerializer);
-        serializer.add("description", key.getDescription());
-        serializer.add("type", key.getLabel());
-        serializer.writeTo(writer);
-
+    @Override
+    public SerializedApiResponse serialize(CryptoKeyDto src) {
+        return new SerializationBuilder()
+                .add("description", src.getDescription())
+                .add("type", src.getLabel())
+                .build();
     }
 }

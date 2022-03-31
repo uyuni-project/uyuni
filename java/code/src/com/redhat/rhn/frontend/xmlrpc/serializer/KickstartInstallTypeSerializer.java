@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -35,30 +32,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "name")
  * #struct_end()
  */
-public class KickstartInstallTypeSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartInstallTypeSerializer extends ApiResponseSerializer<KickstartInstallType> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartInstallType> getSupportedClass() {
         return KickstartInstallType.class;
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output,
-                          XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        KickstartInstallType type = (KickstartInstallType) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", type.getId());
-        helper.add("label", type.getLabel());
-        helper.add("name", type.getName());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartInstallType src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .build();
     }
-
 }

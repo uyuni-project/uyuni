@@ -15,14 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -38,38 +34,28 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #struct_end()
  *
  */
-public class ManagedServerGroupSerializer extends RhnXmlRpcCustomSerializer {
+public class ManagedServerGroupSerializer extends ApiResponseSerializer<ManagedServerGroup> {
 
     public static final String CURRENT_MEMBERS = "system_count";
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ManagedServerGroup> getSupportedClass() {
         return ManagedServerGroup.class;
     }
 
     /**
-     * Converts a ServerGroup to a XMLRPC &lt;struct&gt; containing the top-
-     * level fields of the ServerGroup. It serializes the Org as just an ID
-     * instead of traversing the entire object graph.
-     * @param value ServerGroup object.
-     * @param output Buffer to serialize the object to.
-     * @param serializer basic XMLRPC serializer
-     * @throws XmlRpcException thrown if a problem occurs with serializing
-     * the value.
-     * @throws IOException thrown if a problem occurs with serializing
-     * the value.
+     * Converts a ServerGroup to a {@link SerializedApiResponse} containing the top-level fields of the ServerGroup.
+     * It serializes the Org as just an ID instead of traversing the entire object graph.
+     * @param src the ServerGroup object
      */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        ServerGroup sg = (ServerGroup) value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", sg.getId());
-        helper.add("name", sg.getName());
-        helper.add("description", sg.getDescription());
-        helper.add(CURRENT_MEMBERS, sg.getCurrentMembers());
-        helper.add("org_id", sg.getOrg().getId());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ManagedServerGroup src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add(CURRENT_MEMBERS, src.getCurrentMembers())
+                .add("org_id", src.getOrg().getId())
+                .build();
     }
 }

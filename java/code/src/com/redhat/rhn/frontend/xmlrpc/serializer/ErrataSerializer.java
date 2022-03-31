@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -38,34 +35,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
  *     #struct_end()
  */
-public class ErrataSerializer extends RhnXmlRpcCustomSerializer {
+public class ErrataSerializer extends ApiResponseSerializer<Errata> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Errata> getSupportedClass() {
         return Errata.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        Errata errata = (Errata) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", errata.getId());
-
-        // Short format of the date to match ErrataOverviewSerializer:
-        helper.add("date", LocalizationService.getInstance().formatShortDate(
-                    errata.getUpdateDate()));
-
-        helper.add("advisory_synopsis", errata.getSynopsis());
-        helper.add("advisory_name", errata.getAdvisoryName());
-        helper.add("advisory_type", errata.getAdvisoryType());
-        helper.add("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(Errata src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                // Short format of the date to match ErrataOverviewSerializer:
+                .add("date", LocalizationService.getInstance().formatShortDate(src.getUpdateDate()))
+                .add("advisory_synopsis", src.getSynopsis())
+                .add("advisory_name", src.getAdvisoryName())
+                .add("advisory_type", src.getAdvisoryType())
+                .add("advisory_status", src.getAdvisoryStatus().getMetadataValue())
+                .build();
     }
 }

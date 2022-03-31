@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * CustomDataKeySerializer: Converts a CustomDataKeyOverview object for
@@ -37,28 +34,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("dateTime.iso8601", "last_modified")
  *      #struct_end()
  */
-public class CustomDataKeySerializer extends RhnXmlRpcCustomSerializer {
+public class CustomDataKeySerializer extends ApiResponseSerializer<CustomDataKeyOverview> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CustomDataKeyOverview> getSupportedClass() {
         return CustomDataKeyOverview.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        CustomDataKeyOverview key = (CustomDataKeyOverview)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", key.getId());
-        helper.add("label", key.getLabel());
-        helper.add("description", key.getDescription());
-        helper.add("system_count", key.getServerCount().intValue());
-        helper.add("last_modified", key.getLastModified());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(CustomDataKeyOverview src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("description", src.getDescription())
+                .add("system_count", src.getServerCount().intValue())
+                .add("last_modified", src.getLastModified())
+                .build();
     }
 }

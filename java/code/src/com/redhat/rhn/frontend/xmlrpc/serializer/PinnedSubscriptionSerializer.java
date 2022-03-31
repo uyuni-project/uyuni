@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for the PinnedSubscription class
@@ -34,27 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #prop("int", "system_id")
  *  #struct_end()
  */
-public class PinnedSubscriptionSerializer extends RhnXmlRpcCustomSerializer {
+public class PinnedSubscriptionSerializer extends ApiResponseSerializer<PinnedSubscription> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<PinnedSubscription> getSupportedClass() {
         return PinnedSubscription.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        PinnedSubscription pinnedSubscription = (PinnedSubscription) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", pinnedSubscription.getId());
-        helper.add("subscription_id", pinnedSubscription.getSubscriptionId());
-        helper.add("system_id", pinnedSubscription.getSystemId());
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(PinnedSubscription src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("subscription_id", src.getSubscriptionId())
+                .add("system_id", src.getSystemId())
+                .build();
     }
 }

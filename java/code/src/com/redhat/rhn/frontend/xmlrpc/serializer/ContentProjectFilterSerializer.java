@@ -15,14 +15,12 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link ContentProjectFilter}
@@ -34,20 +32,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   $ContentFilterSerializer
  * #struct_end()
  */
-public class ContentProjectFilterSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentProjectFilterSerializer extends ApiResponseSerializer<ContentProjectFilter> {
 
     @Override
-    public Class getSupportedClass() {
+    public Class<ContentProjectFilter> getSupportedClass() {
         return ContentProjectFilter.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ContentProjectFilter filter = (ContentProjectFilter) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("state", filter.getState());
-        helper.add("filter", filter.getFilter());
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(ContentProjectFilter src) {
+        return new SerializationBuilder()
+                .add("state", src.getState())
+                .add("filter", src.getFilter())
+                .build();
     }
 }

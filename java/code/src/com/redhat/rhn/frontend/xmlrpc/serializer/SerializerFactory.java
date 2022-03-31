@@ -28,7 +28,8 @@ import redstone.xmlrpc.XmlRpcCustomSerializer;
  */
 
 public class SerializerFactory {
-    private List<XmlRpcCustomSerializer> serializers;
+    // TODO: Use ApiResponseSerializer?
+    private final List<XmlRpcCustomSerializer> serializers;
 
     /** private constructor */
     public SerializerFactory() {
@@ -40,7 +41,7 @@ public class SerializerFactory {
      *
      * @return a list of serializers.
      */
-    public List getSerializers() {
+    public List<XmlRpcCustomSerializer> getSerializers() {
         return serializers;
     }
 

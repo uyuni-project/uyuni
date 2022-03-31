@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.PackageMetadata;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Converts PackageMetadata to an XMLRPC &lt;struct&gt;.
@@ -48,28 +45,25 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *
  *
  */
-public class PackageMetadataSerializer extends RhnXmlRpcCustomSerializer {
+public class PackageMetadataSerializer extends ApiResponseSerializer<PackageMetadata> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<PackageMetadata> getSupportedClass() {
         return PackageMetadata.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        PackageMetadata pkg = (PackageMetadata) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("package_name_id", pkg.getId());
-        helper.add("package_name", pkg.getName());
-        helper.add("package_epoch", pkg.getEpoch());
-        helper.add("package_version", pkg.getVersion());
-        helper.add("package_release", pkg.getRelease());
-        helper.add("package_arch", pkg.getArch());
-        helper.add("this_system", pkg.getSystemEvr());
-        helper.add("other_system", pkg.getOtherEvr());
-        helper.add("comparison", pkg.getComparisonAsInt());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageMetadata src) {
+        return new SerializationBuilder()
+                .add("package_name_id", src.getId())
+                .add("package_name", src.getName())
+                .add("package_epoch", src.getEpoch())
+                .add("package_version", src.getVersion())
+                .add("package_release", src.getRelease())
+                .add("package_arch", src.getArch())
+                .add("this_system", src.getSystemEvr())
+                .add("other_system", src.getOtherEvr())
+                .add("comparison", src.getComparisonAsInt())
+                .build();
     }
 }

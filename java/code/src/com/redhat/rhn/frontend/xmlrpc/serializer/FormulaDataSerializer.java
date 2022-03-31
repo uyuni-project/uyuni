@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.dto.FormulaData;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
 *
@@ -36,28 +33,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *     #prop("struct with saved formula values", "formula_values")
 * #struct_end()
 */
-public class FormulaDataSerializer extends RhnXmlRpcCustomSerializer {
+public class FormulaDataSerializer extends ApiResponseSerializer<FormulaData> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<FormulaData> getSupportedClass() {
         return FormulaData.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        FormulaData formulaData = (FormulaData) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("system_id", formulaData.getSystemID());
-        helper.add("minion_id", formulaData.getMinionID());
-        helper.add("formula_values", formulaData.getFormulaValues());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(FormulaData src) {
+        return new SerializationBuilder()
+                .add("system_id", src.getSystemID())
+                .add("minion_id", src.getMinionID())
+                .add("formula_values", src.getFormulaValues())
+                .build();
     }
 }

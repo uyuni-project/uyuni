@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -39,26 +36,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc($date, "last_modified","Last Modified Date")
  * #struct_end()
  */
-public class ConfigFileDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class ConfigFileDtoSerializer extends ApiResponseSerializer<ConfigFileDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ConfigFileDto> getSupportedClass() {
         return ConfigFileDto.class;
     }
 
-    /**
-     * {@inheritDoc}serializer
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ConfigFileDto dto = (ConfigFileDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("type", dto.getType());
-        helper.add("path", dto.getPath());
-        helper.add("last_modified", dto.getModified());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ConfigFileDto src) {
+        return new SerializationBuilder()
+                .add("type", src.getType())
+                .add("path", src.getPath())
+                .add("last_modified", src.getModified())
+                .build();
     }
-
 }

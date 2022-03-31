@@ -17,13 +17,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ImageInfoSerializer
@@ -40,29 +37,27 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "checksum")
  * #struct_end()
  */
-public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
+public class ImageInfoSerializer extends ApiResponseSerializer<ImageInfo> {
 
     @Override
-    protected void doSerialize(Object value, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ImageInfo image = (ImageInfo) value;
-        Checksum chk = image.getChecksum();
-        ImageStore store = image.getStore();
-        helper.add("id", image.getId());
-        helper.add("name", image.getName());
-        helper.add("version", image.getVersion());
-        helper.add("revision", image.getRevisionNumber());
-        helper.add("arch", image.getImageArch().getLabel());
-        helper.add("external", image.isExternalImage());
-        helper.add("storeLabel", store != null ? store.getLabel() : "");
-        helper.add("checksum", chk != null ? chk.getChecksum() : "");
-        helper.add("obsolete", image.isObsolete());
-        helper.writeTo(writer);
+    public Class<ImageInfo> getSupportedClass() {
+        return ImageInfo.class;
     }
 
     @Override
-    public Class getSupportedClass() {
-        return ImageInfo.class;
+    public SerializedApiResponse serialize(ImageInfo src) {
+        Checksum chk = src.getChecksum();
+        ImageStore store = src.getStore();
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("version", src.getVersion())
+                .add("revision", src.getRevisionNumber())
+                .add("arch", src.getImageArch().getLabel())
+                .add("external", src.isExternalImage())
+                .add("storeLabel", store != null ? store.getLabel() : "")
+                .add("checksum", chk != null ? chk.getChecksum() : "")
+                .add("obsolete", src.isObsolete())
+                .build();
     }
 }

@@ -14,17 +14,12 @@
  */
 package com.suse.manager.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Optional;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -63,40 +58,32 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class SystemEventDetailsDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class SystemEventDetailsDtoSerializer extends ApiResponseSerializer<SystemEventDetailsDto> {
 
     @Override
     public Class<SystemEventDetailsDto> getSupportedClass() {
         return SystemEventDetailsDto.class;
-
     }
 
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        SystemEventDetailsDto detail = (SystemEventDetailsDto) value;
-
-        helper.add("id", detail.getId());
-
-        helper.add("history_type", Optional.ofNullable(detail.getHistoryTypeName()).orElse("History Event"));
-        helper.add("status", detail.getHistoryStatus());
-        helper.add("summary", detail.getSummary());
-
-        helper.add("created", detail.getCreated());
-        helper.add("picked_up", detail.getPickedUp());
-        helper.add("completed", detail.getCompleted());
-
-        helper.add("earliest_action", detail.getEarliestAction());
-        helper.add("result_msg", detail.getResultMsg());
-        helper.add("result_code", detail.getResultCode());
+    public SerializedApiResponse serialize(SystemEventDetailsDto src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("history_type", Optional.ofNullable(src.getHistoryTypeName()).orElse("History Event"))
+                .add("status", src.getHistoryStatus())
+                .add("summary", src.getSummary())
+                .add("created", src.getCreated())
+                .add("picked_up", src.getPickedUp())
+                .add("completed", src.getCompleted())
+                .add("earliest_action", src.getEarliestAction())
+                .add("result_msg", src.getResultMsg())
+                .add("result_code", src.getResultCode());
 
         // Add the all the additional properties
-        if (detail.hasAdditionInfo()) {
-            helper.add("additional_info", detail.getAdditionalInfo());
+        if (src.hasAdditionInfo()) {
+            builder.add("additional_info", src.getAdditionalInfo());
         }
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

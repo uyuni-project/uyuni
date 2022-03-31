@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.channel.ContentSourceFilter;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -35,27 +32,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class ContentSourceFilterSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentSourceFilterSerializer extends ApiResponseSerializer<ContentSourceFilter> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ContentSourceFilter> getSupportedClass() {
         return ContentSourceFilter.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ContentSourceFilter filter = (ContentSourceFilter) value;
-
-        helper.add("sortOrder", filter.getSortOrder());
-        helper.add("filter", filter.getFilter());
-        helper.add("flag", filter.getFlag());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ContentSourceFilter src) {
+        return new SerializationBuilder()
+                .add("sortOrder", src.getSortOrder())
+                .add("filter", src.getFilter())
+                .add("flag", src.getFlag())
+                .build();
     }
 }

@@ -15,13 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.KickstartScript;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -45,52 +44,26 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *                  server registers and performs server actions.")
  *     #struct_end()
  */
-public class KickstartScriptSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartScriptSerializer extends ApiResponseSerializer<KickstartScript> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartScript> getSupportedClass() {
         return KickstartScript.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        KickstartScript script = (KickstartScript) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", script.getId());
-        helper.add("name", script.getScriptName());
-        helper.add("contents", script.getDataContents());
-        helper.add("script_type", script.getScriptType());
-
-        if (script.getInterpreter() == null) {
-            helper.add("interpreter", "");
-        }
-        else {
-            helper.add("interpreter", script.getInterpreter());
-        }
-
-        if (script.getChroot().equals("Y")) {
-            helper.add("chroot", true);
-        }
-        else {
-            helper.add("chroot", false);
-        }
-
-        helper.add("erroronfail", script.getErrorOnFail());
-
-        helper.add("template", !script.getRaw());
-
-        helper.add(
-                "beforeRegistration",
-                script.getScriptType().equals(KickstartScript.TYPE_PRE) ||
-                        script.getPosition() < 0L);
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartScript src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getScriptName())
+                .add("contents", src.getDataContents())
+                .add("script_type", src.getScriptType())
+                .add("interpreter", StringUtils.defaultString(src.getInterpreter()))
+                .add("chroot", src.getChroot().equals("Y"))
+                .add("erroronfail", src.getErrorOnFail())
+                .add("template", !src.getRaw())
+                .add("beforeRegistration",
+                        src.getScriptType().equals(KickstartScript.TYPE_PRE) || src.getPosition() < 0L)
+                .build();
     }
 }
