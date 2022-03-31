@@ -4,7 +4,7 @@
   "serverFQDN": "srv.acme.lab",
   "maxSquidCacheSize": 2048,
   "proxyAdminEmail": "coyote@acme.lab",
-  "ssl-mode": "use-ssl",
+  "sslMode": "use-ssl",
   "rootCA": "Root CA",
   "intermediateCAs": ["CA1", "CA2"],
   "proxyCertificate": "CERT",
