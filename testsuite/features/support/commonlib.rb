@@ -226,3 +226,13 @@ def get_variable_from_conf_file(host, file_path, variable_name)
   raise "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
   variable_value.strip!
 end
+
+def get_uptime_from_host(host)
+  node = get_target(host)
+  uptime, _return_code = node.run('cat /proc/uptime') # run code on node only once, to get uptime
+  seconds = Float(uptime.split[0]) # return only the uptime in seconds, as a float
+  minutes = (seconds / 60.0) # 60 seconds; the .0 forces a float division
+  hours = (minutes / 60.0) # 60 minutes
+  days = (hours / 24.0) # 24 hours
+  { seconds: seconds, minutes: minutes, hours: hours, days: days }
+end
