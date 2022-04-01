@@ -1,3 +1,5 @@
+- detect free products in Alpha and Beta stage and prevent checks
+  on openSUSE products (bsc#1197488)
 - Allow monitoring entitlement for debian 11 and 10
 - Hide private methods in XMLRPC handlers
 - Warning log when hardware refresh result is not serializable
