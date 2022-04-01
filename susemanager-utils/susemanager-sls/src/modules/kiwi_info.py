@@ -332,7 +332,7 @@ def inspect_bundles(dest: str, basename: str) -> dict:
     return res
 
 # TODO consider adding checksum to validate upload
-def build_info(dest: str, build_id: str, bundle_dir: str = None) -> dict:
+def build_info(dest: str, build_id: str, bundle_dest: str = None) -> dict:
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -381,7 +381,7 @@ def build_info(dest: str, build_id: str, bundle_dir: str = None) -> dict:
             }
         }
 
-    if bundle_dir is not None:
-        res['bundles'] = inspect_bundles(bundle_dir, basename)
+    if bundle_dest is not None:
+        res['bundles'] = inspect_bundles(bundle_dest, basename)
 
     return res
