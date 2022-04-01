@@ -5,11 +5,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 08:41+0000\n"
+"POT-Creation-Date: 2022-04-01 18:13+0000\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
-"\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
+">\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1580,7 +1580,8 @@ msgstr "ERROR: aquests canals no existeixen o no estan disponibles:"
 #: ../satellite_tools/satsync.py:858
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       (per veure una llista d'etiquetes de canals: %s --list-channels)"
+msgstr ""
+"       (per veure una llista d'etiquetes de canals: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:903
 #, python-format
@@ -1764,8 +1765,8 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
-"els canals personalitzats existents també se sincronitzaran (tret que s'usi "
-"-c)"
+"els canals personalitzats existents també se sincronitzaran (tret que s'usi -"
+"c)"
 
 #: ../satellite_tools/satsync.py:2230
 #, python-format
