@@ -25,6 +25,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-// TODO: Recognize in XMLRPC
 public @interface ReadOnly {
 }

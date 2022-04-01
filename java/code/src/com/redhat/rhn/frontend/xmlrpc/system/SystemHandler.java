@@ -178,6 +178,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -8430,6 +8431,7 @@ public class SystemHandler extends BaseHandler {
      * @return the {@link TaskomaticApi} instance used by this class
      * @xmlrpc.ignore
      */
+    @ApiIgnore
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
     }

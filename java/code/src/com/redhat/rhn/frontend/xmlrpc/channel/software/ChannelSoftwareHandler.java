@@ -85,6 +85,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
+import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -136,6 +137,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      * @xmlrpc.ignore
      */
+    @ApiIgnore
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
     }
