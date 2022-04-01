@@ -1,3 +1,5 @@
+- detect free products in Alpha and Beta stage and prevent checks
+  on openSUSE products (bsc#1197488)
 - Optimize adding new products function (bsc#1193707)
 - change directory owner and permissions only when needed
 - Fixed broken help link for system overview
