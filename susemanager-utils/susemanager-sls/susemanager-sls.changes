@@ -1,3 +1,5 @@
+- Build bundle less images, adapt inspection of such images
+  Part of saltboot containerization workflow
 - Handle salt bundle in set_proxy.sls
 - Accept non standard proxy SSH port
 

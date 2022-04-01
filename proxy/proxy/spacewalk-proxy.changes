@@ -1,3 +1,6 @@
+- Forward images, kernel and initrd requests through squid to the
+  server
+  Part of saltboot containerization workflow
 - Enable HSTS for Apache to force traffic to be in HTTPS
 - Expose release notes to www_path
 
