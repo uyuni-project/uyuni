@@ -123,7 +123,7 @@ create() {
         FQDN="localhost"
     else
         [ ! -s "$SSL_CERT" ] && {
-            echo "SSL Certificate ($SSL_CERT) required to setup the reporting database" >&2
+            echo "SSL Certificate ($SSL_CERT) is required to setup the reporting database" >&2
             exit 1
         }
         [ ! -s "$CA_CERT" ] && {
