@@ -802,8 +802,9 @@ public class ContentSyncManager {
             else if (c != null &&
                     repo.getProducts().stream()
                         .map(pd -> pd.getProduct())
-                        .anyMatch(p -> p.getFree() &&
-                                p.getChannelFamily().getLabel().equals("SLE-M-T"))) {
+                        .filter(SUSEProduct::getFree)
+                        .anyMatch(p -> p.getChannelFamily().getLabel().startsWith("SLE-M-T") ||
+                                p.getChannelFamily().getLabel().startsWith("OPENSUSE"))) {
                 log.debug("Free repo detected. Setting NoAuth for " + repo.getUrl());
                 newAuth = new SCCRepositoryNoAuth();
             }
