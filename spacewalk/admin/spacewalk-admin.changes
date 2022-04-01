@@ -1,4 +1,4 @@
-- Fix uyuni-check-database.service during migration
+- spacewalk-startup-helper check status of reportdb creation 
 - hide test result from terminal output
 
 -------------------------------------------------------------------
