@@ -43,6 +43,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MinionServerUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -108,6 +109,7 @@ public class ServerConfigHandler extends BaseHandler {
      * $ConfigFileNameDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigFileNameDto> listFiles(User loggedInUser,
             Integer sid, Boolean listLocal) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -452,6 +454,7 @@ public class ServerConfigHandler extends BaseHandler {
      *  $ConfigChannelSerializer
      *  #array_end()
      */
+    @ReadOnly
     public List<ConfigChannel> listChannels(User loggedInUser, Integer sid) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         return server.getConfigChannelList();

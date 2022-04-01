@@ -67,12 +67,13 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,7 +92,6 @@ import java.util.stream.Collectors;
  */
 public class ErrataHandler extends BaseHandler {
 
-    private static final List<String> RO_METHODS = Arrays.asList("applicableToChannels");
     private static Logger log = LogManager.getLogger(ErrataHandler.class);
 
     /**
@@ -228,6 +228,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "solution")
      *     #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getDetails(User loggedInUser, String advisoryName)
             throws FaultException {
      // Get the logged in user. We don't care what roles this user has, we
@@ -557,6 +558,7 @@ public class ErrataHandler extends BaseHandler {
      *          $SystemOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listAffectedSystems(User loggedInUser, String advisoryName)
             throws FaultException {
 
@@ -623,6 +625,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "Keyword associated with erratum.")
 
      */
+    @ReadOnly
     public Object[] listKeywords(User loggedInUser, String advisoryName)
             throws FaultException {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
@@ -661,6 +664,7 @@ public class ErrataHandler extends BaseHandler {
      *          #struct_end()
      *       #array_end()
      */
+    @ReadOnly
     public Object[] applicableToChannels(User loggedInUser, String advisoryName)
             throws FaultException {
 
@@ -694,6 +698,7 @@ public class ErrataHandler extends BaseHandler {
      *      #array_single("string", "cveName")
      *
      */
+    @ReadOnly
     public List listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
@@ -748,6 +753,7 @@ public class ErrataHandler extends BaseHandler {
      *               #struct_end()
      *           #array_end()
      */
+    @ReadOnly
     public List<Map> listPackages(User loggedInUser, String advisoryName)
             throws FaultException {
         // Get the logged in user
@@ -1463,6 +1469,7 @@ public class ErrataHandler extends BaseHandler {
      *              $ErrataSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<Errata> findByCve(User loggedInUser, String cveName) {
         // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
@@ -1472,13 +1479,5 @@ public class ErrataHandler extends BaseHandler {
         erratas.removeIf(errata -> errata.getOrg() != null &&
                 !errata.getOrg().equals(loggedInUser.getOrg()));
         return erratas;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected List<String> getReadonlyMethodNames() {
-        return RO_METHODS;
     }
 }

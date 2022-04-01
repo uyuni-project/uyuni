@@ -34,6 +34,8 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -89,6 +91,7 @@ public class SnapshotHandler extends BaseHandler {
      *      $ServerSnapshotSerializer
      *  #array_end()
      */
+    @ReadOnly
     public List<ServerSnapshot> listSnapshots(User loggedInUser, Integer sid,
         Map dateDetails) {
 
@@ -124,6 +127,7 @@ public class SnapshotHandler extends BaseHandler {
      *         $PackageNevraSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Set<PackageNevra> listSnapshotPackages(User loggedInUser, Integer snapId) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
         return snap.getPackages();
@@ -145,6 +149,7 @@ public class SnapshotHandler extends BaseHandler {
      *         $ConfigRevisionSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Set<ConfigRevision> listSnapshotConfigFiles(User loggedInUser, Integer snapId) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
         return snap.getConfigRevisions();

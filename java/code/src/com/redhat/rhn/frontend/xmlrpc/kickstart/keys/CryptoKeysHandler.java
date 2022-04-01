@@ -27,6 +27,8 @@ import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.DeleteCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.EditCryptoKeyCommand;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 
 /**
@@ -54,6 +56,7 @@ public class CryptoKeysHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List listAllKeys(User loggedInUser) {
 
         if (loggedInUser == null) {
@@ -197,6 +200,7 @@ public class CryptoKeysHandler extends BaseHandler {
      *          #prop("string", "content")
      *      #struct_end()
      */
+    @ReadOnly
     public CryptoKey getDetails(User loggedInUser, String description) {
 
         ensureOrgOrConfigAdmin(loggedInUser);

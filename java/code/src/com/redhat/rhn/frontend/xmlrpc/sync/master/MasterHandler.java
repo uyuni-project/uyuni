@@ -26,6 +26,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IssDuplicateMasterException;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -148,6 +150,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype $IssMasterSerializer
      */
+    @ReadOnly
     public IssMaster getDefaultMaster(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         IssMaster dflt = IssFactory.getCurrentMaster();
@@ -212,6 +215,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
      * @xmlrpc.returntype $IssMasterSerializer
      */
+    @ReadOnly
     public IssMaster getMaster(User loggedInUser, Integer masterId) {
         ensureSatAdmin(loggedInUser);
         IssMaster master = IssFactory.lookupMasterById(masterId.longValue());
@@ -230,6 +234,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "Label of the desired Master")
      * @xmlrpc.returntype $IssMasterSerializer
      */
+    @ReadOnly
     public IssMaster getMasterByLabel(User loggedInUser, String masterLabel) {
         ensureSatAdmin(loggedInUser);
         IssMaster master = IssFactory.lookupMasterByLabel(masterLabel);
@@ -249,6 +254,7 @@ public class MasterHandler extends BaseHandler {
      *          $IssMasterSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<IssMaster> getMasters(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         return IssFactory.listAllMasters();
@@ -269,6 +275,7 @@ public class MasterHandler extends BaseHandler {
      *     $IssMasterOrgSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<IssMasterOrg> getMasterOrgs(User loggedInUser, Integer masterId) {
         IssMaster master = getMaster(loggedInUser, masterId);
         ArrayList<IssMasterOrg> orgs = new ArrayList<>();

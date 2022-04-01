@@ -36,6 +36,8 @@ import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 import com.redhat.rhn.manager.kickstart.KickstartPartitionCommand;
 import com.redhat.rhn.manager.kickstart.SystemDetailsCommand;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -201,6 +203,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *          #item ("disabled")
      *      #options_end()
      */
+    @ReadOnly
     public String getSELinux(User loggedInUser, String ksLabel) {
         ensureConfigAdmin(loggedInUser);
         SystemDetailsCommand command  = getSystemDetailsCommand(ksLabel, loggedInUser);
@@ -257,6 +260,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *                  #options_end()
      *          #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getLocale(User loggedInUser, String ksLabel)
             throws FaultException {
 
@@ -367,6 +371,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "A list of partitioning commands used to
      * setup the partitions, logical volumes and volume groups")
      */
+    @ReadOnly
     public List<String> getPartitioningScheme(User loggedInUser, String ksLabel) {
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         List<String> list = new LinkedList<>();
@@ -414,6 +419,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Set<CryptoKey> listKeys(User loggedInUser, String kickstartLabel) {
 
         // TODO: Determine if null or empty set is returned when no keys associated
@@ -539,6 +545,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *         $FileListSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Set<FileList> listFilePreservations(User loggedInUser, String kickstartLabel)
         throws FaultException {
 

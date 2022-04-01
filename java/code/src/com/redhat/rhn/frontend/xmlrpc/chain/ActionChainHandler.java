@@ -34,6 +34,8 @@ import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,6 +82,7 @@ public class ActionChainHandler extends BaseHandler {
      *                      #struct_end()
      *                    #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listChains(User loggedInUser) {
         List<Map<String, Object>> chains = new ArrayList<>();
         for (ActionChain actionChain : ActionChainFactory.getActionChains(loggedInUser)) {
@@ -115,6 +118,7 @@ public class ActionChainHandler extends BaseHandler {
      *                      #struct_end()
      *                    #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listChainActions(User loggedInUser,
                                                       String chainLabel) {
         List<Map<String, Object>> entries = new ArrayList<>();

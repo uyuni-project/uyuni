@@ -30,6 +30,8 @@ import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 
 /**
@@ -52,6 +54,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * search.")
      * @xmlrpc.returntype $KickstartTreeDetailSerializer
      */
+    @ReadOnly
     public KickstartableTreeDetail getDetails(User loggedInUser, String treeLabel) {
         ensureConfigAdmin(loggedInUser);
 
@@ -93,6 +96,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $KickstartInstallTypeSerializer #array_end()
      */
+    @ReadOnly
     public List listInstallTypes(User loggedInUser) {
         return KickstartFactory.lookupKickstartInstallTypes();
     }
