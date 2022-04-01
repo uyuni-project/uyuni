@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
@@ -111,7 +112,6 @@ public enum SaltStateGeneratorService {
             String bootImageName = name + "-" + version + "-" + revision;
             String localPath = "image/" + image.getBasename() + "-" + revision;
             String bootLocalPath = image.getBasename() + "-" + revision;
-            Set<ImageFile> files = imageInfo.getImageFiles();
 
             Map<String, Object> imagePillar = generateImagePillar(image, imageInfo , name, version,
                     revision, localPath);
@@ -134,15 +134,16 @@ public enum SaltStateGeneratorService {
     }
 
     private Map<String, Object> generateImagePillar(OSImageInspectSlsResult.Image image, ImageInfo imageInfo,
-                                                    String name, String version, Integer revision, String localPath) {
+                                                    String name, String version, Integer revision, String localPath)
+            throws SaltbootException {
         Map<String, Object> imagePillar = new TreeMap<>();
         Map<String, Object> imagePillarBase = new TreeMap<>();
         Map<String, Object> imagePillarDetails = new TreeMap<>();
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
-        // TODO handle missing cases
         ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("image")).findFirst().get();
+                f -> f.getType().equals("image")).findFirst().orElseThrow(
+                        () -> new SaltbootException("Trying to generate pillar but no image file was collected"));
 
         imagePillarDetailsSync.put("hash", image.getChecksum().getChecksum());
         imagePillarDetailsSync.put("url", OSImageStoreUtils.getOSImageFileURI(imageFile));
@@ -154,14 +155,15 @@ public enum SaltStateGeneratorService {
             imagePillarDetails.put("compressed", image.getCompression());
             imagePillarDetails.put("compressed_hash", image.getCompressedHash());
         }
-        imagePillarDetails.put("filename", imageFile.getFile());
+        imagePillarDetails.put("filename", Paths.get(imageFile.getFile()).getFileName().toString());
         imagePillarDetails.put("fstype", image.getFstype());
         imagePillarDetails.put("hash", image.getChecksum().getChecksum());
         imagePillarDetails.put("inactive", Boolean.FALSE);
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "http://ftp/" + localPath + "/" + imageFile.getFile());
+        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" +
+                Paths.get(imageFile.getFile()).getFileName().toString());
 
         imagePillarBase.put(version + "-" + revision, imagePillarDetails);
         imagePillar.put(imageInfo.getName(), imagePillarBase);
@@ -170,18 +172,16 @@ public enum SaltStateGeneratorService {
 
     private Map<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
                                                         String bootImageName, ImageInfo imageInfo,
-                                                        String systemLocalPath, String bootLocalPath) {
+                                                        String systemLocalPath, String bootLocalPath)
+            throws SaltbootException {
         Map<String, Object> bootImagePillar = new TreeMap<>();
         Map<String, Object> bootImagePillarBase = new TreeMap<>();
         Map<String, Object> bootImagePillarInitrd = new TreeMap<>();
         Map<String, Object> bootImagePillarKernel = new TreeMap<>();
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
-        // TODO handle missing cases
-        ImageFile kernelFile = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("kernel")).findFirst().get();
-        ImageFile initrdFile = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("initrd")).findFirst().get();
+        Boolean isBundle = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("bundle")).findFirst().isPresent();
 
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());
@@ -198,10 +198,22 @@ public enum SaltStateGeneratorService {
         bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
-        bootImagePillarSync.put("kernel_url", OSImageStoreUtils.getOSImageFileURI(kernelFile));
-        bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' + bootImage.getKernel().getFilename());
-        bootImagePillarSync.put("initrd_url", OSImageStoreUtils.getOSImageFileURI(initrdFile));
-        bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' + bootImage.getInitrd().getFilename());
+        if (isBundle) {
+            bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' +
+                    bootImage.getKernel().getFilename());
+            bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' +
+                    bootImage.getInitrd().getFilename());
+        }
+        else {
+            ImageFile kernelFile = imageInfo.getImageFiles().stream().filter(
+                    f -> f.getType().equals("kernel")).findFirst().orElseThrow(
+                    () -> new SaltbootException("Trying to generate boot images pillar but kernel not collected"));
+            ImageFile initrdFile = imageInfo.getImageFiles().stream().filter(
+                    f -> f.getType().equals("initrd")).findFirst().orElseThrow(
+                    () -> new SaltbootException("Trying to generate boot images pillar but initrd not collected"));
+            bootImagePillarSync.put("kernel_url", OSImageStoreUtils.getOSImageFileURI(kernelFile));
+            bootImagePillarSync.put("initrd_url", OSImageStoreUtils.getOSImageFileURI(initrdFile));
+        }
 
         bootImagePillarBase.put("initrd", bootImagePillarInitrd);
         bootImagePillarBase.put("kernel", bootImagePillarKernel);
