@@ -1916,7 +1916,7 @@ public class SaltServerActionService {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, profile, dist, kickstartHost);
+        String kOpts = buildKernelOptions(system, kickstartHost);
         Map<String, String> pillar = new HashMap<>();
         pillar.put("kernel", saltFSKernel);
         pillar.put("initrd", saltFSInitrd);
@@ -1965,15 +1965,12 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private String buildKernelOptions(SystemRecord sys, Profile prof, Distro dist, String host) {
-        String breed = dist.getBreed();
-        Map<String, Object> kopts =
-                Stream.of(dist.getKernelOptions(), prof.getKernelOptions(), sys.getKernelOptions())
-                .flatMap(map -> map.entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (v1, v2) -> v2));
+    private String buildKernelOptions(SystemRecord sys, String host) {
+        String breed = sys.getProfile().getDistro().getBreed();
+        Map<String, Object> kopts = sys.getResolvedKernelOptions();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Resolved kernel options for " + sys.getName() + ": " + convertOptionsMap(kopts));
+        }
         if (breed.equals("suse")) {
             //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
             if (kopts.containsKey("textmode")) {

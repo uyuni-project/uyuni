@@ -542,16 +542,16 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     cmd.getKsdata().getTree().getCobblerId());
 
             ctx.getRequest().setAttribute("distro_kernel_params",
-                    distro.getKernelOptionsString());
+                    distro.getKernelOptions());
             ctx.getRequest().setAttribute("distro_post_kernel_params",
-                    distro.getKernelOptionsPostString());
+                    distro.getKernelOptionsPost());
 
             org.cobbler.Profile profile = org.cobbler.Profile.
                     lookupById(con, cmd.getKsdata().getCobblerId());
             ctx.getRequest().setAttribute("profile_kernel_params",
-                    profile.getKernelOptionsString());
+                    profile.getKernelOptions());
             ctx.getRequest().setAttribute("profile_post_kernel_params",
-                    profile.getKernelOptionsPostString());
+                    profile.getKernelOptionsPost());
             if (cmd.getServer().getCobblerId() != null) {
                 SystemRecord rec = SystemRecord.
                         lookupById(con, cmd.getServer().getCobblerId());
@@ -559,11 +559,11 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     profile.getName().equals(rec.getProfile().getName())) {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(KERNEL_PARAMS, rec.getKernelOptionsString());
+                        form.set(KERNEL_PARAMS, rec.getKernelOptions());
                     }
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
                         form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(POST_KERNEL_PARAMS, rec.getKernelOptionsPostString());
+                        form.set(POST_KERNEL_PARAMS, rec.getKernelOptionsPost());
                     }
                 }
             }
@@ -991,9 +991,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             ret = profile.getDistro();
         }
         if (!isPost) {
-            return ret.getKernelOptionsString();
+            return ret.getKernelOptions();
         }
-        return ret.getKernelOptionsPostString();
+        return ret.getKernelOptionsPost();
 
     }
 }

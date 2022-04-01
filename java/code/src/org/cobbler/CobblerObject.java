@@ -137,6 +137,10 @@ public abstract class CobblerObject {
     protected abstract void reload();
     protected abstract void invokeRename(String newName);
 
+    protected final Object getResolvedValue(String key) {
+        return client.invokeTokenMethod("get_item_resolved_value", getUid(), key);
+    }
+
     protected String getHandle() {
         if (isBlank(handle)) {
             handle = invokeGetHandle();
@@ -316,24 +320,47 @@ public abstract class CobblerObject {
     /**
      * @return the kernelOptions
      */
-    public Map<String, Object> getKernelOptions() {
-        return (Map<String, Object>)dataMap.get(KERNEL_OPTIONS);
+    @SuppressWarnings("unchecked")
+    public String getKernelOptions() {
+        Object kernelOpts = dataMap.get(KERNEL_OPTIONS);
+        if (kernelOpts instanceof Map) {
+            return convertOptionsMap((Map<String, Object>) kernelOpts);
+        }
+        return (String) kernelOpts;
     }
 
     /**
-     * gets the kernel options in string form
-     * @return the string
+     * Gets resolved kernel options as a dictionary
+     *
+     * The resolved value includes all the options inherited from above.
+     * @return the kernel option map
      */
-    public String getKernelOptionsString() {
-        return convertOptionsMap(getKernelOptions());
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getResolvedKernelOptions() {
+        return (Map<String, Object>) getResolvedValue(KERNEL_OPTIONS);
     }
 
     /**
-     * gets the kernel post options in string form
-     * @return the string
+     * @return the kernelOptionsPost
      */
-    public String getKernelOptionsPostString() {
-        return convertOptionsMap(getKernelOptionsPost());
+    @SuppressWarnings("unchecked")
+    public String getKernelOptionsPost() {
+        Object kernelOptsPost = dataMap.get(KERNEL_OPTIONS_POST);
+        if (kernelOptsPost instanceof Map) {
+            return convertOptionsMap((Map<String, Object>) kernelOptsPost);
+        }
+        return (String) kernelOptsPost;
+    }
+
+    /**
+     * Gets resolved kernel post options as a dictionary
+     *
+     * The resolved value includes all the options inherited from above.
+     * @return the kernel post option map
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getResolvedKernelOptionsPost() {
+        return (Map<String, Object>) getResolvedValue(KERNEL_OPTIONS_POST);
     }
 
     private String convertOptionsMap(Map<String, Object> map) {
@@ -363,51 +390,30 @@ public abstract class CobblerObject {
     /**
      * @param kernelOptionsIn the kernelOptions to set
      */
-    public void setKernelOptions(Map<String, Object> kernelOptionsIn) {
+    public void setKernelOptions(String kernelOptionsIn) {
         modify(SET_KERNEL_OPTIONS, kernelOptionsIn);
     }
 
     /**
-     * @param kernelOptsIn the kernelOptions to set
+     * @param kernelOptionsIn the kernelOptions to set in the form of a map
      */
-    public void setKernelOptions(String kernelOptsIn) {
-        setKernelOptions(parseKernelOpts(kernelOptsIn));
+    public void setKernelOptions(Map<String, Object> kernelOptionsIn) {
+        setKernelOptions(convertOptionsMap(kernelOptionsIn));
     }
-
 
     /**
-     * @param kernelOptsIn the kernelOptions to set
+     * @param kernelOptionsPostIn the kernelOptionsPost to set
      */
-    public void setKernelOptionsPost(String kernelOptsIn) {
-        setKernelOptionsPost(parseKernelOpts(kernelOptsIn));
+    public void setKernelOptionsPost(String kernelOptionsPostIn) {
+        modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
     }
 
-    private Map<String, Object> parseKernelOpts(String kernelOpts) {
-        Map<String, Object> toRet = new HashMap<>();
-
-        if (StringUtils.isEmpty(kernelOpts)) {
-            return toRet;
-        }
-
-        String[] options = StringUtils.split(kernelOpts);
-        for (String option : options) {
-            String[] split = option.split("=", 2);
-            if (split.length == 1) {
-                toRet.put(split[0], new ArrayList<String>());
-            }
-            else if (split.length == 2) {
-                if (toRet.containsKey(split[0])) {
-                    List<String> list = (List)toRet.get(split[0]);
-                    list.add(split[1]);
-                }
-                else {
-                    toRet.put(split[0], new ArrayList<>(Arrays.asList(split[1])));
-                }
-            }
-        }
-        return toRet;
+    /**
+     * @param kernelOptionsPostIn the kernelOptionsPost to set in the form of a map
+     */
+    public void setKernelOptionsPost(Map<String, Object> kernelOptionsPostIn) {
+        setKernelOptionsPost(convertOptionsMap(kernelOptionsPostIn));
     }
-
 
     /**
      * @return the kernelMeta
@@ -441,22 +447,6 @@ public abstract class CobblerObject {
         handle = null;
         handle = getHandle();
         reload();
-    }
-
-
-    /**
-     * @return the kernelOptionsPost
-     */
-    public Map<String, Object> getKernelOptionsPost() {
-        return (Map<String, Object>)dataMap.get(KERNEL_OPTIONS_POST);
-    }
-
-
-    /**
-     * @param kernelOptionsPostIn the kernelOptionsPost to set
-     */
-    public void setKernelOptionsPost(Map<String, Object> kernelOptionsPostIn) {
-        modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
     }
 
     protected boolean isBlank(String str) {

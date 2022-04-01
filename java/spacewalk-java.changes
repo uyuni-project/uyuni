@@ -1,3 +1,4 @@
+- Support inherited values for kernel options from Cobbler API
 - Fix virtFileSize type after cobbler upgrade
 - Redefine available power_management.types for cobbler >= 3.3.1
 - Improved task to update the reporting database
