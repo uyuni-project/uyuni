@@ -1004,6 +1004,7 @@ public class SaltUtils {
                     OSImageBuildImageInfoResult buildInfo =
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
+
                     // TODO move to ImageFile
                     // info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
                     info.setName(buildInfo.getImage().getName());
@@ -1013,14 +1014,22 @@ public class SaltUtils {
 
                     List<List<String>> files = new ArrayList<>();
                     String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                    files.add(List.of(buildInfo.getImage().getFilepath(),
-                            imageDir + buildInfo.getImage().getFilename(), "image"));
-                    buildInfo.getBootImage().ifPresent(f -> {
-                        files.add(List.of(f.getKernel().getFilepath(),
-                                imageDir + f.getKernel().getFilename(), "kernel"));
-                        files.add(List.of(f.getInitrd().getFilepath(),
-                                imageDir + f.getInitrd().getFilename(), "initrd"));
-                    });
+                    if (!buildInfo.getBundles().isEmpty()) {
+                        buildInfo.getBundles().forEach(bundle -> {
+                            files.add(List.of(bundle.getFilepath(),
+                                    imageDir + bundle.getFilename(), "bundle"));
+                        });
+                    }
+                    else {
+                        files.add(List.of(buildInfo.getImage().getFilepath(),
+                                imageDir + buildInfo.getImage().getFilename(), "image"));
+                        buildInfo.getBootImage().ifPresent(f -> {
+                            files.add(List.of(f.getKernel().getFilepath(),
+                                    imageDir + f.getKernel().getFilename(), "kernel"));
+                            files.add(List.of(f.getInitrd().getFilepath(),
+                                    imageDir + f.getInitrd().getFilename(), "initrd"));
+                        });
+                    }
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
                         MgrUtilRunner.ExecResult collectResult = systemQuery
@@ -1240,7 +1249,7 @@ public class SaltUtils {
                         Optional.of(pkg.getArch()), imageInfo));
                 SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
                         ret.getBootImage(), imageInfo);
-                if (ret.getBootImage().isPresent()) {
+                if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
                     SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
                 }
             }

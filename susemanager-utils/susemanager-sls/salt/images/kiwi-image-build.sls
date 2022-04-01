@@ -73,11 +73,13 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+{%- if use_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
     - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ bundle_id }} --bundle-dir {{ bundle_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_create
+{%- endif %}
 
 {%- else %}
 # KIWI Legacy
@@ -118,6 +120,7 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+{%- if use_bundle_build %}
 {%- if have_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
@@ -147,6 +150,7 @@ mgr_buildimage_kiwi_bundle:
     - require:
       - cmd: mgr_buildimage_kiwi_bundle_tarball
 
+{%- endif %}
 {%- endif %}
 
 {%- endif %}
@@ -179,7 +183,7 @@ mgr_buildimage_info:
       - mgr_buildimage_kiwi_collect_image
 {%- else %}
     {%- if use_bundle_build %}
-    - mgr_buildimage_kiwi_bundle
+      - mgr_buildimage_kiwi_bundle
     {%- else %}
       - mgr_buildimage_kiwi_create
     {%- endif %}

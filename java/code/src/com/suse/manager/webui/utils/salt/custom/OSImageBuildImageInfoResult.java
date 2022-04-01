@@ -32,7 +32,15 @@ public class OSImageBuildImageInfoResult {
      * @return the bundle info
      */
     public List<OSImageInspectSlsResult.Bundle> getBundles() {
-        return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
+        if (bundles != null) {
+            return bundles;
+        }
+        else if (bundle != null) {
+            return Collections.singletonList(bundle);
+        }
+        else {
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -46,6 +54,6 @@ public class OSImageBuildImageInfoResult {
      * @return the boot image info
      */
     public Optional<OSImageInspectSlsResult.BootImage> getBootImage() {
-        return Optional.of(boot_image);
+        return Optional.ofNullable(boot_image);
     }
 }
