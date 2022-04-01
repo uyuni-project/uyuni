@@ -1638,10 +1638,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -1680,10 +1682,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -1742,7 +1746,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
 
