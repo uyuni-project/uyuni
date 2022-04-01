@@ -1,3 +1,6 @@
+- Fix the improper condition for checking if the Salt Bundle
+  was extracted with pre flight script
+
 -------------------------------------------------------------------
 Thu Mar 31 15:55:44 CEST 2022 - jgonzalez@suse.com
 
