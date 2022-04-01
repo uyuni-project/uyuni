@@ -3729,7 +3729,7 @@ Benutzers vor dem Versuch, den Account zu deaktivieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target>&lt;strong&gt;ANMERKUNG:&lt;/strong&gt; Dieses System hat sich in letzter Zeit nicht bei @@PRODUCT_NAME@@ angemeldet.  Da ein System nicht aktualisiert werden kann, wenn es sich nicht bei @@PRODUCT_NAME@@ anmeldet, ist es unwahrscheinlich, dass diese Aktion erfolgreich ist.&lt;br/&gt;&lt;br/&gt; Überprüfen Sie bitte das System und stellen Sie sicher, dass rhnsd ausgeführt wird.</target>
+        <target>&lt;strong&gt;ANMERKUNG:&lt;/strong&gt; Dieses System hat sich in letzter Zeit nicht bei @@PRODUCT_NAME@@ angemeldet. Da ein System nicht aktualisiert werden kann, wenn es sich nicht bei @@PRODUCT_NAME@@ anmeldet, ist es unwahrscheinlich, dass diese Aktion erfolgreich ist.&lt;br/&gt;&lt;br/&gt; Überprüfen Sie bitte das System und stellen Sie sicher, dass rhnsd ausgeführt wird.</target>
       </trans-unit>
       <trans-unit id="timetag.categorizeFormat" xml:space="preserve">
         <source>{0} {1} {2}</source>
@@ -10849,12 +10849,16 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Unexpected error while adding the product.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+      <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
       <target state="new"/>
   </trans-unit>
       </body>
