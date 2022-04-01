@@ -126,7 +126,7 @@ check_database() {
             }
             
             if [ $? -ne 0 ]; then
-                echo "Report Database setup failed. Please check the logs."
+                echo "Report Database creation is failed. Please check the logs."
                 exit 1
             fi
 
