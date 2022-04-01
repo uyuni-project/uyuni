@@ -11183,6 +11183,10 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Error during applying the bootstrap state. Check the server logs.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
