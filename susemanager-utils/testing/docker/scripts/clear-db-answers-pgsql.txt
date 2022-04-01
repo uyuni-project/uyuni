@@ -6,7 +6,7 @@ db-name=susemanager
 db-host=
 report-db-backend=postgresql
 report-db-user=pythia
-report-db-password=spacewalk
+report-db-password=oracle
 report-db-name=reportdb
 report-db-host=
 
