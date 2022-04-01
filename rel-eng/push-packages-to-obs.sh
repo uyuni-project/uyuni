@@ -1,4 +1,5 @@
 #! /bin/bash
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 set -e
 #
 # For all packages prepared by build-packages-for-obs.sh in
@@ -249,16 +250,14 @@ while read PKG_NAME; do
     continue
   }
 
-  if [ "${OSCAPI}" = "https://api.suse.de" -a -f "$SRPM_PKG_DIR/Dockerfile" -a "$SRPM_PKG_DIR/_service" ]; then
-    SERVICE="
-  <service name=\"docker_tags_helper\" mode=\"buildtime\">
-     <param name=\"buildtag_replace\">/uyuni/suse\/manager\/4.3/</param>
-     <param name=\"prefix_replace\">/org\.opensuse\.uyuni/com.suse.manager/</param>
-  </service>
-"
-    SERVICES_START=$(sed -n "0,/<services>/p" $SRPM_PKG_DIR/_service)
-    SERVICES_END=$(sed -n "/<service /,/<\/services>/p" $SRPM_PKG_DIR/_service)
-      echo "$SERVICES_START$SERVICE$SERVICES_END" >"$SRPM_PKG_DIR/_service"
+  if [ "${OSCAPI}" = "https://api.suse.de" -a -f "$SRPM_PKG_DIR/Dockerfile" ]; then
+      VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
+      sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+      sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   # update from obs (create missing package on the fly)

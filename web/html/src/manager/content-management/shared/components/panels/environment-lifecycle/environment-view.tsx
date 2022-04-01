@@ -22,7 +22,11 @@ type EnvironmentStatusEnumType = {
 const environmentStatusEnum: EnvironmentStatusEnumType = {
   new: { key: "new", text: t("New"), isBuilding: false },
   building: { key: "building", text: t("Cloning channels"), isBuilding: true },
-  generating_repodata: { key: "generating_repodata", text: t("Generating repositories data"), isBuilding: true },
+  generating_repodata: {
+    key: "generating_repodata",
+    text: t("Waiting for repositories data to be generated"),
+    isBuilding: true,
+  },
   built: { key: "built", text: t("Built"), isBuilding: false },
   failed: { key: "failed", text: t("Failed"), isBuilding: false },
 };

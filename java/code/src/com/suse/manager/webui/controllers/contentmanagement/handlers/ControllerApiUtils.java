@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -33,8 +34,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,9 +72,20 @@ public class ControllerApiUtils {
 
         Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches =
                 ContentManager.listActiveSwSourcesWithUnsyncedPatches(user, dbContentProject);
+        Map<Long, Long> sourceTagetChannelIds = new HashMap<>();
+        if (!dbContentEnvironments.isEmpty() && !swSourcesWithUnsyncedPatches.isEmpty()) {
+            ContentEnvironment first = dbContentEnvironments.get(0);
+            swSourcesWithUnsyncedPatches.forEach(swsource -> {
+                Channel sChan = swsource.getChannel();
+                Optional<Long> tgtChanId = ContentManager.lookupTargetByChannel(sChan, first, user)
+                        .map(target -> target.getChannel().getId());
+                sourceTagetChannelIds.put(sChan.getId(), tgtChanId.orElse(null));
+            });
+        }
 
         return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments, swSourcesWithUnsyncedPatches)
+                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments, swSourcesWithUnsyncedPatches,
+                        sourceTagetChannelIds)
         ));
     }
 

@@ -32,14 +32,11 @@ EXPOSE 443/tcp
 
 VOLUME ["/etc/uyuni", "/srv/tftpboot", "/var/cache/rhn"]
 
-# TODO: remove, devel
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses vim less
-
-# TODO: check and adjust
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
  python3-rhnlib spacewalk-proxy-broker \
  spacewalk-proxy-common spacewalk-proxy-package-manager \
- spacewalk-proxy-redirect spacewalk-ssl-cert-check spacewalk-proxy-html
+ spacewalk-proxy-redirect spacewalk-ssl-cert-check spacewalk-proxy-html \
+ susemanager-tftpsync-recv
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
 

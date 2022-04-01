@@ -32,6 +32,7 @@
 %endif
 %endif
 %{!?rhel: %global sbinpath /sbin}%{?rhel: %global sbinpath %{_sbindir}}
+%{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
@@ -41,11 +42,11 @@ Version:        4.3.10
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
+Source1:        node-modules.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  nodejs-packaging
-BuildRequires:  susemanager-nodejs-sdk-devel
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
@@ -73,6 +74,8 @@ Obsoletes:      rhn-html < 5.3.0
 Provides:       rhn-html = 5.3.0
 Obsoletes:      susemanager-web-libs < %{version}
 Provides:       susemanager-web-libs = %{version}
+Obsoletes:      susemanager-nodejs-sdk-devel < %{version}
+Provides:       susemanager-nodejs-sdk-devel = %{version}
 # files html/javascript/{builder.js,controls.js,dragdrop.js,effects.js,
 # prototype-1.6.0.js,scriptaculous.js,slider.js,sound.js,unittest.js}
 # are licensed under MIT license
@@ -165,14 +168,16 @@ database.
 
 %prep
 %setup -q
+tar xf %{S:1}
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
+mkdir -p %{buildroot}%{nodejs_sitelib}
+cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
 pushd html/src
-mkdir node_modules
-tar x -C node_modules -f %{nodejs_sitelib}/all_modules.tar.gz
-PATH=node_modules/webpack/bin:$PATH BUILD_VALIDATION=false node build.js
+BUILD_VALIDATION=false NODE_OPTIONS="--trace-warnings --trace-deprecation --unhandled-rejections=strict" node build.js
 popd
+rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
 %install

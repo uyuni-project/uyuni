@@ -1,48 +1,64 @@
+/* eslint-disable no-console */
 const shell = require("shelljs");
 const path = require("path");
+const v8 = require("v8");
+const webpack = require("webpack");
 const { fillSpecFile } = require("./build/fill-spec-file");
+const config = require("./build/webpack.config");
 
-const { code: codeBuild } = shell.exec("webpack --config build/webpack.config.js --mode production");
-if (codeBuild !== 0) {
-  shell.exit(codeBuild);
-}
-
-// These are relative to the web folder
-const editedLicenseFilesByBuild = [
-  "spacewalk-web.spec",
-  "html/src/vendors/npm.licenses.structured.js",
-  "html/src/vendors/npm.licenses.txt",
-];
-
-const shouldValidateBuild = process.env.BUILD_VALIDATION !== "false";
-
-fillSpecFile().then(() => {
-  if (shouldValidateBuild) {
-    // Check whether the updated specfile and licenses are committed on git
-    const webDir = path.resolve(__dirname, "../../");
-    const { code: gitCheckCode, stdout } = shell.exec("git ls-files -m", {
-      cwd: webDir,
-    });
-    if (gitCheckCode !== 0) {
-      shell.exit(gitCheckCode);
+webpack(config(process.env, { mode: "production" }), (err, stats) => {
+  // See https://webpack.js.org/api/node/#error-handling
+  if (err) {
+    console.error("Webpack error");
+    console.error(err.stack || err);
+    if (err.message.toLowerCase().match(/\bmemory\b/)) {
+      // See https://stackoverflow.com/a/38049633/1470607
+      console.error("Process memory usage:");
+      console.error(process.memoryUsage());
+      console.error("V8 heap statistics:");
+      console.error(v8.getHeapStatistics());
     }
-
-    if (stdout && editedLicenseFilesByBuild.some((fileName) => stdout.includes(fileName))) {
-      shell.echo(`
-                It seems the most recent ${editedLicenseFilesByBuild} files aren't on git.
-                Run "yarn build" again and commit the following files: ${editedLicenseFilesByBuild.join(", ")}`);
-      // TODO: This should be an error again after dependabot issues are addressed
-      // shell.exit(1);
-    }
-
-    // TODO: This should be simply `yarn audit` once Storybook issues are resolved
-    const { stdout: auditStdout } = shell.exec("yarn audit --groups dependencies,devDependencies");
-
-    if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
-      shell.echo(`
-                There are vulnerabilities on the downloaded npm libraries.
-                Please run "yarn audit" and fix the detected vulnerabilities `);
-      shell.exit(1);
-    }
+    process.exitCode = err.code || 1;
+    return;
   }
+
+  if (stats.hasErrors()) {
+    console.error("Build error");
+    console.error(stats.toJson().errors);
+    process.exitCode = stats.code || 1;
+    return;
+  }
+
+  const editedLicenseFilesByBuild = [
+    "web/spacewalk-web.spec",
+    "web/html/src/vendors/npm.licenses.structured.js",
+    "web/html/src/vendors/npm.licenses.txt",
+  ];
+
+  const shouldValidateBuild = process.env.BUILD_VALIDATION !== "false";
+
+  fillSpecFile().then(() => {
+    if (shouldValidateBuild) {
+      // Check whether the updated specfile and licenses are committed on git
+      const rootDir = path.resolve(__dirname, "../../../");
+      const { code: gitCheckCode, stdout } = shell.exec("git ls-files -m", {
+        cwd: rootDir,
+      });
+
+      if (gitCheckCode !== 0) {
+        process.exitCode = gitCheckCode;
+        return;
+      }
+
+      const uncommittedFiles = editedLicenseFilesByBuild.filter((fileName) => stdout.includes(fileName));
+
+      if (uncommittedFiles.length) {
+        console.error(`
+                It seems changes to license and/or spec files haven't been committed.
+                Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
+        process.exitCode = 1;
+        return;
+      }
+    }
+  });
 });

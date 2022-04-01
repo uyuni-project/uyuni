@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 09:34:34 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Finalize server configuration and start command
+
+-------------------------------------------------------------------
 Tue Mar 15 14:43:07 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Initial version

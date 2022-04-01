@@ -28,10 +28,6 @@ const FiltersProjectSelection = (props: FiltersProps) => {
     onActionAllFilters({}, "get").then((apiAllFilters) => setAllFilters(apiAllFilters));
   }, []);
 
-  useEffect(() => {
-    props.onChange(onGoingSelectedFilters);
-  }, [onGoingSelectedFilters]);
-
   if (isLoadingAllFilters) {
     return <Loading text={t("Loading global filters...")} />;
   }
@@ -52,9 +48,11 @@ const FiltersProjectSelection = (props: FiltersProps) => {
               id={"child_" + filter.id}
               name="filterSelection"
               checked={onGoingSelectedFilters.includes(filter.id)}
-              onChange={(event) =>
-                setOnGoingSelectedFilters(_xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]))
-              }
+              onChange={(event) => {
+                const newFilters = _xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]);
+                setOnGoingSelectedFilters(newFilters);
+                props.onChange(newFilters);
+              }}
             />
             <label htmlFor={"child_" + filter.id}>{getClmFilterDescription(filter)}</label>
           </div>

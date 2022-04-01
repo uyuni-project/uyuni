@@ -102,6 +102,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
@@ -352,6 +353,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Key.Names getKeys() {
         return callSync(Key.listAll()).orElseThrow(this::noWheelResult);
     }
@@ -425,6 +427,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean keyExists(String id, KeyStatus... statusIn) {
         final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
         if (status.isEmpty()) {
@@ -441,6 +444,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Key.Fingerprints getFingerprints() {
         return callSync(Key.finger("*")).orElseThrow(this::noWheelResult);
     }
@@ -448,6 +452,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
         return callSync(Key.genAccept(id, Optional.of(force))).orElseThrow(this::noWheelResult);
@@ -456,6 +461,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames) {
        return callSync(Grains.item(false, type, grainNames), minionId);
     }
@@ -463,6 +469,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<Map<String, Object>> getGrains(String minionId) {
         return callSync(Grains.items(false), minionId);
     }
@@ -470,6 +477,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<String> getMachineId(String minionId) {
         return getGrain(minionId, "machine_id").flatMap(grain -> {
           if (grain instanceof String) {
@@ -486,6 +494,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void acceptKey(String match) {
         if (callSync(Key.accept(match)).isEmpty()) {
             throw noWheelResult();
@@ -495,6 +504,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deleteKey(String minionId) {
         if (callSync(Key.delete(minionId)).isEmpty()) {
             throw noWheelResult();
@@ -504,6 +514,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rejectKey(String minionId) {
         if (callSync(Key.reject(minionId)).isEmpty()) {
             throw noWheelResult();
@@ -584,6 +595,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public EventStream getEventStream() {
         return createOrGetEventStream();
     }
@@ -604,6 +616,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
             return callSync(Cmd.run(cmd), target);
@@ -623,6 +636,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
             MinionList target, String cmd, CompletableFuture<GenericError> cancel) {
 
@@ -660,6 +674,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
             return callSync(SaltUtil.running(), target);
@@ -681,6 +696,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata) {
         return callSync(Jobs.listJobs(metadata));
     }
@@ -688,6 +704,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata,
                                                                     LocalDateTime startTime, LocalDateTime endTime) {
         return callSync(Jobs.listJobs(metadata, startTime, endTime));
@@ -696,6 +713,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<Jobs.Info> listJob(String jid) {
         return callSync(Jobs.listJob(jid));
     }
@@ -703,6 +721,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, CompletionStage<Result<Boolean>>> matchAsync(
             String target, CompletableFuture<GenericError> cancel) {
         try {
@@ -717,6 +736,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> matchCompoundSync(String target) {
         try {
             Map<String, Result<Boolean>> result =
@@ -734,6 +754,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
         return saltSSHService.matchAsyncSSH(target, cancel);
@@ -759,6 +780,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refreshPillar(MinionList minionList) {
         try {
             LocalCall<Boolean> call = SaltUtil.refreshPillar(Optional.empty(),
@@ -779,6 +801,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void syncGrains(MinionList minionList) {
         try {
             LocalCall<List<String>> call = SaltUtil.syncGrains(Optional.empty(),
@@ -793,6 +816,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void syncModules(MinionList minionList) {
         try {
             LocalCall<List<String>> call = SaltUtil.syncModules(Optional.empty(),
@@ -815,6 +839,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void syncAll(MinionList minionList) {
         try {
              LocalCall<Map<String, Object>> call = SaltUtil.syncAll(Optional.empty(),
@@ -940,6 +965,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
@@ -961,6 +987,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
         try {
             LocalCall<String> call = Test.echo("checkIn");
@@ -1022,6 +1049,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateSystemInfo(MinionList minionTarget) {
         try {
             callAsync(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO),
@@ -1036,6 +1064,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
     }
@@ -1050,6 +1079,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
         return callSync(State.apply(Collections.singletonList("packages.redhatproductinfo"),
                 Optional.empty()), minionId)
@@ -1091,6 +1121,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
             Map<String, Object> pillarData) throws SaltException {
@@ -1100,6 +1131,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
         String actionPath = ScapFileManager
@@ -1180,14 +1212,19 @@ public class SaltService implements SystemQuery, SaltApi {
                 .getFileAttributeView(dir,
                         PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
         try {
-            posixAttrs.setPermissions(PosixFilePermissions.fromString("rwxrwxr-x"));
+            Set<PosixFilePermission> wantedPers = PosixFilePermissions.fromString("rwxrwxr-x");
+            if (!posixAttrs.readAttributes().permissions().equals(wantedPers)) {
+                posixAttrs.setPermissions(wantedPers);
+            }
         }
         catch (IOException e) {
             LOG.warn(String.format("Could not set 'rwxrwxr-x' permissions on %s: %s",
                     dir, e.getMessage()));
         }
         try {
-            posixAttrs.setGroup(group);
+            if (!posixAttrs.readAttributes().group().equals(group)) {
+                posixAttrs.setGroup(group);
+            }
         }
         catch (IOException e) {
             LOG.warn(String.format("Could not set group on %s to %s: %s",
@@ -1198,6 +1235,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path) {
         RunnerCall<MgrUtilRunner.SshKeygenResult> call = MgrUtilRunner.generateSSHKey(path);
         return callSync(call);
@@ -1206,6 +1244,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname) {
         RunnerCall<MgrUtilRunner.RemoveKnowHostResult> call = MgrUtilRunner.removeSSHKnowHost("salt", hostname);
         return callSync(call);
@@ -1215,6 +1254,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
         RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
         return callSync(call);
@@ -1223,6 +1263,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts,
                                                     String clientKey,
                                                     String proxyKey,
@@ -1239,6 +1280,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig,
                                                         String context) {
         RunnerCall<MgrK8sRunner.ContainersList> call =
@@ -1289,6 +1331,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<List<String>> cleanupMinion(MinionServer minion,
                                                    int timeout) {
         boolean sshPush = Stream.of(
@@ -1361,6 +1404,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public SaltSSHService getSaltSSHService() {
         return saltSSHService;
     }
@@ -1368,6 +1412,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore) {
         RunnerCall<MgrUtilRunner.ExecResult> call =

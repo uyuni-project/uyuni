@@ -6,11 +6,9 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - 'susemanager-frontend/**'
 
 jobs:
   javascript_build:
@@ -40,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     - name: Build application
       run: yarn --cwd web/html/src build

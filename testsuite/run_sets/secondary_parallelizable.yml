@@ -8,6 +8,7 @@
 
 # IDEMPOTENT
 
+- features/secondary/srv_advanced_search.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
@@ -33,6 +34,7 @@
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_payg_ssh_connection.feature
 - features/secondary/srv_push_package.feature
+- features/secondary/srv_reportdb.feature
 - features/secondary/trad_spacewalk_channel.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature

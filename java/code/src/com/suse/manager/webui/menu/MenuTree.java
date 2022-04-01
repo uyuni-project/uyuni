@@ -166,6 +166,8 @@ public class MenuTree {
                             .withAltUrl("/rhn/ssm/ViewLog.do").withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
             .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/systems/bootstrap")
                     .withVisibility(adminRoles.get("org")))
+            .addChild(new MenuItem("container.based.proxy.config").withPrimaryUrl("/rhn/manager/proxy/container-config")
+                    .withVisibility(adminRoles.get("org")))
             .addChild(new MenuItem("visualization.nav.title")
                     .withVisibility(adminRoles.get("org"))
                     .addChild(new MenuItem("Virtualization Hierarchy")

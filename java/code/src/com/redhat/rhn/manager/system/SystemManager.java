@@ -2229,6 +2229,7 @@ public class SystemManager extends BaseManager {
         config.put("max_cache_size_mb", maxCache);
         config.put("email", email);
         config.put("server_version", ConfigDefaults.get().getProductVersion());
+        config.put("proxy_fqdn", proxyName);
         Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
 
         zipOut.putNextEntry(new ZipEntry("config.yaml"));
@@ -2266,7 +2267,8 @@ public class SystemManager extends BaseManager {
 
         // Check the SSL files using mgr-ssl-cert-setup
         try {
-            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair, intermediateCAs);
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
+                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
             zipOut.putNextEntry(new ZipEntry("server.crt"));
             zipOut.write(certificate.getBytes());
             zipOut.closeEntry();

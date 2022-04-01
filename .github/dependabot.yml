@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # This value means either NPM or Yarn, Yarn doesn't have a separate value
+    directory: "/web/html/src/**"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "daily"
+    # This is currently bugged, see https://github.com/dependabot/dependabot-core/issues/2521
+    allow:
+      - dependency-type: "production"

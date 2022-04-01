@@ -1906,6 +1906,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
         assertEquals(email, yaml.get("email"));
         assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
+        assertEquals(proxyName, yaml.get("proxy_fqdn"));
     }
 
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {

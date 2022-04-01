@@ -26,6 +26,7 @@ public class ProjectSoftwareSourceResponse {
     private String state;
     private String type;
     private boolean hasUnsyncedPatches;
+    private Long targetChannelId;
 
     public void setChannelId(Long channelIdIn) {
         this.channelId = channelIdIn;
@@ -49,6 +50,10 @@ public class ProjectSoftwareSourceResponse {
 
     public void setHasUnsyncedPatches(boolean hasUnsyncedPatchesIn) {
         hasUnsyncedPatches = hasUnsyncedPatchesIn;
+    }
+
+    public void setTargetChannelId(Long targetChannelIdIn) {
+        targetChannelId = targetChannelIdIn;
     }
 }
 
