@@ -21,7 +21,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EventListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -34,7 +35,7 @@ public class PGEventListener implements EventListener {
     /**
      * Logger for this class
      */
-    private static final Logger LOG = Logger.getLogger(PGEventListener.class);
+    private static final Logger LOG = LogManager.getLogger(PGEventListener.class);
 
     /**
      * Function to call when the event stream gets closed

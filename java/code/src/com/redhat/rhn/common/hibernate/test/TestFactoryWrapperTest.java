@@ -26,11 +26,12 @@ import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
-    private static Logger log = Logger.getLogger(TestFactoryWrapperTest.class);
+    private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
 
     @BeforeEach
     public void setUp() {

@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -36,7 +37,7 @@ import java.util.Set;
  */
 public class StateFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(StateFactory.class);
+    private static Logger log = LogManager.getLogger(StateFactory.class);
     private static StateFactory singleton = new StateFactory();
 
     /**

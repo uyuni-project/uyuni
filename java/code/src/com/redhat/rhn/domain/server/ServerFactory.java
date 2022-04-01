@@ -46,7 +46,8 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -81,7 +82,7 @@ import javax.persistence.criteria.Root;
  */
 public class ServerFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(ServerFactory.class);
+    private static Logger log = LogManager.getLogger(ServerFactory.class);
 
     public static final ServerFactory SINGLETON = new ServerFactory();
 

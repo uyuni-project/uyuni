@@ -187,7 +187,8 @@ import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 import java.io.BufferedReader;
@@ -226,7 +227,7 @@ import java.util.stream.Collectors;
  */
 public class SystemHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(SystemHandler.class);
+    private static Logger log = LogManager.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 

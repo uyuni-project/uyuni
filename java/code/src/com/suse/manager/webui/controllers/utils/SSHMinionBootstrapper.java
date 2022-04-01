@@ -34,7 +34,8 @@ import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +49,7 @@ import java.util.stream.Stream;
  */
 public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static final Logger LOG = Logger.getLogger(SSHMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(SSHMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use

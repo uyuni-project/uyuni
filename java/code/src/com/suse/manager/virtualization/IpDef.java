@@ -18,7 +18,8 @@ import com.suse.utils.Ip;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import java.net.UnknownHostException;
@@ -30,7 +31,7 @@ import java.util.Optional;
  * Represents the IP configuration of a virtual network
  */
 public class IpDef {
-    private static final Logger LOG = Logger.getLogger(IpDef.class);
+    private static final Logger LOG = LogManager.getLogger(IpDef.class);
 
     private String address;
     private Integer prefix;

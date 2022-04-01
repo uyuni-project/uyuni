@@ -41,7 +41,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -79,7 +80,7 @@ public class FormulaFactory {
     public static final String SALTBOOT_GROUP = "saltboot-group";
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
+    private static final Logger LOG = LogManager.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
     private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";

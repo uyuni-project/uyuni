@@ -28,7 +28,6 @@ import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
 
-import org.apache.log4j.LogMF;
 import org.hibernate.Session;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -48,7 +47,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             SelectMode query = ModeFactory.getMode(xmlName, tableName, Map.class);
 
             // Remove all the existing data
-            LogMF.debug(log, "Deleting existing data in table {}", tableName);
+            log.debug("Deleting existing data in table {}", tableName);
             WriteMode delete = generateDelete(session, tableName);
             delete.executeUpdate(Map.of("mgm_id", 1));
 
@@ -59,19 +58,19 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 // Generate the insert using the column name retrieved from the select
                 WriteMode insert = generateInsertWithDate(session, tableName, mgmId, firstBatch.get(0).keySet());
                 insert.executeUpdates(firstBatch);
-                LogMF.debug(log, "Extracted {} rows for table {}", firstBatch.size(), tableName);
+                log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
                 if (firstBatch.size() == BATCH_SIZE) {
                     ReportDBHelper.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
                         .forEach(batch -> {
                             insert.executeUpdates(batch);
-                            LogMF.debug(log, "Extracted {} rows more for table {}", firstBatch.size(), tableName);
+                            log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
                         });
                 }
             }
             else {
-                LogMF.debug(log, "No data extracted for table {}", tableName);
+                log.debug("No data extracted for table {}", tableName);
             }
         });
     }

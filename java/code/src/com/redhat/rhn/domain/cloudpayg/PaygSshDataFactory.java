@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.cloudpayg;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,7 @@ import javax.persistence.criteria.Root;
 
 public class PaygSshDataFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(PaygSshDataFactory.class);
+    private static Logger log = LogManager.getLogger(PaygSshDataFactory.class);
     private static final PaygSshDataFactory SINGLETON = new PaygSshDataFactory();
 
     private PaygSshDataFactory() {

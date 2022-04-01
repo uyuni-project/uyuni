@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerator {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(MinionGroupMembershipPillarGenerator.class);
+    private static final Logger LOG = LogManager.getLogger(MinionGroupMembershipPillarGenerator.class);
 
     public static final MinionGroupMembershipPillarGenerator INSTANCE = new MinionGroupMembershipPillarGenerator();
 

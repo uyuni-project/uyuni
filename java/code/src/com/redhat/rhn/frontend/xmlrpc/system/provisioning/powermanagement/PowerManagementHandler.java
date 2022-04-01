@@ -30,7 +30,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredPowerSettings
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ import java.util.Map;
  * call these functions.
  */
 public class PowerManagementHandler extends BaseHandler {
-    private static Logger log = Logger.getLogger(PowerManagementHandler.class);
+    private static Logger log = LogManager.getLogger(PowerManagementHandler.class);
 
     /**
      * Return a list of available power management types

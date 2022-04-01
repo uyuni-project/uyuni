@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.wheel.Key;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,7 +34,7 @@ import java.util.stream.Stream;
 public class SaltKeyUtils {
 
     private final SaltApi saltApi;
-    private static final Logger LOG = Logger.getLogger(SaltKeyUtils.class);
+    private static final Logger LOG = LogManager.getLogger(SaltKeyUtils.class);
 
     /**
      * @param saltApiIn

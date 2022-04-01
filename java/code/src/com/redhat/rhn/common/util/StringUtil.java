@@ -20,7 +20,8 @@ import com.redhat.rhn.common.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xml.utils.XMLChar;
 import org.stringtree.json.JSONReader;
 import org.stringtree.json.JSONWriter;
@@ -104,7 +105,7 @@ public class StringUtil {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(StringUtil.class);
+    private static Logger logger = LogManager.getLogger(StringUtil.class);
 
     /**
      * Private constructore

@@ -33,7 +33,8 @@ import com.google.gson.Gson;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class LoginController {
 
-    private static Logger log = Logger.getLogger(LoginController.class);
+    private static Logger log = LogManager.getLogger(LoginController.class);
     private static final Gson GSON = Json.GSON;
     private static final String URL_CREATE_FIRST_USER = "/rhn/newlogin/CreateFirstUser.do";
 

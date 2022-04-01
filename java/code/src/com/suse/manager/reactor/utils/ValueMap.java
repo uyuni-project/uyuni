@@ -16,7 +16,8 @@ package com.suse.manager.reactor.utils;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class ValueMap {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(ValueMap.class);
+    private static final Logger LOG = LogManager.getLogger(ValueMap.class);
 
     private Map<String, ?> valueMap;
 

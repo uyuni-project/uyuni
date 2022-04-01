@@ -31,7 +31,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +50,7 @@ import java.util.function.Supplier;
  */
 public class MonitoringService {
 
-    private static final Logger LOG = Logger.getLogger(MonitoringService.class);
+    private static final Logger LOG = LogManager.getLogger(MonitoringService.class);
 
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()

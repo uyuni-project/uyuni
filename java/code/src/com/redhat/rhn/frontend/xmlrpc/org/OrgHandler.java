@@ -49,7 +49,8 @@ import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,7 +70,7 @@ public class OrgHandler extends BaseHandler {
     private static final String VALIDATION_XSD =
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
     private static final String USED_KEY = "used";
-    private static Logger log = Logger.getLogger(OrgHandler.class);
+    private static Logger log = LogManager.getLogger(OrgHandler.class);
 
     private final MigrationManager migrationManager;
 

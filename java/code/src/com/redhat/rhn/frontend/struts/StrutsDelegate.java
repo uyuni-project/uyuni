@@ -24,7 +24,8 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.frontend.context.Context;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
@@ -54,7 +55,7 @@ import javax.servlet.http.HttpSession;
  */
 public class StrutsDelegate {
 
-    private static final Logger  LOG = Logger.getLogger(StrutsDelegate.class);
+    private static final Logger  LOG = LogManager.getLogger(StrutsDelegate.class);
     private static final StrutsDelegate INSTANCE = new StrutsDelegate();
 
     /**

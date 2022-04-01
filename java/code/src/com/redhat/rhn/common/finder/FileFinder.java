@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.common.finder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import java.util.List;
 class FileFinder implements Finder {
 
     private final File startDir;
-    private static Logger log = Logger.getLogger(FileFinder.class);
+    private static Logger log = LogManager.getLogger(FileFinder.class);
     private String path;
 
     FileFinder(File directory, String relativeDir) {

@@ -35,7 +35,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.xml.sax.SAXException;
 
@@ -65,7 +66,7 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
 public class BaseHandler implements XmlRpcInvocationHandler {
     public static final int VALID = 1;
 
-    private static Logger log = Logger.getLogger(BaseHandler.class);
+    private static Logger log = LogManager.getLogger(BaseHandler.class);
 
     private static final String RO_REGEX = "^(list|get|is|find).*$";
     private static final String KEY_REGEX = "^[1-9][0-9]*x[a-f0-9]{64}$";

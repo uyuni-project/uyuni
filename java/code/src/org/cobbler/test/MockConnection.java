@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class MockConnection extends CobblerConnection {
     private String token;
     private String url;
 
-    private Logger log = Logger.getLogger(MockConnection.class);
+    private Logger log = LogManager.getLogger(MockConnection.class);
 
     private static List<Map> profiles = new ArrayList<>();
     private static List<Map> distros = new ArrayList<>();

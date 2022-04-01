@@ -56,7 +56,8 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -75,7 +76,7 @@ import java.util.Set;
  * PackageManager
  */
 public class PackageManager extends BaseManager {
-    private static final Logger LOG = Logger.getLogger(PackageManager.class);
+    private static final Logger LOG = LogManager.getLogger(PackageManager.class);
     public static final String RHNCFG = "mgr-cfg";
     public static final String RHNCFG_CLIENT = "mgr-cfg-client";
     public static final String RHNCFG_ACTIONS = "mgr-cfg-actions";

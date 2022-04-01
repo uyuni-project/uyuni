@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.struts.wizard;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -59,7 +60,7 @@ public abstract class RhnWizardAction extends RhnAction {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(RhnWizardAction.class);
+    private static Logger log = LogManager.getLogger(RhnWizardAction.class);
 
     public static final String STEP_START = "start";
     public static final String STEP_PARAM = "wizardStep";

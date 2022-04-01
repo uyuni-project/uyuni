@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -45,7 +46,7 @@ public class PermissionExceptionHandler extends ExceptionHandler {
                                  throws ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         request.setAttribute("error", ex);
-        Logger log = Logger.getLogger(PermissionExceptionHandler.class);
+        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
         log.error("Permission Error", ex);
 
         TraceBackEvent evt = new TraceBackEvent();

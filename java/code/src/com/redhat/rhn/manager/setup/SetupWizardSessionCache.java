@@ -18,7 +18,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpSession;
 public class SetupWizardSessionCache {
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(SetupWizardSessionCache.class);
+    private static Logger logger = LogManager.getLogger(SetupWizardSessionCache.class);
 
     // Session attribute keys
     private static final String SUBSCRIPTIONS_KEY = "SETUP_WIZARD_SUBSCRIPTIONS";

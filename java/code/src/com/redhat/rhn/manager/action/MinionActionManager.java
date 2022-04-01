@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
  */
 public class MinionActionManager {
 
-    private static Logger log = Logger.getLogger(MinionActionManager.class);
+    private static Logger log = LogManager.getLogger(MinionActionManager.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private MinionActionManager() {

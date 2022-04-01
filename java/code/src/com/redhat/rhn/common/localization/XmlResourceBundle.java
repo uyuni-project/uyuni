@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.common.localization;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -49,7 +50,7 @@ import java.util.Vector;
  */
 public final class XmlResourceBundle extends java.util.ResourceBundle {
 
-    private static Logger log = Logger.getLogger(XmlResourceBundle.class);
+    private static Logger log = LogManager.getLogger(XmlResourceBundle.class);
 
     /**
      * Map of key/value pairs

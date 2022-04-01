@@ -73,7 +73,8 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -84,7 +85,7 @@ import java.util.stream.Stream;
 public class SaltReactor {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(SaltReactor.class);
+    private static final Logger LOG = LogManager.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
     private final SaltApi saltApi;

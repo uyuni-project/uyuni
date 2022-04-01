@@ -50,8 +50,8 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -78,7 +78,7 @@ public class ProductsController {
     private static final String REFRESH_FILE_LOCKED = "refreshFileLocked";
     private static final String NO_TOOLS_CHANNEL_SUBSCRIPTION = "noToolsChannelSubscription";
 
-    private static Logger log = Logger.getLogger(ProductsController.class);
+    private static Logger log = LogManager.getLogger(ProductsController.class);
 
     private ProductsController() { }
 

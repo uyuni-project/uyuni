@@ -26,7 +26,8 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import com.suse.manager.webui.websocket.VirtNotifications;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,8 +46,7 @@ public class VirtualInstanceManager extends BaseManager {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger
-            .getLogger(VirtualInstanceManager.class);
+    private static Logger log = LogManager.getLogger(VirtualInstanceManager.class);
 
     private VirtualInstanceManager() {
     }

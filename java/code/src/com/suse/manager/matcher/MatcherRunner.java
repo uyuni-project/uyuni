@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class MatcherRunner {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(MatcherRunner.class);
+    private static Logger logger = LogManager.getLogger(MatcherRunner.class);
 
     /**
      * Runs subscription-matcher.

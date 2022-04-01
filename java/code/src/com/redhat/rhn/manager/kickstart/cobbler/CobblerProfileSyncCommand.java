@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      */
     public CobblerProfileSyncCommand() {
         super();
-        log = Logger.getLogger(this.getClass());
+        log = LogManager.getLogger(this.getClass());
     }
 
 

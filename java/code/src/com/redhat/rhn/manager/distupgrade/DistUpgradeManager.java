@@ -52,7 +52,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.utils.Lists;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +78,7 @@ import java.util.stream.Collectors;
 public class DistUpgradeManager extends BaseManager {
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(DistUpgradeManager.class);
+    private static Logger logger = LogManager.getLogger(DistUpgradeManager.class);
 
     /**
      * For a given system, return true if distribution upgrades are supported.

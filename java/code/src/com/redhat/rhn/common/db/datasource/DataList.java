@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +45,7 @@ public class DataList<E> extends ArrayList<E> {
      */
     private static final long serialVersionUID = -4742688110496214350L;
 
-    private static final Logger LOG = Logger.getLogger(DataList.class);
+    private static final Logger LOG = LogManager.getLogger(DataList.class);
 
     //used for elaborating only
     private SelectMode mode;

@@ -15,7 +15,8 @@
 package com.redhat.rhn.common.validator;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class RequiredIfConstraint extends ParsedConstraint {
 
-    private static Logger log = Logger.getLogger(RequiredIfConstraint.class);
+    private static Logger log = LogManager.getLogger(RequiredIfConstraint.class);
 
     private List fieldValueList;
 

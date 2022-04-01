@@ -37,7 +37,8 @@ import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ import java.util.stream.IntStream;
 
 public class SCCSystemRegistrationManager {
 
-    private final Logger LOG = Logger.getLogger(SCCSystemRegistrationManager.class);
+    private final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
 
     /**

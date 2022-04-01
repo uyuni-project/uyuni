@@ -22,7 +22,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;

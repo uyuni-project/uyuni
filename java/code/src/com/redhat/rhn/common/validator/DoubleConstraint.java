@@ -16,7 +16,8 @@ package com.redhat.rhn.common.validator;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ import org.apache.log4j.Logger;
 public class DoubleConstraint extends RequiredIfConstraint {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(DoubleConstraint.class);
+    private static Logger log = LogManager.getLogger(DoubleConstraint.class);
 
     /** Minimum inclusive value allowed */
     private Double minInclusive;

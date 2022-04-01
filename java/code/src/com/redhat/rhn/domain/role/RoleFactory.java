@@ -16,7 +16,8 @@ package com.redhat.rhn.domain.role;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 /**
@@ -24,7 +25,7 @@ import org.hibernate.Session;
  */
 public class RoleFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(RoleFactory.class);
+    private static Logger log = LogManager.getLogger(RoleFactory.class);
 
     /**
      * Constructs an RoleFactory and initializes the Hibernate

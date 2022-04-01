@@ -34,7 +34,8 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
@@ -47,7 +48,7 @@ import java.util.Optional;
  */
 public class ChannelsChangedEventMessageAction implements MessageAction {
 
-    private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
+    private static Logger log = LogManager.getLogger(ChannelsChangedEventMessageAction.class);
 
     // Reference to the SaltService instance
     private final SystemQuery systemQuery;

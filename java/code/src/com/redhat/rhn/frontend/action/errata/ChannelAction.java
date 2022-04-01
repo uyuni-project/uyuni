@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -55,7 +56,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelAction extends RhnSetAction {
 
 
-    private static Logger log = Logger.getLogger(ChannelAction.class);
+    private static Logger log = LogManager.getLogger(ChannelAction.class);
 
 
     /**

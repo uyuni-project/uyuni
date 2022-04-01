@@ -26,7 +26,8 @@ import com.suse.manager.model.gatherer.GathererModule;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class GathererRunner {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(GathererRunner.class);
+    private static Logger logger = LogManager.getLogger(GathererRunner.class);
 
     /**
      * Call gatherer --list-modules and return the result

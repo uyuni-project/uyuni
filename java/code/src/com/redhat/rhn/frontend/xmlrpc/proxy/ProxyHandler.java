@@ -43,7 +43,8 @@ import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertPair;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ import java.util.List;
  * server.
  */
 public class ProxyHandler extends BaseHandler {
-    private static final Logger LOG = Logger.getLogger(ProxyHandler.class);
+    private static final Logger LOG = LogManager.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemManager systemManager;
 

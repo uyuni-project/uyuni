@@ -49,7 +49,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -84,8 +85,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger
-            .getLogger(ScheduleKickstartWizardAction.class);
+    private static Logger log = LogManager.getLogger(ScheduleKickstartWizardAction.class);
 
     public static final String SYNCH_PACKAGES = "syncPackages";
     public static final String SYNCH_SYSTEMS = "syncSystems";

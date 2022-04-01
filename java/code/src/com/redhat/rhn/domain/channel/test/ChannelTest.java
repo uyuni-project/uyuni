@@ -41,8 +41,9 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +55,7 @@ import java.util.Set;
 @SuppressWarnings("deprecation")
 public class ChannelTest extends BaseTestCaseWithUser {
 
-    private static Logger log = Logger.getLogger(ChannelTest.class);
+    private static Logger log = LogManager.getLogger(ChannelTest.class);
 
 
     @Test

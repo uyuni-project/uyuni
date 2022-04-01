@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.UserFactory;
 
 import com.suse.manager.webui.websocket.Notification;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +49,7 @@ import javax.persistence.criteria.Root;
 public class UserNotificationFactory extends HibernateFactory {
 
     private static UserNotificationFactory singleton = new UserNotificationFactory();
-    private static Logger log = Logger.getLogger(UserNotificationFactory.class);
+    private static Logger log = LogManager.getLogger(UserNotificationFactory.class);
 
     private UserNotificationFactory() {
         super();

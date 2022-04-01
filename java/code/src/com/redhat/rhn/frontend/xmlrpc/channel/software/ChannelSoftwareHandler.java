@@ -90,7 +90,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ import java.util.stream.Collectors;
  */
 public class ChannelSoftwareHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(ChannelSoftwareHandler.class);
+    private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemHandler systemHandler;

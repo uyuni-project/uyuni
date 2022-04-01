@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Image;
 import org.cobbler.SystemRecord;
@@ -39,7 +40,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
     public static final String POWER_MANAGEMENT_DUMMY_NAME = "dummy_for_power_management";
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerPowerSettingsUpdateCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerPowerSettingsUpdateCommand.class);
 
     /** The server to update. */
     private Server server;

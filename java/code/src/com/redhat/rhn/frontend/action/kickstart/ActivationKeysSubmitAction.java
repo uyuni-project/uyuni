@@ -25,7 +25,8 @@ import com.redhat.rhn.manager.kickstart.KickstartActivationKeysCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 
 import java.util.Iterator;
@@ -40,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
 
     public static final String UPDATE_METHOD = "kickstart.activationkeys.jsp.submit";
-    private static Logger log = Logger.getLogger(ActivationKeysSubmitAction.class);
+    private static Logger log = LogManager.getLogger(ActivationKeysSubmitAction.class);
 
     /**
      * {@inheritDoc}

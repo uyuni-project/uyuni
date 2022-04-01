@@ -19,8 +19,8 @@ import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLED_BA
 
 import com.redhat.rhn.common.finder.FinderFactory;
 
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -58,7 +58,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      * @param packageNamesSet set of packages that will be scanned for hbm.xml files on initialization.
      */
     protected AbstractConnectionManager(Set<String> packageNamesSet) {
-        this.LOG = Logger.getLogger(getClass());
+        this.LOG = LogManager.getLogger(getClass());
         this.configurators = new ArrayList<>();
         this.sessionInfoThreadLocal = new ThreadLocal<>();
         this.packageNames = new HashSet<>(packageNamesSet);
@@ -179,7 +179,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             packageNames.stream()
                         .map(FinderFactory::getFinder)
                         .flatMap(finder -> finder.find("hbm.xml").stream())
-                        .peek(hbmFile -> LogMF.debug(LOG, "Adding resource {0}", hbmFile))
+                        .peek(hbmFile -> LOG.debug("Adding resource {0}", hbmFile))
                         .forEach(config::addResource);
 
             // Invoke each configurator to add additional entries to Hibernate config

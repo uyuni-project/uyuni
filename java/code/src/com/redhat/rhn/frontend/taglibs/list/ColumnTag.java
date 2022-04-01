@@ -19,7 +19,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -31,7 +32,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Implements one column of a displayed data list
  */
 public class ColumnTag extends BodyTagSupport {
-    private static final Logger LOG = Logger.getLogger(ColumnTag.class);
+    private static final Logger LOG = LogManager.getLogger(ColumnTag.class);
 
     private static final long serialVersionUID = -1139212563984660282L;
 

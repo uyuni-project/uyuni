@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import java.util.Optional;
 public class ScapFactory extends HibernateFactory {
 
     private static ScapFactory singleton = new ScapFactory();
-    private static Logger log = Logger.getLogger(ScapFactory.class);
+    private static Logger log = LogManager.getLogger(ScapFactory.class);
 
     /**
      * Lookup a XCCDF TestResult by the id

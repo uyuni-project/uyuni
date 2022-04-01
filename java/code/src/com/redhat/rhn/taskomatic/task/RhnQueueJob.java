@@ -21,21 +21,9 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.appender.FileAppender;
-import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -66,7 +54,7 @@ public abstract class RhnQueueJob implements RhnJob {
         var layoutBuilder = builder
                 .newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = this.getClass().getName()+"fileAppender";
+        var appenderName = this.getClass().getName() + "fileAppender";
         var appenderBuilder = builder
                 .newAppender(appenderName, "File")
                 .addAttribute("fileName", jobRun.buildStdOutputLogPath())

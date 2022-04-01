@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 public class ModeFactory implements ManifestFactoryBuilder {
 
-    private static Logger logger = Logger.getLogger(ModeFactory.class);
+    private static Logger logger = LogManager.getLogger(ModeFactory.class);
 
     private static final String DEFAULT_PARSER_NAME =
                                        "org.apache.xerces.parsers.SAXParser";

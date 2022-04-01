@@ -18,14 +18,15 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * UpdateErrataCacheAction
  */
 public class UpdateErrataCacheAction implements MessageAction {
 
-    private static Logger log = Logger.getLogger(UpdateErrataCacheAction.class);
+    private static Logger log = LogManager.getLogger(UpdateErrataCacheAction.class);
 
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {

@@ -22,7 +22,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DownloadAction;
@@ -37,7 +38,7 @@ public class ScapDownloadAction extends DownloadAction {
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Logger log = Logger.getLogger(ScapDownloadAction.class);
+        Logger log = LogManager.getLogger(ScapDownloadAction.class);
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Long sid = context.getRequiredParam("sid");

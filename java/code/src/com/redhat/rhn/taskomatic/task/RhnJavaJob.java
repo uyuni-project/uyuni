@@ -21,11 +21,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.FileAppender;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -53,7 +50,7 @@ public abstract class RhnJavaJob implements RhnJob {
         var layoutBuilder = builder
                 .newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = this.getClass().getName()+"fileAppender";
+        var appenderName = this.getClass().getName() + "fileAppender";
         var appenderBuilder = builder
                 .newAppender(appenderName, "File")
                 .addAttribute("fileName", run.buildStdOutputLogPath())
