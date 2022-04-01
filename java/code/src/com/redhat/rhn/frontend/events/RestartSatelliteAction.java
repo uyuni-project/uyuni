@@ -21,7 +21,8 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.RestartCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * RestartSatelliteAction
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class RestartSatelliteAction implements MessageAction {
 
-    private static Logger log = Logger.getLogger(RestartSatelliteAction.class);
+    private static Logger log = LogManager.getLogger(RestartSatelliteAction.class);
 
     /**
      * {@inheritDoc}

@@ -15,7 +15,8 @@
 
 package org.cobbler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ import redstone.xmlrpc.XmlRpcClient;
 public class CobblerConnection {
     private XmlRpcClient client;
     private String actualUrl;
-    private static Logger log = Logger.getLogger(CobblerConnection.class);
+    private static Logger log = LogManager.getLogger(CobblerConnection.class);
     private String token;
 
     protected CobblerConnection() {

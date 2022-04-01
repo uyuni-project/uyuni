@@ -21,7 +21,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
@@ -38,7 +39,7 @@ import java.util.Map;
  */
 public class TaskoXmlRpcHandler {
 
-    private static Logger log = Logger.getLogger(TaskoXmlRpcHandler.class);
+    private static Logger log = LogManager.getLogger(TaskoXmlRpcHandler.class);
 
     /**
      * dummy call

@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.xmlrpc.util;
 import com.redhat.rhn.common.util.StringUtil;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ import java.util.Set;
 public class MapBuilder {
     private Set excludes = new HashSet();
     private Set includes = new HashSet();
-    private static Logger log = Logger.getLogger(MapBuilder.class);
+    private static Logger log = LogManager.getLogger(MapBuilder.class);
     /**
      * Add a debeanified name that must be excluded from the final map
      * @param fieldName the debeanified property name to exclude

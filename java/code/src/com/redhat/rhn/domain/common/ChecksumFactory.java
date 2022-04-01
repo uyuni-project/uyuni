@@ -18,7 +18,8 @@ import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -31,7 +32,7 @@ import java.util.Map;
  */
 public class ChecksumFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(ChecksumFactory.class);
+    private static Logger log = LogManager.getLogger(ChecksumFactory.class);
 
     /**
      * Lookup a checksum by id

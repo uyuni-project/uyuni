@@ -22,7 +22,8 @@ import static java.util.stream.Stream.concat;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -34,7 +35,7 @@ import javax.persistence.PersistenceException;
  */
 public abstract class TransactionHelper {
 
-    private static Logger log = Logger.getLogger(TransactionHelper.class);
+    private static Logger log = LogManager.getLogger(TransactionHelper.class);
 
     /**
      * Runs the runnable and handles the closing of the transaction and Hibernate session upon completion,

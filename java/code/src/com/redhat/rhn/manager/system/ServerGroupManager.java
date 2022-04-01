@@ -38,7 +38,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ import java.util.stream.Collectors;
 public class ServerGroupManager {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+    private static final Logger LOG = LogManager.getLogger(ServerGroupManager.class);
 
     private final SaltApi saltApi;
 

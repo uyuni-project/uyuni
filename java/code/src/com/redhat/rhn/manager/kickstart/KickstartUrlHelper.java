@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.Date;
@@ -40,7 +41,7 @@ import java.util.Date;
  */
 public class KickstartUrlHelper {
 
-    private static Logger log = Logger.getLogger(KickstartUrlHelper.class);
+    private static Logger log = LogManager.getLogger(KickstartUrlHelper.class);
     public static final String COBBLER_URL_BASE_PATH = "/cblr/svc/op/autoinstall/profile/";
     public static final String KS_DIST = "/ks/dist";
     public static final String KS_CFG = "/ks/cfg";

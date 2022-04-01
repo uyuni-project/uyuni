@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class OrgConfig that reflects the DB representation of rhnOrgConfiguration DB table:
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public class OrgConfig extends BaseDomainHelper {
 
-    protected static Logger log = Logger.getLogger(OrgConfig.class);
+    protected static Logger log = LogManager.getLogger(OrgConfig.class);
 
     private Long orgId;
     private boolean stagingContentEnabled;

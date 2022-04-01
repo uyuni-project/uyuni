@@ -24,7 +24,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -51,7 +52,7 @@ public class GeneralConfigAction extends BaseConfigAction {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(GeneralConfigAction.class);
+    private static Logger logger = LogManager.getLogger(GeneralConfigAction.class);
 
 
     private static final String[] STRING_CONFIG_ARRAY = {"traceback_mail",

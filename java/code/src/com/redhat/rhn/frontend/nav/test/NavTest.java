@@ -29,10 +29,11 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class NavTest extends RhnBaseTestCase {
-    private static Logger log = Logger.getLogger(NavTest.class);
+    private static Logger log = LogManager.getLogger(NavTest.class);
 
     /**
      * {@inheritDoc}

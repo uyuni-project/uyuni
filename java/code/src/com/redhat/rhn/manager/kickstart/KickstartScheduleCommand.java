@@ -64,7 +64,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
@@ -111,7 +112,7 @@ import java.util.Set;
  */
 public class KickstartScheduleCommand extends BaseSystemOperation {
 
-    private static Logger log = Logger.getLogger(KickstartScheduleCommand.class);
+    private static Logger log = LogManager.getLogger(KickstartScheduleCommand.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     public  static final String DHCP_NETWORK_TYPE = "dhcp";
     public  static final String LINK_NETWORK_TYPE = "link";

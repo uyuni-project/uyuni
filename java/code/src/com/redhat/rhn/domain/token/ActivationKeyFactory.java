@@ -33,7 +33,8 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ActivationKeyFactory extends HibernateFactory {
 
     public static final String DEFAULT_DESCRIPTION = "None";
     private static ActivationKeyFactory singleton = new ActivationKeyFactory();
-    private static Logger log = Logger.getLogger(ActivationKeyFactory.class);
+    private static Logger log = LogManager.getLogger(ActivationKeyFactory.class);
 
     /**
      * Lookup an ActivationKey by it's key string.

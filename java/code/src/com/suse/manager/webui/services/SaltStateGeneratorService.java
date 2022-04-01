@@ -55,7 +55,8 @@ import com.suse.manager.webui.utils.SaltPillar;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +80,7 @@ public enum SaltStateGeneratorService {
     INSTANCE;
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltStateGeneratorService.class);
 
     private Path suseManagerStatesFilesRoot;
     private boolean skipSetOwner = false;

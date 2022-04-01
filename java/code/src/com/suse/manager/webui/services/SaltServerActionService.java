@@ -167,7 +167,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
@@ -215,7 +216,7 @@ import java.util.stream.Stream;
 public class SaltServerActionService {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";

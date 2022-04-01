@@ -38,7 +38,8 @@ import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,7 +71,7 @@ import javax.persistence.criteria.Root;
 public class CVEAuditManager {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CVEAuditManager.class);
+    private static Logger log = LogManager.getLogger(CVEAuditManager.class);
 
     // Internal methods caches
     /** The SUSE product channel cache. */

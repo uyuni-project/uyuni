@@ -34,7 +34,8 @@ import com.impossibl.postgres.api.jdbc.PGNotificationListener;
 import com.impossibl.postgres.jdbc.PGDataSource;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -57,7 +58,7 @@ import java.util.stream.Stream;
  */
 public class PGEventStream extends AbstractEventStream implements PGNotificationListener {
 
-    private static final Logger LOG = Logger.getLogger(PGEventStream.class);
+    private static final Logger LOG = LogManager.getLogger(PGEventStream.class);
     private static final int MAX_EVENTS_PER_COMMIT = ConfigDefaults.get().getSaltEventsPerCommit();
     private static final int THREAD_POOL_SIZE = ConfigDefaults.get().getSaltEventThreadPoolSize();
 

@@ -45,7 +45,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -70,7 +71,7 @@ import java.util.stream.Stream;
  */
 public class MinionActionUtils {
 
-    private static final Logger LOG = Logger.getLogger(MinionActionUtils.class);
+    private static final Logger LOG = LogManager.getLogger(MinionActionUtils.class);
 
     /** Whether the current database is Postgres. */
     public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();

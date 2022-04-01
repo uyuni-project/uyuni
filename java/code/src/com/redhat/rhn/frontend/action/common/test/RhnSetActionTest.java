@@ -25,7 +25,8 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.hibernate.HibernateException;
@@ -45,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  * RhnSetActionTest
  */
 public class RhnSetActionTest extends RhnBaseTestCase {
-    private static Logger log = Logger.getLogger(RhnSetActionTest.class);
+    private static Logger log = LogManager.getLogger(RhnSetActionTest.class);
     private TestAction action = null;
 
     public void setUp() throws Exception {

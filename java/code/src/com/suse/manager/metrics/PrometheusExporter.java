@@ -16,7 +16,8 @@ package com.suse.manager.metrics;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public enum PrometheusExporter {
     private static final boolean ENABLED = ConfigDefaults.get().isPrometheusMonitoringEnabled();
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(PrometheusExporter.class);
+    private static final Logger LOG = LogManager.getLogger(PrometheusExporter.class);
 
     // Listening port for non-Servlet based applications
     private static final int PORT = 9800;

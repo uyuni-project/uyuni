@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.audit.AuditManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AuditMachineAction extends RhnAction implements Listable {
 
-    private static Logger log = Logger.getLogger(AuditMachineAction.class);
+    private static Logger log = LogManager.getLogger(AuditMachineAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,

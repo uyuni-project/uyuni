@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ import java.util.List;
 public class TaskFactory extends HibernateFactory {
 
     private static TaskFactory singleton = new TaskFactory();
-    private static Logger log = Logger.getLogger(TaskFactory.class);
+    private static Logger log = LogManager.getLogger(TaskFactory.class);
     public static final int NO_MAXIMUM = -1;
 
     private TaskFactory() {

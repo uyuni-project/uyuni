@@ -22,7 +22,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class RhnSetFactory extends HibernateFactory {
     private static final String CATALOG = "Set_queries";
 
     private static RhnSetFactory singleton = new RhnSetFactory();
-    private static Logger log = Logger.getLogger(RhnSetFactory.class);
+    private static Logger log = LogManager.getLogger(RhnSetFactory.class);
 
     /**
      * Constructs the RhnSetFactory, marked private

@@ -29,7 +29,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(Channel.class);
+    private static Logger log = LogManager.getLogger(Channel.class);
     public static final String PUBLIC = "public";
     public static final String PROTECTED = "protected";
     public static final String PRIVATE = "private";

@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
-    private static Logger log = Logger.getLogger(TestFactoryWrapperTest.class);
+    private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
 
     public TestFactoryWrapperTest(String name) {
         super(name);

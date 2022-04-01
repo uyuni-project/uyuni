@@ -34,7 +34,8 @@ import com.suse.utils.Opt;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class ConfigChannelSaltManager {
 
     private String baseDirPath;
     private static ConfigChannelSaltManager instance;
-    private static final Logger LOG = Logger.getLogger(ConfigChannelSaltManager.class);
+    private static final Logger LOG = LogManager.getLogger(ConfigChannelSaltManager.class);
 
     /**
      * Gets the instance.

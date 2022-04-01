@@ -27,7 +27,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -105,7 +106,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
     public static final List<String> VALID_WHERE_STRINGS =
                     Arrays.asList(new String[] {WHERE_ALL, WHERE_SSM});
 
-    private final Logger log = Logger.getLogger(SystemSearchAction.class);
+    private final Logger log = LogManager.getLogger(SystemSearchAction.class);
 
     @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {

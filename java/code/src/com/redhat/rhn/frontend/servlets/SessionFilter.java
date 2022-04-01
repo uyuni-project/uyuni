@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class SessionFilter implements Filter {
 
 
 private static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
-    private static final Logger LOG = Logger.getLogger(SessionFilter.class);
+    private static final Logger LOG = LogManager.getLogger(SessionFilter.class);
 
     /** {@inheritDoc} */
     public void init(FilterConfig config) throws ServletException {

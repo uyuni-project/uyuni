@@ -21,7 +21,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -38,7 +39,7 @@ import java.util.Map;
 public class ChannelFamilyFactory extends HibernateFactory {
 
     private static ChannelFamilyFactory singleton = new ChannelFamilyFactory();
-    private static Logger log = Logger.getLogger(ChannelFamilyFactory.class);
+    private static Logger log = LogManager.getLogger(ChannelFamilyFactory.class);
     public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "SMS";
     public static final String PROXY_CHANNEL_FAMILY_LABEL = "SMP";
 

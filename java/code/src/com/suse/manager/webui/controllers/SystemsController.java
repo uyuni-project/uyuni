@@ -65,7 +65,8 @@ import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -104,7 +105,7 @@ public class SystemsController {
     }
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(SystemsController.class);
+    private static final Logger LOG = LogManager.getLogger(SystemsController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())

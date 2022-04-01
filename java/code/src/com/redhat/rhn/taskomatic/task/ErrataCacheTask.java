@@ -16,7 +16,8 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -35,7 +36,7 @@ public class ErrataCacheTask extends RhnQueueJob {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(ErrataCacheTask.class);
+            log = LogManager.getLogger(ErrataCacheTask.class);
         }
         return log;
     }

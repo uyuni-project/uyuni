@@ -19,7 +19,8 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.util.concurrent.Callable;
@@ -32,7 +33,7 @@ import java.util.concurrent.Callable;
 public abstract class SCCRequester<T> implements Callable<T> {
 
     /** Logger instance. */
-    private final Logger log = Logger.getLogger(SCCRequester.class);
+    private final Logger log = LogManager.getLogger(SCCRequester.class);
 
     /** The client instance. */
     private final SCCClient scc;

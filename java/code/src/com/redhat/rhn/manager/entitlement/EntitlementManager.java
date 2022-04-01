@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.entitlement.SaltEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.manager.BaseManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -40,8 +41,7 @@ public class EntitlementManager extends BaseManager {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger
-            .getLogger(EntitlementManager.class);
+    private static Logger log = LogManager.getLogger(EntitlementManager.class);
 
     //  ENTITLEMENTS
     public static final Entitlement MANAGEMENT = new ManagementEntitlement();

@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.BatchStartedEvent.Data;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Set;
  */
 public class BatchStartedEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(BatchStartedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(BatchStartedEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {

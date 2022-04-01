@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.filter;
 import com.redhat.rhn.common.db.datasource.DataResult;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -33,7 +34,7 @@ import java.util.Set;
  */
 public class TreeFilter implements ResultsFilter {
 
-    private static Logger log = Logger.getLogger(TreeFilter.class);
+    private static Logger log = LogManager.getLogger(TreeFilter.class);
 
     private Matcher matcher = Matcher.DEFAULT_MATCHER;
     private Set positions;

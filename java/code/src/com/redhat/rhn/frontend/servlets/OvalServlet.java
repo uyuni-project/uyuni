@@ -21,7 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import java.io.File;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class OvalServlet extends HttpServlet {
 
-    private static Logger logger = Logger.getLogger(OvalServlet.class);
+    private static Logger logger = LogManager.getLogger(OvalServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {

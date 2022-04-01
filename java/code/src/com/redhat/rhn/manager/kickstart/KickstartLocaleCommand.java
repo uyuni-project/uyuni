@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.TimezoneDto;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,8 +42,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger
-            .getLogger(KickstartLocaleCommand.class);
+    private static Logger logger = LogManager.getLogger(KickstartLocaleCommand.class);
 
     /**
      * Constructor

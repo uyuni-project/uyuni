@@ -32,7 +32,8 @@ import com.redhat.rhn.manager.session.SessionManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -58,7 +59,7 @@ public  class UserFactory extends HibernateFactory {
     private static final String USER_ID = "user_id";
     private static final String LOGIN_UC = "loginUc";
     private static final UserFactory SINGLETON = new UserFactory();
-    protected static final Logger LOG = Logger.getLogger(UserFactory.class);
+    protected static final Logger LOG = LogManager.getLogger(UserFactory.class);
 
     private static List timeZoneList;
 

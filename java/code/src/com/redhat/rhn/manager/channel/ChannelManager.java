@@ -87,7 +87,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -117,7 +118,7 @@ public class ChannelManager extends BaseManager {
     private static final int LIMIT_CHANNELS_IN_MESSAGE = 3;
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private static Logger log = Logger.getLogger(ChannelManager.class);
+    private static Logger log = LogManager.getLogger(ChannelManager.class);
 
     public static final String QRY_ROLE_MANAGE = "manage";
     public static final String QRY_ROLE_SUBSCRIBE = "subscribe";

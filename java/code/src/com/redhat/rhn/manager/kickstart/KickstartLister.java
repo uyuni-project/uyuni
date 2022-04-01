@@ -33,7 +33,8 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
@@ -55,7 +56,7 @@ public class KickstartLister extends BaseManager {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(KickstartLister.class);
+    private static Logger logger = LogManager.getLogger(KickstartLister.class);
 
     private static KickstartLister instance = new KickstartLister();
 

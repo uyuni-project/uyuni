@@ -21,7 +21,8 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -44,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AuthFilter implements Filter {
 
-    private static Logger log = Logger.getLogger(AuthFilter.class);
+    private static Logger log = LogManager.getLogger(AuthFilter.class);
 
     private AuthenticationService authenticationService;
 

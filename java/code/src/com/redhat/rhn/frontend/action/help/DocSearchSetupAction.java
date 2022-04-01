@@ -24,7 +24,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
@@ -45,7 +46,7 @@ import redstone.xmlrpc.XmlRpcFault;
  * DocSearchSetupAction
  */
 public class DocSearchSetupAction extends BaseSearchAction {
-    private static Logger log = Logger.getLogger(DocSearchSetupAction.class);
+    private static Logger log = LogManager.getLogger(DocSearchSetupAction.class);
 
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
                     DynaActionForm form)

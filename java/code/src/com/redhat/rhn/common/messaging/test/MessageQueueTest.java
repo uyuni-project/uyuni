@@ -20,11 +20,12 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MessageQueueTest extends RhnBaseTestCase {
 
-    private static Logger logger = Logger.getLogger(MessageQueueTest.class);
+    private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
     protected User user;
 
     protected void setUp() throws Exception {

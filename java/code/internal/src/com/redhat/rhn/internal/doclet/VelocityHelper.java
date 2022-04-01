@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.internal.doclet;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -24,8 +26,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -48,7 +48,7 @@ public class VelocityHelper {
         p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
 
         // We want to avoid logging the INFO since it costs time
-        Logger.getLogger(JdkLogChute.DEFAULT_LOG_NAME).setLevel(Level.WARNING);
+        Configurator.setLevel(JdkLogChute.DEFAULT_LOG_NAME, Level.WARN);
         ve = new VelocityEngine(p);
         context = new VelocityContext();
     }

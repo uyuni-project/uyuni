@@ -21,7 +21,8 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class CheckinCandidatesResolver {
 
-    private static final Logger LOG = Logger.getLogger(CheckinCandidatesResolver.class);
+    private static final Logger LOG = LogManager.getLogger(CheckinCandidatesResolver.class);
 
     // Properties used for generating random checkin thresholds
     private int thresholdMax;

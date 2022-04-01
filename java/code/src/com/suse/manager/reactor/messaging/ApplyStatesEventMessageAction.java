@@ -26,7 +26,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -37,7 +38,7 @@ import java.util.Date;
 public class ApplyStatesEventMessageAction implements MessageAction {
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
-    private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(ApplyStatesEventMessageAction.class);
 
     /**
      * Default constructor.

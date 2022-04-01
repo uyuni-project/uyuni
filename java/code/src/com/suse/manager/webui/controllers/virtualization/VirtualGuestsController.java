@@ -73,7 +73,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
@@ -99,7 +100,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualGuestsController extends AbstractVirtualizationController {
 
-    private static final Logger LOG = Logger.getLogger(VirtualGuestsController.class);
+    private static final Logger LOG = LogManager.getLogger(VirtualGuestsController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())

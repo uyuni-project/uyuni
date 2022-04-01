@@ -69,7 +69,8 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -117,7 +118,7 @@ public class SaltSSHService {
     public static final int SSH_DEFAULT_PORT = 22;
     public static final int SSH_PUSH_PORT = SSH_DEFAULT_PORT;
 
-    private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
     public static final List<String> ACTION_STATES_LIST = Arrays.asList(

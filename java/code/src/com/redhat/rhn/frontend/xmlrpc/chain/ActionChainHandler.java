@@ -34,7 +34,8 @@ import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -52,7 +53,7 @@ import java.util.stream.Collectors;
  */
 public class ActionChainHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(ActionChainHandler.class);
+    private static Logger log = LogManager.getLogger(ActionChainHandler.class);
 
     private final ActionChainRPCCommon acUtil;
 

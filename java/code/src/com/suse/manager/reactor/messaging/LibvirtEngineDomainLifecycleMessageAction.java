@@ -26,7 +26,8 @@ import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.websocket.VirtNotifications;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import java.util.Optional;
  */
 public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
 
     private final VirtManager virtManager;
     private final List<String> toRestart = new ArrayList<>();

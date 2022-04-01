@@ -33,7 +33,8 @@ import com.suse.manager.errata.VendorSpecificErrataParser;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataDetailsSetupAction extends RhnAction {
 
-    private static final Logger LOGGER = Logger.getLogger(ErrataManager.class);
+    private static final Logger LOGGER = LogManager.getLogger(ErrataManager.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,

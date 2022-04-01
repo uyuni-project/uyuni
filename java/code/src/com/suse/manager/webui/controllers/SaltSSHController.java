@@ -20,7 +20,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Optional;
@@ -34,7 +35,7 @@ import spark.Response;
 public class SaltSSHController {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(SaltSSHController.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHController.class);
 
     private final SaltApi saltApi;
 

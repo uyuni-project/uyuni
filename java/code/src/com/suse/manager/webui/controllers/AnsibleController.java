@@ -47,7 +47,8 @@ import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -77,7 +78,7 @@ public class AnsibleController {
 
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
-    private static Logger log = Logger.getLogger(AnsibleController.class);
+    private static Logger log = LogManager.getLogger(AnsibleController.class);
 
     private AnsibleController() { }
 

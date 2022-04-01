@@ -21,7 +21,8 @@ import com.redhat.rhn.common.hibernate.HibernateHelper;
 import com.redhat.rhn.common.translation.ExceptionConstants;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ import junit.framework.TestSuite;
 
 public class ExceptionsWrapperTest extends TestCase {
 
-    private static final Logger LOG = Logger.getLogger(ExceptionsWrapperTest.class);
+    private static final Logger LOG = LogManager.getLogger(ExceptionsWrapperTest.class);
     private static final String EXCEPTION_TRANSLATOR =
         "com.redhat.rhn.common.translation.ExceptionTranslator";
 

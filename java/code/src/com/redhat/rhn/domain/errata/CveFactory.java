@@ -16,7 +16,8 @@ package com.redhat.rhn.domain.errata;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class CveFactory extends HibernateFactory {
 
     private static CveFactory singleton = new CveFactory();
-    private static Logger log = Logger.getLogger(CveFactory.class);
+    private static Logger log = LogManager.getLogger(CveFactory.class);
 
     private CveFactory() {
         super();

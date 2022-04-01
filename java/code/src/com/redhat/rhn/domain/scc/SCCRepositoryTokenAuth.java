@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,7 +34,7 @@ import javax.persistence.Transient;
 public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(SCCRepositoryTokenAuth.class);
+    private static Logger log = LogManager.getLogger(SCCRepositoryTokenAuth.class);
 
     private String auth;
 

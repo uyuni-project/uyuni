@@ -41,7 +41,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.AbstractHttpMessage;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -65,7 +66,7 @@ import java.util.stream.Stream;
 public class SCCWebClient implements SCCClient {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
-    private static Logger log = Logger.getLogger(SCCWebClient.class);
+    private static Logger log = LogManager.getLogger(SCCWebClient.class);
     private Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())

@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import spark.Request;
 import spark.Response;
@@ -39,7 +40,7 @@ import spark.Spark;
  */
 public class AppStreamsApiController {
 
-    private static final Logger LOG = Logger.getLogger(AppStreamsApiController.class);
+    private static final Logger LOG = LogManager.getLogger(AppStreamsApiController.class);
     private static final ModulemdApi API = new ModulemdApi();
     private static final LocalizationService LOC = LocalizationService.getInstance();
 

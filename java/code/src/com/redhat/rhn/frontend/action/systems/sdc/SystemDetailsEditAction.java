@@ -40,7 +40,8 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -63,7 +64,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemDetailsEditAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(SystemDetailsEditAction.class);
+    private static Logger log = LogManager.getLogger(SystemDetailsEditAction.class);
 
     public static final String NAME = "system_name";
     public static final String BASE_ENTITLEMENT_OPTIONS = "base_entitlement_options";

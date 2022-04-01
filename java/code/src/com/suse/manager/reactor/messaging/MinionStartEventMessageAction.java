@@ -22,7 +22,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.log4j.Logger;
 public class MinionStartEventMessageAction implements MessageAction {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(MinionStartEventMessageAction.class);
 
     // Reference to the SaltService instance
     private final SaltApi saltApi;

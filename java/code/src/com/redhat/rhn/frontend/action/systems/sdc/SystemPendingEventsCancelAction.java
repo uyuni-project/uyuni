@@ -33,7 +33,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemPendingEventsCancelAction extends RhnAction {
 
     private static final Logger LOG =
-            Logger.getLogger(SystemPendingEventsCancelAction.class);
+            LogManager.getLogger(SystemPendingEventsCancelAction.class);
 
     /**
      * {@inheritDoc}

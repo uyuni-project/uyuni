@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev: 51618 $
  */
 public class ResourceReloadServlet extends HttpServlet {
-    private static Logger log = Logger.getLogger(ResourceReloadServlet.class);
+    private static Logger log = LogManager.getLogger(ResourceReloadServlet.class);
 
 
     /**

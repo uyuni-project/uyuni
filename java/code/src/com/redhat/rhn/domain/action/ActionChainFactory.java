@@ -25,7 +25,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 
 import java.util.Date;
@@ -43,7 +44,7 @@ import java.util.Set;
 public class ActionChainFactory extends HibernateFactory {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ActionChainFactory.class);
+    private static Logger log = LogManager.getLogger(ActionChainFactory.class);
 
     /** Singleton instance */
     private static ActionChainFactory singleton = new ActionChainFactory();

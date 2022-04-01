@@ -16,7 +16,8 @@ package com.suse.manager.utils;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class ExecHelper {
-    private static final Logger LOG = Logger.getLogger(ExecHelper.class);
+    private static final Logger LOG = LogManager.getLogger(ExecHelper.class);
 
     private final Supplier<Runtime> runtimeSupplier;
 

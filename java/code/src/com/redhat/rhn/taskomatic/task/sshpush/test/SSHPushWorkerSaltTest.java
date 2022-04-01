@@ -50,7 +50,8 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -69,7 +70,7 @@ import java.util.Optional;
  */
 public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
-    private Logger logger = Logger.getLogger(SSHMinionBootstrapperTest.class);
+    private Logger logger = LogManager.getLogger(SSHMinionBootstrapperTest.class);
 
     private MinionServer minion;
     private SystemSummary sshPushSystemMock;

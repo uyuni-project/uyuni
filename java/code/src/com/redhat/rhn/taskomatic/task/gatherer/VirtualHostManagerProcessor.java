@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -62,7 +63,7 @@ public class VirtualHostManagerProcessor {
      */
     public VirtualHostManagerProcessor(VirtualHostManager managerIn,
             Map<String, HostJson> virtualHostsIn) {
-        this.log = Logger.getLogger(VirtualHostManagerProcessor.class);
+        this.log = LogManager.getLogger(VirtualHostManagerProcessor.class);
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();

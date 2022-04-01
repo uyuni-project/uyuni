@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.testing.TestCaseHelper;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.util.HashMap;
@@ -48,7 +49,7 @@ import junit.framework.TestCase;
 public class SatScrubberTest extends TestCase {
 
     private User orgAdmin;
-    private static Logger log = Logger.getLogger(SatScrubberTest.class);
+    private static Logger log = LogManager.getLogger(SatScrubberTest.class);
 
 
     // Arg - this is completely bogus.  Even if we wanted to do what this does, this is NOT

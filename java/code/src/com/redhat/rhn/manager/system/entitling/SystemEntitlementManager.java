@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 public class SystemEntitlementManager {
 
-    private static final Logger LOG = Logger.getLogger(SystemEntitlementManager.class);
+    private static final Logger LOG = LogManager.getLogger(SystemEntitlementManager.class);
 
     private SystemUnentitler systemUnentitler;
     private SystemEntitler systemEntitler;

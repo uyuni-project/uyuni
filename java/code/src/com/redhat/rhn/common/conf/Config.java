@@ -17,7 +17,8 @@ package com.redhat.rhn.common.conf;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +45,7 @@ import java.util.TreeSet;
 public class Config {
 
 
-    private static Logger logger = Logger.getLogger(Config.class);
+    private static Logger logger = LogManager.getLogger(Config.class);
 
 
 

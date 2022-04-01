@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -47,7 +48,7 @@ import javax.persistence.criteria.Root;
 public class ContentProjectFactory extends HibernateFactory {
 
     private static final ContentProjectFactory INSTANCE = new ContentProjectFactory();
-    private static Logger log = Logger.getLogger(ContentProjectFactory.class);
+    private static Logger log = LogManager.getLogger(ContentProjectFactory.class);
 
     // forbid  instantiation
     private ContentProjectFactory() {

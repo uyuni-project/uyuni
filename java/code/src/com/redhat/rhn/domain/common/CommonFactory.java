@@ -19,7 +19,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.Calendar;
@@ -32,7 +33,7 @@ public class CommonFactory extends HibernateFactory {
 
 
     private static CommonFactory singleton = new CommonFactory();
-    private static Logger log = Logger.getLogger(CommonFactory.class);
+    private static Logger log = LogManager.getLogger(CommonFactory.class);
 
 
     private CommonFactory() {

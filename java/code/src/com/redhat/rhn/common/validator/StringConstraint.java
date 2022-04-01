@@ -16,7 +16,8 @@ package com.redhat.rhn.common.validator;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
@@ -31,7 +32,7 @@ import java.util.regex.Pattern;
  */
 public class StringConstraint extends RequiredIfConstraint {
 
-    protected static final Logger LOG = Logger.getLogger(StringConstraint.class);
+    protected static final Logger LOG = LogManager.getLogger(StringConstraint.class);
 
     /** Min length of the string */
     protected Double minLength;

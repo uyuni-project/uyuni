@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
@@ -44,7 +45,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public abstract class CobblerCommand {
 
-    private static Logger log = Logger.getLogger(CobblerCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerCommand.class);
 
     protected String xmlRpcToken;
     protected User user;

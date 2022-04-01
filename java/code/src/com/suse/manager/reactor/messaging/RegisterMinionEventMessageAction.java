@@ -80,7 +80,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +103,7 @@ import java.util.stream.Collectors;
 public class RegisterMinionEventMessageAction implements MessageAction {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(
+    private static final Logger LOG = LogManager.getLogger(
             RegisterMinionEventMessageAction.class);
 
     // Reference to the SaltService instance

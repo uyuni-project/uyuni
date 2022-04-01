@@ -19,14 +19,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Tasks to be performed on the application startup
  */
 public class StartupTasksCommand extends BaseTransactionCommand {
 
-    private static final Logger LOG = Logger.getLogger(StartupTasksCommand.class);
+    private static final Logger LOG = LogManager.getLogger(StartupTasksCommand.class);
 
     /**
      * Constructor
