@@ -316,8 +316,15 @@ public abstract class CobblerObject {
     /**
      * @return the kernelOptions
      */
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getKernelOptions() {
-        return (Map<String, Object>)dataMap.get(KERNEL_OPTIONS);
+        Object kernelOpts = dataMap.get(KERNEL_OPTIONS);
+        try {
+            return (Map<String, Object>) kernelOpts;
+        }
+        catch (ClassCastException e) {
+            return parseKernelOpts((String) kernelOpts);
+        }
     }
 
     /**
