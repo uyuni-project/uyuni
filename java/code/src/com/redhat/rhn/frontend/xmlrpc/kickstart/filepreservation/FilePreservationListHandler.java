@@ -24,6 +24,8 @@ import com.redhat.rhn.frontend.xmlrpc.FileListAlreadyExistsException;
 import com.redhat.rhn.manager.common.CreateFileListCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 
 /**
@@ -52,6 +54,7 @@ public class FilePreservationListHandler extends BaseHandler {
      *        $FilePreservationDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List listAllFilePreservations(User loggedInUser)
         throws FaultException {
 
@@ -138,6 +141,7 @@ public class FilePreservationListHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     $FileListSerializer
      */
+    @ReadOnly
     public FileList getDetails(User loggedInUser, String name)
         throws FaultException {
         return CommonFactory.lookupFileList(name, loggedInUser.getOrg());

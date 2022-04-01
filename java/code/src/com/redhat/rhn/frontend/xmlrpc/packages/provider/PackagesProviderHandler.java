@@ -25,6 +25,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageKeyTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageProviderException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.List;
@@ -73,6 +75,7 @@ public class PackagesProviderHandler extends BaseHandler {
      *      $PackageKeySerializer
      *  #array_end()
      */
+    @ReadOnly
     public Set<PackageKey> listKeys(User loggedInUser, String providerName) {
         isSatelliteAdmin(loggedInUser);
         PackageProvider prov = PackageFactory.lookupPackageProvider(providerName);

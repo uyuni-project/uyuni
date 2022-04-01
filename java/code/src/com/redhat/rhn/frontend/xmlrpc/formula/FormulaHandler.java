@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -76,6 +77,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
+    @ReadOnly
     public List<String> listFormulas(User loggedInUser) {
         return FormulaFactory.listFormulaNames();
     }
@@ -92,6 +94,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "systemGroupId")
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
+    @ReadOnly
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
         ManagedServerGroup group = ServerGroupFactory
                 .lookupByIdAndOrg(systemGroupId.longValue(), loggedInUser.getOrg());
@@ -111,6 +114,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
+    @ReadOnly
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
         Server server = ServerFactory.lookupById(systemId.longValue());
         FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
@@ -130,6 +134,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
+    @ReadOnly
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
         MinionServer minion = MinionServerFactory.lookupById(systemId.longValue())
                 .orElseThrow(() -> new InvalidParameterException(
@@ -221,6 +226,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.returntype struct with saved formula data
      */
+    @ReadOnly
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
         return formulaManager
                 .getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
@@ -245,6 +251,7 @@ public class FormulaHandler extends BaseHandler {
      *     $FormulaDataSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
             List<Integer> systemIds) {
         List<Long> ids = systemIds.stream()
@@ -267,6 +274,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "formulaName")
      * @xmlrpc.returntype struct with saved formula data
      */
+    @ReadOnly
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
         Map<String, Object> savedData = formulaManager
                 .getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());

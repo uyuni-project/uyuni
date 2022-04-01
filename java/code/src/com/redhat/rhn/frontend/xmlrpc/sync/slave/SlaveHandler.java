@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IssDuplicateSlaveException;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -136,6 +138,7 @@ public class SlaveHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
+    @ReadOnly
     public IssSlave getSlave(User loggedInUser, Integer slaveId) {
         ensureSatAdmin(loggedInUser);
         IssSlave slave = IssFactory.lookupSlaveById(slaveId.longValue());
@@ -154,6 +157,7 @@ public class SlaveHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "fqdn", "Domain-name of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
+    @ReadOnly
     public IssSlave getSlaveByName(User loggedInUser, String slaveFqdn) {
         ensureSatAdmin(loggedInUser);
         IssSlave slave = IssFactory.lookupSlaveByName(slaveFqdn);
@@ -173,6 +177,7 @@ public class SlaveHandler extends BaseHandler {
      *          $IssSlaveSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<IssSlave> getSlaves(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         return IssFactory.listAllIssSlaves();
@@ -189,6 +194,7 @@ public class SlaveHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Slave")
      * @xmlrpc.returntype #array_single("int", "ids of allowed organizations")
      */
+    @ReadOnly
     public List<Integer> getAllowedOrgs(User loggedInUser, Integer slaveId) {
         IssSlave slave = getSlave(loggedInUser, slaveId);
         List<Integer> allowedOrgIds = new ArrayList<>();

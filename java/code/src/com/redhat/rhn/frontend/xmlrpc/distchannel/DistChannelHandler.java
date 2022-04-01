@@ -29,6 +29,8 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchDistChannelMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchOrgException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -50,6 +52,7 @@ public class DistChannelHandler extends BaseHandler {
      *      $DistChannelMapSerializer
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listDefaultMaps(User loggedInUser) {
         return ChannelFactory.listAllDistChannelMaps().toArray();
     }
@@ -66,6 +69,7 @@ public class DistChannelHandler extends BaseHandler {
      *      $DistChannelMapSerializer
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listMapsForOrg(User loggedInUser) {
         return ChannelFactory.listAllDistChannelMapsByOrg(loggedInUser.getOrg()).toArray();
     }
@@ -86,6 +90,7 @@ public class DistChannelHandler extends BaseHandler {
      *      $DistChannelMapSerializer
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listMapsForOrg(User loggedInUser, Integer orgId) {
         if (!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new PermissionException(RoleFactory.SAT_ADMIN);

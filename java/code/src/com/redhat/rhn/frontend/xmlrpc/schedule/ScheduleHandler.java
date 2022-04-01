@@ -28,6 +28,8 @@ import com.redhat.rhn.manager.action.ActionIsChildException;
 import com.redhat.rhn.manager.action.ActionIsPickedUpException;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +137,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listAllActions(User loggedInUser) {
 
         // the second argument is "PageControl". This is not needed for the api usage;
@@ -155,6 +158,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listCompletedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -174,6 +178,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listInProgressActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -193,6 +198,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listFailedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -212,6 +218,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listArchivedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -231,6 +238,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listAllArchivedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -251,6 +259,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleSystemSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listCompletedSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);
@@ -274,6 +283,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleActionSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listAllCompletedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
@@ -294,6 +304,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleSystemSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listInProgressSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);
@@ -319,6 +330,7 @@ public class ScheduleHandler extends BaseHandler {
      *   $ScheduleSystemSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listFailedSystems(User loggedInUser, Integer actionId) {
         Long aid = actionId.longValue();
         Action action = ActionManager.lookupAction(loggedInUser, aid);

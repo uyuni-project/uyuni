@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 
 import java.util.Collections;
@@ -213,6 +214,7 @@ public class AnsibleHandler extends BaseHandler {
      * $AnsiblePathSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<AnsiblePath> listAnsiblePaths(User loggedInUser, Integer controlNodeId) {
         try {
             return AnsibleManager.listAnsiblePaths(controlNodeId, loggedInUser);

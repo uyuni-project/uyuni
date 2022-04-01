@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
@@ -71,6 +73,7 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.doc Returns the version of the API.
      * @xmlrpc.returntype #param("string", "version")
      */
+    @ReadOnly
     public String getVersion() {
         return Config.get().getString("java.apiversion");
     }
@@ -87,6 +90,7 @@ public class ApiHandler extends BaseHandler {
      *        #prop_desc("string", "handler", "API Handler")
      *   #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getApiNamespaces(User loggedInUser) {
         return handlers.getKeys().stream().collect(Collectors.toMap(
            namespace -> namespace,
@@ -110,6 +114,7 @@ public class ApiHandler extends BaseHandler {
      *       #prop_desc("string", "return", "method return type")
      *   #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getApiCallList(User loggedInUser) {
         return handlers.getKeys().stream().collect(Collectors.toMap(
             namespace -> namespace,
@@ -134,6 +139,7 @@ public class ApiHandler extends BaseHandler {
      *        #prop_desc("string", "return", "method return type")
      *   #struct_end()
      */
+    @ReadOnly
     public Map getApiNamespaceCallList(User loggedInUser, String namespace) {
         Class<? extends BaseHandler> handlerClass =
                 handlers.getHandler(namespace)

@@ -34,6 +34,8 @@ import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -95,6 +97,7 @@ public class PackagesHandler extends BaseHandler {
      *       #prop("string", "payload_size")
      *    #struct_end()
      */
+    @ReadOnly
     public Map getDetails(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
@@ -122,6 +125,7 @@ public class PackagesHandler extends BaseHandler {
      *   #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public Object[] listProvidingChannels(User loggedInUser, Integer pid)
             throws FaultException {
         //Get the logged in user
@@ -155,6 +159,7 @@ public class PackagesHandler extends BaseHandler {
      *   #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public Object[] listProvidingErrata(User loggedInUser, Integer pid)
             throws FaultException {
         // Get the logged in user
@@ -190,6 +195,7 @@ public class PackagesHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listFiles(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
@@ -245,6 +251,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.returntype
      *   string
      */
+    @ReadOnly
     public String listChangelog(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
@@ -284,6 +291,7 @@ public class PackagesHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listDependencies(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
@@ -420,6 +428,7 @@ public class PackagesHandler extends BaseHandler {
      *   #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public Object[] listSourcePackages(User loggedInUser) throws FaultException {
 
         DataResult dr =
@@ -521,6 +530,7 @@ public class PackagesHandler extends BaseHandler {
      *     $PackageSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<Package> findByNvrea(User loggedInUser, String name, String version,
             String release, String epoch, String archLabel) {
         PackageArch arch = PackageFactory.lookupPackageArchByLabel(archLabel);
@@ -548,6 +558,7 @@ public class PackagesHandler extends BaseHandler {
      *  string - the download url
      *
      */
+    @ReadOnly
     public String getPackageUrl(User loggedInUser, Integer pid) {
         Package pkg = lookupPackage(loggedInUser, pid);
         return RhnXmlRpcServer.getProtocol() + "://" +
@@ -570,6 +581,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "package_id")
      * @xmlrpc.returntype #array_single("byte", "binary object - package file")
      */
+    @ReadOnly
     public byte[] getPackage(User loggedInUser, Integer pid) throws IOException {
         Package pkg = lookupPackage(loggedInUser, pid);
         String path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +

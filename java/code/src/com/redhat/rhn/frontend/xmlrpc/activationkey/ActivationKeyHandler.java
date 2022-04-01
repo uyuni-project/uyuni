@@ -50,6 +50,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 
@@ -243,6 +244,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @throws NoSuchSystemException if the given minion does not exist
      * @throws TokenCreationException if the token could not be created
      */
+    @ReadOnly
     public List<ChannelInfo> listChannels(String minionId,
         String machinePassword,
         String activationKey)
@@ -509,6 +511,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.returntype $ActivationKeySerializer
      */
+    @ReadOnly
     public ActivationKey getDetails(User loggedInUser, String key) {
         return lookupKey(key, loggedInUser);
     }
@@ -856,6 +859,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     $ActivationKeySerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<ActivationKey> listActivationKeys(User loggedInUser) {
         List<ActivationKey> result = new ArrayList<>();
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
@@ -891,6 +895,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *       #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listActivatedSystems(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
@@ -937,6 +942,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     $ConfigChannelSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List listConfigChannels(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
         return activationKey.getConfigChannelsFor(loggedInUser);
