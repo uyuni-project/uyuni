@@ -92,7 +92,7 @@ public class OSImageStoreUtils {
     }
 
     /**
-     * Returns a OS Image File local path
+     * Returns an OS Image File local path
      *
      * @param file the image file
      * @return the local path
@@ -101,11 +101,11 @@ public class OSImageStoreUtils {
         if (file.isExternal()) {
             throw new IllegalArgumentException("External file has no local path");
         }
-        return getOSImageStorePathForImage(file.getImageInfo()) + file.getFile();
+        return getOSImageStorePathForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
 
     /**
-     * Returns a OS Image File URI
+     * Returns an OS Image File URI
      *
      * @param file the image file
      * @return the URI
@@ -114,7 +114,6 @@ public class OSImageStoreUtils {
         if (file.isExternal()) {
             return file.getFile();
         }
-        ImageInfo info = file.getImageInfo();
         return getOSImageStoreURIForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
 
