@@ -26,7 +26,6 @@ import org.cobbler.Distro;
 import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.jfree.util.Log;
 
 import java.util.List;
 import java.util.stream.Collectors;
