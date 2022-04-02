@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
@@ -313,6 +314,9 @@ public class ImageInfoFactory extends HibernateFactory {
     public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
         imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
         imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+
+        // delete saltboot image profile and distro
+        SaltbootUtils.deleteSaltbootDistro(imageInfo);
 
         // delete files
         imageInfo.getImageFiles().stream().forEach(f -> {

@@ -575,6 +575,16 @@ public class FormulaFactory {
         List<String> deletedFormulas = getFormulasByGroup(group);
         deletedFormulas.removeAll(selectedFormulas);
 
+        // Try to remove SaltbootProfile first. It this fails, stop removing formulas
+        if (deletedFormulas.contains(SALTBOOT_GROUP)) {
+            try {
+                SaltbootUtils.deleteSaltbootProfile(group.getName());
+            }
+            catch (SaltbootException e) {
+                throw new ValidatorException(e.getMessage());
+            }
+        }
+
         for (String f : deletedFormulas) {
             group.getPillarByCategory(PREFIX + f).ifPresent(pillar -> group.getPillars().remove(pillar));
         }

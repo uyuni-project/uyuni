@@ -26,6 +26,7 @@ import org.cobbler.Distro;
 import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.jfree.util.Log;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +43,8 @@ public class SaltbootUtils {
     public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
-        String initrd = pathPrefix + "/" + bootImage.getInitrd().getFilename();
-        String kernel = pathPrefix + "/" + bootImage.getKernel().getFilename();
+        String initrd = pathPrefix + bootImage.getInitrd().getFilename();
+        String kernel = pathPrefix + bootImage.getKernel().getFilename();
         String name = imageInfo.getName() + "-" + imageInfo.getVersion() + "-" + imageInfo.getRevisionNumber();
         // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
         Distro cd = new Distro.Builder().setName(name)
@@ -78,10 +79,14 @@ public class SaltbootUtils {
      * If distribution is not found, does nothing
      * @param info
      */
-    public static void deleteSaltbootDistro(ImageInfo info) {
+    public static void deleteSaltbootDistro(ImageInfo info) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        Distro d = Distro.lookupByName(con, info.getName() + "-" + info.getVersion() + "-" +
-                info.getRevisionNumber());
+        String fullname = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber();
+
+        // First delete hidden distro profile
+        deleteSaltbootProfile(fullname);
+        // then distro itself
+        Distro d = Distro.lookupByName(con, fullname);
         if (d != null) {
             d.remove();
         }
@@ -116,11 +121,22 @@ public class SaltbootUtils {
     /**
      * Delete saltboot profile
      * If profile is not found, does nothing
-     * @param saltbootGroup
+     * @param profileName
      */
-    public static void deleteSaltbootProfile(String saltbootGroup) {
+    public static void deleteSaltbootProfile(String profileName) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        Profile p = Profile.lookupByName(con, saltbootGroup);
+        Profile p = Profile.lookupByName(con, profileName);
+
+        if (p != null) {
+            List<SystemRecord> systems = SystemRecord.listByAssociatedProfile(con, p.getName());
+            if (!systems.isEmpty()) {
+                throw new SaltbootException("Unable to delete distro, systems are still registered to it");
+            }
+            if (!p.remove()) {
+                throw new SaltbootException("Unable to delete image saltboot distribution for image " + profileName);
+            }
+        }
+
         if (p != null) {
             p.remove();
         }

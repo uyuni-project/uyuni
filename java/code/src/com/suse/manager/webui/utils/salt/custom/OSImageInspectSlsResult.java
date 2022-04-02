@@ -422,6 +422,14 @@ public class OSImageInspectSlsResult {
      * @return the bundle
      */
     public List<Bundle> getBundles() {
-        return Optional.ofNullable(bundles).orElseGet(() -> Collections.singletonList(bundle));
+        if (bundles != null) {
+            return bundles;
+        }
+        else if (bundle != null) {
+            return Collections.singletonList(bundle);
+        }
+        else {
+            return Collections.emptyList();
+        }
     }
 }
