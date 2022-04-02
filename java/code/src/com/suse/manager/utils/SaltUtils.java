@@ -104,6 +104,7 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
@@ -1005,35 +1006,37 @@ public class SaltUtils {
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
 
-                    // TODO move to ImageFile
-                    // info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
                     info.setName(buildInfo.getImage().getName());
                     info.setVersion(buildInfo.getImage().getVersion());
 
                     ImageInfoFactory.updateRevision(info);
 
-                    List<List<String>> files = new ArrayList<>();
+                    List<List<Object>> files = new ArrayList<>();
                     String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
                     if (!buildInfo.getBundles().isEmpty()) {
                         buildInfo.getBundles().forEach(bundle -> {
                             files.add(List.of(bundle.getFilepath(),
-                                    imageDir + bundle.getFilename(), "bundle"));
+                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum()));
                         });
                     }
                     else {
                         files.add(List.of(buildInfo.getImage().getFilepath(),
-                                imageDir + buildInfo.getImage().getFilename(), "image"));
+                                imageDir + buildInfo.getImage().getFilename(), "image",
+                                buildInfo.getImage().getChecksum()));
                         buildInfo.getBootImage().ifPresent(f -> {
                             files.add(List.of(f.getKernel().getFilepath(),
-                                    imageDir + f.getKernel().getFilename(), "kernel"));
+                                    imageDir + f.getKernel().getFilename(), "kernel",
+                                    f.getKernel().getChecksum()));
                             files.add(List.of(f.getInitrd().getFilepath(),
-                                    imageDir + f.getInitrd().getFilename(), "initrd"));
+                                    imageDir + f.getInitrd().getFilename(), "initrd",
+                                    f.getInitrd().getChecksum()));
                         });
                     }
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
                         MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, file.get(0), targetPath)
+                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
                         if (collectResult.getReturnCode() != 0) {
@@ -1044,8 +1047,10 @@ public class SaltUtils {
                         }
                         else {
                             ImageFile imagefile = new ImageFile();
-                            imagefile.setFile(file.get(1));
-                            imagefile.setType(file.get(2));
+                            imagefile.setFile((String)file.get(1));
+                            imagefile.setType((String)file.get(2));
+                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
+                                    (ImageChecksum.Checksum)file.get(3)));
                             imagefile.setImageInfo(info);
                             info.getImageFiles().add(imagefile);
                         }

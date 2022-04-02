@@ -366,6 +366,8 @@ def build_info(dest: str, build_id: str, bundle_dest: str = None) -> dict:
         'build_id': build_id
     }
 
+    res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5')))
+
     if image_type == 'pxe':
         r = inspect_boot_image(dest)
         res['boot_image'] = {

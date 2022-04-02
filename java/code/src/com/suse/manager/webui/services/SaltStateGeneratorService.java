@@ -141,12 +141,23 @@ public enum SaltStateGeneratorService {
         Map<String, Object> imagePillarDetails = new TreeMap<>();
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
-        ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("image")).findFirst().orElseThrow(
-                        () -> new SaltbootException("Trying to generate pillar but no image file was collected"));
+        Boolean isBundle = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("bundle")).findFirst().isPresent();
 
-        imagePillarDetailsSync.put("hash", image.getChecksum().getChecksum());
-        imagePillarDetailsSync.put("url", OSImageStoreUtils.getOSImageFileURI(imageFile));
+        if (isBundle) {
+            ImageFile bundle = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("bundle")).findFirst().get();
+            imagePillarDetailsSync.put("bundle_hash", image.getChecksum().getChecksum());
+            imagePillarDetailsSync.put("bundle_url", OSImageStoreUtils.getOSImageFileURI(bundle));
+        }
+        else {
+            ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
+                    f -> f.getType().equals("image")).findFirst().orElseThrow(
+                    () -> new SaltbootException("Trying to generate pillar but no image file was collected"));
+            imagePillarDetailsSync.put("hash", image.getChecksum().getChecksum());
+            imagePillarDetailsSync.put("url", OSImageStoreUtils.getOSImageFileURI(imageFile));
+        }
+
         imagePillarDetailsSync.put("local_path", localPath);
 
         imagePillarDetails.put("arch", image.getArch());
@@ -155,15 +166,14 @@ public enum SaltStateGeneratorService {
             imagePillarDetails.put("compressed", image.getCompression());
             imagePillarDetails.put("compressed_hash", image.getCompressedHash());
         }
-        imagePillarDetails.put("filename", Paths.get(imageFile.getFile()).getFileName().toString());
+        imagePillarDetails.put("filename", image.getFilename());
         imagePillarDetails.put("fstype", image.getFstype());
         imagePillarDetails.put("hash", image.getChecksum().getChecksum());
         imagePillarDetails.put("inactive", Boolean.FALSE);
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" +
-                Paths.get(imageFile.getFile()).getFileName().toString());
+        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" + image.getFilename());
 
         imagePillarBase.put(version + "-" + revision, imagePillarDetails);
         imagePillar.put(imageInfo.getName(), imagePillarBase);
