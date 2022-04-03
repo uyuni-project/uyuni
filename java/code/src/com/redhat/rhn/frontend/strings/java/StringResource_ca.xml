@@ -445,6 +445,7 @@
       </trans-unit>
       <trans-unit id="Audit" xml:space="preserve">
         <source>Audit</source>
+        <target>Auditoria</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -500,6 +501,7 @@
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
+        <target>Llista de canals</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -576,12 +578,14 @@
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
+        <target>Convidats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Storage" xml:space="preserve">
         <source>Storage</source>
+        <target>Emmagatzematge</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -674,6 +678,7 @@
       </trans-unit>
       <trans-unit id="Documentation_version" xml:space="preserve">
         <source>Documentation {0}</source>
+        <target>Documentació {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -715,12 +720,14 @@
       </trans-unit>
       <trans-unit id="Lookup Login/Password" xml:space="preserve">
         <source>Lookup Login/Password</source>
+        <target>Cerca inici de sessió / contrasenya</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Errata" xml:space="preserve">
         <source>Manage Patches</source>
+        <target>Gestiona els pedaços</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -734,6 +741,7 @@
       </trans-unit>
       <trans-unit id="Manage" xml:space="preserve">
         <source>Manage</source>
+        <target>Gestiona</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -747,6 +755,7 @@
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
+        <target>Mapatge de canals de distribució</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -809,6 +818,7 @@
       </trans-unit>
       <trans-unit id="Out of Date" xml:space="preserve">
         <source>Out of Date</source>
+        <target>Obsolet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -850,6 +860,7 @@
       </trans-unit>
       <trans-unit id="Locale Preferences" xml:space="preserve">
         <source>Locale Preferences</source>
+        <target>Preferències de llengua</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -863,6 +874,7 @@
       </trans-unit>
       <trans-unit id="Proxy Guide" xml:space="preserve">
         <source>Proxy Quick Start</source>
+        <target>Inici ràpid de l'intermediari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -876,12 +888,14 @@
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
+        <target>Intermediari @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
+        <target>Servidor @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -902,12 +916,14 @@
       </trans-unit>
       <trans-unit id="Organization Trusts" xml:space="preserve">
         <source>Organization Trusts</source>
+        <target>Fideïcomisos de l'organització</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Quota" xml:space="preserve">
         <source>Quota</source>
+        <target>Quota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -928,18 +944,21 @@
       </trans-unit>
       <trans-unit id="Relevant" xml:space="preserve">
         <source>Relevant</source>
+        <target>Rellevant</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reviews" xml:space="preserve">
         <source>Reviews</source>
+        <target>Revisions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="request" xml:space="preserve">
         <source>Request</source>
+        <target>Peticions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
@@ -1029,6 +1048,7 @@
       </trans-unit>
       <trans-unit id="System Set Manager" xml:space="preserve">
         <source>System Set Manager</source>
+        <target>Gestor de conjunt del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1042,6 +1062,7 @@
       </trans-unit>
       <trans-unit id="System List" xml:space="preserve">
         <source>System List</source>
+        <target>Llista de sistemes</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1055,66 +1076,77 @@
       </trans-unit>
       <trans-unit id="Task Engine Status" xml:space="preserve">
         <source>Task Engine Status</source>
+        <target>Estat del motor de tasques</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Last Execution Times" xml:space="preserve">
         <source>Last Execution Times</source>
+        <target>Últimes hores d'execució</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Runtime Status" xml:space="preserve">
         <source>Runtime Status</source>
+        <target>Estat del temps d'execució</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Show Tomcat Logs" xml:space="preserve">
         <source>Show Tomcat Logs</source>
+        <target>Mostra els registres de Tomcat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage" xml:space="preserve">
         <source>this is a test of the emergency broadcast</source>
+        <target>aquesta és una prova de l'emissió d'emergència</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.oneparam" xml:space="preserve">
         <source>this is a test of the {0}</source>
+        <target>aquesta és una prova de {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="testMessage.html" xml:space="preserve">
         <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} systems&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <target>&lt;p&gt;No teniu prou drets per a &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} sistemes&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="traceback message header" xml:space="preserve">
         <source>The following exception occurred while executing this request:</source>
+        <target>S'ha produït la següent excepció durant l'execució d'aquesta sol·licitud:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Ungrouped" xml:space="preserve">
         <source>Ungrouped</source>
+        <target>No agrupat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Unix Release Notes" xml:space="preserve">
         <source>Unix Release Notes</source>
+        <target>Notes de la versió d'Unix</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
+        <target>Sense tipus de sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/SystemList</context>
           <context context-type="sourcefile">
@@ -1184,10 +1216,11 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="needs-adaptation"> </target>
+        <target state="translated"> </target>
       </trans-unit>
       <trans-unit id="user.delete" xml:space="preserve">
         <source>Deleted user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>Usuari suprimit: &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
           <context context-type="paramnotes">Deleted user ssprocket.</context>
@@ -1195,6 +1228,7 @@
       </trans-unit>
       <trans-unit id="user.disable" xml:space="preserve">
         <source>Deactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>Usuari desactivat: &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
@@ -1216,6 +1250,7 @@
       </trans-unit>
       <trans-unit id="user.enable" xml:space="preserve">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>Usuari reactivat: &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
@@ -1223,6 +1258,7 @@
       </trans-unit>
       <trans-unit id="user.deleteself" xml:space="preserve">
         <source>You may not delete yourself.</source>
+        <target>No podeu esborrar-vos.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1232,17 +1268,18 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">S'ha suprimit la funció d'administrador de @@PRODUCT_NAME@@ de {0}</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add" xml:space="preserve">
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">S'ha afegit la funció d'administrador de @@PRODUCT_NAME@@ a {0}</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin" xml:space="preserve">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
+        <target>No podeu suprimir un altre administrador d'organització. Si us plau, elimineu la funció "Administrador de l'organització" d'aquest usuari abans d'intentar suprimir-ne compte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1252,7 +1289,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">No es pot suprimir l'últim administrador de @@PRODUCT_NAME@@ restant.</target>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
@@ -1288,17 +1325,18 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">TRAÇA WEB de </target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">NOTIFICACIÓ TASKOMATIC DE @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Notification Messages" xml:space="preserve">
         <source>Notification Messages</source>
+        <target>Missatges de notificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1333,6 +1371,7 @@
       </trans-unit>
       <trans-unit id="Organization Applicants" xml:space="preserve">
         <source>Organization Applicants</source>
+        <target>Sol·licitants de l'organització</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -1377,7 +1416,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated"> per Org </target>
       </trans-unit>
       <trans-unit id="username" xml:space="preserve">
         <source>Username</source>
@@ -1395,12 +1434,14 @@
       </trans-unit>
       <trans-unit id="desiredlogin" xml:space="preserve">
         <source>Desired Login</source>
+        <target>Inici de sessió desitjat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredpass" xml:space="preserve">
         <source>Desired Password</source>
+        <target>Contrasenya desitjada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1414,42 +1455,49 @@
       </trans-unit>
       <trans-unit id="error.invalid_login" xml:space="preserve">
         <source>Either the password or username is incorrect.</source>
+        <target>La contrasenya o el nom d'usuari són incorrectes.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.user_readonly" xml:space="preserve">
         <source>This user has read only API access. WebUI login is denied.</source>
+        <target>Aquest usuari només té accés a l'API de lectura. S'ha denegat l'inici de sessió d'IU web.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.org_already_taken" xml:space="preserve">
         <source>That organization name is already taken; please choose another.</source>
+        <target>Aquest nom d'organització ja està agafat; si us plau, trieu-ne un altre.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/OrgCreate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.login_already_taken" xml:space="preserve">
         <source>That username is already taken; please choose another.</source>
+        <target>Aquest nom d'usuari ja està agafat; si us plau, trieu-ne un altre.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.same_email" xml:space="preserve">
         <source>You must specify a different email</source>
+        <target>Heu d'especificar un correu electrònic diferent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.maxemail" xml:space="preserve">
         <source>The email address is too long. Please enter a shorter email address and try again.</source>
+        <target>L'adreça de correu electrònic és massa llarga. Introduïu-ne una de més curta i torneu-ho a provar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.addr_invalid" xml:space="preserve">
         <source>Entered email address is not valid</source>
+        <target>L'adreça de correu electrònic introduïda no és vàlida.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
@@ -1458,12 +1506,14 @@
       </trans-unit>
       <trans-unit id="error.proxy_invalid" xml:space="preserve">
         <source>HTTP proxy needs to be specified as host:port.</source>
+        <target>El servidor intermediari HTTP s'ha d'especificar com a amfitrió:port.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
         </context-group>
       </trans-unit>
       <trans-unit id="/rhn/" xml:space="preserve">
         <source>That username is already taken; please choose another.</source>
+        <target>Aquest nom d'usuari ja està agafat; si us plau, trieu-ne un altre.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/newlogin/CreatePersonal</context>
           <context context-type="sourcefile">/newlogin/CreateCorporate</context>
@@ -1471,6 +1521,7 @@
       </trans-unit>
       <trans-unit id="error.minlogin" xml:space="preserve">
         <source>Logins must be no shorter than {0} characters.</source>
+        <target>Els inicis de sessió no han de tenir menys de {0} caràcters.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Logins must be no shorter than 5 characters.</context>
@@ -1478,12 +1529,14 @@
       </trans-unit>
       <trans-unit id="error.maxlogin" xml:space="preserve">
         <source>The desired login you requested is too long. Please enter a shorter desired login and try again.</source>
+        <target>L'inici de sessió desitjat que heu sol·licitat és massa llarg. Introduïu-ne un de més breu i torneu-ho a provar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.minpassword" xml:space="preserve">
         <source>Passwords must be at least {0} characters.</source>
+        <target>Les contrasenyes han de tenir com a mínim {0} caràcters.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="paramnotes">Passwords must be no shorter than 5 characters.</context>
@@ -1491,18 +1544,21 @@
       </trans-unit>
       <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
+        <target>La contrasenya conté caràcters de tabulació o de línia nova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
+        <target>Les contrasenyes no poden tenir més de {0} caràcters.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.password_mismatch" xml:space="preserve">
         <source>Passwords do not match.</source>
+        <target>Les contrasenyes no coincideixen.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -1511,30 +1567,35 @@
       </trans-unit>
       <trans-unit id="error.user_invalid_prefix" xml:space="preserve">
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
+        <target>Prefix [{0}] no vàlid. Ha de ser un de {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.readonly_org_admin" xml:space="preserve">
         <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
+        <target>Almenys un administrador d'organització amb accés habitual ha de romandre a l'organització {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.readonly_sat_admin" xml:space="preserve">
         <source>At least one @@PRODUCT_NAME@@ Administrator must remain with regular access.</source>
+        <target>Almenys un administrador de @@PRODUCT_NAME@@ ha de romandre amb accés habitual.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="login" xml:space="preserve">
         <source>Desired Login</source>
+        <target>Inici de sessió desitjat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredPassword" xml:space="preserve">
         <source>Desired Password</source>
+        <target>Contrasenya desitjada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -1576,12 +1637,14 @@
       </trans-unit>
       <trans-unit id="company" xml:space="preserve">
         <source>Company</source>
+        <target>Empresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="desiredpassword" xml:space="preserve">
         <source>Desired Password</source>
+        <target>Contrasenya desitjada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
@@ -1595,6 +1658,7 @@
       </trans-unit>
       <trans-unit id="address1" xml:space="preserve">
         <source>Street Address</source>
+        <target>Adreça</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1603,6 +1667,7 @@
       </trans-unit>
       <trans-unit id="address2" xml:space="preserve">
         <source>Street Address 2</source>
+        <target>Adreça 2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1619,6 +1684,7 @@
       </trans-unit>
       <trans-unit id="state" xml:space="preserve">
         <source>State/Province</source>
+        <target>Estat / província</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
@@ -1636,6 +1702,7 @@
       </trans-unit>
       <trans-unit id="building" xml:space="preserve">
         <source>Building</source>
+        <target>Edifici</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1643,6 +1710,7 @@
       </trans-unit>
       <trans-unit id="room" xml:space="preserve">
         <source>Room</source>
+        <target>Habitació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1665,6 +1733,7 @@
       </trans-unit>
       <trans-unit id="zip" xml:space="preserve">
         <source>Zip / Postal Code</source>
+        <target>Zip / Codi Postal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
@@ -1678,18 +1747,21 @@
       </trans-unit>
       <trans-unit id="edit.note.subjecttoolong" xml:space="preserve">
         <source>Subject too long (80 character maximum)</source>
+        <target>L'assumpte és massa llarg (80 caràcters com a màxim).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.subjecttooshort" xml:space="preserve">
         <source>Subject must not be empty</source>
+        <target>L'assumpte no ha d'estar buit.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.note.notetoolong" xml:space="preserve">
         <source>Note details must be 4000 characters or less</source>
+        <target>Els detalls de la nota han de tenir 4.000 caràcters o menys.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/EditNote</context>
         </context-group>
@@ -1703,42 +1775,49 @@
       </trans-unit>
       <trans-unit id="to_org" xml:space="preserve">
         <source>Destination Organization</source>
+        <target>Organització de destinació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="params" xml:space="preserve">
         <source>Command-line Arguments</source>
+        <target>Arguments de la línia d'ordres</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="path" xml:space="preserve">
         <source>Path to XCCDF document</source>
+        <target>Camí al document XCCDF</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="first" xml:space="preserve">
           <source>First Scan Id</source>
+        <target>Primer escaneig de l'dentificador</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="second" xml:space="preserve">
           <source>Second Scan Id</source>
+        <target>Segon escaneig de l'dentificador</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
+        <target>Permisos actualitzats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.refeshScheduled" xml:space="preserve">
         <source>You have successfully &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; a hardware profile refresh for &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>Heu &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;programat&lt;/a&gt; una actualització del perfil de maquinari per a &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
@@ -1748,7 +1827,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Propietats de xarxa actualitzades.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -1787,12 +1866,14 @@
       </trans-unit>
       <trans-unit id="address_record" xml:space="preserve">
         <source>Address Record:</source>
+        <target>Registre d'adreça:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
+        <target>S'han actualitzat els grups del sistema predeterminats per a &lt;strong&gt;{0}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
           <context context-type="paramnotes">
@@ -1802,42 +1883,49 @@
       </trans-unit>
       <trans-unit id="message.preferencesModified" xml:space="preserve">
         <source>Preferences modified</source>
+        <target>Preferències modificades</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addressChanged" xml:space="preserve">
         <source>Address changed</source>
+        <target>L'adreça ha canviat.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userInfoUpdated" xml:space="preserve">
         <source>User information updated</source>
+        <target>Informació de l'usuari actualitzada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no user loggedin" xml:space="preserve">
         <source>No User logged in.</source>
+        <target>Cap usuari no ha iniciat sessió.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headers" xml:space="preserve">
         <source>Headers</source>
+        <target>Capçaleres</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="form variables" xml:space="preserve">
         <source>Form Variables</source>
+        <target>Variables de forma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreated" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
+        <target>Compte &lt;strong&gt;{0}&lt;/strong&gt; creat.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1850,14 +1938,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Filtra per {0}: </target>
+        <target state="translated">Filtra per {0}: </target>
       </trans-unit>
       <trans-unit id="message.filterby.multiple" xml:space="preserve">
         <source>Filter by: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Filtra per:</target>
+        <target state="translated">Filtra per: </target>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
         <source>{0} - {1} of {2}</source>
@@ -1872,10 +1960,12 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; de &lt;span&gt;{2}&lt;/span&gt;
+Es mostra {3}</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
+        <target>({0} de seleccionats)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
           <context context-type="paramnotes">
@@ -1885,12 +1975,14 @@
       </trans-unit>
       <trans-unit id="message.items.per.page" xml:space="preserve">
         <source>{0} items per page</source>
+        <target>{0} elements per pàgina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.userCreatedIntoOrg" xml:space="preserve">
         <source>Account &lt;strong&gt;{0}&lt;/strong&gt; created, login information sent to &lt;strong&gt;{1}&lt;/strong&gt;</source>
+        <target>Compte &lt;strong&gt;{0}&lt;/strong&gt; creat, informació d'inici de sessió enviada a &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
@@ -1914,30 +2006,35 @@
       </trans-unit>
       <trans-unit id="bad-class" xml:space="preserve">
         <source>Class does not implement AclHandler: {0}</source>
+        <target>La classe no implementa AclHandler: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-signature" xml:space="preserve">
         <source>Bad ACL handler method [{0}]. ACL handler methods must have the following signature (may be static or non-static), with no declared exceptions: public aclXXXX(Object, String[])</source>
+        <target>Mètode de controlador ACL incorrecte [{0}]. Els mètodes del controlador ACL han de tenir la signatura següent (pot ser estàtica o no estàtica), sense excepcions declarades: public aclXXXX(Objecte, String[])</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-syntax" xml:space="preserve">
         <source>Could not parse ACL statement: "{0}"</source>
+        <target>No s'ha pogut analitzar la instrucció ACL: "{0}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bad-handler" xml:space="preserve">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
+        <target>No s'ha pogut trobar el controlador ACL {0} a la instrucció: "{1}". Gestors d'ACL disponibles: {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
       </trans-unit>
       <trans-unit id="invocation-target-exception" xml:space="preserve">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
+        <target>IllegalInvocationException crida {0} ("{1}"): {2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
@@ -1951,12 +2048,14 @@
       </trans-unit>
       <trans-unit id="packages.refresh_list" xml:space="preserve">
         <source>Package List Refresh</source>
+        <target>Actualització de la llista de paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hardware.refresh_list" xml:space="preserve">
         <source>Hardware List Refresh</source>
+        <target>Actualització de la llista de maquinari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -1984,30 +2083,35 @@
       </trans-unit>
       <trans-unit id="scap.xccdf_eval" xml:space="preserve">
         <source>OpenSCAP xccdf scanning</source>
+        <target>Escaneig d'OpenSCAP xccdf</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="up2date_config.get" xml:space="preserve">
         <source>Get server up2date config</source>
+        <target>Obteniu la configuració del servidor up2date</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="up2date_config.update" xml:space="preserve">
         <source>Update server up2date config</source>
+        <target>Actualitza la configuració del servidor up2date</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.delta" xml:space="preserve">
         <source>Package installation and removal in one RPM transaction</source>
+        <target>Instal·lació i supressió de paquets en una transacció d'RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
+        <target>Reinici del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
