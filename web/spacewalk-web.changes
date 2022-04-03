@@ -1,3 +1,5 @@
+- Add UI for peripheral server with report database password
+  regeneration
 - Upgrade minimist to fix CVE-2021-44906
 - Container proxy configuration new webUI page
 - Resolve race conditions in CLM (bsc#1195710)
