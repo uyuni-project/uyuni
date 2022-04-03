@@ -682,63 +682,63 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason3" xml:space="preserve">
           <source>You've found an error in our site.</source>
-        <target/>
+        <target>Na našej stránke ste našli chybu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issslave.title" xml:space="preserve">
           <source>We're sorry, but the requested slave could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný podriadený sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issslave.reason1" xml:space="preserve">
           <source>No slave with the name {0} is identified on this master.</source>
-        <target/>
+        <target>Na tomto nadradenom nie je identifikovaný žiadny podriadený s názvom {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.title" xml:space="preserve">
           <source>We're sorry, but the requested master could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný nadradený sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.reason1" xml:space="preserve">
           <source>No master with the label {0} is identified to this slave.</source>
-        <target/>
+        <target>K tomuto podriadenému nie je identifikovaný žiadny nadradený s označením {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.local.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovanú organizáciu sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.local.reason1" xml:space="preserve">
           <source>No local organization with the ID  {0} exists on this slave.</source>
-        <target/>
+        <target>Na tomto podriadenom neexistuje žiadna lokálna organizácia s ID {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmasterorg.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovanú organizáciu sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmasterorg.reason1" xml:space="preserve">
           <source>No master organization with the ID {0} is identified to this slave.</source>
-        <target/>
+        <target>Žiadna nadradená organizácia s ID {0} nie je identifikovaná pre tohto podriadeného.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
