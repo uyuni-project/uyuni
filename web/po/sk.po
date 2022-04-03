@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-01 08:42+0000\n"
-"PO-Revision-Date: 2022-03-24 18:12+0000\n"
+"PO-Revision-Date: 2022-04-03 12:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2418,9 +2418,8 @@ msgid "Cloning channels"
 msgstr "Klonovanie kanálov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "Generovanie údajov repozitárov"
+msgstr "Čakanie na vygenerovanie dát repozitárov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:503
@@ -4133,19 +4132,17 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "Konfigurácia proxy založeného na kontajneri bola vygenerovaná správne."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
-"Prosím, skúste znova."
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
