@@ -1640,11 +1640,29 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
+                            "-default.kernel")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-0/POS_Image_JeOS7.x86_64-7.0.0",
-                                             user.getOrg().getId())))));
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
+                            user.getOrg().getId())))));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
+                            user.getOrg().getId())))));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
+                                    "-5.3.18-150300.59.54-default.kernel",
+                            user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
 
@@ -1654,7 +1672,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
 
-        ImageInfo image = doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
             assertEquals("POS_Image_JeOS7", info.getName());
             assertEquals("7.0.0", info.getVersion());
@@ -1664,6 +1682,51 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 info.getChecksum().getChecksum());
             assertEquals("POS_Image_JeOS7.x86_64-7.0.0",
                 info.getImageFiles().stream().findFirst().get().getFile());
+        });
+        ImageInfoFactory.delete(image, saltServiceMock);
+        HibernateFactory.getSession().flush();
+    }
+
+    @Test
+    public void testKiwiImageBuildWithBundle() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
+                                    "-build129.tar.xz",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+        }});
+
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", (info) -> {
+            // name and version is updated from the Kiwi build result
+            assertEquals("POS_Image_JeOS7", info.getName());
+            assertEquals("7.0.0", info.getVersion());
+            assertEquals(1, info.getRevisionNumber());
+            assertNotNull(info.getChecksum());
+            assertEquals("sha256:93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+                    info.getChecksum().getChecksum());
+            assertEquals("POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
+                    info.getImageFiles().stream().findFirst().get().getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         HibernateFactory.getSession().flush();
@@ -1788,8 +1851,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
-    private ImageInfo doTestKiwiImageBuild(MinionServer server, String imageName,
-                                           ImageProfile profile, Consumer<ImageInfo> assertions)
+    private ImageInfo doTestKiwiImageBuild(MinionServer server, ImageProfile profile,
+                                           String returnEventJson,
+                                           Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), user);
@@ -1800,7 +1864,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the image build return event
         Optional<JobReturnEvent> event =
-                JobReturnEvent.parse(getJobReturnEvent("image.build.kiwi.json", actionId));
+                JobReturnEvent.parse(getJobReturnEvent(returnEventJson, actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
