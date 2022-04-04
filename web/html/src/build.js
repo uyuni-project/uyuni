@@ -29,11 +29,10 @@ webpack(config(process.env, { mode: "production" }), (err, stats) => {
     return;
   }
 
-  // These are relative to the web folder
   const editedLicenseFilesByBuild = [
-    "spacewalk-web.spec",
-    "html/src/vendors/npm.licenses.structured.js",
-    "html/src/vendors/npm.licenses.txt",
+    "web/spacewalk-web.spec",
+    "web/html/src/vendors/npm.licenses.structured.js",
+    "web/html/src/vendors/npm.licenses.txt",
   ];
 
   const shouldValidateBuild = process.env.BUILD_VALIDATION !== "false";
@@ -41,31 +40,22 @@ webpack(config(process.env, { mode: "production" }), (err, stats) => {
   fillSpecFile().then(() => {
     if (shouldValidateBuild) {
       // Check whether the updated specfile and licenses are committed on git
-      const webDir = path.resolve(__dirname, "../../");
+      const rootDir = path.resolve(__dirname, "../../../");
       const { code: gitCheckCode, stdout } = shell.exec("git ls-files -m", {
-        cwd: webDir,
+        cwd: rootDir,
       });
+
       if (gitCheckCode !== 0) {
         process.exitCode = gitCheckCode;
         return;
       }
 
-      if (stdout && editedLicenseFilesByBuild.some((fileName) => stdout.includes(fileName))) {
-        console.error(`
-                It seems the most recent ${editedLicenseFilesByBuild} files aren't on git.
-                Run "yarn build" again and commit the following files: ${editedLicenseFilesByBuild.join(", ")}`);
-        // TODO: This should be an error again after dependabot issues are addressed
-        // process.exitCode = 1;
-        // return;
-      }
+      const uncommittedFiles = editedLicenseFilesByBuild.filter((fileName) => stdout.includes(fileName));
 
-      // TODO: This should be simply `yarn audit` once Storybook issues are resolved
-      const { stdout: auditStdout } = shell.exec("yarn audit --groups dependencies,devDependencies");
-
-      if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
+      if (uncommittedFiles.length) {
         console.error(`
-                There are vulnerabilities on the downloaded npm libraries.
-                Please run "yarn audit" and fix the detected vulnerabilities `);
+                It seems changes to license and/or spec files haven't been committed.
+                Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
         process.exitCode = 1;
         return;
       }
