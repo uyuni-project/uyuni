@@ -20,6 +20,12 @@
 - Added the server location information to reporting database
 
 -------------------------------------------------------------------
+Mon Apr 04 11:02:21 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Prevent error on setting web.ssh_salt_pre_flight_script to blank
+
+-------------------------------------------------------------------
 Wed Mar 23 10:32:00 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.17-1

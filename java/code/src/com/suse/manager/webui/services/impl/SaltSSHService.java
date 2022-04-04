@@ -254,7 +254,7 @@ public class SaltSSHService {
                                 minion.getSSHPushPort().orElse(SSH_PUSH_PORT)),
                             sshTimeout,
                             minionOpts(mid, contactMethodLabel),
-                            Optional.of(getSaltSSHPreflightScriptPath()),
+                            Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                             Optional.of(Arrays.asList(
                                     proxyPath.isEmpty() ?
                                             ConfigDefaults.get().getCobblerHost() :
