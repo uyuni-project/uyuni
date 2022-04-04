@@ -561,7 +561,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public void testDelete() throws Exception {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0-0/test-1.0.0.tgz",
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0.tgz",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -598,11 +598,11 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public void testDeltaImage() throws Exception {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0-0/delta1.tgz",
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta1.tgz",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltApiMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.1-0/delta2.tgz",
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta2.tgz",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -636,7 +636,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(1, org.getPillars().size());
 
-        // deleting a delta should not delte the images
+        // deleting a delta should not delete the images
         ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
 
         HibernateFactory.getSession().flush();
