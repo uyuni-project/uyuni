@@ -1,3 +1,4 @@
+- Optimize adding new products function (bsc#1193707)
 - change directory owner and permissions only when needed
 - Fixed broken help link for system overview
 - Finding empty profiles by mac address must be case insensitive (bsc#1196407)

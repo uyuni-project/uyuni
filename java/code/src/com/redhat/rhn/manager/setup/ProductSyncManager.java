@@ -56,40 +56,31 @@ import java.util.stream.Collectors;
 public class ProductSyncManager {
 
     /** The logger. */
-    protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
+    private static final Logger LOGGER = Logger.getLogger(ProductSyncManager.class);
 
     /**
-     * Returns a list of base products.
-     * @return the products list
-     * @throws ProductSyncException if an error occurred
+     * Returns a list of base products and addons.
+     * @return the products list with addons
      */
-    public List<SetupWizardProductDto> getBaseProducts() {
+    public List<SetupWizardProductDto> getBaseAndAddonProducts() {
         ContentSyncManager csm = new ContentSyncManager();
         // Convert the listed products to objects we can display
         Collection<MgrSyncProductDto> products = csm.listProducts();
-        List<SetupWizardProductDto> result = convertProducts(products);
+        List<SetupWizardProductDto> productsWithAddons = convertProducts(products);
 
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = ChannelFactory.listVendorChannels()
                 .stream().collect(Collectors.toMap(c -> c.getLabel(), c -> c));
 
         // Determine their product sync status separately
-        for (SetupWizardProductDto p : result) {
+        for (SetupWizardProductDto p : productsWithAddons) {
             if (p.isProvided()) {
                 p.setSyncStatus(getProductSyncStatus(p, channelByLabel));
             }
             else {
                 p.setStatusNotMirrored();
             }
-            for (SetupWizardProductDto addon : p.getAddonProducts()) {
-                if (addon.isProvided()) {
-                    addon.setSyncStatus(getProductSyncStatus(addon, channelByLabel));
-                }
-                else {
-                    addon.setStatusNotMirrored();
-                }
-            }
         }
-        return result;
+        return productsWithAddons;
     }
 
     /**
@@ -116,28 +107,29 @@ public class ProductSyncManager {
 
     /**
      * Adds the product.
-     * @param productIdent the product ident
+     * @param productIdent the SUSE Product as it is shown in the Setup Wizard UI
      * @param user the current user
      * @throws ProductSyncException if an error occurred
      */
     public void addProduct(String productIdent, User user) throws ProductSyncException {
-        SetupWizardProductDto product = findProductByIdent(productIdent);
+        List<SetupWizardProductDto> productsWithAddons = getBaseAndAddonProducts();
+        SetupWizardProductDto product = findProductByIdent(productIdent, productsWithAddons);
         if (product != null) {
             try {
                 List<String> channelsToSync = new LinkedList<>();
                 // Add the channels first
                 ContentSyncManager csm = new ContentSyncManager();
                 for (Channel channel : product.getMandatoryChannels()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Add channel: " + channel.getLabel());
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Add channel: " + channel.getLabel());
                     }
                     csm.addChannel(channel.getLabel(), null);
                     channelsToSync.add(channel.getLabel());
                 }
 
                 for (Channel iuc : product.getInstallerUpdateChannels()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Add installer update channel: " + iuc.getLabel());
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Add installer update channel: " + iuc.getLabel());
                     }
                     csm.addChannel(iuc.getLabel(), null);
                     channelsToSync.add(iuc.getLabel());
@@ -181,19 +173,19 @@ public class ProductSyncManager {
             }
 
             if (channelStatus.isNotMirrored()) {
-                logger.debug("Channel not mirrored: " + c.getLabel());
+                LOGGER.debug("Channel not mirrored: " + c.getLabel());
                 notMirroredCounter++;
             }
             else if (channelStatus.isFinished()) {
-                logger.debug("Channel finished: " + c.getLabel());
+                LOGGER.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
             else if (channelStatus.isFailed()) {
-                logger.debug("Channel failed: " + c.getLabel());
+                LOGGER.debug("Channel failed: " + c.getLabel());
                 failedCounter++;
             }
             else {
-                logger.debug("Channel in progress: " + c.getLabel());
+                LOGGER.debug("Channel in progress: " + c.getLabel());
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
@@ -274,8 +266,8 @@ public class ProductSyncManager {
 
                 // Set the status and debug info
                 String runStatus = run.getStatus();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Repo sync run found for channel " + c.getLabel() +
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Repo sync run found for channel " + c.getLabel() +
                             " (" + runStatus + ")");
                 }
 
@@ -351,7 +343,7 @@ public class ProductSyncManager {
             ret = Long.parseLong(channelIdString);
         }
         catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return ret;
     }
@@ -361,7 +353,7 @@ public class ProductSyncManager {
      * {@link SetupWizardProductDto} for further display.
      *
      * @param products collection of {@link MgrSyncProductDto}
-     * @return List of {@link SetupWizardProductDto}
+     * @return List of {@link SetupWizardProductDto} with addons
      */
     private List<SetupWizardProductDto> convertProducts(
             Collection<MgrSyncProductDto> products) {
@@ -371,6 +363,9 @@ public class ProductSyncManager {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 SetupWizardProductDto displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
+                for (SetupWizardProductDto addOnProduct : displayProduct.getAddonProducts()) {
+                    displayProducts.add(addOnProduct);
+                }
             }
         }
         return displayProducts;
@@ -427,12 +422,12 @@ public class ProductSyncManager {
      * Find a product for any given ident by looking through base and their addons.
      *
      * @param ident ident of a product
+     * @param productsWithAddons the products list with addons
      * @return the {@link SetupWizardProductDto}
      * @throws ProductSyncException in case of an error
      */
-    private SetupWizardProductDto findProductByIdent(String ident)
-            throws ProductSyncException {
-        for (SetupWizardProductDto p : getBaseProducts()) {
+    private SetupWizardProductDto findProductByIdent(String ident, List<SetupWizardProductDto> productsWithAddons) {
+        for (SetupWizardProductDto p : productsWithAddons) {
             if (p.getIdent().equals(ident)) {
                 return p;
             }
