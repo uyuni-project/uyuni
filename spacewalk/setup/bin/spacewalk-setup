@@ -690,9 +690,11 @@ sub setup_ssl_certs {
                      '-cert-expiration' => $answers->{'ssl-ca-cert-expiration'},
                     );
     $answers->{'ssl-ca-cert'} = File::Spec->catfile($answers->{'ssl-dir'}, "RHN-ORG-TRUSTED-SSL-CERT");
-  } elsif ($use_own_certs) {
+  } else {
+    if (! $use_own_certs) {
+      $answers->{'ssl-ca-cert'} = File::Spec->catfile($answers->{'ssl-dir'}, "RHN-ORG-TRUSTED-SSL-CERT");
+    }
     my @osImageOpts = ("--ca-cert-full-path=$answers->{'ssl-ca-cert'}");
-
     Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', @osImageOpts], 35, 'Could not import CA certificate.');
     Spacewalk::Setup::system_or_exit(['/usr/sbin/mgr-package-rpm-certificate-osimage', '--target-os', 'SLE11', @osImageOpts], 35, 'Could not import CA certificate.');
   }
