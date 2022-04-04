@@ -42,6 +42,7 @@ public class SaltbootUtils {
     public static void createSaltbootDistro(ImageInfo imageInfo, BootImage bootImage) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         String pathPrefix = OSImageStoreUtils.getOSImageStorePathForImage(imageInfo);
+        pathPrefix += imageInfo.getName() + "-" + imageInfo.getVersion() + "-" + imageInfo.getRevisionNumber() + "/";
         String initrd = pathPrefix + bootImage.getInitrd().getFilename();
         String kernel = pathPrefix + bootImage.getKernel().getFilename();
         String name = imageInfo.getName() + "-" + imageInfo.getVersion() + "-" + imageInfo.getRevisionNumber();

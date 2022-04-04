@@ -48,8 +48,7 @@ public class OSImageStoreUtils {
         if (!image.getStore().getStoreType().equals(ImageStoreFactory.TYPE_OS_IMAGE)) {
             throw new IllegalArgumentException("Image store is not OS Image Store");
         }
-        return getOSImageStorePathForOrg(image.getOrg()) + "/" +
-                image.getName() + "-" + image.getVersion() + "-" + image.getRevisionNumber() + "/";
+        return getOSImageStorePathForOrg(image.getOrg());
     }
 
     /**

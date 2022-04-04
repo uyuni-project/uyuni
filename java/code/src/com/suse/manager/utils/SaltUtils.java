@@ -1035,6 +1035,7 @@ public class SaltUtils {
                     }
                     files.stream().forEach(file -> {
                         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
+                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
                         MgrUtilRunner.ExecResult collectResult = systemQuery
                                 .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
