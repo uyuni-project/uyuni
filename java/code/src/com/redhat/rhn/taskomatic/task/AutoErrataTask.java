@@ -16,25 +16,24 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -53,8 +52,6 @@ import java.util.stream.Collectors;
  */
 
 public class AutoErrataTask extends RhnJavaJob {
-
-    private Queue<Action> actionsToSchedule = new LinkedList<>();
 
     @Override
     public String getConfigNamespace() {
@@ -79,28 +76,29 @@ public class AutoErrataTask extends RhnJavaJob {
             return;
         }
 
-        log.debug("=== Scheduling " + results.size() + " auto errata updates");
+        Set<Long> orgs = results.stream().map(result -> result.get("org_id")).collect(Collectors.toSet());
 
-        for (Map<String, Long> result : results) {
-            Long errataId = result.get("errata_id");
-            Long serverId = result.get("server_id");
-            Long orgId = result.get("org_id");
+        orgs.forEach(orgId -> {
+            Org org = OrgFactory.lookupById(orgId);
+            List<Map<String, Long>> orgErrata = results.stream().filter(
+                    result -> result.get("org_id").equals(orgId)
+            ).collect(Collectors.toList());
+            Map<Long, List<Long>> serverApplicableErrataMap = orgErrata.stream().collect(
+                    Collectors.groupingBy(errata -> errata.get("server_id"),
+                            Collectors.mapping(errata -> errata.get("errata_id") , Collectors.toList()))
+            );
+
+            Set<Long> errataIdSet = orgErrata.stream().map(errata -> errata.get("errata_id"))
+                    .collect(Collectors.toSet());
+            List<Errata> errataList = ErrataFactory.listErrata(errataIdSet, orgId);
             try {
-                Errata errata = ErrataFactory.lookupErrataById(errataId);
-                Org org = OrgFactory.lookupById(orgId);
-                ErrataAction errataAction = ActionManager.
-                        createErrataAction(org, errata);
-                ActionManager.addServerToAction(serverId, errataAction);
-                ActionManager.storeAction(errataAction);
-                actionsToSchedule.add(errataAction);
+                ErrataManager.scheduleErrataActions(org, new Date(), null, false,
+                        serverApplicableErrataMap, errataList);
             }
-            catch (Exception e) {
-                log.error("Errata: " + errataId + ", Org Id: " + orgId + ", Server: " +
-                        serverId, e);
-                throw new JobExecutionException(e);
+            catch (TaskomaticApiException e) {
+                log.error(e.getMessage());
             }
-            log.debug("Scheduling auto update actions for server " + serverId + " and erratum " + errataId);
-        }
+        });
     }
 
     /**
@@ -167,10 +165,5 @@ public class AutoErrataTask extends RhnJavaJob {
         @SuppressWarnings("unchecked")
         List<Map<String, Long>> results = select.execute(sids);
         return results;
-    }
-
-    @Override
-    protected void finishJob() {
-        actionsToSchedule.forEach(a -> TaskHelper.scheduleActionExecution(a));
     }
 }
