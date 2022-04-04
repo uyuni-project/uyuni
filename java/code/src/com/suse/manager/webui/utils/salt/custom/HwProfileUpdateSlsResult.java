@@ -21,6 +21,8 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.log4j.Logger;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,8 @@ import java.util.Optional;
  * Object representation of the results of a call to state.apply hardware.profileupdate.
  */
 public class HwProfileUpdateSlsResult {
+
+    private static final Logger LOG = Logger.getLogger(HwProfileUpdateSlsResult.class);
 
     @SerializedName("mgrcompat_|-grains_|-grains.items_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
@@ -78,6 +82,10 @@ public class HwProfileUpdateSlsResult {
      * @return the grains
      */
     public Map<String, Object> getGrains() {
+        if (grains == null) {
+            LOG.warn("grains value is null");
+            return Collections.emptyMap();
+        }
         return grains.getChanges().getRet();
     }
 
@@ -85,6 +93,10 @@ public class HwProfileUpdateSlsResult {
      * @return information about CPUs
      */
     public Map<String, Object> getCpuInfo() {
+        if (cpuInfo == null) {
+            LOG.warn("cpuInfo value is null");
+            return Collections.emptyMap();
+        }
         return cpuInfo.getChanges().getRet();
     }
 
@@ -92,6 +104,10 @@ public class HwProfileUpdateSlsResult {
      * @return exported contents of the udevdb
      */
     public List<Map<String, Object>> getUdevdb() {
+        if (udevdb == null) {
+            LOG.warn("udevdb value is null");
+            return Collections.emptyList();
+        }
         return udevdb.getChanges().getRet();
     }
 
@@ -99,6 +115,10 @@ public class HwProfileUpdateSlsResult {
      * @return network interfaces
      */
     public Map<String, Network.Interface> getNetworkInterfaces() {
+        if (networkInterfaces == null) {
+            LOG.warn("networkInterfaces value is null");
+            return Collections.emptyMap();
+        }
         return networkInterfaces.getChanges().getRet();
     }
 
@@ -106,6 +126,10 @@ public class HwProfileUpdateSlsResult {
      * @return network IPs
      */
     public Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getNetworkIPs() {
+        if (networkIPs == null) {
+            LOG.warn("networkIPs value is null");
+            return Collections.emptyMap();
+        }
         return networkIPs.getChanges().getRet();
     }
 
@@ -113,6 +137,10 @@ public class HwProfileUpdateSlsResult {
      * @return network modules
      */
     public Map<String, Optional<String>> getNetworkModules() {
+        if (networkModules == null) {
+            LOG.warn("networkModules value is null");
+            return Collections.emptyMap();
+        }
         return networkModules.getChanges().getRet();
     }
 
