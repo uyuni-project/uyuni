@@ -57,8 +57,9 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
     public List<MgrServerInfo> getCandidates() {
         CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
         CriteriaQuery<MgrServerInfo> criteria = builder.createQuery(MgrServerInfo.class);
+        criteria.from(MgrServerInfo.class);
         Query<MgrServerInfo> query = HibernateFactory.getSession().createQuery(criteria);
-        List<MgrServerInfo> mgrServerInfos = (List<MgrServerInfo>)query.list();
+        List<MgrServerInfo> mgrServerInfos = query.list();
         return mgrServerInfos.stream().filter(info ->
                 Optional.ofNullable(info.getReportDbLastSynced())
                         .map(time -> time.toInstant().plus(24, ChronoUnit.HOURS).isBefore(Instant.now()))
