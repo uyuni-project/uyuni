@@ -1637,13 +1637,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-0/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+                            "/srv/www/os-images/%d/POS_Image_JeOS6-7.0.0-0/POS_Image_JeOS7.x86_64-7.0.0",
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -1656,13 +1656,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ImageInfo image = doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
             // name and version is updated from the Kiwi build result
-            assertEquals("POS_Image_JeOS6", info.getName());
-            assertEquals("6.0.0", info.getVersion());
+            assertEquals("POS_Image_JeOS7", info.getName());
+            assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
             assertNotNull(info.getChecksum());
-            assertEquals("a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
+            assertEquals("md5:7057ea9a15784f469e03f2de045d3c73",
                 info.getChecksum().getChecksum());
-            assertEquals("POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
+            assertEquals("POS_Image_JeOS7.x86_64-7.0.0",
                 info.getImageFiles().stream().findFirst().get().getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
