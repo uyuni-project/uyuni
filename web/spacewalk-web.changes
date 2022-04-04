@@ -1,5 +1,9 @@
-- Set default web.ssh_salt_pre_flight_script to blank to disable
-  using the Salt Bundle for Salt SSH temporary
+-------------------------------------------------------------------
+Mon Apr 04 11:02:39 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Set default web.ssh_salt_pre_flight_script to blank to disable
+    using the Salt Bundle for Salt SSH temporary
 
 -------------------------------------------------------------------
 Fri Mar 11 15:31:32 CET 2022 - jgonzalez@suse.com
