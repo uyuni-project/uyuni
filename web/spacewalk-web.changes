@@ -1,3 +1,4 @@
+- susemanager-nodejs-sdk-devel is now provided by spacewalk-web
 - Resolve race conditions in CLM (bsc#1195710)
 
 -------------------------------------------------------------------

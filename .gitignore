@@ -61,6 +61,7 @@ sqlnet.log
 *.zip
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
+node-modules.tar.gz
 yarn-error.log
 
 rel-eng/custom/__pycache__
