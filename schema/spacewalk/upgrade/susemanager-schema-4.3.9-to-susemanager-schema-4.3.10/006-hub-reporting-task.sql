@@ -10,7 +10,7 @@ WHERE NOT EXISTS (
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 SELECT sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-hub-default',
        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-hub-bunch'),
-       current_timestamp, '0 0 0 ? * *'
+       current_timestamp, '0 30 1 ? * *'
 WHERE NOT EXISTS (
         SELECT 1 FROM rhnTaskoSchedule
         WHERE job_label = 'update-reporting-hub-default'
