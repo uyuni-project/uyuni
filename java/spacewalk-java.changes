@@ -1,3 +1,4 @@
+- Redesign the auto errata task to schedule combined actions (bsc#1197429)
 - detect free products in Alpha and Beta stage and prevent checks
   on openSUSE products (bsc#1197488)
 - Optimize adding new products function (bsc#1193707)

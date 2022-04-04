@@ -600,7 +600,7 @@ public class ActionChainManager {
                 taskomaticApi.scheduleActionExecution(action);
             }
             if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-                MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
             }
         }
         else {
@@ -614,7 +614,7 @@ public class ActionChainManager {
                     nextSortOrder);
                 result.add(action);
                 if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-                    MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user);
+                    MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
                 }
             }
         }

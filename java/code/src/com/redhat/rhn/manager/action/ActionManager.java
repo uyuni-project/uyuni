@@ -1938,7 +1938,7 @@ public class ActionManager extends BaseManager {
         addPackageActionDetails(Arrays.asList(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-            MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler);
+            MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler.getOrg());
         }
 
         return action;
