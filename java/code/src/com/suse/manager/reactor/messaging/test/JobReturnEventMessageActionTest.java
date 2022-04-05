@@ -1666,12 +1666,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
-
 
         ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
@@ -1723,12 +1721,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
-
 
         ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
@@ -1769,7 +1765,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                              user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
@@ -1828,10 +1823,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
-
-        new File("/srv/susemanager/pillar_data/images").mkdirs();
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);

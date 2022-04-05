@@ -58,20 +58,6 @@ public class SaltbootUtils {
         profile.setEnableMenu(false);
         profile.setComment("Distro " + name + " private profile");
         profile.save();
-
-        // Check if cobbler default distro is present and update if so. Otherwise, create it
-        Distro defaultDistro = Distro.lookupByName(con, "default-latest");
-        if (defaultDistro == null) {
-            new Distro.Builder().setName("default-latest")
-              .setInitrd(initrd).setKernel(kernel)
-              .setKernelOptions("panic=60 splash=silent")
-              .setArch(imageInfo.getImageArch().getName()).setBreed("generic").build(con);
-        }
-        else {
-            defaultDistro.setInitrd(initrd);
-            defaultDistro.setKernel(kernel);
-            defaultDistro.save();
-        }
     }
 
     /**
@@ -105,13 +91,40 @@ public class SaltbootUtils {
                                      String bootImage, String bootImageVersion) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
-        Distro d = Distro.lookupByName(con, bootImage + "-" + bootImageVersion);
+        String distroToUse;
+        if (bootImage == null || bootImage.isEmpty()) {
+            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
+            distroToUse = Distro.list(con).stream().map(d -> d.getName()).sorted(saltbootCompare)
+                    .collect(Collectors.toList()).stream().findFirst().orElseThrow(
+                            () -> new SaltbootException("No registered image found"));
+        }
+        else if (bootImageVersion == null || bootImageVersion.isEmpty()) {
+            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
+            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(bootImage))
+                    .sorted(saltbootCompare).collect(Collectors.toList()).stream().findFirst().orElseThrow(
+                            () -> new SaltbootException("Specified image name is not known"));
+        }
+        else if (!bootImageVersion.contains("-")) {
+            // bootImageVersion does not have revision
+            SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
+            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(bootImage + "-" +
+                    bootImageVersion)).sorted(saltbootCompare).collect(Collectors.toList()).stream().findFirst()
+                    .orElseThrow(() -> new SaltbootException("Specified image name is not known"));
+        }
+        else {
+            distroToUse = bootImage + "-" + bootImageVersion;
+        }
+        Distro d = Distro.lookupByName(con, distroToUse);
         if (d == null) {
             throw new SaltbootException("Unable to find Cobbler distribution for specified image and version");
         }
+
         Profile gp = Profile.lookupByName(con, saltbootGroup);
         if (gp == null) {
             gp = Profile.create(con, saltbootGroup, d);
+        }
+        else {
+            gp.setDistro(d);
         }
         gp.setKernelOptions(kernelOptions);
         gp.setComment("Saltboot group " + saltbootGroup + " default profile");

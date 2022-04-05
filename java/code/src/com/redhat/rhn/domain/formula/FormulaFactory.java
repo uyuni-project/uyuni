@@ -285,13 +285,7 @@ public class FormulaFactory {
                 kernelOptions += " " + saltboot.get("default_kernel_parameters");
             }
             String bootImage = (String)saltboot.get("default_boot_image");
-            if (bootImage.isEmpty()) {
-                bootImage = "default";
-            }
             String bootImageVersion = (String)saltboot.get("default_boot_image_version");
-            if (bootImageVersion.isEmpty()) {
-                bootImageVersion = "latest";
-            }
 
             try {
                 SaltbootUtils.createSaltbootProfile((String)saltboot.get("branch_id"), kernelOptions,
