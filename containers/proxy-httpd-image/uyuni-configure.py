@@ -8,9 +8,11 @@ import yaml
 import socket
 import sys
 
+from typing import Tuple
+
 config_path = "/etc/uyuni/"
 
-def getIPs(fqdn: str) -> [str, str]:
+def getIPs(fqdn: str) -> Tuple[str, str]:
     addrinfo = socket.getaddrinfo(fqdn, None)
     ipv4s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET, addrinfo)))
     ipv6s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET6, addrinfo)))
