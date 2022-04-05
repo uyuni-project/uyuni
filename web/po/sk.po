@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-01 08:42+0000\n"
-"PO-Revision-Date: 2022-04-03 12:12+0000\n"
+"PO-Revision-Date: 2022-04-05 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4132,7 +4132,8 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr "Konfigurácia proxy založeného na kontajneri bola vygenerovaná správne."
+msgstr ""
+"Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
@@ -4147,7 +4148,7 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "Konfigurácia proxy založeného na kontajneroch"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4155,34 +4156,33 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"Môžete vygenerovať sadu konfiguračných súborov a certifikátov na registráciu "
+"a spustenie proxy servera založeného na kontajneroch. Po vyplnení a odoslaní "
+"nasledujúceho formulára dostanete na stiahnutie archív .zip."
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "Proxy"
+msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
 msgid "e.g., proxy.domain.com"
-msgstr "napr. host.domain.com"
+msgstr "napr. proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Server FQDN"
-msgstr ""
+msgstr "Server FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:201
-#, fuzzy
 msgid "e.g., server.domain.com"
-msgstr "napr. host.domain.com"
+msgstr "napr. server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
 
 #: ../html/src/manager/proxy/container-config.tsx:208
-#, fuzzy
 msgid "Proxy SSH port"
-msgstr "Port SSH"
+msgstr "Port Proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
@@ -4191,12 +4191,11 @@ msgstr "Rozsah portov: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:218
 msgid "Max Squid cache size (MB)"
-msgstr ""
+msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
 
 #: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
 msgid "e.g., 2048"
-msgstr "napr. SLE12"
+msgstr "napr. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Proxy administrator email"
