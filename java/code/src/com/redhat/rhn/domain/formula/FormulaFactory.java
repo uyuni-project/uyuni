@@ -267,7 +267,7 @@ public class FormulaFactory {
         // Handle Saltboot group - create Cobbler profile
         if (SALTBOOT_GROUP.equals(formulaName)) {
             Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
-            String kernelOptions = "MINION_ID_PREFIX=" + saltboot.get("branch_id");
+            String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
             kernelOptions += " MASTER=" + saltboot.get("download_server");
             if ((Boolean)saltboot.get("disable_id_prefix")) {
                 kernelOptions += " DISABLE_ID_PREFIX=1";
@@ -288,7 +288,7 @@ public class FormulaFactory {
             String bootImageVersion = (String)saltboot.get("default_boot_image_version");
 
             try {
-                SaltbootUtils.createSaltbootProfile((String)saltboot.get("branch_id"), kernelOptions,
+                SaltbootUtils.createSaltbootProfile(group.getName(), kernelOptions, group.getOrg(),
                         bootImage, bootImageVersion);
             }
             catch (SaltbootException e) {
@@ -572,7 +572,7 @@ public class FormulaFactory {
         // Try to remove SaltbootProfile first. It this fails, stop removing formulas
         if (deletedFormulas.contains(SALTBOOT_GROUP)) {
             try {
-                SaltbootUtils.deleteSaltbootProfile(group.getName());
+                SaltbootUtils.deleteSaltbootProfile(group.getName(), group.getOrg());
             }
             catch (SaltbootException e) {
                 throw new ValidatorException(e.getMessage());
