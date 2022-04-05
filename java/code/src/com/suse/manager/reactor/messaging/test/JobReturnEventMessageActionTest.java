@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -1678,10 +1679,22 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
             assertNotNull(info.getChecksum());
-            assertEquals("md5:7057ea9a15784f469e03f2de045d3c73",
+            assertEquals("7057ea9a15784f469e03f2de045d3c73",
                 info.getChecksum().getChecksum());
-            assertEquals("POS_Image_JeOS7.x86_64-7.0.0",
-                info.getImageFiles().stream().findFirst().get().getFile());
+            String pathPrefix = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber();
+            // check initrd file
+            ImageFile file = info.getImageFiles().stream().filter(f -> f.getType().equals("initrd")).findFirst().get();
+            assertEquals("47a5391bd6c5f62c328605b0375b1216", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "/POS_Image_JeOS7.x86_64-7.0.0.initrd", file.getFile());
+            // check kernel
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("kernel")).findFirst().get();
+            assertEquals("62c7d8dbb3ac208fbfa92d6034f361bc", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
+                    file.getFile());
+            // check image
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
+            assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "/POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         HibernateFactory.getSession().flush();
@@ -1723,8 +1736,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
             assertNotNull(info.getChecksum());
-            assertEquals("sha256:93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+            assertEquals("7057ea9a15784f469e03f2de045d3c73",
                     info.getChecksum().getChecksum());
+            assertEquals("93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+                    info.getImageFiles().stream().findFirst().get().getChecksum().getChecksum());
             assertEquals("POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
                     info.getImageFiles().stream().findFirst().get().getFile());
         });
