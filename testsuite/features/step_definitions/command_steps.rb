@@ -964,7 +964,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
-    sleep 2
   end
 end
 
