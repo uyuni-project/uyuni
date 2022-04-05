@@ -956,7 +956,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
-    sleep 2
   end
 end
 
@@ -1175,7 +1174,7 @@ When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host
   node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
 
   # Ensure the pool is started
-  node.run("virsh pool-start #{pool_name}", check_errors: false)
+  node.run("virsh pool-start #{pool_name}", check_errors: false)Remove the sleep to catch the cached package
 end
 
 When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
