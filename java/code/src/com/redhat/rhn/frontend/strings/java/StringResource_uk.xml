@@ -10101,6 +10101,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state. Check the server logs.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

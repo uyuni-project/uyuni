@@ -111,13 +111,13 @@ default_or_input "SUSE Manager Proxy FQDN" SUMA_PROXY_FQDN $(hostname -f)
 
 default_or_input "SUSE Manager Proxy IPv4 Address" SUMA_PROXY_IP $(getent ahostsv4 $SUMA_PROXY_FQDN | awk '{ print $1 }' | head -1 || echo "")
 
-default_or_input "SUSE Manager Proxy IPv6 Address" SUMA_PROXY_IP6 $(getent ahostsv6 $SUMA_PROXY_FQDN | awk '{ print $1 }' | head -1 || echo "")
+default_or_input "SUSE Manager Proxy IPv6 Address" SUMA_PROXY_IP6 $(getent ahostsv6 $SUMA_PROXY_FQDN | awk '{ print $1 }' | head -1 | grep -v '^::' || echo "")
 
 default_or_input "SUSE Manager Server FQDN" SUMA_FQDN $PARENT_FQDN
 
 default_or_input "SUSE Manager Parent IPv4 Address" SUMA_IP $(getent ahostsv4 $SUMA_FQDN | awk '{ print $1 }' | head -1 || echo "" )
 
-default_or_input "SUSE Manager Parent IPv6 Address" SUMA_IP6 $(getent ahostsv6 $SUMA_FQDN | awk '{ print $1 }' | head -1 || echo "" )
+default_or_input "SUSE Manager Parent IPv6 Address" SUMA_IP6 $(getent ahostsv6 $SUMA_FQDN | awk '{ print $1 }' | head -1 | grep -v '^::' || echo "" )
 
 
 
@@ -180,8 +180,13 @@ fi
 
 sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/#        Allow from /g" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
 sed -i "s/^[[:space:]]*Require ip[[:space:]].*$/#        Require ip /g" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
-sed -i "0,/^[[:space:]#]*Allow from[[:space:]].*/s/^[[:space:]#]*Allow from[[:space:]].*$/        Allow from $SUMA_IP\n        Allow from $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
-sed -i "0,/^[[:space:]#]*Require ip[[:space:]].*/s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP\n        Require ip $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+if [ -n "$SUMA_IP6" ]; then
+    sed -i "0,/^[[:space:]#]*Allow from[[:space:]].*/s/^[[:space:]#]*Allow from[[:space:]].*$/        Allow from $SUMA_IP\n        Allow from $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+    sed -i "0,/^[[:space:]#]*Require ip[[:space:]].*/s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP\n        Require ip $SUMA_IP6/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+else
+    sed -i "s/^[[:space:]#]*Allow from[[:space:]].*/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+    sed -i "s/^[[:space:]#]*Require ip[[:space:]].*/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+fi
 
 
 #######################################

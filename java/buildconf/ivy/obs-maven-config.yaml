@@ -153,6 +153,9 @@ artifacts:
     repository: Leap
   - artifact: jsch
     repository: Uyuni_Other
+  - artifact: mchange-commons-java
+    package: mchange-commons
+    repository: Uyuni_Other
   - artifact: netty-buffer
     package: netty
     repository: Uyuni_Other
@@ -268,11 +271,8 @@ artifacts:
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
-  - artifact: commons-lang
-    package: apache-commons-lang
-    repository: Leap
-  - artifact: velocity
-    repository: Leap
+  - artifact: velocity-engine-core
+    repository: Uyuni_Other
 
   - artifact: jasper
     package: tomcat-lib

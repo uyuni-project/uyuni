@@ -27,23 +27,29 @@ function fillSpecFile() {
         reject(err);
         throw err;
       }
-      var specFileEdited = specFile.replace(
+      const editedSpecFile = specFile.replace(
         /(?<=%package -n spacewalk-html[\s\S]*?)License:.*/m,
         `License:        ${mappedProcessedLicenses}`
       );
 
-      fs.writeFile(specFileLocation, specFileEdited, "utf8", function (err) {
+      if (editedSpecFile === specFile) {
+        console.log(`${path.basename(specFileLocation)} is already up to date.`);
+        resolve();
+        return;
+      }
+
+      fs.writeFile(specFileLocation, editedSpecFile, "utf8", function (err) {
         if (err) {
           reject(err);
           throw err;
         }
 
-        resolve({ mappedProcessedLicenses });
         console.log(
           `${path.basename(
             specFileLocation
           )} was updated successfully with the following licenses for spacewalk-html: ${mappedProcessedLicenses}`
         );
+        resolve();
       });
     });
   });

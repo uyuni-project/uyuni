@@ -675,7 +675,7 @@
       </trans-unit>
       <trans-unit id="lookup.configrev.reason2" xml:space="preserve">
           <source>You do not have permission to view this configuration revision.</source>
-        <target/>
+        <target>Nemáte oprávnenie na zobrazenie tejto konfiguračnej revízie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -17288,7 +17288,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
       <!-- addfiles.jsp -->
       <trans-unit id="config.error.file-exists" xml:space="preserve">
         <source>A file named "{0}" already exists in this channel.</source>
-        <target/>
+        <target>V tomto kanáli už existuje súbor s názvom "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
@@ -29506,13 +29506,13 @@ given channel.</source>
         <source>Update Reporting Database</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

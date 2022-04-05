@@ -48,12 +48,16 @@ public class SSLCertData {
                        String orgIn, String orgUnitIn, String emailIn) {
         cn = cnIn;
         cnames = cnamesIn;
-        country = countryIn;
-        state = stateIn;
-        city = cityIn;
-        org = orgIn;
-        orgUnit = orgUnitIn;
-        email = emailIn;
+        country = sanitizeValue(countryIn);
+        state = sanitizeValue(stateIn);
+        city = sanitizeValue(cityIn);
+        org = sanitizeValue(orgIn);
+        orgUnit = sanitizeValue(orgUnitIn);
+        email = sanitizeValue(emailIn);
+    }
+
+    private String sanitizeValue(String value) {
+        return value != null && value.isBlank() ? null : value;
     }
 
     /**

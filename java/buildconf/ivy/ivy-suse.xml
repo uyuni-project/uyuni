@@ -58,6 +58,7 @@
         <dependency org="suse" name="jose4j" rev="0.5.1" />
         <dependency org="suse" name="log4j" rev="1.2.12" />
         <dependency org="suse" name="jsch" rev="0.1.55" />
+        <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="suse" name="netty-buffer" rev="4.1.44.Final" />
         <dependency org="suse" name="netty-codec" rev="4.1.44.Final" />
         <dependency org="suse" name="netty-common" rev="4.1.44.Final" />
@@ -98,10 +99,6 @@
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
         <dependency org="suse" name="xerces-j2" rev="2.12.0" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
-        <dependency org="suse" name="velocity" rev="1.7" />
-
-        <!-- Uncommend commons-lang only to generate the apidocs using manager-build.xml -->
-        <!-- <dependency org="suse" name="commons-lang" rev="2.6" /> -->
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="jasper" rev="9.0.36" />
@@ -112,6 +109,7 @@
         <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.36" />
 
         <!-- Compilation and testing -->
+        <dependency org="suse" name="velocity-engine-core" rev="2.2"/>
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
         </dependency>

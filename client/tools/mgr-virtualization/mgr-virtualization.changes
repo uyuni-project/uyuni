@@ -1,3 +1,6 @@
+- Fix the condition for preventing building python 2 subpackage
+  for SLE15
+
 -------------------------------------------------------------------
 Fri Mar 11 15:06:20 CET 2022 - jgonzalez@suse.com
 

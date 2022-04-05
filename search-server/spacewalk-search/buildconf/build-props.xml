@@ -6,8 +6,11 @@
 
   <property name="ivy.settings.file" value="buildconf/ivyconf.xml" />
 
+  <property name="c3p0" value="c3p0"/>
+  <available file="/usr/share/java/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
+
   <property name="jpackage.jars"
-      value="c3p0 cglib commons-cli commons-codec commons-httpclient commons-lang3
+      value="${c3p0} cglib commons-cli commons-codec commons-httpclient commons-lang3
              commons-logging ${log4j-jars} objectweb-asm/asm oro
              quartz redstone-xmlrpc redstone-xmlrpc-client simple-core
              slf4j/api slf4j/simple junit nutch-core hadoop picocontainer

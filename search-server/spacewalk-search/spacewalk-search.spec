@@ -139,6 +139,9 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 
+# cleanup unwanted jar
+rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
+
 %post
 %if 0%{?rhel}
 %systemd_post rhn-search.service

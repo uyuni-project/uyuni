@@ -1,4 +1,11 @@
+* Add pg-migrate-12-to-14.sh script
 * Add pg-migrate-13-to-14.sh script
+
+-------------------------------------------------------------------
+Thu Mar 31 12:26:36 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * fix SLE15 bootstrap repo definition (bsc#1197438)
 
 -------------------------------------------------------------------
 Fri Mar 11 15:32:36 CET 2022 - jgonzalez@suse.com

@@ -9150,6 +9150,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="Bootstrapping" xml:space="preserve">
         <source>Bootstrapping</source>
       </trans-unit>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
+      </trans-unit>
       <trans-unit id="salt_entitled" xml:space="preserve">
         <source>Salt</source>
       </trans-unit>

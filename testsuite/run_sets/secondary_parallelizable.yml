@@ -8,6 +8,7 @@
 
 # IDEMPOTENT
 
+- features/secondary/srv_advanced_search.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature

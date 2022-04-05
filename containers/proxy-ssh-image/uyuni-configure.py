@@ -18,7 +18,6 @@ with open("/etc/uyuni/config.yaml") as source:
     os.system(f'groupadd -r {SSH_PUSH_USER}')
     os.system(f'useradd -r -g {SSH_PUSH_USER} -m -d {SSH_PUSH_USER_HOME} -c "susemanager ssh push tunnel" {SSH_PUSH_USER}')
 
-
     # create .ssh dir in home and set permissions
     os.makedirs(SSH_PUSH_KEY_DIR)
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}')
@@ -27,17 +26,12 @@ with open("/etc/uyuni/config.yaml") as source:
     # copy the ssh push server/parent key files
     shutil.copyfile("/etc/uyuni/server_ssh_push", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}")
     shutil.copyfile("/etc/uyuni/server_ssh_push.pub", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub")
-
     
     # change owner to {SSH_PUSH_USER}
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}')
     os.system(f'chmod 600 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}')
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub')
     os.system(f'chmod 644 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub')
-
-    # TODO
-    # copy the public key to apache's pub dir
-    # cp {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
 
     # Authorize the server to ssh into this container
     shutil.copyfile("/etc/uyuni/server_ssh_key.pub", f"{SSH_PUSH_KEY_DIR}/authorized_keys")

@@ -12,13 +12,14 @@ import _last from "lodash/last";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
-import useInterval from "core/hooks/use-interval";
 
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+
+import { useIntervalEffect } from "utils/hooks";
 
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { getClmFilterDescription } from "../shared/business/filters.enum";
@@ -41,14 +42,19 @@ const Project = (props: Props) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
-  useInterval(() => {
-    onAction({}, "get", project.properties.label).then((newProject) => {
-      // Only propagate the received value if something has changed
-      if (!_isEqual(project, newProject)) {
-        setProject(newProject);
-      }
-    });
-  }, 5000);
+  useIntervalEffect(
+    () => {
+      onAction({}, "get", project.properties.label).then((newProject) => {
+        // Only propagate the received value if something has changed
+        if (!_isEqual(project, newProject)) {
+          setProject(newProject);
+        }
+      });
+      return cancelRefreshAction;
+    },
+    5000,
+    [project]
+  );
 
   useEffect(() => {
     if (props.wasFreshlyCreatedMessage) {
