@@ -81,17 +81,15 @@
   </query>
 </mode>
 
-<mode name="SystemGroup" class="">
+<mode name="SystemGroupMember" class="">
     <query params="offset, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
-                    , rhnservergroup.name
-                    , rhnservergroup.description
-                    , rhnservergroup.current_members
-                    , web_customer.name AS organization
+                    , rhnservergroup.name AS group_name
+                    , rhnserver.name AS system_name
             FROM rhnservergroupmembers
+                    INNER JOIN rhnserver ON rhnservergroupmembers.server_id = rhnserver.id
                     INNER JOIN rhnservergroup ON rhnservergroupmembers.server_group_id = rhnservergroup.id
-                    INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
            WHERE rhnservergroup.group_type IS NULL
         ORDER BY server_id, server_group_id OFFSET :offset LIMIT :limit
   </query>

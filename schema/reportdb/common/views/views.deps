@@ -25,7 +25,7 @@ InventoryReport                  :: System \
                                     SystemNetAddressV4 \
                                     SystemNetAddressV6 \
                                     SystemEntitlement \
-                                    SystemGroup \
+                                    SystemGroupMember \
                                     SystemVirtualData \
                                     SystemConfigChannel \
                                     SystemChannel \
