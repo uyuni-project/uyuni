@@ -1,3 +1,5 @@
+- Improve parsing deb packages dependencies (bsc#1194594)
+
 -------------------------------------------------------------------
 Tue Mar 29 14:22:50 CEST 2022 - jmassaguerpla@suse.de
 
