@@ -26,14 +26,15 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.MgrServerInfo;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
-
 
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
@@ -129,8 +130,10 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                 TABLES.forEach(table -> {
                     updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
                 });
-                mgrServerInfo.setReportDbLastSynced(new Date());
-                ServerFactory.save(mgrServerInfo.getServer());
+                Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
+                mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
+                ServerFactory.save(mgrServer);
+                HibernateFactory.commitTransaction();
                 localRcm.commitTransaction();
                 log.info("Reporting db updated for server " + mgrServerInfo.getServer().getId() + " successfully.");
             }
