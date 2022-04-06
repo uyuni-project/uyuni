@@ -1,3 +1,9 @@
+- Added Channel information
+- Added System packages information
+- Added OpenScap scans information
+- Added Groups information
+- Added System packages information
+- Added proxy information to the system table
 - Changed table SystemGroup to better reflect its content
 - Added location information to the system table
 

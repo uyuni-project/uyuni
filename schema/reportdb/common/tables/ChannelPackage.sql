@@ -9,21 +9,20 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE Channel
+CREATE TABLE ChannelPackage
 (
     mgm_id                    NUMERIC NOT NULL,
     channel_id                NUMERIC NOT NULL,
-    name                      VARCHAR(256),
-    label                     VARCHAR(128),
-    type                      VARCHAR(50),
-    arch                      VARCHAR(64),
-    summary                   VARCHAR(500),
-    description               VARCHAR(4000),
-    parent_channel_label      VARCHAR(128),
-    original_channel_id       NUMERIC,
-    organization              VARCHAR(128),
+    package_id                NUMERIC NOT NULL,
+    channel_label             VARCHAR(128),
+    package_name              VARCHAR(256),
+    package_epoch             VARCHAR(16),
+    package_version           VARCHAR(512),
+    package_release           VARCHAR(512),
+    package_type              VARCHAR(10),
+    package_arch              VARCHAR(64),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-ALTER TABLE Channel
-  ADD CONSTRAINT Channel_pk PRIMARY KEY (mgm_id, channel_id);
+ALTER TABLE ChannelPackage
+  ADD CONSTRAINT ChannelPackage_pk PRIMARY KEY (mgm_id, channel_id, package_id);

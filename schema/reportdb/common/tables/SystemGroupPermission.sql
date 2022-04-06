@@ -9,21 +9,14 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE Channel
+CREATE TABLE SystemGroupPermission
 (
     mgm_id                    NUMERIC NOT NULL,
-    channel_id                NUMERIC NOT NULL,
-    name                      VARCHAR(256),
-    label                     VARCHAR(128),
-    type                      VARCHAR(50),
-    arch                      VARCHAR(64),
-    summary                   VARCHAR(500),
-    description               VARCHAR(4000),
-    parent_channel_label      VARCHAR(128),
-    original_channel_id       NUMERIC,
-    organization              VARCHAR(128),
+    system_group_id           NUMERIC NOT NULL,
+    account_id                NUMERIC NOT NULL,
+    group_name                VARCHAR(64),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-ALTER TABLE Channel
-  ADD CONSTRAINT Channel_pk PRIMARY KEY (mgm_id, channel_id);
+ALTER TABLE SystemGroupPermission
+  ADD CONSTRAINT SystemGroupPermission_pk PRIMARY KEY (mgm_id, system_group_id, account_id);

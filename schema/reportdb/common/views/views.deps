@@ -15,6 +15,21 @@
 
 path = . tables
 
+AccountsReport                   :: Account \
+                                    AccountGroup
+AccountsSystemsReport            :: Account \
+                                    AccountGroup
+                                    SystemGroupPermission \
+                                    SystemGroupMember \
+                                    System
+ChannelPackagesReport            :: Channel \
+                                    ChannelPackage
+ChannelsReport                   :: Channel \
+                                    ChannelPackage
+ClonedChannelsReport             :: Channel
+CustomInfoReport                 :: System \
+                                    SystemCustomInfo
+ErrataChannelsReport             :: ChannelErrata
 ErrataListReport                 :: SystemErrata \
                                     Errata
 HistoryReport                    :: SystemAction \
@@ -30,3 +45,25 @@ InventoryReport                  :: System \
                                     SystemConfigChannel \
                                     SystemChannel \
                                     SystemOutdated
+PackagesUpdatesAllReport         :: System \
+                                    SystemPackageInstalled \
+                                    SystemPackageUpdate
+PackagesUpdatesNewestReport      :: System \
+                                    SystemPackageInstalled \
+                                    SystemPackageUpdate
+ProxyOverviewReport              :: System
+ScapScanReport                   :: XccdScan \
+                                    System \
+                                    SystemNetInterface \
+                                    SystemNetAddressV4
+ScapScanResultReport             :: XccdScanResult \
+                                    System
+SystemExtraPackagesReport        :: System \
+                                    SystemPackageInstalled \
+                                    SystemChannel \
+                                    ChannelPackage
+SystemGroupsReport               :: SystemGroup
+SystemGroupsSystemsReport        :: SystemGroupMember \
+                                    System
+SystemPackagesInstalledReport    :: SystemPackageInstalled \
+                                    System

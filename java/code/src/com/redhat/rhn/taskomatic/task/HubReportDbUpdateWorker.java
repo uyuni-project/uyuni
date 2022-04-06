@@ -54,10 +54,12 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     private Logger log;
 
     private static final List<String> TABLES =
-            List.of("System", "SystemHistory", "SystemAction", "SystemChannel",
+            List.of("SystemGroup", "SystemGroupPermission", "System", "SystemHistory", "SystemAction", "SystemChannel",
             "SystemConfigChannel", "SystemVirtualData", "SystemNetInterface", "SystemNetAddressV4",
             "SystemNetAddressV6", "SystemOutdated", "SystemGroupMember", "SystemEntitlement", "SystemErrata",
-            "Channel", "Errata", "Package");
+            "SystemPackageInstalled", "SystemPackageUpdate", "SystemCustomInfo", "Account", "AccountGroup",
+            "Channel", "ChannelPackage", "ChannelErrata", "Errata", "Package", "XccdScan", "XccdScanResult"
+            );
 
     /**
      * Hub Reporting DB Worker

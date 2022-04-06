@@ -20,7 +20,7 @@
           SELECT rhnchannel.id AS channel_id
                       , rhnchannel.name
                       , rhnchannel.label
-                      , CASE 
+                      , CASE
                           WHEN rhnchannel.org_id IS NULL THEN 'Vendor'
                           ELSE 'Custom'
                         END AS type
@@ -28,13 +28,49 @@
                       , rhnchannel.summary
                       , rhnchannel.description
                       , rhnparentchannel.label AS parent_channel_label
-                      , web_customer.name AS organization 
+                      , rhnchannelcloned.original_id AS original_channel_id
+                      , web_customer.name AS organization
             FROM rhnchannel
                       LEFT JOIN rhnchannelarch ON rhnchannel.channel_arch_id = rhnchannelarch.id
                       LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
+                      LEFT JOIN rhnchannelcloned ON rhnchannel.id = rhnchannelcloned.id
                       LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
         ORDER BY channel_id OFFSET :offset LIMIT :limit
   </query>
+</mode>
+
+<mode name="ChannelPackage" class="">
+    <query params="offset, limit">
+          SELECT rhnchannel.id AS channel_id
+                      , rhnchannel.label AS channel_label
+                      , rhnpackage.id AS package_id
+                      , rhnpackagename.name AS package_name
+                      , rhnpackageevr.epoch AS package_epoch
+                      , rhnpackageevr.version AS package_version
+                      , rhnpackageevr.release AS package_release
+                      , rhnpackageevr.type AS package_type
+                      , rhnpackagearch.label AS package_arch
+            FROM rhnchannel
+                      INNER JOIN rhnchannelpackage ON rhnchannel.id = rhnchannelpackage.channel_id
+                      INNER JOIN rhnpackage ON rhnpackage.id = rhnchannelpackage.package_id
+                      INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+                      INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+                      INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+        ORDER BY channel_id, package_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="ChannelErrata" class="">
+    <query params="offset, limit">
+          SELECT rhnchannel.id AS channel_id
+                    , rhnchannel.label AS channel_label
+                    , rhnerrata.id AS errata_id
+                    , rhnerrata.advisory_name
+            FROM rhnchannelerrata
+                    INNER JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
+                    INNER JOIN rhnerrata ON rhnchannelerrata.errata_id = rhnerrata.id
+        ORDER BY channel_id, errata_id OFFSET :offset LIMIT :limit
+    </query>
 </mode>
 
 <mode name="Errata" class="">
@@ -78,7 +114,7 @@
                       , rhnpackageevr.version
                       , rhnpackageevr.release
                       , rhnpackageevr.type
-                      , rhnpackagearch.name AS arch
+                      , rhnpackagearch.label AS arch
                       , rhnpackage.package_size
                       , rhnpackage.payload_size
                       , rhnpackage.installed_size
