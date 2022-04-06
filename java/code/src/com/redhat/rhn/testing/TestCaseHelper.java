@@ -45,8 +45,7 @@ public class TestCaseHelper {
         if (rollbackException != null) {
             throw rollbackException;
         }
-        // In case someone disabled it and forgot to
-        // renable it.
-        RhnBaseTestCase.enableLocalizationServiceLogging();
+        // In case someone disabled it and forgot to renable it.
+        TestUtils.enableLocalizationLogging();
     }
 }

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.ExportWriter;
 import com.redhat.rhn.frontend.dto.BaseDto;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +35,11 @@ import java.util.Map;
 /**
  * CSVWriterTest
  */
-public class CSVWriterTest extends RhnBaseTestCase {
+public class CSVWriterTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
     }
 
 

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.Asserts;
 
@@ -29,8 +28,6 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
@@ -207,24 +204,6 @@ public abstract class RhnBaseTestCase  {
         if (!body.contains(fragment)) {
             fail(msg);
         }
-    }
-
-    /**
-     * Util for turning of the spew from the l10n service for
-     * test cases that make calls with dummy string IDs.
-     */
-    public static void disableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.OFF);
-    }
-
-    /**
-     * Util for turning on the spew from the l10n service for
-     * test cases that make calls with dummy string IDs.
-     */
-    public static void enableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.ERROR);
     }
 
     protected static void createDirIfNotExists(File dir) {
