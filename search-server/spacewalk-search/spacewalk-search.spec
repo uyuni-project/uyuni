@@ -52,7 +52,6 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  apache-mybatis
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-BuildRequires:  hadoop
 BuildRequires:  %{apache_commons_httpclient}
 BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
@@ -79,7 +78,6 @@ Requires:       apache-commons-logging
 Requires:       apache-mybatis
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       hadoop
 Requires:       %{apache_commons_httpclient}
 Requires:       %{oro}
 Requires:       javapackages-tools

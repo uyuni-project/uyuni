@@ -46,5 +46,3 @@ artifacts:
     repository: Uyuni_Other
   - artifact: picocontainer
     repository: Uyuni_Other
-  - artifact: hadoop
-    repository: Uyuni_Other
