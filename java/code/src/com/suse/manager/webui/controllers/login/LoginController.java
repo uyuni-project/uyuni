@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.login;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -23,6 +24,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
@@ -65,6 +67,7 @@ public class LoginController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/login", withCsrfToken(LoginController::loginView), jade);
         post("/manager/api/login", LoginController::login);
+        get("/manager/api/logout", withUser(LoginController::logout));
     }
 
     /**
@@ -134,7 +137,7 @@ public class LoginController {
      *
      * @param request the request object
      * @param response the response object
-     * @return the model and view
+     * @return the JSON result of the login operation
      */
     public static String login(Request request, Response response) {
         List<String> errors = new ArrayList<>();
@@ -154,18 +157,31 @@ public class LoginController {
             }
         }
         // External-auth returned a user and no errors
-        else if (errors.isEmpty()) {
+        else {
             log.info("EXTERNAL AUTH SUCCESS: [" + user.getLogin() + "]");
         }
 
         if (errors.isEmpty()) {
             LoginHelper.successfulLogin(request.raw(), response.raw(), user);
-            return json(response, new LoginResult(true, new String[0]));
+            return json(response, new LoginResult(true));
         }
         else {
             log.error("LOCAL AUTH FAILURE: [" + creds.getLogin() + "]");
-            return json(response, new LoginResult(false, errors.toArray(new String[errors.size()])));
+            return json(response, new LoginResult(false, errors.toArray(new String[0])));
         }
+    }
+
+    /**
+     * Logs out the current user
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the JSON result of the logout operation
+     */
+    public static String logout(Request request, Response response, User user) {
+        AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
+        log.info("WEB LOGOUT: [" + user.getLogin() + "]");
+        return json(response, new LoginResult(true));
     }
 
     /**
