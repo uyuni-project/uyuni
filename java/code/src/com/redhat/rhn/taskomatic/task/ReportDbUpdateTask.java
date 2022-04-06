@@ -93,7 +93,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV4", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV6", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroup", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroupMember", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemErrata", mgmId);
 

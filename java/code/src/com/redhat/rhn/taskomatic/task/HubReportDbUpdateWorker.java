@@ -56,7 +56,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     private static final List<String> TABLES =
             List.of("System", "SystemHistory", "SystemAction", "SystemChannel",
             "SystemConfigChannel", "SystemVirtualData", "SystemNetInterface", "SystemNetAddressV4",
-            "SystemNetAddressV6", "SystemOutdated", "SystemGroup", "SystemEntitlement", "SystemErrata",
+            "SystemNetAddressV6", "SystemOutdated", "SystemGroupMember", "SystemEntitlement", "SystemErrata",
             "Channel", "Errata", "Package");
 
     /**
