@@ -1022,6 +1022,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
 
+
   case target_status
   when 'selected'
     raise "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id)
