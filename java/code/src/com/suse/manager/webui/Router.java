@@ -40,6 +40,7 @@ import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.ImageUploadController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
@@ -214,6 +215,9 @@ public class Router implements SparkApplication {
 
         // Rhn Set API
         SetController.initRoutes();
+
+        // Image Upload
+        ImageUploadController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.ImageFile;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import java.io.IOException;
@@ -27,10 +28,11 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * ImageFileSerializer
  * @xmlrpc.doc
  * #struct_begin("Image information")
- *   #prop_desc("string", "file", "file name")
+ *   #prop_desc("string", "file", "file name without path")
  *   #prop_desc("string", "type", "file type")
  *   #prop_desc("boolean", "external", "true if the file is external,
  *          false otherwise")
+ *   #prop_desc("string", "url", "file url")
  * #struct_end()
  */
 public class ImageFileSerializer extends RhnXmlRpcCustomSerializer {
@@ -43,6 +45,7 @@ public class ImageFileSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("file", file.getFile());
         helper.add("type", file.getType());
         helper.add("external", file.isExternal());
+        helper.add("url", OSImageStoreUtils.getOSImageFileURI(file));
         helper.writeTo(writer);
     }
 
