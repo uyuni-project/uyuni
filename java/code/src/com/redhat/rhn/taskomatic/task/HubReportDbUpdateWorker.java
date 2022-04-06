@@ -150,6 +150,8 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             finally {
                 remoteDB.closeSession();
                 remoteDB.closeSessionFactory();
+                localRcm.closeSession();
+                localRcm.close();
             }
         }
         catch (Exception e) {
