@@ -6546,7 +6546,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int createSystemRecord(User loggedInUser, String sysName, String ksLabel,
-            String kOptions, String comment, List<HashMap<String, String>> netDevices) {
+            String kOptions, String comment, List<Map<String, String>> netDevices) {
         // Determine the user and lookup the kickstart profile
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
@@ -6561,8 +6561,7 @@ public class SystemHandler extends BaseHandler {
                 ksData.getCobblerObject(loggedInUser).getName());
 
         // Set network device information to the server
-        Set<NetworkInterface> set = new HashSet<>();
-        for (HashMap<String, String> map : netDevices) {
+        for (Map<String, String> map : netDevices) {
             // FIXME: why do we need this?
             CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
             device.setName(map.get("name"));
