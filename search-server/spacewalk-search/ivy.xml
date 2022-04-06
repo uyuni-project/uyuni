@@ -13,7 +13,6 @@
         <dependency org="suse" name="c3p0" rev="0.9.5.2" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="suse" name="picocontainer" rev="1.3" />
-        <dependency org="suse" name="hadoop" rev="0.18.1" />
 
         <dependency org="junit" name="junit" rev="3.8.2" transitive="false"/>
     </dependencies>
