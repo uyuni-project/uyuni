@@ -27,7 +27,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * SessionCancelAction - Action to cancel a Kickstart.
- * @version $Rev: 1 $
  */
 public class SessionCancelAction extends BaseSystemEditAction {
 

@@ -21,7 +21,6 @@ import java.util.Date;
 
 /**
  * CryptoKeyType - Class representation of the table rhnCryptoKeyType.
- * @version $Rev: 1 $
  */
 public class CryptoKeyType {
 

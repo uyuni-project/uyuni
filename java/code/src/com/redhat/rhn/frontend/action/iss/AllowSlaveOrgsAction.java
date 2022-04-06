@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AllowSlaveOrgsAction extends RhnAction
  *
- * @version $Rev: 1 $
  */
 public class AllowSlaveOrgsAction extends RhnAction {
 

@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * Test cases for the {@link FilePreservationListHandler}.
  *
- * @version $Revision$
  */
 public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
 

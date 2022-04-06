@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * Test cases for the {@link CryptoKeysHandler}.
  *
- * @version $Revision$
  */
 public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
 

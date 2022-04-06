@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * KickstartPackageProfilesEditAction - setup for listing the profiles available
  * for selection.
- * @version $Rev: 1 $
  */
 public class KickstartPackageProfileSetupAction extends RhnAction implements Listable {
 

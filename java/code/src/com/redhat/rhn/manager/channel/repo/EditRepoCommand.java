@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * EditRepoCommand - Command to edit a repo
- * @version $Rev: 119601 $
  */
 public class EditRepoCommand extends BaseRepoCommand {
 

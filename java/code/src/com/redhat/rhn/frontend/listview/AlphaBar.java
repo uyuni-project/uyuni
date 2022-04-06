@@ -41,7 +41,6 @@ import java.util.Map;
  *
  * With each letter highlighted with an * indicating its contained within the set
  *
- * @version $Rev: 448 $
  */
 
 public class AlphaBar {

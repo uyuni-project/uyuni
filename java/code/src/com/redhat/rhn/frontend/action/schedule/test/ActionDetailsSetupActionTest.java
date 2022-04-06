@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * UserPrefSetupActionTest
- * @version $Rev: 1635 $
  */
 public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
 

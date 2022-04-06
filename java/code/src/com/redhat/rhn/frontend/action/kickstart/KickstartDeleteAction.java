@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartDeleteAction extends BaseKickstartEditAction
- * @version $Rev:$
  */
 public class KickstartDeleteAction extends BaseKickstartEditAction {
 

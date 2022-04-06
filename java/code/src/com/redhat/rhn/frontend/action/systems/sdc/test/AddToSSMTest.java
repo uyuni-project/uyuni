@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * SystemChannelsActionTest
- * @version $Rev: 1 $
  */
 public class AddToSSMTest extends RhnMockStrutsTestCase {
 

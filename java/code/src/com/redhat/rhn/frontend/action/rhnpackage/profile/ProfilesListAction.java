@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
  * This action will present the user with a list of all stored profiles
  * and allow one to be seleted.
  *
- * @version $Revision$
  */
 public class ProfilesListAction extends RhnListAction implements Listable<ProfileOverviewDto> {
 

@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ResetPasswordAction, destination once a reset-link has been accepted
  *
- * @version $Rev: $
  */
 public class ResetPasswordAction extends RhnAction {
 

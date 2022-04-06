@@ -35,7 +35,6 @@ import java.util.Objects;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev: 1743 $
  */
 public class SystemOverview extends BaseDto implements Serializable  {
 

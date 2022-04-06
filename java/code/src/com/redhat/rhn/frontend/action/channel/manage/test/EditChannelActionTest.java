@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * EditChannelActionTest
- * @version $Rev: 1 $
  */
 public class EditChannelActionTest extends RhnMockStrutsTestCase {
 

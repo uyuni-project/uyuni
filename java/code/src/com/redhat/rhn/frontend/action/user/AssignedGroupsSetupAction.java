@@ -54,7 +54,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * AssignedGroupsSetupAction, edit action for assigned groups page
- * @version $Rev: 1196 $
  */
 public class AssignedGroupsSetupAction extends RhnListAction {
 

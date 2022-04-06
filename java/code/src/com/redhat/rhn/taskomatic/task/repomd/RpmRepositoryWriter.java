@@ -55,7 +55,6 @@ import java.util.List;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class RpmRepositoryWriter extends RepositoryWriter {

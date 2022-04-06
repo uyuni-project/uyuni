@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * OrgDetailsActionTest
- * @version $Rev: 1 $
  */
 public class OrgDetailsActionTest extends RhnMockStrutsTestCase {
 

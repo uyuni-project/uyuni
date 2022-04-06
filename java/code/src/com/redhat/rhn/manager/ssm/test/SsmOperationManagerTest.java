@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * @version $Revision$
  */
 public class SsmOperationManagerTest extends RhnBaseTestCase {
 

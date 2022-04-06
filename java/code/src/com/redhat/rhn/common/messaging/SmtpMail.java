@@ -41,7 +41,6 @@ import javax.mail.internet.MimeMessage;
 /**
  * A simple wrapper around javamail to allow us to send e-mail quickly.
  *
- * @version $Rev: 694 $
  */
 public class SmtpMail implements Mail {
 

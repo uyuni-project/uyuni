@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * IssMapOrgsActionTest
- * @version $Rev: 1 $
  */
 public class EditMasterSetupAction extends BaseIssTestAction {
 

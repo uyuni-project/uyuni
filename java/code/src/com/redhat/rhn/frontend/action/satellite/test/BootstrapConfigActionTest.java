@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * BootstrapConfigActionTest
- * @version $Rev: 1 $
  */
 public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
 

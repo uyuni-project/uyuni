@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * LoginActionTest
- * @version $Rev: 1427 $
  */
 public class AddressesActionTest extends RhnBaseTestCase {
 

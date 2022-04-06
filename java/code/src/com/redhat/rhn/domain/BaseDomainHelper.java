@@ -29,7 +29,6 @@ import javax.persistence.MappedSuperclass;
  * Class UserImpl that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
- * @version $Rev: 59372 $
  */
 @MappedSuperclass
 public abstract class BaseDomainHelper {

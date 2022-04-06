@@ -39,7 +39,6 @@ import java.util.Vector;
 
 /**
  * Test for NewUserEvent
- * @version $Rev: 59477 $
  */
 
 public class NewUserEventTest extends RhnBaseTestCase {

@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartScriptDeleteActionTest
- * @version $Rev: 1 $
  */
 public class KickstartScriptDeleteActionTest extends BaseKickstartEditTestCase {
 

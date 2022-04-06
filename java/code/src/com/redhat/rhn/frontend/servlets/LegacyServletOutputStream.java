@@ -26,7 +26,6 @@ import javax.servlet.WriteListener;
  * we create dummy version this interface in our code.
  * So we are able to compile with older Servlet API too.
  *
- * @version $Rev $
  */
 public abstract class LegacyServletOutputStream extends ServletOutputStream {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * Class PersonalInfo that reflects the DB representation of WEB_USER_PERSONAL_INFO
  * DB table: WEB_USER_PERSONAL_INFO
- * @version $Rev: 59372 $
  */
 public class PersonalInfo extends AbstractUserChild {
 

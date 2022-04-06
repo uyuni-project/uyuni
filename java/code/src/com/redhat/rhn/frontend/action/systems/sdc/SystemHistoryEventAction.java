@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemHistoryEventAction - page for displaying details about system events
- * @version $Rev: 1226 $
  */
 public class SystemHistoryEventAction extends RhnAction {
 

@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * UserListFilter
  *
- * @version $Rev $
  */
 public class OrgListFilter extends BaseListFilter {
 

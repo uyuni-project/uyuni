@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DetailsAction backs the page for managing config-channel details
- * @version $Rev: 1 $
  */
 public class ChannelOverviewAction extends RhnAction {
 

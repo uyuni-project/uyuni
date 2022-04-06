@@ -22,7 +22,6 @@ import javax.servlet.jsp.JspException;
 
 /**
  * HTML Submit tag that supports localization of the value
- * @version $Rev: 1036 $
  */
 public class LocalizedSubmitTag extends SubmitTag {
 

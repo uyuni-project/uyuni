@@ -23,7 +23,6 @@ import java.util.Set;
 /**
  * IssSlave - Class representation of the table rhnissslave.
  *
- * @version $Rev: 1 $
  */
 public class IssSlave extends BaseDto {
     public static final long NEW_SLAVE_ID = -1L;

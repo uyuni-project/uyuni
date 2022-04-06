@@ -39,7 +39,6 @@ import org.junit.jupiter.api.Test;
  * but it at least verifies that the SQL is runable and will filter
  * out bad IDs placed in the set.
  *
- * @version $Rev: 61756 $
  */
 public class RhnSetDeclTest extends RhnBaseTestCase {
 

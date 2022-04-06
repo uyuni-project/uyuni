@@ -24,7 +24,6 @@ import java.util.Date;
 
 /**
  * KickstartDefaultRegToken - Class representation of the table rhnkickstartdefaultregtoken.
- * @version $Rev: 1 $
  */
 public class KickstartDefaultRegToken implements Serializable {
 

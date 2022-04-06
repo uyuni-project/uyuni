@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @version $Revision$
  */
 public class SsmActionTestUtils {
 

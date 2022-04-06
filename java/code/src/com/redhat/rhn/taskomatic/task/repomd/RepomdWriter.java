@@ -30,7 +30,6 @@ import java.io.Writer;
 
 /**
  *
- * @version $Rev $
  *
  */
 public abstract class RepomdWriter {

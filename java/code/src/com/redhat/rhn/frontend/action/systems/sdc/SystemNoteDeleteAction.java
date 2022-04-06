@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemNoteDeleteAction
- * @version $Rev: 1 $
  */
 public class SystemNoteDeleteAction extends RhnAction {
 

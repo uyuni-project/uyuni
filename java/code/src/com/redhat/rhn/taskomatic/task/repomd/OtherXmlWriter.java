@@ -37,7 +37,6 @@ import java.util.Collection;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class OtherXmlWriter extends RepomdWriter {

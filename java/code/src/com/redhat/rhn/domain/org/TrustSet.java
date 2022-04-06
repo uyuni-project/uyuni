@@ -24,7 +24,6 @@ import java.util.Set;
 /**
  * This class provides a wrapper around an Org's trustedOrgs set to ensure that
  * operations on the set result in a bidirectional trust relationship.
- * @version $Rev:67468 $
  */
 public class TrustSet implements Set<Org> {
 

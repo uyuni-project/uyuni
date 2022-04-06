@@ -35,7 +35,6 @@ import java.util.Date;
 /**
  * Test for urlhelper
  *
- * @version $Rev $
  */
 public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 

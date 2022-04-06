@@ -32,7 +32,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * SetTagTest
- * @version $Rev: 1743 $
  */
 public class SetTagTest extends RhnBaseTestCase {
 

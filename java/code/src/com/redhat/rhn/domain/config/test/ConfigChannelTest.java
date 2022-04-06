@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * ConfigChannelTest
- * @version $Rev: $
  */
 public class ConfigChannelTest extends RhnBaseTestCase {
 

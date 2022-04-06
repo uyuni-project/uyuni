@@ -27,7 +27,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * Serializes instances of
  * {@link com.redhat.rhn.domain.kickstart.crypto.CryptoKey}.
  *
- * @version $Revision$
  *
  * @xmlrpc.doc
  *      #struct_begin("key")

@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  * A basic servlet class that reloads resources.  For now this just reloads the
  * LocalizationService resource files.
  *
- * @version $Rev: 51618 $
  */
 public class ResourceReloadServlet extends HttpServlet {
     private static Logger log = Logger.getLogger(ResourceReloadServlet.class);

@@ -22,7 +22,6 @@ import java.util.Date;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev: 1743 $
  */
 public class SystemCurrency extends BaseDto implements Serializable  {
 

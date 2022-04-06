@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartPreActionTest
- * @version $Rev: 1 $
  */
 public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     private KickstartData ksdata;

@@ -39,7 +39,6 @@ import java.util.List;
  * times when committing this file.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 

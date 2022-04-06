@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev: 1651 $
  */
 public class VisibleSystems extends BaseDto {
     private Long id;

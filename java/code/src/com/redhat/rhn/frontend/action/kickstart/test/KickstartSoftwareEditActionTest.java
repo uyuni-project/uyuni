@@ -33,7 +33,6 @@ import java.util.Collection;
 
 /**
  * KickstartSoftwareEditActionTest
- * @version $Rev: 1 $
  */
 public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
 

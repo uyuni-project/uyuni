@@ -22,7 +22,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * TreeCreate class for creating Kickstart Trees
- * @version $Rev: 1 $
  */
 public class TreeCreateAction extends BaseTreeAction {
 

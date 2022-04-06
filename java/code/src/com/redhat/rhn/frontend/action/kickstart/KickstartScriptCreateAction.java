@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.kickstart.KickstartScriptCreateCommand;
 
 /**
  * KickstartScriptCreateAction action for creating a new kickstart script
- * @version $Rev: 1 $
  */
 public class KickstartScriptCreateAction extends BaseKickstartScriptAction {
 

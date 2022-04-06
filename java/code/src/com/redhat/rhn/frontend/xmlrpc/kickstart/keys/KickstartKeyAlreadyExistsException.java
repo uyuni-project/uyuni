@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
  * Exception thrown if there is already a kickstart key with the given description and org.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class KickstartKeyAlreadyExistsException extends FaultException {
 

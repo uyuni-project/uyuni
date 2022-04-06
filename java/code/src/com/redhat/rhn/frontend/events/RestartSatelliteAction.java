@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 /**
  * RestartSatelliteAction
- * @version $Rev: 74533 $
  */
 public class RestartSatelliteAction implements MessageAction {
 

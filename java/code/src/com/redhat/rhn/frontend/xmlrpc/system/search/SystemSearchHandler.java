@@ -33,7 +33,6 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * SystemSearchHandler
  * Provides access to the internal XMLRPC search-server for system searches
- * @version $Rev: 1 $
  * @xmlrpc.namespace system.search
  * @xmlrpc.doc Provides methods to perform system search requests using the search server.
  *

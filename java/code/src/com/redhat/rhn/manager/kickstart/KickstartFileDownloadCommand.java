@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Simple class to reduce dependencies between Struts and database laysers
  *
- * @version $Rev $
  */
 public class KickstartFileDownloadCommand extends BaseKickstartCommand {
     private String protocol;

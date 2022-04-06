@@ -22,7 +22,6 @@ import javax.servlet.jsp.JspException;
 
 /**
  * ToolbarTagCloneTest
- * @version $Rev: 60021 $
  */
 public class ToolbarTagCloneTest extends BaseTestToolbarTag {
 

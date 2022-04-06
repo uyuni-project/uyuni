@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 
 /** JUnit test case for the UserGroup
  *  class.
- * @version $Rev: 845 $
  */
 
 public class UserGroupFactoryTest extends RhnBaseTestCase {

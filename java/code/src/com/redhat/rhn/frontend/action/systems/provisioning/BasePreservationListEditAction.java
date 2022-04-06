@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * AbstractPreservationListEditAction - stuts action for editing/creating
  * FileLists.
- * @version $Rev: 1 $
  */
 public abstract class BasePreservationListEditAction extends BaseEditAction {
 

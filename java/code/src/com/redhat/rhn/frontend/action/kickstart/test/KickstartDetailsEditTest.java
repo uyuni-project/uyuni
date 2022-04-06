@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsEditTest
- * @version $Rev: 1 $
  */
 public class KickstartDetailsEditTest extends BaseKickstartEditTestCase {
 

@@ -33,7 +33,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * AddressMenuTagTest
- * @version $Rev: 694 $
  */
 public class AddressTagTest extends RhnBaseTestCase {
 

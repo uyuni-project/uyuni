@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ChannelAddFilesAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class ChannelAddFilesAction extends BaseAddFilesAction {
 

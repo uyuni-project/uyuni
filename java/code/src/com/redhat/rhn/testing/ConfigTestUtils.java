@@ -39,7 +39,6 @@ import java.util.Date;
 
 /**
  * ConfigTestUtils
- * @version $Rev 95653 $
  */
 public class ConfigTestUtils  {
 

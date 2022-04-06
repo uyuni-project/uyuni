@@ -26,7 +26,6 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class CompressingDigestOutputWriter extends OutputStream {

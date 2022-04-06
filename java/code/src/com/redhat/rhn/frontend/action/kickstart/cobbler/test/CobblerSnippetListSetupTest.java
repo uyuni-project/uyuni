@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CobblerSnippetListSetupTest
- * @version $Rev: 1 $
  */
 public class CobblerSnippetListSetupTest extends RhnMockStrutsTestCase {
 

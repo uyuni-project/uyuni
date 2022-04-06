@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class RepomdIndexData {

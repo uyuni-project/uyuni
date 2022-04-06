@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CryptoKeyCreateActionTest
- * @version $Rev: 1 $
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 

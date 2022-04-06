@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemNoteEditAction
- * @version $Rev: 1 $
  */
 public class SystemDeleteConfirmAction extends RhnAction {
 

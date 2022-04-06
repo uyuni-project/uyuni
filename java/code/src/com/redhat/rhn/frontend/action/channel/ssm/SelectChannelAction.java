@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
  * Used in the first step of the SSM install package workflow, this action will
  * present the user with a list of all channels and allow one to be selected.
  *
- * @version $Revision$
  */
 public class SelectChannelAction extends RhnListAction implements
         Listable<ChannelTreeNode> {

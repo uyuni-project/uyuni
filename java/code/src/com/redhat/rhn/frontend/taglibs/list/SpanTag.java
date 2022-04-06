@@ -23,7 +23,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * The class name derives from the fact that headers and footers
  * _span_ columsn when they are displayed
  *
- * @version $Rev $
  */
 public class SpanTag extends TagSupport {
 

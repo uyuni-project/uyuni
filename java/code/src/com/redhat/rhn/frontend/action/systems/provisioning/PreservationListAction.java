@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * PreservationListAction - simple class to list the rhnFileList entries for an org.
- * @version $Rev: 1 $
  */
 public class PreservationListAction extends BaseSetListAction {
 

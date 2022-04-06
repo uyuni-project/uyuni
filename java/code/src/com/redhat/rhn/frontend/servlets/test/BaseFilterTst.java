@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  * AuthFilterTest
- * @version $Rev: 59372 $
  */
 public abstract class BaseFilterTst extends RhnBaseTestCase {
 

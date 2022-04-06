@@ -35,7 +35,6 @@ import java.util.List;
 
 /**
  * RhnListActionTest - test RhnListAction code.
- * @version $Rev: 55033 $
  */
 public class BaseSetListActionTest extends RhnBaseTestCase {
 

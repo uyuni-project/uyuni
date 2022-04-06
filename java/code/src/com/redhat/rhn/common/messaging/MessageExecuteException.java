@@ -24,7 +24,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
  * Failure to run the Action.execute() method correctly
  * <p>
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class MessageExecuteException extends RhnRuntimeException  {
 

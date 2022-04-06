@@ -40,7 +40,6 @@ import java.util.List;
 
 /**
  * UserEditSetupActionTest
- * @version $Rev: 1635 $
  */
 public class UserEditSetupActionTest extends RhnBaseTestCase {
 

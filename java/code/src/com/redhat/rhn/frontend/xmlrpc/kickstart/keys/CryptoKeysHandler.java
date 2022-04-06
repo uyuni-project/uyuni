@@ -34,7 +34,6 @@ import java.util.List;
  * @xmlrpc.doc Provides methods to manipulate kickstart keys.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class CryptoKeysHandler extends BaseHandler {
 

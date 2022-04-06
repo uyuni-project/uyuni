@@ -36,7 +36,6 @@ import java.util.Date;
 
 /**
  * KickstartIpRangeActionTest
- * @version $Rev: 1 $
  */
 public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
 
