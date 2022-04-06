@@ -9,6 +9,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
 import { TabContainer } from "components/tab-container";
@@ -238,7 +239,8 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
 
   getImageInfoDetails(id, tab) {
     let url;
-    if (tab === "patches" || tab === "packages") url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
+    if (tab === "patches" || tab === "packages" || tab === "buildlog")
+      url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
     //overview, runtime
     else url = "/rhn/manager/api/cm/images/" + id;
 
@@ -752,6 +754,20 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   }
 }
 
+function ImageViewBuildLog(props) {
+  return (
+    <BootstrapPanel title={t("Build Log")}>
+      <div className="auto-overflow">
+        {props.data.buildlog ? (
+          <textarea className="form-control" name="buildlog" rows={30} value={props.data.buildlog} readOnly />
+        ) : (
+          t("Build log is not available.")
+        )}
+      </div>
+    </BootstrapPanel>
+  );
+}
+
 type ImageViewDetailsProps = {
   data: any;
   runtimeInfoEnabled: any;
@@ -782,8 +798,14 @@ class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
     return (
       <div>
         <TabContainer
-          labels={[t("Overview"), t("Patches"), t("Packages"), this.props.runtimeInfoEnabled ? t("Runtime") : null]}
-          hashes={this.getHashUrls(["overview", "patches", "packages", "runtime"])}
+          labels={[
+            t("Overview"),
+            t("Patches"),
+            t("Packages"),
+            t("Build Log"),
+            this.props.runtimeInfoEnabled ? t("Runtime") : null,
+          ]}
+          hashes={this.getHashUrls(["overview", "patches", "packages", "buildlog", "runtime"])}
           initialActiveTabHash={window.location.hash}
           onTabHashChange={this.onTabChange}
           tabs={[
@@ -798,8 +820,9 @@ class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
             />,
             <ImageViewPatches key="2" data={data} />,
             <ImageViewPackages key="3" data={data} />,
+            <ImageViewBuildLog key="4" data={data} />,
             this.props.runtimeInfoEnabled ? (
-              <ImageViewRuntime key="4" data={data} gotRuntimeInfo={this.props.gotRuntimeInfo} />
+              <ImageViewRuntime key="5" data={data} gotRuntimeInfo={this.props.gotRuntimeInfo} />
             ) : null,
           ]}
         />

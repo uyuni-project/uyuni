@@ -746,7 +746,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
 %dir %{serverdir}/susemanager/formula_data
-%attr(750, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
+%attr(770, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
 %{serverdir}/tomcat/webapps/rhn/css/
