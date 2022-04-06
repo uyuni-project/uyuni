@@ -24,7 +24,6 @@ import java.io.IOException;
 
 /**
  * AuthFilterTest
- * @version $Rev: 2593 $
  */
 public class I18NFilterTest extends BaseFilterTst {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.org.Org;
 
 /**
  * CreateRepoCommand - Command to create a repo
- * @version $Rev: 119601 $
  */
 public class CreateRepoCommand extends BaseRepoCommand {
 

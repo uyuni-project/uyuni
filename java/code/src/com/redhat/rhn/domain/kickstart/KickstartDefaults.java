@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * KickstartDefaults - Class representation of the table rhnkickstartdefaults.
- * @version $Rev: 1 $
  */
 public class KickstartDefaults {
 

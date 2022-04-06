@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * @version $Revision$
  */
 public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
  * BaseKickstartListSetupAction - base class for Kickstart Details list pages that show
  * a list of items to associate with the kickstart.
  *
- * @version $Rev: 76571 $
  */
 public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
 

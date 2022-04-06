@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartKeysEditActionTest
- * @version $Rev: 1 $
  */
 public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase {
 

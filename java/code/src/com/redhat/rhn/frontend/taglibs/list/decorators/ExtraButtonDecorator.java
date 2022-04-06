@@ -26,7 +26,6 @@ import javax.servlet.jsp.JspException;
 /**
  *
  * Decorator used to add an extra button to the right of 'select all'
- * @version $Revision$
  */
 public class ExtraButtonDecorator extends BaseListDecorator {
 

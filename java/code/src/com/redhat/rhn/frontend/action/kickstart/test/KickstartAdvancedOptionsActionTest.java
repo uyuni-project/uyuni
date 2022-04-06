@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartAdvancedOptionsTest
- * @version $Rev: 1 $
  */
 public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCase {
 

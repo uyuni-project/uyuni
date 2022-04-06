@@ -34,7 +34,6 @@ import java.io.IOException;
  * This policy was chosen instead of blocking so as to reduce threading
  * problems inside Quartz itself.
  *
- * @version $Rev $
  *
  */
 public abstract class RhnQueueJob implements RhnJob {

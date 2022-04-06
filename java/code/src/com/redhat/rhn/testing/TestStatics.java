@@ -16,7 +16,6 @@ package com.redhat.rhn.testing;
 
 /**
  * TestStatics.
- * @version $Rev: 1 $
  */
 public class TestStatics {
     /*

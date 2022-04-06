@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * EditMasterAction extends RhnAction
  *
- * @version $Rev: 1 $
  */
 public class EditMasterAction extends RhnAction {
 

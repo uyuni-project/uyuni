@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserEditAction, edit action for user detail page
- * @version $Rev: 1196 $
  */
 public class UserEditSetupAction extends RhnAction {
 

@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.channel;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class Comps extends RepoMetadata {

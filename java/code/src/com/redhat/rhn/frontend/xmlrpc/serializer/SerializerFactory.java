@@ -24,7 +24,6 @@ import redstone.xmlrpc.XmlRpcCustomSerializer;
  * HandlerFactory, simple factory class that uses ManifestFactory to
  * return RPC Handlers.
  *
- * @version $Rev: 101893 $
  */
 
 public class SerializerFactory {

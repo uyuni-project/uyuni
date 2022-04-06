@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * DeleteSlaveAction extends RhnAction
  *
- * @version $Rev: 1 $
  */
 public class DeleteSlaveAction extends RhnAction {
 

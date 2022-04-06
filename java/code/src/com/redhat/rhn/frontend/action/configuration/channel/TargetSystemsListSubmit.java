@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * TargetSystemsListSubmit
  * Subscribes systems to a config-channel
- * @version $Rev:  $
  */
 public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction {
 

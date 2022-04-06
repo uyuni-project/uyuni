@@ -55,7 +55,6 @@ import java.util.List;
 
 /**
  * JUnit test case for the KickstartLister class.
- * @version $Rev: 49711 $
  */
 
 public class KickstartListerTest extends BaseTestCaseWithUser {

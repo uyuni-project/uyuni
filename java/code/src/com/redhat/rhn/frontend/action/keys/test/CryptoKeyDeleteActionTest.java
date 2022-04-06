@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * CryptoKeyDeleteActionTest
- * @version $Rev: 1 $
  */
 public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
 

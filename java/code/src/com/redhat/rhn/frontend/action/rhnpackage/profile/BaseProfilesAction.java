@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * BaseProfilesAction is an abstract class which aids in
  * removing duplicate code from the profile actions.
- * @version $Rev: 60028 $
  */
 public abstract class BaseProfilesAction extends RhnLookupDispatchAction {
 

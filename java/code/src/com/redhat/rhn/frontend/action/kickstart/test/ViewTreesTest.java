@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the View Kickstartable Distributions page
  *
- * @version $Rev $
  */
 public class ViewTreesTest extends RhnMockStrutsTestCase {
 

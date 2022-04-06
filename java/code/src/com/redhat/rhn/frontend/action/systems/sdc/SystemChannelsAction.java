@@ -53,7 +53,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SystemChannelsAction - action to setup/process viewing a system's channel subscription
  * info.
- * @version $Rev: 1 $
  */
 public class SystemChannelsAction extends RhnLookupDispatchAction {
 

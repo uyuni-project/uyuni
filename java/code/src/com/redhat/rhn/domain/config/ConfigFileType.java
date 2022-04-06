@@ -24,7 +24,6 @@ import java.util.TreeMap;
 
 /**
  * @author Hibernate CodeGenerator
- * @version $Rev: 98107 $
  */
 public class ConfigFileType implements Serializable {
 

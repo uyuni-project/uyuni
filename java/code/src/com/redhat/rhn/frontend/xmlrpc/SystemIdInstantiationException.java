@@ -24,7 +24,6 @@ import com.redhat.rhn.FaultException;
  * system id could not be created
  * <p>
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class SystemIdInstantiationException extends FaultException  {
 

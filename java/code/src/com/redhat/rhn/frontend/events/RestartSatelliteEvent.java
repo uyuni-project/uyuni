@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.User;
  * RestartSatelliteEvent - event containing necessary info to restart
  * the satellite.
  *
- * @version $Rev: 74533 $
  */
 public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
 

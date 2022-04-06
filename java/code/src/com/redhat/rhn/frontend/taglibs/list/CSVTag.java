@@ -34,7 +34,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 /**
  * Exports a List of data to a comma separated value string
  *
- * @version $Rev $
  */
 public class CSVTag extends BodyTagSupport {
 

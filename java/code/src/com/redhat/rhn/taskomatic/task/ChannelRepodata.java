@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class ChannelRepodata extends RhnQueueJob {

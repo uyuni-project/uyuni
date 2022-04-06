@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * RestartActionTest
- * @version $Rev: 1 $
  */
 public class RestartActionTest extends RhnPostMockStrutsTestCase {
 

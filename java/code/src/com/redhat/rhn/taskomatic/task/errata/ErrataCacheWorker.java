@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * Performs errata cache recalc for a given server or channel
- * @version $Rev $
  */
 public class ErrataCacheWorker implements QueueWorker {
 

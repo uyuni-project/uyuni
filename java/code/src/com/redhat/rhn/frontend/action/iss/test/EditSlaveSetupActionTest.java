@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 /**
  * IssEditSlaveActionTest
  *
- * @version $Rev: 1 $
  */
 public class EditSlaveSetupActionTest extends BaseIssTestAction {
 

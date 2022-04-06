@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
  * ResetPasswordSubmitAction, responds to user pushing 'update' on the change-password
  * form
  *
- * @version $Rev: $
  */
 public class ResetPasswordSubmitAction extends UserEditActionHelper {
 

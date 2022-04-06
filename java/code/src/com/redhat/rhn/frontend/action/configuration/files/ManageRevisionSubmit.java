@@ -52,7 +52,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ManageRevisionSubmit struts action.
- * @version $Rev: 101893 $
  */
 public class ManageRevisionSubmit extends RhnSetAction {
 

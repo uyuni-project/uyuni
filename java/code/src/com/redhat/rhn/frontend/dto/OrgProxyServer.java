@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * AwolServer
- * @version $Rev: 76626 $
  */
 public class OrgProxyServer {
 

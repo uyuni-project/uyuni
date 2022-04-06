@@ -26,7 +26,6 @@ import servletunit.HttpServletRequestSimulator;
 
 /**
  * SessionCancelActionTest
- * @version $Rev: 1 $
  */
 public class SessionCancelActionTest extends BaseSessionTestCase {
 

@@ -25,7 +25,6 @@ import org.hibernate.Transaction;
  *  This is useful if your Event needs to wait for the caller to finish writing
  *  things to the database.
  *
- * @version $Rev: 94458 $
  */
 public interface EventDatabaseMessage extends EventMessage {
 

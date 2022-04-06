@@ -32,7 +32,6 @@ import java.util.Map;
  * UserGroupFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.org.usergroup.UserGroup objects from the
  * database.
- * @version $Rev: 803 $
  */
 public class UserGroupFactory extends HibernateFactory {
 

@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Task Status Action
  *
- * @version $Rev: 1 $
  */
 public class TaskStatusAction extends RhnAction {
 

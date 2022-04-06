@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * SessionStatusActionTest
- * @version $Rev: 1 $
  */
 public class SessionStatusActionTest extends BaseSessionTestCase {
 

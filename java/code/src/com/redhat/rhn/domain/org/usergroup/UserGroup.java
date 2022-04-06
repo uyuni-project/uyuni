@@ -25,7 +25,6 @@ import java.util.Date;
  * parent of this package, com.redhat.rhn.domain.org
  *
  * DB table: RHNUSERGROUP
- * @version $Rev: 714 $
  */
 public interface UserGroup {
 

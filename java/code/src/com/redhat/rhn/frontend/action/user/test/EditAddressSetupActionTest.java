@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * EditAddressActionTest
- * @version $Rev: 694 $
  */
 public class EditAddressSetupActionTest extends RhnBaseTestCase {
 

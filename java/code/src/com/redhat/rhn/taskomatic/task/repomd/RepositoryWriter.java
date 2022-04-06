@@ -23,7 +23,6 @@ import java.io.File;
 
 /**
  *
- * @version $Rev $
  *
  */
 public abstract class RepositoryWriter {

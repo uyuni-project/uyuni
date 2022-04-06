@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 /**
  * CreateUserActionTest - Test the CreateUserAction
  *
- * @version $Rev: 1427 $
  */
 public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 

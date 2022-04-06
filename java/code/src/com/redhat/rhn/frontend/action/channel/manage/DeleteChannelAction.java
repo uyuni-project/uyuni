@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Handles the page display and actual deletion of a software channel.
  *
- * @version $Revision$
  */
 public class DeleteChannelAction extends RhnAction {
     private static final String DISABLE_DELETE = "disableDelete";

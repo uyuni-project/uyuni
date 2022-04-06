@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartScriptDeleteAction - Action to delete a KickstartScript
- * @version $Rev: 1 $
  */
 public class KickstartScriptDeleteAction extends BaseKickstartEditAction {
 

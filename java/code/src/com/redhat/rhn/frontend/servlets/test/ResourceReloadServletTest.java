@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SessionFilterTest
- * @version $Rev: 51260 $
  */
 public class ResourceReloadServletTest extends MockObjectTestCase {
 

@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartsSetupAction.
- * @version $Rev: 1 $
  */
 public class KickstartsSetupAction  extends RhnAction {
 

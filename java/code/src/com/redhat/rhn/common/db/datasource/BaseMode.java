@@ -19,7 +19,6 @@ import org.hibernate.Session;
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
  *
- * @version $Rev: 59372 $
  */
 public abstract class BaseMode implements Mode {
 

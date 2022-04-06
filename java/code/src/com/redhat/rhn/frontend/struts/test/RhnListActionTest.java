@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RhnListActionTest - test RhnListAction code.
- * @version $Rev: 55033 $
  */
 public class RhnListActionTest extends RhnBaseTestCase {
 

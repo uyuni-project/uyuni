@@ -42,7 +42,6 @@ import javax.servlet.jsp.PageContext;
  * Provides a bunch of helper methods to make working with lists easier from a
  * custom tag POV.
  *
- * @version $Rev $
  */
 public class DataSetManipulator {
 

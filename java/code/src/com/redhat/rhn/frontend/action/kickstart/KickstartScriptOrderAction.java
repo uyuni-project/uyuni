@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartScriptCreateAction action for creating a new kickstart script
- * @version $Rev: 1 $
  */
 public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
 

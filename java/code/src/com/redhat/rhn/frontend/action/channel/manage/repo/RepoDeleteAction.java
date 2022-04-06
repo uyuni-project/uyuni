@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RepoDeleteAction
- * @version $Rev: 1 $
  */
 public class RepoDeleteAction extends RhnAction {
     /** {@inheritDoc} */

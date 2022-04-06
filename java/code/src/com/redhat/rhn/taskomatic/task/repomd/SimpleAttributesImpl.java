@@ -18,7 +18,6 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Attributes implementation class
- * @version $Rev $
  *
  */
 public class SimpleAttributesImpl extends AttributesImpl {

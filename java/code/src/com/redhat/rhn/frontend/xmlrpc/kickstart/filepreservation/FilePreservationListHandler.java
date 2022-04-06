@@ -31,7 +31,6 @@ import java.util.List;
  * @xmlrpc.doc Provides methods to retrieve and manipulate kickstart file
  * preservation lists.
  *
- * @version $Revision$
  */
 public class FilePreservationListHandler extends BaseHandler {
 

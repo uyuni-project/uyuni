@@ -56,7 +56,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * @see <a href="http://getbootstrap.com/components/#panels">
  * http://getbootstrap.com/components/#panels</a>
  *
- * @version $Rev $
  */
 public class ListTag extends BodyTagSupport {
 

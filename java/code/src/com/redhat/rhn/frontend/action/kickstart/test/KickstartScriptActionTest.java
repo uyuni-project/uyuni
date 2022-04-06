@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartScriptCreateActionTest
- * @version $Rev: 1 $
  */
 public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
 

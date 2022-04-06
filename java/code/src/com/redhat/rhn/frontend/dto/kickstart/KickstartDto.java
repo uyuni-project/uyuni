@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickStartData
- * @version $Rev: 50942 $
  */
 public class KickstartDto extends BaseDto {
     private Long id;

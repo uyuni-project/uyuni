@@ -51,7 +51,6 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * SystemSearchHelper
  * This will make calls to the XMLRPC Search Server
- * @version $Rev: 1 $
  */
 public class SystemSearchHelper {
     private static Logger log = Logger.getLogger(SystemSearchHelper.class);

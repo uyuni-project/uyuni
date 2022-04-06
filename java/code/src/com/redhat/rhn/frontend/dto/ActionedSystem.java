@@ -21,7 +21,6 @@ import java.util.Date;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev: 1846 $
  */
 public class ActionedSystem extends SystemOverview {
 

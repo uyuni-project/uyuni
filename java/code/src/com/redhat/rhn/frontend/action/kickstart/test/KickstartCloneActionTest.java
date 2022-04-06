@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartCloneActionTest
- * @version $Rev: 1 $
  */
 public class KickstartCloneActionTest extends BaseKickstartEditTestCase {
 

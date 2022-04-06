@@ -23,7 +23,6 @@ package com.redhat.rhn.common.db;
  * <p>
 
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class BindVariableNotFoundException extends DatabaseException  {
 

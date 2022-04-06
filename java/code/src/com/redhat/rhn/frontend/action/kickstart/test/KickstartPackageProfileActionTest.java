@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * KickstartPackageProfilesEditActionTest
- * @version $Rev: 1 $
  */
 public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
 

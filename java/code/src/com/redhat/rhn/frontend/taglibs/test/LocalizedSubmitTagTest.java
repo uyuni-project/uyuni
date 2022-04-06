@@ -30,7 +30,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * LocalizedSubmitTagTest
- * @version $Rev: 694 $
  */
 public class LocalizedSubmitTagTest extends RhnBaseTestCase {
 

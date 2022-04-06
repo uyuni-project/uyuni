@@ -34,7 +34,6 @@ import java.util.Map;
 
 /**
  * GeneralConfigActionTest
- * @version $Rev: 1 $
  */
 public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
     private static final String TEST_CONFIG_BOOLEAN = ConfigDefaults.DISCONNECTED;

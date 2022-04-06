@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet interface for downloading OVAL files
  *
- * @version $Rev $
  */
 public class OvalServlet extends HttpServlet {
 

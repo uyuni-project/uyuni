@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * OrgDetailsAction extends RhnAction - Class representation of the table web_customer
- * @version $Rev: 1 $
  */
 public class SatAdminAction extends RhnAction {
 

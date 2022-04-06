@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * CPU
- * @version $Rev: 118113 $
  */
 public class SnapshotTagName extends BaseDomainHelper {
 

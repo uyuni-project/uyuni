@@ -43,7 +43,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * ColumnTagTest
- * @version $Rev: 59372 $
  */
 public class ListDisplayTagTest extends MockObjectTestCase {
 

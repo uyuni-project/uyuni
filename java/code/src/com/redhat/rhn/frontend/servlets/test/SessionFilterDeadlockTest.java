@@ -33,7 +33,6 @@ import javax.servlet.ServletResponse;
 
 /**
  * AuthFilterTest
- * @version $Rev: 50384 $
  */
 public class SessionFilterDeadlockTest extends BaseFilterTst {
 

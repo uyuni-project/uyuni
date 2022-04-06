@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Polls the EventQueue for events and executes them
  *
- * @version $Rev $
  */
 public class MessageDispatcher implements Runnable {
 

@@ -23,7 +23,6 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Generic content handler for repomd
- * @version $Rev $
  *
  */
 public class SimpleContentHandler {

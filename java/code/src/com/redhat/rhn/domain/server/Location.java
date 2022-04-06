@@ -22,7 +22,6 @@ import java.util.Date;
 
 /**
  * Location - Class representation of the table rhnServerLocation.
- * @version $Rev: 1 $
  */
 public class Location extends BaseDomainHelper {
 
