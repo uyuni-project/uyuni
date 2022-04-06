@@ -58,7 +58,8 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             "SystemConfigChannel", "SystemVirtualData", "SystemNetInterface", "SystemNetAddressV4",
             "SystemNetAddressV6", "SystemOutdated", "SystemGroupMember", "SystemEntitlement", "SystemErrata",
             "SystemPackageInstalled", "SystemPackageUpdate", "SystemCustomInfo", "Account", "AccountGroup",
-            "Channel", "ChannelPackage", "ChannelErrata", "Errata", "Package", "XccdScan", "XccdScanResult"
+            "Channel", "ChannelPackage", "ChannelRepository", "ChannelErrata", "Errata", "Package", "Repository",
+            "XccdScan", "XccdScanResult"
             );
 
     /**

@@ -221,8 +221,12 @@
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
                       , rhnserver.hostname
+                      , web_contact.login AS scheduled_by
+                      , rhnaction.earliest_action
+                      , rhnaction.archived = 1 AS archived
                       , rhnserveraction.pickup_time
                       , rhnserveraction.completion_time
+                      , rhnaction.name AS action_name
                       , rhnactionstatus.name AS status
                       , case
                           when rhnactiontype.name = 'Package Install' and exists (SELECT 1 FROM rhnactionpackage WHERE rhnactionpackage.action_id = rhnserveraction.action_id AND rhnactionpackage.parameter = 'upgrade' ) then 'Package Upgrade'
@@ -254,6 +258,7 @@
             FROM rhnserveraction
                       LEFT JOIN rhnserver ON rhnserveraction.server_id = rhnserver.id
                       LEFT JOIN rhnaction ON rhnserveraction.action_id = rhnaction.id
+                      LEFT JOIN web_contact ON rhnaction.scheduler = web_contact.id
                       LEFT JOIN rhnactionstatus ON rhnserveraction.status = rhnactionstatus.id
                       LEFT JOIN rhnactiontype ON rhnaction.action_type = rhnactiontype.id
                       LEFT JOIN action_xccdtestresult ON action_xccdtestresult.server_id = rhnserveraction.server_id AND action_xccdtestresult.action_id = rhnserveraction.action_id

@@ -108,8 +108,10 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelErrata", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelPackage", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelRepository", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Repository", mgmId);
 
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
