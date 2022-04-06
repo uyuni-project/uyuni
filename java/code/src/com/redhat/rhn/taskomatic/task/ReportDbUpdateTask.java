@@ -83,6 +83,11 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         long mgmId = 1;
 
         try {
+            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroup", mgmId);
+            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroupPermission", mgmId);
+            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "Account", mgmId);
+            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "AccountGroup", mgmId);
+
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", mgmId);
@@ -96,10 +101,18 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroupMember", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", mgmId);
             fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemErrata", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageInstalled", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageUpdate", mgmId);
+            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemCustomInfo", mgmId);
 
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelErrata", mgmId);
+            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelPackage", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", mgmId);
             fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", mgmId);
+
+            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
+            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
 
             rh.commitTransaction();
             log.info("Reporting db updated successfully.");

@@ -9,21 +9,21 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE Channel
-(
+CREATE TABLE Account (
     mgm_id                    NUMERIC NOT NULL,
-    channel_id                NUMERIC NOT NULL,
-    name                      VARCHAR(256),
-    label                     VARCHAR(128),
-    type                      VARCHAR(50),
-    arch                      VARCHAR(64),
-    summary                   VARCHAR(500),
-    description               VARCHAR(4000),
-    parent_channel_label      VARCHAR(128),
-    original_channel_id       NUMERIC,
+    account_id                NUMERIC NOT NULL,
+    username                  VARCHAR(64),
     organization              VARCHAR(128),
+    last_name                 VARCHAR(128),
+    first_name                VARCHAR(128),
+    position                  VARCHAR(128),
+    email                     VARCHAR(128),
+    creation_time             TIMESTAMPTZ,
+    last_login_time           TIMESTAMPTZ,
+    status                    VARCHAR(32),
+    md5_encryption            BOOLEAN,
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
-ALTER TABLE Channel
-  ADD CONSTRAINT Channel_pk PRIMARY KEY (mgm_id, channel_id);
+ALTER TABLE Account
+  ADD CONSTRAINT Account_pk PRIMARY KEY (mgm_id, account_id);

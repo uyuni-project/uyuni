@@ -9,23 +9,15 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE Package
+CREATE TABLE SystemPackageInstalled
 (
     mgm_id              NUMERIC NOT NULL,
-    package_id          NUMERIC NOT NULL,
+    system_id           NUMERIC NOT NULL,
     name                VARCHAR(256),
     epoch               VARCHAR(16),
     version             VARCHAR(512),
     release             VARCHAR(512),
     arch                VARCHAR(64),
     type                VARCHAR(10),
-    package_size        NUMERIC,
-    payload_size        NUMERIC,
-    installed_size      NUMERIC,
-    vendor              VARCHAR(64),
-    organization        VARCHAR(128),
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );
-
-ALTER TABLE Package
-  ADD CONSTRAINT Package_pk PRIMARY KEY (mgm_id, package_id);
