@@ -211,7 +211,14 @@ end
 
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
+  salt =
+    if ENV['PROVIDER'] == PROVIDER
+      "salt-common"
+    elsif $use_salt_bundle
+      "venv-salt-minion"
+    else
+      "salt"
+    end
   changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
@@ -760,7 +767,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
+	   "    -re -nocase \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"

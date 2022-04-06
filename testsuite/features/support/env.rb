@@ -26,13 +26,14 @@ STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
+$is_cloud_provider = ENV["PROVIDER"].include? 'aws'
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
-  $build_validation = true
+  build_validation = $is_cloud_provider
 end
 
 def enable_assertions
@@ -392,6 +393,11 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
+end
+
+# skip tests if executed in cloud environment
+Before('@skip_if_cloud') do
+  skip_this_scenario if $is_cloud_provider
 end
 
 # have more infos about the errors

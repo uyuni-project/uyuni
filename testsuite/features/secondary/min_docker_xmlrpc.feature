@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_cloud
 @scope_building_container_images
 Feature: XML-RPC image namespace for containers
 
