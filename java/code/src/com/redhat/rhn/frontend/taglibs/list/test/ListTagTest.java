@@ -25,8 +25,8 @@ import com.redhat.rhn.frontend.taglibs.list.ListCommand;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.api.Action;
@@ -55,7 +55,7 @@ public class ListTagTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        RhnBaseTestCase.disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
         final List dataList = CSVWriterTest.getTestListOfMaps();
 
         req = mock(HttpServletRequest.class);

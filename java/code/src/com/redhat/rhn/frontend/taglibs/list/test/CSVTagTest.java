@@ -22,8 +22,8 @@ import com.redhat.rhn.frontend.action.CSVDownloadAction;
 import com.redhat.rhn.frontend.taglibs.list.CSVTag;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -52,7 +52,7 @@ public class CSVTagTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        RhnBaseTestCase.disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
 
         req = mock(HttpServletRequest.class);
         session = mock(HttpSession.class);
@@ -122,7 +122,7 @@ public class CSVTagTest extends MockObjectTestCase {
 
     @AfterEach
     public void tearDown() throws Exception {
-        RhnBaseTestCase.enableLocalizationServiceLogging();
+        TestUtils.enableLocalizationLogging();
     }
 
 }

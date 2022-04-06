@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockHttpServletRequest;
@@ -138,7 +139,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
 
     @Test
     public void testDoStartTag() throws JspException {
-        disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
         ListDisplayTag ldt = new ListDisplayTag();
         ColumnTag ct = new ColumnTag();
         ct.setSortProperty("sortProp");
@@ -172,8 +173,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         tth.assertDoEndTag(Tag.EVAL_BODY_INCLUDE);
         //TODO: verify if this test is needed, followup with bug 458688
         //out.verify();
-        enableLocalizationServiceLogging();
-
+        TestUtils.enableLocalizationLogging();
     }
 
 }

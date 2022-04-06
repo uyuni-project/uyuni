@@ -22,9 +22,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.frontend.taglibs.UnpagedListDisplayTag;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -53,7 +53,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        RhnBaseTestCase.disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
 
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -99,7 +99,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
 
     @AfterEach
     public void tearDown() throws Exception {
-        RhnBaseTestCase.enableLocalizationServiceLogging();
+        TestUtils.enableLocalizationLogging();
     }
 
     @Test

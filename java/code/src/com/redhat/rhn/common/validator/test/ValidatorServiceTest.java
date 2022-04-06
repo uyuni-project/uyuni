@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.validator.Validator;
 import com.redhat.rhn.common.validator.ValidatorService;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -31,18 +30,18 @@ import java.util.Date;
 /**
  * ValidatorTest - Test that the ValidatorService functions properly
  */
-public class ValidatorServiceTest extends RhnBaseTestCase {
+public class ValidatorServiceTest {
 
     private Validator validator;
 
     @BeforeEach
     public void setUp() throws Exception {
-        disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
         validator = Validator.getInstance(TestUtils.findTestData("TestObject.xsd"));
     }
 
     @Test
-    public void testValidateObject() throws Exception {
+    public void testValidateObject() {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
         to.setDateField(new Date());
@@ -65,7 +64,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
      * @throws Exception something bad happened
      */
     @Test
-    public void testValidateObjectNoValidator() throws Exception {
+    public void testValidateObjectNoValidator() {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
         to.setDateField(new Date());
@@ -84,7 +83,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testInvalidObject() throws Exception {
+    public void testInvalidObject() {
         TestObject to = new TestObject();
         to.setStringField("somevaluelkjajsjlfdlkjaslkjdf0980934098234");
         to.setLongField(10L);
@@ -98,13 +97,9 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @AfterEach
-    public void tearDown() throws Exception {
-        // TODO Auto-generated method stub
-        super.tearDown();
-        enableLocalizationServiceLogging();
+    public void tearDown() {
+        TestUtils.enableLocalizationLogging();
     }
-
-
 }
 
 
