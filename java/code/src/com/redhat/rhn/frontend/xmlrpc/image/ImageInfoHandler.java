@@ -273,7 +273,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "image name as specified in the
      * store")
      * @xmlrpc.param #param_desc("string", "version", "version to import")
-     * @xmlrpc.param #param_desc("string", "arch", image architecture")
+     * @xmlrpc.param #param_desc("string", "arch", "image architecture")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the image")
      */
     public Long importOSImage(User loggedInUser, String name, String version, String arch) {
