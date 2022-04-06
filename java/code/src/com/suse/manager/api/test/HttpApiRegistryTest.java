@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.api.RouteFactory;
@@ -36,9 +37,10 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
     public static class RegistryTestHandler extends BaseHandler {
         private void notExposed() { }
         @ReadOnly public void myFirstEndpoint() { }
-        @ReadOnly public void mySecondEndpoint() { }
-        public void myThirdEndpoint() { }
-        @ApiIgnore public void ignored() { }
+        public void mySecondEndpoint() { }
+        @ReadOnly @ApiIgnore public void ignored() { }
+        @ApiIgnore(ApiType.HTTP) public void alsoIgnored() { }
+        @ApiIgnore(ApiType.XMLRPC) public void notIgnored() { }
     }
 
     @Override
@@ -60,10 +62,11 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
 
         context().checking(new Expectations() {{
             oneOf(helper).addGetRoute(with("/manager/api/test/path/myFirstEndpoint"), with(any(Route.class)));
-            oneOf(helper).addGetRoute(with("/manager/api/test/path/mySecondEndpoint"), with(any(Route.class)));
-            oneOf(helper).addPostRoute(with("/manager/api/test/path/myThirdEndpoint"), with(any(Route.class)));
+            oneOf(helper).addPostRoute(with("/manager/api/test/path/mySecondEndpoint"), with(any(Route.class)));
             never(helper).addPostRoute(with("/manager/api/test/path/notExposed"), with(any(Route.class)));
-            never(helper).addPostRoute(with("/manager/api/test/path/ignored"), with(any(Route.class)));
+            never(helper).addGetRoute(with("/manager/api/test/path/ignored"), with(any(Route.class)));
+            never(helper).addPostRoute(with("/manager/api/test/path/alsoIgnored"), with(any(Route.class)));
+            oneOf(helper).addPostRoute(with("/manager/api/test/path/notIgnored"), with(any(Route.class)));
         }});
 
         registry.initRoutes();

@@ -14,20 +14,10 @@
  */
 package com.suse.manager.api;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * API handler methods marked with this annotation will be ignored by the XMLRPC and/or HTTP API interfaces
+ * SUSE Manager public APIs
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ApiIgnore {
-    /**
-     * The specific API interface the method shall be ignored in
-     * @return the ignored API types
-     */
-    ApiType[] value() default {ApiType.XMLRPC, ApiType.HTTP};
+public enum ApiType {
+    XMLRPC,
+    HTTP
 }

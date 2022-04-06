@@ -80,7 +80,7 @@ public class HttpApiRegistry {
             Map<Pair<String, Boolean>, List<Method>> methodsByName =
                     Arrays.stream(handler.getClass().getDeclaredMethods())
                             .filter(m -> Modifier.isPublic(m.getModifiers()))
-                            .filter(m -> !m.isAnnotationPresent(ApiIgnore.class))
+                            .filter(HttpApiRegistry::isMethodAvailable)
                             .collect(Collectors.groupingBy(
                                     m -> new ImmutablePair<>(m.getName(), m.isAnnotationPresent(ReadOnly.class))));
 
@@ -109,5 +109,15 @@ public class HttpApiRegistry {
 
         LOG.info(MessageFormat.format("Registered {0} methods in {1} namespaces.",
                 methodCount[0], handlerFactory.getKeys().size()));
+    }
+
+    /**
+     * Returns true if the method is available to be exposed in the HTTP interface
+     * @param method the method
+     * @return true if the method is available
+     */
+    private static boolean isMethodAvailable(Method method) {
+        return !(method.isAnnotationPresent(ApiIgnore.class) &&
+                Arrays.asList(method.getAnnotation(ApiIgnore.class).value()).contains(ApiType.HTTP));
     }
 }

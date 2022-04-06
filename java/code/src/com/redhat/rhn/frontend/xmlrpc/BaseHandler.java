@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 
 import org.apache.logging.log4j.LogManager;
@@ -91,7 +92,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         Class<? extends BaseHandler> myClass = this.getClass();
         Method[] methods = Arrays.stream(myClass.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()))
-                .filter(m -> !m.isAnnotationPresent(ApiIgnore.class))
+                .filter(BaseHandler::isMethodAvailable)
                 .toArray(Method[]::new);
 
         String[] byNamespace = methodCalled.split("\\.");
@@ -482,4 +483,13 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         return string.matches(KEY_REGEX);
     }
 
+    /**
+     * Returns true if the method is available to be exposed in the XMLRPC interface
+     * @param method the method
+     * @return true if the method is available
+     */
+    private static boolean isMethodAvailable(Method method) {
+        return !(method.isAnnotationPresent(ApiIgnore.class) &&
+                Arrays.asList(method.getAnnotation(ApiIgnore.class).value()).contains(ApiType.XMLRPC));
+    }
 }
