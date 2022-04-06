@@ -76,7 +76,9 @@ class TFTPHandler(BaseHandler):
             if self._saltboot:
                 # saltboot mode use proxy fqdn filename in saltboot directory to get custom saltboot
                 # group defaults
-                return HttpResponseData("http://{}/tftp/saltboot/{}".format(self._url, self._url))
+                # TODO: disabled for now until server support
+                pass
+#                return HttpResponseData("http://{}/tftp/saltboot/{}".format(self._url, self._url))
             return HttpResponseData("http://{}/tftp/{}".format(self._url, path))
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
