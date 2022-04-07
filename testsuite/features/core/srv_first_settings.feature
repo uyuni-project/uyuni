@@ -6,6 +6,12 @@ Feature: Very first settings
   As the admin user
   I want to create the organisation, the first users and set the HTTP proxy
 
+  @server_build_image
+  Scenario: Set admin user password
+   Given I am not authorized
+   Then I set the admin password
+
+  @skip_if_server_build_image
   Scenario: Create admin user and first organization
     Given I access the host the first time
     And I run "rm -Rf /srv/salt/*" on "server"

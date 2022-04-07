@@ -412,6 +412,16 @@ Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
 end
 
+# skip tests if using a server build image
+Before('@skip_if_server_build_image') do
+  skip_this_scenario if $server_build_image
+end
+
+# execute tests if using a server build image
+Before('@server_build_image') do
+  skip_this_scenario unless $server_build_image
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'

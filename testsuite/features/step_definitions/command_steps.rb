@@ -1706,3 +1706,24 @@ Then(/^I should find the updated "([^"]*)" property as "([^"]*)" on the "([^"]*)
   final_synced_date = Time.parse(query_result.tuple(0)[1])
   raise "Column synced_date not updated. Inital synced_date was #{$initial_synced_date} while current synced_date is #{final_synced_date}" unless final_synced_date > $initial_synced_date
 end
+
+Then(/^I set the admin password$/) do
+  # generate expect file
+
+  script = "spawn satpasswd admin\n" \
+           "while {1} {\n" \
+           "  expect {\n" \
+           "    eof                                                  {break}\n" \
+	         "    \"Password:\"                                        {send \"admin\r\"}\n" \
+           "    \"Retype password:\"                                 {send \"admin\r\"}\n" \
+           "  }\n" \
+           "}\n"
+  path = generate_temp_file('admin-setting.exp', script)
+  step 'I copy "' + path + '" to "server"'
+  `rm #{path}`
+  # perform the registration
+  filename = File.basename(path)
+  bootstrap_timeout = 600
+  $server.run("expect #{filename}", timeout: bootstrap_timeout)
+  # restore files from backups
+end
