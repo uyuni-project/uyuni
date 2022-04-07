@@ -23660,6 +23660,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
             <context-group name="ctx">
@@ -24080,6 +24086,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
         <source>Update Reporting Database</source>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
