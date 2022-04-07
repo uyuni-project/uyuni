@@ -122,9 +122,11 @@ public enum SaltStateGeneratorService {
                 pillar.add("boot_images", bootImagePillar);
             }
 
-            for (File f : Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).toFile().listFiles()) {
-                if (f.getName().startsWith(PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + image.getBasename())) {
-                    f.delete();
+            if (Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).toFile().exists()) {
+                for (File f : Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).toFile().listFiles()) {
+                    if (f.getName().startsWith(PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + image.getBasename())) {
+                        f.delete();
+                    }
                 }
             }
 
