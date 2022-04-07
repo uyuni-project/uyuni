@@ -333,19 +333,32 @@ from sub
 where rhnproxyinfo.server_id = sub.server_id;
 
 
---    TABLE "rhnsatelliteinfo" CONSTRAINT "rhn_satellite_info_eid_fk" FOREIGN KEY (evr_id) REFERENCES rhnpackageevr(id)
-with sub as (
-    select p.server_id, t.label, pe.evr
-         from rhnsatelliteinfo p
-         join rhnserver s on s.id = p.server_id
-         join rhnserverarch pa on s.server_arch_id = pa.id
-         join rhnarchtype t on pa.arch_type_id = t.id
-         join rhnpackageevr pe on p.evr_id = pe.id
-)
-update rhnsatelliteinfo
-set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
-from sub
-where rhnsatelliteinfo.server_id = sub.server_id;
+DO $$
+    BEGIN
+      -- Schema migration must be idempotent, so we need to guarantee that it will not fail
+      -- if 'rhnsatelliteinfo' table was already dropped by the '001-drop-rhnSatelliteInfo.sql' script
+      IF EXISTS (
+            SELECT 1
+                from information_schema.tables
+                where table_schema = current_schema()
+                and table_name = 'rhnsatelliteinfo'
+      ) THEN
+        --    TABLE "rhnsatelliteinfo" CONSTRAINT "rhn_satellite_info_eid_fk" FOREIGN KEY (evr_id) REFERENCES rhnpackageevr(id)
+        with sub as (
+            select p.server_id, t.label, pe.evr
+                 from rhnsatelliteinfo p
+                 join rhnserver s on s.id = p.server_id
+                 join rhnserverarch pa on s.server_arch_id = pa.id
+                 join rhnarchtype t on pa.arch_type_id = t.id
+                 join rhnpackageevr pe on p.evr_id = pe.id
+        )
+        update rhnsatelliteinfo
+        set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+        from sub
+        where rhnsatelliteinfo.server_id = sub.server_id;
+      END IF ;
+    END
+$$ ;
 
 
 --    TABLE "rhnserverprofilepackage" CONSTRAINT "rhn_sprofile_evrid_fk" FOREIGN KEY (evr_id) REFERENCES rhnpackageevr(id)
@@ -509,7 +522,12 @@ DO $$
                and not exists (select 1 from suseimageinfopackage f18 where f18.evr_id = pe.id)
              ) as sub
             where p.id = sub.id;
-        ELSE
+        ELSIF EXISTS (
+                SELECT 1
+                    from information_schema.tables
+                    where table_schema = current_schema()
+                    and table_name = 'rhnsatelliteinfo'
+          ) THEN
             delete from rhnpackageevr p
              using (
             select pe.id
@@ -523,6 +541,29 @@ DO $$
                and not exists (select 1 from rhnserveractionverifymissing f7 where f7.package_evr_id = pe.id)
                and not exists (select 1 from rhnserveractionverifyresult f8 where f8.package_evr_id = pe.id)
                and not exists (select 1 from rhnsatelliteinfo f9 where f9.evr_id = pe.id)
+               and not exists (select 1 from rhnserverprofilepackage f11 where f11.evr_id = pe.id)
+               and not exists (select 1 from rhntransactionpackage f12 where f12.evr_id = pe.id)
+               and not exists (select 1 from rhnversioninfo f13 where f13.evr_id = pe.id)
+               and not exists (select 1 from rhnlockedpackages f14 where f14.evr_id = pe.id)
+               and not exists (select 1 from rhnserverpackage f15 where f15.evr_id = pe.id)
+               and not exists (select 1 from susepackagestate f16 where f16.evr_id = pe.id)
+               and not exists (select 1 from suseproductfile f17 where f17.evr_id = pe.id)
+               and not exists (select 1 from suseimageinfopackage f18 where f18.evr_id = pe.id)
+             ) as sub
+            where p.id = sub.id;
+        ELSE
+            delete from rhnpackageevr p
+             using (
+            select pe.id
+              from rhnpackageevr pe
+             where not exists (select 1 from rhnactionpackage f1 where f1.evr_id = pe.id)
+               and not exists (select 1 from rhnactionpackageremovalfailure f2 where f2.evr_id = pe.id)
+               and not exists (select 1 from rhnchannelnewestpackage f3 where f3.evr_id = pe.id)
+               and not exists (select 1 from rhnpackage f4 where f4.evr_id = pe.id)
+               and not exists (select 1 from rhnpackagenevra f5 where f5.evr_id = pe.id)
+               and not exists (select 1 from rhnproxyinfo f6 where f6.proxy_evr_id = pe.id)
+               and not exists (select 1 from rhnserveractionverifymissing f7 where f7.package_evr_id = pe.id)
+               and not exists (select 1 from rhnserveractionverifyresult f8 where f8.package_evr_id = pe.id)
                and not exists (select 1 from rhnserverprofilepackage f11 where f11.evr_id = pe.id)
                and not exists (select 1 from rhntransactionpackage f12 where f12.evr_id = pe.id)
                and not exists (select 1 from rhnversioninfo f13 where f13.evr_id = pe.id)
