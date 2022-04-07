@@ -1,10 +1,10 @@
-# Copyright (c) 2011-2020 SUSE LLC.
+# Copyright (c) 2011-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# XMLRPCActivationKeyTest xmlrpc
-class XMLRPCActivationKeyTest < XMLRPCBaseTest
+# APIActivationKeyTest class
+class APIActivationKeyTest < APITestBase
   def create_key(id, descr, base_channel, limit)
     @connection.call('activationkey.create', @sid, id, descr, base_channel, limit.to_i, [], false)
   end

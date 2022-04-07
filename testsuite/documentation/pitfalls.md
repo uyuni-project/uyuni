@@ -201,13 +201,13 @@ Can be writen as:
 
 ## What is this?
 
-This code tries to load "xmlrpctest.rb" which is in the same directory as the file. First add the directory of the file to the load path:
+This code tries to load "api_test.rb" which is in the same directory as the file. First add the directory of the file to the load path:
 
 ```ruby
 File.expand_path(__FILE__)           # For Ruby 1.9.2+
 $LOAD_PATH << File.dirname(__FILE__) # For Ruby 1.8
 
-require 'xmlrpctest'
+require 'api_test'
 ```
 
 The second line does something (appends), but the first, is an expression, which evaluates to some path, and then the value is lost, so is wrong.
@@ -215,7 +215,7 @@ The second line does something (appends), but the first, is an expression, which
 In ruby 1.9+ the best is to use `require_relative`
 
 ```ruby
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 ```
 ## Just buggy code
 

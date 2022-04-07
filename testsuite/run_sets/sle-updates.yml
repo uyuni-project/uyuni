@@ -32,13 +32,13 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
-- features/secondary/min_docker_xmlrpc.feature
+- features/secondary/min_docker_api.feature
 - features/secondary/min_docker_build_image.feature
 - features/secondary/trad_metadata_check.feature
 - features/secondary/trad_cve_audit.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
-- features/secondary/srv_xmlrpc_user.feature
+- features/secondary/srv_api_user.feature
 - features/secondary/srv_salt_download_endpoint.feature
 - features/secondary/srv_virtual_host_manager.feature
 - features/secondary/trad_config_channel.feature

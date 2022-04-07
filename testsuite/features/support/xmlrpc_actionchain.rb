@@ -1,11 +1,11 @@
-# Copyright (c) 2014-2018 SUSE LLC.
+# Copyright (c) 2014-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'base64'
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# actionchain class
-class XMLRPCActionChain < XMLRPCBaseTest
+# APIActionChainTest class
+class APIActionChainTest < APITestBase
   def list_chains
     @connection.call('actionchain.list_chains', @sid).map { |x| x['label'] }
   end

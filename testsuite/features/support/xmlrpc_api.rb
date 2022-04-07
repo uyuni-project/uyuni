@@ -1,10 +1,10 @@
-# Copyright (c) 2011-2017 SUSE LLC.
+# Copyright (c) 2011-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# api namespace class
-class XMLRPCApiTest < XMLRPCBaseTest
+# APIApiTest class
+class APIApiTest < APITestBase
   def get_version
     @connection.call('api.getVersion')
   end

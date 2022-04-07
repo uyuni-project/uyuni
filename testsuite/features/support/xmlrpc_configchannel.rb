@@ -1,10 +1,10 @@
-# Copyright (c) 2020 SUSE LLC.
+# Copyright (c) 2020-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
-#
-require_relative 'xmlrpctest'
 
-# configchannel class
-class XMLRPCConfigChannelTest < XMLRPCBaseTest
+require_relative 'api_test'
+
+# APIConfigChannelTest class
+class APIConfigChannelTest < APITestBase
   def channel_exists(channel)
     @connection.call('configchannel.channel_exists', @sid, channel)
   end

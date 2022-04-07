@@ -1,10 +1,10 @@
-# Copyright (c) 2020 SUSE LLC.
+# Copyright (c) 2020-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# channel class
-class XMLRPCPowermanagementTest < XMLRPCBaseTest
+# APIPowermanagementTest class
+class APIPowermanagementTest < APITestBase
   #
   # list power management types
   #

@@ -1,10 +1,10 @@
-# Copyright (c) 2013-2017 SUSE LLC.
+# Copyright (c) 2013-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# audit class xmlrpc
-class XMLRPCCVEAuditTest < XMLRPCBaseTest
+# APIAuditTest class
+class APIAuditTest < APITestBase
   def populate_cveserver_channels
     @connection.call('audit.populate_cveserver_channels', @sid)
   end

@@ -143,16 +143,18 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api = APISystemTest.new($server.full_hostname)
   @system_api.login('admin', 'admin')
   refute_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
+  @system_api.logout
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api = APISystemTest.new($server.full_hostname)
   @system_api.login('admin', 'admin')
   assert_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
+  @system_api.logout
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
@@ -163,11 +165,12 @@ end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @user_api = XMLRPCUserTest.new(ENV['SERVER'])
+  @user_api = APIUserTest.new($server.full_hostname)
   @user_api.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
   @user_api.create_user(@username, 'linux')
   step %(I am authorized as "#{@username}" with password "linux")
+  @user_api.logout
 end
 
 Then(/^I can cleanup the no longer needed user$/) do

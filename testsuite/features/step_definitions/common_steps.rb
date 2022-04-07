@@ -287,38 +287,41 @@ Given(/^distro "([^"]*)" exists$/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
+Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, user, password|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
+  ct.login(user, password)
+  raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
   ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
+  user_api = APIUserTest.new($server.full_hostname)
+  user_api.login('admin', 'admin')
+  kickstart_api = APIKickstartTest.new($server.full_hostname)
+  kickstart_api.login('admin', 'admin')
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
-  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @client_api.call('auth.login', 'admin', 'admin')
 
-  # Get all distributions: created from UI or from XMLRPC API.
+  # Get all distributions: created from UI or from API.
   distros = $server.run('cobbler distro list')[0].split
 
   # The name of distros created in the UI has the form: distro_label + suffix
-  user_details = @client_api.call('user.get_details', @sid, 'testing')
+  user_details = user_api.get_details('testing')
   suffix = ":#{user_details['org_id']}:#{user_details['org_name'].delete(' ')}"
 
   distros_ui = distros.select { |distro| distro.end_with? suffix }.map { |distro| distro.split(':')[0] }
   distros_api = distros.reject { |distro| distro.end_with? suffix }
-  distros_ui.each { |distro| @client_api.call('kickstart.tree.delete_tree_and_profiles', @sid, distro) }
-  @client_api.call('auth.logout', @sid)
+  distros_ui.each { |distro| kickstart_api.tree_delete_tree_and_profiles(distro) }
   # -------------------------------
-  # Remove profiles and distros created with the XMLRPC API.
+  # Remove profiles and distros created with the API.
 
   # We have already deleted the profiles from the UI; delete all the remaning ones.
   profiles = $server.run('cobbler profile list')[0].split
   profiles.each { |profile| $server.run("cobbler profile remove --name '#{profile}'") }
   distros_api.each { |distro| $server.run("cobbler distro remove --name '#{distro}'") }
+  user_api.logout
+  kickstart_api.logout
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -870,6 +873,11 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   else # As Ubuntu has no support, must be CentOS/SLES_ES
     node.run('yum install wget', timeout: 600)
   end
+  registration_url = if $proxy.nil?
+    "https://#{$server.full_hostname}/XMLRPC"
+  else
+    "https://#{$proxy.full_hostname}/XMLRPC"
+  end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
   log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
@@ -1320,10 +1328,10 @@ end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  node_id = retrieve_server_id(system_name)
-  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
-  @system_api.login('admin', 'admin')
-  react_key = @system_api.obtain_reactivation_key(node_id)
+  $api_test.auth_login('admin', 'admin')
+  node_id = $api_test.system_retrieve_server_id(system_name)
+  react_key = $api_test.system_obtain_reactivation_key(node_id)
+  $api_test.auth_logout
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end

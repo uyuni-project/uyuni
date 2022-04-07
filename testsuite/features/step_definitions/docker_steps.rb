@@ -1,17 +1,16 @@
 # Copyright (c) 2017-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require 'xmlrpc/client'
 require 'time'
 require 'date'
 require 'timeout'
 
 # container operations
-cont_op = XMLRPCImageTest.new(ENV['SERVER'])
+cont_op = APIImageTest.new(ENV['SERVER'])
 
 # retrieve build host id, needed for scheduleImageBuild call
 def retrieve_build_host_id
-  sysrpc = XMLRPCSystemTest.new(ENV['SERVER'])
+  sysrpc = APISystemTest.new(ENV['SERVER'])
   sysrpc.login('admin', 'admin')
   systems = sysrpc.list_systems
   refute_nil(systems)
@@ -83,7 +82,7 @@ When(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|
   version_build = ''
   build_host_id = retrieve_build_host_id
   now = DateTime.now
-  date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
+  date_build = API::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   cont_op.schedule_image_build(image, version_build, build_host_id, date_build)
 end
 
@@ -93,7 +92,7 @@ When(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via XML-RP
   version_build = version
   build_host_id = retrieve_build_host_id
   now = DateTime.now
-  date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
+  date_build = API::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   cont_op.schedule_image_build(image, version_build, build_host_id, date_build)
 end
 
@@ -174,10 +173,10 @@ When(/^I create and delete profile custom values via XML-RPC$/) do
   cont_op.create_profile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
   cont_op.create_custom_key('arancio', 'test containers')
   values = {}
-  values['arancio'] = 'arancia xmlrpc tests'
+  values['arancio'] = 'arancia API tests'
   cont_op.set_profile_custom_values('fakeone', values)
   pro_det = cont_op.get_profile_custom_values('fakeone')
-  raise "setting custom profile value failed: #{pro_det['arancio']} != 'arancia xmlrpc tests'" unless pro_det['arancio'] == 'arancia xmlrpc tests'
+  raise "setting custom profile value failed: #{pro_det['arancio']} != 'arancia API tests'" unless pro_det['arancio'] == 'arancia API tests'
   pro_type = cont_op.list_image_profile_types
   raise "Number of image profile types is #{pro_type.length}" unless pro_type.length == 2
   raise "type #{pro_type[0]} is not dockerfile" unless pro_type[0] == 'dockerfile'

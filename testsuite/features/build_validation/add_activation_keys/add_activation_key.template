@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC
+# Copyright (c) 2010-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -8,4 +8,6 @@ Feature: Create an activation key for <client>
   I want to use activation keys
 
   Scenario: Create an activation key with the channel and child channels for a <client>
-    When I create an activation key including custom channels for "<client>" via XML-RPC
+    When I am logged in API as user "admin" and password "admin"
+    And I create an activation key including custom channels for "<client>" via XML-RPC
+    And I logout from API

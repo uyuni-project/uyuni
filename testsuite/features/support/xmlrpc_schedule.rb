@@ -1,10 +1,10 @@
-# Copyright (c) 2014-2019 SUSE LLC.
+# Copyright (c) 2014-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# schedule class
-class XMLRPCScheduleTest < XMLRPCBaseTest
+# APIScheduleTest class
+class APIScheduleTest < APITestBase
   def list_all_actions
     @connection.call('schedule.list_all_actions', @sid)
   end

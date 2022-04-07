@@ -1,10 +1,10 @@
-# Copyright (c) 2017-2018 SUSE LLC.
+# Copyright (c) 2017-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'api_test'
 
-# This class enables to use image namespace operations via XML-RPC calls
-class XMLRPCImageTest < XMLRPCBaseTest
+# APIImageTest class
+class APIImageTest < APITestBase
   def delete_image(imageid)
     @connection.call('image.delete', @sid, imageid)
   end

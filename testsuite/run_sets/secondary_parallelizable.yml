@@ -13,10 +13,10 @@
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_manage_activationkey.feature
-- features/secondary/srv_xmlrpc_activationkey.feature
+- features/secondary/srv_api_activationkey.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
-- features/secondary/srv_xmlrpc_user.feature
+- features/secondary/srv_api_user.feature
 - features/secondary/srv_salt_download_endpoint.feature
 - features/secondary/srv_docker_advanced_content_management.feature
 - features/secondary/srv_docker_cve_audit.feature
@@ -27,7 +27,7 @@
 - features/secondary/srv_salt.feature
 - features/secondary/srv_check_channels_page.feature
 - features/secondary/srv_manage_channels_page.feature
-- features/secondary/srv_xmlrpc_channel.feature
+- features/secondary/srv_api_channel.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_content_lifecycle.feature
 - features/secondary/srv_change_task_schedule.feature
@@ -51,7 +51,7 @@
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_ubuntu_salt_install_with_staging.feature
 - features/secondary/min_ubuntu_salt_install_package.feature
-- features/secondary/min_bootstrap_xmlrpc.feature
+- features/secondary/min_bootstrap_api.feature
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_bootstrap_reactivation.feature
 - features/secondary/min_salt_software_states.feature
@@ -64,7 +64,7 @@
 - features/secondary/min_salt_minion_details.feature
 - features/secondary/min_config_state_channel.feature
 - features/secondary/min_config_state_channel_subscriptions.feature
-- features/secondary/min_config_state_channel_xmlrpc.feature
+- features/secondary/min_config_state_channel_api.feature
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
 - features/secondary/min_monitoring.feature
