@@ -1646,10 +1646,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
                             "-default.kernel")),
@@ -1660,10 +1662,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
                             user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
@@ -1727,6 +1731,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                     "-build129.tar.xz",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1761,16 +1767,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                                             user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel", user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd", user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1788,12 +1795,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(map.containsKey("boot_images"));
             Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
+            assertTrue(bootImages.containsKey("POS_Image_JeOS6-6.0.0-1"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").containsKey("initrd"));
             assertEquals(
-            "http://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
-                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
@@ -1829,6 +1838,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1850,11 +1861,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
             assertEquals(
-            "http://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
-                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
@@ -1907,7 +1918,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
+        // Basic image info and image list is taken from ImageInfo
+        imgInfoBuild.get().setName("POS_Image_JeOS6");
+        imgInfoBuild.get().setVersion("6.0.0");
         imgInfoBuild.get().setRevisionNumber(1);
+
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "kernel", "kernel");
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "initrd", "initrd");
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "image", "image");
 
         actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
 

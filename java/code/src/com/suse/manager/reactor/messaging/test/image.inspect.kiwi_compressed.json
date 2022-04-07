@@ -39,7 +39,7 @@
                 "changes": {
                     "ret": {
                         "image": {
-                            "hash": "a64dbc025c748bde968b888db6b7b9e3",
+                            "hash": "md5:a64dbc025c748bde968b888db6b7b9e3",
                             "compression": null,
                             "name": "POS_Image_JeOS6",
                             "filepath": "/var/lib/Kiwi/build24/images.build/POS_Image_JeOS6.x86_64-6.0.0",
@@ -2348,7 +2348,7 @@
                         "boot_image": {
                             "kernel": {
                                 "version": "4.4.126-94.22-default",
-                                "hash": "ec5473654d2fdca4f60c7d2f8f86e45c",
+                                "hash": "md5:ec5473654d2fdca4f60c7d2f8f86e45c",
                                 "filename": "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
                                 "size": 6053712
                             },
@@ -2357,7 +2357,7 @@
                             "name": "initrd-netboot-suse-SLES12",
                             "initrd": {
                                 "version": "2.1.1",
-                                "hash": "e39757568fbd014656307e04508e01fb",
+                                "hash": "md5:e39757568fbd014656307e04508e01fb",
                                 "filename": "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
                                 "size": 101571905
                             }

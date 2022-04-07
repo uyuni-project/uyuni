@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImagePackage;
@@ -398,5 +399,19 @@ public class ImageTestUtils {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         entitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         return server;
+    }
+
+    /**
+     * Test create image file
+     * @param image
+     * @param filename
+     * @param type
+     */
+    public static void createImageFile(ImageInfo image, String filename, String type) {
+        ImageFile file = new ImageFile();
+        file.setFile(filename);
+        file.setType(type);
+        file.setImageInfo(image);
+        image.getImageFiles().add(file);
     }
 }
