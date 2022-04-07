@@ -14,33 +14,38 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.util.DebVersionComparator;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 /**
  * DebVersionComparatorTest
  */
-public class DebVersionComparatorTest extends TestCase {
+public class DebVersionComparatorTest {
 
     private DebVersionComparator cmp;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         cmp = new DebVersionComparator();
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         cmp = null;
-        super.tearDown();
     }
 
+    @Test
     public void testDpkgTestCases() {
         // source: https://git.dpkg.org/cgit/dpkg/dpkg.git/tree/scripts/t/Dpkg_Version.t
         final String debianTestcases = "1.0-1 2.0-2 -1\n" + "2.2~rc-4 2.2-1 -1\n" + "2.2-1 2.2~rc-4 1\n" + "1" +
@@ -62,6 +67,7 @@ public class DebVersionComparatorTest extends TestCase {
         }
     }
 
+    @Test
     public void testBugzillaCases() {
         // bsc#1150113
         // bsc#1173201
@@ -106,6 +112,7 @@ public class DebVersionComparatorTest extends TestCase {
         assertEquals(exp, testDebianVersionCompareInDatabase(v1, v2));
     }
 
+    @Test
     private int testDebianVersionCompareInDatabase(String operand1, String operand2) {
         // test the stored function
         CallableMode m = ModeFactory.getCallableMode("test_queries", "debstrcmp");

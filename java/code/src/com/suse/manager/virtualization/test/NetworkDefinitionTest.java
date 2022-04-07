@@ -14,17 +14,21 @@
  */
 package com.suse.manager.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.manager.virtualization.DnsDef;
 import com.suse.manager.virtualization.IpDef;
 import com.suse.manager.virtualization.NetworkDefinition;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.Optional;
 
-import junit.framework.TestCase;
+public class NetworkDefinitionTest {
 
-public class NetworkDefinitionTest extends TestCase {
-
+    @Test
     public void testParseBridge() {
         String xml = "<network>\n" +
                      "  <name>default</name>\n" +
@@ -39,6 +43,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertEquals(Optional.of("br0"), def.getBridge());
     }
 
+    @Test
     public void testParseNat() {
         String xml = "<network connections='2'>\n" +
                 "  <name>default</name>\n" +
@@ -95,6 +100,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertEquals(Optional.of("peter.xyz"), ipv6.getHosts().get(0).getName());
     }
 
+    @Test
     public void testParseDns() {
         String xml = "<network>\n" +
                 "  <name>default</name>\n" +
@@ -140,6 +146,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertTrue(dnsDef.getForwarders().get(2).getAddress().isEmpty());
     }
 
+    @Test
     public void testParseOpenVSwitch() {
         String xml = "<network>\n" +
                 "  <name>ovs-net</name>\n" +
@@ -163,6 +170,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertEquals(47, def.getVlans().get(1).getTag());
     }
 
+    @Test
     public void testParseIsolated() {
         String xml = "<network>\n" +
                 "  <name>private</name>\n" +
@@ -174,6 +182,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertTrue(def.getBridge().isEmpty());
     }
 
+    @Test
     public void testParsePassthrough() {
         String xml = "<network>\n" +
                 "  <name>test</name>\n" +
@@ -189,6 +198,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertEquals(Arrays.asList("eth10", "eth11"), def.getInterfaces());
     }
 
+    @Test
     public void testParsePrivate() {
         String xml = "<network>\n" +
                 "  <name>test</name>\n" +
@@ -203,6 +213,7 @@ public class NetworkDefinitionTest extends TestCase {
         assertEquals(Optional.of("eth0"), def.getPhysicalFunction());
     }
 
+    @Test
     public void testParseHostdev() {
         String xml = "<network>\n" +
                 "  <name>test</name>\n" +

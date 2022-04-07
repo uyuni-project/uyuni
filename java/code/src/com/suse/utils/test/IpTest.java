@@ -14,21 +14,25 @@
  */
 package com.suse.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.suse.utils.Ip;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import junit.framework.TestCase;
+public class IpTest {
 
-public class IpTest extends TestCase {
-
+    @Test
     public void testPrefixConversion() throws UnknownHostException {
         assertEquals(24, Ip.netmaskToPrefix("255.255.255.0"));
         assertEquals(17, Ip.netmaskToPrefix("255.255.128.0"));
         assertEquals(64, Ip.netmaskToPrefix("ffff:ffff:ffff:ffff::"));
     }
 
+    @Test
     public void testPrefixToNetmask() throws UnknownHostException {
         assertEquals("255.255.255.0",
                 InetAddress.getByAddress(Ip.prefixToNetmask(24, 4)).getHostAddress());
@@ -36,6 +40,7 @@ public class IpTest extends TestCase {
                 InetAddress.getByAddress(Ip.prefixToNetmask(17, 4)).getHostAddress());
     }
 
+    @Test
     public void testGetNetworkAddress() throws UnknownHostException {
         assertEquals("192.168.129.0", Ip.getNetworkAddress("192.168.129.12", 24));
         assertEquals("192.168.128.0", Ip.getNetworkAddress("192.168.129.12", 17));
