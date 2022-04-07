@@ -168,6 +168,9 @@ public class RouteFactory {
             catch (NoSuchMethodException e) {
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
             }
+            catch (UserNotPermittedException e) {
+                throw Spark.halt(HttpStatus.SC_FORBIDDEN, e.getMessage());
+            }
             catch (IllegalAccessException e) {
                 // Should not happen since we're only evaluating public methods
                 throw new RuntimeException(e);

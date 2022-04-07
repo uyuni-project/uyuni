@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.HttpApiResponse;
@@ -90,8 +91,31 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         Request req = createRequest("/manager/api/test/withUser");
         Response res = createResponse();
-        authorizeRequest(req, res);
+        authorizeRequest(req, res, user);
         assertEquals(user.getId(), getResult((String) route.handle(req, res), Long.class));
+    }
+
+    /**
+     * Tests a read-only user against a read-write method
+     */
+    public void testWithReadOnlyUser() throws Exception {
+        User readOnly = UserTestUtils.createUser("readonly-user", user.getOrg().getId());
+        readOnly.setReadOnly(true);
+
+        Method withUser = TestHandler.class.getMethod("withUser", User.class);
+        Route route = routeFactory.createRoute(withUser, handler);
+
+        Request req = createRequest("/manager/api/test/withUser");
+        Response res = createResponse();
+        authorizeRequest(req, res, readOnly);
+        try {
+            route.handle(req, res);
+            fail("Route must throw HaltException with 403.");
+        }
+        catch (HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.statusCode());
+            assertEquals("The method is not available to read-only API users", e.body());
+        }
     }
 
     /**
@@ -638,7 +662,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      * @param req the request
      * @param res the response
      */
-    private void authorizeRequest(Request req, Response res) {
+    private void authorizeRequest(Request req, Response res, User user) {
         PxtSessionDelegateFactory factory = PxtSessionDelegateFactory.getInstance();
         PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
         pxtDelegate.updateWebUserId(req.raw(), res.raw(), user.getId());

@@ -36,7 +36,6 @@ public class TestHandler extends BaseHandler {
      * @param user the logged-in user
      * @return the user ID
      */
-    @ReadOnly
     public Long withUser(User user) {
         return user.getId();
     }

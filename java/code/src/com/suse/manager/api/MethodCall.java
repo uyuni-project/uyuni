@@ -14,6 +14,8 @@
  */
 package com.suse.manager.api;
 
+import com.redhat.rhn.domain.user.User;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -42,7 +44,20 @@ public class MethodCall {
      * @throws InvocationTargetException if the underlying method throws an exception
      * @throws IllegalAccessException if the underlying method is inaccessible
      */
-    public Object invoke(Object obj) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(Object obj) throws InvocationTargetException, IllegalAccessException,
+            UserNotPermittedException {
+        ensureUserAccess();
         return method.invoke(obj, args);
+    }
+
+    private void ensureUserAccess() throws UserNotPermittedException {
+        for (Object arg : args) {
+            if (arg instanceof User) {
+                User user = (User) arg;
+                if (user.isReadOnly() && !method.isAnnotationPresent(ReadOnly.class)) {
+                    throw new UserNotPermittedException("The method is not available to read-only API users");
+                }
+            }
+        }
     }
 }
