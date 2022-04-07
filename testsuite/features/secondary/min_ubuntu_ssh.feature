@@ -69,7 +69,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "ubuntu_minion"
+    And I enter target "*ubuntu*"
     And I click on preview
     And I click on run
     Then I should see "ubuntu_minion" hostname
