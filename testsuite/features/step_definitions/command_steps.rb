@@ -770,7 +770,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   # perform the registration
   filename = File.basename(path)
   bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout)
+  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
   # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
