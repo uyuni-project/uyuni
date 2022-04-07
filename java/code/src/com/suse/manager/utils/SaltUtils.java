@@ -15,6 +15,8 @@
 
 package com.suse.manager.utils;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
@@ -144,6 +146,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -963,6 +966,31 @@ public class SaltUtils {
         }
     }
 
+    private void handleImageBuildLog(ImageInfo info, Action action) {
+        MinionServer buildHost = info.getBuildServer();
+        if (buildHost == null) {
+            return;
+        }
+
+        Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
+                            "/files/var/lib/Kiwi/build" + action.getId() + "/build.log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/build-" + action.getId() + ".log");
+
+        try {
+            // copy the log to a directory readable by tomcat
+            saltApi.copyFile(srcPath, tmpPath)
+                        .orElseThrow(() -> new RuntimeException("Can't copy the build log file"));
+
+            String log = Files.readString(tmpPath);
+            info.setBuildLog(log);
+            saltApi.removeFile(srcPath);
+            saltApi.removeFile(tmpPath);
+        }
+        catch (Exception e) {
+            LOG.info("No build log for action " + action.getId() + " " + e);
+        }
+    }
+
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction) action;
@@ -977,6 +1005,8 @@ public class SaltUtils {
             return;
         }
         ImageInfo info = infoOpt.get();
+
+        handleImageBuildLog(info, action);
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {

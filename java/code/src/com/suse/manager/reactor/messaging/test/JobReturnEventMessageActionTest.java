@@ -1568,6 +1568,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private ImageInfo doTestContainerImageBuild(MinionServer server, String imageName, String imageVersion,
                                                 ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
@@ -1665,6 +1670,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                     "-5.3.18-150300.59.54-default.kernel",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
