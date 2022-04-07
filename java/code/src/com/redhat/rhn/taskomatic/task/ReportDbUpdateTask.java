@@ -40,7 +40,7 @@ import java.util.Map;
 public class ReportDbUpdateTask extends RhnJavaJob {
 
     private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 100);
+            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 500);
 
 
     private void fillReportDbTable(Session session, String xmlName, String tableName, long mgmId) {
