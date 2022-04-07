@@ -85,7 +85,7 @@ enable_assertions
 # embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
-  STDOUT.puts "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+  log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
       Dir.mkdir("screenshots") unless File.directory?("screenshots")
@@ -119,15 +119,15 @@ end
 
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
-    STDOUT.puts 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    STDOUT.puts 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
+    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
   end
 end
 
 Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
-  STDOUT.puts "This scenario ran at: #{current_time}\n"
+  log "This scenario ran at: #{current_time}\n"
 end
 
 # do some tests only if the corresponding node exists
