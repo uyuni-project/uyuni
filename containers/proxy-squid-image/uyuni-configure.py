@@ -11,7 +11,7 @@ with open("/etc/uyuni/config.yaml") as source:
     # read to existing config file
     with open("/etc/squid/squid.conf", "r+") as config_file:
         file_content = config_file.read()
-        file_content = re.sub(r"cache_dir ufs .*", f"cache_dir ufs /var/cache/squid {str(config['max_cache_size_mb'])} 16 256", file_content)
+        file_content = re.sub(r"cache_dir aufs .*", f"cache_dir aufs /var/cache/squid {str(config['max_cache_size_mb'])} 16 256", file_content)
         file_content = re.sub(r"access_log .*", "access_log stdio:/proc/self/fd/1 squid", file_content)
         # writing back the content
         config_file.seek(0,0)

@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.common.Checksum;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,6 +44,7 @@ public class ImageFile extends BaseDomainHelper {
     private String file;
     private String type;
     private boolean external;
+    private Checksum checksum;
 
     /**
      * @return the id
@@ -128,6 +130,21 @@ public class ImageFile extends BaseDomainHelper {
         this.external = externalIn;
     }
 
+    /**
+     * @return the checksum of the file
+     */
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
+    public Checksum getChecksum() {
+        return checksum;
+    }
+
+    /**
+     * @param checksumIn checksum to set
+     */
+    public void setChecksum(Checksum checksumIn) {
+        this.checksum = checksumIn;
+    }
 
     /**
      * {@inheritDoc}

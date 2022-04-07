@@ -81,7 +81,7 @@ public class OSImageStoreUtils {
     }
 
     /**
-     * Returns a OS Image Store URI relative to the server's domain name for an Org
+     * Returns an OS Image Store URI relative to the server's domain name for an Org
      *
      * @param org the org associated with the Image Store
      * @return the relative URI for the Org
@@ -91,7 +91,7 @@ public class OSImageStoreUtils {
     }
 
     /**
-     * Returns a OS Image File local path
+     * Returns an OS Image File local path
      *
      * @param file the image file
      * @return the local path
@@ -100,11 +100,11 @@ public class OSImageStoreUtils {
         if (file.isExternal()) {
             throw new IllegalArgumentException("External file has no local path");
         }
-        return getOSImageStorePathForImage(file.getImageInfo()) + file.getFile();
+        return getOSImageStorePathForOrg(file.getImageInfo().getOrg()) + file.getFile();
     }
 
     /**
-     * Returns a OS Image File URI
+     * Returns an OS Image File URI
      *
      * @param file the image file
      * @return the URI

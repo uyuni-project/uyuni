@@ -28,8 +28,10 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
@@ -313,6 +315,9 @@ public class ImageInfoFactory extends HibernateFactory {
         imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
         imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
 
+        // delete saltboot image profile and distro
+        SaltbootUtils.deleteSaltbootDistro(imageInfo);
+
         // delete files
         imageInfo.getImageFiles().stream().forEach(f -> {
             if (!f.isExternal()) {
@@ -512,7 +517,11 @@ public class ImageInfoFactory extends HibernateFactory {
     public static com.redhat.rhn.domain.common.Checksum convertChecksum(
             Checksum dockerChecksum) {
         String checksumType = "sha256";
-        if (dockerChecksum instanceof SHA1Checksum) {
+
+        if (dockerChecksum instanceof MD5Checksum) {
+            checksumType = "md5";
+        }
+        else if (dockerChecksum instanceof SHA1Checksum) {
             checksumType = "sha1";
         }
         else  if (dockerChecksum instanceof SHA256Checksum) {
@@ -535,6 +544,8 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
+        case "md5":
+            return new MD5Checksum(checksum.getChecksum());
         case "sha1":
             return new SHA1Checksum(checksum.getChecksum());
         case "sha256":

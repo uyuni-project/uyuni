@@ -43,6 +43,16 @@
                                 "hash": "md5:62c7d8dbb3ac208fbfa92d6034f361bc"
                             }
                         },
+                        "bundles": [
+                            {
+                                "basename": "POS_Image_JeOS7.x86_64-7.0.0",
+                                "filename": "POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
+                                "filepath": "/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
+                                "hash": "sha256:93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+                                "id": "build129",
+                                "suffix": "tar.xz"
+                            }
+                        ],
                         "image": {
                             "arch": "x86_64",
                             "build_id": "build129",

@@ -22,6 +22,9 @@ CREATE TABLE suseImageFile
     file           TEXT NOT NULL,
     type           VARCHAR(16) NOT NULL,
     external       CHAR(1) DEFAULT ('N') NOT NULL,
+    checksum_id    NUMERIC
+                     CONSTRAINT suse_fileinfo_chsum_fk
+                     REFERENCES rhnChecksum (id),
     created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     modified       TIMESTAMPTZ

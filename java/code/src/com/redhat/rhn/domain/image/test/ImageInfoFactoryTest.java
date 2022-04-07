@@ -636,7 +636,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(1, org.getPillars().size());
 
-        // deleting a delta should not delte the images
+        // deleting a delta should not delete the images
         ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
 
         HibernateFactory.getSession().flush();
