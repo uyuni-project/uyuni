@@ -20,8 +20,9 @@ import java.util.List;
 
 /**
  * "Driver" for a work queue of worker threads
+ * @param <T> type of the queue driver candidates
  */
-public interface QueueDriver {
+public interface QueueDriver<T> {
 
     /**
      * Set the logger to use for all logging operations
@@ -39,7 +40,7 @@ public interface QueueDriver {
      * List of work items to "prime" the queue
      * @return list of work items
      */
-    List getCandidates();
+    List<T> getCandidates();
 
     /**
      * Maximum number of worker threads to run
@@ -52,7 +53,7 @@ public interface QueueDriver {
      * @param workItem object contained in the list returned from getCandidates()
      * @return worker instance
      */
-    QueueWorker makeWorker(Object workItem);
+    QueueWorker makeWorker(T workItem);
 
     /**
      * Logic to tell the queue when to stop running

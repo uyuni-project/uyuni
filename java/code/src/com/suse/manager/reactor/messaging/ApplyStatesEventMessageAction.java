@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Applies states to a server
@@ -65,7 +66,8 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         scheduler,
                         Arrays.asList(server.getId()),
                         applyStatesEvent.getStateNames(),
-                        new Date());
+                        applyStatesEvent.getPillar(),
+                        new Date(), Optional.of(false));
                 TASKOMATIC_API.scheduleActionExecution(action,
                         applyStatesEvent.isForcePackageListRefresh());
             }

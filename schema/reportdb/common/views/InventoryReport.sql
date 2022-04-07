@@ -16,8 +16,8 @@ CREATE OR REPLACE VIEW InventoryReport AS
           FROM systementitlement
       GROUP BY mgm_id, system_id
     ), Groups AS (
-        SELECT mgm_id, system_id, string_agg(system_group_id || ' - ' || name, ';') AS system_groups
-          FROM SystemGroup
+        SELECT mgm_id, system_id, string_agg(system_group_id || ' - ' || group_name, ';') AS system_groups
+          FROM SystemGroupMember
       GROUP BY mgm_id, system_id
     ), ConfigChannels AS (
         SELECT mgm_id, system_id, string_agg(config_channel_id || ' - ' || name, ';') AS configuration_channels

@@ -68,7 +68,6 @@ import com.suse.salt.netapi.client.impl.HttpAsyncClientImpl;
 import com.suse.salt.netapi.datatypes.AuthMethod;
 import com.suse.salt.netapi.datatypes.Batch;
 import com.suse.salt.netapi.datatypes.PasswordAuth;
-import com.suse.salt.netapi.datatypes.Token;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
@@ -585,11 +584,7 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     private EventStream createEventStream() throws SaltException {
-        if (ConfigDefaults.get().isPostgresql()) {
-            return new PGEventStream();
-        }
-        Token token = adaptException(saltClient.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
-        return saltClient.events(token, 0, 0, 0);
+        return new PGEventStream();
     }
 
     /**

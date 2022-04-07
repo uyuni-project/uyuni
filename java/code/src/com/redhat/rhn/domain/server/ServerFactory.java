@@ -26,13 +26,14 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -663,11 +664,6 @@ public class ServerFactory extends HibernateFactory {
      * @param serverIn Server to be stored in database.
      */
     public static void save(Server serverIn) {
-        if (serverIn.isSatellite()) {
-            SatelliteServer ss = (SatelliteServer) serverIn;
-            PackageEvrFactory.lookupOrCreatePackageEvr(ss.getVersion());
-        }
-
         SINGLETON.saveObject(serverIn);
         updateServerPerms(serverIn);
     }
@@ -885,7 +881,7 @@ public class ServerFactory extends HibernateFactory {
         if (error != null) {
             throw new ChannelSubscriptionException(error.getKey());
         }
-        return (Server) HibernateFactory.reload(server);
+        return HibernateFactory.reload(server);
     }
 
     /**
@@ -1497,5 +1493,21 @@ public class ServerFactory extends HibernateFactory {
                 .setParameter("schedule", schedule)
                 .setParameter("systemIds", systemIds)
                 .executeUpdate();
+    }
+
+    /**
+     * Remove MgrServerInfo from minion
+     *
+     * @param minion the minion
+     */
+    public static void dropMgrServerInfo(MinionServer minion) {
+        MgrServerInfo serverInfo = minion.getMgrServerInfo();
+        if (serverInfo == null) {
+            return;
+        }
+        Credentials credentials = serverInfo.getReportDbCredentials();
+        CredentialsFactory.removeCredentials(credentials);
+        SINGLETON.removeObject(serverInfo);
+        minion.setMgrServerInfo(null);
     }
 }

@@ -38,8 +38,8 @@ public abstract class BaseHandler implements AclHandler {
      * @param params nothing
      * @return true if satellite, false if spacewalk
      */
-    public boolean aclIsSatellite(Object ctx, String[] params) {
-        return !ConfigDefaults.get().isSpacewalk();
+    public boolean aclIsSuma(Object ctx, String[] params) {
+        return !ConfigDefaults.get().isUyuni();
     }
 
 

@@ -32,17 +32,15 @@ public class AuthenticationServiceFactoryTest  {
 
     private class AuthenticationServiceFactoryStub extends AuthenticationServiceFactory {
 
-        private boolean satellite = true;
+        private boolean mgrServer = true;
 
-        public boolean isSatellite() {
-            return satellite;
+        public boolean isMgrServer() {
+            return mgrServer;
         }
 
-        public void setSatellite(boolean isSatellite) {
-            satellite = isSatellite;
+        public void setMgrServer(boolean isMgrServer) {
+            mgrServer = isMgrServer;
         }
-
-
     }
 
     private AuthenticationServiceFactoryStub factory;
@@ -59,7 +57,7 @@ public class AuthenticationServiceFactoryTest  {
 
     @Test
     public final void testGetAuthenticationServiceWhenInSatelliteMode() {
-        factory.setSatellite(true);
+        factory.setMgrServer(true);
 
         AuthenticationService service = factory.getAuthenticationService();
 

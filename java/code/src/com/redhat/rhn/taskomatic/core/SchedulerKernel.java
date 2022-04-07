@@ -79,21 +79,11 @@ public class SchedulerKernel {
         props.setProperty(ds + ".password", dbPass);
         // props.setProperty(ds + ".maxConnections", 30);
 
-        if (ConfigDefaults.get().isPostgresql()) {
-            props.setProperty("org.quartz.jobStore.driverDelegateClass",
-                    "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
+        props.setProperty("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
 
-            String driver = Config.get().getString(ConfigDefaults.DB_CLASS,
-                    "org.postgresql.Driver");
-            props.setProperty(ds + ".driver", driver);
-            props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
-        }
-        else {
-            // This code should never get called as Exception would get
-            // thrown in getJdbcConnectionString.
-            throw new InstantiationException(
-                    "Unknown db backend set, expecting postgresql");
-        }
+        String driver = Config.get().getString(ConfigDefaults.DB_CLASS, "org.postgresql.Driver");
+        props.setProperty(ds + ".driver", driver);
+        props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
 
         try {
             SchedulerKernel.factory = new StdSchedulerFactory(props);

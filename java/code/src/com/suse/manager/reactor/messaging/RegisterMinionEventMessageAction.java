@@ -82,6 +82,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -413,6 +414,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                            Optional<String> activationKeyOverride,
                                            boolean isSaltSSH) {
         Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+        // take care that custom grains are deployed on the minion before we request them
+        saltApi.syncGrains(new MinionList(minionId));
         ValueMap grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
@@ -466,7 +469,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setOsFamily(osfamily);
             minion.setRelease(osrelease);
             minion.setRunningKernel(kernelrelease);
-            minion.setSecret(RandomStringUtils.randomAlphanumeric(64));
+            minion.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
             minion.setAutoUpdate("N");
             minion.setLastBoot(System.currentTimeMillis() / 1000);
             minion.setCreated(new Date());
@@ -488,6 +491,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     activationKeyLabel);
 
             minion.updateServerInfo();
+
+            // Check for Uyuni Server and create basic info
+            SystemManager.updateMgrServerInfo(minion, grains);
 
             mapHardwareGrains(minion, grains);
 
