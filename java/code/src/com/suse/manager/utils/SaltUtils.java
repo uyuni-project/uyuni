@@ -139,7 +139,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -186,7 +187,7 @@ public class SaltUtils {
         "pkg.group_install", "pkg.install", "pkg.purge", "pkg.remove", "pkg.upgrade"
     );
 
-    private static final Logger LOG = Logger.getLogger(SaltUtils.class);
+    private static final Logger LOG = LogManager.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);

@@ -49,7 +49,8 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Date;
@@ -82,7 +83,7 @@ public class MinionsAPI {
             .serializeNulls()
             .create();
 
-    private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
+    private static final Logger LOG = LogManager.getLogger(MinionsAPI.class);
 
     /**
      * @param saltApiIn instance to use.

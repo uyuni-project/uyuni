@@ -44,7 +44,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -71,7 +72,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SPMigrationAction extends RhnAction {
 
-    private static Logger logger = Logger.getLogger(SPMigrationAction.class);
+    private static Logger logger = LogManager.getLogger(SPMigrationAction.class);
 
     // Request attributes
     private static final String UPGRADE_SUPPORTED = "upgradeSupported";

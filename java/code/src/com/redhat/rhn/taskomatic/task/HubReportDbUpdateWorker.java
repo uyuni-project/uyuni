@@ -36,8 +36,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.Date;
@@ -82,7 +81,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             SelectMode query = generateQuery(remoteSession, tableName);
 
             // Remove all the existing data
-            LogMF.debug(log, "Deleting existing data in table {}", tableName);
+            log.debug("Deleting existing data in table {}", tableName);
             WriteMode delete = generateDelete(localSession, tableName);
             delete.executeUpdate(Map.of("mgm_id", mgmId));
 
@@ -95,7 +94,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                 // Generate the insert using the column name retrieved from the select
                 WriteMode insert = generateInsert(localSession, tableName, mgmId, firstBatch.get(0).keySet());
                 insert.executeUpdates(firstBatch);
-                LogMF.debug(log, "Extracted {} rows for table {}", firstBatch.size(), tableName);
+                log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
                 if (firstBatch.size() == BATCH_SIZE) {
@@ -103,12 +102,12 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                             .forEach(batch -> {
                                 batch.forEach(e -> e.remove("mgm_id"));
                                 insert.executeUpdates(batch);
-                                LogMF.debug(log, "Extracted {} rows more for table {}", firstBatch.size(), tableName);
+                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
                             });
                 }
             }
             else {
-                LogMF.debug(log, "No data extracted for table {}", tableName);
+                log.debug("No data extracted for table {}", tableName);
             }
         });
     }

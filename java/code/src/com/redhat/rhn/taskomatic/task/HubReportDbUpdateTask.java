@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class HubReportDbUpdateTask extends RhnQueueJob {
 
-    private Logger log = Logger.getLogger(getClass());
+    private Logger log = LogManager.getLogger(getClass());
 
     @Override
     protected Logger getLogger() {

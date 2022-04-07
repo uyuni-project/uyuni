@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class TokenPackageFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(TokenPackageFactory.class);
+    private static Logger log = LogManager.getLogger(TokenPackageFactory.class);
 
     /**
      * Lookup token packages by token.  The result return will be ordered

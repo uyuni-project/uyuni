@@ -148,8 +148,20 @@ artifacts:
     repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
-  - artifact: log4j
-    package: log4j12
+  - artifact: log4j-core
+    jar: log4j-core.jar
+    package: log4j
+    repository: Leap
+  - artifact: log4j-api
+    jar: log4j-api.jar
+    package: log4j
+    repository: Leap
+  - artifact: log4j-jcl
+    jar: log4j-jcl.jar
+    repository: Leap
+  - artifact: log4j-slf4j-impl
+    jar: log4j-slf4j-impl.jar
+    package: log4j-slf4j
     repository: Leap
   - artifact: jsch
     repository: Uyuni_Other
@@ -224,9 +236,6 @@ artifacts:
   - artifact: slf4j-api
     package: slf4j
     jar: api
-    repository: Leap
-  - artifact: slf4j-log4j12
-    jar: log4j12
     repository: Leap
   - artifact: snakeyaml
     repository: Leap

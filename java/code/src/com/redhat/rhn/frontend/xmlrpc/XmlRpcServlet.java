@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -39,7 +40,7 @@ public class XmlRpcServlet extends HttpServlet {
     /** Comment for <code>serialVersionUID</code> */
     private static final long serialVersionUID = -9173485623604749521L;
 
-    private static Logger log = Logger.getLogger(XmlRpcServlet.class);
+    private static Logger log = LogManager.getLogger(XmlRpcServlet.class);
 
     private RhnXmlRpcServer server;
     private HandlerFactory handlers;

@@ -21,7 +21,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ import java.io.IOException;
  */
 public class HttpHelper {
     // Logger instance
-    private static Logger log = Logger.getLogger(HttpHelper.class);
+    private static Logger log = LogManager.getLogger(HttpHelper.class);
 
     // Adapter object for handling HTTP requests
     private final HttpClientAdapter httpClient;

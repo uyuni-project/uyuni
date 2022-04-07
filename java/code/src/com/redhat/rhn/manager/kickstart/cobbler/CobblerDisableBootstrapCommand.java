@@ -21,7 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
@@ -35,7 +36,7 @@ import java.util.List;
 public class CobblerDisableBootstrapCommand extends CobblerCommand {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerDisableBootstrapCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerDisableBootstrapCommand.class);
 
     /**
      * Standard constructor.

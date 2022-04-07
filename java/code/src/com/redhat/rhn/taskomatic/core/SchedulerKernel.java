@@ -33,7 +33,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import com.suse.manager.metrics.PrometheusExporter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -54,7 +55,7 @@ public class SchedulerKernel {
 
     private static final String[] TASKOMATIC_PACKAGE_NAMES =
             {"com.redhat.rhn.taskomatic.domain"};
-    private static Logger log = Logger.getLogger(SchedulerKernel.class);
+    private static Logger log = LogManager.getLogger(SchedulerKernel.class);
     private byte[] shutdownLock = new byte[0];
     private static SchedulerFactory factory = null;
     private static Scheduler scheduler = null;

@@ -24,7 +24,8 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,7 +52,7 @@ public class SetupWizardAction extends RhnAction {
     private static final String REFRESH_RUNNING = "refreshRunning";
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(SetupWizardAction.class);
+    private static Logger logger = LogManager.getLogger(SetupWizardAction.class);
 
     /**
       * {@inheritDoc}

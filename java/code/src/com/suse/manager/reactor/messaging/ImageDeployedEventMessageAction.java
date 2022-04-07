@@ -27,7 +27,8 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
 
     private final SystemQuery systemQuery;
 
-    private static final Logger LOG = Logger.getLogger(ImageDeployedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(ImageDeployedEventMessageAction.class);
 
     /**
      * Constructor allowing setting a salt service instance.

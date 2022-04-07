@@ -38,7 +38,8 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -64,7 +65,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseSystemPackagesConfirmAction extends RhnAction implements MaintenanceWindowsAware {
     /** Logger instance */
-    private static Logger log = Logger.getLogger(BaseSystemPackagesConfirmAction.class);
+    private static Logger log = LogManager.getLogger(BaseSystemPackagesConfirmAction.class);
 
     private static final String DATA_SET = RequestContext.PAGE_LIST;
     private static final String WIDGET_SUMMARY = "widgetSummary";

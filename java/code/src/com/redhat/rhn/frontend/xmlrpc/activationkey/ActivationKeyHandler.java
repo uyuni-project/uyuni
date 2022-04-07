@@ -54,7 +54,8 @@ import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
 import org.jose4j.lang.JoseException;
 
@@ -79,7 +80,7 @@ import java.util.stream.Collectors;
  */
 public class ActivationKeyHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(ActivationKeyHandler.class);
+    private static Logger log = LogManager.getLogger(ActivationKeyHandler.class);
 
     private static final String VALIDATION_XSD =
         "/com/redhat/rhn/frontend/action/token/validation/activationKeyForm.xsd";

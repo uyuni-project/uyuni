@@ -20,7 +20,8 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,8 +37,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.
-        getLogger(ConfigureSatelliteCommand.class);
+    private static Logger logger = LogManager.getLogger(ConfigureSatelliteCommand.class);
 
     private final List<String> keysToBeUpdated;
 

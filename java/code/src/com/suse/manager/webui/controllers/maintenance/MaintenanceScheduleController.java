@@ -55,7 +55,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class MaintenanceScheduleController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
-    private static Logger log = Logger.getLogger(MaintenanceScheduleController.class);
+    private static Logger log = LogManager.getLogger(MaintenanceScheduleController.class);
 
     private MaintenanceScheduleController() { }
 

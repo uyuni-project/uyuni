@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -47,7 +48,7 @@ import javax.persistence.criteria.Root;
  */
 public class MinionServerFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(MinionServerFactory.class);
+    private static Logger log = LogManager.getLogger(MinionServerFactory.class);
 
     /**
      * Lookup all Servers that belong to an org

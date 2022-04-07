@@ -15,7 +15,8 @@
 package com.redhat.rhn.frontend.dto;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public class HistoryEvent extends BaseDto {
     private String historyType;
     private String historyTypeName;
     private String details;
-    private static Logger logger = Logger.getLogger(HistoryEvent.class);
+    private static Logger logger = LogManager.getLogger(HistoryEvent.class);
     /**
      * gets details of the event
      * @return details

@@ -86,7 +86,8 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -118,7 +119,7 @@ import spark.Spark;
 public class StatesAPI {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(StatesAPI.class);
+    private static final Logger LOG = LogManager.getLogger(StatesAPI.class);
     private final TaskomaticApi taskomaticApi;
     private final SaltApi saltApi;
     private final ServerGroupManager serverGroupManager;

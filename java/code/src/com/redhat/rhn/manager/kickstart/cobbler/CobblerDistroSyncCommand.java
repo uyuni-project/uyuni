@@ -21,7 +21,8 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Distro;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
      */
     public CobblerDistroSyncCommand() {
         super();
-        log = Logger.getLogger(this.getClass());
+        log = LogManager.getLogger(this.getClass());
     }
 
     protected Map<String, Distro> getDistros() {

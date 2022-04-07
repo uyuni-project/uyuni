@@ -28,8 +28,10 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
@@ -64,12 +66,12 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
          * Logging complains and sends warnings (expected)
          * Tracebacks will get sent to root@localhost
          */
-        Logger log = Logger.getLogger(LookupExceptionHandler.class);
+        Logger log = LogManager.getLogger(LookupExceptionHandler.class);
         Level orig = log.getLevel();
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail", "");
         try {
-            log.setLevel(Level.OFF);
+            Configurator.setLevel(this.getClass().getName(), Level.OFF);
             c.setString("web.traceback_mail", "jesusr@redhat.com");
 
             LookupException ex = new LookupException("Simply a test");
@@ -99,7 +101,7 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
             //Turn tracebacks and logging back on
             Thread.sleep(1000); //wait for message to be sent
             c.setString("web.traceback_mail", mail);
-            log.setLevel(orig);
+            Configurator.setLevel(this.getClass().getName(), orig);
         }
     }
 

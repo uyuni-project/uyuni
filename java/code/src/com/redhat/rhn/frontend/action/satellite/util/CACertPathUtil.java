@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.action.satellite.util;
 import com.redhat.rhn.common.conf.Config;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public final class CACertPathUtil {
     public static final String CA_CRT_RPM_NAME = "rhn-org-trusted-ssl-cert";
     public static final String GLOB_NOARCH_RPM = "*.noarch.rpm";
     public static final String PUB_TREE = "/pub/";
-    private static Logger logger = Logger.getLogger(CACertPathUtil.class);
+    private static Logger logger = LogManager.getLogger(CACertPathUtil.class);
 
     private CACertPathUtil() {
     }

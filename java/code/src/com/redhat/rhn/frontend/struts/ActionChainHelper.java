@@ -28,7 +28,8 @@ import com.suse.utils.Json;
 import com.google.gson.JsonObject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.DynaActionForm;
 import org.stringtree.json.JSONWriter;
 
@@ -56,7 +57,7 @@ public class ActionChainHelper {
             "existingActionChains";
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ActionChainHelper.class);
+    private static Logger log = LogManager.getLogger(ActionChainHelper.class);
 
     /**
      * Default constructor.

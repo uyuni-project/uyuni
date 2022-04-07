@@ -35,7 +35,8 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -54,7 +55,7 @@ import java.util.Map;
  */
 public class PackagesHandler extends BaseHandler {
 
-    private static Logger logger = Logger.getLogger(PackagesHandler.class);
+    private static Logger logger = LogManager.getLogger(PackagesHandler.class);
     private static float freeMemCoeff = 0.9f;
 
     /**

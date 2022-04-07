@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.common.localization;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -34,7 +35,7 @@ class XmlResourceBundleParser  extends DefaultHandler {
     private Map messages;
     private StringBuffer thisText;
     private String currKey;
-    private static Logger log = Logger.getLogger(XmlResourceBundleParser.class);
+    private static Logger log = LogManager.getLogger(XmlResourceBundleParser.class);
 
     /** constructor
      */

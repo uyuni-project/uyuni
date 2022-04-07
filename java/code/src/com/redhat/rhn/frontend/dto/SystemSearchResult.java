@@ -16,7 +16,8 @@ package com.redhat.rhn.frontend.dto;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.IDN;
@@ -57,7 +58,7 @@ public class SystemSearchResult extends SystemOverview {
     private Double score;
     private String uuid;
 
-    private static Logger log = Logger.getLogger(SystemSearchResult.class);
+    private static Logger log = LogManager.getLogger(SystemSearchResult.class);
     /**
      * This method will look up the value of "matchingField" it will then
      * return the value of the variable name which matches it.

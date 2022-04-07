@@ -46,7 +46,8 @@ import com.suse.manager.utils.DiskCheckSeverity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginHelper {
 
-    private static Logger log = Logger.getLogger(LoginHelper.class);
+    private static Logger log = LogManager.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
     private static final Long MIN_PG_DB_VERSION = 130001L;
     private static final Long MAX_PG_DB_VERSION = 149999L;

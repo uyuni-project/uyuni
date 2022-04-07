@@ -18,7 +18,8 @@ package com.redhat.rhn.domain.credentials;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -35,7 +36,7 @@ import java.util.Map;
 public class CredentialsFactory extends HibernateFactory {
 
     private static CredentialsFactory singleton = new CredentialsFactory();
-    private static Logger log = Logger.getLogger(CredentialsFactory.class);
+    private static Logger log = LogManager.getLogger(CredentialsFactory.class);
 
     private CredentialsFactory() {
         super();

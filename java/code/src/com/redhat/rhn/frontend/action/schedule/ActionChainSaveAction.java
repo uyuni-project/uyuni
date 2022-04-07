@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.stringtree.json.JSONWriter;
 
 import java.util.Date;
@@ -49,7 +50,7 @@ public class ActionChainSaveAction {
     public static final String TEXT_FIELD = "text";
 
     /** Logger instance. */
-    private static Logger log = Logger.getLogger(ActionChainSaveAction.class);
+    private static Logger log = LogManager.getLogger(ActionChainSaveAction.class);
 
     /**
      * Saves changes to an Action Chain.

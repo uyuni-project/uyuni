@@ -34,7 +34,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -60,7 +61,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     private static final String LIST_NAME = "packageList";
 
     /** Logger instance */
-    private static final Logger LOG = Logger.getLogger(LockPackageAction.class);
+    private static final Logger LOG = LogManager.getLogger(LockPackageAction.class);
 
     @Override
     protected DataResult getDataResult(Server server) {

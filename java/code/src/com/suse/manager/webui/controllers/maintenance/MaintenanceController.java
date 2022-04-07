@@ -41,7 +41,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -67,7 +68,7 @@ import spark.Spark;
 public class MaintenanceController {
 
     private static final MaintenanceManager MM = new MaintenanceManager();
-    private static Logger log = Logger.getLogger(MaintenanceScheduleController.class);
+    private static Logger log = LogManager.getLogger(MaintenanceScheduleController.class);
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())

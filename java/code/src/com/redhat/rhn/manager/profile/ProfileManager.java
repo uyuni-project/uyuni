@@ -49,7 +49,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +68,7 @@ import java.util.Set;
  */
 public class ProfileManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(ProfileManager.class);
+    private static Logger log = LogManager.getLogger(ProfileManager.class);
     public static final String OPTION_REMOVE = "remove";
     public static final String OPTION_SUBSCRIBE = "subscribe";
 

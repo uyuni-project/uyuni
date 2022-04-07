@@ -23,7 +23,8 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.context.Context;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.text.Collator;
@@ -62,9 +63,8 @@ public class LocalizationService {
     public static final String RHN_DB_DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
 
-    private static Logger log = Logger.getLogger(LocalizationService.class);
-    private static Logger msgLogger = Logger
-            .getLogger("com.redhat.rhn.common.localization.messages");
+    private static Logger log = LogManager.getLogger(LocalizationService.class);
+    private static Logger msgLogger = LogManager.getLogger("com.redhat.rhn.common.localization.messages");
 
     public static final Locale DEFAULT_LOCALE = getDefaultLocale();
     // private instance of the service.

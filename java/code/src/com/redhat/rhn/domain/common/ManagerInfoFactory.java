@@ -20,7 +20,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -34,7 +35,7 @@ import java.util.Optional;
 public class ManagerInfoFactory extends HibernateFactory {
 
     private static ManagerInfoFactory singleton = new ManagerInfoFactory();
-    private static Logger log = Logger.getLogger(CommonFactory.class);
+    private static Logger log = LogManager.getLogger(CommonFactory.class);
 
     private ManagerInfoFactory() {
         super();

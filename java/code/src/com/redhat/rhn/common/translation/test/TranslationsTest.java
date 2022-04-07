@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 

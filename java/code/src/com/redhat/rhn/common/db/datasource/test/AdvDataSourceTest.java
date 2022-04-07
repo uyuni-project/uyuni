@@ -33,7 +33,8 @@ import com.redhat.rhn.common.hibernate.HibernateHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ import java.util.Set;
 
 public class AdvDataSourceTest extends RhnBaseTestCase {
 
-    private static Logger log = Logger.getLogger(AdvDataSourceTest.class);
+    private static Logger log = LogManager.getLogger(AdvDataSourceTest.class);
     private final Random random = new Random();
     private String db_sufix;
     private String db_user;

@@ -44,7 +44,8 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.Collections;
@@ -64,7 +65,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class VirtualizationActionHelper {
 
-    private static final Logger LOG = Logger.getLogger(VirtualizationActionHelper.class);
+    private static final Logger LOG = LogManager.getLogger(VirtualizationActionHelper.class);
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 

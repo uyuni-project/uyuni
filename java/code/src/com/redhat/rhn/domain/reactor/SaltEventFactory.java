@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.reactor;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
  */
 public class SaltEventFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(SaltEventFactory.class);
+    private static Logger log = LogManager.getLogger(SaltEventFactory.class);
     private static SaltEventFactory singleton = new SaltEventFactory();
 
     @Override

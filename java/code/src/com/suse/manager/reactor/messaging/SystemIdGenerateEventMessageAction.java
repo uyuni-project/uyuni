@@ -21,7 +21,8 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.exception.SaltException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
 public class SystemIdGenerateEventMessageAction implements MessageAction {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(SystemIdGenerateEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(SystemIdGenerateEventMessageAction.class);
 
     private static final String EVENT_TAG = "suse/systemid/generated";
 

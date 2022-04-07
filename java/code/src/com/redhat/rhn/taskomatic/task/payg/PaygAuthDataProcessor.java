@@ -31,7 +31,8 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,7 +45,7 @@ import java.util.stream.Collectors;
 
 public class PaygAuthDataProcessor {
 
-    private static final Logger LOG = Logger.getLogger(PaygAuthDataProcessor.class);
+    private static final Logger LOG = LogManager.getLogger(PaygAuthDataProcessor.class);
 
 
     private static final Gson GSON = new GsonBuilder()

@@ -29,14 +29,15 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * System Reboot action in the SSM/Miscellaneous.
  * @author Bo Maryniuk {@literal <bo@suse.de>}
  */
 public class SsmSystemRebootAction implements MessageAction {
-    private static Logger log = Logger.getLogger(SsmSystemRebootAction.class);
+    private static Logger log = LogManager.getLogger(SsmSystemRebootAction.class);
 
     @Override
     public void execute(EventMessage msg) {

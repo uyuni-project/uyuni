@@ -31,7 +31,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -41,7 +42,7 @@ import java.util.Set;
  * PackageActionTest
  */
 public class PackageActionTest extends RhnBaseTestCase {
-    private static Logger log = Logger.getLogger(PackageActionTest.class);
+    private static Logger log = LogManager.getLogger(PackageActionTest.class);
 
 
     /**

@@ -90,7 +90,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -132,7 +133,7 @@ public class SaltService implements SystemQuery, SaltApi {
     private final Batch defaultBatch;
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(SaltService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltService.class);
 
     // Salt properties
     private static final URI SALT_MASTER_URI = URI.create("https://" +

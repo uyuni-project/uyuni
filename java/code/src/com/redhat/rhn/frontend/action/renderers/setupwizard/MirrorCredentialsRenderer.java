@@ -22,7 +22,8 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsNotUniqueException;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MirrorCredentialsRenderer {
 
     // The logger for this class
-    private static Logger logger = Logger.getLogger(MirrorCredentialsRenderer.class);
+    private static Logger logger = LogManager.getLogger(MirrorCredentialsRenderer.class);
 
     // Attribute keys
     private static final String ATTRIB_MIRRCREDS = "credentials";

@@ -26,8 +26,10 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
@@ -63,9 +65,9 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
          * Logging complains and sends warnings (expected)
          * Tracebacks will get sent to root@localhost
          */
-        Logger log = Logger.getLogger(BadParameterExceptionHandler.class);
+        Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         Level origLevel = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail");
         try {
@@ -109,7 +111,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             if (mail != null) {
                 c.setString("web.traceback_mail", mail);
             }
-            log.setLevel(origLevel);
+            Configurator.setLevel(this.getClass().getName(), origLevel);
         }
     }
 

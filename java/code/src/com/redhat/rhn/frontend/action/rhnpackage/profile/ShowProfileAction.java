@@ -25,7 +25,8 @@ import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -45,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ShowProfileAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(ShowProfileAction.class);
+    private static Logger log = LogManager.getLogger(ShowProfileAction.class);
     private static final String BTN_CREATE = "createBtn";
     private static final String BTN_COMPARE_PROFILES = "compareProfilesBtn";
     private static final String BTN_COMPARE_SYSTEMS = "compareSystemsBtn";

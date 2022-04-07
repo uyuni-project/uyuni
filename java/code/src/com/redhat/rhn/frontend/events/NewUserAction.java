@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MailHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(NewUserAction.class);
+    private static Logger logger = LogManager.getLogger(NewUserAction.class);
 
     /**
      * Execute the Event.  This Action actually sends 2 mail messages

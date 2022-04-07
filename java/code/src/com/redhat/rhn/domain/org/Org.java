@@ -48,7 +48,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     private static final String USER_ID_KEY = "user_id";
     private static final String ORG_ID_KEY = "org_id";
 
-    protected static Logger log = Logger.getLogger(Org.class);
+    protected static Logger log = LogManager.getLogger(Org.class);
 
     private Long id;
     private String name;

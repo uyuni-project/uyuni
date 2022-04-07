@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(PinnedSubscriptionFactory.class);
+            log = LogManager.getLogger(PinnedSubscriptionFactory.class);
         }
         return log;
     }

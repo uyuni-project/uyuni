@@ -136,7 +136,8 @@ import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.ByteArrayOutputStream;
@@ -169,7 +170,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class SystemManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(SystemManager.class);
+    private static Logger log = LogManager.getLogger(SystemManager.class);
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
