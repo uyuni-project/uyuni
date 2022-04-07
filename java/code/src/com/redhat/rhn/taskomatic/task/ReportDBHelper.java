@@ -55,8 +55,9 @@ public class ReportDBHelper {
      * @return select mode query
      */
     public static SelectMode generateQuery(Session session, String table) {
-        final String sqlStatement = "SELECT * FROM " + table + " WHERE mgm_id = 1";
-        return new GeneratedSelectMode("select." + table, session, sqlStatement);
+        final String sqlStatement = "SELECT * FROM " + table +
+                " WHERE mgm_id = 1 ORDER BY ctid OFFSET :offset LIMIT :limit";
+        return new GeneratedSelectMode("select." + table, session, sqlStatement, List.of("offset", "limit"));
     }
 
     /**
