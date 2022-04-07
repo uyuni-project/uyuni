@@ -20,10 +20,11 @@ import com.redhat.rhn.common.messaging.MessageAction;
 
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PXEEventMessageAction implements MessageAction {
-    private static final Logger LOG = Logger.getLogger(ImageSyncedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(ImageSyncedEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {
