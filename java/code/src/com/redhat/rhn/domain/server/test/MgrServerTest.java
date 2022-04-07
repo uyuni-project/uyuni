@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -23,8 +27,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 public class MgrServerTest extends RhnBaseTestCase {
 
+    @Test
     public void testSatServer() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -33,9 +40,8 @@ public class MgrServerTest extends RhnBaseTestCase {
                 ServerFactoryTest.TYPE_SERVER_MGR);
         //flushAndEvict(server);
         Server s = ServerFactory.lookupById(server.getId());
-        assertNotNull("Server not found", s);
-        assertTrue("Server object returned is NOT a MgrServer",
-                s instanceof MinionServer);
+        assertNotNull(s, "Server not found");
+        assertTrue(s instanceof MinionServer, "Server object returned is NOT a MgrServer");
         assertTrue(s.isMgrServer());
         assertFalse(s.isProxy());
     }
