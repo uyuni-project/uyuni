@@ -156,10 +156,6 @@ public class SaltbootUtils {
                 throw new SaltbootException("Unable to delete image saltboot distribution for image " + profileName);
             }
         }
-
-        if (p != null) {
-            p.remove();
-        }
     }
 
     /**

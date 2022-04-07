@@ -292,8 +292,7 @@ public class FormulaFactory {
                         bootImage, bootImageVersion);
             }
             catch (SaltbootException e) {
-                // TODO create and display error message
-                throw e;
+                throw new ValidatorException(e.getMessage());
             }
 
         }
