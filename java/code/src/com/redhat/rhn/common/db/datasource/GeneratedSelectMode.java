@@ -26,10 +26,11 @@ import java.util.List;
 public class GeneratedSelectMode extends SelectMode {
 
     /**
-     * Creates am instance
+     * Creates an instance.
      * @param name the name to be used to identify the dynamic query
      * @param session hibernate database session to be used
      * @param sqlStatement the sql statement to execute
+     * @param parameters the parameters needed to peform the quer
      */
     public GeneratedSelectMode(String name, Session session, String sqlStatement, List<String> parameters) {
         super(session, new DynamicParsedMode(name, sqlStatement, parameters));
