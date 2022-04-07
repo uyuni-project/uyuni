@@ -2320,7 +2320,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
    /**
     * Associates a repository with a channel
     * @param loggedInUser The current user
-    * @param chanLabel of the channel to use
+    * @param channelLabel of the channel to use
     * @param repoLabel of the repo to associate
     * @return the channel with the newly associated repo
     *
@@ -2330,8 +2330,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
     * @xmlrpc.returntype $ChannelSerializer
    **/
-    public Channel associateRepo(User loggedInUser, String chanLabel, String repoLabel) {
-        Channel channel = lookupChannelByLabel(loggedInUser, chanLabel);
+    public Channel associateRepo(User loggedInUser, String channelLabel, String repoLabel) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         ContentSource repo = lookupContentSourceByLabel(repoLabel, loggedInUser.getOrg());
 
         Set<ContentSource> set = channel.getSources();
@@ -2344,7 +2344,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
    /**
     * Disassociates a repository from a channel
     * @param loggedInUser The current user
-    * @param chanLabel of the channel to use
+    * @param channelLabel of the channel to use
     * @param repoLabel of the repo to disassociate
     * @return the channel minus the disassociated repo
     *
@@ -2354,8 +2354,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
     * @xmlrpc.returntype $ChannelSerializer
    **/
-    public Channel disassociateRepo(User loggedInUser, String chanLabel, String repoLabel) {
-        Channel channel = lookupChannelByLabel(loggedInUser, chanLabel);
+    public Channel disassociateRepo(User loggedInUser, String channelLabel, String repoLabel) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         ContentSource repo = lookupContentSourceByLabel(repoLabel, loggedInUser.getOrg());
 
         Set<ContentSource> set = channel.getSources();

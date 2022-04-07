@@ -14,6 +14,9 @@
  */
 package com.suse.manager.api;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -184,7 +187,7 @@ public class RouteFactory {
                 throw new RuntimeException(exceptionInMethod);
             }
         };
-        return SparkApplicationHelper.withUser(routeWithUser);
+        return asJson(withUser(routeWithUser));
     }
 
     /**
