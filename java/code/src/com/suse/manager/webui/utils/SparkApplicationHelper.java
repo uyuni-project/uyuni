@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
+import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
@@ -384,19 +385,13 @@ public class SparkApplicationHelper {
     }
 
     /**
-     * Use in routes to automatically get the current user, which must have the
-     * role specified, in your controller. Example:
-     * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
+     * Sets the content type to "application/json" for a {@link Route}
      * @param route the route
-     * @param role the required role to have access to the route
      * @return the route
      */
-    private static TemplateViewRoute withRole(TemplateViewRoute route, Role role) {
+    public static Route asJson(Route route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(role)) {
-                throw new PermissionException("no perms");
-            }
+            response.type("application/json");
             return route.handle(request, response);
         };
     }
@@ -411,6 +406,15 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Returns true if the request is made to the API root
+     * @param request the request
+     * @return true if the request is made to the API root
+     */
+    public static boolean isApiRequest(Request request) {
+        return request.pathInfo().startsWith("/manager/api/");
+    }
+
+    /**
      * Sets up this application and the Jade engine.
      * @return the jade template engine
      */
@@ -421,11 +425,6 @@ public class SparkApplicationHelper {
             response.type("text/html");
             // init the flash scope
             FlashScopeHelper.handleFlashData(request, response);
-        });
-
-        // Override content type for API routes
-        Spark.before("/manager/api/*", (request, response) -> {
-            response.type("application/json");
         });
 
         // capture json endpoint exceptions, let others pass (resulting in status code 500)

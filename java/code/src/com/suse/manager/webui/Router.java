@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
@@ -76,7 +80,6 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.SparkApplicationHelper;
 
 import org.apache.http.HttpStatus;
 
@@ -123,7 +126,7 @@ public class Router implements SparkApplication {
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
 
-        post("/manager/frontend-log", withUser(FrontendLogController::log));
+        post("/manager/frontend-log", asJson(withUser(FrontendLogController::log)));
 
         // Login
         LoginController.initRoutes(jade);
@@ -227,8 +230,8 @@ public class Router implements SparkApplication {
 
     private void initNotFoundRoutes(JadeTemplateEngine jade) {
         notFound((request, response) -> {
-            if (SparkApplicationHelper.isJson(response)) {
-                return SparkApplicationHelper.json(response, Collections.singletonMap("message", "404 Not found"));
+            if (isJson(response) || isApiRequest(request)) {
+                return json(response, Collections.singletonMap("message", "404 Not found"));
             }
             var data = Collections.singletonMap("currentUrl", request.pathInfo());
             return jade.render(new ModelAndView(data, "templates/errors/404.jade"));
@@ -236,7 +239,10 @@ public class Router implements SparkApplication {
 
         exception(NotFoundException.class, (exception, request, response) -> {
             response.status(HttpStatus.SC_NOT_FOUND);
-            if (!SparkApplicationHelper.isJson(response)) {
+            if (isJson(response) || isApiRequest(request)) {
+                response.body(json(response, Collections.singletonMap("message", "404 Not found")));
+            }
+            else {
                 var data = Collections.singletonMap("currentUrl", request.pathInfo());
                 response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
             }

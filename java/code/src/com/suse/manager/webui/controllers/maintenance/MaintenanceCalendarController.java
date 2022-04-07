@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.maintenance;
 
 import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
 import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -89,10 +90,11 @@ public class MaintenanceCalendarController {
                 jade);
         get("/manager/api/maintenance/calendar/list", withUser(MaintenanceCalendarController::list));
         get("/manager/api/maintenance/calendar/:id/details", withUser(MaintenanceCalendarController::details));
-        get("/manager/api/maintenance/calendar/names", withUser(MaintenanceCalendarController::getNames));
-        post("/manager/api/maintenance/calendar/save", withUser(MaintenanceCalendarController::save));
-        post("/manager/api/maintenance/calendar/refresh", withUser(MaintenanceCalendarController::refresh));
-        Spark.delete("/manager/api/maintenance/calendar/delete", withUser(MaintenanceCalendarController::delete));
+        get("/manager/api/maintenance/calendar/names", asJson(withUser(MaintenanceCalendarController::getNames)));
+        post("/manager/api/maintenance/calendar/save", asJson(withUser(MaintenanceCalendarController::save)));
+        post("/manager/api/maintenance/calendar/refresh", asJson(withUser(MaintenanceCalendarController::refresh)));
+        Spark.delete("/manager/api/maintenance/calendar/delete",
+                asJson(withUser(MaintenanceCalendarController::delete)));
     }
 
     /**
@@ -186,7 +188,6 @@ public class MaintenanceCalendarController {
      * @return the result JSON object
      */
     public static String getNames(Request request, Response response, User user) {
-        response.type("application/json");
         return json(response, MM.listCalendarLabelsByUser(user));
     }
 
@@ -199,7 +200,6 @@ public class MaintenanceCalendarController {
      * @return string containing the JSON response
      */
     public static String save(Request request, Response response, User user) {
-        response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         if (json.getName().isBlank()) {
@@ -279,7 +279,6 @@ public class MaintenanceCalendarController {
      * @return string containing the JSON response
      */
     public static String refresh(Request request, Response response, User user) {
-        response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         try {
@@ -318,7 +317,6 @@ public class MaintenanceCalendarController {
      * @return the result JSON object
      */
     public static String delete(Request request, Response response, User user) {
-        response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         String name = json.getName();

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.virtualization;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -131,7 +132,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         get("/manager/systems/details/virtualization/guests/console/:guestuuid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUserAndServer(this::data));
+                asJson(withUserAndServer(this::data)));
         post("/manager/api/systems/details/virtualization/guests/consoleToken/:guestuuid",
                 withUser(this::refreshConsoleToken));
         post("/manager/api/systems/details/virtualization/guests/:sid/refresh",
@@ -202,7 +203,6 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             }
         }
 
-        response.type("application/json");
         String json = GSON.toJson(data);
         List<Map<String, JsonElement>> mergeData = GSON.fromJson(json,
                 new TypeToken<List<Map<String, JsonElement>>>() { }.getType());

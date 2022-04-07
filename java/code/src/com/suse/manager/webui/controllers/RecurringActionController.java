@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -80,10 +81,10 @@ public class RecurringActionController {
                 withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringStates))),
                 jade);
 
-        get("/manager/api/recurringactions", withUser(RecurringActionController::listAll));
-        get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::listByEntity));
-        post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
-        delete("/manager/api/recurringactions/:id/delete", withUser(RecurringActionController::deleteSchedule));
+        get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
+        get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
+        post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
+        delete("/manager/api/recurringactions/:id/delete", asJson(withUser(RecurringActionController::deleteSchedule)));
     }
 
     /**
@@ -187,8 +188,6 @@ public class RecurringActionController {
      * @return string containing the json response
      */
     public static String save(Request request, Response response, User user) {
-        response.type("application/json");
-
         List<String> errors = new LinkedList<>();
 
         RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
