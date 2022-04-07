@@ -26,7 +26,7 @@ CREATE TABLE System
     architecture                  VARCHAR(64),
     is_proxy                      BOOLEAN NOT NULL DEFAULT FALSE,
     proxy_system_id               NUMERIC,
-    is_mgr_server                 BOOOLEAN NOT NULL DEFAULT FALSE,
+    is_mgr_server                 BOOLEAN NOT NULL DEFAULT FALSE,
     organization                  VARCHAR(128),
     hardware                      TEXT,
     machine                       VARCHAR(64),
