@@ -14,6 +14,11 @@
  */
 package com.suse.manager.api.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
@@ -36,6 +41,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -63,6 +70,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     private TestHandler handler;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         handler = new TestHandler();
@@ -85,6 +93,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests if the authorized user instance is passed into the API method
      */
+    @Test
     public void testWithUser() throws Exception {
         Method withUser = TestHandler.class.getMethod("withUser", User.class);
         Route route = routeFactory.createRoute(withUser, handler);
@@ -98,6 +107,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests a read-only user against a read-write method
      */
+    @Test
     public void testWithReadOnlyUser() throws Exception {
         User readOnly = UserTestUtils.createUser("readonly-user", user.getOrg().getId());
         readOnly.setReadOnly(true);
@@ -108,19 +118,16 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/withUser");
         Response res = createResponse();
         authorizeRequest(req, res, readOnly);
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with 403.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_FORBIDDEN, e.statusCode());
-            assertEquals("The method is not available to read-only API users", e.body());
-        }
+
+        HaltException e = assertThrows(HaltException.class, () -> route.handle(req, res));
+        assertEquals(HttpStatus.SC_FORBIDDEN, e.statusCode());
+        assertEquals("The method is not available to read-only API users", e.body());
     }
 
     /**
      * Tests handling of different types of numbers
      */
+    @Test
     public void testNumbers() throws Exception {
         Method numbers = handler.getClass().getMethod("numbers", Integer.class, Long.class, Double.class);
         Route route = routeFactory.createRoute(numbers, handler);
@@ -141,6 +148,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of primitive parameter types in query string
      */
+    @Test
     public void testBasicTypes() throws Exception {
         Method basicTypes = handler.getClass().getMethod("basicTypes", Integer.class, String.class, Boolean.class);
         Route route = routeFactory.createRoute(basicTypes, handler);
@@ -158,6 +166,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of empty parameter values in query string
      */
+    @Test
     public void testEmptyParams() throws Exception {
         Method basicTypes = handler.getClass().getMethod("basicTypes", Integer.class, String.class, Boolean.class);
         Route route = routeFactory.createRoute(basicTypes, handler);
@@ -175,6 +184,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests precedence of an argument value provided in both query string and the body
      */
+    @Test
     public void testBasicTypesMixedArgs() throws Exception {
         Method basicTypes = handler.getClass().getMethod("basicTypes", Integer.class, String.class, Boolean.class);
         Route route = routeFactory.createRoute(basicTypes, handler);
@@ -193,6 +203,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests API response in case of missing arguments
      */
+    @Test
     public void testBasicTypesMissingArgs() throws Exception {
         Method basicTypes = handler.getClass().getMethod("basicTypes", Integer.class, String.class, Boolean.class);
         Route route = routeFactory.createRoute(basicTypes, handler);
@@ -201,18 +212,14 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/basicTypes", queryParams);
         Response res = createResponse();
 
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with 400.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
-        }
+        HaltException e = assertThrows(HaltException.class, () -> route.handle(req, res));
+        assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
     }
 
     /**
      * Tests handling of primitive parameter types in the request body
      */
+    @Test
     public void testBasicTypesInBody() throws Exception {
         Method basicTypes = handler.getClass().getMethod("basicTypes", Integer.class, String.class, Boolean.class);
         Route route = routeFactory.createRoute(basicTypes, handler);
@@ -230,6 +237,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a basic {@link Date} argument in query string
      */
+    @Test
     public void testBasicDate() throws Exception {
         Method basicDate = handler.getClass().getMethod("basicDate", Date.class);
         Route route = routeFactory.createRoute(basicDate, handler);
@@ -244,6 +252,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a basic {@link Date} argument in the request body
      */
+    @Test
     public void testBasicDateInBody() throws Exception {
         Method basicDate = handler.getClass().getMethod("basicDate", Date.class);
         Route route = routeFactory.createRoute(basicDate, handler);
@@ -259,6 +268,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of ISO 8601 dates
      */
+    @Test
     public void testIso8601Date() throws Exception {
         Method basicDate = handler.getClass().getMethod("basicDate", Date.class);
         Route route = routeFactory.createRoute(basicDate, handler);
@@ -274,19 +284,16 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of an invalid {@link Date} argument in query string
      */
+    @Test
     public void testInvalidDate() throws Exception {
         Method basicDate = handler.getClass().getMethod("basicDate", Date.class);
         Route route = routeFactory.createRoute(basicDate, handler);
 
         Request req = createRequest("/manager/api/test/basicDate", Collections.singletonMap("myDate", "not-a-date"));
         Response res = createResponse();
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with 400.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
-        }
+
+        HaltException e = assertThrows(HaltException.class, () -> route.handle(req, res));
+        assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
     }
 
     /**
@@ -295,6 +302,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      * Note: Because of type erasure, GSON will parse elements as {@link Long} instances
      * regardless of the declared type parameter in the handler.
      */
+    @Test
     public void testIntegerList() throws Exception {
         Method sortIntegerList = handler.getClass().getMethod("sortIntegerList", List.class);
         Route route = routeFactory.createRoute(sortIntegerList, handler);
@@ -310,6 +318,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests parsing of a list of {@link Long}s in the request body
      */
+    @Test
     public void testLongList() throws Exception {
         Method sortLongList = handler.getClass().getMethod("sortLongList", List.class);
         Route route = routeFactory.createRoute(sortLongList, handler);
@@ -326,6 +335,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a query string array of string type
      */
+    @Test
     public void testStringListInQueryString() throws Exception {
         Method sortStringList = handler.getClass().getMethod("sortStringList", List.class);
         Route route = routeFactory.createRoute(sortStringList, handler);
@@ -343,6 +353,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a string array in the request body
      */
+    @Test
     public void testStringListInBody() throws Exception {
         Method sortStringList = handler.getClass().getMethod("sortStringList", List.class);
         Route route = routeFactory.createRoute(sortStringList, handler);
@@ -359,6 +370,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests an overloaded API endpoint
      */
+    @Test
     public void testOverloadedEndpoint() throws Exception {
         Method overload1 = handler.getClass().getMethod("overloadedEndpoint", Integer.class);
         Method overload2 = handler.getClass().getMethod("overloadedEndpoint", Integer.class, Integer.class);
@@ -380,6 +392,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a map of mixed types
      */
+    @Test
     public void testObjectMap() throws Exception {
         Method mapKeysToSet = handler.getClass().getMethod("mapKeysToSet", Map.class, Integer.class);
         Route route = routeFactory.createRoute(mapKeysToSet, handler);
@@ -397,6 +410,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of a list of maps of mixed types
      */
+    @Test
     public void testListOfObjects() throws Exception {
         Method listOfMaps = handler.getClass().getMethod("listOfMaps", List.class);
         Route route = routeFactory.createRoute(listOfMaps, handler);
@@ -415,37 +429,30 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of invalid argument types
      */
+    @Test
     public void testParameterTypeMismatch() throws Exception {
         Method overload1 = handler.getClass().getMethod("overloadedEndpoint", Integer.class);
         Method overload2 = handler.getClass().getMethod("overloadedEndpoint", Integer.class, Integer.class);
         Route route = routeFactory.createRoute(List.of(overload1, overload2), handler);
 
-        Request req = createRequest("/manager/api/test/overloadedEndpoint", Map.of("myInteger1", "foo"));
-        Response res = createResponse();
+        Request req1 = createRequest("/manager/api/test/overloadedEndpoint", Map.of("myInteger1", "foo"));
+        Response res1 = createResponse();
 
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with 400.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
-        }
+        HaltException e = assertThrows(HaltException.class, () -> route.handle(req1, res1));
+        assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
 
-        req = createRequest("/manager/api/test/overloadedEndpoint", Map.of("myInteger1", "foo", "myInteger2", "2"));
-        res = createResponse();
+        Request req2 = createRequest("/manager/api/test/overloadedEndpoint",
+                Map.of("myInteger1", "foo", "myInteger2", "2"));
+        Response res2 = createResponse();
 
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with status 400.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
-        }
+        e = assertThrows(HaltException.class, () -> route.handle(req2, res2));
+        assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
     }
 
     /**
      * Tests API exception output
      */
+    @Test
     public void testMethodException() throws Exception {
         Method failing = handler.getClass().getMethod("failing");
         Route route = routeFactory.createRoute(failing, handler);
@@ -460,6 +467,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests forbidding object-like parameters in the query string
      */
+    @Test
     public void testComplexQueryParam() throws Exception {
         Method listOfMaps = handler.getClass().getMethod("listOfMaps", List.class);
         Route route = routeFactory.createRoute(listOfMaps, handler);
@@ -470,18 +478,14 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Request req = createRequest("/manager/api/test/listOfMaps", Map.of("myList", GSON.toJson(list)));
         Response res = createResponse();
 
-        try {
-            route.handle(req, res);
-            fail("Route must throw HaltException with status 400.");
-        }
-        catch (HaltException e) {
-            assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
-        }
+        HaltException e = assertThrows(HaltException.class, () -> route.handle(req, res));
+        assertEquals(HttpStatus.SC_BAD_REQUEST, e.statusCode());
     }
 
     /**
      * Tests default serialization of API response objects
      */
+    @Test
     public void testDefaultSerialization() throws Exception {
         RouteFactory noSerializerFactory = new RouteFactory(new SerializerFactory() {
             @Override
@@ -507,6 +511,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests custom serializers
      */
+    @Test
     public void testCustomSerializer() throws Exception {
         Method customResponse = handler.getClass().getMethod("customResponse", Integer.class, String.class);
         Route route = routeFactory.createRoute(customResponse, handler);
@@ -525,6 +530,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests custom serialization of a subclass
      */
+    @Test
     public void testCustomSerializerWithSubclass() throws Exception {
         Method customResponseSubclass =
                 handler.getClass().getMethod("customResponseSubclass", Integer.class, String.class);
@@ -545,6 +551,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests chain serialization of complex objects
      */
+    @Test
     public void testChainSerialization() throws Exception {
         Method complexResponse = handler.getClass().getMethod("complexResponse", String.class, Map.class);
         Route route = routeFactory.createRoute(complexResponse, handler);
@@ -576,6 +583,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests lists of custom serialized objects
      */
+    @Test
     public void testCustomSerializedList() throws Exception {
         Method customResponseList = handler.getClass().getMethod("customResponseList", String.class, String.class);
         Route route = routeFactory.createRoute(customResponseList, handler);
@@ -596,6 +604,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests lists of custom serialized objects
      */
+    @Test
     public void testCustomSerializedMap() throws Exception {
         Method customResponseMap = handler.getClass().getMethod("customResponseMap", String.class, String.class);
         Route route = routeFactory.createRoute(customResponseMap, handler);
@@ -617,6 +626,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     /**
      * Tests handling of arrays in query string
      */
+    @Test
     public void testQueryStringArray() throws Exception {
         Method sortLongList = handler.getClass().getMethod("sortLongList", List.class);
         Route route = routeFactory.createRoute(sortLongList, handler);

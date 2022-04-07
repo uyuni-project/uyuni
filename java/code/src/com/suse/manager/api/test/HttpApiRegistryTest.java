@@ -27,6 +27,8 @@ import com.suse.manager.api.SparkRegistrationHelper;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import spark.Route;
 
@@ -43,15 +45,15 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
         @ApiIgnore(ApiType.XMLRPC) public void notIgnored() { }
     }
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     /**
      * Tests creation of correct Spark GET or POST requests according to handler contents
      */
+    @Test
     public void testInitRoutes() {
         RouteFactory routeFactory = new RouteFactory(RouteFactoryTest.createTestSerializerFactory());
         HandlerFactory handlerFactory = new HandlerFactory();
