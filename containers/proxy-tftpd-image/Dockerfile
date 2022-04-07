@@ -30,9 +30,6 @@ EXPOSE 69/udp
 
 VOLUME [ "/etc/uyuni", "/srv/tftpboot" ]
 
-# FIXME remove before shipping
-RUN zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.3/ extra
-
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML python3-fbtftp python3-requests
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
