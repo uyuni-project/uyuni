@@ -1,3 +1,4 @@
+- Migrated from log4j1.x.x to log4j2.x.x
 - Add UI for peripheral server with report database password
   regeneration
 - Added the server location information to reporting database
