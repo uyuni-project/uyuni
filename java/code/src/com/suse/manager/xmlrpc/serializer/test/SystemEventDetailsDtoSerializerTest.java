@@ -14,10 +14,15 @@
  */
 package com.suse.manager.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -26,14 +31,14 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcSerializer;
 
-public class SystemEventDetailsDtoSerializerTest extends TestCase {
+public class SystemEventDetailsDtoSerializerTest {
 
     /**
      * Verify if the serialization to xml contains the expected tags
      */
+    @Test
     public void testSerializeSystemEventDetailDto() throws IOException {
 
         final SystemEventDetailsDtoSerializer serializer = new SystemEventDetailsDtoSerializer();
