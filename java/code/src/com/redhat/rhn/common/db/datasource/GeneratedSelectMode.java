@@ -31,8 +31,8 @@ public class GeneratedSelectMode extends SelectMode {
      * @param session hibernate database session to be used
      * @param sqlStatement the sql statement to execute
      */
-    public GeneratedSelectMode(String name, Session session, String sqlStatement) {
-        super(session, new DynamicParsedMode(name, sqlStatement, List.of()));
+    public GeneratedSelectMode(String name, Session session, String sqlStatement, List<String> parameters) {
+        super(session, new DynamicParsedMode(name, sqlStatement, parameters));
     }
 
     private static class DynamicParsedMode implements ParsedMode {
