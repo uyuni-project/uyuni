@@ -9,7 +9,6 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
 import { TabContainer } from "components/tab-container";
@@ -20,6 +19,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import { ImageViewBuildLog } from "./image-view-buildlog";
 import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
@@ -752,20 +752,6 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
       </div>
     );
   }
-}
-
-function ImageViewBuildLog(props) {
-  return (
-    <BootstrapPanel title={t("Build Log")}>
-      <div className="auto-overflow">
-        {props.data.buildlog ? (
-          <textarea className="form-control" name="buildlog" rows={30} value={props.data.buildlog} readOnly />
-        ) : (
-          t("Build log is not available.")
-        )}
-      </div>
-    </BootstrapPanel>
-  );
 }
 
 type ImageViewDetailsProps = {
