@@ -1,3 +1,4 @@
+- Show image build log in UI
 - Build bundle less images and create pxe profile for pxe images
   Introduce saltboot-group handing and pxe management of them
   Part of saltboot containerization workflow
