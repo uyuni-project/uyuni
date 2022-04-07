@@ -1033,7 +1033,6 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |ta
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
-
   "disabled".eql?(is_disabled) || raise('Invalid disabled flag value')
 
   case target_status

@@ -212,7 +212,7 @@ end
 When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
-    if ENV['PROVIDER'] == PROVIDER
+    if $is_cloud_provider
       "salt-common"
     elsif $use_salt_bundle
       "venv-salt-minion"

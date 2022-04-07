@@ -196,9 +196,9 @@ When(/^I enter target "([^"]*)"$/) do |host|
     if $is_cloud_provider
       get_system_name(host)
     elsif host == 'ceos_minion'
-      "*centos*"
+      '*centos*'
     elsif host == 'ubuntu_minion'
-      "*ubuntu*"
+      '*ubuntu*'
     end
 
   fill_in('target', with: value, fill_options: { clear: :backspace })
