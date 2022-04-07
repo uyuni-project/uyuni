@@ -192,6 +192,11 @@ When(/^I enter target "([^"]*)"$/) do |host|
   fill_in('target', with: value, fill_options: { clear: :backspace })
 end
 
+When(/^I enter target "([^"]*)"$/) do |host|
+   value = $is_cloud_provider ? get_system_name(host) : SEARCH_VALUE[host]
+   fill_in('target', with: value, fill_options: { clear: :backspace })
+end
+
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
