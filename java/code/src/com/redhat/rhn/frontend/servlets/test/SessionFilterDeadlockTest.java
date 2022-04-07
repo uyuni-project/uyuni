@@ -21,11 +21,11 @@ import com.redhat.rhn.frontend.servlets.SessionFilter;
 
 import com.mockobjects.servlet.MockFilterChain;
 
-import org.junit.jupiter.api.Test;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

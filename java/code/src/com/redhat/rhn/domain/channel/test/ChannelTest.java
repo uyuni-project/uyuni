@@ -41,9 +41,9 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.jupiter.api.Test;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;

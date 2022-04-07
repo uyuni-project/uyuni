@@ -23,8 +23,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.junit.jupiter.api.Test;
 import org.apache.logging.log4j.LogManager;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ErrataCacheDriver class.

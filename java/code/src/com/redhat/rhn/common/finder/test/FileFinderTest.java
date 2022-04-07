@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
