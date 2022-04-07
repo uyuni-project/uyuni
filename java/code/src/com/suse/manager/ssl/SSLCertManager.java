@@ -97,7 +97,12 @@ public class SSLCertManager {
                     FileUtils.readStringFromFile(serverKeyFile.getAbsolutePath()));
         }
         catch (RhnRuntimeException | IOException err) {
-            throw new SSLCertGenerationException(err.getMessage());
+            String msg = err.getMessage();
+            if (msg.startsWith(ExecHelper.TOOL_FAILED_MSG)) {
+                msg = msg.substring(ExecHelper.TOOL_FAILED_MSG.length()).replaceAll("^$", "")
+                        .replace("ERROR: ", "").strip();
+            }
+            throw new SSLCertGenerationException(msg);
         }
         finally {
             if (sslBuildDir != null) {

@@ -8,9 +8,11 @@ import yaml
 import socket
 import sys
 
+from typing import Tuple
+
 config_path = "/etc/uyuni/"
 
-def getIPs(fqdn: str) -> [str, str]:
+def getIPs(fqdn: str) -> Tuple[str, str]:
     addrinfo = socket.getaddrinfo(fqdn, None)
     ipv4s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET, addrinfo)))
     ipv6s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET6, addrinfo)))
@@ -141,6 +143,8 @@ os.system('chown -R root:root /srv/www/htdocs/pub')
 os.system('chmod -R 755 /srv/www/htdocs/pub')
 os.system('chown -R wwwrun:www /var/spool/rhn-proxy')
 os.system('chmod -R 750 /var/spool/rhn-proxy')
+if not os.path.exists('/var/cache/rhn/proxy-auth'):
+    os.makedirs('/var/cache/rhn/proxy-auth')
 os.system('chown -R wwwrun:root /var/cache/rhn/proxy-auth')
 os.system('chown -R wwwrun:root /srv/tftpboot')
 os.system('chmod 755 /srv/tftpboot')

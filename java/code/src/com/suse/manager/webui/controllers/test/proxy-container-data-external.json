@@ -1,0 +1,12 @@
+{
+  "proxyFQDN": "pxy.acme.lab",
+  "proxyPort": 8022,
+  "serverFQDN": "srv.acme.lab",
+  "maxSquidCacheSize": 2048,
+  "proxyAdminEmail": "coyote@acme.lab",
+  "sslMode": "use-ssl",
+  "rootCA": "Root CA",
+  "intermediateCAs": ["CA1", "CA2"],
+  "proxyCertificate": "CERT",
+  "proxyKey": "KEY"
+}

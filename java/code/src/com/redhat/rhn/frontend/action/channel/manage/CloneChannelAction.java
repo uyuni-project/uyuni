@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditChannelAction
- * @version $Rev: 1 $
  */
 public class CloneChannelAction extends RhnAction {
     public static final String CURRENT = "current";

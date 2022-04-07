@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -28,6 +32,8 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +46,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
     private final ChannelHandler handler = new ChannelHandler();
 
+    @Test
     public void testListSoftwareChannels() throws Exception {
 
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -61,6 +68,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListAllChannels() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -89,6 +97,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
+    @Test
     public void testListManageableChannels() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         admin.getOrg().addOwnedChannel(channel);
@@ -122,6 +131,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         regular.removePermanentRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testListPopularChannels() throws Exception {
         // setup
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -157,6 +167,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, result.length);
     }
 
+    @Test
     public void testListMyChannels() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -185,6 +196,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
+    @Test
     public void testListSharedChannels() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -221,6 +233,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
+    @Test
     public void testListRetiredChannels() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);

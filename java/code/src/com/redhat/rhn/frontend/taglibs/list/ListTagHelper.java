@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Static helper class for the "new-style" list tag
  *
- * @version $Rev $
  */
 public class ListTagHelper {
 

@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * MD5CryptTest
@@ -24,6 +30,7 @@ public class MD5CryptTest extends RhnBaseTestCase {
 
     /** Test the crypt function
      */
+    @Test
     public void testCrypt() {
         String key = "%43AazZ09!@#$%^&*()-+=/.~`?;:<>,";
         String salt = "testsalttest";
@@ -52,6 +59,7 @@ public class MD5CryptTest extends RhnBaseTestCase {
 
     /** Test the crypt function
      */
+    @Test
     public void testMD5Hex() {
         String someString = "somestringtohex";
         String hexified = MD5Crypt.md5Hex(someString);

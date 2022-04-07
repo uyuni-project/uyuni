@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 /**
  * Manages the pending errata queue
  *
- * @version $Rev $
  */
 public class ErrataQueue extends RhnQueueJob {
 

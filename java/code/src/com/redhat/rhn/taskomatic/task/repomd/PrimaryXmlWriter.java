@@ -37,7 +37,6 @@ import java.util.Map;
 
 /**
  * Primary.xml writer class
- * @version $Rev $
  *
  */
 public class PrimaryXmlWriter extends RepomdWriter {

@@ -64,7 +64,7 @@
 
   <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
     <exec failonerror="true" executable="obs-to-maven">
-      <arg line="${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
+      <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
     </exec>
   </target>
 
@@ -298,7 +298,20 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="test" depends="jar" description="Run unit tests">
+  <target name="test-report" depends="test" description="Run unit tests and produce a report">
+    <junitreport todir="${tests.results.dir}">
+      <fileset dir="${tests.results.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.results.dir}/html"/>
+    </junitreport>
+  </target>
+
+  <target
+      name="test"
+      description="Run unit tests"
+      depends="refresh-branding-jar, jar"
+      >
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
@@ -307,31 +320,37 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
+    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+    <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
 
-    <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf"
-	    failureproperty="junit_failed">
-      <sysproperty key="rhn-home" value="." />
-      <sysproperty key="java.awt.headless" value="true" />
-      <sysproperty key="log4j.threshold" value="warn" />
-      <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
+    <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
+         Before it outputs useless over-verbose Junit5 summary for each test summary for each test summary for each test... -->
+    <junitlauncher>
+	    <classpath>
+            <fileset dir="/usr/share/java/junit5/">
+                <include name="**/junit-platform-*.jar" />
+                <include name="**/junit-jupiter-*.jar" />
+            </fileset>
+        </classpath>
 
-      <jvmarg value="-ea" />
-      <classpath refid="managertestjars" />
-      <formatter type="xml" usefile="true" />
-      <formatter type="brief" usefile="false" />
-      <batchtest todir="${tests.results.dir}">
-        <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
-      </batchtest>
-    </junit>
-  </target>
+        <classpath refid="managertestjars" />
 
-  <target name="test-report" depends="test" description="Run unit tests and produce a report">
-    <junitreport todir="${tests.results.dir}">
-      <fileset dir="${tests.results.dir}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${tests.results.dir}/html"/>
-    </junitreport>
+        <testclasses
+                outputdir="${tests.results.dir}"
+                failureProperty="junit_failed">
+            <fork>
+                <sysproperty key="rhn-home" value="." />
+                <sysproperty key="java.awt.headless" value="true" />
+                <sysproperty key="log4j.threshold" value="warn" />
+                <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
+                <jvmarg value="-ea" />
+                <jvmarg value="${jacocoagent}"/>
+            </fork>
+            <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
+            <listener type="legacy-brief" sendSysOut="true"/>
+            <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
+        </testclasses>
+    </junitlauncher>
   </target>
 
   <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">
@@ -358,35 +377,7 @@
     </checkstyle>
   </target>
 
-  <target name="test-coverage" depends="jar" description="Measure unit test coverage">
-    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
-
-    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
-    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
-    <echo message="Running tests with coverage including:" />
-    <echo message="${tests.includes.text}" />
-    <echo message="and excluding:" />
-    <echo message="${tests.excludes.text}" />
-
-    <coverage destfile="${tests.coverage.destfile}">
-      <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf">
-        <sysproperty key="rhn-home" value="." />
-        <sysproperty key="java.awt.headless" value="true" />
-        <sysproperty key="log4j.threshold" value="warn" />
-        <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
-
-        <jvmarg value="-ea" />
-        <classpath refid="managertestjars" />
-        <formatter type="xml" usefile="true" />
-        <formatter type="brief" usefile="false" />
-        <batchtest todir="${tests.results.dir}">
-          <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
-        </batchtest>
-      </junit>
-    </coverage>
-  </target>
-
-  <target name="test-coverage-report" depends="test-coverage" description="Generate the unit test coverage reports">
+  <target name="test-coverage-report" depends="test" description="Generate the unit test coverage reports">
     <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
     <report>
       <executiondata>

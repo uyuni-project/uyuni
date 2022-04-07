@@ -14,18 +14,21 @@
  */
 package com.redhat.rhn.frontend.action.iss.test;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * IssMapOrgsActionTest
- * @version $Rev: 1 $
  */
 public class EditMasterSetupAction extends BaseIssTestAction {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("id", masterDto.getId().toString());
     }
 
+    @Test
     public void testEditSlave() {
         doPerform(true);
         verifyFormValue("id", masterDto.getId());

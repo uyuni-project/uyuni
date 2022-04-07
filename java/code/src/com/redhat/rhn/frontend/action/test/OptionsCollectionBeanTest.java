@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.action.OptionsCollectionBean;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * OptionsCollectionBean
  */
-public class OptionsCollectionBeanTest extends TestCase {
+public class OptionsCollectionBeanTest  {
 
+    @Test
     public void testGettersSetters() {
         OptionsCollectionBean ocb = new OptionsCollectionBean("label", "value");
         assertEquals("label", ocb.getLabel());

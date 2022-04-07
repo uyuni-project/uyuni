@@ -14,14 +14,17 @@
  */
 package com.suse.utils.test;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.suse.utils.Opt;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Optional;
 
-public class OptTest extends RhnBaseTestCase {
+public class OptTest {
 
+    @Test
     public void testWrapFirstNonNull() {
         assertEquals(Optional.of("test"), Opt.wrapFirstNonNull(null, "test", null));
         assertEquals(Optional.of("this"), Opt.wrapFirstNonNull("this", "is", "a", "test"));

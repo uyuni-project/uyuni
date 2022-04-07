@@ -1,0 +1,89 @@
+<!--
+  ~ Copyright (c) 2022 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<datasource_modes>
+
+<mode name="SystemGroup">
+    <query params="offset, limit">
+            SELECT rhnservergroup.id AS system_group_id
+                      , rhnservergroup.name
+                      , rhnservergroup.description
+                      , rhnservergroup.current_members
+                      , web_customer.name AS organization
+              FROM rhnservergroup
+                      INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
+             WHERE rhnservergroup.group_type IS NULL
+        ORDER BY rhnservergroup.id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="SystemGroupPermission" class="">
+    <query params="offset, limit">
+          SELECT rhnUserServerGroupPerms.server_group_id AS system_group_id
+                    , rhnUserServerGroupPerms.user_id AS account_id
+                    , rhnServerGroup.name AS group_name
+            FROM rhnUserServerGroupPerms
+                    INNER JOIN rhnServerGroup ON rhnUserServerGroupPerms.server_group_id = rhnServerGroup.id
+        ORDER BY system_group_id, account_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="Account" class="">
+    <query params="offset, limit">
+          WITH latest_state_change AS (
+               SELECT rhnWebContactChangeLog.web_contact_id
+                            , rhnWebContactChangeState.label
+                FROM rhnWebContactChangeLog
+                            INNER JOIN rhnWebContactChangeState ON rhnWebContactChangeLog.change_state_id = rhnWebContactChangeState.id
+                            LEFT JOIN rhnWebContactChangeLog older ON ( rhnWebContactChangeLog.web_contact_id = older.web_contact_id AND rhnWebContactChangeLog.date_completed &lt; older.date_completed )
+              WHERE older.date_completed IS NULL
+          )
+          SELECT web_contact.id AS account_id
+                    , web_contact.login AS username
+                    , web_customer.name AS organization
+                    , web_user_personal_info.last_name
+                    , web_user_personal_info.first_names as first_name
+                    , web_user_personal_info.title as position
+                    , web_user_personal_info.email
+                    , web_contact.created AS creation_time
+                    , rhnUserInfo.last_logged_in AS last_login_time
+                    , COALESCE(latest_state_change.label, 'enabled') AS status
+                    , web_contact.password like '$1$%' AS md5_encryption
+            FROM web_contact
+                    INNER JOIN web_customer ON web_contact.org_id = web_customer.id
+                    INNER JOIN web_user_personal_info ON web_contact.id = web_user_personal_info.web_user_id
+                    INNER JOIN rhnUserInfo ON web_contact.id = rhnUserInfo.user_id
+                    LEFT JOIN latest_state_change ON web_contact.id = latest_state_change.web_contact_id
+        ORDER BY account_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="AccountGroup" class="">
+    <query params="offset, limit">
+          SELECT web_contact.id AS account_id
+                    , web_contact.login AS username
+                    , rhnusergroupmembers.user_group_id AS account_group_id
+                    , rhnusergroup.name AS account_group_name
+                    , rhnusergrouptype.id AS account_group_type_id
+                    , rhnusergrouptype.name AS account_group_type_name
+                    , rhnusergrouptype.label AS account_group_type_label
+            FROM web_contact
+                    LEFT JOIN rhnusergroupmembers ON web_contact.id = rhnusergroupmembers.user_id
+                    LEFT JOIN rhnusergroup ON rhnusergroupmembers.user_group_id = rhnusergroup.id
+                    LEFT JOIN rhnusergrouptype ON rhnusergroup.group_type = rhnusergrouptype.id
+        ORDER BY account_id, account_group_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+</datasource_modes>

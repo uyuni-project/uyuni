@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.Server;
  * <p>
 
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class PermissionCheckFailureException extends FaultException  {
 

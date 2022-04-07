@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
@@ -28,12 +32,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
-import junit.framework.Assert;
-
 /**
  * A class that allows us to easily create test users.
  */
-public class UserTestUtils extends Assert {
+public class UserTestUtils  {
     // static class
     private UserTestUtils() { }
 
@@ -229,8 +231,8 @@ public class UserTestUtils extends Assert {
     public static void assertOrgAdmin(User user) {
         boolean act = user.hasRole(RoleFactory.ORG_ADMIN);
         int servers = UserManager.visibleSystems(user).size();
-        assertTrue("User must be org_admin", act);
-        assertTrue("User sees some systems", servers > 0);
+        assertTrue(act, "User must be org_admin");
+        assertTrue(servers > 0, "User sees some systems");
     }
 
     /**
@@ -242,8 +244,8 @@ public class UserTestUtils extends Assert {
     public static void assertNotOrgAdmin(User user) {
         boolean act = user.hasRole(RoleFactory.ORG_ADMIN);
         int servers = UserManager.visibleSystems(user).size();
-        assertFalse("User must not be org_admin", act);
-        assertEquals("User sees no servers", 0, servers);
+        assertFalse(act, "User must not be org_admin");
+        assertEquals(0, servers, "User sees no servers");
     }
 
     /**

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -22,6 +26,9 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * CreateCommandTest
@@ -32,8 +39,8 @@ public class CreateCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         ccc = new CreateChannelCommand();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         user = UserTestUtils.createUser("testUser", oid);
@@ -42,6 +49,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         ccc.setSummary("empty summary"); // valid summary
         // label and name get set in the test methods as appropriate.
     }
+    @Test
     public void testVerifyChannelName() {
 
         // channel names at least 6 chars
@@ -123,6 +131,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testVerifyChannelLabel() {
 
         // channel names at least 6 chars

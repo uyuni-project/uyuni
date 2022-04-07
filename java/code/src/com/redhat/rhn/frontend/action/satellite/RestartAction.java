@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RestartAction extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev: 1 $
  */
 public class RestartAction extends RhnAction {
 

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -37,12 +40,14 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * ChannelActionTest
  */
 public class ChannelActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPublish() throws Exception {
         ChannelAction action = new ChannelAction();
 
@@ -88,6 +93,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         assertEquals(result.getName(), "publish");
     }
 
+    @Test
     public void testUpdateChannels() throws Exception {
         ChannelAction action = new ChannelAction();
 
@@ -164,6 +170,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         assertTrue(e3.getChannels().size() < size); //less than before
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         ChannelAction action = new ChannelAction();
         ActionHelper ah = new ActionHelper();

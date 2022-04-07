@@ -16,6 +16,9 @@ package com.redhat.rhn.frontend.xmlrpc.proxy.test;
 
 import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
 import static java.lang.Math.toIntExact;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.util.Asserts;
@@ -46,6 +49,8 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,13 +73,13 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     private final SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
             saltApi);
 
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
     }
 
+    @Test
     public void testDeactivateProxyWithReload() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -84,6 +89,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertFalse(changedServer.isProxy());
     }
 
+    @Test
     public void testActivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
@@ -100,6 +106,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testActivateSaltProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager);
@@ -116,6 +123,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testDeactivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -134,6 +142,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testListProxyClients() throws Exception {
         // create user
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
@@ -157,6 +166,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         Asserts.assertContains(clientIds, minion.getId());
     }
 
+    @Test
     public void testContainerConfig() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         byte[] dummyConfig = "Dummy config".getBytes();
@@ -177,6 +187,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
         assertEquals(dummyConfig, actual);
     }
 
+    @Test
     public void testContainerConfigGenerateCert() throws Exception {
         User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
         byte[] dummyConfig = "Dummy config".getBytes();

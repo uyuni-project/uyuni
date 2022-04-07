@@ -772,6 +772,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
         <context-group name="ctx">
@@ -9149,6 +9155,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Bootstrapping" xml:space="preserve">
         <source>Bootstrapping</source>
+      </trans-unit>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
       </trans-unit>
       <trans-unit id="salt_entitled" xml:space="preserve">
         <source>Salt</source>

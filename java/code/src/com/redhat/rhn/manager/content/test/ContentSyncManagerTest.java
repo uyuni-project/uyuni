@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -63,6 +70,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -104,6 +113,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String UPGRADE_PATHS_JSON = "upgrade_paths.json";
     private static final String UPGRADE_PATHS_EMPTY_JSON = JARPATH + "upgrade_paths_empty.json";
 
+    @Test
     public void testSubscriptionDeleteCaching() throws Exception {
 
         File upgradePathsJson = new File(
@@ -176,6 +186,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertNull(two);
     }
 
+    @Test
     public void testListSubscriptionsCaching() throws Exception {
         File subJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
@@ -200,7 +211,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             assertNotNull(s);
-            assertFalse("Should no find a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
+            assertFalse(cm.hasToolsChannelSubscription(), "Should no find a SUSE Manager Server Subscription");
 
             for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
                 assertEquals("55REGCODE180", dbs.getRegcode());
@@ -244,7 +255,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Files.copy(orderJson2.toPath(), ordertempFile.toPath());
             s = cm.updateSubscriptions();
             HibernateFactory.getSession().flush();
-            assertTrue("Should have a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
+            assertTrue(cm.hasToolsChannelSubscription(), "Should have a SUSE Manager Server Subscription");
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
@@ -258,6 +269,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateProducts()  throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
 
@@ -274,20 +286,22 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
 
-        assertTrue("Repo should not have authentication.", SCCCachingFactory.lookupRepositoryBySccId(633L).get()
-                .getRepositoryAuth().isEmpty());
+        assertTrue(SCCCachingFactory.lookupRepositoryBySccId(633L).get()
+                .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
 
         ContentSyncManager csm = new ContentSyncManager();
+        // todo i think this doesn't mock correctly and causes timeouts
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(633L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth",
-                upRepo.getBestAuth().flatMap(SCCRepositoryAuth::tokenAuth).isPresent());
+        assertTrue(upRepo.getBestAuth().flatMap(SCCRepositoryAuth::tokenAuth).isPresent(),
+                "Best Auth is not token auth");
 
     }
 
+    @Test
     public void testUpdateRepositories() throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -327,15 +341,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
 
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
     }
 
     public void dupIdSzenario(boolean rhel6sync, boolean rhel7sync, boolean rhel6first) throws Exception {
@@ -439,6 +453,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDupIdSzenario9() throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -507,38 +522,47 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(rhel6csIds, rhel7csIds);
     }
 
+    @Test
     public void testDupIdSzenario1() throws Exception {
         dupIdSzenario(false, true, false);
     }
 
+    @Test
     public void testDupIdSzenario2() throws Exception {
         dupIdSzenario(false, false, false);
     }
 
+    @Test
     public void testDupIdSzenario3() throws Exception {
         dupIdSzenario(true, true, false);
     }
 
+    @Test
     public void testDupIdSzenario4() throws Exception {
         dupIdSzenario(true, false, false);
     }
 
+    @Test
     public void testDupIdSzenario5() throws Exception {
         dupIdSzenario(false, true, true);
     }
 
+    @Test
     public void testDupIdSzenario6() throws Exception {
         dupIdSzenario(false, false, true);
     }
 
+    @Test
     public void testDupIdSzenario7() throws Exception {
         dupIdSzenario(true, true, true);
     }
 
+    @Test
     public void testDupIdSzenario8() throws Exception {
         dupIdSzenario(true, false, true);
     }
 
+    @Test
     public void testReleaseStageOverride() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -552,6 +576,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test if changes in SCC data result in updates of the channel data in the DB
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -628,6 +653,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test changes of the repo URL (result in change of the repository)
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelsWithSimilarPath() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -712,6 +738,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSwitchingBestAuthItem() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
                 "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -820,6 +847,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSwitchFromCloudRmtToScc() throws Exception {
         Credentials credentials = CredentialsFactory.createCloudRmtCredentials();
         credentials.setPassword("dummy");
@@ -861,18 +889,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not cloud rmt auth",
-                upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth,
+                "Best Auth is not cloud rmt auth");
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_CLOUD_RMT);
 
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not cloud rmt auth",
-                upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth,
+                "Best Auth is not cloud rmt auth");
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_CLOUD_RMT);
 
@@ -897,17 +925,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth",
-                upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth,
+                "Best Auth is not token auth");
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_SCC);
 
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_SCC);
     }
@@ -916,6 +944,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateSUSEProducts} inserting a new product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateSUSEProductsNew() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -957,6 +986,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateSUSEProducts} update a product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateSUSEProductsUpdate() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -1008,6 +1038,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#getAvailableChannels}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetAvailableChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -1026,16 +1057,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertContains(avChanLanbels, "sle-ha-geo12-debuginfo-pool-x86_64");
         assertContains(avChanLanbels, "sle-we12-updates-x86_64");
         // Installer Updates is optional and not in repositories.json
-        assertFalse("unexpected optional channel found", avChanLanbels.contains("sles12-installer-updates-x86_64"));
+        assertFalse(avChanLanbels.contains("sles12-installer-updates-x86_64"), "unexpected optional channel found");
         // Storage 2 is not in repositories.json to emulate no subscription
-        assertFalse("Storage should not be avaliable",
-                avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"));
+        assertFalse(avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"),
+                "Storage should not be avaliable");
     }
 
     /**
      * Test for duplicates in {@link ContentSyncManager#getAvailableChannels} output.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNoDupInGetAvailableChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/", true);
         HibernateFactory.getSession().flush();
@@ -1109,14 +1141,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 "suse-caasp-all-pool-x86_64",
                 "suse-caasp-all-updates-x86_64");
         duplicates.removeAll(dupExceptions);
-        assertTrue(duplicates.size() + " Duplicate labels found: " +
-                String.join("\n", duplicates), duplicates.isEmpty());
+        assertTrue(duplicates.isEmpty(),
+                duplicates.size() + " Duplicate labels found: " + String.join("\n", duplicates));
     }
 
     /**
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, insert case.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelFamiliesInsert() throws Exception {
         // Get test data and insert
         List<ChannelFamilyJson> channelFamilies = getChannelFamilies();
@@ -1155,6 +1188,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, update case.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelFamiliesUpdate() throws Exception {
         // Get test data and insert
         int familynumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
@@ -1210,6 +1244,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Update the upgrade paths test.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateUpgradePaths() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -1323,6 +1358,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * There is an upgrade path in the DB and SCC deletes the "from" product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpgradePathPredecessorDeleted() throws Exception {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
@@ -1390,6 +1426,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * An upgrade path between two products is removed while the products still exist.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpgradePathRemoved() throws Exception {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
@@ -1454,6 +1491,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#listChannels}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -1483,14 +1521,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 foundDebugPool = true;
             }
             else if (c.getLabel().equals("sles12-installer-updates-x86_64")) {
-                assertTrue("Unexpected Installer Update channel found", false);
+                assertTrue(false, "Unexpected Installer Update channel found");
             }
             else if (c.getLabel().startsWith("suse-enterprise-storage")) {
-                assertTrue("Storage Channels should not be listed", false);
+                assertTrue(false, "Storage Channels should not be listed");
             }
         }
-        assertTrue("Pool channel not found", foundPool);
-        assertTrue("Debuginfo Pool channel not found", foundDebugPool);
+        assertTrue(foundPool, "Pool channel not found");
+        assertTrue(foundDebugPool, "Debuginfo Pool channel not found");
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream()
                 .collect(Collectors.groupingBy(MgrSyncChannelDto::getStatus));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
@@ -1502,6 +1540,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * filtering of unavailable products.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListProductsAvailability() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -1521,9 +1560,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         for (MgrSyncProductDto product : products) {
             if (product.getFriendlyName().equals("SUSE Linux Enterprise Server 12 x86_64")) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
-                assertFalse("Unexpected Installer Update Channel found",
+                assertFalse(
                         product.getChannels().stream()
-                                .anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")));
+                                .anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")),
+                        "Unexpected Installer Update Channel found");
                 foundSLES = true;
 
                 for (MgrSyncProductDto ext : product.getExtensions()) {
@@ -1535,14 +1575,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
         }
-        assertTrue("SLES not found", foundSLES);
-        assertTrue("HA-GEO not found", foundHAGEO);
+        assertTrue(foundSLES, "SLES not found");
+        assertTrue(foundHAGEO, "HA-GEO not found");
     }
 
     /**
      * Tests {@link ContentSyncManager#isRefreshNeeded}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIsRefreshNeeded() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -1580,6 +1621,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Tests {@link ContentSyncManager#isRefreshNeeded} when fromdir is configured
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIsRefreshNeededFromDir() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
@@ -1616,6 +1658,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testAddChannel() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                 user, "/com/redhat/rhn/manager/content/test/smallBase", true);
@@ -1676,10 +1719,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests {@link ContentSyncManager#setupSourceURL} with a local filesystem link
+     * Tests ContentSyncManager with a local filesystem link
      * using an URL pointing to an official SUSE server.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSetupSourceURLLocalFS() throws Exception {
         File reposJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
@@ -1778,6 +1822,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Tests changing from fromdir to SCC
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSwitchFromdirToSCC() throws Exception {
         File reposJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
@@ -1888,6 +1933,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * (ensures there is no regression wrt bsc#932052).
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSUSEProductChannelUpdates() throws Exception {
         // Setup two products
         Channel channel = SUSEProductTestUtils.createTestVendorChannel();
@@ -1961,6 +2007,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testIsChannelOrLabelReserved() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
         HibernateFactory.getSession().flush();
@@ -1977,6 +2024,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * without failing.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateProductsMultipleTimes() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
@@ -2001,6 +2049,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test debian and repomd url building
      * @throws Exception
      */
+    @Test
     public void testBuildRepoFileUrl() throws Exception {
         SCCRepository debrepo = new SCCRepository();
         debrepo.setDistroTarget("amd64");
@@ -2038,6 +2087,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

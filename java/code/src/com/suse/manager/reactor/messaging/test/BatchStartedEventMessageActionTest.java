@@ -16,6 +16,9 @@ package com.suse.manager.reactor.messaging.test;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -35,6 +38,8 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -53,6 +58,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     private BatchStartedEventMessageAction messageAction;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();
@@ -60,6 +66,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testExecute() throws Exception {
         // Create 2 minions
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);

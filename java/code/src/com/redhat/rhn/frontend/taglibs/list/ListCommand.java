@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 /**
  * Describes the various states the ListTag moves thru as it renders a list
- * @version $Rev $
  */
 
 public enum ListCommand {

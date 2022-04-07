@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.keys.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -22,17 +24,21 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * CryptoKeyCreateActionTest
- * @version $Rev: 1 $
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         super.setUp();
     }
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.FALSE.toString());
@@ -41,6 +47,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         assertNotNull(request.getAttribute(CryptoKeyCreateAction.TYPES));
     }
 
+    @Test
     public void testCreateSubmit() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
@@ -54,6 +61,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         verifyActionErrors(keys);
     }
 
+    @Test
     public void testEdit() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyEdit");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());

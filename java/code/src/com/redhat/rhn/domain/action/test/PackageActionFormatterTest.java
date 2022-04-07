@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.PackageActionFormatter;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -32,6 +36,7 @@ public class PackageActionFormatterTest extends BaseTestCaseWithUser {
      * Tests getRelatedObjectDescription().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetRelatedObjectDescription() throws Exception {
         PackageAction action = (PackageAction) ActionFactoryTest.createAction(user,
             ActionFactory.TYPE_PACKAGES_UPDATE);

@@ -148,6 +148,8 @@ public class ImageBuildController {
                 withUser(imageBuildController::getPatches));
         Spark.get("/manager/api/cm/images/packages/:id",
                 withUser(imageBuildController::getPackages));
+        Spark.get("/manager/api/cm/images/buildlog/:id",
+                withUser(imageBuildController::getBuildLog));
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(imageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
@@ -616,6 +618,41 @@ public class ImageBuildController {
 
         return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPackageList)
                     .orElse(null));
+    }
+
+    /**
+     * Gets build log for single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object getBuildLog(Request req, Response res, User user) {
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getBuildLogJson)
+                    .orElse(null));
+    }
+
+    private static JsonObject getBuildLogJson(ImageOverview imageOverview) {
+        JsonObject json = GSON
+                .toJsonTree(ImageInfoJson.fromImageInfo(imageOverview), ImageInfoJson.class)
+                .getAsJsonObject();
+        ImageInfoFactory.lookupById(imageOverview.getId()).ifPresent(imageInfo -> {
+            json.addProperty("buildlog", imageInfo.getBuildLog());
+        });
+
+        return json;
     }
 
     /**

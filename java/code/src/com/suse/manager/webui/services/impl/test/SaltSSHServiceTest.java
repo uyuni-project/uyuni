@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.services.impl.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -27,6 +31,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,6 +46,7 @@ import java.util.Set;
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -47,12 +54,14 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("ssh_push_sudo_user", "mgruser");
     }
 
+    @Test
     public void testProxyCommandNoProxy() {
         Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
                 Collections.emptyList(), "ssh-push", "minion", 22);
         assertFalse(res.isPresent());
     }
 
+    @Test
     public void testProxyCommandSSHPush1Proxy() {
         Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
                 List.of("proxy1"), "ssh-push", "minion", 22);
@@ -65,6 +74,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPushTunnel1Proxy() {
         Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
                 List.of("proxy1:24"), "ssh-push-tunnel", "minion", 22);
@@ -77,6 +87,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPush2Proxies() {
         Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
                 Arrays.asList("proxy1:23", "proxy2"), "ssh-push", "minion", 22);
@@ -91,6 +102,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPushTunnel2Proxies() {
         Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
                 Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion", 22);
@@ -117,6 +129,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         return srv;
     }
 
+    @Test
     public void testProxyPathToHostnames() throws Exception {
         Server proxy0 = createTestProxyMinimal("unitTest", 8022);
         Server proxy1 = createTestProxyMinimal("junit", 23);

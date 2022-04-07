@@ -65,15 +65,16 @@ module LavandaBasic
   end
 
   # run functions
-  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536)
+  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
     else
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
     if check_errors
-      raise "FAIL: #{cmd} returned #{code}. output : #{out}" unless successcodes.include?(code)
+      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
     end
+    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
     if separated_results
       [out, err, code]
     else

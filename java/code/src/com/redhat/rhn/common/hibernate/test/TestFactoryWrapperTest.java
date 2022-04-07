@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -24,6 +28,10 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,21 +39,15 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
 
-    public TestFactoryWrapperTest(String name) {
-        super(name);
-    }
-
+    @BeforeEach
     public void setUp() {
         HibernateFactory.createSessionFactory();
     }
 
+    @Test
     public void testLookupReturnNull() throws Exception {
         TestInterface obj = TestFactory.lookupByFoobar("NOTFOUND");
         assertNull(obj);
@@ -53,6 +55,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     // This is a trivial test, but it proves that we can create a simple
     // SQL query automatically from the table definition.
+    @Test
     public void testLookup() throws Exception {
         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
         assertEquals("Blarg", obj.getFoobar());
@@ -62,6 +65,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         assertTrue(obj.getId() == 1);
     }
 
+    @Test
      public void testNullIntoPrimitive() throws Exception {
          TestInterface obj = TestFactory.lookupByFoobar("Blarg");
          assertEquals("Blarg", obj.getFoobar());
@@ -72,6 +76,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
          assertTrue(obj.getId() == 1);
      }
 
+    @Test
     public void testNewInsert() throws Exception {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("testNewInsert");
@@ -83,6 +88,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testUpdate() throws Exception {
 
         TestInterface obj = TestFactory.createTest();
@@ -100,6 +106,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         assertEquals(54321, updated.getPin().intValue());
     }
 
+    @Test
     public void testUpdateAfterCommit() throws Exception {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test");
@@ -109,11 +116,13 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         assertTrue(true);
     }
 
+    @Test
     public void testLookupMultipleObjects() throws Exception {
         List allTests = TestFactory.lookupAll();
         assertTrue(allTests.size() > 0);
     }
 
+    @Test
     public void testUpdateToNullValue() throws Exception {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test3");
@@ -131,7 +140,8 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         assertTrue(result.getTestColumn() == null);
     }
 
-    public void testLotsOfTransactions() throws Exception {
+    @Test
+    public void testLotsOfTransactions() {
 
         for (int i = 0; i < 20; i++) {
             SelectMode m = ModeFactory.getMode("test_queries", "get_test_users");
@@ -142,23 +152,8 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     }
 
-
-    public static Test suite()
-        throws Exception {
-        TestSuite suite = new TestSuite(TestFactoryWrapperTest.class);
-
-        return new TestSetup(suite) {
-            protected void setUp() throws Exception {
-                oneTimeSetup();
-            }
-
-            protected void tearDown() throws Exception {
-                oneTimeTeardown();
-            }
-        };
-    }
-
-    protected static void oneTimeSetup() throws Exception {
+    @BeforeAll
+    public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -202,7 +197,8 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         });
     }
 
-    protected static void oneTimeTeardown() throws Exception {
+    @AfterAll
+    public static void oneTimeTeardown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Handles display and update of {@literal Kickstart -> System Details -> Troubleshooting}
  *
- * @version $Rev $
  */
 public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction {
 

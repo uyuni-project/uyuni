@@ -24,6 +24,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.kubernetes.KubernetesManager;
@@ -39,10 +40,12 @@ import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.ImageUploadController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
@@ -107,8 +110,10 @@ public class Router implements SparkApplication {
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
+        ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
                 new NotificationMessageController(systemQuery, saltApi);
@@ -151,7 +156,10 @@ public class Router implements SparkApplication {
         minionsAPI.initRoutes();
 
         // Systems API
-        SystemsController.initRoutes(systemsController, jade);
+        systemsController.initRoutes(jade);
+
+        // Proxy
+        proxyController.initRoutes(proxyController, jade);
 
         //CSV API
         CSVDownloadController.initRoutes();
@@ -207,6 +215,9 @@ public class Router implements SparkApplication {
 
         // Rhn Set API
         SetController.initRoutes();
+
+        // Image Upload
+        ImageUploadController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

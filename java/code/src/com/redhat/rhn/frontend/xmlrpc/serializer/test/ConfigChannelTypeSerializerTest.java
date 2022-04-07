@@ -14,22 +14,25 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigChannelTypeSerializer;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
-
 
 /**
  * ConfigChannelTypeSerializer
  */
-public class ConfigChannelTypeSerializerTest  extends TestCase {
+public class ConfigChannelTypeSerializerTest  {
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         ConfigChannelTypeSerializer ccts = new ConfigChannelTypeSerializer();
 

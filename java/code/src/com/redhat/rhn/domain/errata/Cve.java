@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.errata;
 /**
  *
- * @version $Rev $
  *
  */
 public class Cve {

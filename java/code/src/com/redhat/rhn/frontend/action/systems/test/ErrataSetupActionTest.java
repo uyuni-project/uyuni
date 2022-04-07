@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -23,20 +27,26 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * ErrataSetupActionTest
  */
 public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/ErrataList");
     }
+    @Test
     public void testInvalidParamCase() {
         addRequestParameter(RequestContext.SID, "-9999");
         actionPerform();
         assertPermissionException();
     }
 
+    @Test
     public void testNormalCase() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         addRequestParameter("allowVendorChange", "false");

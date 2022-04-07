@@ -28,7 +28,6 @@ import javax.servlet.jsp.PageContext;
  * list widget on the page.
  *
  *
- * @version $Rev $
  */
 public interface ListDecorator {
 

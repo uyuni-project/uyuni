@@ -59,7 +59,7 @@ type Props = {
    * tells if a row is selectable.
    * If using an asynchronous provider, the selectAll filtering has to be implemented on the server side too.
    */
-  selectable: boolean | ((row: any) => boolean);
+  selectable: boolean | ((row: unknown) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;

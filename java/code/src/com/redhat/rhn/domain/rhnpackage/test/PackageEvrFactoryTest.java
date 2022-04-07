@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageEvrTest
@@ -29,6 +34,7 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
      * PackageEvrs and write them to the db.
      * @throws Exception Exception
      */
+    @Test
     public void testCreate() throws Exception {
 
        PackageEvr evr = createTestPackageEvr();

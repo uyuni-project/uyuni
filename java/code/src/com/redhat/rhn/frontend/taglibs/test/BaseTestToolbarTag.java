@@ -23,6 +23,9 @@ import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockJspWriter;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.net.URL;
 import java.util.HashMap;
 
@@ -38,6 +41,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     protected ToolbarTag tt;
     protected MockJspWriter out;
 
+    @BeforeEach
     public void setUp() {
         tt = new ToolbarTag();
         tth = TagTestUtils.setupTagTest(tt, null);
@@ -46,7 +50,9 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         req.setupGetAttribute(new HashMap());
     }
 
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         tt = null;
         tth = null;
         out = null;

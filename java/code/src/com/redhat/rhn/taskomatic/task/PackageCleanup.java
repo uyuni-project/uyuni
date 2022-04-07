@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * Cleans up orphaned packages
  *
- * @version $Rev $
  */
 
 public class PackageCleanup extends RhnJavaJob {

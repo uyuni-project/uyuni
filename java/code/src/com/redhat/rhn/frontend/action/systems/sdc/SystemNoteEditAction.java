@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemNoteEditAction
- * @version $Rev: 1 $
  */
 public class SystemNoteEditAction extends RhnAction {
 

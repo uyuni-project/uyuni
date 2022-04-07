@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -30,6 +34,8 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -37,6 +43,7 @@ import java.util.Date;
  */
 public class ConfigRevisionActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testBeanMethods() {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         Date now = new Date();
@@ -75,6 +82,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
      * Test fetching a ConfigRevisionAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupConfigRevision() throws Exception {
         User user = UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName()));

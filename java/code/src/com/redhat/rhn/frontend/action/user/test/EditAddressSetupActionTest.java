@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.EditAddressSetupAction;
@@ -21,12 +23,14 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * EditAddressActionTest
- * @version $Rev: 694 $
  */
 public class EditAddressSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecuteWithAddr() throws Exception {
         EditAddressSetupAction action = new EditAddressSetupAction();
         ActionHelper sah = new ActionHelper();

@@ -26,7 +26,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 /**
  * Serializer for {@link KickstartOptionValue} objects.
  *
- * @version $Revision$
  *
  * @xmlrpc.doc
  *      #struct_begin("value")

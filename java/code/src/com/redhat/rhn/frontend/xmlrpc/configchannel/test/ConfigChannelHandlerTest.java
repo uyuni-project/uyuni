@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.configchannel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -49,6 +55,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +77,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private static final String NAME = "NAME" + TestUtils.randomString();
     private static final String DESCRIPTION = "DESCRIPTION" + TestUtils.randomString();
 
+    @Test
     public void testCreate() {
         try {
             handler.create(regular, LABEL, NAME, DESCRIPTION);
@@ -96,6 +104,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateStateChannel() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
@@ -108,6 +117,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testUpdate() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         String newName = NAME + TestUtils.randomString();
@@ -139,6 +149,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListGlobal() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
         ConfigTestUtils.giveUserChanAccess(regular, cc);
@@ -146,6 +157,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(contains(cc, list));
     }
 
+    @Test
     public void testLookupGlobal() throws Exception {
         List<String> channelLabels = new LinkedList<>();
         List<ConfigChannel> channels = new LinkedList<>();
@@ -162,6 +174,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channels, list);
     }
 
+    @Test
     public void testGetDetailsByLabel() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
@@ -172,6 +185,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channel, cc);
     }
 
+    @Test
     public void testGetDetailsById() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
@@ -182,6 +196,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channel, cc);
     }
 
+    @Test
     public void testDelete() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> labels = new LinkedList<>();
@@ -198,6 +213,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
      }
 
+    @Test
     public void testUpdateInitSls() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
@@ -217,6 +233,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testSyncSaltFiles() throws Exception {
 
         // Remove all channels
@@ -246,6 +263,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testSyncSaltFilesNoChannels() throws Exception {
 
         // Remove all channels.
@@ -357,6 +375,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertRev(rev, rev.getConfigFile().getConfigFileName().getPath(), cc);
     }
 
+    @Test
     public void testAddPath() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -403,6 +422,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                 path + TestUtils.randomString(), cc, "root:root");
     }
 
+    @Test
     public void testAddPathStateChannel() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
 
@@ -470,6 +490,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListFiles() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -510,6 +531,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemovePaths() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> paths = new LinkedList<>();
@@ -522,6 +544,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, files.size());
     }
 
+    @Test
     public void testScheduleFileComparisons() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
@@ -556,6 +579,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                 ((ScheduledAction)dr.get(0)).getId().intValue()));
     }
 
+    @Test
     public void testChannelExists() {
         handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -567,6 +591,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testDeployAllSystems()  throws Exception {
         // Create  global config channels
         List<ConfigChannel> gccList = new ArrayList<>();
@@ -650,6 +675,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListAssignedGroups() throws Exception {
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
@@ -676,7 +702,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertContains(systemGroups, group2);
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
-        assertFalse("Unexpected group found", systemGroups.contains(group1));
+        assertFalse(systemGroups.contains(group1), "Unexpected group found");
         assertContains(systemGroups, group2);
 
         group1.subscribeConfigChannels(Arrays.asList(cc2), admin);
@@ -684,7 +710,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel1);
         assertContains(systemGroups, group1);
-        assertFalse("Unexpected group found", systemGroups.contains(group2));
+        assertFalse(systemGroups.contains(group2), "Unexpected group found");
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
         assertContains(systemGroups, group1);

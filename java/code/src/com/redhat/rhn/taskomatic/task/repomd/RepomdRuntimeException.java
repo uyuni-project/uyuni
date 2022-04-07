@@ -18,7 +18,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class RepomdRuntimeException extends RhnRuntimeException {

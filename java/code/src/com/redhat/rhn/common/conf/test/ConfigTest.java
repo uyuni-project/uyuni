@@ -15,11 +15,19 @@
 
 package com.redhat.rhn.common.conf.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +41,7 @@ public class ConfigTest extends RhnBaseTestCase {
     static final String TEST_CONF_LOCATION = "/usr/share/rhn/unit-tests/";
     private Config c;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -67,6 +76,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * fully qualified property name.
      * define value in rhn_web.conf without a prefix, call get fully qualified.
      */
+    @Test
     public void testGetFullyQualified() {
         assertEquals("this is a property with a prefix",
                      c.getString("web.property_with_prefix"));
@@ -79,6 +89,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * property name.
      * define value in rhn_web.conf without a prefix, call get with just prop name.
      */
+    @Test
     public void testGetByPropertyNameOnly() {
         assertEquals("this is a property with a prefix",
                      c.getString("property_with_prefix"));
@@ -92,6 +103,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Accessed fully qualified.
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverride() throws Exception {
         assertEquals("keep", c.getString("web.to_override"));
     }
@@ -102,6 +114,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Accessed by property name only.
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverride1() throws Exception {
         assertEquals("keep", c.getString("to_override"));
     }
@@ -112,6 +125,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Accessed fully qualified.
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverride2() throws Exception {
         assertEquals("1", c.getString("web.fq_to_override"));
     }
@@ -122,6 +136,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Accessed by property name only.
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverride3() throws Exception {
         assertEquals("1", c.getString("fq_to_override"));
     }
@@ -131,6 +146,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * overridden fully qualfied in rhn.conf.
      * Accessed fully qualified.
      */
+    @Test
     public void testOverride4() {
         assertEquals("overridden",
                 c.getString("web.to_override_without_prefix"));
@@ -143,6 +159,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * overridden without a prefix in rhn.conf.
      * Accessed fully qualified.
      */
+    @Test
     public void testOverride5() {
         assertEquals("overridden",
                 c.getString("to_override_without_prefix1"));
@@ -155,6 +172,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * more than one conf file with different prefixes.
      * Accesses the value fully qualfied.
      */
+    @Test
     public void testCollision() {
         assertEquals("10", c.getString("web.collision"));
         assertEquals("12", c.getString("prefix.collision"));
@@ -166,16 +184,19 @@ public class ConfigTest extends RhnBaseTestCase {
      * Accesses the value without a prefix.  This will look through the
      * predefined prefix order to find the value.
      */
+    @Test
     public void testPrefixOrder() {
         assertEquals("10", c.getString("collision"));
     }
 
+    @Test
     public void testGetStringArray1Elem() throws Exception {
         String[] elems = c.getStringArray("prefix.array_one_element");
         assertEquals(1, elems.length);
         assertEquals("some value", elems[0]);
     }
 
+    @Test
     public void testGetStringArrayNull() throws Exception {
         String[] elems = c.getStringArray("find.this.entry.b****");
         assertNull(elems);
@@ -186,6 +207,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Test true, false, 1, 0, y, n, foo, 10
      * @throws Exception something bad happened
      */
+    @Test
     public void testGetBoolean() throws Exception {
         boolean b = c.getBoolean("prefix.boolean_true");
         assertTrue(b);
@@ -214,6 +236,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertFalse(c.getBoolean("prefix.boolean_off"));
     }
 
+    @Test
     public void testGetIntWithDefault() {
         // lookup a non existent value
         assertEquals(1000, c.getInt("value.doesnotexist", 1000));
@@ -227,6 +250,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Test -10, 0, 100, y
      * @throws Exception something bad happened
      */
+    @Test
     public void testGetInt() throws Exception {
         int i = c.getInt("prefix.int_minus10");
         assertEquals(-10, i);
@@ -243,6 +267,7 @@ public class ConfigTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testGetInteger() throws Exception {
         assertEquals(Integer.valueOf(-10), c.getInteger("prefix.int_minus10"));
         assertEquals(Integer.valueOf(0), c.getInteger("prefix.int_zero"));
@@ -266,6 +291,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * call using StringArrayElem, verify all values are in array.
      * @throws Exception something bad happened
      */
+    @Test
     public void testGetStringArrayMultElem() throws Exception {
         String[] elems = c.getStringArray("prefix.comma_separated");
         assertEquals(5, elems.length);
@@ -276,6 +302,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals("fine", elems[4]);
     }
 
+    @Test
     public void testGetStringArrayWhitespace() {
         String[] elems = c.getStringArray("prefix.comma_no_trim");
         assertEquals(5, elems.length);
@@ -286,6 +313,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals("fine", elems[4]);
     }
 
+    @Test
     public void testSetBoolean() throws Exception {
         boolean oldValue = c.getBoolean("prefix.boolean_true");
         c.setBoolean("prefix.boolean_true", Boolean.FALSE.toString());
@@ -294,6 +322,7 @@ public class ConfigTest extends RhnBaseTestCase {
         c.setBoolean("prefix.boolean_true", Boolean.valueOf(oldValue).toString());
     }
 
+    @Test
     public void testSetString() throws Exception {
         String oldValue = c.getString("to_override");
         c.setString("to_override", "newValue");
@@ -301,21 +330,25 @@ public class ConfigTest extends RhnBaseTestCase {
         c.setString("to_override", oldValue);
     }
 
+    @Test
     public void testGetUndefinedInt() throws Exception {
         int zero = c.getInt("Undefined_config_variable");
         assertEquals(0, zero);
     }
 
+    @Test
     public void testGetUndefinedString() {
         assertNull(c.getString("Undefined_config_variable"));
     }
 
+    @Test
     public void testNewValue() {
         String key = "newvalue" + TestUtils.randomString();
         c.setString(key, "somevalue");
         assertNotNull(c.getString(key));
     }
 
+    @Test
     public void testGetUndefinedBoolean() {
         assertFalse(c.getBoolean("Undefined_config_variable"));
     }
@@ -325,11 +358,13 @@ public class ConfigTest extends RhnBaseTestCase {
      * of the prefix order. Access property fully qualified, then
      * unqualified.
      */
+    @Test
     public void testUnprefixedProperty() {
         assertEquals("thirty-three", c.getString("prefix.foo"));
         assertNull(c.getString("foo"));
     }
 
+    @Test
     public void testNamespaceProperties() throws Exception {
         Set<String> expectedProperties = Set.of("web.without_prefix",
             "web.to_override_without_prefix",
@@ -347,6 +382,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals(expectedProperties, prop.keySet());
     }
 
+    @Test
     public void testNamespacePropertiesWithRewriting() throws Exception {
         Set<String> expectedProperties = Set.of("test.without_prefix",
             "test.to_override_without_prefix",
@@ -364,6 +400,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertEquals(expectedProperties, prop.keySet());
     }
 
+    @Test
     public void testBug154517IgnoreRpmsave() {
         assertNull(c.getString("bug154517.conf.betternotfindme"));
         assertNull(c.getString("betternotfindme"));
@@ -376,6 +413,7 @@ public class ConfigTest extends RhnBaseTestCase {
      *
      * you would get back ""
      */
+    @Test
     public void testDefaultValueQuoteQuote() {
         Config.get().setString("somevalue8923984", "");
         assertNull(Config.get().getString("somevalue8923984"));
@@ -385,6 +423,7 @@ public class ConfigTest extends RhnBaseTestCase {
         assertFalse(somevalue.equals(""));
         assertTrue(somevalue.equals("xmlrpc.rhn.redhat.com"));
     }
+    @Test
     public void testForNull() {
         assertNull(c.getString(null));
         assertNull(c.getInteger(null));
@@ -397,6 +436,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Commenting using '#' aren't supported currently by the config parser.
      * This test is here to document this behavior.
      */
+    @Test
     public void testComment() {
         assertEquals(
                 "#this will NOT be a comment!",
@@ -407,6 +447,7 @@ public class ConfigTest extends RhnBaseTestCase {
      * Verify that we treat the backslash as a normal character
      * (normally the Properties.load() would require them escaped).
      */
+    @Test
     public void testBackSlashes() {
         assertEquals(
                 "we\\have\\backslashes", // we\have\backslashes

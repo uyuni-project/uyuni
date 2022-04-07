@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * ManageRevisionSetup extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev: 101893 $
  */
 public class ManageRevisionSetup extends BaseSetListAction {
 

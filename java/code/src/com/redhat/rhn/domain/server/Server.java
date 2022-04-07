@@ -124,6 +124,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<ServerHistoryEvent> history = new HashSet<>();
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
+    private MgrServerInfo mgrServerInfo;
     private Set<ServerGroup> groups = new HashSet<>();
     private Set<ClientCapability> capabilities = new HashSet<>();
     private Set<InstalledProduct> installedProducts = new HashSet<>();
@@ -186,6 +187,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setProxyInfo(ProxyInfo proxy) {
         this.proxyInfo = proxy;
+    }
+
+    /**
+     * @return the mgrServerInfo
+     */
+    public MgrServerInfo getMgrServerInfo() {
+        return mgrServerInfo;
+    }
+
+    /**
+     * the mgr server information to set
+     * @param mgrServer the mgrServerInfo to set
+     */
+    public void setMgrServerInfo(MgrServerInfo mgrServer) {
+        mgrServerInfo = mgrServer;
     }
 
     /**
@@ -1375,11 +1391,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Returns true if this is a satellite server.
-     * @return true if this is a satellite server.
+     * Returns true if this is a mgr server.
+     * @return true if this is a mgr server.
      */
-    public boolean isSatellite() {
-        return false;
+    public boolean isMgrServer() {
+        return getMgrServerInfo() != null;
     }
 
     /**
@@ -1647,6 +1663,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 Optional.ofNullable(proxyInfo).map(ProxyInfo::getVersion);
         Optional<PackageEvr> otherProxyVersion =
                 Optional.ofNullable(castOther.getProxyInfo()).map(ProxyInfo::getVersion);
+        Optional<PackageEvr> mgrVersion =
+                Optional.ofNullable(mgrServerInfo).map(MgrServerInfo::getVersion);
+        Optional<PackageEvr> otherMgrVersion =
+                Optional.ofNullable(castOther.getMgrServerInfo()).map(MgrServerInfo::getVersion);
 
         return new EqualsBuilder().append(os, castOther.getOs())
                 .append(release, castOther.getRelease())
@@ -1659,6 +1679,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 .append(lastBoot, castOther.getLastBoot())
                 .append(channelsChanged, castOther.getChannelsChanged())
                 .append(proxyVersion, otherProxyVersion)
+                .append(mgrVersion, otherMgrVersion)
                 .isEquals();
     }
 
@@ -1669,12 +1690,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public int hashCode() {
         Optional<PackageEvr> proxyVersion =
                 Optional.ofNullable(getProxyInfo()).map(ProxyInfo::getVersion);
+        Optional<PackageEvr> mgrVersion =
+                Optional.ofNullable(getMgrServerInfo()).map(MgrServerInfo::getVersion);
         return new HashCodeBuilder().append(id).append(digitalServerId).append(os)
                 .append(release).append(name).append(description)
                 .append(info).append(secret)
                 .append(autoUpdate).append(runningKernel)
-                .append(lastBoot).append(channelsChanged).
-                append(proxyVersion)
+                .append(lastBoot).append(channelsChanged)
+                .append(proxyVersion)
+                .append(mgrVersion)
                 .toHashCode();
     }
 

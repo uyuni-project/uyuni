@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.configuration;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -1128,14 +1127,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("num", results);
-        SelectMode m;
-        if (ConfigDefaults.get().isPostgresql()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_modified_config_files_for_user_postgres");
-        }
-        else {
-            throw new IllegalStateException("Unknown database platform");
-        }
+        SelectMode m = ModeFactory.getMode("config_queries", "recent_modified_config_files_for_user");
         return m.execute(params);
     }
 
@@ -1161,14 +1153,7 @@ public class ConfigurationManager extends BaseManager {
         format.applyPattern("yyyy-MM-dd HH:mm:ss");
         params.put("date", format.format(cal.getTime()));
 
-        SelectMode m;
-        if (ConfigDefaults.get().isPostgresql()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_config_deploy_actions_for_user_postgres");
-        }
-        else {
-            throw new IllegalStateException("Unknown database platform");
-        }
+        SelectMode m = ModeFactory.getMode("config_queries", "recent_config_deploy_actions_for_user");
         return m.execute(params);
     }
 

@@ -38,7 +38,6 @@ import java.util.Map;
 
 /**
  * CreateOrgCommand - Command to create an org and the first admin in the Org.
- * @version $Rev: 119601 $
  */
 public class CreateOrgCommand {
 

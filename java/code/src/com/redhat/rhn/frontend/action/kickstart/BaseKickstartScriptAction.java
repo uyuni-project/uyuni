@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartScriptCreateAction action for creating a new kickstart script
- * @version $Rev: 1 $
  */
 public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction {
 

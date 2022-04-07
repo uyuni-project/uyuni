@@ -56,7 +56,6 @@ import java.util.TreeSet;
  * Class UserImpl that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
- * @version $Rev: 75755 $
  */
 public class UserImpl extends BaseDomainHelper implements User {
 

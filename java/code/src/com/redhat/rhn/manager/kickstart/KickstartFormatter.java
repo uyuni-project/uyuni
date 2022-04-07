@@ -53,7 +53,6 @@ import java.util.List;
 /**
  * Simple class to reduce dependencies between Struts and database layers
  *
- * @version $Rev $
  */
 public class KickstartFormatter {
 

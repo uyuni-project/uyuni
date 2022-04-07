@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -27,11 +29,15 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * CompletedActionsSetupActionTest
  */
 public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/schedule/CompletedActions");
@@ -40,6 +46,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
+    @Test
     public void testPerformExecute() throws Exception {
 
 
@@ -50,6 +57,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testPerformSubmit() throws Exception {
 
 

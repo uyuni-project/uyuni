@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -29,6 +32,8 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ChannelSetupActionTest
  */
@@ -38,6 +43,7 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
      * A dummy test until the other two are fixed.
      * @throws Exception something bad happened
      */
+    @Test
     public void testDummy() throws Exception {
         assertEquals(42, 42);
     }

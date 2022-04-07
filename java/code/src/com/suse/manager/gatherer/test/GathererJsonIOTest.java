@@ -15,6 +15,11 @@
 
 package com.suse.manager.gatherer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -26,6 +31,8 @@ import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.HostJson;
 import com.suse.manager.model.gatherer.GathererModule;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,16 +40,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 /**
  * Tests for {@link GathererJsonIO}
  */
-public class GathererJsonIOTest extends TestCase {
+public class GathererJsonIOTest  {
 
     private static final String MODULELIST = "modulelist.json";
     private static final String GATHEREROUT = "exampleGathererOutput.json";
 
+    @Test
     public void testReadGathererModules() throws Exception {
         String json =
                 FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
@@ -70,11 +76,12 @@ public class GathererJsonIOTest extends TestCase {
                 assertTrue(g.getParameters().containsKey("tenant"));
             }
             else {
-                assertTrue("Unknown Module", false);
+                assertTrue(false, "Unknown Module");
             }
         }
     }
 
+    @Test
     public void testVHMtoJson() throws Exception {
         Credentials creds = CredentialsFactory.createVHMCredentials();
         creds.setUsername("tux");
@@ -111,6 +118,7 @@ public class GathererJsonIOTest extends TestCase {
         assertTrue(s.contains("\"module\": \"VMware\""));
     }
 
+    @Test
     public void testReadGathererOutput() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);
@@ -123,7 +131,7 @@ public class GathererJsonIOTest extends TestCase {
         assertEquals("x86_64", h.getCpuArch());
         assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
         assertEquals("amd", h.getCpuVendor());
-        assertEquals(3092.212727, h.getCpuMhz());
+        assertEquals(Double.valueOf(3092.212727), h.getCpuMhz());
         assertEquals("10.162.186.111", h.getName());
         assertEquals("de8-9a-8f-bd-a1-48.d3.cloud.mydomain.de", h.getHostIdentifier());
         assertEquals("VMware ESXi", h.getOs());
@@ -135,6 +143,7 @@ public class GathererJsonIOTest extends TestCase {
         assertEquals(Collections.emptyMap(), h.getOptionalVmData());
     }
 
+    @Test
     public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);

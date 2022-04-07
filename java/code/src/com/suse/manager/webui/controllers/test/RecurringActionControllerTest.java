@@ -17,6 +17,9 @@ package com.suse.manager.webui.controllers.test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -35,6 +38,8 @@ import com.google.gson.GsonBuilder;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -61,6 +66,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -78,6 +84,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         } });
     }
 
+    @Test
     public void testCreateAction() throws UnsupportedEncodingException {
         Long orgId = user.getOrg().getId();
 
@@ -95,6 +102,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         assertEquals(user.getLogin(), action.get("creatorLogin"));
     }
 
+    @Test
     public void testCreateActionSameName() throws UnsupportedEncodingException {
         Long orgId = user.getOrg().getId();
 
@@ -111,6 +119,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         }
     }
 
+    @Test
     public void testUpdateAction() throws UnsupportedEncodingException {
         var org = OrgFactory.createOrg();
         org.setName("test org: " + TestUtils.randomString());

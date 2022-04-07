@@ -14,8 +14,16 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * BooleanWrapperTest
@@ -24,11 +32,12 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
 
     private BooleanWrapper bw;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         bw = new BooleanWrapper();
     }
 
+    @Test
     public void testIntegerSet() {
         bw.setBool(1);
         assertTrue(bw.booleanValue());
@@ -51,6 +60,7 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
         assertNull(bw.getBool());
     }
 
+    @Test
     public void testBooleanSet() {
         bw.setBool(Boolean.TRUE);
         assertTrue(bw.booleanValue());

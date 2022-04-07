@@ -54,7 +54,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * </ul>
  *
- * @version $Rev $
  */
 public abstract class RhnWizardAction extends RhnAction {
 

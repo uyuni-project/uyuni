@@ -24,7 +24,6 @@ import java.util.Collection;
  * changes for servers in the SSM.
  *
  * @see com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent
- * @version $Revision$
  */
 public class SsmChangeBaseChannelSubscriptionsEvent extends
         SsmChangeChannelSubscriptionsEvent {

@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartDetailsEdit extends RhnAction
- * @version $Rev: 1 $
  */
 public abstract class BaseKickstartEditAction extends RhnAction {
 

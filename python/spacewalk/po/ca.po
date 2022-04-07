@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-24 04:13+0000\n"
-"PO-Revision-Date: 2022-03-23 22:12+0000\n"
+"POT-Creation-Date: 2022-04-01 08:41+0000\n"
+"PO-Revision-Date: 2022-04-01 08:36+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
 ">\n"
@@ -1283,16 +1283,16 @@ msgstr "Arbres de taules d'inici importats (%d)"
 
 #: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ enviament de registre com a correu electrònic +++"
 
 #: ../satellite_tools/reposync.py:118
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "Informe de sincronització de %s de %s"
 
 #: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1301,6 +1301,9 @@ msgid ""
 "could not be opened and read:\n"
 "%s"
 msgstr ""
+"%s (especificat a la línia d'ordres)\n"
+"no s'ha pogut obrir ni llegir:\n"
+"%s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:205
 #, python-format
@@ -1309,25 +1312,28 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+"%s no s'ha pogut obrir\n"
+"ni escriure-hi:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
-msgstr ""
+msgstr "No hi ha controlador per al pas %s"
 
 #. Try one more time - this time it should be faster since
 #. everything should be cached
 #: ../satellite_tools/satsync.py:270
 msgid "Environment changed, trying again..."
-msgstr ""
+msgstr "L'entorn ha canviat, es torna a provar..."
 
 #: ../satellite_tools/satsync.py:277
 msgid "ERROR: Encountered IntegrityError: \n"
-msgstr ""
+msgstr "ERROR: s'ha trobat un error d'integritat: \n"
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Fallades repetides"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format

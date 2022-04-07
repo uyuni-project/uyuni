@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 /*
- * $Rev$
  */
 public class TestFactory extends HibernateFactory {
 

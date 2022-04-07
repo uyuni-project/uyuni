@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.domain.role.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -23,6 +28,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -38,6 +45,7 @@ public class RoleTest extends RhnBaseTestCase {
     * thrown if the collection is attempted to be modified.
     * @throws Exception something bad happened
     */
+    @Test
     public void testAttemptChangeUserRoles() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -56,6 +64,7 @@ public class RoleTest extends RhnBaseTestCase {
     /**
     * Test to see if we can add a role to a user
     */
+    @Test
     public void testUserAddRole() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -75,6 +84,7 @@ public class RoleTest extends RhnBaseTestCase {
     * Test to make sure you can't add a Role to a User who's Org
     * doesn't have that Role.
     */
+    @Test
     public void testUserAddRoleNotInOrg() {
         User usr = UserFactory.createUser();
         Org org = OrgFactory.createOrg();
@@ -94,6 +104,7 @@ public class RoleTest extends RhnBaseTestCase {
     /**
     * Test to see if we can add a role to a user
     */
+    @Test
     public void testUserRemoveRole() {
         // Create a new user, add ORG_ADMIN to their roles
         User usr = UserTestUtils.findNewUser("testUser",
@@ -112,6 +123,7 @@ public class RoleTest extends RhnBaseTestCase {
     * is an org admin.
     * @throws Exception something bad happened
     */
+    @Test
     public void testOrgAdminRole() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -130,6 +142,7 @@ public class RoleTest extends RhnBaseTestCase {
     *  Test to make sure we can add Roles to Orgs
     * @throws Exception something bad happened
     */
+    @Test
     public void testOrgAddRole() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -148,6 +161,7 @@ public class RoleTest extends RhnBaseTestCase {
     * a user to have no roles
     * @throws Exception something bad happened
     */
+    @Test
     public void testUserWithNoRoles() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -158,6 +172,7 @@ public class RoleTest extends RhnBaseTestCase {
     * Test the RoleFactory's lookupByLabel() method
     * @throws Exception something bad happened
     */
+    @Test
     public void testFindByLabel() throws Exception {
         Role role = RoleFactory.lookupByLabel(RoleFactory.ORG_ADMIN.getLabel());
         assertEquals(RoleFactory.ORG_ADMIN.getLabel(), role.getLabel());
@@ -169,6 +184,7 @@ public class RoleTest extends RhnBaseTestCase {
     * Test the RoleFactory's testFindById() method
     * @throws Exception something bad happened
     */
+    @Test
     public void testFindById() throws Exception {
         Role r2 = RoleFactory.lookupById(RoleFactory.ORG_ADMIN.getId());
         assertEquals(r2.getLabel(), RoleFactory.ORG_ADMIN.getLabel());
@@ -181,6 +197,7 @@ public class RoleTest extends RhnBaseTestCase {
     * roles that don't exist
     * @throws Exception something bad happened
     */
+    @Test
     public void testFindNonExistentRole() throws Exception {
         assertNull(RoleFactory.lookupByLabel("somerolethatdoesntexist"));
     }
@@ -190,6 +207,7 @@ public class RoleTest extends RhnBaseTestCase {
      * run these every time, so I'll leave them commented out
      */
     /*
+    @Test
     public void testCache1() throws Exception {
         System.out.println("******************");
         System.out.println("*** testCache1 ***");
@@ -204,6 +222,7 @@ public class RoleTest extends RhnBaseTestCase {
         System.out.println("r2.getLabel() " + r2.getLabel());
     }
 
+    @Test
     public void testCache2() throws Exception {
         System.out.println("******************");
         System.out.println("*** testCache2 ***");

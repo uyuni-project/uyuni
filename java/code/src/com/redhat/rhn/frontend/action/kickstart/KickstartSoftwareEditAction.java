@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartSoftwareEditAction
- * @version $Rev: 1 $
  */
 public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
 

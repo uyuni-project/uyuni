@@ -815,3 +815,5 @@ Following code is expected to be a part of function used as step definition for 
 
 NOTE: This solution was tested and worked properly, but there was no time gain in comparison with old solution using capybara steps.
 
+TIP: We still can play with timeout value in our test environment, if necessary. See default value [here](https://github.com/uyuni-project/uyuni/blob/master/web/conf/rhn_web.conf#L29-L31)
+

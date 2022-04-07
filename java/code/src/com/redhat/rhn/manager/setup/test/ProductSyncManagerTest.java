@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -47,6 +53,7 @@ import com.suse.manager.model.products.OptionalChannels;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +77,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusNotMirrored() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -89,6 +97,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailed() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -103,6 +112,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailedTasko() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -119,6 +129,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailedNoMetadata() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -134,6 +145,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressScheduled() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -150,6 +162,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressRescheduled() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -170,6 +183,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressReady() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -185,6 +199,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressRunning() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -201,6 +216,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFinished() throws Exception {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
@@ -230,6 +246,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCanVerifyVendorChannelConflictsWithCustomChannel() {
         ProductSyncManager manager = new ProductSyncManager();
 
@@ -267,6 +284,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(uniquePrefix + "-sle-containers", containersConflict.get(0));
     }
 
+    @Test
     public void testCanRetrieveTreeStructureForProducts() {
         ProductSyncManager manager = new ProductSyncManager();
 

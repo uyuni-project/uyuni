@@ -14,12 +14,19 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -35,12 +42,13 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
     private LoggingInvocationProcessor lip;
     private Writer writer;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         lip = new LoggingInvocationProcessor();
         writer = new StringWriter();
     }
 
+    @Test
     public void testPreProcess() {
         String[] args = {"username", "password"};
 
@@ -50,6 +58,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
+    @Test
     public void testPreProcessWithXmlArg() {
         String[] args = {"<?xml version=\"1.0\"?><somestuff>foo</somestuff>",
                 "password"};
@@ -60,6 +69,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
+    @Test
     public void testPreProcessWithValidSession() {
         // create a web session indicating a logged in user.
         WebSession s = WebSessionFactory.createSession();
@@ -75,6 +85,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
+    @Test
     public void testPreProcessWithInvalidSession() {
         String[] args = {"12312312xFFFFFABABABFFFCD01"};
 
@@ -83,6 +94,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
+    @Test
     public void testPostProcess() {
         String[] args = {"<?xml version=\"1.0\"?><somestuff>foo</somestuff>",
                 "password"};
@@ -93,6 +105,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertEquals("", writer.toString());
     }
 
+    @Test
     public void testPostProcessValidSession() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -113,6 +126,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertEquals("", writer.toString());
     }
 
+    @Test
     public void testPostProcessInvalidSession() {
         String[] args = {"12312312xFFFFFABABABFFFCD01"};
 
@@ -124,6 +138,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertEquals("", writer.toString());
     }
 
+    @Test
     public void testPostProcessWhereFirstArgHasNoX() {
         String[] args = {"abcdefghijklmnopqrstuvwyz", "password"};
 
@@ -133,6 +148,7 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertEquals("", writer.toString());
     }
 
+    @Test
     public void testAuthLogin() {
         String[] args = {"user", "password"};
 

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -29,6 +33,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Set;
@@ -44,6 +49,7 @@ public class PackageActionTest extends RhnBaseTestCase {
      * Test fetching a PackageAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupPackageAction() throws Exception {
 
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
@@ -91,6 +97,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testCreatePackageUpdateAction() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -116,6 +123,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         assertEquals(sameAction.getId(), testAction.getId());
     }
 
+    @Test
     public void testCreatePackageUpdateActionWithName() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -140,6 +148,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         assertEquals(sameAction.getId(), testAction.getId());
     }
 
+    @Test
     public void testCreatePackageRemoveAction() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

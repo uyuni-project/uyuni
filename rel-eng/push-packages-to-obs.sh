@@ -252,7 +252,7 @@ while read PKG_NAME; do
 
   if [ "${OSCAPI}" = "https://api.suse.de" -a -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
-      sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
       sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
       sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
       sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile

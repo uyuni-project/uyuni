@@ -13,6 +13,11 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.common.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
@@ -30,6 +35,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.hibernate.HibernateException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,11 +56,12 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(RhnSetActionTest.class);
     private TestAction action = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         action = new TestAction();
     }
 
+    @Test
     public void testUpdateList() throws Exception {
         //TestAction action = new TestAction();
         ActionHelper sah = new ActionHelper();
@@ -71,6 +79,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         verifyParam(forward.getPath(), "setupdated", "true");
     }
 
+    @Test
     public void testUpdateListPipe() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
@@ -85,6 +94,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         // let's go find the data
         verifyRhnSetData(sah.getUser().getId(), action.getSetDecl().getLabel(), 3);
     }
+    @Test
     public void testUnselectAll() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
@@ -95,6 +105,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         verifyParam(forward.getPath(), "setupdated", "true");
     }
 
+    @Test
     public void testSelectAllBadDataType() throws Exception {
         ActionHelper sah = new ActionHelper();
         TestActionWithData a = new TestActionWithData();
@@ -112,6 +123,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         assertTrue(failed);
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         ActionHelper sah = new ActionHelper();
         TestActionWithData a = new TestActionWithData() {
@@ -134,6 +146,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testFilter() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
@@ -145,6 +158,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testUnspecified() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);

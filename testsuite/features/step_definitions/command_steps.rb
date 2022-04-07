@@ -599,8 +599,10 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
 end
 
 When(/^I clean the search index on the server$/) do
-  output, _code = $server.run('/usr/sbin/rcrhn-search cleanindex', check_errors: false)
+  output, _code = $server.run('/usr/sbin/rhn-search cleanindex', check_errors: false)
+  log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
   raise 'The output includes an error log' if output.include?('ERROR')
+  step %(I wait until "rhn-search" service is active on "server")
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
@@ -768,7 +770,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   # perform the registration
   filename = File.basename(path)
   bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout)
+  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
   # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
@@ -959,7 +961,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
-    sleep 2
   end
 end
 

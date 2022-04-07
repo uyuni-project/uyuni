@@ -1,0 +1,43 @@
+name: Frontend dependency audit
+
+on:
+  # This is intentionally not run on `pull_request` since we don't want to block unrelated PRs with fresh audit issues
+  push:
+    branches:
+      - master
+    paths:
+      - 'web/html/src/package.json'
+
+jobs:
+  frontend_dependency_audit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Use Yarn cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install dependencies
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
+
+    # Audit will exit with non-zero if there are any vulnerabilities, whoever triggered the run will get an email by default
+    - name: Run audit
+      run: yarn audit-production-dependencies

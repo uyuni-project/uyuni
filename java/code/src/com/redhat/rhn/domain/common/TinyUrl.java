@@ -22,7 +22,6 @@ import java.util.Date;
 
 /**
  * TinyUrl - Class representation of the table rhntinyurl.
- * @version $Rev: 1 $
  */
 public class TinyUrl {
 

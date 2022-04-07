@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%define SERVICES container-proxy-httpd container-proxy-salt-broker container-proxy-squid container-proxy-ssh container-proxy-tftpd proxy-pod
+%define SERVICES proxy-httpd proxy-salt-broker proxy-squid proxy-ssh proxy-tftpd proxy-pod
 
 Name:           uyuni-proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
@@ -25,11 +25,13 @@ Version:        4.3.0
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}-1.tar.gz
-Source1:        %{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/containers/proxy-systemd-services/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       podman
-Requires(post): %{fillup_prereq}
+%if 0%{?suse_version}
+Requires(post): %fillup_prereq
+%endif
 BuildRequires:  systemd-rpm-macros
 
 %description
@@ -48,9 +50,14 @@ install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-tftpboot
 install -d -m 755 %{buildroot}%{_sbindir}
 
 %if !0%{?is_opensuse}
-sed 's/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/4.3/' -i uyuni-container-proxy-services.config
+PRODUCT_VERSION=$(echo %{version} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
+sed "s/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/${PRODUCT_VERSION}/" -i uyuni-proxy-services.config
 %endif
-install -D -m 644 uyuni-container-proxy-services.config %{buildroot}%{_fillupdir}/sysconfig.%{name}
+%if 0%{?rhel}
+install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_sysconfdir}/sysconfig/uyuni-proxy-systemd-services.config
+%else
+install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_fillupdir}/sysconfig.%{name}
+%endif
 
 for service in %{SERVICES}; do
     install -D -m 644 uyuni-${service}.service %{buildroot}%{_unitdir}/uyuni-${service}.service
@@ -67,7 +74,9 @@ done
 %endif
 
 %post
+%if 0%{?suse_version}
 %fillup_only
+%endif
 for service in %{SERVICES}; do
     %if 0%{?rhel}
         %systemd_post uyuni-${service}.service
@@ -98,7 +107,11 @@ done
 %defattr(-,root,root)
 %{_unitdir}/*.service
 %{_sbindir}/rcuyuni-*
+%if 0%{?rhel}
+%{_sysconfdir}/sysconfig/uyuni-proxy-systemd-services.config
+%else
 %{_fillupdir}/sysconfig.%{name}
+%endif
 %{_sysconfdir}/uyuni
 %{_localstatedir}/lib/uyuni
 

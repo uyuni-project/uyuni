@@ -231,7 +231,7 @@ public class SCCWebClient implements SCCClient {
             else {
                 // Request was not successful
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        username, config.getLoggingDir());
+                        username, config.getLoggingDir(), !config.isSkipOwner());
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         String.format("Got response code %s connecting to %s: %s", responseCode,
                                 request.getURI(), streamReader.lines().collect(Collectors.joining("\n"))));
@@ -304,7 +304,7 @@ public class SCCWebClient implements SCCClient {
             //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode == HttpStatus.SC_CREATED) {
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        username, config.getLoggingDir());
+                        username, config.getLoggingDir(), !config.isSkipOwner());
 
                 return gson.fromJson(streamReader, SCCSystemCredentialsJson.class);
             }
@@ -352,7 +352,7 @@ public class SCCWebClient implements SCCClient {
 
             if (responseCode == HttpStatus.SC_OK) {
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        config.getUsername(), config.getLoggingDir());
+                        config.getUsername(), config.getLoggingDir(), !config.isSkipOwner());
 
                 // Parse result type from JSON
                 T result = gson.fromJson(streamReader, resultType);

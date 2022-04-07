@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -44,6 +47,10 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * SystemEntitlementsSubmitActionTest
  */
@@ -69,6 +76,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
@@ -136,6 +144,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testAddVirtForManagement() throws Exception {
         testAddOnVirt(EntitlementManager.VIRTUALIZATION_ENTITLED,
                 EntitlementManager.VIRTUALIZATION,
@@ -181,8 +190,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         String[] messageNames = {"system_entitlements.addon.success"};
 
         verifyActionMessages(messageNames);
-        assertTrue("Doesn't have: " + ent,
-                SystemManager.hasEntitlement(server.getId(), ent));
+        Assertions.assertTrue(SystemManager.hasEntitlement(server.getId(), ent), "Doesn't have: " + ent);
 
     }
 

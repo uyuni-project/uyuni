@@ -14,8 +14,13 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MirrorCredentialsDto}.
@@ -25,6 +30,7 @@ public class MirrorCredentialsTest extends RhnBaseTestCase {
     /**
      * Tests MirrorCredentialsDto.equals()
      */
+    @Test
     public void testEquality() {
         MirrorCredentialsDto mc1 = new MirrorCredentialsDto("user1", "pw1");
         MirrorCredentialsDto mc2 = new MirrorCredentialsDto("user1", "pw1");

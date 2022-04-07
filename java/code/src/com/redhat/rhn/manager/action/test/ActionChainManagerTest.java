@@ -16,6 +16,12 @@
 package com.redhat.rhn.manager.action.test;
 
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -37,6 +43,8 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,6 +61,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -62,6 +71,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * Tests schedulePackageUpgrades().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSchedulePackageUpgrades() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -91,6 +101,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * Tests scheduleErrataUpdates().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testScheduleErrataUpdates() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -118,6 +129,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleAnsiblePlaybook() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -145,6 +157,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleAnsiblePlaybookTestMode() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();

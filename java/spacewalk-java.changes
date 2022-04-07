@@ -1,3 +1,19 @@
+- Add UI for peripheral server with report database password
+  regeneration
+- Added the server location information to reporting database
+- detect MgrServer on bootstrap and store report database settings
+- Correctly notify the failed status for the report db update task.
+- Show image build log in UI
+- Build bundle less images and create pxe profile for pxe images
+  Introduce saltboot-group handing and pxe management of them
+  Part of saltboot containerization workflow
+- Improve XMLRPC API for image management
+- Allow image upload via HTTP
+- Remove doc search functionality
+- adapt for new c3p0 and mchange-commons package
+- Set default image download protocol to http
+- Container proxy configuration handler
+- Hibernate: set a non-singleton ehcache
 - change directory owner and permissions only when needed
 - Provide link to Sync page when unsynced patches message show up
   (bsc#1196094)
@@ -15,6 +31,12 @@
 - CVE Audit: Show patch as available in the currently installed product even if successor
   patch affects additional packages (bsc#1196455)
 - Added the server location information to reporting database
+
+-------------------------------------------------------------------
+Mon Apr 04 11:02:21 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Prevent error on setting web.ssh_salt_pre_flight_script to blank
 
 -------------------------------------------------------------------
 Wed Mar 23 10:32:00 CET 2022 - jgonzalez@suse.com

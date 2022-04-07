@@ -30,7 +30,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Implements one column of a displayed data list
- * @version $Rev $
  */
 public class ColumnTag extends BodyTagSupport {
     private static final Logger LOG = LogManager.getLogger(ColumnTag.class);

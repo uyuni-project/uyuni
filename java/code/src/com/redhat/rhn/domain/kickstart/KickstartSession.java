@@ -32,7 +32,6 @@ import java.util.TreeMap;
 
 /**
  * KickstartSession - Class representation of the table rhnkickstartsession.
- * @version $Rev: 1 $
  */
 public class KickstartSession {
 

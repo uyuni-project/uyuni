@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -29,8 +30,12 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MgrServerInfo;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -115,21 +120,24 @@ public class SystemsController {
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
-     * @param systemsController instance to register.
+     *
      * @param jade Jade template engine
      */
-    public static void initRoutes(SystemsController systemsController, JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
-                withCsrfToken(withDocsLocale(withUser(systemsController::virtualListPage))), jade);
-
-        post("/manager/api/systems/:sid/delete", withUser(systemsController::delete));
-        get("/manager/api/systems/:sid/channels", withUser(systemsController::getChannels));
+                withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+        get("/manager/systems/details/mgr-server-info/:sid",
+                withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
+                jade);
+        post("/manager/api/systems/:sid/mgr-server-reportdb-newpw", withUser(this::mgrServerNewReportDbPassword));
+        post("/manager/api/systems/:sid/delete", withUser(this::delete));
+        get("/manager/api/systems/:sid/channels", withUser(this::getChannels));
         get("/manager/api/systems/:sid/channels-available-base",
-                withUser(systemsController::getAvailableBaseChannels));
-        post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
+                withUser(this::getAvailableBaseChannels));
+        post("/manager/api/systems/:sid/channels", withUser(this::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
-                withUser(systemsController::getAccessibleChannelChildren));
-        get("/manager/api/systems/list/virtual", withUser(systemsController::virtualSystems));
+                withUser(this::getAccessibleChannelChildren));
+        get("/manager/api/systems/list/virtual", withUser(this::virtualSystems));
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
@@ -171,6 +179,78 @@ public class SystemsController {
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
     }
+
+    /**
+     * Get the virtual systems list page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param server the server
+     * @return the jade rendered template
+     */
+     public ModelAndView mgrServerInfoPage(Request request, Response response, User user, Server server) {
+        MgrServerInfo info = server.getMgrServerInfo();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("name", server.getName());
+        data.put("version", Optional.ofNullable(info.getVersion())
+                .map(PackageEvr::toUniversalEvrString)
+                .orElse(""));
+        data.put("reportDbName", info.getReportDbName());
+        data.put("reportDbHost", info.getReportDbHost());
+        data.put("reportDbPort", info.getReportDbPort());
+        data.put("reportDbUser", Optional.ofNullable(info.getReportDbCredentials())
+                .map(Credentials::getUsername)
+                .orElse(""));
+        data.put("reportDbLastSynced", info.getReportDbLastSynced());
+
+        return new ModelAndView(data, "templates/systems/mgr-server.jade");
+     }
+
+     /**
+      * Autogenerate a new password for a Mgr Servers report database,
+      * set it in the DB and schedule a password change on that server.
+      *
+      * @param request the request
+      * @param response the response
+      * @param user the user
+      * @return the json response
+      */
+     public String mgrServerNewReportDbPassword(Request request, Response response, User user) {
+         String sidStr = request.params("sid");
+         long sid;
+         try {
+             sid = Long.parseLong(sidStr);
+         }
+         catch (NumberFormatException e) {
+             LOG.error(String.format("SystemID (%s) not a long", sidStr));
+             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("invalid_systemid"));
+         }
+         Server server = null;
+         try {
+             server = SystemManager.lookupByIdAndUser(sid, user);
+         }
+         catch (Exception e) {
+             LOG.error(e.getMessage());
+             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("unknown_system"));
+         }
+         if (server.isMgrServer()) {
+             Optional<MinionServer> minion = server.asMinionServer();
+             if (minion.isEmpty()) {
+                 LOG.error(String.format("System (%s) not a minion", sidStr));
+                 return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
+             }
+             SystemManager.setReportDbUser(minion.get(), true);
+         }
+         else {
+             LOG.error(String.format("System (%s) not a Mgr Server", sidStr));
+             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
+         }
+         return json(response, ResultJson.success());
+     }
+
     /**
      * Deletes a system.
      * @param request the request

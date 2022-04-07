@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -31,6 +34,10 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -43,12 +50,14 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     private final SaltApi saltApi = new TestSaltApi();
     private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
 
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
     }
 
+    @AfterEach
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
@@ -58,6 +67,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).
      */
+    @Test
     public void testCleanupScriptActions() throws Exception {
 
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
@@ -82,6 +92,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is deleted in case no Action is there at all.
      */
+    @Test
     public void testCleanupScriptWithoutAction() throws Exception {
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
@@ -98,6 +109,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
+    @Test
     public void testCleanupScriptActionsPickedUp() throws Exception {
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);

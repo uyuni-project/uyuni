@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * PushClient - Class representation of the table rhnpushclient.
- * @version $Rev: 1 $
  */
 public class PushClient {
 

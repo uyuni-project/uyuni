@@ -14,11 +14,18 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.KickstartPartitionCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartPartitionCommandTest - test for KickstartDetailsCommand
@@ -26,6 +33,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
 
+    @Test
     public void testKickstartPartitionCommand() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         assertTrue(k.getPartitionData().isEmpty());
@@ -48,6 +56,7 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLVMSwapPartitions() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         KickstartFactory.saveKickstartData(k);

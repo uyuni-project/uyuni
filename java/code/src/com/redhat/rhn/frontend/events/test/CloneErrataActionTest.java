@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.events.test;
 
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -32,6 +33,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -48,6 +52,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();
@@ -59,6 +64,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
      * Tests execute().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testDoExecute() throws Exception {
         // setup a channel with an errata
         Channel original = ChannelFactoryTest.createTestChannel(admin);

@@ -17,14 +17,18 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testDisplay() throws Exception {
         KickstartData k = KickstartTestHelper.createTestKickStart(user);
         setupForDisplay(k);
         actionPerform();
     }
 
+    @Test
     public void testEditWithAdd() throws Exception {
         KickstartData k = KickstartTestHelper.createTestKickStart(user);
         setupForEdit(k);
@@ -32,6 +36,7 @@ public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
         actionPerform();
     }
 
+    @Test
     public void testEditWithDelete() throws Exception {
         KickstartData k = KickstartTestHelper.createTestKickStart(user);
         setupForEdit(k);

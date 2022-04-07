@@ -64,7 +64,6 @@ import java.util.Set;
 /**
  * Class Org that reflects the DB representation of web_customer DB table:
  * web_customer
- * @version $Rev:67468 $
  */
 public class Org extends BaseDomainHelper implements SaltConfigurable {
 

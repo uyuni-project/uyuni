@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.common.errors.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.PermissionExceptionHandler;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -34,7 +37,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -45,13 +50,15 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
-    public void setUp() {
+    @BeforeEach
+    public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);
         MessageQueue.startMessaging();
     }
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
@@ -99,7 +106,8 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
         }
     }
 
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

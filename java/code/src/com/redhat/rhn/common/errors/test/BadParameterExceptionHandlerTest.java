@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -34,7 +35,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -45,6 +48,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
+    @BeforeEach
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
@@ -53,6 +57,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
@@ -110,7 +115,8 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
         }
     }
 
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

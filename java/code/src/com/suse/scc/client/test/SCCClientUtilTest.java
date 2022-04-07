@@ -14,6 +14,9 @@
  */
 package com.suse.scc.client.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.scc.client.SCCClientUtils;
@@ -22,7 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -47,6 +50,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
      * Tests {@link SCCClientUtils#getLogFilename}
      * @throws URISyntaxException if URI syntax is wrong
      */
+    @Test
     public void testFilenameFromURI() throws URISyntaxException {
         URI uri = new URI(TEST_URI);
         String actual = SCCClientUtils.getLogFilename(uri, TEST_USER_NAME);
@@ -58,6 +62,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
      * @throws IOException if anything goes wrong
      * @throws URISyntaxException if URI has wrong syntax
      */
+    @Test
     public void testGetLoggingReader() throws IOException, URISyntaxException {
         URI uri = new URI(TEST_URI);
 
@@ -80,7 +85,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
         // get reader
         BufferedReader reader =
                 SCCClientUtils.getLoggingReader(uri, mockResponse, TEST_USER_NAME,
-                        System.getProperty("java.io.tmpdir"));
+                        System.getProperty("java.io.tmpdir"), false);
 
         // expect to read fake data from reader
         assertEquals(expected, reader.readLine());

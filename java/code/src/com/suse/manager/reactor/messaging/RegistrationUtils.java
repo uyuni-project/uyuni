@@ -149,6 +149,7 @@ public class RegistrationUtils {
         if (applyHighstate) {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
+        SystemManager.setReportDbUser(minion, false);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {

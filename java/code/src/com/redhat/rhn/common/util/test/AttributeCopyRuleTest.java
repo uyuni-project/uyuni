@@ -15,11 +15,15 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.util.AttributeCopyRule;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.digester.Digester;
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -27,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class AttributeCopyRuleTest extends RhnBaseTestCase {
+    @Test
     public void testCopy() throws Exception {
         Digester digester = new Digester();
         digester.setValidating(false);

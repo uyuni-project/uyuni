@@ -153,6 +153,17 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new Virtual Host Manager {@link Credentials}
+     * @return new credential with type Virtual Host Manager
+     */
+    public static Credentials createReportCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_REPORT_CREDS));
+        return creds;
+    }
+
+    /**
      * Create Credentials of a specific type
      * @param username - the username
      * @param password - the password
@@ -178,6 +189,9 @@ public class CredentialsFactory extends HibernateFactory {
         }
         else if (credentialsType.equals(Credentials.TYPE_CLOUD_RMT)) {
             credentials = CredentialsFactory.createCloudRmtCredentials();
+        }
+        else if (credentialsType.equals(Credentials.TYPE_REPORT_CREDS)) {
+            credentials = CredentialsFactory.createReportCredentials();
         }
         else {
             return credentials;

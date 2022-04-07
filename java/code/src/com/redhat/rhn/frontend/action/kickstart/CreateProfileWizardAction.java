@@ -51,7 +51,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Manages the workflow for the Create New Kickstart Profile wizard
  *
- * @version $Rev $
  */
 public class CreateProfileWizardAction extends RhnWizardAction {
 

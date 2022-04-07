@@ -14,10 +14,17 @@
  */
 package com.redhat.rhn.common.translation.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,12 +35,14 @@ import java.util.Map;
 
 public class TranslatorTest extends RhnBaseTestCase {
 
+    @Test
     public void testInt2String() {
         Integer i = 42;
         assertEquals("42", Translator.int2String(i));
         assertEquals("", Translator.int2String(null));
     }
 
+    @Test
     public void testInt2List() {
         Integer i = 42;
         List list = Translator.int2List(i);
@@ -45,6 +54,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertTrue(list.isEmpty());
     }
 
+    @Test
     public void testBigDecimal2SomethingElse() throws Exception {
         BigDecimal bd = new BigDecimal(1);
         int i = Translator.bigDecimal2Int(bd);
@@ -60,12 +70,14 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertEquals(Long.valueOf(1), bl);
     }
 
+    @Test
     public void testDouble2SomethingElse() {
         Double d = 10.0;
         String s = Translator.double2String(d);
         assertEquals("10.0", s);
     }
 
+    @Test
     public void testLong2SomethingElse() throws Exception {
         Long bl = 10L;
         long ll = Translator.long2Objlong(bl);
@@ -79,6 +91,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertTrue(user.getLogin().startsWith("testUser"));
     }
 
+    @Test
     public void testString2SomethingElse() throws Exception {
         assertFalse(Translator.string2boolean(null));
         assertTrue(Translator.string2boolean("Y"));
@@ -95,6 +108,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertFalse(Translator.string2boolean("rock on"));
     }
 
+    @Test
     public void testInteger2Boolean() {
         Integer zero = 0;
         Integer one = 1;
@@ -106,12 +120,14 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertFalse(Translator.int2Boolean(null));
     }
 
+    @Test
     public void testDate2String() {
         Date now = new Date();
         assertEquals(now.toString(), Translator.date2String(now));
         assertEquals("", Translator.date2String(null));
     }
 
+    @Test
     public void testBoolean2Somethingelse() {
         assertTrue(Translator.boolean2boolean(Boolean.TRUE));
         assertFalse(Translator.boolean2boolean(Boolean.FALSE));
@@ -122,6 +138,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertEquals("false", Translator.boolean2String(null));
     }
 
+    @Test
     public void testMap2String() {
         Map foo = new HashMap();
         foo.put("bar", "nut");
@@ -130,6 +147,7 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertEquals("", Translator.map2String(null));
     }
 
+    @Test
     public void testList2String() {
         List l = new ArrayList();
         l.add(1);

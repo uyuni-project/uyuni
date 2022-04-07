@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Handles display and update of {@literal Kickstart -> System Details}
  *
- * @version $Rev $
  */
 public class SystemDetailsEditAction extends RhnAction {
 

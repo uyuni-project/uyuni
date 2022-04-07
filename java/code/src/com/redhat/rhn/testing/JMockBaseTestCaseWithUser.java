@@ -23,6 +23,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,11 +39,12 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     protected Path tmpSaltRoot;
 
     /**
-     * {@inheritDoc}
+     * Called once per test method to setup the test environment.
+     *
+     * @throws Exception if an error occurs during setup
      */
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
@@ -55,10 +58,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
 

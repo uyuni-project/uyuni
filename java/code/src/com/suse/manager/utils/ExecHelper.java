@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class ExecHelper {
+
+    public static final String TOOL_FAILED_MSG = "External tool failed: ";
+
     private static final Logger LOG = LogManager.getLogger(ExecHelper.class);
 
     private final Supplier<Runtime> runtimeSupplier;
@@ -78,7 +81,7 @@ public class ExecHelper {
         try {
             if (process.waitFor() != 0) {
                 String errMsg = new String(process.getErrorStream().readAllBytes());
-                throw new RhnRuntimeException("External tool failed: " + errMsg);
+                throw new RhnRuntimeException(TOOL_FAILED_MSG + errMsg);
             }
         }
         catch (InterruptedException err) {

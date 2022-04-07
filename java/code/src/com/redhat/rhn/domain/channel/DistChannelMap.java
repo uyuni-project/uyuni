@@ -24,7 +24,6 @@ import java.io.Serializable;
 
 /**
  * DistChannelMap - Class representation of the table rhnDistChannelMap.
- * @version $Rev: 1 $
  */
 public class DistChannelMap implements Serializable {
 

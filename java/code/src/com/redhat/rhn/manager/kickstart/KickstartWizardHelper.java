@@ -41,7 +41,6 @@ import java.util.Set;
 /**
  * Provides convenience methods for creating a kickstart profile.
  *
- * @version $Rev $
  */
 public class KickstartWizardHelper {
 

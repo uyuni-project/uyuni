@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.frontend.nav.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.nav.DepthGuard;
 import com.redhat.rhn.frontend.nav.NavCache;
 import com.redhat.rhn.frontend.nav.NavDigester;
@@ -31,6 +37,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NavTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(NavTest.class);
@@ -38,12 +46,12 @@ public class NavTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
     }
 
+    @Test
     public void testCache() throws Exception {
         NavTree realTree = NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
         NavTree cacheTree1 = NavCache.getTree(TestUtils.findTestData("sitenav.xml"));
@@ -53,6 +61,7 @@ public class NavTest extends RhnBaseTestCase {
         assertSame(cacheTree1, cacheTree2);
     }
 
+    @Test
     public void testDigester() throws Exception {
         StopWatch st = new StopWatch();
         st.start();
@@ -87,6 +96,7 @@ public class NavTest extends RhnBaseTestCase {
                        st.getTime() / 1000f + " seconds");
     }
 
+    @Test
     public void testUrlSplit() throws Exception {
         String[] testUrls = new String[] {
             "/",
@@ -114,6 +124,7 @@ public class NavTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLastMappedPath() throws Exception {
 
         NavTree nt =
@@ -133,6 +144,7 @@ public class NavTest extends RhnBaseTestCase {
         assertEquals(bestNode.getPrimaryURL(), activePath);
     }
 
+    @Test
     public void testMatchByUrl() throws Exception {
         NavTree nt =
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
@@ -145,6 +157,7 @@ public class NavTest extends RhnBaseTestCase {
         assertEquals("/rhn/apidoc/index.jsp", bestNode.getPrimaryURL());
     }
 
+    @Test
     public void testMatchByDir() throws Exception {
         NavTree nt =
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));

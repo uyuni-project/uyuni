@@ -14,9 +14,13 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
@@ -25,7 +29,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.utils.LoginHelper;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -41,16 +45,9 @@ import spark.routematch.RouteMatch;
 public class RequestContextTest extends MockObjectTestCase {
 
     /**
-     *
-     * @param name Name of the TestCase
-     */
-    public RequestContextTest(String name) {
-        super(name);
-    }
-
-    /**
      * @throws Exception if an error occurs
      */
+    @Test
     public final void testGetLoggedInUser() throws Exception {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
@@ -139,6 +136,7 @@ public class RequestContextTest extends MockObjectTestCase {
     /**
      * @throws Exception if an error occurs
      */
+    @Test
     public void testbuildPageLink() throws Exception {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupAddParameter("someparam", "value");

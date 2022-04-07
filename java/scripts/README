@@ -8,8 +8,6 @@ connwatch - watches connections and logs status to stdout
 create-api-test - creates python xmlrpc api testcase
 gen-eclipse.py - generates eclipse .classpath file (should be renamed)
 jarsearch.sh - searches a directory of jars for a specific class
-java-create-page.pl -
-java-map-hibernate-table.pl -
 java-xliff-csv.pl -
 loadnouser.pl - multithreaded load test for rhn with NO user
 lwload.pl - multithreaded load test for rhn

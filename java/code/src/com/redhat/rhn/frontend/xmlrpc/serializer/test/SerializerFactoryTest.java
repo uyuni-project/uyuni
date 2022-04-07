@@ -14,22 +14,28 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import junit.framework.TestCase;
 
-
-public class SerializerFactoryTest extends TestCase {
+public class SerializerFactoryTest  {
 
     private SerializerFactory factory = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
+
         factory = new SerializerFactory();
     }
 
+    @Test
     public void testFactory() {
         List serializers = factory.getSerializers();
         assertNotNull(serializers);

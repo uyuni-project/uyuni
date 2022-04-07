@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.dto;
  * <code>PackageListItem</code> subclass specifically for carrying the extra information
  * of how many systems a package is installed on, for use in SSM.
  *
- * @version $Revision$
  */
 public class SsmRemovePackageListItem extends PackageListItem {
 

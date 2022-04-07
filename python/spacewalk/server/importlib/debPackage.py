@@ -123,7 +123,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             l = []
             values = header[k]
             if values is not None:
-                val = values.split(', ')  # split packages
+                val = [ elem.strip() for elem in values.split(',') ]  # split packages
                 i = 0
                 for v in val:
                     relation = 0

@@ -14,10 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,6 +40,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -44,6 +52,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * Tests disabling and enabling bootstrap discovery.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testDisableEnableBootstrapDiscovery() throws Exception {
         actionPerform();
 
@@ -89,6 +98,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * Test enabling bootstrap from a different Org.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testBootstrapDifferentOrg() throws Exception {
         addRequestParameter(BootstrapSystemConfigAction.DISABLE, "submitted");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());

@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * CryptoKey - Class representation of the table rhnCryptoKey.
- * @version $Rev: 1 $
  */
 public class CryptoKey implements Identifiable {
 

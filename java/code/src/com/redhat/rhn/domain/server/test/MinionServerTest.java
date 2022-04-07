@@ -14,10 +14,17 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +41,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything bad happens
      */
+    @Test
     public void testPillars() throws Exception {
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Set<Pillar> pillars = new HashSet<>();

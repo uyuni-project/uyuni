@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -24,12 +27,14 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * RhnListActionTest - test RhnListAction code.
- * @version $Rev: 55033 $
  */
 public class BaseSetListActionTest extends RhnBaseTestCase {
 
@@ -39,6 +44,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
         sah = new ActionHelper();
@@ -51,6 +57,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecute() throws Exception {
         sah.executeAction();
         assertNotNull(sah.getRequest().getAttribute("pageList"));
@@ -63,6 +70,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testExport() throws Exception {
         // Need to fetch the 0 value one and put the 1 back in.
         sah.getRequest().getParameter(RequestContext.LIST_DISPLAY_EXPORT);

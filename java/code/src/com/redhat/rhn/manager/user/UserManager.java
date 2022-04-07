@@ -73,7 +73,6 @@ import javax.security.auth.login.LoginException;
  * on Users where those operations interact with other top tier Business Objects.
  *
  * Operations that require the User make changes to
- * @version $Rev: 903 $
  */
 public class UserManager extends BaseManager {
 

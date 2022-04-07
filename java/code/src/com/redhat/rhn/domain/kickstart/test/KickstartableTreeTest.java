@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -36,6 +42,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cobbler.Distro;
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
@@ -85,6 +92,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPaths()[0]);
     }
 
+    @Test
     public void testKickstartableTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         assertNotNull(k);
@@ -116,6 +124,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertNull(lookedUp.getOrgId());
     }
 
+    @Test
     public void testIsRhnTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         assertFalse(k.isRhnTree());
@@ -123,6 +132,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertTrue(k.isRhnTree());
     }
 
+    @Test
     public void testDownloadLocation() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         String expected = "/ks/dist/org/" + k.getOrg().getId() + "/" +
@@ -130,6 +140,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertEquals(expected, k.getDefaultDownloadLocation());
     }
 
+    @Test
     public void testKsDataByTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));
@@ -278,6 +289,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         return tree;
     }
 
+    @Test
     public void testSUSEStartupPaths() throws Exception {
         File ksRoot = new File("/media");
 
@@ -320,6 +332,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Tests listing candidates for the the cobbler backsync.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCandidatesForBacksync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));
@@ -332,6 +345,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Tests listing candidates for the the cobbler backsync when there are no candidates.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCandidatesForBacksyncNoSync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));

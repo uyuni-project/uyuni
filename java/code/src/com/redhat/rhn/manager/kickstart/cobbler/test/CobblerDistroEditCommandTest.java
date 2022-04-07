@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroEditCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -21,6 +25,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
@@ -38,6 +44,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * @throws Exception if anything goes wrong
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -52,6 +59,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroEdit() throws Exception {
         CobblerDistroEditCommand cmd = new
             CobblerDistroEditCommand(sourceTree, user);
@@ -69,6 +77,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroRecreateXenDistroOnEdit() throws Exception {
         // remove the distro
         Distro xen = Distro.lookupById(connection, sourceTree.getCobblerXenId());
@@ -91,6 +100,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroXenDistroRemovedOnEdit() throws Exception {
         // verify it's there
         assertNotNull(Distro.lookupById(connection, sourceTree.getCobblerXenId()));
@@ -112,6 +122,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroEditIdStaysSameOnEdit() throws Exception {
         String xenIdBefore = sourceTree.getCobblerXenId();
 

@@ -20,7 +20,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.log.JdkLogChute;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -48,7 +47,7 @@ public class VelocityHelper {
         p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
 
         // We want to avoid logging the INFO since it costs time
-        Configurator.setLevel(JdkLogChute.DEFAULT_LOG_NAME, Level.WARN);
+        Configurator.setLevel("org.apache.velocity", Level.WARN);
         ve = new VelocityEngine(p);
         context = new VelocityContext();
     }

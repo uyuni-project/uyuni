@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * KickstartScript - Class representation of the table rhnKickstartScript.
- * @version $Rev: 1 $
  */
 public class KickstartScript extends BaseDto implements Comparable<KickstartScript> {
 

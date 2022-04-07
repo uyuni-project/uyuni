@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.utils.salt.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -22,11 +26,14 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 import java.util.Optional;
 
 public class FileDiffResultTest extends JMockBaseTestCaseWithUser  {
     static final String JSON_FILE_DIFF_RESPONSE = "dummy_files_diff_res.json";
+    @Test
     public void testFileDiffResult() throws Exception {
         String jsonResult = TestUtils.readAll(TestUtils.findTestData(JSON_FILE_DIFF_RESPONSE));
         TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<>() {

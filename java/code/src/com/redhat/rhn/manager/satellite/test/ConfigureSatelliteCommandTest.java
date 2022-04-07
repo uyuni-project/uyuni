@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -22,6 +28,9 @@ import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
@@ -41,11 +50,13 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 
+    @Test
     public void testCreateCommand() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -96,6 +107,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testRemoveEntries() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -132,6 +144,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertEquals(0, cmd.getKeysToBeUpdated().size());
     }
 
+    @Test
     public void testUpdateHostname() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -146,6 +159,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testMountPoint() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -162,6 +176,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
                 Config.get().getString(ConfigDefaults.KICKSTART_MOUNT_POINT));
     }
 
+    @Test
     public void testRoles() throws Exception {
 
         user.removePermanentRole(RoleFactory.SAT_ADMIN);

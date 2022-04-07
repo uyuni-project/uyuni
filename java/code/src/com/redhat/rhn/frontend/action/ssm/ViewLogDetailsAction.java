@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
  * a request parameter).
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class ViewLogDetailsAction extends RhnListAction implements Listable {
 

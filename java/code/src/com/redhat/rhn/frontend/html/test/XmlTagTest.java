@@ -14,16 +14,22 @@
  */
 package com.redhat.rhn.frontend.html.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.html.XmlTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 public class XmlTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testSpaceBefore() {
         XmlTag xml = new XmlTag("foo", true);
         assertEquals("<foo />", xml.render());
     }
 
+    @Test
     public void testXmltag() {
         XmlTag xml = new XmlTag("foo");
         assertEquals("<foo/>", xml.render());

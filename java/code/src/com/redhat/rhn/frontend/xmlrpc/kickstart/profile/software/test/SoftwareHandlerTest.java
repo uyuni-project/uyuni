@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
 
     private SoftwareHandler handler = new SoftwareHandler();
 
+    @Test
     public void testGetSoftwareList() throws Exception {
 
         KickstartData ksProfile  = KickstartDataTest.createKickstartWithProfile(admin);
@@ -41,6 +47,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(ksProfile.getKsPackages().size(), packages.size());
     }
 
+    @Test
     public void testSetSoftwareList() throws Exception {
 
         KickstartData ksProfile  = KickstartDataTest.createKickstartWithProfile(admin);
@@ -63,6 +70,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     // Test API with nobase and ignoremissing
+    @Test
     public void testSetSoftwareListWithParams() throws Exception {
 
         KickstartData ksProfile = KickstartDataTest.createKickstartWithProfile(admin);
@@ -86,6 +94,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(ksProfile.getIgnoreMissing(), true);
     }
 
+    @Test
     public void testAppendToSoftwareList() throws Exception {
 
         KickstartData ksProfile  = KickstartDataTest.createKickstartWithProfile(admin);

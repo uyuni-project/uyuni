@@ -79,7 +79,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * blah blah
  *
- * @version $Rev $
  */
 public class ScheduleKickstartWizardAction extends RhnWizardAction {
 

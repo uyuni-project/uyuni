@@ -1,4 +1,4 @@
-mgr_download_mgr_cert:
+mgr_ca_cert:
   file.managed:
     - name: /usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt
     - makedirs: True
@@ -10,4 +10,4 @@ mgr_update_ca_certs:
     - name: /usr/sbin/update-ca-certificates
     - runas: root
     - onchanges:
-      - file: /usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt
+      - file: mgr_ca_cert

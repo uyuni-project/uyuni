@@ -29,7 +29,6 @@ import java.util.Date;
 /**
  * SystemDetailsCommand
  *
- * @version $Rev $
  */
 public class SystemDetailsCommand extends BaseKickstartCommand {
     /**

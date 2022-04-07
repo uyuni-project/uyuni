@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -34,6 +39,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +56,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         cmd.store();
     }*/
 
+    @Test
     public void testSystemCreate() throws Exception {
 
         Server s = ServerTestUtils.createTestSystem(user);
@@ -68,6 +75,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNotNull(s.getCobblerId());
     }
 
+    @Test
     public void testProfileCreate() throws Exception {
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
                 ksdata, user);
@@ -76,6 +84,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNotNull(ksdata.getCobblerObject(user).getName());
     }
 
+    @Test
     public void testProfileEdit() throws Exception {
         // create one first
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
@@ -91,6 +100,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNotNull(ksdata.getCobblerObject(user).getName());
     }
 
+    @Test
     public void testProfileDelete() throws Exception {
         CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
                 ksdata, user);
@@ -104,6 +114,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     /**
      * Tests that CobblerDistroSyncCommand recreates missing cobbler entries.
      */
+    @Test
     public void testDistroSync() {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
@@ -132,6 +143,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
      * Tests that 'kernel options' and 'kernel options post' are back-synced from cobbler
      * in case they are null.
      */
+    @Test
     public void testKernelOptionsBacksync() {
         // re-use the KS tree created in setUp
         KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
@@ -167,6 +179,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
      * Tests that non-null 'kernel options' field of the kickstartable tree
      * remains untouched on the backsync.
      */
+    @Test
     public void testKernelOptionsDontBacksync() {
         // re-use the KS tree created in setUp
         KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
@@ -189,12 +202,14 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assert fromDb.getKernelOptionsPost().isEmpty();
     }
 
+    @Test
     public void testDistroDelete() throws Exception {
         CobblerDistroDeleteCommand cmd = new
             CobblerDistroDeleteCommand(ksdata.getTree(), user);
         assertNull(cmd.store());
     }
 
+    @Test
     public void testLogin() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);

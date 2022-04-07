@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -62,6 +69,7 @@ import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -76,6 +84,7 @@ import java.util.Set;
  */
 public class PackageManagerTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testSystemPackageList() throws Exception {
         // need a system
         // need to add packages to that system
@@ -100,6 +109,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testSystemPackageListMulti() throws Exception {
         // Test that the package id comes from a package of an assigned channel
         PageControl pc = new PageControl();
@@ -142,6 +152,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGuestimateChannelInvalidPackage() {
         // guestimatePackageByChannel should return null if it
         // can't find a package, not throw an exception.
@@ -154,6 +165,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGuestimateHandlesNullArchId() throws Exception {
         PackageListItem pli = PackageListItem.parse("10000|1000");
         assertNull(pli.getIdThree());
@@ -161,6 +173,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 pli.getIdThree(), null));
     }
 
+    @Test
     public void testGuestimateInvalidPackage() throws Exception {
         // guestimatePackageBySystem should return null if it
         // can't find a package, not throw an exception.
@@ -173,6 +186,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpgradable() throws Exception {
         Map info = ErrataCacheManagerTest.
             createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
@@ -193,6 +207,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertTrue(containsSamePackage);
     }
 
+    @Test
     public void testSystemAvailablePackages() throws Exception {
         // need a system
         // need to add packages to that system
@@ -332,6 +347,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         return retval;
     }
 
+    @Test
     public void testCreateLotsofPackagesInChannel() throws Exception {
         String rand = TestUtils.randomString();
         Channel c = ChannelTestUtils.createTestChannel(user);
@@ -340,6 +356,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testPossiblePackagesForPushingIntoChannel() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelTestUtils.createTestChannel(user);
@@ -349,6 +366,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
    }
 
 
+    @Test
     public void testGetServerNeededUpdatePackageByName() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server s = ServerFactoryTest.createTestServer(user);
@@ -360,6 +378,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 getServerNeededUpdatePackageByName(s.getId(), "some-test-package"));
     }
 
+    @Test
     public void testPackageIdsInSet() throws Exception {
 
         DataResult dr = PackageManager.packageIdsInSet(user, "packages_to_add",
@@ -457,6 +476,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 BaseTreeEditOperation.KICKSTART_CAPABILITY);
     }
 
+    @Test
     public void testPackageNameOverview() {
         String packageName = "kernel";
         String[] channelarches = {"channel-ia32", "channel-x86_64"};
@@ -466,6 +486,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
     }
 
+    @Test
     public void testLookupPackageForChannelFromChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -486,6 +507,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertTrue(test.size() == 0);
     }
 
+    @Test
     public void testLookupCustomPackagesForChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
@@ -503,6 +525,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertTrue(test.size() == 0);
     }
 
+    @Test
     public void testListOrphanPackages() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
@@ -523,6 +546,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testUpgradablePackagesFromServerSet() throws Exception {
         // Setup
         Org org = user.getOrg();
@@ -549,6 +573,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, result.size());
     }
 
+    @Test
     public void testDeletePackages() throws Exception {
         // Configuration
         final int numPackagesToDelete = 50;
@@ -588,6 +613,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testRepodata() throws Exception {
 
         OutputStream st = new ByteArrayOutputStream();

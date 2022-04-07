@@ -6,8 +6,8 @@
 Description=Podman uyuni-proxy-pod.service
 Wants=network.target
 After=network-online.target
-Requires=uyuni-container-proxy-httpd.service uyuni-container-proxy-salt-broker.service uyuni-container-proxy-squid.service uyuni-container-proxy-ssh.service uyuni-container-proxy-tftpd.service
-Before=uyuni-container-proxy-httpd.service uyuni-container-proxy-salt-broker.service uyuni-container-proxy-squid.service uyuni-container-proxy-ssh.service uyuni-container-proxy-tftpd.service
+Requires=uyuni-proxy-httpd.service uyuni-proxy-salt-broker.service uyuni-proxy-squid.service uyuni-proxy-ssh.service uyuni-proxy-tftpd.service
+Before=uyuni-proxy-httpd.service uyuni-proxy-salt-broker.service uyuni-proxy-squid.service uyuni-proxy-ssh.service uyuni-proxy-tftpd.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

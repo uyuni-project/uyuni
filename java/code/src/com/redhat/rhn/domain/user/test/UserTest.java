@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.domain.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -30,6 +35,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -42,15 +51,16 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
-        super.setUp();
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
         super.tearDown();
     }
@@ -59,6 +69,7 @@ public class UserTest extends RhnBaseTestCase {
      *  Test to make sure that we can set the login on a newly created
      *  user.
     */
+    @Test
     public void testSetLogin() {
         User usr = UserFactory.createUser();
         usr.setLogin("testLogin");
@@ -71,6 +82,7 @@ public class UserTest extends RhnBaseTestCase {
     * because the password changed.
     * @throws Exception something bad happened
     */
+    @Test
     public void testAuthenticateTrue() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -83,6 +95,7 @@ public class UserTest extends RhnBaseTestCase {
     * in that we actually fail the authenticate method
     * @throws Exception something bad happened
     */
+    @Test
     public void testAuthenticateFail() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -95,6 +108,7 @@ public class UserTest extends RhnBaseTestCase {
     * is bad, test that so that it doesn't happen again.
     * @throws Exception something bad happened
     */
+    @Test
     public void testLookupSameUserTwice() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -108,6 +122,7 @@ public class UserTest extends RhnBaseTestCase {
     * Check to make sure we can add an Address to a User.
     * @throws Exception something bad happened
     */
+    @Test
     public void testAddAddress() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -117,6 +132,7 @@ public class UserTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testBeanMethods() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -192,6 +208,7 @@ public class UserTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testSystemGroupMethods() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -205,6 +222,7 @@ public class UserTest extends RhnBaseTestCase {
         assertNotNull(usr.getDefaultSystemGroupIds());
     }
 
+    @Test
     public void testGetRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -233,6 +251,7 @@ public class UserTest extends RhnBaseTestCase {
      * a boatload of setup that needs root access
      * @see #testAuthenticateTrue
      */
+    @Test
     public void testPamAuthenticationFails() {
         String oldValue = Config.get().setString("web.pam_auth_service", "login");
         try {
@@ -249,6 +268,7 @@ public class UserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testServerPerms() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

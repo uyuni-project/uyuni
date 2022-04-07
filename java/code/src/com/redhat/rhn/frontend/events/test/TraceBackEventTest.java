@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.frontend.events.TraceBackAction;
@@ -24,6 +28,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockHttpSession;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -39,14 +46,15 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         mailer = new MockMail();
     }
 
     /**
      * test that makes sure we can instantiate the service
      */
+    @Test
     public void testToText() {
         TraceBackEvent evt = createTestEvent();
         String eventText = evt.toText();
@@ -64,6 +72,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertContains(eventText, "Exception");
     }
 
+    @Test
     public void testProtectPassword() {
         TraceBackEvent evt = createTestEventWithValue("password", "no-secret");
         mailer.setExpectedSendCount(1);
@@ -79,6 +88,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertTrue(body.indexOf("password: " + evt.getHashMarks()) > 0);
     }
 
+    @Test
     public void testNoPassword() {
         TraceBackEvent evt = createTestEventWithValue("passsword", "no-secret");
         mailer.setExpectedSendCount(1);
@@ -93,6 +103,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertFalse(body.indexOf("passsword: " + evt.getHashMarks()) > 0);
     }
 
+    @Test
     public void testToTextWithNulls() {
         TraceBackEvent evt = new TraceBackEvent();
         evt.setRequest(null);
@@ -104,6 +115,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertContains(eventText, "No request information");
     }
 
+    @Test
     public void testTraceBackAction() {
         TraceBackEvent evt = createTestEvent();
         mailer.setExpectedSendCount(1);

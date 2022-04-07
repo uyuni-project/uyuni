@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -25,6 +31,9 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,11 +51,13 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     private ServerGroupManager manager;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = new ServerGroupManager(new TestSaltApi());
     }
 
+    @Test
     public void testCreate() {
         try {
             manager.create(user, NAME, DESCRIPTION);
@@ -66,6 +77,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         assertEquals(DESCRIPTION, sg.getDescription());
     }
 
+    @Test
     public void testAccess() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -86,6 +98,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         assertTrue(manager.canAccess(orgAdmin, sg));
     }
 
+    @Test
     public void testRemove() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -132,6 +145,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListNoAssociatedAdmins() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -158,6 +172,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testAddRemoveAdmins() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);

@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev: 101893 $
  */
 public class MultiOrgUserOverview extends BaseDto {
     private Long id;

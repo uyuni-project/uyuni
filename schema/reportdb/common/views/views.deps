@@ -15,18 +15,71 @@
 
 path = . tables
 
-ErrataListReport                 :: SystemErrata \
-                                    Errata
-HistoryReport                    :: SystemAction \
-                                    SystemHistory
-SystemInactivityReport           :: System
-InventoryReport                  :: System \
-                                    SystemNetInterface \
-                                    SystemNetAddressV4 \
-                                    SystemNetAddressV6 \
-                                    SystemEntitlement \
-                                    SystemGroup \
-                                    SystemVirtualData \
-                                    SystemConfigChannel \
-                                    SystemChannel \
-                                    SystemOutdated
+AccountsReport                         :: Account \
+                                          AccountGroup
+AccountsSystemsReport                  :: Account \
+                                          AccountGroup
+                                          SystemGroupPermission \
+                                          SystemGroupMember \
+                                          System
+ActionsReport                          :: SystemAction
+ChannelPackagesReport                  :: Channel \
+                                          ChannelPackage
+ChannelsReport                         :: Channel \
+                                          ChannelPackage
+ClonedChannelsReport                   :: Channel
+CustomChannelsReport                   :: Channel \
+                                          ChannelRepository
+CustomInfoReport                       :: System \
+                                          SystemCustomInfo
+ErrataChannelsReport                   :: ChannelErrata
+ErrataListReport                       :: SystemErrata \
+                                          Errata
+ErrataSystemsReport                    :: SystemErrata \
+                                          System \
+                                          SystemNetInterface \
+                                          SystemNetAddressV4 \
+                                          SystemNetAddressV6
+HistoryReport                          :: SystemAction \
+                                          SystemHistory
+HostGuestsReport                       :: SystemVirtualData
+SystemInactivityReport                 :: System
+InventoryReport                        :: System \
+                                          SystemNetInterface \
+                                          SystemNetAddressV4 \
+                                          SystemNetAddressV6 \
+                                          SystemEntitlement \
+                                          SystemGroupMember \
+                                          SystemVirtualData \
+                                          SystemConfigChannel \
+                                          SystemChannel \
+                                          SystemOutdated
+PackagesUpdatesAllReport               :: System \
+                                          SystemPackageInstalled \
+                                          SystemPackageUpdate
+PackagesUpdatesNewestReport            :: System \
+                                          SystemPackageInstalled \
+                                          SystemPackageUpdate
+ProxyOverviewReport                    :: System
+ScapScanReport                         :: XccdScan \
+                                          System \
+                                          SystemNetInterface \
+                                          SystemNetAddressV4
+ScapScanResultReport                   :: XccdScanResult \
+                                          System
+SystemExtraPackagesReport              :: System \
+                                          SystemPackageInstalled \
+                                          SystemChannel \
+                                          ChannelPackage
+SystemGroupsReport                     :: SystemGroup
+SystemGroupsSystemsReport              :: SystemGroupMember \
+                                          System
+SystemHistoryAutoinstallationReport    :: SystemAction
+SystemHistoryChannelsReport            :: SystemHistory
+SystemHistoryConfigurationReport       :: SystemAction
+SystemHistoryEntitlementsReport        :: SystemHistory
+SystemHistoryErrataReport              :: SystemAction
+SystemHistoryPackagesReport            :: SystemAction
+SystemHistoryScapReport                :: SystemAction
+SystemPackagesInstalledReport          :: SystemPackageInstalled \
+                                          System

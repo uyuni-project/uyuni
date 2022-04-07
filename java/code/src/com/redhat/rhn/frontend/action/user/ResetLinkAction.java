@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
  * Its job is to validate the token, log in the affected user, and redirect them to
  * the change-your-password-NOW page
  *
- * @version $Rev: $
  */
 public class ResetLinkAction extends RhnAction {
 

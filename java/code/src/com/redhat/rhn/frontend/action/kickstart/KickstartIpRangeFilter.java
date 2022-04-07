@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * KickstartIpRangeFilter
- * @version $Rev: 1 $
  */
 public class KickstartIpRangeFilter extends BaseListFilter {
 

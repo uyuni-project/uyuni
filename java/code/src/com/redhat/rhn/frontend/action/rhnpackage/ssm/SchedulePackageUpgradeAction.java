@@ -65,7 +65,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @version $Revision$
  */
 public class SchedulePackageUpgradeAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 

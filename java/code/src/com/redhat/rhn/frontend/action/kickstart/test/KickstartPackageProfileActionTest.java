@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -25,9 +28,11 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartPackageProfilesEditActionTest
- * @version $Rev: 1 $
  */
 public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
 
@@ -36,6 +41,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         ksdata = KickstartDataTest.createKickstartWithProfile(user);
@@ -47,6 +53,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
         TestUtils.flushAndEvict(ksdata);
     }
 
+    @Test
     public void testExecute() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");
@@ -54,6 +61,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getParameter(RequestContext.KICKSTART_ID));
     }
 
+    @Test
     public void testSubmit() throws Exception {
         assertNull(ksdata.getKickstartDefaults().getProfile());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

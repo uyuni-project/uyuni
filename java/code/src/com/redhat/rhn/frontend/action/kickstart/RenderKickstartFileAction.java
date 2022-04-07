@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Render a kickstart file to Anaconda
  *
- * @version $Rev $
  */
 public class RenderKickstartFileAction extends Action {
 

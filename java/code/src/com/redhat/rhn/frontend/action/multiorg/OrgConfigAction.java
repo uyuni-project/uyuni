@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * OrgDetailsAction extends RhnAction - Class representation of the table
  * web_customer
- * @version $Rev: 1 $
  */
 public class OrgConfigAction extends RhnAction {
     private static final String SCAP_RETENTION_PERIOD = "scap_retention_period";

@@ -20,7 +20,6 @@ import java.util.Locale;
 
 /**
  * Defines the interface for filtering data in the ListTag
- * @version $Rev $
  */
 public interface ListFilter {
 

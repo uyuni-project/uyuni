@@ -16,6 +16,9 @@
 package com.redhat.rhn.taskomatic.task.test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -39,6 +42,8 @@ import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -55,11 +60,13 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testSubscribeChannelsMinions() throws Exception {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());

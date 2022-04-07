@@ -33,7 +33,7 @@ export function Dialog(props: DialogProps) {
       isOpen={props.isOpen}
       id={props.id}
       overlayClassName="modal-overlay"
-      className="modal-dialog react-modal"
+      className={`modal-dialog react-modal ${props.className ? props.className : ""}`}
       shouldCloseOnOverlayClick={closableModal}
       shouldCloseOnEsc={closableModal}
       onRequestClose={() => {
@@ -41,26 +41,24 @@ export function Dialog(props: DialogProps) {
       }}
     >
       <div className="modal-content">
-        <div className="modal-content">
-          {!props.hideHeader && (
-            <div className="modal-header">
-              {closableModal && (
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => props.onClose?.()}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              )}
-              {props.title ? <h4 className="modal-title">{props.title}</h4> : null}
-            </div>
-          )}
-          <div className="modal-body">{props.content}</div>
-          {props.footer ? <div className="modal-footer">{props.footer}</div> : null}
-        </div>
+        {!props.hideHeader && (
+          <div className="modal-header">
+            {closableModal && (
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                onClick={() => props.onClose?.()}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            )}
+            {props.title ? <h4 className="modal-title">{props.title}</h4> : null}
+          </div>
+        )}
+        <div className="modal-body">{props.content}</div>
+        {props.footer ? <div className="modal-footer">{props.footer}</div> : null}
       </div>
     </ReactModal>
   );

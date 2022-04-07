@@ -14,12 +14,18 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -34,6 +40,7 @@ public class ServerUuidTest extends RhnBaseTestCase {
      * Simple test to exercise codepaths in ServerUuid class
      * @throws Exception something bad happened
      */
+    @Test
     public void testServerUuid() throws Exception {
         ServerUuid su1 = createTestServerUuid();
         ServerUuid su2 = new ServerUuid();

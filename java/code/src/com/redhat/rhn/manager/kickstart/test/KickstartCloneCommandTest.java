@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -28,6 +33,7 @@ import java.util.LinkedHashSet;
  */
 public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testClone() throws Exception {
         KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
                 "someNewLabel [" + TestUtils.randomString() + "]");

@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartAdvancedOptions extends RhnAction
- * @version $Rev: 1 $
  */
 public class KickstartAdvancedOptionsAction extends RhnAction {
 

@@ -24,6 +24,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,10 +40,9 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
@@ -59,6 +60,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
 

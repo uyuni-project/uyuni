@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +35,7 @@ import java.util.List;
  */
 public class PreservationListDeleteSingleTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testForwardToDelete() throws Exception {
         setRequestPathInfo(
                 "/systems/provisioning/preservation/PreservationListDeleteSingle");

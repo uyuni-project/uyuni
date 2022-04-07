@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-24 10:56+0000\n"
-"PO-Revision-Date: 2022-03-04 18:12+0000\n"
+"POT-Creation-Date: 2022-04-01 08:42+0000\n"
+"PO-Revision-Date: 2022-03-24 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -228,7 +228,7 @@ msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
 #: ../html/src/components/dialog/DangerDialog.tsx:62
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
-#: ../html/src/components/panels/CreatorPanel.tsx:113
+#: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
@@ -246,11 +246,11 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
-#: ../html/src/components/panels/CreatorPanel.tsx:96
+#: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:117
 #: ../html/src/manager/admin/payg/payg.tsx:68
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
-#: ../html/src/manager/content-management/project/project.tsx:103
+#: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
@@ -293,7 +293,7 @@ msgstr ""
 "automaticky inštalovať a konfigurovať softvér."
 
 #: ../html/src/components/formula-selection.tsx:279
-#: ../html/src/components/panels/CreatorPanel.tsx:124
+#: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -386,7 +386,7 @@ msgstr "Priezvisko"
 msgid "Login"
 msgstr "Prihlasovacie meno"
 
-#: ../html/src/components/input/FormMultiInput.tsx:148
+#: ../html/src/components/input/FormMultiInput.tsx:155
 msgid "Remove"
 msgstr "Odstrániť"
 
@@ -924,6 +924,7 @@ msgstr "Pridať nové priebežne platené dáta ssh"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
+#: ../html/src/manager/proxy/container-config.tsx:244
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -945,7 +946,7 @@ msgstr "Popis priebežne plateného pripojenia"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
 msgid "Description"
@@ -981,7 +982,7 @@ msgstr "Hostiteľ"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
 #: ../html/src/manager/systems/virtual-list.tsx:84
@@ -1080,7 +1081,7 @@ msgid "Delete Pay-as-you-go"
 msgstr "Vymazať priebežnú platbu"
 
 #: ../html/src/manager/admin/payg/payg.tsx:77
-#: ../html/src/manager/content-management/project/project.tsx:113
+#: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr "Naozaj chcete vymazať projekt"
 
@@ -1996,7 +1997,7 @@ msgstr "Obdobie"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:106
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
@@ -2150,15 +2151,15 @@ msgstr "Posledné zostavenie"
 msgid "Environment Lifecycle"
 msgstr "Životný cyklus prostredia"
 
-#: ../html/src/manager/content-management/project/project.tsx:62
+#: ../html/src/manager/content-management/project/project.tsx:68
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
 
-#: ../html/src/manager/content-management/project/project.tsx:98
+#: ../html/src/manager/content-management/project/project.tsx:104
 msgid "Content Lifecycle Project - {0}"
 msgstr "Projekt životného cyklu obsahu - {0}"
 
-#: ../html/src/manager/content-management/project/project.tsx:110
+#: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
 msgstr "Vymazať projekt"
 
@@ -2359,7 +2360,7 @@ msgid "Version {0} successfully built into {1}"
 msgstr "Verzia {0} bola úspešne zabudovaná do {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:34
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
 #: ../html/src/manager/images/image-build.tsx:258
 #: ../html/src/manager/images/image-profile-edit.tsx:528
@@ -2416,39 +2417,40 @@ msgstr "Nový"
 msgid "Cloning channels"
 msgstr "Klonovanie kanálov"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
-msgid "Generating repositories data"
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
+#, fuzzy
+msgid "Waiting for repositories data to be generated"
 msgstr "Generovanie údajov repozitárov"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:503
 msgid "Built"
 msgstr "Zostavené"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view-overview.tsx:81
 #: ../html/src/manager/images/image-view.tsx:505
 msgid "Failed"
 msgstr "Neúspešné"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:54
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:86
 msgid "not built"
 msgstr "nezostavené"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:69
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:73
 msgid "Built time"
 msgstr "Čas zostavenia"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:36
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:32
 msgid "Loading global filters..."
 msgstr "Načítavajú sa globálne filtre..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:40
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:36
 msgid "Updating project filters..."
 msgstr "Aktualizácia filtrov projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
 msgid "Create New Filter"
 msgstr "Vytvoriť nový filter"
 
@@ -2608,19 +2610,19 @@ msgstr "žiadne kanály potomkov"
 msgid "Type"
 msgstr "Typ"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:56
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:62
 msgid "has unsynchronized patches"
 msgstr "má nesynchronizované opravy"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:99
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:108
 msgid "Sources"
 msgstr "Zdroje"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:126
 msgid "Sources edited successfully"
 msgstr "Zdroje boli úspešne upravené"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:139
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:148
 #: ../html/src/manager/images/image-build.tsx:287
 msgid "Software Channels"
 msgstr "Softvérové kanály"
@@ -2859,6 +2861,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:368
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
 msgid "Clear fields"
@@ -3349,7 +3352,7 @@ msgstr "Beh programu"
 
 #: ../html/src/manager/images/image-view.tsx:621
 msgid "Show obsolete"
-msgstr ""
+msgstr "Zobraziť zastarané"
 
 #: ../html/src/manager/images/image-view.tsx:643
 msgid "Revision"
@@ -3357,7 +3360,7 @@ msgstr "Revízia"
 
 #: ../html/src/manager/images/image-view.tsx:645
 msgid "(obsolete)"
-msgstr ""
+msgstr "(zastarané)"
 
 #: ../html/src/manager/images/image-view.tsx:647
 #: ../html/src/manager/systems/virtual-list.tsx:90
@@ -3685,10 +3688,14 @@ msgstr "Kalendáre"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
+"Nižšie je uvedený zoznam plánov údržby, ktoré sú k dispozícii aktuálnemu "
+"používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
+"Nižšie je uvedený zoznam kalendárov údržby, ktoré sú k dispozícii aktuálnemu "
+"používateľovi."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -3968,6 +3975,7 @@ msgid "Package States"
 msgstr "Stavy balíkov"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
+#: ../html/src/manager/proxy/container-config.tsx:303
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4122,6 +4130,170 @@ msgid ""
 msgstr ""
 "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
 "tejto organizácii"
+
+#: ../html/src/manager/proxy/container-config-messages.tsx:14
+msgid "The container based proxy configuration has been generated correctly."
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config-messages.tsx:33
+msgid ""
+"Generation of the proxy configuration in progress: waiting for a response..."
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:134
+#, fuzzy
+msgid "Request interrupted or invalid response received from the server."
+msgstr ""
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
+"Prosím, skúste znova."
+
+#: ../html/src/manager/proxy/container-config.tsx:171
+#: ../html/src/manager/proxy/container-config.tsx:187
+msgid "Container Based Proxy Configuration"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:177
+msgid ""
+"You can generate a set of configuration files and certificates in order to "
+"register and run a container-based proxy. Once the following form is filled "
+"out and submitted you will get a .zip archive to download."
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:191
+#, fuzzy
+msgid "Proxy FQDN"
+msgstr "Proxy"
+
+#: ../html/src/manager/proxy/container-config.tsx:193
+#, fuzzy
+msgid "e.g., proxy.domain.com"
+msgstr "napr. host.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:199
+msgid "Server FQDN"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:201
+#, fuzzy
+msgid "e.g., server.domain.com"
+msgstr "napr. host.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:202
+msgid "FQDN of the server of proxy to connect to."
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:208
+#, fuzzy
+msgid "Proxy SSH port"
+msgstr "Port SSH"
+
+#: ../html/src/manager/proxy/container-config.tsx:209
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+msgid "Port range: 1 - 65535"
+msgstr "Rozsah portov: 1 - 65535"
+
+#: ../html/src/manager/proxy/container-config.tsx:218
+msgid "Max Squid cache size (MB)"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:221
+#, fuzzy
+msgid "e.g., 2048"
+msgstr "napr. SLE12"
+
+#: ../html/src/manager/proxy/container-config.tsx:228
+msgid "Proxy administrator email"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:229
+#, fuzzy
+msgid "e.g., proxy.admin@mycompany.com"
+msgstr "napr. host.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:236
+#: ../html/src/manager/proxy/container-config.tsx:237
+msgid "SSL certificate"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:245
+msgid "Use existing"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:252
+msgid "CA certificate to use to sign the SSL certificate in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:260
+msgid "CA private key to use to sign the SSL certificate in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:268
+#, fuzzy
+msgid "The CA private key password"
+msgstr "Vygenerovať nové heslo"
+
+#: ../html/src/manager/proxy/container-config.tsx:276
+msgid "SSL Certificate data"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:283
+msgid "Alternate CNAMEs"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:291
+msgid "CNAME"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:297
+msgid "2-letter country code"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:304
+msgid "City"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:305
+#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/recurring-states-utils.tsx:8
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
+msgid "Organization"
+msgstr "Organizácia"
+
+#: ../html/src/manager/proxy/container-config.tsx:306
+#, fuzzy
+msgid "Organization Unit"
+msgstr "Organizácia"
+
+#: ../html/src/manager/proxy/container-config.tsx:307
+msgid "Email"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:315
+msgid "The root CA used to sign the SSL certificate in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:324
+#, fuzzy
+msgid "Intermediate CAs"
+msgstr "Rozhrania"
+
+#: ../html/src/manager/proxy/container-config.tsx:334
+msgid "CA file in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:345
+msgid "Proxy CRT content in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:353
+msgid "Proxy SSL private key in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:363
+#, fuzzy
+msgid "Generate"
+msgstr "Všeobecné"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4329,13 +4501,6 @@ msgstr "Zobraziť úplný výstup highstate"
 msgid "System Group"
 msgstr "Systémová skupina"
 
-#: ../html/src/manager/state/highstate-summary.tsx:170
-#: ../html/src/manager/state/recurring-states-utils.tsx:8
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
-msgid "Organization"
-msgstr "Organizácia"
-
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
 msgstr "Akcia bola úspešne pridaná do "
@@ -4432,13 +4597,15 @@ msgstr "Opakujúce sa stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Boli vytvorené nasledujúce opakujúce sa akcie."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Ak chcete vytvoriť nové opakujúce sa akcie, prejdite do systému, skupiny "
+"alebo organizácie, pre ktorú chcete akciu vytvoriť."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4572,10 +4739,6 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
-msgid "Port range: 1 - 65535"
-msgstr "Rozsah portov: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid ""

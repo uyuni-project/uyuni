@@ -25,6 +25,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +39,16 @@ import java.util.List;
  * times when committing this file.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         // Override so the base class' tearDown doesn't rollback the transaction;
         // for this class we want the data to be persisted and remain there
     }
 
+    @Test
     public void testDummy() {
         // Stub to have at least one test when all of the actual populate ones are
         // disabled so JUnit doesn't complain

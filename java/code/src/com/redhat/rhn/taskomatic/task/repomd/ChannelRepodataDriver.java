@@ -32,7 +32,6 @@ import java.util.Map;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class ChannelRepodataDriver implements QueueDriver {

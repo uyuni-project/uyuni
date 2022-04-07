@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * User never logged in to Spacewalk.
- * @version $Rev: $
  */
 public class UserNeverLoggedInException extends FaultException {
 

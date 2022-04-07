@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -25,6 +27,8 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +37,7 @@ import java.util.Set;
  * UpdateBaseChannelCommandTest
  */
 public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
+    @Test
     public void testChannelPreservation() throws Exception {
         ProductName pn = ChannelFactoryTest.createProductName();
         Channel parent = ChannelFactoryTest.createBaseChannel(user);

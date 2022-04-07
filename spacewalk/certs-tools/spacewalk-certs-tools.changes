@@ -1,4 +1,14 @@
+- deploy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+- Adapted openssl call in mgr_ssl_cert_setup.py to work on Python 3.9.
 - Add randomness to first generated server serial
+
+-------------------------------------------------------------------
+Thu Mar 31 15:55:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Use _arch instead of _host_cpu macro to detect the arch
+    of the Salt Bundle to be deployed (bsc#1197759)
 
 -------------------------------------------------------------------
 Tue Mar 15 16:30:36 CET 2022 - jgonzalez@suse.com

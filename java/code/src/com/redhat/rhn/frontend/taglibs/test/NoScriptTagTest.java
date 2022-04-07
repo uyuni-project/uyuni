@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.NoScriptTag;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
@@ -23,6 +25,8 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 
@@ -34,6 +38,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class NoScriptTagTest  extends RhnBaseTestCase {
 
+    @Test
     public void testRender() throws Exception {
         NoScriptTag tag = new NoScriptTag();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();

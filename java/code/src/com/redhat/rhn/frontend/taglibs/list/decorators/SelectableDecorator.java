@@ -29,7 +29,6 @@ import javax.servlet.jsp.JspException;
 /**
  * Handles selectable lists, such as lists backed by RhnSet
  *
- * @version $Rev $
  */
 public class SelectableDecorator extends BaseListDecorator {
     private static final String NULL_SELECTION = "0";

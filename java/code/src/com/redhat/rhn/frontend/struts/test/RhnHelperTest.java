@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -23,12 +28,14 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnHelperTest - test our RhnHelper class
  */
 public class RhnHelperTest extends RhnBaseTestCase {
 
+    @Test
     public void testEmptySelectionError() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnHelper.handleEmptySelection(request);
@@ -42,6 +49,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
         DynaActionForm form = new RhnMockDynaActionForm();
@@ -51,6 +59,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
         assertTrue(stripped.indexOf('\r') == -1);
     }
 
+    @Test
     public void testGetParameterWithSpecialCharacters() throws Exception {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupQueryString("   ");

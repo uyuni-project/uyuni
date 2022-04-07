@@ -14,12 +14,20 @@
  */
 package com.redhat.rhn.manager.rhnset.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnManagerTest
@@ -33,13 +41,14 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     private static final String TEST_USER_NAME = "automated_test_user_jesusr";
     private static final String TEST_ORG_NAME = "automated_test_org_jesusr";
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
         cleanup = new TestSetCleanup();
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         userId = null;
         cleanup = null;
         super.tearDown();
@@ -47,6 +56,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     /**
      * Looks for an RhnSet for a non-existent user.
      */
+    @Test
     public void testGetByLabelInvalidUser() {
         RhnSet set = RhnSetManager.findByLabel(10L, "foo", cleanup);
         assertNull(set);
@@ -57,6 +67,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
      * by trying to fetch it again.
      * @throws Exception something bad happened
      */
+    @Test
     public void testCreateDeleteRhnSet() throws Exception {
         String label = "test_rhn_set_label";
 
@@ -78,6 +89,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     /**
      * Creates an RhnSet, then Deletes verifies it was deleted.
      */
+    @Test
     public void testCreateDeleteMultipleRhnSet() {
         RhnSet set = RhnSetManager.createSet(userId,
                         "test_rhn_set_label_delete", cleanup);
@@ -113,6 +125,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     /**
      * Tests the remove method of RhnSetManager
      */
+    @Test
     public void testCreateRemoveRhnSet() {
         RhnSet set = RhnSetManager.createSet(userId,
                         "test_rhn_set_label_remove", cleanup);
@@ -144,6 +157,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
      * Testing the store method of RhnSetManager
      * @throws Exception something bad happened
      */
+    @Test
     public void testStore() throws Exception {
         String label = "test_rhn_set_label_store";
 
@@ -192,6 +206,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
         assertEquals(5, cleanup.callbacks);
     }
 
+    @Test
     public void testStoreElement3() throws Exception {
         String label = "test_rhn_set_store_element_3";
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Server not in group exception.
  *
- * @version definition($Rev: 107920 $)/template($Rev: 107920 $)
  */
 public class ServerNotInGroupException extends FaultException  {
 

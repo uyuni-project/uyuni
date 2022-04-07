@@ -26,7 +26,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 /**
  * Serializes instances of {@link com.redhat.rhn.frontend.dto.CryptoKeyDto}.
  *
- * @version $Revision$
  *
  * @xmlrpc.doc
  *      #struct_begin("key")

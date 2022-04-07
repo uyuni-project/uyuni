@@ -21,35 +21,38 @@
         ],
         "jid": "20180516174949796992",
         "return": {
-            "mgrcompat_|-mgr_buildimage_info_|-kiwi_info.image_details_|-module_run": {
-                "comment": "Module function kiwi_info.image_details executed",
-                "name": "kiwi_info.image_details",
-                "start_time": "17:54:21.076430",
+            "mgrcompat_|-mgr_buildimage_info_|-kiwi_info.build_info_|-module_run": {
+                "comment": "Module function kiwi_info.build_info executed",
+                "name": "kiwi_info.build_info",
+                "start_time": "11:05:54.766520",
                 "result": true,
-                "duration": 27.375,
+                "duration": 856.665,
                 "__run_num__": 5,
+                "__sls__": "images.kiwi-image-build",
                 "changes": {
                     "ret": {
-                        "image": {
-                            "hash": "a64dbc025c748bde968b888db6b7b9e3",
-                            "name": "POS_Image_JeOS6",
-                            "filepath": "/var/lib/Kiwi/build06/images.build/POS_Image_JeOS6.x86_64-6.0.0",
-                            "arch": "x86_64",
-                            "basename": "POS_Image_JeOS6.x86_64-6.0.0",
-                            "filename": "POS_Image_JeOS6.x86_64-6.0.0",
-                            "version": "6.0.0",
-                            "compression": null,
-                            "type": "pxe",
-                            "size": 1490026496
+                        "boot_image": {
+                            "initrd": {
+                                "filename": "POS_Image_JeOS7.x86_64-7.0.0.initrd",
+                                "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd",
+                                "hash": "md5:47a5391bd6c5f62c328605b0375b1216"
+                            },
+                            "kernel": {
+                                "filename": "POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
+                                "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
+                                "hash": "md5:62c7d8dbb3ac208fbfa92d6034f361bc"
+                            }
                         },
-                        "bundles": [{
-                            "hash": "sha256:a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
-                            "suffix": "tgz",
-                            "filepath": "/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                            "basename": "POS_Image_JeOS6.x86_64-6.0.0",
-                            "filename": "POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                            "id": "build06"
-                        }]
+                        "image": {
+                            "arch": "x86_64",
+                            "build_id": "build129",
+                            "filename": "POS_Image_JeOS7.x86_64-7.0.0",
+                            "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0",
+                            "hash": "md5:7057ea9a15784f469e03f2de045d3c73",
+                            "name": "POS_Image_JeOS7",
+                            "size": 1907359744,
+                            "version": "7.0.0"
+                        }
                     }
                 },
                 "__id__": "mgr_buildimage_info"
