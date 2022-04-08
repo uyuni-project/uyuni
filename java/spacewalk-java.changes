@@ -1,3 +1,5 @@
+- Prefer parsing numbers as ints in HTTP API for compatibility
+
 -------------------------------------------------------------------
 Tue Apr 19 12:01:05 CEST 2022 - jgonzalez@suse.com
 
