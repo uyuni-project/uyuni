@@ -175,6 +175,7 @@ EOF
     sed -i 's/^\([^#].*\)$/### next line has been commented out by spacewalk-setup-postgresql: ###\n##\1/ ' $PG_HBA
     cat >> $PG_HBA <<EOF
 
+local $PGNAME postgres peer
 local $PGNAME $PGUSER scram-sha-256
 host  $PGNAME $PGUSER 127.0.0.1/8 scram-sha-256
 host  $PGNAME $PGUSER ::1/128 scram-sha-256
