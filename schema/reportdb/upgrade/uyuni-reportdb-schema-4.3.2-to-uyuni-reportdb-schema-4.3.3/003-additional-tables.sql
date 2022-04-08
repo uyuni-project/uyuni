@@ -350,6 +350,7 @@ CREATE OR REPLACE VIEW PackagesUpdatesNewestReport AS
             , SystemPackageUpdate.epoch AS newer_epoch
             , SystemPackageUpdate.version AS newer_version
             , SystemPackageUpdate.release AS newer_release
+            , SystemPackageUpdate.synced_date
     FROM System
             INNER JOIN SystemPackageUpdate ON ( System.mgm_id = SystemPackageUpdate.mgm_id AND System.system_id = SystemPackageUpdate.system_id )
             INNER JOIN SystemPackageInstalled ON ( System.mgm_id = SystemPackageInstalled.mgm_id AND System.system_id = SystemPackageInstalled.system_id AND SystemPackageInstalled.name = SystemPackageUpdate.name )
@@ -409,6 +410,7 @@ CREATE OR REPLACE VIEW ErrataChannelsReport AS
             , errata_id
             , channel_label
             , channel_id
+            , synced_date
     FROM ChannelErrata
 ORDER BY mgm_id, advisory_name, errata_id, channel_label, channel_id
 ;

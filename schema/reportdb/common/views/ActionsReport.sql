@@ -10,7 +10,8 @@
 --
 
 CREATE OR REPLACE VIEW ActionsReport AS
-  SELECT DISTINCT SystemAction.action_id
+  SELECT DISTINCT SystemAction.mgm_id
+             , SystemAction.action_id
              , SystemAction.earliest_action
              , SystemAction.event
              , SystemAction.action_name
@@ -19,5 +20,7 @@ CREATE OR REPLACE VIEW ActionsReport AS
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Completed') OVER(PARTITION BY action_id) AS completed_systems
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Failed') OVER(PARTITION BY action_id) AS failed_systems
              , SystemAction.archived
+             , SystemAction.synced_date
     FROM SystemAction
+ORDER BY SystemAction.mgm_id, SystemAction.action_id
 ;
