@@ -25,8 +25,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +41,7 @@ import java.util.List;
  */
 public abstract class SsmPackagesAction implements MessageAction {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Logger LOG = LogManager.getLogger(SsmPackagesAction.class);
 
     /**
      * {@inheritDoc}
@@ -88,18 +88,18 @@ public abstract class SsmPackagesAction implements MessageAction {
 
             scheduleAction(event, user);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Time to schedule all actions: " +
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Time to schedule all actions: " +
                         (System.currentTimeMillis() - actionStart));
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package action:");
-            log.error(e);
+            LOG.error("Could not schedule package action:");
+            LOG.error(e);
             throw new RuntimeException(e);
         }
         catch (Exception e) {
-            log.error("Error scheduling package installations for event " + event, e);
+            LOG.error("Error scheduling package installations for event " + event, e);
         }
         finally {
             // This should stay in the finally block so the operation is
@@ -111,7 +111,7 @@ public abstract class SsmPackagesAction implements MessageAction {
     protected void scheduleAction(SsmPackageEvent event, User user)
         throws TaskomaticApiException {
 
-        log.debug("Scheduling package actions.");
+        LOG.debug("Scheduling package actions.");
         Date earliest = event.getEarliest();
         ActionChain actionChain = ActionChainFactory.getActionChain(user, event
             .getActionChainId());
@@ -119,11 +119,11 @@ public abstract class SsmPackagesAction implements MessageAction {
         List<Long> sids = getAffectedServers(event, user);
 
 
-        log.debug("Scheduling actions.");
+        LOG.debug("Scheduling actions.");
 
         doSchedule(event, user, sids, earliest, actionChain);
 
-        log.debug("Done scheduling package actions.");
+        LOG.debug("Done scheduling package actions.");
 
     }
 
