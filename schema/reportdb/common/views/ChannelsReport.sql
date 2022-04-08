@@ -19,6 +19,6 @@ CREATE OR REPLACE VIEW ChannelsReport AS
             , Channel.synced_date
     FROM Channel
             LEFT JOIN ChannelPackage ON ( Channel.mgm_id = ChannelPackage.mgm_id AND Channel.channel_id = ChannelPackage.channel_id )
-GROUP BY Channel.channel_id, Channel.label, Channel.name, Channel.organization
+GROUP BY Channel.mgm_id, Channel.channel_id, Channel.label, Channel.name, Channel.organization, Channel.synced_date
 ORDER BY Channel.mgm_id, Channel.channel_id
 ;
