@@ -14,14 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Converts an InstalledProduct object for representation as an XMLRPC struct.
@@ -37,42 +34,32 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * #struct_end()
  *
  */
-public class SUSEInstalledProductSerializer extends RhnXmlRpcCustomSerializer {
+public class SUSEInstalledProductSerializer extends ApiResponseSerializer<SUSEInstalledProduct> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<SUSEInstalledProduct> getSupportedClass() {
         return SUSEInstalledProduct.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
+    public SerializedApiResponse serialize(SUSEInstalledProduct src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("name", src.getName())
+                .add("isBaseProduct", src.isBaseproduct());
 
-        SUSEInstalledProduct product = (SUSEInstalledProduct) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("name", product.getName());
-        helper.add("isBaseProduct", product.isBaseproduct());
-
-        if (product.getVersion() != null) {
-            helper.add("version", product.getVersion());
+        if (src.getVersion() != null) {
+            builder.add("version", src.getVersion());
         }
-        if (product.getArch() != null) {
-            helper.add("arch", product.getArch());
+        if (src.getArch() != null) {
+            builder.add("arch", src.getArch());
         }
-        if (product.getRelease() != null) {
-            helper.add("release", product.getRelease());
+        if (src.getRelease() != null) {
+            builder.add("release", src.getRelease());
         }
-        if (product.getFriendlyName() != null) {
-            helper.add("friendlyName", product.getFriendlyName());
+        if (src.getFriendlyName() != null) {
+            builder.add("friendlyName", src.getFriendlyName());
         }
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

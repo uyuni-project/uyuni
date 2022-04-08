@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.dto.EndpointInfo;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -40,32 +37,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("bool", "tls_enabled")
  * #struct_end()
  */
-public class EndpointInfoSerializer extends RhnXmlRpcCustomSerializer {
+public class EndpointInfoSerializer extends ApiResponseSerializer<EndpointInfo> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<EndpointInfo> getSupportedClass() {
         return EndpointInfo.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        EndpointInfo endpointInfo = (EndpointInfo) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("system_id", endpointInfo.getSystemID());
-        helper.add("endpoint_name", endpointInfo.getEndpointName());
-        helper.add("exporter_name", endpointInfo.getExporterName().orElse(null));
-        helper.add("module", endpointInfo.getModule());
-        helper.add("path", endpointInfo.getPath());
-        helper.add("port", endpointInfo.getPort());
-        helper.add("tls_enabled", endpointInfo.isTlsEnabled());
-
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(EndpointInfo src) {
+        return new SerializationBuilder()
+                .add("system_id", src.getSystemID())
+                .add("endpoint_name", src.getEndpointName())
+                .add("exporter_name", src.getExporterName().orElse(null))
+                .add("module", src.getModule())
+                .add("path", src.getPath())
+                .add("port", src.getPort())
+                .add("tls_enabled", src.isTlsEnabled())
+                .build();
     }
 }

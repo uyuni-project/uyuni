@@ -43,7 +43,7 @@ public class LogoutAction extends RhnAction {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         log.info("WEB LOGOUT: [" +
             new RequestContext(request).getCurrentUser().getLogin() + "]");
 

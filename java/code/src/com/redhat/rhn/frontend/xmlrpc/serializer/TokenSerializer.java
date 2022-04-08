@@ -20,17 +20,15 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenPackage;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
 * ActivationKeySerializer
@@ -54,30 +52,27 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *     #prop("boolean", "disabled")
 *   #struct_end()
 */
-public class TokenSerializer extends RhnXmlRpcCustomSerializer {
+public class TokenSerializer extends ApiResponseSerializer<Token> {
 
-   /**
-    * {@inheritDoc}
-    */
-   public Class getSupportedClass() {
+   public Class<Token> getSupportedClass() {
        return Token.class;
    }
 
-   /** {@inheritDoc} */
-   protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-       throws XmlRpcException, IOException {
-       SerializerHelper helper = new SerializerHelper(serializer);
-       populateTokenInfo((Token)value, helper);
-       helper.writeTo(output);
-   }
+    @Override
+    public SerializedApiResponse serialize(Token src) {
+        SerializationBuilder builder = new SerializationBuilder();
+        populateTokenInfo(src, builder);
+        return builder.build();
+    }
+
    /**
     * Populates token information in to serializer format.
     * Since 95% of activation key serializer also uses this format
     *  it seemed prudent to make this a default access static method..
     * @param token the token to get the information to populate
-    * @param helper the serializer helper that will be populated.
+    * @param builder the serialization builder that will be populated.
     */
-   static  void populateTokenInfo(Token token,  SerializerHelper helper) {
+   static void populateTokenInfo(Token token, SerializationBuilder builder) {
        // Locate the base channel, and store the others in a list of child channels:
        List<String> childChannelLabels = new LinkedList<>();
        String baseChannelLabel = null;
@@ -120,26 +115,26 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
            }
            packages.add(pkgMap);
        }
-       helper.add("description", token.getNote());
+       builder.add("description", token.getNote());
 
-       Integer usageLimit = 0;
+       int usageLimit = 0;
        if (token.getUsageLimit() != null) {
            usageLimit = token.getUsageLimit().intValue();
        }
-       helper.add("usage_limit", usageLimit);
+       builder.add("usage_limit", usageLimit);
 
-       helper.add("base_channel_label", baseChannelLabel);
-       helper.add("child_channel_labels", childChannelLabels);
-       helper.add("entitlements", entitlementLabels);
-       helper.add("server_group_ids", serverGroupIds);
-       helper.add("package_names", packageNames);
-       helper.add("packages", packages);
+       builder.add("base_channel_label", baseChannelLabel);
+       builder.add("child_channel_labels", childChannelLabels);
+       builder.add("entitlements", entitlementLabels);
+       builder.add("server_group_ids", serverGroupIds);
+       builder.add("package_names", packageNames);
+       builder.add("packages", packages);
 
        Boolean universalDefault = token.isOrgDefault();
-       helper.add("universal_default", universalDefault);
-       helper.add("disabled", token.isTokenDisabled());
+       builder.add("universal_default", universalDefault);
+       builder.add("disabled", token.isTokenDisabled());
 
        // Return the contact method label (e.g. 'ssh-push')
-       helper.add("contact_method", token.getContactMethod().getLabel());
+       builder.add("contact_method", token.getContactMethod().getLabel());
    }
 }

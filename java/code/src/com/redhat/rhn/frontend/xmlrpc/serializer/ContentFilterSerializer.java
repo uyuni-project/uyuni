@@ -17,14 +17,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.HashMap;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link ContentFilter}
@@ -43,25 +41,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #struct_end()
  * #struct_end()
  */
-public class ContentFilterSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentFilterSerializer extends ApiResponseSerializer<ContentFilter> {
 
     @Override
-    public Class getSupportedClass() {
+    public Class<ContentFilter> getSupportedClass() {
         return ContentFilter.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ContentFilter filter = (ContentFilter) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", filter.getId());
-        helper.add("name", filter.getName());
-        helper.add("orgId", filter.getOrg().getId());
-        helper.add("entityType", filter.getEntityType().getLabel());
-        helper.add("rule", filter.getRule().getLabel());
-        helper.add("criteria", criteriaToMap(filter.getCriteria()));
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(ContentFilter src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("orgId", src.getOrg().getId())
+                .add("entityType", src.getEntityType().getLabel())
+                .add("rule", src.getRule().getLabel())
+                .add("criteria", criteriaToMap(src.getCriteria()))
+                .build();
     }
 
     private HashMap<Object, Object> criteriaToMap(FilterCriteria criteria) {

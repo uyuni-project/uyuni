@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.formula.Formula;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
 *
@@ -36,28 +33,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *     #prop("string", "formula_group")
 * #struct_end()
 */
-public class FormulaSerializer extends RhnXmlRpcCustomSerializer {
+public class FormulaSerializer extends ApiResponseSerializer<Formula> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<Formula> getSupportedClass() {
         return Formula.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        Formula formula = (Formula) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", formula.getName());
-        helper.add("description", formula.getDescription());
-        helper.add("formula_group", formula.getGroup());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(Formula src) {
+        return new SerializationBuilder()
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add("formula_group", src.getGroup())
+                .build();
     }
 }

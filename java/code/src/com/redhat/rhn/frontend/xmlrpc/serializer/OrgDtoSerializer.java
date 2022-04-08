@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.OrgDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -46,42 +43,32 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *                      "Is staging content enabled in organization. (optional)")
  * #struct_end()
  */
-public class OrgDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class OrgDtoSerializer extends ApiResponseSerializer<OrgDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
-        // TODO Auto-generated method stub
+    @Override
+    public Class<OrgDto> getSupportedClass() {
         return OrgDto.class;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        OrgDto dto = (OrgDto) value;
-        helper.add("id", dto.getId());
-        helper.add("name", dto.getName());
-        add(helper, "active_users", dto.getUsers());
-        add(helper, "systems", dto.getSystems());
-        add(helper, "trusts", dto.getTrusts());
-        add(helper, "activation_keys", dto.getActivationKeys());
-        add(helper, "system_groups", dto.getServerGroups());
-        add(helper, "kickstart_profiles", dto.getKickstartProfiles());
-        add(helper, "configuration_channels", dto.getConfigChannels());
-        add(helper, "staging_content_enabled", dto.isStagingContentEnabled());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(OrgDto src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName());
+        add(builder, "active_users", src.getUsers());
+        add(builder, "systems", src.getSystems());
+        add(builder, "trusts", src.getTrusts());
+        add(builder, "activation_keys", src.getActivationKeys());
+        add(builder, "system_groups", src.getServerGroups());
+        add(builder, "kickstart_profiles", src.getKickstartProfiles());
+        add(builder, "configuration_channels", src.getConfigChannels());
+        add(builder, "staging_content_enabled", src.isStagingContentEnabled());
+        return builder.build();
     }
 
-    private void add(SerializerHelper helper, String name, Object value) {
+    private void add(SerializationBuilder builder, String name, Object value) {
         if (value != null) {
-            helper.add(name, value);
+            builder.add(name, value);
         }
     }
 }

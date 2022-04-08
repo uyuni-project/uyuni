@@ -94,8 +94,6 @@ public interface AuthenticationService {
      *
      * @param request The current request
      * @param response The current response
-     * @throws ServletException If an unrecoverable error occurs
      */
-    void invalidate(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException;
+    void invalidate(HttpServletRequest request, HttpServletResponse response);
 }

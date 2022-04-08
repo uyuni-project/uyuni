@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -110,7 +111,7 @@ public class MinionsAPI {
         post("/manager/api/systems/keys/:target/accept", withOrgAdmin(this::accept));
         post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
         post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
-        post("/manager/api/systems/proxy", withOrgAdmin(this::setProxy));
+        post("/manager/api/systems/proxy", asJson(withOrgAdmin(this::setProxy)));
     }
 
     /**
@@ -267,7 +268,6 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public String setProxy(Request req, Response res, User user) {
-        res.type("application/json");
         ServerSetProxyJson rq = GSON.fromJson(req.body(),
                 ServerSetProxyJson.class);
 

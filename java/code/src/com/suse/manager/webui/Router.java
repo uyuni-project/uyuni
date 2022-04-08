@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
@@ -27,6 +31,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
@@ -78,8 +83,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
@@ -122,7 +126,7 @@ public class Router implements SparkApplication {
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
 
-        post("/manager/frontend-log", withUser(FrontendLogController::log));
+        post("/manager/frontend-log", asJson(withUser(FrontendLogController::log)));
 
         // Login
         LoginController.initRoutes(jade);
@@ -218,20 +222,30 @@ public class Router implements SparkApplication {
 
         // Image Upload
         ImageUploadController.initRoutes();
+
+        // HTTP API
+        HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
+        httpApiRegistry.initRoutes();
     }
 
-    private void  initNotFoundRoutes(JadeTemplateEngine jade) {
+    private void initNotFoundRoutes(JadeTemplateEngine jade) {
         notFound((request, response) -> {
-            Map<String, Object> data = new HashMap<>();
-            data.put("currentUrl", request.pathInfo());
+            if (isJson(response) || isApiRequest(request)) {
+                return json(response, Collections.singletonMap("message", "404 Not found"));
+            }
+            var data = Collections.singletonMap("currentUrl", request.pathInfo());
             return jade.render(new ModelAndView(data, "templates/errors/404.jade"));
         });
 
         exception(NotFoundException.class, (exception, request, response) -> {
             response.status(HttpStatus.SC_NOT_FOUND);
-            Map<String, Object> data = new HashMap<>();
-            data.put("currentUrl", request.pathInfo());
-            response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
+            if (isJson(response) || isApiRequest(request)) {
+                response.body(json(response, Collections.singletonMap("message", "404 Not found")));
+            }
+            else {
+                var data = Collections.singletonMap("currentUrl", request.pathInfo());
+                response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
+            }
         });
     }
 

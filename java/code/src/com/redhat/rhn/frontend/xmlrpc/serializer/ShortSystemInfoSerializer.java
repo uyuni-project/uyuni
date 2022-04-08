@@ -16,14 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Date;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -40,35 +38,29 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
  * #struct_end()
  */
-public class ShortSystemInfoSerializer extends RhnXmlRpcCustomSerializer {
+public class ShortSystemInfoSerializer extends ApiResponseSerializer<ShortSystemInfo> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ShortSystemInfo> getSupportedClass() {
         return ShortSystemInfo.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ShortSystemInfo system = (ShortSystemInfo) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", system.getId());
-        helper.add("name", system.getName());
-        helper.add("last_checkin", system.getLastCheckinDate());
+    @Override
+    public SerializedApiResponse serialize(ShortSystemInfo src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("last_checkin", src.getLastCheckinDate());
 
-        Date regDate = system.getCreated();
+        Date regDate = src.getCreated();
         if (regDate != null) {
-            helper.add("created", regDate);
+            builder.add("created", regDate);
         }
 
-        Date lastBoot = system.getLastBootAsDate();
+        Date lastBoot = src.getLastBootAsDate();
         if (lastBoot != null) {
-            helper.add("last_boot", lastBoot);
+            builder.add("last_boot", lastBoot);
         }
-        helper.writeTo(output);
+        return builder.build();
     }
 }

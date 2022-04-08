@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.Note;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -38,40 +35,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("date", "updated",  "Date of the last note update")
  * #struct_end()
  */
-public class NoteSerializer extends RhnXmlRpcCustomSerializer {
+public class NoteSerializer extends ApiResponseSerializer<Note> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Note> getSupportedClass() {
         return Note.class;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        Note note = (Note) value;
-        helper.add("id", note.getId());
-        helper.add("subject", note.getSubject());
-        add(helper, "note", note.getNote());
-        add(helper, "system_id", note.getServer().getId());
+    @Override
+    public SerializedApiResponse serialize(Note src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("subject", src.getSubject());
+        add(builder, "note", src.getNote());
+        add(builder, "system_id", src.getServer().getId());
         // Creator account may be deleted.
-        if (note.getCreator() != null) {
-            add(helper, "creator", note.getCreator().getLogin());
+        if (src.getCreator() != null) {
+            add(builder, "creator", src.getCreator().getLogin());
         }
-        add(helper, "updated", note.getModified());
-        helper.writeTo(output);
+        add(builder, "updated", src.getModified());
+        return builder.build();
     }
 
-    private void add(SerializerHelper helper, String name, Object value) {
+    private void add(SerializationBuilder builder, String name, Object value) {
         if (value != null) {
-            helper.add(name, value);
+            builder.add(name, value);
         }
     }
 }

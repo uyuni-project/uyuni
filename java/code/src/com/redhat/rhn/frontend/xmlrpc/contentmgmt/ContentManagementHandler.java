@@ -43,6 +43,8 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -90,6 +92,7 @@ public class ContentManagementHandler extends BaseHandler {
      * $ContentProjectSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ContentProject> listProjects(User loggedInUser) {
         return ContentManager.listProjects(loggedInUser);
     }
@@ -218,6 +221,7 @@ public class ContentManagementHandler extends BaseHandler {
      * $ContentEnvironmentSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ContentEnvironment> listProjectEnvironments(User loggedInUser, String projectLabel) {
         try {
             return ContentManager.listProjectEnvironments(projectLabel, loggedInUser);
@@ -374,6 +378,7 @@ public class ContentManagementHandler extends BaseHandler {
      * $ContentProjectSourceSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ProjectSource> listProjectSources(User loggedInUser, String projectLabel) {
         return ContentManager.lookupProject(projectLabel, loggedInUser)
                 .orElseThrow(() -> new EntityNotExistsFaultException(projectLabel))
@@ -514,6 +519,7 @@ public class ContentManagementHandler extends BaseHandler {
      * $ContentFilterSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ContentFilter> listFilters(User loggedInUser) {
         return ContentManager.listFilters(loggedInUser);
     }
@@ -553,6 +559,7 @@ public class ContentManagementHandler extends BaseHandler {
      * #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public List<Map<String, String>> listFilterCriteria(User loggedInUser) {
         return FilterCriteria.listFilterCriteria();
     }
@@ -745,6 +752,7 @@ public class ContentManagementHandler extends BaseHandler {
      * $ContentProjectFilterSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
         try {
             return lookupProject(loggedInUser, projectLabel).getProjectFilters();

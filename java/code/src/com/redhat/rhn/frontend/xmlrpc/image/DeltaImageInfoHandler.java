@@ -22,6 +22,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $DeltaImageSerializer #array_end()
      */
+    @ReadOnly
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listDeltaImageInfos(loggedInUser.getOrg());
@@ -60,6 +63,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "targetImageId")
      * @xmlrpc.returntype $DeltaImageSerializer
      */
+    @ReadOnly
     public DeltaImageInfo getDetails(User loggedInUser, Integer sourceImageId, Integer targetImageId) {
         ensureImageAdmin(loggedInUser);
         Optional<DeltaImageInfo> opt = ImageInfoFactory.lookupDeltaImageInfo(sourceImageId, targetImageId);

@@ -29,6 +29,8 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -56,6 +58,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
      */
+    @ReadOnly
     public Collection<MgrSyncProductDto> listProducts(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
@@ -76,6 +79,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
      */
+    @ReadOnly
     public List<MgrSyncChannelDto> listChannels(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
@@ -334,6 +338,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
      */
+    @ReadOnly
     public List<MirrorCredentialsDto> listCredentials(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);

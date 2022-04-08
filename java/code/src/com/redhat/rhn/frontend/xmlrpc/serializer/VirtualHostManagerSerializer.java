@@ -17,17 +17,15 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for VirtualHostManager class.
@@ -41,29 +39,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #prop("struct", "configs")
  *  #struct_end()
  */
-public class VirtualHostManagerSerializer extends RhnXmlRpcCustomSerializer {
+public class VirtualHostManagerSerializer extends ApiResponseSerializer<VirtualHostManager> {
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("rawtypes")
     @Override
-    public Class getSupportedClass() {
+    public Class<VirtualHostManager> getSupportedClass() {
         return VirtualHostManager.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        VirtualHostManager manager = (VirtualHostManager) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("label", manager.getLabel());
-        helper.add("org_id", manager.getOrg().getId());
-        helper.add("gatherer_module", manager.getGathererModule());
-        helper.add("configs", generateConfigs(manager));
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(VirtualHostManager src) {
+        return new SerializationBuilder()
+                .add("label", src.getLabel())
+                .add("org_id", src.getOrg().getId())
+                .add("gatherer_module", src.getGathererModule())
+                .add("configs", generateConfigs(src))
+                .build();
     }
 
     /**

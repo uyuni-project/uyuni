@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -137,11 +138,10 @@ public class SystemsController {
         post("/manager/api/systems/:sid/channels", withUser(this::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(this::getAccessibleChannelChildren));
-        get("/manager/api/systems/list/virtual", withUser(this::virtualSystems));
+        get("/manager/api/systems/list/virtual", asJson(withUser(this::virtualSystems)));
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
-        response.type("application/json");
         PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
 
         DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);

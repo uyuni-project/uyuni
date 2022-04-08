@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -84,16 +85,16 @@ public class NotificationMessageController {
                                   NotificationMessageController notificationMessageController) {
         get("/manager/notification-messages",
                 withUserPreferences(withCsrfToken(withUser(notificationMessageController::getList))), jade);
-        get("/manager/notification-messages/data-unread", withUser(notificationMessageController::dataUnread));
-        get("/manager/notification-messages/data-all", withUser(notificationMessageController::dataAll));
+        get("/manager/notification-messages/data-unread", asJson(withUser(notificationMessageController::dataUnread)));
+        get("/manager/notification-messages/data-all", asJson(withUser(notificationMessageController::dataAll)));
         post("/manager/notification-messages/update-messages-status",
-                withUser(notificationMessageController::updateMessagesStatus));
+                asJson(withUser(notificationMessageController::updateMessagesStatus)));
         post("/manager/notification-messages/delete",
-                withUser(notificationMessageController::delete));
+                asJson(withUser(notificationMessageController::delete)));
         post("/manager/notification-messages/retry-onboarding/:minionId",
-                withUser(notificationMessageController::retryOnboarding));
+                asJson(withUser(notificationMessageController::retryOnboarding)));
         post("/manager/notification-messages/retry-reposync/:channelId",
-                withUser(notificationMessageController::retryReposync));
+                asJson(withUser(notificationMessageController::retryReposync)));
     }
 
     /**
@@ -119,8 +120,6 @@ public class NotificationMessageController {
      */
     public String dataUnread(Request request, Response response, User user) {
         Object data = getJSONNotificationMessages(UserNotificationFactory.listUnreadByUser(user), user);
-
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -134,8 +133,6 @@ public class NotificationMessageController {
      */
     public String dataAll(Request request, Response response, User user) {
         Object data = getJSONNotificationMessages(UserNotificationFactory.listAllByUser(user), user);
-
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -167,7 +164,6 @@ public class NotificationMessageController {
         else {
             data.put("text", messageIds.size() + " messages deleted successfully");
         }
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -203,7 +199,6 @@ public class NotificationMessageController {
         else {
             data.put("text", messageIds.size() + " messages status updated successfully");
         }
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -227,7 +222,6 @@ public class NotificationMessageController {
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);
         data.put("text", String.format(resultMessage, minionId));
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -279,7 +273,6 @@ public class NotificationMessageController {
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);
         data.put("text", String.format(resultMessage, channelLabel.orElse(String.valueOf(channelId))));
-        response.type("application/json");
         return GSON.toJson(data);
     }
 

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -41,34 +38,26 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class CpuSerializer extends RhnXmlRpcCustomSerializer {
+public class CpuSerializer extends ApiResponseSerializer<CPU> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CPU> getSupportedClass() {
         return CPU.class;
     }
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        CPU cpu = (CPU) value;
-        helper.add("cache", cpu.getCache());
-        helper.add("family", cpu.getFamily());
-        helper.add("mhz", cpu.getMHz());
-        helper.add("flags", cpu.getFlags());
-        helper.add("model", cpu.getModel());
-        helper.add("vendor", cpu.getVendor());
-        helper.add("arch", cpu.getArchName());
-        helper.add("stepping", cpu.getStepping());
-        helper.add("count", cpu.getNrCPU());
-        helper.add("socket_count", cpu.getNrsocket());
-        helper.writeTo(output);
-    }
 
+    @Override
+    public SerializedApiResponse serialize(CPU src) {
+        return new SerializationBuilder()
+                .add("cache", src.getCache())
+                .add("family", src.getFamily())
+                .add("mhz", src.getMHz())
+                .add("flags", src.getFlags())
+                .add("model", src.getModel())
+                .add("vendor", src.getVendor())
+                .add("arch", src.getArchName())
+                .add("stepping", src.getStepping())
+                .add("count", src.getNrCPU())
+                .add("socket_count", src.getNrsocket())
+                .build();
+    }
 }

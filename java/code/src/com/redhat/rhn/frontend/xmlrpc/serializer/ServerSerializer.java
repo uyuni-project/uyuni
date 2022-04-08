@@ -17,18 +17,16 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -74,36 +72,26 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *            #options_end()
  *  #struct_end()
  */
-public class ServerSerializer extends RhnXmlRpcCustomSerializer {
+public class ServerSerializer extends ApiResponseSerializer<Server> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<Server> getSupportedClass() {
         return Server.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        Server server = (Server)value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", server.getId());
-        helper.add("profile_name", server.getName());
-        helper.add("machine_id", server.getMachineId());
-        helper.add("hostname", server.getHostname());
-        helper.add("minion_id", server.getMinionId());
+    public SerializedApiResponse serialize(Server src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("profile_name", src.getName())
+                .add("machine_id", src.getMachineId())
+                .add("hostname", src.getHostname())
+                .add("minion_id", src.getMinionId());
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;
         List<String> addonEntitlements = new LinkedList<>();
-        for (Entitlement ent : server.getEntitlements()) {
+        for (Entitlement ent : src.getEntitlements()) {
             if (ent.isBase()) {
                 baseEntitlement = ent.getLabel();
             }
@@ -111,16 +99,16 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
                 addonEntitlements.add(ent.getLabel());
             }
         }
-        helper.add("base_entitlement", baseEntitlement);
-        helper.add("addon_entitlements", addonEntitlements);
+        builder.add("base_entitlement", baseEntitlement);
+        builder.add("addon_entitlements", addonEntitlements);
 
         Boolean autoUpdate = Boolean.FALSE;
-        if (server.getAutoUpdate().equals("Y")) {
+        if (src.getAutoUpdate().equals("Y")) {
             autoUpdate = Boolean.TRUE;
         }
-        helper.add("auto_update", autoUpdate);
+        builder.add("auto_update", autoUpdate);
 
-        helper.add("description", StringUtils.defaultString(server.getDescription()));
+        builder.add("description", StringUtils.defaultString(src.getDescription()));
 
         String address1 = "";
         String address2 = "";
@@ -130,63 +118,54 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
         String building = "";
         String room = "";
         String rack = "";
-        if (server.getLocation() != null) {
-            address1 = StringUtils.defaultString(server.getLocation().
-                    getAddress1());
-            address2 = StringUtils.defaultString(server.getLocation().
-                    getAddress2());
-            city = StringUtils.defaultString(server.getLocation().
-                    getCity());
-            state = StringUtils.defaultString(server.getLocation().
-                    getState());
-            country = StringUtils.defaultString(server.getLocation().
-                    getCountry());
-            building = StringUtils.defaultString(server.getLocation().
-                    getBuilding());
-            room = StringUtils.defaultString(server.getLocation().
-                    getRoom());
-            rack = StringUtils.defaultString(server.getLocation().
-                    getRack());
+        if (src.getLocation() != null) {
+            address1 = StringUtils.defaultString(src.getLocation().getAddress1());
+            address2 = StringUtils.defaultString(src.getLocation().getAddress2());
+            city = StringUtils.defaultString(src.getLocation().getCity());
+            state = StringUtils.defaultString(src.getLocation().getState());
+            country = StringUtils.defaultString(src.getLocation().getCountry());
+            building = StringUtils.defaultString(src.getLocation().getBuilding());
+            room = StringUtils.defaultString(src.getLocation().getRoom());
+            rack = StringUtils.defaultString(src.getLocation().getRack());
         }
-        helper.add("address1", address1);
-        helper.add("address2", address2);
-        helper.add("city", city);
-        helper.add("state", state);
-        helper.add("country", country);
-        helper.add("building", building);
-        helper.add("room", room);
-        helper.add("rack", rack);
+        builder.add("address1", address1);
+        builder.add("address2", address2);
+        builder.add("city", city);
+        builder.add("state", state);
+        builder.add("country", country);
+        builder.add("building", building);
+        builder.add("room", room);
+        builder.add("rack", rack);
 
-        helper.add("release", server.getRelease());
-        helper.add("last_boot", server.getLastBootAsDate());
+        builder.add("release", src.getRelease());
+        builder.add("last_boot", src.getLastBootAsDate());
 
-        if (server.getPushClient() != null) {
-            helper.add("osa_status", server.getPushClient().getState().getName());
+        if (src.getPushClient() != null) {
+            builder.add("osa_status", src.getPushClient().getState().getName());
         }
         else {
-            helper.add("osa_status", LocalizationService.getInstance().getMessage(
-                    "sdc.details.overview.unknown"));
+            builder.add("osa_status", LocalizationService.getInstance()
+                    .getMessage("sdc.details.overview.unknown"));
         }
 
         Boolean locked = Boolean.FALSE;
-        if (server.getLock() != null) {
+        if (src.getLock() != null) {
             locked = Boolean.TRUE;
         }
-        helper.add("lock_status", locked);
+        builder.add("lock_status", locked);
 
-        if (server.isVirtualGuest()) {
-            if (server.getVirtualInstance().getType() != null) {
-                helper.add("virtualization", server.getVirtualInstance().getType().
-                        getName());
+        if (src.isVirtualGuest()) {
+            if (src.getVirtualInstance().getType() != null) {
+                builder.add("virtualization", src.getVirtualInstance().getType().getName());
             }
             else {
-                helper.add("virtualization", "");
+                builder.add("virtualization", "");
             }
         }
 
         // Contact method
-        helper.add("contact_method", server.getContactMethod().getLabel());
+        builder.add("contact_method", src.getContactMethod().getLabel());
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

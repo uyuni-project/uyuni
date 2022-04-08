@@ -39,6 +39,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertPair;
@@ -101,6 +102,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
      * @xmlrpc.returntype #return_int_success()
      */
+    @ReadOnly
     public int isProxy(String clientcert)
         throws MethodInvalidParamException {
         Server server = validateClientCertificate(clientcert);
@@ -179,6 +181,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
      * @xmlrpc.returntype  #array_single ("string", "version")
      */
+    @ReadOnly
     public List<String> listAvailableProxyChannels(String clientcert) {
 
         Server server = validateClientCertificate(clientcert);
@@ -218,6 +221,7 @@ public class ProxyHandler extends BaseHandler {
      *   $SystemOverviewSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listProxies(User loggedInUser) {
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
         List<Object> toReturn = new ArrayList<>();
@@ -239,6 +243,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param("int","proxyId","the Proxy ID")
      * @xmlrpc.returntype #array_single("int", "clientId")
      */
+    @ReadOnly
     public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, proxyId);
         if (!server.isProxy()) {

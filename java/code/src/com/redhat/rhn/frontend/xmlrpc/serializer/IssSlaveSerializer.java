@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.iss.IssSlave;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * IssSlaveSerializer
@@ -34,28 +31,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("boolean", "allowAllOrgs")
  * #struct_end()
  */
-public class IssSlaveSerializer extends RhnXmlRpcCustomSerializer {
+public class IssSlaveSerializer extends ApiResponseSerializer<IssSlave> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<IssSlave> getSupportedClass() {
         return IssSlave.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        IssSlave slave = (IssSlave) obj;
-        helper.add("id", slave.getId());
-        helper.add("label", slave.getSlave());
-        helper.add("enabled", "Y".equals(slave.getEnabled()));
-        helper.add("allowAllOrgs", "Y".equals(slave.getAllowAllOrgs()));
-        helper.writeTo(writer);
+    @Override
+    public SerializedApiResponse serialize(IssSlave src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getSlave())
+                .add("enabled", "Y".equals(src.getEnabled()))
+                .add("allowAllOrgs", "Y".equals(src.getAllowAllOrgs()))
+                .build();
     }
-
 }

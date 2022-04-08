@@ -15,15 +15,12 @@
 package com.suse.manager.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.SystemEventDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Optional;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -39,27 +36,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class SystemEventDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class SystemEventDtoSerializer extends ApiResponseSerializer<SystemEventDto> {
 
     @Override
     public Class<SystemEventDto> getSupportedClass() {
         return SystemEventDto.class;
-
     }
 
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        SystemEventDto event = (SystemEventDto) value;
-
-        helper.add("id", event.getId());
-        helper.add("history_type", Optional.ofNullable(event.getHistoryTypeName()).orElse("History Event"));
-        helper.add("status", event.getHistoryStatus());
-        helper.add("summary", event.getSummary());
-        helper.add("completed", event.getCompleted());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(SystemEventDto src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("history_type", Optional.ofNullable(src.getHistoryTypeName()).orElse("History Event"))
+                .add("status", src.getHistoryStatus())
+                .add("summary", src.getSummary())
+                .add("completed", src.getCompleted())
+                .build();
     }
 }

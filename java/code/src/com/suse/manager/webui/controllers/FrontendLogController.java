@@ -67,7 +67,6 @@ public class FrontendLogController {
 
         Map<String, Boolean> data = new HashMap<>();
         data.put("success", true);
-        response.type("application/json");
         return GSON.toJson(data);
     }
 }

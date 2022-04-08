@@ -208,7 +208,7 @@ public final class SSOController {
                 auth.logout();
                 return response;
             }
-            catch (SettingsException | ServletException | IOException | XMLEntityException e) {
+            catch (SettingsException | IOException | XMLEntityException e) {
                 LOG.error("Unable to parse settings for SSO and/or XML parsing: " + e.getMessage());
             }
         }

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.channel.ContentSource;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -40,30 +37,22 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class ContentSourceSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentSourceSerializer extends ApiResponseSerializer<ContentSource> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ContentSource> getSupportedClass() {
         return ContentSource.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ContentSource repo = (ContentSource) value;
-
-        helper.add("id", repo.getId());
-        helper.add("label", repo.getLabel());
-        helper.add("sourceUrl", repo.getSourceUrl());
-        helper.add("type", repo.getType().getLabel());
-        helper.add("hasSignedMetadata", repo.getMetadataSigned());
-        helper.add("sslContentSources", repo.getSslSets());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ContentSource src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("sourceUrl", src.getSourceUrl())
+                .add("type", src.getType().getLabel())
+                .add("hasSignedMetadata", src.getMetadataSigned())
+                .add("sslContentSources", src.getSslSets())
+                .build();
     }
 }

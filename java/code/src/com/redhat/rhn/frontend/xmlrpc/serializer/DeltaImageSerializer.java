@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.DeltaImageInfo;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * DeltaImageSerializer
@@ -33,22 +30,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("struct", "pillar", "pillar data")
  * #struct_end()
  */
-public class DeltaImageSerializer extends RhnXmlRpcCustomSerializer {
+public class DeltaImageSerializer extends ApiResponseSerializer<DeltaImageInfo> {
 
     @Override
-    protected void doSerialize(Object value, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        DeltaImageInfo delta = (DeltaImageInfo) value;
-        helper.add("source_id", delta.getSourceImageInfo().getId());
-        helper.add("target_id", delta.getTargetImageInfo().getId());
-        helper.add("file", delta.getFile());
-        helper.add("pillar", delta.getPillar().getPillar());
-        helper.writeTo(writer);
+    public Class<DeltaImageInfo> getSupportedClass() {
+        return DeltaImageInfo.class;
     }
 
     @Override
-    public Class getSupportedClass() {
-        return DeltaImageInfo.class;
+    public SerializedApiResponse serialize(DeltaImageInfo src) {
+        return new SerializationBuilder()
+                .add("source_id", src.getSourceImageInfo().getId())
+                .add("target_id", src.getTargetImageInfo().getId())
+                .add("file", src.getFile())
+                .add("pillar", src.getPillar().getPillar())
+                .build();
     }
 }

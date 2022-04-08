@@ -1,3 +1,6 @@
+- Implement JSON over HTTP API
+- Preserve parameter names in bytecode
+- Disable CSRF tokens for API routes
 - Migrated from log4j1.x.x to log4j2.x.x
 - Add UI for peripheral server with report database password
   regeneration

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -150,15 +151,15 @@ public class StatesAPI {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public void initRoutes() {
-        post("/manager/api/states/apply", withUser(this::apply));
-        post("/manager/api/states/applyall", withUser(this::applyHighstate));
-        get("/manager/api/states/match", withUser(this::matchStates));
-        post("/manager/api/states/save", withUser(this::saveConfigChannels));
-        get("/manager/api/states/packages", this::packages);
-        post("/manager/api/states/packages/save", withUser(this::savePackages));
-        get("/manager/api/states/packages/match", this::matchPackages);
+        post("/manager/api/states/apply", asJson(withUser(this::apply)));
+        post("/manager/api/states/applyall", asJson(withUser(this::applyHighstate)));
+        get("/manager/api/states/match", asJson(withUser(this::matchStates)));
+        post("/manager/api/states/save", asJson(withUser(this::saveConfigChannels)));
+        get("/manager/api/states/packages", asJson(this::packages));
+        post("/manager/api/states/packages/save", asJson(withUser(this::savePackages)));
+        get("/manager/api/states/packages/match", asJson(this::matchPackages));
         get("/manager/api/states/highstate", this::showHighstate);
-        get("/manager/api/states/summary", this::listSummary);
+        get("/manager/api/states/summary", asJson(this::listSummary));
         get("/manager/api/states/:channelId/content", withUser(this::stateContent));
     }
 
@@ -172,8 +173,6 @@ public class StatesAPI {
     public String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
-
-        response.type("application/json");
         return GSON.toJson(latestPackageStatesJSON(server));
     }
 
@@ -220,7 +219,6 @@ public class StatesAPI {
                         p.getEpoch(), p.getVersion(), p.getRelease(), server.getPackageType()), p.getArch()))
                 .collect(Collectors.toSet());
 
-        response.type("application/json");
         matching.addAll(matchingAvailable);
         return GSON.toJson(matching);
     }
@@ -378,7 +376,6 @@ public class StatesAPI {
      * @return null to make spark happy
      */
     public Object savePackages(Request request, Response response, User user) {
-        response.type("application/json");
         ServerPackageStatesJson json = GSON.fromJson(request.body(),
                 ServerPackageStatesJson.class);
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getServerId()));
@@ -419,7 +416,6 @@ public class StatesAPI {
      * @return the id of the scheduled action
      */
     public Object applyHighstate(Request req, Response res, User user) {
-        res.type("application/json");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
                 .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
@@ -470,7 +466,6 @@ public class StatesAPI {
      * @return the id of the scheduled action
      */
     public Object apply(Request request, Response response, User user) {
-        response.type("application/json");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
                 .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())

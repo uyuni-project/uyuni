@@ -114,6 +114,7 @@
         <path location="code/src" />
         <path location="code/internal/src" />
       </src>
+      <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
     </javac>
 
     <copy toDir="${build.dir}/classes">

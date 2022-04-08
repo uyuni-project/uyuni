@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.PackageDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -41,46 +38,41 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class PackageDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class PackageDtoSerializer extends ApiResponseSerializer<PackageDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<PackageDto> getSupportedClass() {
         return PackageDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        PackageDto pack = (PackageDto) value;
+    @Override
+    public SerializedApiResponse serialize(PackageDto src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("name", src.getName())
+                .add("version", src.getVersion())
+                .add("release", src.getRelease());
 
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", pack.getName());
-        helper.add("version", pack.getVersion());
-        helper.add("release", pack.getRelease());
-        String epoch = pack.getEpoch();
+        String epoch = src.getEpoch();
         if (epoch == null || epoch.equals(" ")) {
             epoch = "";
         }
-        helper.add("epoch", epoch);
-        helper.add("checksum", pack.getChecksum());
-        helper.add("checksum_type", pack.getChecksumType());
-        helper.add("id", pack.getId());
-        helper.add("arch_label", pack.getArchLabel());
-        helper.add("last_modified_date", pack.getLastModified());
-        if (pack.getRetracted() != null) {
-            helper.add("retracted", pack.getRetracted());
+        builder.add("epoch", epoch)
+                .add("checksum", src.getChecksum())
+                .add("checksum_type", src.getChecksumType())
+                .add("id", src.getId())
+                .add("arch_label", src.getArchLabel())
+                .add("last_modified_date", src.getLastModified());
+
+        if (src.getRetracted() != null) {
+            builder.add("retracted", src.getRetracted());
         }
 
         // Deprecated and should eventually be removed, were returning this
         // for some time although it was undocumented. All other occurrences of
         // last_modified are actual date objects, whereas last_modified_date is
         // used whenever we return a string.
-        helper.add("last_modified", pack.getLastModified());
+        builder.add("last_modified", src.getLastModified());
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

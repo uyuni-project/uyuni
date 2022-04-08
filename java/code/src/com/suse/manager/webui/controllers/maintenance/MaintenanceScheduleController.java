@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.maintenance;
 
 import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -104,14 +105,17 @@ public class MaintenanceScheduleController {
                 MaintenanceScheduleController::ssmSchedules))), jade);
         get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
-        get("/manager/api/maintenance/schedule/:id/systems", withUser(MaintenanceScheduleController::assignedSystems));
-        get("/manager/api/maintenance/schedule/systems", withUser(MaintenanceScheduleController::systemSchedules));
+        get("/manager/api/maintenance/schedule/:id/systems",
+                asJson(withUser(MaintenanceScheduleController::assignedSystems)));
+        get("/manager/api/maintenance/schedule/systems",
+                asJson(withUser(MaintenanceScheduleController::systemSchedules)));
         post("/manager/api/maintenance/schedule/:id/setsystems",
-                withUser(MaintenanceScheduleController::setAssignedSystems));
-        post("/manager/api/maintenance/schedule/:id/assign", withUser(MaintenanceScheduleController::assign));
-        post("/manager/api/maintenance/schedule/unassign", withUser(MaintenanceScheduleController::unassign));
-        post("/manager/api/maintenance/schedule/save", withUser(MaintenanceScheduleController::save));
-        Spark.delete("/manager/api/maintenance/schedule/delete", withUser(MaintenanceScheduleController::delete));
+                asJson(withUser(MaintenanceScheduleController::setAssignedSystems)));
+        post("/manager/api/maintenance/schedule/:id/assign", asJson(withUser(MaintenanceScheduleController::assign)));
+        post("/manager/api/maintenance/schedule/unassign", asJson(withUser(MaintenanceScheduleController::unassign)));
+        post("/manager/api/maintenance/schedule/save", asJson(withUser(MaintenanceScheduleController::save)));
+        Spark.delete("/manager/api/maintenance/schedule/delete",
+                asJson(withUser(MaintenanceScheduleController::delete)));
     }
 
     /**
@@ -201,7 +205,6 @@ public class MaintenanceScheduleController {
      * @return string containing the JSON response
      */
     public static String save(Request request, Response response, User user) {
-        response.type("application/json");
         MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
         if (json.getName().isBlank()) {
@@ -257,7 +260,6 @@ public class MaintenanceScheduleController {
      * @return the result JSON object
      */
     public static String delete(Request request, Response response, User user) {
-        response.type("application/json");
         MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
         String name = json.getName();
@@ -278,7 +280,6 @@ public class MaintenanceScheduleController {
      * @return the JSON list of system IDs
      */
     public static String assignedSystems(Request request, Response response, User user) {
-        response.type("application/json");
         Long scheduleId = Long.parseLong(request.params("id"));
         List<Long> systemIds = new ArrayList<>();
         MM.lookupScheduleByUserAndId(user, scheduleId).ifPresentOrElse(
@@ -300,7 +301,6 @@ public class MaintenanceScheduleController {
      * @return the JSON response
      */
     public static String systemSchedules(Request request, Response response, User user) {
-        response.type("application/json");
         PageControlHelper pageHelper = new PageControlHelper(request, "name");
 
         DataResult<SystemScheduleDto> systems = SystemManager.systemListWithSchedules(user, null);
@@ -334,7 +334,6 @@ public class MaintenanceScheduleController {
      * @return the JSON response
      */
     public static String setAssignedSystems(Request request, Response response, User user) {
-        response.type("application/json");
         SystemAssignmentRequest reqData = GSON.fromJson(request.body(), SystemAssignmentRequest.class);
         List<Long> requestedSysIds = reqData.systemIds;
 
@@ -383,7 +382,6 @@ public class MaintenanceScheduleController {
      * @return string containing the JSON response
      */
     public static String assign(Request request, Response response, User user) {
-        response.type("application/json");
         SystemAssignmentRequest reqData = GSON.fromJson(request.body(), SystemAssignmentRequest.class);
         List<Long> systemIds = reqData.systemIds;
 
@@ -418,7 +416,6 @@ public class MaintenanceScheduleController {
      * @return string containing the JSON response
      */
     public static String unassign(Request request, Response response, User user) {
-        response.type("application/json");
         List<Long> systemIds = Arrays.asList(GSON.fromJson(request.body(), Long[].class));
         try {
             MM.retractScheduleFromSystems(user, new HashSet<>(systemIds));

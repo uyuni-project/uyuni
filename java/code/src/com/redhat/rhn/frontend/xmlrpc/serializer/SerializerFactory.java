@@ -15,21 +15,17 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.suse.manager.api.ApiResponseSerializer;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import redstone.xmlrpc.XmlRpcCustomSerializer;
-
-/**
- * HandlerFactory, simple factory class that uses ManifestFactory to
- * return RPC Handlers.
- *
- */
-
 public class SerializerFactory {
-    private List<XmlRpcCustomSerializer> serializers;
+    private final List<ApiResponseSerializer<?>> serializers;
 
-    /** private constructor */
+    /**
+     * Constructs a {@link SerializerFactory} with the default {@link SerializerRegistry}
+     */
     public SerializerFactory() {
         serializers = new ArrayList<>();
         initialize();
@@ -39,22 +35,17 @@ public class SerializerFactory {
      *
      * @return a list of serializers.
      */
-    public List getSerializers() {
+    public List<ApiResponseSerializer<?>> getSerializers() {
         return serializers;
     }
 
     private void initialize() {
-        List<Class> classes = SerializerRegistry.getSerializationClasses();
-
-        for (Class clazz : classes) {
+        for (Class<? extends ApiResponseSerializer<?>> clazz : SerializerRegistry.getSerializationClasses()) {
             try {
-                if (XmlRpcCustomSerializer.class.isAssignableFrom(clazz)) {
-                    Object s = clazz.newInstance();
-                    serializers.add((XmlRpcCustomSerializer)s);
-                }
+                serializers.add(clazz.getDeclaredConstructor().newInstance());
             }
             catch (Exception e) {
-                e.printStackTrace(System.out);
+                throw new RuntimeException(e);
             }
         }
     }
