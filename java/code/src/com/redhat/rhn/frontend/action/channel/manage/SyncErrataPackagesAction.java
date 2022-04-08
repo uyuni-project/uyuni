@@ -55,7 +55,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
         Listable<PackageOverview> {
 
 
-    private Logger log = LogManager.getLogger(SyncErrataPackagesAction.class);
+    private static final Logger log = LogManager.getLogger(SyncErrataPackagesAction.class);
 
     /**
      *
