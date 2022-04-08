@@ -110,7 +110,7 @@ public class MethodUtil {
          * refactored.   rbb
          */
         if (log.isDebugEnabled()) {
-            log.debug("Trying to call: " + methodCalled + " in " + o.getClass());
+            log.debug("Trying to call: {} in {}", methodCalled, o.getClass());
         }
         Class myClass = o.getClass();
         Method[] methods;
@@ -143,10 +143,7 @@ public class MethodUtil {
                 for (int j = 0; j < types.length; j++) {
                     Object curr = params[j];
                     if (log.isDebugEnabled()) {
-                        log.debug("Trying to translate from: " +
-                                ((curr == null) ? null : curr.getClass()) +
-                                " to: " + types[j] +
-                                " isInstance: " + types[j].isInstance(curr));
+                        log.debug("Trying to translate from: {} to: {} isInstance: {}", (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
                     }
                     if (curr != null && curr.getClass().isPrimitive() &&
                             types[j].isPrimitive()) {
@@ -165,13 +162,12 @@ public class MethodUtil {
                     }
                     try {
                         if (log.isDebugEnabled()) {
-                            log.debug("calling converter: " + curr);
+                            log.debug("calling converter: {}", curr);
                         }
                         converted[j] = Translator.convert(curr, types[j]);
                     }
                     catch (TranslationException e) {
-                        log.debug("Couldn't translate between " + curr +
-                                " and " + types[j]);
+                        log.debug("Couldn't translate between {} and {}", curr, types[j]);
                         // move on to the next method.
                         found = false;
                         break;

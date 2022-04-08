@@ -224,7 +224,7 @@ public class SaltReactor {
      */
     private Stream<EventMessage> eventToMessages(SystemIdGenerateEvent systemIdGenerateEvent) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Generate systemid file for minion: " + (String) systemIdGenerateEvent.getData().get("id"));
+            LOG.debug("Generate systemid file for minion: {}", (String) systemIdGenerateEvent.getData().get("id"));
         }
         return of(new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id")));
     }
@@ -259,7 +259,7 @@ public class SaltReactor {
         String minionId = (String) minionStartEvent.getData().get("id");
         Optional<MinionStartupGrains> startupGrains = minionStartEvent.getStartUpGrains(MinionStartupGrains.class);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Trigger start and registration for minion: " + minionId);
+            LOG.debug("Trigger start and registration for minion: {}", minionId);
         }
         return of(
             new MinionStartEventMessage(minionId),
@@ -281,12 +281,11 @@ public class SaltReactor {
                     return of(message);
                 }
                 else {
-                    LOG.debug("Unhandled libvirt engine event:" +
-                              engineEvent.getAdditional());
+                    LOG.debug("Unhandled libvirt engine event:{}", engineEvent.getAdditional());
                 }
             }
             catch (IllegalArgumentException e) {
-                LOG.warn("Invalid libvirt engine event: " + engineEvent.getAdditional());
+                LOG.warn("Invalid libvirt engine event: {}", engineEvent.getAdditional());
             }
         }
         return empty();
@@ -318,8 +317,7 @@ public class SaltReactor {
                             ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                    minionServer.getMinionId());
+                            LOG.error("Could not schedule package refresh for minion: {}", minionServer.getMinionId());
                             LOG.error(e);
                         }
                     }))

@@ -70,7 +70,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
 
         for (KickstartCommandName cn : availableOptions) {
 
-            log.debug("avail commandname: " + cn.getName());
+            log.debug("avail commandname: {}", cn.getName());
 
             String name = cn.getName();
             boolean added = false;
@@ -83,7 +83,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
                     v.setRequired(cn.getRequired());
 
                     String args = c.getArguments();
-                    log.debug("   args = " + args);
+                    log.debug("   args = {}", args);
 
                     // Default URL's are stored as a path, not a full URL. Because we store
                     // the value directly back in the db we still must render just /path

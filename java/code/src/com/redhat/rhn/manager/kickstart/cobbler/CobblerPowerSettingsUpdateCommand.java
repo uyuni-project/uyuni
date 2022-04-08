@@ -94,7 +94,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         SystemRecord systemRecord = getSystemRecordForSystem();
         if (systemRecord != null) {
             systemRecord.remove();
-            log.debug("Cobbler system profile removed for system " + getIdent());
+            log.debug("Cobbler system profile removed for system {}", getIdent());
         }
 
         return null;
@@ -122,7 +122,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         SystemRecord systemRecord = getSystemRecordForSystem();
 
         if (systemRecord == null && server != null) {
-            log.debug("No Cobbler system record found for system " + getIdent());
+            log.debug("No Cobbler system record found for system {}", getIdent());
             try {
                 CobblerConnection connection = getCobblerConnection();
                 Image image = createDummyImage(connection);
@@ -142,7 +142,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         }
 
         try {
-            log.debug("Setting Cobbler parameters for system " + getIdent());
+            log.debug("Setting Cobbler parameters for system {}", getIdent());
             if (powerType != null && !powerType.equals("") &&
                     !powerType.equals(systemRecord.getPowerType())) {
                 systemRecord.setPowerType(powerType);
@@ -163,14 +163,14 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
                 systemRecord.setPowerId(powerId);
             }
             systemRecord.save();
-            log.debug("Settings saved for system " + getIdent());
+            log.debug("Settings saved for system {}", getIdent());
         }
         catch (XmlRpcException e) {
             Throwable cause = e.getCause();
             if (cause != null) {
                 String message = cause.getMessage();
                 if (message != null && message.contains("power type must be one of")) {
-                    log.error("Unsupported Cobbler power type " + powerType);
+                    log.error("Unsupported Cobbler power type {}", powerType);
                     return new ValidatorError(
                         "kickstart.powermanagement.unsupported_power_type");
                 }

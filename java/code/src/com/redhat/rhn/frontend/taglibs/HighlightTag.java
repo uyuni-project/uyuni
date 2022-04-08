@@ -97,8 +97,7 @@ public class HighlightTag extends BodyTagSupport {
             body = matcher.replaceAll(startTag + "$1" + endTag);
         }
         catch (PatternSyntaxException e) {
-            log.warn("highlighting disabled. Invalid pattern [" + search +
-                    "]." + e.getMessage());
+            log.warn("highlighting disabled. Invalid pattern [{}].{}", search, e.getMessage());
         }
 
         try {

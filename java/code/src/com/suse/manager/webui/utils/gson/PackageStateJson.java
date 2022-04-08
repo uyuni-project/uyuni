@@ -171,8 +171,7 @@ public class PackageStateJson {
                     packageState.setVersionConstraint(vc);
                 }
                 else {
-                    LOG.error("Version constraint required for " + ps + ": " +
-                            packageState.getName());
+                    LOG.error("Version constraint required for {}: {}", ps, packageState.getName());
                     return Optional.empty();
                 }
             }

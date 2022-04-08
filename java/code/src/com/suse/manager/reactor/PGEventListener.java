@@ -64,7 +64,7 @@ public class PGEventListener implements EventListener {
     @Override
     public void notify(Event event) {
         if (LOG.isTraceEnabled()) {
-            LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
+            LOG.trace("Event: {} -> {}", event.getTag(), event.getData());
         }
 
         Stream<EventMessage> messages = eventToMessages.apply(event);
@@ -88,7 +88,7 @@ public class PGEventListener implements EventListener {
      */
     @Override
     public void eventStreamClosed(int code, String phrase) {
-        LOG.warn("Event stream closed: " + phrase + " [" + code + "]");
+        LOG.warn("Event stream closed: {} [{}]", phrase, code);
         eventStreamClosed.run();
     }
 }

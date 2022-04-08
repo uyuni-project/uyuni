@@ -445,7 +445,7 @@ public class AuditManager /* extends BaseManager */ {
                     str.substring(str.indexOf('=') + 1).trim());
             }
             else {
-                log.debug("unknown string: " + str);
+                log.debug("unknown string: {}", str);
             }
         }
 

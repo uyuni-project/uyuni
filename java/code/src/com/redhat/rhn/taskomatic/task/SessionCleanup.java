@@ -51,7 +51,7 @@ public class SessionCleanup extends RhnJavaJob {
 
         log.debug("session_cleanup: starting delete of stale sessions");
         if (log.isDebugEnabled()) {
-            log.debug("Session expiry threshold is " + bound);
+            log.debug("Session expiry threshold is {}", bound);
         }
 
         //input parameters of the query
@@ -70,7 +70,7 @@ public class SessionCleanup extends RhnJavaJob {
         }
         //logs number of sessions deleted
         if (sessionsDeleted > 0) {
-            log.info(sessionsDeleted + " stale session(s) deleted");
+            log.info("{} stale session(s) deleted", sessionsDeleted);
         }
         else {
             log.debug("No stale sessions deleted");

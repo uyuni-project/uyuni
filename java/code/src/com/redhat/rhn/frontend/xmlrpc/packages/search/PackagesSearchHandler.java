@@ -321,15 +321,15 @@ public class PackagesSearchHandler extends BaseHandler {
                             true, null, PackageSearchAction.WHERE_ALL);
         }
         catch (MalformedURLException | XmlRpcFault e) {
-            log.info("Caught Exception :" + e);
+            log.info("Caught Exception :{}", e);
             e.printStackTrace();
             throw new SearchServerCommException();
         }
         // Connection error
 
         if (log.isDebugEnabled()) {
-            log.debug("Query = : " + query + ", mode = " + mode);
-            log.debug(pkgs.size() + " packages were fetched");
+            log.debug("Query = : {}, mode = {}", query, mode);
+            log.debug("{} packages were fetched", pkgs.size());
         }
         return pkgs;
     }

@@ -85,7 +85,7 @@ public abstract class RhnWizardAction extends RhnAction {
         ActionForward retval = null;
 
         if (step != null) {
-            log.debug("Step selected: " + step);
+            log.debug("Step selected: {}", step);
             retval = dispatch(step, mapping, form, ctx, response);
         }
         return retval;

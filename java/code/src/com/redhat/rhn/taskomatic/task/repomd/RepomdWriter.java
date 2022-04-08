@@ -152,8 +152,7 @@ public abstract class RepomdWriter {
             return input;
         }
         if (log.isDebugEnabled()) {
-            log.debug("Package " + pkgId +
-                    " metadata contains control chars, cleanup required: " + input);
+            log.debug("Package {} metadata contains control chars, cleanup required: {}", pkgId, input);
         }
         return StringUtils.replaceChars(input, CONTROL_CHARS, CONTROL_CHARS_REPLACEMENT);
     }

@@ -61,7 +61,7 @@ public class SystemCommandExecutor implements Executor {
      */
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(String[] args=" + Arrays.asList(args) + ") - start");
+            logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
         }
 
         Runtime r = Runtime.getRuntime();
@@ -73,7 +73,7 @@ public class SystemCommandExecutor implements Executor {
 
             lastCommandOutput = inputStreamToString(p.getInputStream());
             if (logger.isDebugEnabled()) {
-                logger.debug("Output from process execution: " + lastCommandOutput);
+                logger.debug("Output from process execution: {}", lastCommandOutput);
             }
 
             lastCommandError = inputStreamToString(p.getErrorStream());
@@ -109,7 +109,7 @@ public class SystemCommandExecutor implements Executor {
             for (String argIn : args) {
                 message = message + argIn + " ";
             }
-            logger.error("IOException while trying to exec: " + message, ioe);
+            logger.error("IOException while trying to exec: {}", message, ioe);
             throw new RuntimeException(
                     "IOException while trying to exec: " + message, ioe);
         }

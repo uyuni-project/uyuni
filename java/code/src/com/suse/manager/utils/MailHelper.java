@@ -57,7 +57,7 @@ public class MailHelper {
             enrichedSubject.append(" from " + InetAddress.getLocalHost().getHostName());
         }
         catch (UnknownHostException ue) {
-            LOG.error("Could not retrieve hostname: " + ue);
+            LOG.error("Could not retrieve hostname: {}", ue);
         }
         sendEmail(recipients, enrichedSubject.toString(), messageBody);
     }
@@ -84,7 +84,7 @@ public class MailHelper {
         mailer.setBody(body);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Sending mail message:\n" + mailer.toString());
+            LOG.debug("Sending mail message:\n{}", mailer.toString());
         }
         try {
             mailer.send();

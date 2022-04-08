@@ -200,16 +200,14 @@ public class TreeFilter implements ResultsFilter {
                 method = clazz.getMethod("processList", DataResult.class);
             }
             catch (Exception e) {
-                log.warn("Can't locate 'processList' method for class: " +
-                        clazz.getName());
+                log.warn("Can't locate 'processList' method for class: {}", clazz.getName());
             }
             if (method != null) {
                 try {
                     method.invoke(clazz, result);
                 }
                 catch (Exception e) {
-                    log.warn("Can't invoke " + method.getName() + " method of class: " +
-                            clazz.getName());
+                    log.warn("Can't invoke {} method of class: {}", method.getName(), clazz.getName());
                 }
             }
         }

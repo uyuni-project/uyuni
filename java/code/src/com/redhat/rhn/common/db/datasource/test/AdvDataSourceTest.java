@@ -349,7 +349,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
                 connection.commit();
             }
             catch (SQLException se) {
-                log.warn("Failed to create table adv_datasource: " + se.toString());
+                log.warn("Failed to create table adv_datasource: {}", se.toString());
                 connection.rollback();
             }
             finally {
@@ -380,7 +380,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             stmt.execute(query);
         }
         catch (SQLException se) {
-            log.warn("Failed to execute query " + query + ": " + se.toString());
+            log.warn("Failed to execute query {}: {}", query, se.toString());
         }
     }
 

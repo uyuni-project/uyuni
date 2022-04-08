@@ -86,7 +86,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      */
     public String getLabel() {
         String returnString = this.ksdata.getLabel();
-        logger.debug("getLabel() - end - return value=" + returnString);
+        logger.debug("getLabel() - end - return value={}", returnString);
         return returnString;
     }
 
@@ -99,7 +99,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
             KickstartBuilder builder = new KickstartBuilder(getUser());
             builder.validateNewLabel(labelIn);
         }
-        logger.debug("setLabel(String labelIn=" + labelIn + ") - start");
+        logger.debug("setLabel(String labelIn={}) - start", labelIn);
         this.ksdata.setLabel(labelIn);
     }
 
@@ -110,7 +110,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
     public Boolean getActive() {
         logger.debug("getActive() - start");
         Boolean returnBoolean = this.ksdata.getActive();
-        logger.debug("getActive() - end - return value=" + returnBoolean);
+        logger.debug("getActive() - end - return value={}", returnBoolean);
         return returnBoolean;
     }
 
@@ -119,7 +119,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      * @param activeIn Set active status of Kickstart
      */
     public void setActive(Boolean activeIn) {
-        logger.debug("setActive(Boolean activeIn=" + activeIn + ") - start");
+        logger.debug("setActive(Boolean activeIn={}) - start", activeIn);
         this.ksdata.setActive(activeIn);
     }
 
@@ -159,7 +159,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      */
     public String getComments() {
         String returnString = this.ksdata.getComments();
-        logger.debug("getComments() - end - return value=" + returnString);
+        logger.debug("getComments() - end - return value={}", returnString);
         return returnString;
     }
 
@@ -179,7 +179,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      * @param commentsIn to set for Kickstart
      */
     public void setComments(String commentsIn) {
-        logger.debug("setComments(String commentsIn=" + commentsIn + ") - start");
+        logger.debug("setComments(String commentsIn={}) - start", commentsIn);
         this.ksdata.setComments(commentsIn);
 
     }
@@ -212,8 +212,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
 
         if (tree == null) {
             ValidatorError ve = new ValidatorError("kickstart.software.notree");
-            logger.debug("updateKickstartableTree(Long, String, " +
-                    "String, Long) - end - return value=" + ve);
+            logger.debug("updateKickstartableTree(Long, String, String, Long) - end - return value={}", ve);
             return ve;
         }
         else if (!tree.equals(ksdata.getTree())) {
@@ -275,7 +274,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         for (Channel c : ksc) {
             retval.add(c.getChannelArch());
         }
-        logger.debug("getAvailableArches() - end - return value=" + retval);
+        logger.debug("getAvailableArches() - end - return value={}", retval);
         return retval;
     }
 
@@ -287,7 +286,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         logger.debug("getAvailableChannels() - start");
         Collection<Channel> returnCollection = ChannelFactory
                 .getKickstartableChannels(user.getOrg());
-        logger.debug("getAvailableChannels() - end - return value=" + returnCollection);
+        logger.debug("getAvailableChannels() - end - return value={}", returnCollection);
         return returnCollection;
     }
 
@@ -313,7 +312,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         for (Channel c : channels) {
             retval.add(c.getChannelFamily());
         }
-        logger.debug("getAvailableChannelFamilies() - end - return value=" + retval);
+        logger.debug("getAvailableChannelFamilies() - end - return value={}", retval);
         return retval;
     }
 
@@ -325,7 +324,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         Set<String> retval = new TreeSet<>();
         retval.addAll(Arrays.asList(UPDATES));
 
-        logger.debug("getAvailableUpdates() - end - return value=" + retval);
+        logger.debug("getAvailableUpdates() - end - return value={}", retval);
         return retval;
     }
 
@@ -344,13 +343,13 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         retval = this.ksdata.getTree().getLabel();
         retval = retval.replaceAll(
                 getBaseLabel(this.ksdata.getTree().getChannel()), "");
-        logger.debug("retval after replace: " + retval);
+        logger.debug("retval after replace: {}", retval);
         int hyphen = retval.indexOf('-');
         if (hyphen >= 0) {
             retval = retval.substring(hyphen + 1, retval.length());
         }
         //}
-        logger.debug("retval: " + retval);
+        logger.debug("retval: {}", retval);
         return retval;
     }
 

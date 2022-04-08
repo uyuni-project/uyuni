@@ -115,7 +115,7 @@ public class HttpHelper {
      */
     private HttpResponse sendHeadRequest(String url, String username, String password, boolean ignoreNoProxy)
             throws IOException {
-        log.debug("HEAD: " + url);
+        log.debug("HEAD: {}", url);
         HttpHead headRequest = new HttpHead(url);
         try {
             return httpClient.executeRequest(headRequest, username, password, ignoreNoProxy);
@@ -139,7 +139,7 @@ public class HttpHelper {
      */
     private HttpResponse sendGetRequest(String url, String username, String password, boolean ignoreNoProxy)
             throws IOException {
-        log.debug("GET: " + url);
+        log.debug("GET: {}", url);
         HttpGet getRequest = new HttpGet(url);
         return httpClient.executeRequest(getRequest, username, password, ignoreNoProxy);
     }

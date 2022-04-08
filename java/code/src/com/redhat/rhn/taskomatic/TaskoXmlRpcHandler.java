@@ -221,7 +221,7 @@ public class TaskoXmlRpcHandler {
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
         if ((scheduleList.isEmpty()) && (trigger == null)) {
-            log.error("Unscheduling of bunch " + jobLabel + "failed: no such job label");
+            log.error("Unscheduling of bunch {}failed: no such job label", jobLabel);
             return 0;
         }
         for (TaskoSchedule schedule : scheduleList) {

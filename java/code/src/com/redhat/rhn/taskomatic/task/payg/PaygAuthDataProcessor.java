@@ -62,7 +62,7 @@ public class PaygAuthDataProcessor {
      */
     public void processPaygInstanceData(PaygSshData instance, PaygInstanceInfo paygData) throws URISyntaxException {
 
-        LOG.debug("Number installed Products: " + paygData.getProducts().size());
+        LOG.debug("Number installed Products: {}", paygData.getProducts().size());
         Credentials credentials = processAndGetCredentials(instance, paygData);
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(credentials);
 
@@ -87,7 +87,7 @@ public class PaygAuthDataProcessor {
             processedRepoAuth.add(authRepo);
         });
 
-        LOG.debug("Total repository authentication inserted: " + processedRepoAuth.size());
+        LOG.debug("Total repository authentication inserted: {}", processedRepoAuth.size());
         existingRepos.stream()
                 .filter(er -> processedRepoAuth.stream().noneMatch(pr -> er.getId().equals(pr.getId())))
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);

@@ -385,7 +385,8 @@ public class NetworkDefinition {
                         case "pf": def.setPhysicalFunction(Optional.of(node.getAttributeValue("dev"))); break;
                         case "interface": def.interfaces.add(node.getAttributeValue("dev")); break;
                         case "address": def.virtualFunctions.add(NetworkDefinition.getPCIAddress(node)); break;
-                        default: LOG.error("Unexpected forward mode: " + node.getName());
+                        default:
+                            LOG.error("Unexpected forward mode: {}", node.getName());
                     }
                 }
             }
@@ -425,7 +426,7 @@ public class NetworkDefinition {
             }
         }
         catch (Exception e) {
-            LOG.error("failed to parse libvirt network XML definition: " + e.getMessage());
+            LOG.error("failed to parse libvirt network XML definition: {}", e.getMessage());
             def = null;
         }
 

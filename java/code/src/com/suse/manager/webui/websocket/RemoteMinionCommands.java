@@ -184,11 +184,10 @@ public class RemoteMinionCommands {
                         if (err instanceof TimeoutException) {
                             sendMessage(session,
                                     new ActionTimedOutEventDto(minionId, "preview"));
-                            LOG.debug("Timed out waiting for response from minion " +
-                                    minionId);
+                            LOG.debug("Timed out waiting for response from minion {}", minionId);
                         }
                         else {
-                            LOG.error("Error waiting for minion " + minionId, err);
+                            LOG.error("Error waiting for minion {}", minionId, err);
                             sendMessage(session,
                                     new ActionErrorEventDto(minionId,
                                             "ERR_WAIT_MATCH",
@@ -265,9 +264,7 @@ public class RemoteMinionCommands {
                     res = saltApi
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
-                    LOG.info("User '" + webSession.getUser().getLogin() + "' has sent the command '" +
-                            msg.getCommand() + "' to minions [" +
-                            String.join(", ", previewedMinions) + "]");
+                    LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(), msg.getCommand(), String.join(", ", previewedMinions));
 
                 }
                 catch (NullPointerException e) {
@@ -285,18 +282,16 @@ public class RemoteMinionCommands {
                         AbstractSaltEventDto event = cmdResult.fold(
                                 error -> {
                                     String errMsg = parseSaltError(error);
-                                    LOG.info("Received Salt error for minion " + minionId + ": " + errMsg);
+                                    LOG.info("Received Salt error for minion {}: {}", minionId, errMsg);
                                     return new ActionErrorEventDto(minionId,
                                         "ERR_CMD_SALT_ERROR", errMsg);
                                 },
                                 result -> {
-                                    LOG.info("User '" + webSession.getUser().getLogin() +
-                                            "' received command result from minion " + minionId +
-                                            ". Output is logged at DEBUG level.");
+                                    LOG.info("User '{}' received command result from minion {}. Output is logged at DEBUG level.", webSession.getUser().getLogin(), minionId);
                                     addHistoryEvent(webSession.getUser().getLogin(), minionId,
                                             msg.getCommand(), result);
                                     if (LOG.isDebugEnabled()) {
-                                        LOG.debug("Minion " + minionId + " returned:\n" + result);
+                                        LOG.debug("Minion {} returned:\n{}", minionId, result);
 
                                     }
                                     return new MinionCommandResultEventDto(minionId, result);
@@ -307,11 +302,10 @@ public class RemoteMinionCommands {
                         if (err instanceof TimeoutException) {
                             sendMessage(session,
                                     new ActionTimedOutEventDto(minionId, "run"));
-                            LOG.debug("Timed out waiting for response from minion " +
-                                    minionId);
+                            LOG.debug("Timed out waiting for response from minion {}", minionId);
                         }
                         else {
-                            LOG.error("Error waiting for minion " + minionId, err);
+                            LOG.error("Error waiting for minion {}", minionId, err);
                             sendMessage(session,
                                     new ActionErrorEventDto(minionId, "ERR_WAIT_CMD",
                                             "Error waiting to execute command: " +
@@ -359,9 +353,7 @@ public class RemoteMinionCommands {
                             );
                         },
                         (Exception e) ->
-                                LOG.error(
-                                        "Error adding Salt remote command event to " +
-                                                "history of minion " + minionId, e)
+                                LOG.error("Error adding Salt remote command event to history of minion {}", minionId, e)
                 )
         );
     }

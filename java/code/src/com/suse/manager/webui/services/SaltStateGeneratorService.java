@@ -387,7 +387,7 @@ public enum SaltStateGeneratorService {
      */
     private void generateServerConfigState(ServerStateRevision serverStateRevision, Path statePath) {
         serverStateRevision.getServer().asMinionServer().ifPresent(minion -> {
-            LOG.debug("Generating config channel SLS file for server: " + minion.getId());
+            LOG.debug("Generating config channel SLS file for server: {}", minion.getId());
 
             generateConfigStates(serverStateRevision, getServerStateFileName(minion.getMachineId()), statePath);
         });
@@ -401,7 +401,7 @@ public enum SaltStateGeneratorService {
     private void generateGroupConfigState(ServerGroupStateRevision groupStateRevision,
                                          Path statePath) {
         ServerGroup group = groupStateRevision.getGroup();
-        LOG.debug("Generating config channel SLS file for server group: " + group.getId());
+        LOG.debug("Generating config channel SLS file for server group: {}", group.getId());
 
         generateConfigStates(groupStateRevision, getGroupStateFileName(group.getId()), statePath);
     }
@@ -413,7 +413,7 @@ public enum SaltStateGeneratorService {
      */
     private void generateOrgConfigState(OrgStateRevision orgStateRevision, Path statePath) {
         Org org = orgStateRevision.getOrg();
-        LOG.debug("Generating config channel SLS file for organization: " + org.getId());
+        LOG.debug("Generating config channel SLS file for organization: {}", org.getId());
 
         generateConfigStates(orgStateRevision, getOrgStateFileName(org.getId()), statePath);
     }

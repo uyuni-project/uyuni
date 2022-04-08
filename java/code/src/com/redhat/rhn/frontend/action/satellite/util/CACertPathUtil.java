@@ -58,7 +58,7 @@ public final class CACertPathUtil {
             certFile = findCACert(docroot);
         }
 
-        logger.debug("Found CA cert file: " + certFile);
+        logger.debug("Found CA cert file: {}", certFile);
         return certFile;
     }
 
@@ -67,7 +67,7 @@ public final class CACertPathUtil {
         try (DirectoryStream<Path> directoryStream =
                 Files.newDirectoryStream(docrootPath, CA_CRT_RPM_NAME + GLOB_NOARCH_RPM)) {
             for (Path rpmFile : directoryStream) {
-                logger.debug("Found CA RPM file: " + candidateRpmCA);
+                logger.debug("Found CA RPM file: {}", candidateRpmCA);
                 if (rpmFile.toString().compareTo(candidateRpmCA) > 0) {
                     candidateRpmCA = rpmFile.toString();
                 }
@@ -75,8 +75,7 @@ public final class CACertPathUtil {
             return candidateRpmCA;
         }
         catch (IOException | DirectoryIteratorException ex) {
-            logger.warn("Cannot scan docroot " + docrootPath +
-                    " for CA RPM certificate. Exception: " + ex);
+            logger.warn("Cannot scan docroot {} for CA RPM certificate. Exception: {}", docrootPath, ex);
         }
         return candidateRpmCA;
     }
@@ -84,7 +83,7 @@ public final class CACertPathUtil {
     private static String findCACert(String docroot) {
         File certFile = new File(docroot + CA_CRT_NAME);
         if (certFile.exists() && !certFile.isDirectory()) {
-            logger.debug("Found CA file: " + certFile);
+            logger.debug("Found CA file: {}", certFile);
             return certFile.toString();
         }
         return StringUtils.EMPTY;

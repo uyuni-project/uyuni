@@ -159,8 +159,7 @@ public class PageSizeDecorator extends BaseListDecorator {
             }
         }
         catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing " +
-                    ConfigDefaults.DEFAULT_PAGE_SIZE + "=" + sizeStr);
+            logger.warn("Number format exception encountered while parsing " + ConfigDefaults.DEFAULT_PAGE_SIZE + "={}", sizeStr);
             size = DEFAULT_PAGE_SIZE;
         }
 
@@ -204,8 +203,7 @@ public class PageSizeDecorator extends BaseListDecorator {
             return ret;
         }
         catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing " +
-                    ConfigDefaults.PAGE_SIZES + "=" + pageSizes);
+            logger.warn("Number format exception encountered while parsing " + ConfigDefaults.PAGE_SIZES + "={}", pageSizes);
             return Collections.emptyList();
         }
     }

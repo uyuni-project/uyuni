@@ -67,7 +67,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                 .orElse(null);
 
         if (actionChain == null) {
-            LOG.error("Action chain not found id=" + actionChainId);
+            LOG.error("Action chain not found id={}", actionChainId);
             return;
         }
 
@@ -92,18 +92,17 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                         ZoneId.systemDefault()), ZonedDateTime.now())
                 .toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
-            log.warn("Scheduled action chain " + actionChain.getId() + " was scheduled to be executed more than " +
-                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.");
+            log.warn("Scheduled action chain {} was scheduled to be executed more than " + MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.", actionChain.getId());
             return;
         }
 
-        log.info("Executing action chain: " + actionChainId);
+        log.info("Executing action chain: {}", actionChainId);
 
         saltServerActionService.executeActionChain(actionChainId);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 

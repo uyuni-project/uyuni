@@ -219,8 +219,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
             stmt.execute(query);
         }
         catch (SQLException se) {
-            log.warn("Failed to execute query " + query + ": " +
-                           se.toString());
+            log.warn("Failed to execute query {}: {}", query, se.toString());
         }
     }
 }

@@ -59,7 +59,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
             scheduleVerifications(event, user);
         }
         catch (Exception e) {
-            LOG.error("Error scheduling package installations for event " + event, e);
+            LOG.error("Error scheduling package installations for event {}", event, e);
         }
         finally {
             // This should stay in the finally block so the operation is

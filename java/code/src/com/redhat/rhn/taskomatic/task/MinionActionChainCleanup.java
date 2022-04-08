@@ -48,7 +48,7 @@ public class MinionActionChainCleanup extends RhnJavaJob {
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 }

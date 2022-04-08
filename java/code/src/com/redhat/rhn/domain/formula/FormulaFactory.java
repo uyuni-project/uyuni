@@ -214,8 +214,7 @@ public class FormulaFactory {
         return Optional.ofNullable(formulasFolder.listFiles())
                 .map(Arrays::asList)
                 .orElseGet(() -> {
-                    LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
-                            ". Check if it exists and have the correct permissions (755).");
+                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the correct permissions (755).", formulasFolder.getAbsolutePath());
                     return Collections.EMPTY_LIST;
                 });
     }
@@ -462,7 +461,7 @@ public class FormulaFactory {
             }
         }
         catch (FileNotFoundException | YAMLException e) {
-            LOG.error("Error loading layout for formula '" + name + "'", e);
+            LOG.error("Error loading layout for formula '{}'", name, e);
             return Optional.empty();
         }
     }

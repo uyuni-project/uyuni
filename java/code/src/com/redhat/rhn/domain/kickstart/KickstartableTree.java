@@ -567,7 +567,7 @@ public class KickstartableTree extends BaseDomainHelper {
             Files.createDirectories(fullDir);
         }
         catch (IOException e) {
-            log.error("Unable to create directory " + fullDir, e);
+            log.error("Unable to create directory {}", fullDir, e);
             return;
         }
         try {
@@ -605,7 +605,7 @@ public class KickstartableTree extends BaseDomainHelper {
             FileUtils.deleteDirectory(fullDir.toFile());
         }
         catch (Exception e) {
-            log.error("Unable to delete directory " + fullDir, e);
+            log.error("Unable to delete directory {}", fullDir, e);
         }
     }
 }

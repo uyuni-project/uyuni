@@ -99,7 +99,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             parentQueue.workerStarting();
 
             MinionServerFactory.lookupById(system.getId()).ifPresent(m -> {
-                log.info("Executing actions for minion: " + m.getMinionId());
+                log.info("Executing actions for minion: {}", m.getMinionId());
 
                 boolean checkinNeeded = true;
                 if (system.isRebooting()) {
@@ -115,7 +115,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
                 // update uptime, etc and set Reboot Actions to COMPLETED
                 updateSystemInfo(new MinionList(m.getMinionId()));
-                log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
+                log.debug("Nothing left to do for {}, exiting worker", m.getMinionId());
             });
         }
         catch (Exception e) {
@@ -150,13 +150,12 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
 
         if (pendingResume.isEmpty()) {
-            log.debug("Minion " + minion.getMinionId() + " is probably not up." +
-                    " Checking later for pending action chain executions.");
+            log.debug("Minion {} is probably not up. Checking later for pending action chain executions.", minion.getMinionId());
             return false;
         }
 
         Optional<Map<String, String>> confValues = pendingResume.get(minion.getMinionId()).fold(err -> {
-                    log.error("mgractionchains.get_pending_resume failed for ssh minion: " + err.fold(
+                    log.error("mgractionchains.get_pending_resume failed for ssh minion: {}", err.fold(
                             Object::toString,
                             Object::toString,
                             Object::toString,
@@ -169,7 +168,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 Optional::of);
 
         if (!confValues.isPresent() || confValues.get().isEmpty()) {
-            log.debug("No action chain execution pending on minion " + minion.getMinionId());
+            log.debug("No action chain execution pending on minion {}", minion.getMinionId());
             return false;
         }
 
@@ -181,22 +180,19 @@ public class SSHPushWorkerSalt implements QueueWorker {
         String persistBoot = values.get("persist_boot_time");
 
         if (StringUtils.isBlank(currentBoot)) {
-            log.error("Could not resume pending action chain execution, no current_boot_time returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+            log.error("Could not resume pending action chain execution, no current_boot_time returned by mgractionchains.get_pending_resume for ssh minion {}", minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
             return false;
         }
 
         if (StringUtils.isBlank(persistBoot)) {
-            log.error("Could not resume pending action chain execution, no persist_boot_time returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+            log.error("Could not resume pending action chain execution, no persist_boot_time returned by mgractionchains.get_pending_resume for ssh minion {}", minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
             return false;
         }
 
         if (StringUtils.isBlank(nextActionIdStr)) {
-            log.error("Could not resume pending action chain execution, no next_action_id returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+            log.error("Could not resume pending action chain execution, no next_action_id returned by mgractionchains.get_pending_resume for ssh minion {}", minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
             return false;
         }
@@ -211,8 +207,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
 
         if (StringUtils.isBlank(nextChunk)) {
-            log.error("Could not resume pending action chain execution, no next_chunk returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+            log.error("Could not resume pending action chain execution, no next_chunk returned by mgractionchains.get_pending_resume for ssh minion {}", minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
             saltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
                     Optional.of("Could not resume pending action chain execution, no next_chunk returned by " +
@@ -221,8 +216,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
 
         if (StringUtils.isBlank(extraFileRefs)) {
-            log.error("Could not resume pending action chain execution, no ssh_extra_filerefs returned by " +
-                    "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
+            log.error("Could not resume pending action chain execution, no ssh_extra_filerefs returned by mgractionchains.get_pending_resume for ssh minion {}", minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
             saltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
                     Optional.of("Could not resume pending action chain execution, no ssh_extra_filerefs " +
@@ -247,7 +241,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
         if (timeDelta < 3) {
             // don't resume the action chain, the system hasn't rebooted yet
-            log.info("Not resuming action chain execution. Minion " + minion.getMinionId() + " hasn't rebooted yet");
+            log.info("Not resuming action chain execution. Minion {} hasn't rebooted yet", minion.getMinionId());
             return false;
         }
 
@@ -305,12 +299,12 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 }
             }
             else {
-                log.error("No action chain result for minion " + minion.getMinionId());
+                log.error("No action chain result for minion {}", minion.getMinionId());
                 return false;
             }
         }
         catch (SaltException e) {
-            log.error("Error resuming action on minion " + minion.getMinionId(), e);
+            log.error("Error resuming action on minion {}", minion.getMinionId(), e);
             return false;
         }
 
@@ -330,7 +324,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
-        log.info("Performing a check-in for: " + minion.getMinionId());
+        log.info("Performing a check-in for: {}", minion.getMinionId());
         Optional<Boolean> result = saltApi.ping(minion.getMinionId());
 
         result.ifPresent(res -> minion.updateServerInfo());
@@ -352,7 +346,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             }));
         }
         catch (SaltException ex) {
-            log.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+            log.debug("Error while executing util.systeminfo state: {}", ex.getMessage());
         }
     }
 }

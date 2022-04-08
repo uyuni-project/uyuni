@@ -181,7 +181,7 @@ public class ResetPasswordFactory extends HibernateFactory {
      * @return ActionErrors list - isEmpty() means "no errors found"
      */
     public static ActionErrors findErrors(ResetPassword rp) {
-        log.debug("findErrors : [" + (rp == null ? "null" : rp.toString()) + "]");
+        log.debug("findErrors : [{}]", rp == null ? "null" : rp.toString());
         ActionErrors errors = new ActionErrors();
         if (rp == null) {
             log.debug("findErrors: no RP found");

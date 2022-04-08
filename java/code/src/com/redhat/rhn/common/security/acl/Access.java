@@ -81,12 +81,12 @@ public class Access extends BaseHandler {
         if (user != null) {
             boolean retval = user.hasRole(RoleFactory.lookupByLabel(params[0]));
             if (LOG.isDebugEnabled()) {
-                LOG.debug(params[0] + " aclUserRole | A returning " + retval);
+                LOG.debug("{} aclUserRole | A returning {}", params[0], retval);
             }
             return retval;
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug(params[0] + " aclUserRole | B returning false ..");
+            LOG.debug("{} aclUserRole | B returning false ..", params[0]);
         }
         return false;
     }

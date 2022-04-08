@@ -68,7 +68,7 @@ public class PackageNameOverviewAction extends RhnAction {
                         pkgName, filterChannelId);
             }
             catch (NumberFormatException e) {
-                log.warn("Exception caught, unable to parse channel ID: " + channelFilter);
+                log.warn("Exception caught, unable to parse channel ID: {}", channelFilter);
                 dr = Collections.EMPTY_LIST;
             }
         }

@@ -70,18 +70,14 @@ public class SystemSearchResult extends SystemOverview {
     public String getLookupMatchingField() {
         String value = "";
         String field = getMatchingField();
-        log.info("Will look up field <" + field + "> to determine why" +
-                " this matched");
+        log.info("Will look up field <{}> to determine why this matched", field);
         try {
             if ((field != null) && (!StringUtils.isBlank(field))) {
                 value = BeanUtils.getProperty(this, field);
-                log.info("SystemSearchResult.Id = " + getId() +
-                        " BeanUtils.getProperty(sr, " +
-                        field + ") = " + value);
+                log.info("SystemSearchResult.Id = {} BeanUtils.getProperty(sr, {}) = {}", getId(), field, value);
             }
             else {
-                log.info("SystemSearchResult.ID = " + getId() +
-                        " matchingField was null or blank");
+                log.info("SystemSearchResult.ID = {} matchingField was null or blank", getId());
             }
         }
         catch (IllegalAccessException | InvocationTargetException e) {
@@ -89,9 +85,7 @@ public class SystemSearchResult extends SystemOverview {
             // ignore
         }
         catch (NoSuchMethodException e) {
-            log.info("SystemSearchResult.lookupMatchingField() " +
-                    "NoSuchMethodException caught looking up: " + field +
-                    ", for system id = " + getId() + ">");
+            log.info("SystemSearchResult.lookupMatchingField() NoSuchMethodException caught looking up: {}, for system id = {}>", field, getId());
         }
         return value;
     }

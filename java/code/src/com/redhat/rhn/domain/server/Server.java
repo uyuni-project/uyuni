@@ -990,7 +990,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         NetworkInterface ni = findPrimaryNetworkInterface();
         if (ni != null) {
             for (ServerNetAddress6 ipv6address : ni.getIPv6Addresses()) {
-                log.debug("Found a NetworkInterface: " + ipv6address);
+                log.debug("Found a NetworkInterface: {}", ipv6address);
                 if (!ipv6address.getAddress().equals("::1")) {
                     return ipv6address.getAddress();
                 }
@@ -1079,13 +1079,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
             }
             if (startsWith) {
                 if (ni.getName().startsWith(pattern)) {
-                    log.debug("Found " + pattern + "*");
+                    log.debug("Found {}*", pattern);
                     return ni;
                 }
             }
             else {
                 if (ni.getName().equals(pattern)) {
-                    log.debug("Found " + pattern);
+                    log.debug("Found {}", pattern);
                     return ni;
                 }
             }

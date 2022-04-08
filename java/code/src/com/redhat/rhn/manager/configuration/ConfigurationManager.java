@@ -1983,7 +1983,7 @@ public class ConfigurationManager extends BaseManager {
      * @return The sought for config file.
      */
     public ConfigFile lookupConfigFile(User user, Long id) {
-        log.debug("lookupConfigFile: " + id);
+        log.debug("lookupConfigFile: {}", id);
         if (!accessToFile(user.getId(), id)) {
             LocalizationService ls = LocalizationService.getInstance();
             throw new LookupException("Could not find config file with id=" + id,
@@ -2091,8 +2091,7 @@ public class ConfigurationManager extends BaseManager {
     }
 
     private boolean accessToObject(Long uid, String name, Long oid, String mode) {
-        log.debug("accessToObject :: uid: " + uid + " name: " + name +
-                " oid: " + oid + " mode: " + mode);
+        log.debug("accessToObject :: uid: {} name: {} oid: {} mode: {}", uid, name, oid, mode);
         CallableMode m = ModeFactory.getCallableMode("config_queries", mode);
         Map inParams = new HashMap();
         inParams.put("user_id", uid);
@@ -2254,7 +2253,7 @@ public class ConfigurationManager extends BaseManager {
                 names = listFileNamesForSystemChannel(user, server, channel, null);
             }
             if (names.isEmpty()) {
-                log.warn("No files exists for " + server.getHostname() + " --skipping");
+                log.warn("No files exists for {} --skipping", server.getHostname());
                 continue;
             }
             Set<Server> system = new HashSet<>();

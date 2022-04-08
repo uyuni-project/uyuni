@@ -59,15 +59,14 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         Org org = OrgFactory.lookupById(orgId);
 
         if (org == null) {
-            log.error("Org with id " + orgId + " was not found");
+            log.error("Org with id {} was not found", orgId);
             return;
         }
 
         int count = ErrataCacheManager.countServersInQueue(org);
 
         if (log.isDebugEnabled()) {
-            log.debug("Number of servers [" + count +
-                    "] threshold [" + threshold + "]");
+            log.debug("Number of servers [{}] threshold [{}]", count, threshold);
         }
 
         if (count == 0 || count >= threshold) {
@@ -76,14 +75,14 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
 
         DataResult dr = ErrataCacheManager.allServerIdsForOrg(org);
         if (log.isDebugEnabled()) {
-            log.debug("allservers returned [" + dr.size() + "]");
+            log.debug("allservers returned [{}]", dr.size());
         }
 
         for (Object oIn : dr) {
             Map item = (Map) oIn;
             Long sid = (Long) item.get("id");
             if (log.isDebugEnabled() && sid != null) {
-                log.debug("Working on server [" + sid.toString() + "]");
+                log.debug("Working on server [{}]", sid.toString());
             }
             Long serverId = sid;
             processServer(serverId);
@@ -102,7 +101,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * @param commit commit the database transaction when complete
      */
     public void updateErrataCacheForServer(Long serverId, boolean commit) {
-        log.info("Updating errata cache for server [" + serverId + "]");
+        log.info("Updating errata cache for server [{}]", serverId);
         try {
             processServer(serverId);
         }
@@ -115,7 +114,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
                 handleTransaction();
             }
         }
-        log.info("Finished errata cache for server [" + serverId + "]");
+        log.info("Finished errata cache for server [{}]", serverId);
     }
 
     /**
@@ -124,7 +123,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * @param commit commit the database transaction when complete
      */
     public void updateErrataCacheForImage(Long imageId, boolean commit) {
-        log.info("Updating errata cache for image [" + imageId + "]");
+        log.info("Updating errata cache for image [{}]", imageId);
         try {
             processImage(imageId);
         }
@@ -137,7 +136,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
                 handleTransaction();
             }
         }
-        log.info("Finished errata cache for image [" + imageId + "]");
+        log.info("Finished errata cache for image [{}]", imageId);
     }
 
     /**
@@ -159,8 +158,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * @param pids the List of package ids that will be considered
      */
     public void updateErrataCacheForErrata(Long cid, Long eid, List<Long> pids) {
-        log.info("Updating errata cache for servers in channel [" + cid + "] " +
-                "and packages [" + eid + "]");
+        log.info("Updating errata cache for servers in channel [{}] and packages [{}]", cid, eid);
         try {
             ErrataCacheManager.insertCacheForChannelPackages(cid, eid, pids);
         }
@@ -171,8 +169,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         finally {
             handleTransaction();
         }
-        log.info("Finished with servers in channel [" + cid + "] " +
-                "and errata [" + eid + "]" + " with pids [" + pids + "]");
+        log.info("Finished with servers in channel [{}] and errata [{}] with pids [{}]", cid, eid, pids);
     }
 
     /**
@@ -180,7 +177,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * @param cid Channel id whose servers need their cache updated.
      */
     public void updateErrataCacheForChannel(Long cid) {
-        log.info("Updating errata cache for servers in channel [" + cid + "]");
+        log.info("Updating errata cache for servers in channel [{}]", cid);
         try {
             ErrataCacheManager.updateErrataAndPackageCacheForChannel(cid);
         }
@@ -191,7 +188,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         finally {
             handleTransaction();
         }
-        log.info("Finished with servers in channel [" + cid + "]");
+        log.info("Finished with servers in channel [{}]", cid);
     }
 
     private void processServer(Long serverId) {

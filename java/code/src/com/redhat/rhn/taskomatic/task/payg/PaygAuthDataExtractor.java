@@ -123,8 +123,8 @@ public class PaygAuthDataExtractor {
                 int exitStatus = channel.getExitStatus();
 
                 if (exitStatus != 0 || error.length() > 0) {
-                    LOG.error("Exit status: " + exitStatus);
-                    LOG.error("stderr:\n" + error.toString());
+                    LOG.error("Exit status: {}", exitStatus);
+                    LOG.error("stderr:\n{}", error.toString());
                     throw new PaygDataExtractException(error.toString());
                 }
                 if (output.length() == 0) {

@@ -224,7 +224,7 @@ public class CVEAuditManager {
         List<Channel> result = suseProductChannelCache.get(suseProductID);
         if (result != null) {
             if (log.isDebugEnabled()) {
-                log.debug("Product channels retrieved from cache for " + suseProductID);
+                log.debug("Product channels retrieved from cache for {}", suseProductID);
             }
             return result;
         }
@@ -241,11 +241,11 @@ public class CVEAuditManager {
                 result.addAll(productChannels);
             }
             if (log.isDebugEnabled()) {
-                log.debug("Product channels for " + suseProductID + ": " + result);
+                log.debug("Product channels for {}: {}", suseProductID, result);
             }
         }
         else if (log.isDebugEnabled()) {
-            log.debug("No channels available for SUSE product: " + suseProductID);
+            log.debug("No channels available for SUSE product: {}", suseProductID);
         }
 
         // Put it in the cache before returning
@@ -304,7 +304,7 @@ public class CVEAuditManager {
         while (targets.size() > 0) {
             // We assume that there is always only one target!
             if (targets.size() > 1) {
-                log.warn("More than one migration target found for " + suseProductID);
+                log.warn("More than one migration target found for {}", suseProductID);
             }
             SUSEProductDto target = targets.get(0);
             result.add(target);
@@ -337,11 +337,10 @@ public class CVEAuditManager {
             // We assume that there is always only one source!
             if (sources.size() > 1) {
                 SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
-                log.warn("More than one migration source product found for " +
-                        product.getFriendlyName() + " (" + product.getProductId() + "):");
+                log.warn("More than one migration source product found for {} ({}):", product.getFriendlyName(), product.getProductId());
                 for (SUSEProductDto source : sources) {
                     SUSEProduct p = SUSEProductFactory.getProductById(source.getId());
-                    log.warn("- " + p.getFriendlyName() + " (" + p.getProductId() + ")");
+                    log.warn("- {} ({})", p.getFriendlyName(), p.getProductId());
                 }
             }
             SUSEProductDto source = sources.get(0);
@@ -408,8 +407,7 @@ public class CVEAuditManager {
                         relevantChannelProductIDs, parentChannelID);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Found " + vendorChannelIDs.size() + " vendor channels -> " +
-                            "channel products: " + relevantChannelProductIDs);
+                    log.debug("Found {} vendor channels -> channel products: {}", vendorChannelIDs.size(), relevantChannelProductIDs);
                 }
 
                 // Increase ranking index for unassigned product channels, but revert the
@@ -453,7 +451,7 @@ public class CVEAuditManager {
         // Get a list of *all* servers
         List<Server> servers = ServerFactory.list(false, false);
         if (log.isDebugEnabled()) {
-            log.debug("Number of servers found: " + servers.size());
+            log.debug("Number of servers found: {}", servers.size());
         }
 
         CachingSUSEProductFactory productFactory = new CachingSUSEProductFactory();
@@ -525,12 +523,11 @@ public class CVEAuditManager {
                     // ...if it has a target with that base product...
                     List<SUSEProductDto> targets = findAllTargetProducts(suseProductID);
                     if (log.isDebugEnabled() && targets.size() <= 0) {
-                        log.debug("No target products found for " + suseProductID);
+                        log.debug("No target products found for {}", suseProductID);
                     }
                     for (SUSEProductDto target : targets) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Target found for " + suseProductID + ": " +
-                                    target.getId());
+                            log.debug("Target found for {}: {}", suseProductID, target.getId());
                         }
 
                         // ...add its channel to the relevant list
@@ -559,12 +556,11 @@ public class CVEAuditManager {
                     // ...if it has a source with that base product...
                     List<SUSEProductDto> sources = findAllSourceProducts(suseProductID);
                     if (log.isDebugEnabled() && sources.size() <= 0) {
-                        log.debug("No source products found for " + suseProductID);
+                        log.debug("No source products found for {}", suseProductID);
                     }
                     for (SUSEProductDto source : sources) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Source found for " + suseProductID + ": " +
-                                    source.getId());
+                            log.debug("Source found for {}: {}", suseProductID, source.getId());
                         }
 
                         // ...add its channel to the relevant list
@@ -1163,7 +1159,7 @@ public class CVEAuditManager {
      */
     private static void debugLog(List<CVEAuditSystemBuilder> results) {
         if (log.isDebugEnabled()) {
-            log.debug("Returning " + results.size() + " results");
+            log.debug("Returning {} results", results.size());
             for (CVEAuditSystemBuilder s : results) {
                 String errata = "";
                 for (ErrataIdAdvisoryPair e : s.getErratas()) {
@@ -1173,9 +1169,7 @@ public class CVEAuditManager {
                 for (AuditChannelInfo c : s.getChannels()) {
                     channels += " " + c.getId();
                 }
-                log.debug(s.getId() + ": " + s.getPatchStatus() +
-                        " (patches: " + errata + ")" +
-                        " (channels: " + channels + ")");
+                log.debug("{}: {} (patches: {}) (channels: {})", s.getId(), s.getPatchStatus(), errata, channels);
             }
         }
     }

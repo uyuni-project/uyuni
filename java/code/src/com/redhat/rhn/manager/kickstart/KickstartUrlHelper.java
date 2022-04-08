@@ -200,7 +200,7 @@ public class KickstartUrlHelper {
         log.debug("Formatting for view use.");
         StringBuilder url = new StringBuilder();
         url.append(protocol + host + getKickstartMediaPath());
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -251,7 +251,7 @@ public class KickstartUrlHelper {
     public String getCobblerMediaUrl() {
         StringBuilder url = new StringBuilder();
         url.append(getCobblerMediaUrlBase()).append("$").append(COBBLER_MEDIA_VARIABLE);
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -265,7 +265,7 @@ public class KickstartUrlHelper {
     public String getCobblerMediaUrlBase() {
         StringBuilder url = new StringBuilder();
         url.append(protocol).append(host);
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -303,7 +303,7 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 date);
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: " + turl.computeTinyPath());
+        log.debug("returning: {}", turl.computeTinyPath());
         return turl.computeTinyPath();
     }
 
@@ -330,7 +330,7 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 new Date());
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: " + turl.computeTinyUrl(this.host));
+        log.debug("returning: {}", turl.computeTinyUrl(this.host));
         return turl.computeTinyUrl(this.host);
     }
 

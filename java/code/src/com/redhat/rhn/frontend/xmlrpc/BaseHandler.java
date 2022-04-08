@@ -155,7 +155,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 // FaultExceptions are "bad request" type of exceptions
                 // Normally they should be thrown as response to the client but there's no need to log them as errors.
                 FaultException fault = (FaultException) cause;
-                log.debug("'" + methodCalled + "' returned: [" + fault.getErrorCode() + "] " + fault.getMessage());
+                log.debug("'{}' returned: [{}] {}", methodCalled, fault.getErrorCode(), fault.getMessage());
             }
             else {
                 log.error("Error calling method: ", e);
@@ -196,12 +196,11 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private Method findPerfectMethod(List params, List<Method> matchedMethods) {
         //now lets try to find one that matches parameters exactly
         for (Method currMethod : matchedMethods) {
-            log.debug("findPerfectMethod test:" + currMethod.toGenericString());
+            log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
                 if (log.isDebugEnabled()) {
-                    log.debug("  findPerfectMethod: compare: " + types[i].getCanonicalName() +
-                            " isAssignableFrom " + params.get(i).getClass().getCanonicalName());
+                    log.debug("  findPerfectMethod: compare: {} isAssignableFrom {}", types[i].getCanonicalName(), params.get(i).getClass().getCanonicalName());
                 }
                 //if we find a param that doesn't match, go to the next method
                 if (!types[i].isAssignableFrom(params.get(i).getClass())) {

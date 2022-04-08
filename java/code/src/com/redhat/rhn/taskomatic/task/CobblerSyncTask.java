@@ -112,8 +112,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             }
 
 
-            log.debug("mtime: " + mtime.longValue() + ", last modified: " +
-                    LAST_UPDATED.get());
+            log.debug("mtime: {}, last modified: {}", mtime.longValue(), LAST_UPDATED.get());
             //If we got an mtime from cobbler and that mtime is before our last update
             // Then don't update anything
             if (mtime.longValue() < CobblerSyncTask.LAST_UPDATED.get()) {
@@ -133,9 +132,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             LAST_UPDATED.set((new Date()).getTime() / 1000 + 1);
         }
         catch (RuntimeException re) {
-            log.error(
-                    "RuntimeExceptionError trying to sync to cobbler: " +
-                    re.getMessage(), re);
+            log.error("RuntimeExceptionError trying to sync to cobbler: {}", re.getMessage(), re);
             // Only throw up one error.  Otherwise if say cobblerd is shutoff you can
             // possibly generate 1 stacktrace email per minute which is quite spammy.
             if (errorCount < 1) {

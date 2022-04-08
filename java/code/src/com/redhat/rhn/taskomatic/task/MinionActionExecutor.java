@@ -105,11 +105,11 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         if (action == null) {
-            log.error("Action not found: " + actionId);
+            log.error("Action not found: {}", actionId);
             return;
         }
         else {
-            log.debug("Action " + actionId + " found after: " + waitedTime + "ms");
+            log.debug("Action {} found after: {}ms", actionId, waitedTime);
         }
 
         // calculate offset between scheduled time of
@@ -119,14 +119,11 @@ public class MinionActionExecutor extends RhnJavaJob {
                         ZoneId.systemDefault()), ZonedDateTime.now())
                 .toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
-            log.warn("Scheduled action " + action.getId() +
-                    " was scheduled to be executed more than " +
-                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS +
-                    " hours ago. Skipping it.");
+            log.warn("Scheduled action {} was scheduled to be executed more than " + MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.", action.getId());
             return;
         }
 
-        log.info("Executing action: " + actionId);
+        log.info("Executing action: {}", actionId);
 
         if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
             handleTraditionalClients(user, (SubscribeChannelsAction) action);
@@ -137,7 +134,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 

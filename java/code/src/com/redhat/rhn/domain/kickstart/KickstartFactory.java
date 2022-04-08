@@ -432,7 +432,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void saveKickstartData(KickstartData ksdataIn,
             KickstartSession ksession) {
-        log.debug("saveKickstartData: " + ksdataIn.getLabel());
+        log.debug("saveKickstartData: {}", ksdataIn.getLabel());
         singleton.saveObject(ksdataIn);
         String fileData = null;
         if (ksdataIn.isRawData()) {
@@ -452,7 +452,7 @@ public class KickstartFactory extends HibernateFactory {
             Map ksmeta = p.getKsMeta();
             for (Object oIn : ksmeta.keySet()) {
                 String name = (String) oIn;
-                log.debug("fixing ksmeta: " + name);
+                log.debug("fixing ksmeta: {}", name);
                 fileData = StringUtils.replace(fileData, "\\$" + name, "$" + name);
             }
         }
@@ -460,7 +460,7 @@ public class KickstartFactory extends HibernateFactory {
             log.debug("No ks meta for this profile.");
         }
         String path = ksdataIn.buildCobblerFileName();
-        log.debug("writing ks file to : " + path);
+        log.debug("writing ks file to : {}", path);
         FileUtils.writeStringToFile(fileData, path);
     }
 
@@ -500,7 +500,7 @@ public class KickstartFactory extends HibernateFactory {
         if (path != null) {
             File file = new File(path);
             if (file.exists()) {
-                log.debug("deleting : " + path);
+                log.debug("deleting : {}", path);
                 file.delete();
             }
         }
@@ -1073,7 +1073,7 @@ public class KickstartFactory extends HibernateFactory {
             List ksSessions = kickstartSessionQuery.list();
             for (Object next : ksSessions) {
                 KickstartSession ks = (KickstartSession)next;
-                log.debug("Failing kickstart associated with action: " + ks.getId());
+                log.debug("Failing kickstart associated with action: {}", ks.getId());
                 ks.setState(failed);
                 ks.setAction(null);
 

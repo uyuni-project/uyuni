@@ -63,7 +63,7 @@ public class SummaryPopulation extends RhnJavaJob {
                 else {
                     log.debug("awolServerOrgs() returned null");
                 }
-                log.debug("Found  " + orgCount + " awol servers");
+                log.debug("Found  {} awol servers", orgCount);
             }
 
             log.debug("Finding orgs w/ recent action activity");
@@ -91,7 +91,7 @@ public class SummaryPopulation extends RhnJavaJob {
         Map<String, Object> params = new HashMap<>();
         int checkin = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
         if (log.isDebugEnabled()) {
-            log.debug("Server checkin threshold for AWOL servers: " + checkin);
+            log.debug("Server checkin threshold for AWOL servers: {}", checkin);
         }
         params.put("checkin_threshold", checkin);
         return m.execute(params);
@@ -119,7 +119,7 @@ public class SummaryPopulation extends RhnJavaJob {
             if (count.intValue() == 0) {
                 return m.executeUpdate(params);
             }
-            log.warn("Skipping " + orgId + " because it's already queued");
+            log.warn("Skipping {} because it's already queued", orgId);
             return 0;
         }
         catch (RuntimeException e) {

@@ -113,11 +113,11 @@ public class Validator {
         // Validate against the correct constraint
         Object o = constraints.get(constraintName);
 
-        log.debug("Validating: " + constraintName);
+        log.debug("Validating: {}", constraintName);
 
         // If no constraint, then everything is valid
         if (o == null) {
-            log.debug("No constraint found for " + constraintName);
+            log.debug("No constraint found for {}", constraintName);
             return null;
         }
 
@@ -139,8 +139,8 @@ public class Validator {
 
         ValidatorError validationMessage = null;
 
-        log.debug("Data: " + data);
-        log.debug("Constraint: " + constraint);
+        log.debug("Data: {}", data);
+        log.debug("Constraint: {}", constraint);
 
         boolean required = !constraint.getOptional() ||
                 (value != null && !value.equals(""));
@@ -149,18 +149,18 @@ public class Validator {
             if (constraint instanceof RequiredIfConstraint) {
                 checkConstraint = ((RequiredIfConstraint) constraint).
                         isRequired(data, objToValidate);
-                log.debug("RequiredIf indicates:" + required);
+                log.debug("RequiredIf indicates:{}", required);
             }
             if (checkConstraint) {
                 // Validate data type
                 validationMessage = correctDataType(data, constraint);
                 if (validationMessage != null) {
-                    log.debug("Not the right datatype.. " + validationMessage);
+                    log.debug("Not the right datatype.. {}", validationMessage);
                     return validationMessage;
                 }
                 validationMessage = constraint.checkConstraint(data);
                 if (validationMessage != null) {
-                    log.debug("Failed: " + validationMessage);
+                    log.debug("Failed: {}", validationMessage);
                     return validationMessage;
             }
             }

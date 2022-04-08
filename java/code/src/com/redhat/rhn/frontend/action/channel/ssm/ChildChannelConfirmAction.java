@@ -122,7 +122,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
             result = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }
 
-        LOG.debug("Overall time to run: " + (System.currentTimeMillis() - overallStart));
+        LOG.debug("Overall time to run: {}", System.currentTimeMillis() - overallStart);
 
         return result;
     }

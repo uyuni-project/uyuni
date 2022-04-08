@@ -65,7 +65,7 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
             return newURI.toString();
         }
         catch (URISyntaxException ex) {
-            log.error("Unable to parse URL: " + getUrl());
+            log.error("Unable to parse URL: {}", getUrl());
         }
         return null;
     }

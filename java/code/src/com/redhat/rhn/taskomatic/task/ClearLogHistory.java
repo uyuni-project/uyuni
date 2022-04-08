@@ -73,8 +73,7 @@ public class ClearLogHistory extends RhnJavaJob {
         now.set(Calendar.MILLISECOND, 0);
         Date limitTime = now.getTime();
 
-        log.info("Clearing log history older than: " +
-                LocalizationService.getInstance().formatCustomDate(limitTime));
+        log.info("Clearing log history older than: {}", LocalizationService.getInstance().formatCustomDate(limitTime));
         HibernateFactory.getSession();
         // loop accross all the orgs
         List<TaskoRun> runList = TaskoFactory.listRunsOlderThan(limitTime);
