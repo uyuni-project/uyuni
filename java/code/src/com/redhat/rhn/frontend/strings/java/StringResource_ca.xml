@@ -972,6 +972,7 @@
       </trans-unit>
       <trans-unit id="Scout Config Push" xml:space="preserve">
         <source>Scout Config Push</source>
+        <target>Empenta de configuració de Scout</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -2118,72 +2119,85 @@ Es mostra {3}</target>
       </trans-unit>
       <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
+        <target>Actualització del certificat del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.config" xml:space="preserve">
         <source>Enable or Disable RPM Transaction Rollback</source>
+        <target>Activa o desactiva la recuperació de transaccions d'RPM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.listTransactions" xml:space="preserve">
         <source>Refresh server-side transaction list</source>
+        <target>Actualitza la llista de transaccions del servidor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.autoupdate" xml:space="preserve">
         <source>Automatic package installation</source>
+        <target>Instal·lació automàtica de paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.runTransaction" xml:space="preserve">
         <source>Package Synchronization</source>
+        <target>Sincronització de paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.import.success" xml:space="preserve">
         <source>{0} files &lt;a href="{1}"&gt;scheduled&lt;/a&gt; for upload.</source>
+        <target>{0} fitxers &lt;a href="{1}"&gt;programats&lt;/a&gt; per carregar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.upload" xml:space="preserve">
         <source>Import config file data from system</source>
+        <target>Importa les dades del fitxer de configuració del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deploy" xml:space="preserve">
         <source>Deploy config files to system</source>
+        <target>Desplega fitxers de configuració al sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.deployed" xml:space="preserve">
         <source>Files successfully deployed</source>
+        <target>Fitxers desplegats correctament</target>
       </trans-unit>
       <trans-unit id="configfiles.verify" xml:space="preserve">
         <source>Verify deployed config files</source>
+        <target>Verifica els fitxers de configuració desplegats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diff" xml:space="preserve">
         <source>Show differences between profiled config files and deployed config files</source>
+        <target>Mostra les diferències entre els fitxers de configuració amb perfil i els fitxers de configuració desplegats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.diffed" xml:space="preserve">
         <source>Files successfully compared</source>
+        <target>Fitxers comparats correctament</target>
       </trans-unit>
       <trans-unit id="config.actionnote" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
+        <target>&lt;a href="{0}"&gt;Revisió {1}&lt;/a&gt; de {2} de &lt;a href="{3}"&gt;{4}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
