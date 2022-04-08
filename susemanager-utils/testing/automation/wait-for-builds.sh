@@ -9,6 +9,7 @@ usage() {
 api=https://api.opensuse.org
 config_file=$HOME/.oscrc
 lock="yes"
+osc_timeout="2h"
 
 while getopts ":a:c:p:u" o;do
     case "${o}" in
@@ -43,7 +44,21 @@ if [ -z "${project}" ];then
 fi 
 
 echo "Waiting for $project to build"
-osc -A $api -c $config_file results $project -w --xml
+# Sometimes the osc results -w gets stucked
+# Autobuild has been informed but until we have a better solution,
+# we are running it with a timeout command twice. If the second timeout
+# is triggered, we exit with an error
+timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml
+if [ $? -eq 124 ];then
+    echo "Trying again to wait for ${project} to build"
+    timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml
+    if [ $? -eq 124 ];then
+        echo "Waiting for the results of ${project} got stucked twice"
+        echo "Please check ${project} build results"
+        echo "You can contact autobuild@suse.de if this does not get fixed"
+        exit 124
+    fi
+fi
 
 for i in $(osc -A $api -c $config_file ls $project);do
     if [ $lock == "yes" ];then
