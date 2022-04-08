@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.channel.SslContentSource;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -36,30 +33,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class SslContentSourceSerializer extends RhnXmlRpcCustomSerializer {
+public class SslContentSourceSerializer extends ApiResponseSerializer<SslContentSource> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<SslContentSource> getSupportedClass() {
         return SslContentSource.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        SslContentSource sslSet = (SslContentSource) value;
-        SslCryptoKey ca = sslSet.getCaCert();
-        SslCryptoKey cert = sslSet.getClientCert();
-        SslCryptoKey key = sslSet.getClientKey();
+    @Override
+    public SerializedApiResponse serialize(SslContentSource src) {
+        SslCryptoKey ca = src.getCaCert();
+        SslCryptoKey cert = src.getClientCert();
+        SslCryptoKey key = src.getClientKey();
 
-        helper.add("sslCaDesc", (ca != null) ? ca.getDescription() : "");
-        helper.add("sslCertDesc", (cert != null) ? cert.getDescription() : "");
-        helper.add("sslKeyDesc", (key != null) ? key.getDescription() : "");
-
-        helper.writeTo(output);
+        return new SerializationBuilder()
+                .add("sslCaDesc", (ca != null) ? ca.getDescription() : "")
+                .add("sslCertDesc", (cert != null) ? cert.getDescription() : "")
+                .add("sslKeyDesc", (key != null) ? key.getDescription() : "")
+                .build();
     }
 }

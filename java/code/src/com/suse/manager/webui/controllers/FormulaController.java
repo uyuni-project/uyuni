@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -102,13 +103,13 @@ public class FormulaController {
 
         // Formula API
         get("/manager/api/formulas/list/:targetType/:id",
-                withUser(this::listSelectedFormulas));
+                asJson(withUser(this::listSelectedFormulas)));
         get("/manager/api/formulas/form/:targetType/:id/:formula_id",
-                withUser(this::formulaData));
+                asJson(withUser(this::formulaData)));
         post("/manager/api/formulas/select",
-                withUser(this::saveSelectedFormulas));
+                asJson(withUser(this::saveSelectedFormulas)));
         post("/manager/api/formulas/save",
-                withUser(this::saveFormula));
+                asJson(withUser(this::saveFormula)));
     }
 
     /**
@@ -423,13 +424,11 @@ public class FormulaController {
    }
 
     private String errorResponse(Response response, List<String> errs) {
-        response.type("application/json");
         response.status(HttpStatus.SC_BAD_REQUEST);
         return GSON.toJson(errs);
     }
 
     private String deniedResponse(Response response) {
-        response.type("application/json");
         response.status(HttpStatus.SC_FORBIDDEN);
         return GSON.toJson("['Permission denied!']");
     }

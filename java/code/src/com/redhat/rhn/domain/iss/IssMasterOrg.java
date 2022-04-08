@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
  * IssMasterOrg - Class representation of the table rhnissmasterorgs.
- * @version $Rev: 1 $
  */
 public class IssMasterOrg extends BaseDto {
 

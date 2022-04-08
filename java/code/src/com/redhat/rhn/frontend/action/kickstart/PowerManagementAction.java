@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -54,7 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PowerManagementAction extends RhnAction {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(PowerManagementAction.class);
+    private static Logger log = LogManager.getLogger(PowerManagementAction.class);
     public static final String TYPES = "types";
     public static final String POWER_TYPE = "powerType";
     public static final String POWER_ADDRESS = "powerAddress";

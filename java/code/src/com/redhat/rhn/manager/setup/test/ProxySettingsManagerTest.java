@@ -14,10 +14,14 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ProxySettingsManager}.
@@ -28,6 +32,7 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
      * Tests getProxySettings().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProxySettings() throws Exception {
         ProxySettingsDto proxy = new ProxySettingsDto();
         proxy.setHostname("proxy.foobar.com");

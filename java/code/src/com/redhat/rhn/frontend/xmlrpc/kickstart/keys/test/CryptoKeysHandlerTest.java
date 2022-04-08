@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.keys.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -25,16 +29,17 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 /**
  * Test cases for the {@link CryptoKeysHandler}.
  *
- * @version $Revision$
  */
 public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
 
+    @Test
     public void testListAllKeys() throws Exception {
         // Setup
         User otherOrg = UserTestUtils.findNewUser("testUser", "cryptoOrg", true);
@@ -56,6 +61,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         assertEquals(key.getOrg().getId(), dto.getOrgId());
     }
 
+    @Test
     public void testCreate() throws Exception {
         // Setup
         String description = "CryptoKeysHandler.testCreate-Description";
@@ -75,6 +81,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         assertEquals(cryptoKey.getKeyString(), content);
     }
 
+    @Test
     public void testDelete() throws Exception {
         // Setup
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());
@@ -92,6 +99,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         assertNull(deletedKey);
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         // Setup
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());

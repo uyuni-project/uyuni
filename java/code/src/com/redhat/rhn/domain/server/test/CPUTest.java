@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -21,6 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CPUTest
@@ -33,6 +39,7 @@ public class CPUTest extends RhnBaseTestCase {
     public static final String MHZ = "500";
     public static final long MHZ_NUMERIC = 500;
 
+    @Test
     public void testCreateLookup() throws Exception {
         CPU unit = createTestCpu();
         User user = UserTestUtils.findNewUser("testUser",

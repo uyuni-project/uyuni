@@ -20,7 +20,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.common.translation.Translator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +35,7 @@ import java.lang.reflect.Modifier;
  */
 public class MethodUtil {
 
-    private static Logger log = Logger.getLogger(MethodUtil.class);
+    private static Logger log = LogManager.getLogger(MethodUtil.class);
 
     /**
      * Private constructore

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.task.Task;
@@ -23,6 +28,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -31,6 +37,7 @@ import java.util.List;
  */
 public class TaskTest extends RhnBaseTestCase {
 
+    @Test
     public void testTask() throws Exception {
 
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
@@ -60,9 +67,10 @@ public class TaskTest extends RhnBaseTestCase {
 
         assertEquals(t2, t3);
         t3.setName("foo");
-        assertFalse("t2 should not be equal to t3", t2.equals(t3));
+        assertFalse(t2.equals(t3), "t2 should not be equal to t3");
     }
 
+    @Test
     public void testLookupNameLike() throws Exception {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();

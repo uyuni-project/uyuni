@@ -14,15 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 /**
  * JUnit primarily for SystemSearchHelper.SearchResultScoreComparator
@@ -32,7 +36,7 @@ import junit.framework.TestCase;
  * @author ggainey
  *
  */
-public class SystemSearchHelperTest extends TestCase {
+public class SystemSearchHelperTest  {
 
     // LABEL;SCORE;PROFILE-NAME;SID
     // SCORE==-1 => null-score
@@ -67,17 +71,8 @@ public class SystemSearchHelperTest extends TestCase {
     protected SystemSearchHelper.SearchResultScoreComparator cmp;
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
-    public SystemSearchHelperTest() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public SystemSearchHelperTest(String name) {
-        super(name);
-    }
-
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         dtos = new HashMap<>();
         scores = new HashMap<>();
 
@@ -108,60 +103,73 @@ public class SystemSearchHelperTest extends TestCase {
 
     // No results?
     // Sort by profile then reverse-SID
+    @Test
     public void testNullResultsSameDto() {
         assertEquals(A_EQUAL_B,
                         nullCmp.compare(dtos.get("10-1-1100"), dtos.get("10-1-1100")));
     }
+    @Test
     public void testNullResultsSameScoreDiffProfAFirst() {
         assertEquals(A_FIRST,
                         nullCmp.compare(dtos.get("10-1-1100"), dtos.get("10-2-1200")));
     }
+    @Test
     public void testNullResultsSameScoreDiffProfBFirst() {
         assertEquals(B_FIRST,
                         nullCmp.compare(dtos.get("10-2-1200"), dtos.get("10-1-1100")));
     }
+    @Test
     public void testNullResultsSameScoreSameProfDiffSidAFirst() {
         assertEquals(A_FIRST,
                         nullCmp.compare(dtos.get("10-3-1310"), dtos.get("10-3-1300")));
     }
+    @Test
     public void testNullResultsSameScoreSameProfDiffSidBFirst() {
         assertEquals(B_FIRST,
                         nullCmp.compare(dtos.get("10-3-1300"), dtos.get("10-3-1310")));
     }
 
+    @Test
     public void testEqual() {
         assertEquals(A_EQUAL_B, cmp.compare(dtos.get("10-1-1100"), dtos.get("10-1-1100")));
     }
 
+    @Test
     public void testEqualScoreDiffProfile() {
         assertEquals(A_FIRST, cmp.compare(dtos.get("10-1-1100"), dtos.get("10-2-1200")));
         assertEquals(B_FIRST, cmp.compare(dtos.get("10-2-1200"), dtos.get("10-1-1100")));
     }
 
+    @Test
     public void testEqualScoreSameProfile() {
         assertEquals(B_FIRST, cmp.compare(dtos.get("10-3-1310"), dtos.get("10-3-1315")));
         assertEquals(A_FIRST, cmp.compare(dtos.get("10-3-1315"), dtos.get("10-3-1310")));
     }
 
+    @Test
     public void testNullScoreBothSame() {
         assertEquals(A_EQUAL_B,
                         cmp.compare(dtos.get("null-1-1101"), dtos.get("null-1-1101")));
     }
+    @Test
     public void testNullScoreBothDiffProfile() {
         assertEquals(A_FIRST,
                         cmp.compare(dtos.get("null-1-1101"), dtos.get("null-2-1201")));
         assertEquals(B_FIRST,
                         cmp.compare(dtos.get("null-2-1201"), dtos.get("null-1-1101")));
     }
+    @Test
     public void testNullScoreBothDiffSID() {
         assertEquals(A_FIRST,
                         cmp.compare(dtos.get("null-1-1102"), dtos.get("null-1-1101")));
         assertEquals(B_FIRST,
                         cmp.compare(dtos.get("null-1-1101"), dtos.get("null-1-1102")));
     }
+    @Test
     public void testNullScoreSecond() {
         assertEquals(A_FIRST, cmp.compare(dtos.get("10-1-1100"), dtos.get("null-1-1101")));
     }
+    @Test
     public void testNullScoreFirst() {
         assertEquals(B_FIRST, cmp.compare(dtos.get("null-1-1101"), dtos.get("10-1-1100")));
     }
@@ -193,6 +201,7 @@ should sort to
     "null-1-1101;-1.0d;profile1;1101",
     "null-2-1201;-1.0d;profile2;1201",
 */
+    @Test
     public void testListSort() {
         List<SystemOverview> systems = new ArrayList<>(dtos.values());
         assertEquals(dtos.size(), systems.size());

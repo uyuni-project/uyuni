@@ -15,20 +15,27 @@
 
 package com.redhat.rhn.common.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MessageQueueTest extends RhnBaseTestCase {
 
-    private static Logger logger = Logger.getLogger(MessageQueueTest.class);
+    private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
     protected User user;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         logger.debug("setUp - start");
         Config.get().setString("web.mailer_class",
                 MockMail.class.getName());
@@ -38,7 +45,9 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
         TestDBAction.deRegisterAction();
@@ -48,6 +57,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("tearDown - end");
     }
 
+    @Test
     public void testPublish() throws Exception {
         logger.debug("testPublish - start");
         TestEventMessage me = new TestEventMessage();
@@ -59,6 +69,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testMultiThreadedPublish() throws Exception {
         logger.debug("testMultiThreadedPublish - start");
         // Crank up 10 Threads to add test messages to the queue
@@ -83,6 +94,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
      * and publishers.
      * @throws Exception something bad happened
      */
+    @Test
     public void testMultiThreadedPublishRegister() throws Exception {
         logger.debug("testMultiThreadedPublishRegister - start");
         // Let's start 10 publishers, 10 registers,
@@ -122,6 +134,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("testMultiThreadedPublishRegister - end");
     }
 
+    @Test
     public void testStop() throws Exception {
         logger.debug("testStop - start");
         MessageQueue.stopMessaging();
@@ -149,6 +162,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("testDeRegister - end");
     }
 
+    @Test
     public void testDeRegisterMultiple() throws Exception {
         logger.debug("testDeRegisterMultiple - start");
         TestAction.deRegisterAction();
@@ -156,6 +170,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("testDeRegisterMultiple - end");
     }
 
+    @Test
     public void testQueueSetup() {
         logger.debug("testQueueSetup - start");
         assertTrue(MessageQueue.isMessaging());
@@ -163,6 +178,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("testQueueSetup - end");
     }
 
+    @Test
     public void testThreadKiller() throws InterruptedException {
         logger.debug("testThreadKiller - start");
         TestAction.deRegisterAction();

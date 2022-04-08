@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -37,36 +34,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *                         false if the user is disabled")
  *      #struct_end()
  */
-public class UserSerializer extends RhnXmlRpcCustomSerializer {
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+public class UserSerializer extends ApiResponseSerializer<User> {
+
+    @Override
+    public Class<User> getSupportedClass() {
         return User.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-       SerializerHelper helper = new SerializerHelper(serializer);
-
-       User user = (User) value;
-       helper.add("id", user.getId());
-       helper.add("login", user.getLogin());
-       helper.add("login_uc", user.getLoginUc());
-
-       if (user.isDisabled()) {
-           helper.add("enabled", Boolean.FALSE);
-       }
-       else {
-           helper.add("enabled", Boolean.TRUE);
-       }
-
-       helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(User src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("login", src.getLogin())
+                .add("login_uc", src.getLoginUc())
+                .add("enabled", src.isDisabled())
+                .build();
     }
 }
-
-
-

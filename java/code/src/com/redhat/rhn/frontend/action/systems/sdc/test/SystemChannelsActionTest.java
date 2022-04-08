@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.action.systems.sdc.SystemChannelsAction;
@@ -25,6 +31,9 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * SystemChannelsActionTest
@@ -36,6 +45,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         server = ServerTestUtils.createTestSystem(user);
@@ -59,6 +69,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         actionPerform();
@@ -77,7 +88,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
                 found = true;
             }
         }
-        assertTrue("Enabled child not found.", found);
+        Assertions.assertTrue(found, "Enabled child not found.");
 
         assertNotNull(request.getAttribute(SystemChannelsAction.BASE_CHANNELS));
         assertNotNull(request.getAttribute(SystemChannelsAction.CUSTOM_BASE_CHANNELS));
@@ -85,6 +96,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testConfirmUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.edit.confirm_update_base");
         Channel newBase = ChannelTestUtils.createBaseChannel(user);
@@ -99,6 +111,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(SystemChannelsAction.NEW_BASE_CHANNEL));
     }
 
+    @Test
     public void testUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         Channel newBase = ChannelTestUtils.createBaseChannel(user);
@@ -111,6 +124,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testUpdateNoBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID, "-1");
@@ -121,6 +135,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testUpdateChildChannels() throws Exception {
         addDispatchCall("sdc.channels.edit.update_sub");
 

@@ -135,8 +135,10 @@ BuildRequires:  libxml2-devel
 %else
 BuildRequires:  libxml2-tools
 %endif
-BuildRequires:  log4j12
-BuildRequires:  slf4j-log4j12
+BuildRequires:  log4j
+BuildRequires:  log4j-slf4j
+BuildRequires:  log4j-over-slf4j
+BuildRequires:  log4j-jcl
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -233,12 +235,13 @@ Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
-Requires:       log4j12
+Requires:       log4j
 Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
-Requires:       slf4j-log4j12
+Requires:       log4j-slf4j
+Requires:       log4j-over-slf4j
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
@@ -377,7 +380,7 @@ Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
 %endif
-Requires:       log4j12
+Requires:       log4j
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
@@ -746,7 +749,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
 %attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
 %dir %{serverdir}/susemanager/formula_data
-%attr(750, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
+%attr(770, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
 %{serverdir}/tomcat/webapps/rhn/css/

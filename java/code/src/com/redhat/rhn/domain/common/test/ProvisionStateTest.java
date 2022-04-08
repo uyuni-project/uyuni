@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -25,6 +30,7 @@ import java.util.Date;
  */
 public class ProvisionStateTest extends RhnBaseTestCase {
 
+    @Test
     public void testProvisionState() throws Exception {
 
         ProvisionState p = new ProvisionState();

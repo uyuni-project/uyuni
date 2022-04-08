@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -38,36 +35,24 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop_desc("string", "advisory_name", "Name such as RHSA, etc")
  *      #struct_end()
  */
-public class ErrataOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOverview> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ErrataOverview> getSupportedClass() {
         return ErrataOverview.class;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        ErrataOverview errata = (ErrataOverview) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", errata.getId());
-        helper.add("issue_date", errata.getIssueDateIsoFormat());
-        helper.add("date", errata.getUpdateDateIsoFormat());
-        helper.add("update_date", errata.getUpdateDateIsoFormat());
-        helper.add("advisory_synopsis", errata.getAdvisorySynopsis());
-        helper.add("advisory_type", errata.getAdvisoryType());
-        helper.add("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
-        helper.add("advisory_name", errata.getAdvisoryName());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ErrataOverview src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("issue_date", src.getIssueDateIsoFormat())
+                .add("date", src.getUpdateDateIsoFormat())
+                .add("update_date", src.getUpdateDateIsoFormat())
+                .add("advisory_synopsis", src.getAdvisorySynopsis())
+                .add("advisory_type", src.getAdvisoryType())
+                .add("advisory_status", src.getAdvisoryStatus().getMetadataValue())
+                .add("advisory_name", src.getAdvisoryName())
+                .build();
     }
-
 }

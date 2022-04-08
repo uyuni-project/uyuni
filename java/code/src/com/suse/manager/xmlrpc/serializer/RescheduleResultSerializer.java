@@ -17,24 +17,20 @@ package com.suse.manager.xmlrpc.serializer;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 /**
- * Serializer for {@link com.suse.manager.model.maintenance.RescheduleResult}
+ * Serializer for {@link com.suse.manager.maintenance.rescheduling.RescheduleResult}
  *
  * @xmlrpc.doc
  * #struct_begin("Reschedule information")
@@ -57,26 +53,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_array_end()
  * #struct_end()
  */
-public class RescheduleResultSerializer extends RhnXmlRpcCustomSerializer {
+public class RescheduleResultSerializer extends ApiResponseSerializer<RescheduleResult> {
 
     @Override
-    public Class getSupportedClass() {
-        // TODO Auto-generated method stub
+    public Class<RescheduleResult> getSupportedClass() {
         return RescheduleResult.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        RescheduleResult result = (RescheduleResult) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("strategy", result.getStrategy());
-        helper.add("for_schedule_name", result.getScheduleName());
-        helper.add("status", result.isSuccess());
-        helper.add("message", result.getMessage());
+    public SerializedApiResponse serialize(RescheduleResult src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("strategy", src.getStrategy())
+                .add("for_schedule_name", src.getScheduleName())
+                .add("status", src.isSuccess())
+                .add("message", src.getMessage());
 
         List<Map<String, Object>> actions = new ArrayList<>();
-        for (Action action: result.getActionsServers().keySet()) {
+        for (Action action: src.getActionsServers().keySet()) {
             Map<String, Object> a = new HashMap<>();
             a.put("id", action.getId());
             a.put("name", action.getName());
@@ -86,15 +79,13 @@ public class RescheduleResultSerializer extends RhnXmlRpcCustomSerializer {
             if (action.getPrerequisite() != null) {
                 a.put("prerequisite", action.getPrerequisite().getId());
             }
-            a.put("affected_system_ids", result.getActionsServers().get(action).stream()
+            a.put("affected_system_ids", src.getActionsServers().get(action).stream()
                     .map(Server::getId).collect(Collectors.toList()));
             a.put("details", StringUtil.toPlainText(action.getFormatter().getNotes()));
             actions.add(a);
         }
 
-        helper.add("actions", actions);
-        helper.writeTo(writer);
-
+        builder.add("actions", actions);
+        return builder.build();
     }
-
 }

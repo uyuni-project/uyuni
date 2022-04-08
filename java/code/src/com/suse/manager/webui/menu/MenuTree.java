@@ -145,7 +145,7 @@ public class MenuTree {
                     .addChild(new MenuItem("Inactive").withPrimaryUrl("/rhn/systems/Inactive.do"))
                     .addChild(new MenuItem("Recently Registered").withPrimaryUrl("/rhn/systems/Registered.do"))
                     .addChild(new MenuItem("Proxy").withPrimaryUrl("/rhn/systems/ProxyList.do")
-                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_satellite()") &&
+                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
                                     adminRoles.get("org")))
                     .addChild(new MenuItem("Duplicate Systems").withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
                             .withAltUrl("/rhn/systems/DuplicateIPv6List.do")
@@ -274,8 +274,7 @@ public class MenuTree {
         return new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
             .addChild(new MenuItem("Channel List").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
-                    .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do")
-                            .withVisibility(checkAcl(user, "is_satellite()")))
+                    .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do"))
                     .addChild(new MenuItem("channel.nav.popular").withPrimaryUrl("/rhn/software/channels/Popular.do"))
                     .addChild(new MenuItem("channel.nav.custom").withPrimaryUrl("/rhn/software/channels/Custom.do"))
                     .addChild(new MenuItem("channel.nav.shared").withPrimaryUrl("/rhn/software/channels/Shared.do"))
@@ -328,7 +327,6 @@ public class MenuTree {
                                         .withAltUrl("/rhn/audit/scap/DiffSubmit.do"))
                         .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/audit/scap/Search.do"))
                         .addChild(new MenuItem("audit.nav.logreview")
-                                .withVisibility(checkAcl(user, "not is_satellite()"))
                                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/audit/Overview.do"))
                                 .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
                                 .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))));
@@ -485,8 +483,7 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
-            )
-            .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"));
+            );
     }
 
     private MenuItem getAboutNode(String docsLocale) {
@@ -509,8 +506,7 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
-            )
-            .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"));
+            );
     }
 
     private MenuItem getExternalLinksNode() {

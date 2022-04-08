@@ -18,6 +18,8 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.Hashtable;
 
 /**
@@ -59,6 +61,7 @@ public class UnitTestHandler extends BaseHandler {
         return a + b;
     }
 
+    @ReadOnly
     public String getUserLogin(User u) {
         return u.getLogin();
     }

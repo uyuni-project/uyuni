@@ -32,7 +32,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * Implements a simple selected checkbox like those used with RhnSets
  *
- * @version $Rev $
  */
 public class SelectableColumnTag extends TagSupport {
 

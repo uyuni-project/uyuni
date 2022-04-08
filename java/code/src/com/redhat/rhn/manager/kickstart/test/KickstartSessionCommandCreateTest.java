@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -27,11 +30,14 @@ import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartSessionCommandCreateTest
  */
 public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testCreate() throws Exception {
         // We want to add a activation key to the kickstart data to validate
         // that we get both a one-time-key and the actual key associated with the KS

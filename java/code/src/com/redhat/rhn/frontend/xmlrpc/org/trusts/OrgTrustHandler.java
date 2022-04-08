@@ -30,6 +30,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +59,7 @@ public class OrgTrustHandler extends BaseHandler {
      *         $TrustedOrgDtoSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listOrgs(User loggedInUser) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
@@ -86,6 +89,7 @@ public class OrgTrustHandler extends BaseHandler {
      *         #struct_end()
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listChannelsProvided(User loggedInUser, Integer trustOrgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
@@ -129,6 +133,7 @@ public class OrgTrustHandler extends BaseHandler {
      *         #struct_end()
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listChannelsConsumed(User loggedInUser, Integer trustOrgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
@@ -181,6 +186,7 @@ public class OrgTrustHandler extends BaseHandler {
      *          from the organization.")
      *     #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getDetails(User loggedInUser, Integer trustOrgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
@@ -239,6 +245,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.returntype
      * $OrgTrustOverviewSerializer
      */
+    @ReadOnly
     public List<OrgTrustOverview> listTrusts(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = OrgFactory.lookupById(Long.valueOf(orgId));
@@ -324,6 +331,7 @@ public class OrgTrustHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSystemsAffected(
         User loggedInUser,
         Integer orgId,

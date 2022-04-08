@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.kickstart.IpAddressRange;
 
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickStartData
- * @version $Rev: 50942 $
  */
 public class KickstartIpRangeDto extends BaseDto {
 

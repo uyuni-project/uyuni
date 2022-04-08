@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.frontend.taglibs.HighlightTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
+
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -29,6 +33,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class HighlightTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testDoEndTag() throws Exception {
 
         HighlightTag ht = new HighlightTag();

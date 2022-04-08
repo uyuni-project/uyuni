@@ -14,17 +14,21 @@
  */
 package com.redhat.rhn.domain.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ConfigChannelTest
- * @version $Rev: $
  */
 public class ConfigChannelTest extends RhnBaseTestCase {
 
+    @Test
     public void testIsTypeMethods() {
         ConfigChannel cc = ConfigurationFactory.newConfigChannel();
         cc.setConfigChannelType(ConfigChannelType.local());

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto.kickstart;
 /**
  * blah
  *
- * @version $Rev $
  */
 public class KickstartChannelDto extends KickstartDto {
 

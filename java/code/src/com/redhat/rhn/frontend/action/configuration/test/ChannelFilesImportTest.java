@@ -20,12 +20,15 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Tests both Setup and Submit Actions
  * ChannelFilesImportTest
  */
 public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testExecuteNoFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -39,6 +42,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
         actionPerform();
     }
 
+    @Test
     public void testSubmitNoFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

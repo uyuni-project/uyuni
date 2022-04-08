@@ -44,7 +44,6 @@ import javax.servlet.jsp.tagext.Tag;
 /**
  * Provides various utility functions for the ListTag, ColumnTag, and SpanTag
  *
- * @version $Rev $
  */
 public class ListTagUtil {
     private static final String HIDDEN_TEXT = "<input type=\"hidden\" " +

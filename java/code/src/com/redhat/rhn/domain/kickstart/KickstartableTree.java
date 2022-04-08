@@ -29,7 +29,8 @@ import com.suse.manager.webui.services.SaltConstants;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
@@ -49,7 +50,7 @@ import java.util.List;
  */
 public class KickstartableTree extends BaseDomainHelper {
 
-    private static Logger log = Logger.getLogger(KickstartableTree.class);
+    private static Logger log = LogManager.getLogger(KickstartableTree.class);
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     private String basePath;

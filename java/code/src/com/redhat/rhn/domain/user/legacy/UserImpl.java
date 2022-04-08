@@ -42,7 +42,8 @@ import com.suse.pam.PamReturnValue;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
@@ -55,12 +56,11 @@ import java.util.TreeSet;
  * Class UserImpl that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
- * @version $Rev: 75755 $
  */
 public class UserImpl extends BaseDomainHelper implements User {
 
 
-    private static final Logger LOG = Logger.getLogger(UserImpl.class);
+    private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
     //private Address address;
     private EnterpriseUserImpl euser;

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -21,11 +26,14 @@ import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * TreeEditCommandTest
  */
 public class TreeEditOperationTest extends TreeOperationTestBase {
 
+    @Test
     public void testEdit() throws Exception {
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(ChannelFactoryTest.createTestChannel(user));
@@ -40,6 +48,7 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         assertEquals(nlabel, tree.getLabel());
     }
 
+    @Test
     public void testInvalidEdit() throws Exception {
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(ChannelFactoryTest.createTestChannel(user));

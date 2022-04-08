@@ -32,7 +32,8 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,7 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MirrorCredentialsManager {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(MirrorCredentialsManager.class);
+    private static Logger log = LogManager.getLogger(MirrorCredentialsManager.class);
 
     /**
      * Find all currently available mirror credentials and return them.

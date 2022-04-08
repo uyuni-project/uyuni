@@ -14,6 +14,9 @@
  */
 package com.suse.manager.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
@@ -26,21 +29,22 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import junit.framework.TestCase;
-
 /**
  * Test the Salt implementation of the VirtManager interface
  */
-public class VirtManagerSaltTest extends TestCase {
+public class VirtManagerSaltTest {
 
     /**
      * Test the getGuestsUpdatePlan method
      */
+    @Test
     public void testGetGuestsUpdatePlan() {
         SaltApi testSaltApi = new TestSaltApi() {
             @Override
@@ -79,6 +83,7 @@ public class VirtManagerSaltTest extends TestCase {
         assertEquals(VirtualInstanceManager.EVENT_TYPE_EXISTS, vm2infos.getEventType());
     }
 
+    @Test
     public void testGetFeatures() {
         SaltApi testSaltApi = new TestSaltApi() {
             @Override

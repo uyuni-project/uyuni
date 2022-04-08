@@ -16,8 +16,12 @@ package com.redhat.rhn.domain.contentmgmt.validation.test;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_WARN;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
 
@@ -28,11 +32,13 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private final String MSG_NOMODULARSOURCES = getLoc().getMessage("contentmanagement.validation.nomodularsources");
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularSourcesValidator();
     }
 
+    @Test
     public void testNoSourcesNoFilters() {
         assertTrue(getProject().getActiveSources().isEmpty());
         assertTrue(getProject().getActiveFilters().isEmpty());
@@ -41,6 +47,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).isEmpty());
     }
 
+    @Test
     public void testNonModularSourcesAndFilters() throws Exception {
         attachSource();
         attachFilter();
@@ -49,6 +56,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).isEmpty());
     }
 
+    @Test
     public void testModularSourcesWithModuleFilters() throws Exception {
         attachModularSource();
         attachModularFilter();
@@ -57,6 +65,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).isEmpty());
     }
 
+    @Test
     public void testModularSourcesWithNoModuleFilters() throws Exception {
         attachModularSource();
         assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
@@ -64,6 +73,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
     }
 
+    @Test
     public void testNonModularSourcesWithModuleFilters() throws Exception {
         attachSource();
         attachModularFilter();

@@ -14,16 +14,10 @@
  */
 package com.suse.manager.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link com.suse.manager.model.maintenance.MaintenanceSchedule}
@@ -37,29 +31,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   $MaintenanceCalendarSerializer
  * #struct_end()
  */
-public class MaintenanceScheduleSerializer extends RhnXmlRpcCustomSerializer {
+public class MaintenanceScheduleSerializer extends ApiResponseSerializer<MaintenanceSchedule> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<MaintenanceSchedule> getSupportedClass() {
         return MaintenanceSchedule.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        MaintenanceSchedule schedule = (MaintenanceSchedule) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", schedule.getId());
-        helper.add("orgId", schedule.getOrg().getId());
-        helper.add("name", schedule.getName());
-        helper.add("type", schedule.getScheduleType().getLabel());
-        schedule.getCalendarOpt().ifPresent(cal -> helper.add("calendar", cal));
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(MaintenanceSchedule src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("orgId", src.getOrg().getId())
+                .add("name", src.getName())
+                .add("type", src.getScheduleType().getLabel());
+        src.getCalendarOpt().ifPresent(cal -> builder.add("calendar", cal));
+        return builder.build();
     }
 }

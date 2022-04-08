@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -38,29 +35,22 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   $ConfigChannelTypeSerializer
  * #struct_end()
  */
-public class ConfigChannelSerializer extends RhnXmlRpcCustomSerializer {
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+public class ConfigChannelSerializer extends ApiResponseSerializer<ConfigChannel> {
+
+    @Override
+    public Class<ConfigChannel> getSupportedClass() {
         return ConfigChannel.class;
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ConfigChannel chan = (ConfigChannel) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", chan.getId());
-        helper.add("label", chan.getLabel());
-        helper.add("name", chan.getName());
-        helper.add("description", chan.getDescription());
-        helper.add("orgId", chan.getOrgId());
-        helper.add("configChannelType", chan.getConfigChannelType());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ConfigChannel src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add("orgId", src.getOrgId())
+                .add("configChannelType", src.getConfigChannelType())
+                .build();
     }
 }

@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services.impl.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -33,6 +36,9 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,12 +57,14 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     private Path tempDir;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tempDir = Files.createTempDirectory("saltservice");
     }
 
+    @Test
     public void testfilterSSHMinionIdsNoSSHMinions() {
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
@@ -66,6 +74,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
+    @Test
     public void testfilterSSHMinionIdsBootstrap() {
         MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH);
         MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT);
@@ -80,6 +89,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         MinionPendingRegistrationService.removeMinion("m2");
     }
 
+    @Test
     public void testfilterSSHMinionIds() throws Exception {
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
@@ -92,6 +102,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
+    @Test
     public void testfilterSSHMinionIdsMixedMinions() throws Exception {
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
@@ -106,6 +117,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
+    @Test
     public void testGenerateSSHKeyExists() throws IOException {
         Path keyFile = Files.createFile(tempDir.resolve("mgr_ssh_id.pub"));
         String keyPath = keyFile.toFile().getCanonicalPath();
@@ -128,7 +140,9 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         try {
             if (tempDir.toFile().exists()) {
                 FileUtils.deleteDirectory(tempDir.toFile());

@@ -25,7 +25,6 @@ import java.util.List;
  * log entries for the current user.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class ViewLogAction extends BaseViewLogAction {
 

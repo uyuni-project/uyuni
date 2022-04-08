@@ -14,11 +14,19 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -30,13 +38,13 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     private NavNode node;
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         node = new NavNode();
         TestUtils.disableLocalizationLogging();
     }
 
+    @Test
     public void testAddNode() {
         for (int i = 0; i < 10; i++) {
             NavNode n = new NavNode();
@@ -53,6 +61,7 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     // Some reflection trickery here to verify that we set the
     // localized key at the right time.
+    @Test
     public void testLocalizedName() throws Exception {
         NavNode n1 = new NavNode();
         String randName = TestUtils.randomString();
@@ -74,6 +83,7 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testEscapedName() {
         NavNode theNode = new NavNode();
         String random = TestUtils.randomString();
@@ -89,6 +99,7 @@ public class NavNodeTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testAddUrls() {
         for (int i = 0; i < 10; i++) {
             node.addURL(Integer.toString(i));
@@ -101,6 +112,7 @@ public class NavNodeTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testExceptionCase() {
         boolean flag = false;
         try {
@@ -112,10 +124,12 @@ public class NavNodeTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testToString() {
         assertNotNull(node.toString());
     }
 
+    @Test
     public void testStringSetters()
         throws Exception {
         String[] methods = { "Label", "Name", "Acl",
@@ -127,6 +141,7 @@ public class NavNodeTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testBooleanSetters()
         throws Exception {
         String[] methods = { "Dominant", "Invisible", "OverrideSidenav",
@@ -156,7 +171,9 @@ public class NavNodeTest extends RhnBaseTestCase {
     }
 
     @Override
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         node = null;
     }
 }

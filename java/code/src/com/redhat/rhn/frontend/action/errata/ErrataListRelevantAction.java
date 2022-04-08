@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.action.errata;
  * Loads the data for the relevant errata. This action is written to comply with the
  * "new" list tag.
  *
- * @version $Revision$
  */
 public class ErrataListRelevantAction extends ErrataListBaseAction {
 

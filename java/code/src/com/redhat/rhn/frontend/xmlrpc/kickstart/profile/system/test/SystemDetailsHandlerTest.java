@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -37,6 +43,9 @@ import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +63,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private User userNotOrgOne;
     private String userKey;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         userNotOrgOne = UserTestUtils.findNewUser();
@@ -62,6 +72,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testSELinux() throws Exception {
         KickstartData profile = createProfile();
 
@@ -86,6 +97,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testConfigMgmt() throws Exception {
         KickstartData profile = createProfile();
 
@@ -106,6 +118,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertFalse(configManaged);
     }
 
+    @Test
     public void testRemoteCommands() throws Exception {
         KickstartData profile = createProfile();
 
@@ -127,6 +140,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testGetLocale() throws Exception {
 
         KickstartData newProfile = createProfile();
@@ -150,6 +164,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(locale.get("useUtc"), Boolean.TRUE);
     }
 
+    @Test
     public void testSetLocale() throws Exception {
 
         KickstartData newProfile = createProfile();
@@ -192,6 +207,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         return createProfile(admin, adminKey);
     }
 
+    @Test
     public void testListKeys() throws Exception {
         // Setup
 
@@ -223,6 +239,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(key.getDescription(), foundKey.getDescription());
     }
 
+    @Test
     public void testListKeysNoKeys() throws Exception {
         // Setup
         KickstartData profile = createProfile(userNotOrgOne, userKey);
@@ -235,6 +252,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(associatedKeys.size(), 0);
     }
 
+    @Test
     public void testAddKeys() throws Exception {
         // Setup
 
@@ -268,6 +286,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(key.getDescription(), foundKey.getDescription());
     }
 
+    @Test
     public void testRemoveKeys() throws Exception {
 
         // Setup
@@ -305,6 +324,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(0, foundKeys.size());
     }
 
+    @Test
     public void testListFilePreservations() throws Exception {
 
         // Setup
@@ -330,6 +350,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(fileList.getFileNames(), foundFL.getFileNames());
     }
 
+    @Test
     public void testListFilePreservationsNone() throws Exception {
         // Setup
         KickstartData profile = createProfile();
@@ -343,6 +364,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(0, associatedFL.size());
     }
 
+    @Test
     public void testAddFilePreservations() throws Exception {
 
         // Setup
@@ -372,6 +394,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(fileList.getFileNames(), foundList.getFileNames());
     }
 
+    @Test
     public void testRemoveFilePreservations() throws Exception {
 
         // Setup
@@ -413,6 +436,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         return CommonFactory.lookupFileList("list1", admin.getOrg());
     }
 
+    @Test
     public void testRegistrationType() throws Exception {
         KickstartData profile = createProfile();
         handler.setRegistrationType(admin, profile.getLabel(),

@@ -30,7 +30,8 @@ import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -55,7 +56,7 @@ public class KickstartFactory extends HibernateFactory {
 
     private static final int IN_CLAUSE_MAX_SIZE = 1000;
     private static KickstartFactory singleton = new KickstartFactory();
-    private static Logger log = Logger.getLogger(KickstartFactory.class);
+    private static Logger log = LogManager.getLogger(KickstartFactory.class);
 
 
     public static final CryptoKeyType KEY_TYPE_GPG = lookupKeyType("GPG");

@@ -15,12 +15,19 @@
 
 package com.suse.manager.webui.utils.gson.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.redhat.rhn.testing.MockObjectTestCase;
+
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +38,12 @@ import java.util.stream.Collectors;
 
 public class SaltMinionTestJson extends MockObjectTestCase {
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testFromFingerprints() {
         Map<String, String> accepted = new HashMap<>();
         accepted.put("m1", "fingerprint1");

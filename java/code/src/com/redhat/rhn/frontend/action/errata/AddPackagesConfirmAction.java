@@ -49,7 +49,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** @version $Revision$ */
 public class AddPackagesConfirmAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */

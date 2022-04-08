@@ -19,6 +19,8 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
@@ -27,6 +29,8 @@ import com.suse.salt.netapi.datatypes.Event;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +41,7 @@ import java.util.Optional;
 public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -46,6 +51,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
      * Tests parsing {@link ImageDeployedEvent}.
      * "Happy path" scenario.
      */
+    @Test
     public void testParse() {
         Event event = mock(Event.class);
         String machineId = "12345";
@@ -68,6 +74,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests parsing event with unmatching tag.
      */
+    @Test
     public void testParseNotMatchingTag() {
         Event event = mock(Event.class);
         context().checking(new Expectations() {{
@@ -80,6 +87,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests parsing event with unmatching tag.
      */
+    @Test
     public void testParseNoGrains() {
         Event event = mock(Event.class);
         context().checking(new Expectations() {{

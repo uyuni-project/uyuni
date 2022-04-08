@@ -68,7 +68,6 @@ import com.suse.salt.netapi.client.impl.HttpAsyncClientImpl;
 import com.suse.salt.netapi.datatypes.AuthMethod;
 import com.suse.salt.netapi.datatypes.Batch;
 import com.suse.salt.netapi.datatypes.PasswordAuth;
-import com.suse.salt.netapi.datatypes.Token;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
@@ -91,7 +90,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -133,7 +133,7 @@ public class SaltService implements SystemQuery, SaltApi {
     private final Batch defaultBatch;
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(SaltService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltService.class);
 
     // Salt properties
     private static final URI SALT_MASTER_URI = URI.create("https://" +
@@ -585,11 +585,7 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     private EventStream createEventStream() throws SaltException {
-        if (ConfigDefaults.get().isPostgresql()) {
-            return new PGEventStream();
-        }
-        Token token = adaptException(saltClient.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
-        return saltClient.events(token, 0, 0, 0);
+        return new PGEventStream();
     }
 
     /**
@@ -1374,6 +1370,18 @@ public class SaltService implements SystemQuery, SaltApi {
         String absolutePath = path.toAbsolutePath().toString();
         RunnerCall<Boolean> createFile = MgrRunner.removeFile(absolutePath);
         return callSync(createFile);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Boolean> copyFile(Path src, Path dst) {
+        ensureAbsolutePath(src);
+        ensureAbsolutePath(dst);
+        RunnerCall<Boolean> call = MgrRunner.copyFile(src.toAbsolutePath().toString(),
+                                              dst.toAbsolutePath().toString(), false, false);
+        return callSync(call);
     }
 
     private void ensureAbsolutePath(Path path) {

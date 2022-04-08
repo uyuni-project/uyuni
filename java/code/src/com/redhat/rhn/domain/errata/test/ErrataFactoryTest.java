@@ -15,6 +15,11 @@
 package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -60,6 +65,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.utils.Opt;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,6 +83,7 @@ import java.util.stream.Collectors;
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testAddToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
@@ -113,6 +121,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateAndLookupVendorAndUserErrata() throws Exception {
         Errata userErrata = createTestErrata(user.getOrg().getId());
         assertTrue(userErrata instanceof Errata);
@@ -157,6 +166,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
     }
 
+    @Test
     public void testCreateAndLookupErrata() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         assertTrue(testErrata instanceof Errata);
@@ -173,6 +183,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(pubname, errata.getAdvisoryName());
     }
 
+    @Test
     public void testCreateAndLookupErrataNullOrg() throws Exception {
         //create an errata with null Org
         Errata testErrata = createTestErrata(null);
@@ -194,12 +205,14 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertNull(errata);
     }
 
+    @Test
     public void testLastModified() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         testErrata = reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 
+    @Test
     public void testBugs() throws Exception {
         var e = createTestErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
@@ -300,7 +313,9 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         m.executeUpdate(params);
     }
 
-    public static void testLookupByOriginal() throws Exception {
+    @Test
+    public void testLookupByOriginal() throws Exception {
+
         Long orgId = UserTestUtils.createOrg("testOrgLookupByOriginal");
         Org org = OrgFactory.lookupById(orgId);
         Errata testErrata = createTestErrata(orgId);
@@ -314,6 +329,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(clone.getOriginal().equals(testErrata));
     }
 
+    @Test
     public void testListErrataChannelPackages() {
         try {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
@@ -344,6 +360,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListErrataByChannel() throws Exception {
         Channel chan = ChannelTestUtils.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());
@@ -358,6 +375,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * Tests that syncing errata details syncs advisoryStatus attribute.
      * @throws Exception
      */
+    @Test
     public void testSyncErrataAdvisoryStatus() throws Exception {
         Errata oe = ErrataFactoryTest.createTestErrata(null);
 
@@ -375,6 +393,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * See updatePatchAndCheckUpdateCacheConsistency.
      * @throws Exception when anything goes wrong
      */
+    @Test
     public void testUpdateCacheConsistencyOnRetractingPatch() throws Exception {
         updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.FINAL, AdvisoryStatus.RETRACTED);
     }
@@ -384,6 +403,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * See updatePatchAndCheckUpdateCacheConsistency.
      * @throws Exception when anything goes wrong
      */
+    @Test
     public void testUpdateCacheConsistencyOnUnretractingPatch() throws Exception {
         updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.RETRACTED, AdvisoryStatus.FINAL);
     }
@@ -393,6 +413,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * See updatePatchAndCheckUpdateCacheConsistency.
      * @throws Exception when anything goes wrong
      */
+    @Test
     public void testUpdateCacheConsistencyForNonRetractedPatches() throws Exception {
         updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.STABLE, AdvisoryStatus.FINAL);
     }
@@ -461,6 +482,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListErrataSubclassMapping() throws Exception {
         Cve cveOriginal = ErrataTestUtils.createTestCve("testcveorig-1");
         Errata original = ErrataTestUtils.createTestErrata(user, Set.of(cveOriginal));
@@ -483,6 +505,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRetractedPackagesByNevra() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel channel = ChannelFactoryTest.createTestChannel(user);

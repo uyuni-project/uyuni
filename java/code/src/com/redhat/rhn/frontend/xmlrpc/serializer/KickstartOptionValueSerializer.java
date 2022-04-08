@@ -15,18 +15,14 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link KickstartOptionValue} objects.
  *
- * @version $Revision$
  *
  * @xmlrpc.doc
  *      #struct_begin("value")
@@ -36,35 +32,25 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #struct_end()
 
  */
-public class KickstartOptionValueSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartOptionValueSerializer extends ApiResponseSerializer<KickstartOptionValue> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartOptionValue> getSupportedClass() {
         return KickstartOptionValue.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object o, Writer writer, XmlRpcSerializer xmlRpcSerializer)
-        throws XmlRpcException, IOException {
-        if (!(o instanceof KickstartOptionValue)) {
-            throw new XmlRpcException("Object of incorrect type to be serialized. " +
-                "Expected: KickstartOptionValue, Found: " +
-                (o != null ? o.getClass() : null));
-        }
-
-        KickstartOptionValue value = (KickstartOptionValue) o;
-
-        SerializerHelper serializer = new SerializerHelper(xmlRpcSerializer);
-        serializer.add("name", value.getName());
-        serializer.add("value", value.getArg());
+    @Override
+    public SerializedApiResponse serialize(KickstartOptionValue src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("name", src.getName())
+                .add("value", src.getArg());
 
         // Null check so if enabled is effectively false, we send that and don't squash it
-        Boolean enabled = value.getEnabled();
+        Boolean enabled = src.getEnabled();
         if (enabled == null) {
             enabled = Boolean.FALSE;
         }
-        serializer.add("enabled", enabled);
-
-        serializer.writeTo(writer);
+        builder.add("enabled", enabled);
+        return builder.build();
     }
 }

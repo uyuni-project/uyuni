@@ -23,12 +23,15 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartFileDownloadCommandTest
  */
 public class KickstartFileDownloadCommandTest extends
         BaseKickstartCommandTestCase {
 
+    @Test
     public void testDownload() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(user);

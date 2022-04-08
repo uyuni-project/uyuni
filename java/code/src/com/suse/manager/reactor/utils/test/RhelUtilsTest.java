@@ -14,6 +14,10 @@
  */
 package com.suse.manager.reactor.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ProductName;
@@ -36,6 +40,8 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.CmdResult;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
@@ -76,11 +82,13 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testParseReleaseFileRedHat() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(PLAIN_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -90,6 +98,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Santiago", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileRES() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(RES_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -99,6 +108,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Santiago", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileCentos() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(CENTOS_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -108,6 +118,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Core", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileOracle() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ORACLE_RELEASE);
         assertTrue(os.isPresent());
@@ -117,6 +128,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileAlibaba() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALIBABA_RELEASE);
         assertTrue(os.isPresent());
@@ -126,6 +138,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Hunting Beagle", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileAlma() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALMALINUX_RELEASE);
         assertTrue(os.isPresent());
@@ -135,6 +148,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Purple Manul", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileAmazon() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(AMAZON_RELEASE);
         assertTrue(os.isPresent());
@@ -143,6 +157,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Karoo", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileRocky() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ROCKY_RELEASE);
         assertTrue(os.isPresent());
@@ -152,6 +167,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Green Obsidian", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -208,6 +224,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testDetectRhelProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_res.json",
                 minionServer -> {
@@ -224,6 +241,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectCentOSProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos2.json",
                 minionServer -> {
@@ -232,7 +250,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("res", prod.get().getSuseProduct().get().getName());
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Final", prod.get().getRelease());
@@ -240,39 +258,43 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectRhelProductRHEL() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
         });
     }
 
+    @Test
     public void testDetectRhelProductCentos() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Core", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
         });
     }
 
+    @Test
     public void testDetectRhelProductOracle() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_oracle.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("OracleLinux", prod.get().getName());
                     assertEquals("", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
         });
     }
 
+    @Test
     public void testDetectRhelProductAlibaba() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_alibaba.json",
                 null,
@@ -284,33 +306,36 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
+    @Test
     public void testDetectRhelProductAlma() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_almalinux.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("AlmaLinux", prod.get().getName());
                     assertEquals("Purple Manul", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
                 });
     }
 
+    @Test
     public void testDetectRhelProductAmazon() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_amazon.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("AmazonLinux", prod.get().getName());
                     assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });
     }
 
+    @Test
     public void testDetectRhelProductRocky() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rockylinux.json",
                 null,
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("RockyLinux", prod.get().getName());
                     assertEquals("Green Obsidian", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());

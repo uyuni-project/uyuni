@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -39,6 +45,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +56,7 @@ import java.util.Map;
  */
 public class PackageTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testIsType() throws Exception {
         Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
                 PackageFactory.lookupPackageArchByLabel("x86_64"));
@@ -62,6 +71,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertTrue(pkgDeb.isTypeDeb());
     }
 
+    @Test
     public void testPackage() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         assertNotNull(pkg);
@@ -73,6 +83,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertNotNull(lookup.getBuildTime());
     }
 
+    @Test
     public void testFile() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -261,6 +272,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         cp.executeUpdate(params);
     }
 
+    @Test
     public void testGetNevraWithEpoch() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3", PackageType.RPM);
@@ -279,10 +291,12 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertFalse(pkg.getNameEvra().equals(pkg.getNevraWithEpoch()));
     }
 
+    @Test
     public void testIsInChannel() {
         // TODO make this work on sate
     }
 
+    @Test
     public void testGetExtraTag() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         pkg.getExtraTags().put(PackageManagerTest.createExtraTagKey("mytag"), "myvalue");

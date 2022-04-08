@@ -16,7 +16,8 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.frontend.events.TransactionHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 class ActionExecutor implements Runnable {
 
-    private static final Logger LOG = Logger.getLogger(ActionExecutor.class);
+    private static final Logger LOG = LogManager.getLogger(ActionExecutor.class);
 
     private EventMessage msg;
     private List<MessageAction> actionHandlers = new ArrayList<>();

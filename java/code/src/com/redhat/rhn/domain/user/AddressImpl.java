@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * Class AddressImpl that implements Address
- * @version $Rev: 623 $
  */
 public class AddressImpl extends BaseDomainHelper implements Address {
 

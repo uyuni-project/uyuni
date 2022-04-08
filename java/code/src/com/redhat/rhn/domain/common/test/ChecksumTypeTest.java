@@ -14,15 +14,21 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ArchTypeTest
  */
 public class ChecksumTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testChecksumType() throws Exception {
 
         Long testid = 1L;

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -42,6 +47,8 @@ import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +64,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
     private ProfileHandler handler = new ProfileHandler();
     private KickstartHandler ksHandler = new KickstartHandler();
 
+    @Test
     public void testKickstartTree() throws Exception {
         // test the setKickstartTree and getKickstartTree APIs
 
@@ -84,6 +92,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(anotherTestTree.getLabel(), tree);
     }
 
+    @Test
     public void testCfgPreservation() throws Exception {
         // test the setCfgPreservation and getCfgPreservation APIs
 
@@ -109,6 +118,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertFalse(handler.getCfgPreservation(admin, profileLabel));
     }
 
+    @Test
     public void testChildChannels() throws Exception {
         // test the setChildChannels and getChildChannels APIs
 
@@ -152,6 +162,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundC2);
     }
 
+    @Test
     public void testListScript() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
@@ -168,6 +179,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testOrderScripts() throws Exception {
         KickstartData ks = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         // delete kickstart scripts that are already there
@@ -232,6 +244,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(scripts.get(5).getId().intValue() == idPostNochroot2);
     }
 
+    @Test
     public void testAddScript() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
@@ -247,6 +260,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testRemoveScript() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
 
@@ -272,6 +286,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertFalse(found);
     }
 
+    @Test
     public void testDownloadKickstart() throws Exception {
         KickstartData ks1  = KickstartDataTest.createKickstartWithProfile(admin);
         ks1.addKsPackage(new KickstartPackage(ks1,
@@ -285,6 +300,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(file.contains("blahPackage"));
     }
 
+    @Test
     public void testSetAdvancedOptions() throws Exception {
         //setup
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
@@ -346,6 +362,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result);
     }
 
+    @Test
     public void testGetAdvancedOptions() throws Exception {
         //setup
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
@@ -408,6 +425,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testListIpRanges() throws Exception {
         KickstartData ks1 = setupIpRanges(100);
         KickstartData ks2 = setupIpRanges(110);
@@ -417,6 +435,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertFalse(set.contains(ks2.getIps().iterator().next()));
     }
 
+    @Test
     public void testAddIpRange() throws Exception {
         KickstartData ks1 = setupIpRanges(100);
         handler.addIpRange(admin, ks1.getLabel(), "192.168.1.1", "192.168.1.10");
@@ -425,6 +444,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(ks1.getIps().size() == 2);
     }
 
+    @Test
     public void testAddIpRange1() throws Exception {
         KickstartData ks1 = setupIpRanges(100);
         boolean caught = false;
@@ -440,6 +460,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(ks1.getIps().size() == 1);
     }
 
+    @Test
     public void testRemoveIpRange() throws Exception {
         KickstartData ks1 = setupIpRanges(100);
         assertTrue(ks1.getIps().size() == 1);
@@ -449,6 +470,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(ks1.getIps().size() == 0);
     }
 
+    @Test
     public void testCompareActivationKeys() throws Exception {
         // Setup
         KickstartData ks1 = KickstartDataTest.createKickstartWithProfile(admin);
@@ -490,6 +512,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(ks2DiffKey.getToken(), activationKey3.getToken());
     }
 
+    @Test
     public void testCompareActivationKeysSameProfile() throws Exception {
         // Setup
         KickstartData ks1 = KickstartDataTest.createKickstartWithProfile(admin);
@@ -513,6 +536,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(ks1KeyList.size(), 0);
     }
 
+    @Test
     public void testCompareActivationKeysNoKeys() throws Exception {
         // Setup
         KickstartData ks1 = KickstartDataTest.createKickstartWithProfile(admin);
@@ -533,6 +557,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(ks1KeyList.size(), 0);
     }
 
+    @Test
     public void testComparePackages() throws Exception {
         // Setup
 
@@ -578,6 +603,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(package3.getPackageName().getName(), ks2PackageName);
     }
 
+    @Test
     public void testComparePackagesSameProfile() throws Exception {
         // Setup
 
@@ -601,6 +627,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, ks1PackageNameList.size());
     }
 
+    @Test
     public void testComparePackagesNoPackages() throws Exception {
         // Setup
 
@@ -630,6 +657,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, ks2PackageNameList.size());
     }
 
+    @Test
     public void testCompareAdvancedOptions() throws Exception {
         // Setup
         KickstartData ks1 =
@@ -692,6 +720,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         return ks1;
     }
 
+    @Test
     public void testCustomOptions() throws Exception {
 
         KickstartData newProfile = createProfile();

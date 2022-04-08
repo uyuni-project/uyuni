@@ -31,12 +31,9 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 /**
- * @version $Revision$
  */
-public class SsmActionTestUtils extends TestCase {
+public class SsmActionTestUtils {
 
     private User user;
 

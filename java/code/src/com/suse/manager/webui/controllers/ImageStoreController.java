@@ -42,7 +42,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class ImageStoreController {
 
     private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
-    private static Logger log = Logger.getLogger(ImageStoreController.class);
+    private static Logger log = LogManager.getLogger(ImageStoreController.class);
 
     private ImageStoreController() { }
 

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user.external.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -34,6 +39,8 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +52,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
     private static List<String> roles = Arrays.asList(RoleFactory.SYSTEM_GROUP_ADMIN
             .getLabel());
 
+    @Test
     public void testExternalGroupToRoleMap() {
         String name = "My External Group Name" + TestUtils.randomString();
         //admin should be able to call list users, regular should not
@@ -115,6 +123,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         assertTrue(success == 1);
     }
 
+    @Test
     public void testExternalGroupToServerGroupMap() {
         String name = "My External Group Name" + TestUtils.randomString();
         String systemGroupName = "my-system-group-name" + TestUtils.randomString();
@@ -200,6 +209,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         sghandler.delete(admin, systemGroupName);
     }
 
+    @Test
     public void testDefaultOrg() {
         int currentDefault = handler.getDefaultOrg(satAdmin);
         handler.setDefaultOrg(satAdmin, 0);
@@ -211,6 +221,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         handler.setDefaultOrg(satAdmin, currentDefault);
     }
 
+    @Test
     public void testKeepRoles() {
         boolean currentKeepRoles = handler.getKeepTemporaryRoles(satAdmin);
         handler.setKeepTemporaryRoles(satAdmin, !currentKeepRoles);
@@ -218,6 +229,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         handler.setKeepTemporaryRoles(satAdmin, currentKeepRoles);
     }
 
+    @Test
     public void testUseOrgUnit() {
         boolean currentUseOrgUnit = handler.getUseOrgUnit(satAdmin);
         handler.setUseOrgUnit(satAdmin, !currentUseOrgUnit);

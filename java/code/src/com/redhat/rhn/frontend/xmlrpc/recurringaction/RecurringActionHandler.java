@@ -29,6 +29,8 @@ import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,7 @@ public class RecurringActionHandler extends BaseHandler {
      *          $RecurringActionSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<? extends RecurringAction> listByEntity(User loggedInUser, String entityType, Integer entityId) {
         try {
             switch (getEntityType(entityType)) {

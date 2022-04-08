@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -26,6 +30,8 @@ import com.redhat.rhn.manager.kickstart.KickstartActivationKeysCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 
 /**
@@ -34,6 +40,7 @@ import java.util.ArrayList;
 
 public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testActivationKeysForKickstart() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -56,7 +63,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
                 found = true;
             }
         }
-        assertTrue("Didnt find the updated note.", found);
+        assertTrue(found, "Didnt find the updated note.");
 
         ActivationKey key2 = ActivationKeyFactory.lookupByKey(key.getKey());
         assertNotNull(key2.getId());
@@ -65,6 +72,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testKickstartActivationKeysCommand() throws Exception {
 
         KickstartFactory.saveKickstartData(ksdata);

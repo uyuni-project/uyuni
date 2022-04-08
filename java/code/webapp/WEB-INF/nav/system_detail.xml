@@ -13,6 +13,7 @@
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
     <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()">
     </rhn-tab>
+    <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
     <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="system_feature(ftr_agent_smith)"/>
     <rhn-tab name="Hardware" acl="not system_has_foreign_entitlement() or not system_is_proxy()">
       <rhn-tab-url>/rhn/systems/details/SystemHardware.do</rhn-tab-url>

@@ -45,7 +45,8 @@ import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public abstract class AbstractMinionBootstrapper {
 
     private static final int KEY_LENGTH_LIMIT = 1_000_000;
 
-    private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractMinionBootstrapper.class);
     private static final LocalizationService LOC = LocalizationService.getInstance();
 
     /**

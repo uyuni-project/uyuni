@@ -14,18 +14,21 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-import junit.framework.Assert;
-
 
 /**
  * ServletTestUtils
  */
-public class ServletTestUtils extends Assert {
+public class ServletTestUtils  {
+
+    private ServletTestUtils() {
+    }
 
     /**
      * Asserts that two query strings are equal. Order of parameters is not checked. A query

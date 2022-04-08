@@ -15,36 +15,28 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
  * OrgSerializer is a custom serializer for the XMLRPC library.
  * It converts an Org to an XMLRPC &lt;struct&gt;.
  */
-public class OrgSerializer extends RhnXmlRpcCustomSerializer {
+public class OrgSerializer extends ApiResponseSerializer<Org> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Org> getSupportedClass() {
         return Org.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        Org org = (Org) value;
-
-        helper.add("id", org.getId());
-        helper.add("name", org.getName());
-        helper.writeTo(output);
-
+    @Override
+    public SerializedApiResponse serialize(Org src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .build();
     }
 }

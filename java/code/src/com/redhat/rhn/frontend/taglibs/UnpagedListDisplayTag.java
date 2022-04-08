@@ -86,7 +86,6 @@ import javax.servlet.jsp.tagext.BodyContent;
  * ...
  * </pre>
  *
- * @version $Rev: 79797 $
  * @see com.redhat.rhn.frontend.taglibs.ColumnTag
  * @see com.redhat.rhn.frontend.taglibs.ListTag
  */

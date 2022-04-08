@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.TimeUtils;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * TimeUtilsTest is the test class for TimeUtils.
  */
-public class TimeUtilsTest extends TestCase {
+public class TimeUtilsTest  {
 
+    @Test
     public void testCurrentTimeSeconds() {
         assertTrue(timeEquals((System.currentTimeMillis() / 1000),
                      TimeUtils.currentTimeSeconds()));

@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.ssm;
 
 /**
  * @author Jason Dobies
- * @version $Revision$
  */
 public enum SsmOperationStatus {
 

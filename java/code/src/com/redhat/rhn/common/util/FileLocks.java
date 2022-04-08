@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ import java.util.function.Supplier;
 public class FileLocks {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(FileLocks.class);
+    private static Logger log = LogManager.getLogger(FileLocks.class);
 
     /**
      * Lock for the scc refresh process

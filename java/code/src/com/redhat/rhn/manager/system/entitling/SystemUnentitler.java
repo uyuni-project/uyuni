@@ -27,7 +27,8 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ import java.util.Set;
  */
 public class SystemUnentitler {
 
-    private static final Logger LOG = Logger.getLogger(SystemUnentitler.class);
+    private static final Logger LOG = LogManager.getLogger(SystemUnentitler.class);
 
     private final MonitoringManager monitoringManager;
     private final VirtManager virtManager;

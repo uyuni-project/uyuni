@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.security;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -32,7 +33,7 @@ public class AuthenticationServiceFactory {
 
     private static AuthenticationServiceFactory instance;
 
-    private static final Logger LOG = Logger.getLogger(AuthenticationServiceFactory.class);
+    private static final Logger LOG = LogManager.getLogger(AuthenticationServiceFactory.class);
 
     private PxtAuthenticationService pxtAuthService;
 

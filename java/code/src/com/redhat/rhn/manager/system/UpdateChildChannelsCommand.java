@@ -30,7 +30,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(UpdateChildChannelsCommand.class);
+    private static Logger log = LogManager.getLogger(UpdateChildChannelsCommand.class);
 
     private List<Long> cids;
     private Server server;

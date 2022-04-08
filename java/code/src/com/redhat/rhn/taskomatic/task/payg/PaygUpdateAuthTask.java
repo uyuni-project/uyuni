@@ -28,7 +28,8 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 
 import com.jcraft.jsch.JSchException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -40,7 +41,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
     private final PaygAuthDataProcessor paygDataProcessor = new PaygAuthDataProcessor();
     private PaygAuthDataExtractor paygDataExtractor = new PaygAuthDataExtractor();
 
-    private static final Logger LOG = Logger.getLogger(PaygUpdateAuthTask.class);
+    private static final Logger LOG = LogManager.getLogger(PaygUpdateAuthTask.class);
 
     private static final String KEY_ID = "sshData_id";
 

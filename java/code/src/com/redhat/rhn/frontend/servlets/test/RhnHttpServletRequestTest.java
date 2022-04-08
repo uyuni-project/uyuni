@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import com.mockobjects.servlet.MockHttpSession;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnHttpServletRequestTest
@@ -28,8 +33,8 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     private RhnMockHttpServletRequest mockRequest;
     private RhnHttpServletRequest request;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new MockHttpSession());
         request = new RhnHttpServletRequest(mockRequest);
@@ -39,6 +44,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testNoHeaders() throws Exception {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
@@ -50,6 +56,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideServerName() throws Exception {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
@@ -62,6 +69,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testNoOverrideSecure() throws Exception {
         mockRequest.setupIsSecure(false);
         assertFalse(request.isSecure());
@@ -71,6 +79,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideSecureHosted() throws Exception {
 
         mockRequest.setupIsSecure(false);
@@ -84,6 +93,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideSecureSat() throws Exception {
     }
 }

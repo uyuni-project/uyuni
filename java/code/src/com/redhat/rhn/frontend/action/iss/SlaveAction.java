@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SlaveAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class SlaveAction extends RhnAction {
 

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -36,29 +33,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "username")
  * #struct_end()
  */
-public class ImageStoreSerializer extends RhnXmlRpcCustomSerializer {
+public class ImageStoreSerializer extends ApiResponseSerializer<ImageStore> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-       throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ImageStore store = (ImageStore) value;
-        helper.add("label", store.getLabel());
-        helper.add("uri", store.getUri());
-        helper.add("storetype", store.getStoreType().getLabel());
-        helper.add("hasCredentials", (store.getCreds() != null));
-        helper.add("username", store.getCreds() != null ?
-                store.getCreds().getUsername() : "");
-        helper.writeTo(output);
+    @Override
+    public Class<ImageStore> getSupportedClass() {
+        return ImageStore.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
-        return ImageStore.class;
+    @Override
+    public SerializedApiResponse serialize(ImageStore src) {
+        return new SerializationBuilder()
+                .add("label", src.getLabel())
+                .add("uri", src.getUri())
+                .add("storetype", src.getStoreType().getLabel())
+                .add("hasCredentials", src.getCreds() != null)
+                .add("username", src.getCreds() != null ? src.getCreds().getUsername() : "")
+                .build();
     }
 }

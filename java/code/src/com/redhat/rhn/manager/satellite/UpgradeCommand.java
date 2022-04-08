@@ -45,7 +45,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -66,7 +67,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(UpgradeCommand.class);
+    private static Logger log = LogManager.getLogger(UpgradeCommand.class);
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
     public static final String UPGRADE_KS_PROFILES =

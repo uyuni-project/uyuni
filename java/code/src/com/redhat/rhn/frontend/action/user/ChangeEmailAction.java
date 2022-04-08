@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Change e-mail
- * @version $Rev: 1202 $
  */
 public class ChangeEmailAction extends RhnAction {
     /** {@inheritDoc} */

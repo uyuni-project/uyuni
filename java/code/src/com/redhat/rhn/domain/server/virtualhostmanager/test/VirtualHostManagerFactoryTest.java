@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -24,6 +30,9 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,6 +51,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         factory = VirtualHostManagerFactory.getInstance();
@@ -51,6 +61,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCreateAndGetVHM() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -70,6 +81,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager with credentials.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCreateAndGetVHManagerWithCreds() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -85,6 +97,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(virtualHostManager.getConfigs().isEmpty());
     }
 
+    @Test
     public void testUpdateVHM() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -118,6 +131,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager with config.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCreateAndGetVHMWithConfigs() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -136,6 +150,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * IllegalArgumentException.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCreateAndGetVHMNullLabel() throws Exception {
         try {
             createAndSaveVirtualHostManager("test", null, SUSE_CLOUD,
@@ -150,6 +165,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests retrieving non-existing Virtual Host Manager.
      */
+    @Test
     public void testCreateAndGetNonExistentVHM() {
         assertNull(factory.lookupByLabel("idontexist"));
     }
@@ -158,6 +174,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests deleting an existing Virtual Host Manager.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDeleteVirtualHostManager() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -177,6 +194,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests that the deleting an existing Virtual Host Manager doesn't cascade to server.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDeleteVirtualHostManagerDontCascade() throws Exception {
         Server server = ServerTestUtils.createForeignSystem(user, "server_digital_id");
         Long serverId = server.getId();
@@ -199,6 +217,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a list of VirtualHostManager an organization.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCreateAndGetVHMs() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
@@ -220,6 +239,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests that after removing VirtualHostManager, its credentials are removed as well.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDeleteVHMAndCredentials() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("username", "foouser");
@@ -239,6 +259,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * passing null params.
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testFailOnNullParameters() throws Exception {
         try {
             // should throw a NullPointerException

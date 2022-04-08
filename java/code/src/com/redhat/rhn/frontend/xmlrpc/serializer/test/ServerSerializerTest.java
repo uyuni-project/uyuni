@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -21,6 +23,8 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.ServerSerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -33,6 +37,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type Normal without machine Id
      * @throws Exception
      */
+    @Test
     public void testSerializeNormalServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -49,6 +54,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type salt minion.
      * @throws Exception
      */
+    @Test
     public void testSerializeMinion() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(), ServerFactoryTest.TYPE_SERVER_MINION);
@@ -64,6 +70,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type Normal with machine Id
      * @throws Exception
      */
+    @Test
     public void testSerializeNormalServerWithMachineId() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());

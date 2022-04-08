@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
  * Manages displaying/updating package names
  * associated with Kickstarts
  *
- * @version $Rev $
  */
 public class EditPackagesAction extends RhnAction {
 

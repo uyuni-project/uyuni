@@ -28,12 +28,15 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * AllChannelTreeSetupActionTest
  */
 public class AllChannelTreeActionTest extends RhnBaseTestCase {
 
 
+    @Test
     public void testPerformExecute() throws Exception {
         AllChannelTreeAction action = new AllChannelTreeAction() {
             protected DataResult<ChannelTreeNode> getDataResult(User user, ListControl lc) {

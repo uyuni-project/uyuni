@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.rhnset.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -25,6 +28,10 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * RhnSetDeclTest - Simple set of Unit tests that exercise
  * the SQL syntax of the queries used by RhnSetDeclTest.  Not
@@ -32,22 +39,23 @@ import com.redhat.rhn.testing.UserTestUtils;
  * but it at least verifies that the SQL is runable and will filter
  * out bad IDs placed in the set.
  *
- * @version $Rev: 61756 $
  */
 public class RhnSetDeclTest extends RhnBaseTestCase {
 
     private User user;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 
+    @Test
     public void testGetUnownedSystems() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);

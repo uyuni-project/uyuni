@@ -70,7 +70,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -111,7 +112,7 @@ import java.util.stream.Stream;
 public class ContentSyncManager {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(ContentSyncManager.class);
+    private static Logger log = LogManager.getLogger(ContentSyncManager.class);
 
     /**
      * OES channel family name, this is used to distinguish supported non-SUSE
@@ -801,8 +802,9 @@ public class ContentSyncManager {
             else if (c != null &&
                     repo.getProducts().stream()
                         .map(SUSEProductSCCRepository::getProduct)
-                        .anyMatch(p -> p.getFree() &&
-                                p.getChannelFamily().getLabel().equals("SLE-M-T"))) {
+                        .filter(SUSEProduct::getFree)
+                        .anyMatch(p -> p.getChannelFamily().getLabel().startsWith("SLE-M-T") ||
+                                p.getChannelFamily().getLabel().startsWith("OPENSUSE"))) {
                 log.debug("Free repo detected. Setting NoAuth for " + repo.getUrl());
                 newAuth = new SCCRepositoryNoAuth();
             }

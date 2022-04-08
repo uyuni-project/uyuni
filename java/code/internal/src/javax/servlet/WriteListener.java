@@ -19,7 +19,6 @@ package javax.servlet;
  * Dummy interface allowing to compile with Tomcat Servlet API < 3.1.
  * Should not be included in jar if it's available from Servlet API.
  *
- * @version $Rev $
  */
 public interface WriteListener {
 

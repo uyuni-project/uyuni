@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class ImageStoreFactory extends HibernateFactory {
     public static final ImageStoreType TYPE_REGISTRY = lookupStoreTypeByLabel("registry").get();
 
     private static ImageStoreFactory instance = new ImageStoreFactory();
-    private static Logger log = Logger.getLogger(ImageStoreFactory.class);
+    private static Logger log = LogManager.getLogger(ImageStoreFactory.class);
     public static final String USER_KEY = "username";
     public static final String PASS_KEY = "password";
 
@@ -57,7 +58,7 @@ public class ImageStoreFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(ImageStoreFactory.class);
+            log = LogManager.getLogger(ImageStoreFactory.class);
         }
         return log;
     }

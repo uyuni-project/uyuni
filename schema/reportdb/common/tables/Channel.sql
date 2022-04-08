@@ -17,9 +17,11 @@ CREATE TABLE Channel
     label                     VARCHAR(128),
     type                      VARCHAR(50),
     arch                      VARCHAR(64),
+    checksum_type             VARCHAR(32),
     summary                   VARCHAR(500),
     description               VARCHAR(4000),
     parent_channel_label      VARCHAR(128),
+    original_channel_id       NUMERIC,
     organization              VARCHAR(128),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );

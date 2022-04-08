@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.action.help;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -26,8 +28,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +53,7 @@ public class EulaAction extends org.apache.struts.action.Action {
                         StandardCharsets.UTF_8));
             }
             catch (IOException ex) {
-                Logger.getLogger(EulaAction.class.getName()).log(Level.SEVERE, null, ex);
+                LogManager.getLogger(EulaAction.class.getName()).log(Level.ERROR, ex);
                 throw new RuntimeException(ex);
             }
         }

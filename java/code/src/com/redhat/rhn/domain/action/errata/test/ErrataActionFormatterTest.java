@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.errata.ErrataActionFormatter;
@@ -22,6 +24,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ErrataActionFormatter.
@@ -33,6 +36,7 @@ public class ErrataActionFormatterTest extends BaseTestCaseWithUser {
      * Tests getRelatedObjectDescription().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetRelatedObjectDescription() throws Exception {
         ErrataAction action = (ErrataAction) ActionFactoryTest.createAction(user,
             ActionFactory.TYPE_ERRATA);

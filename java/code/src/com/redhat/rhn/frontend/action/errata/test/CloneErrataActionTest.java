@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -27,17 +29,22 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * CloneErrataActionTest
  */
 public class CloneErrataActionTest extends RhnMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/errata/manage/CloneErrata");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testEmptySet() throws Exception {
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
                                                           "clone_errata_list",
@@ -52,6 +59,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
         verifyActionMessage("emptyselectionerror");
     }
 
+    @Test
     public void testNonEmptySet() throws Exception {
 
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),

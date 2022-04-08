@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -36,28 +33,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class ChannelInfoSerializer extends RhnXmlRpcCustomSerializer {
+public class ChannelInfoSerializer extends ApiResponseSerializer<ChannelInfo> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ChannelInfo> getSupportedClass() {
         return ChannelInfo.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ChannelInfo c = (ChannelInfo) value;
-
-        helper.add("label", c.getLabel());
-        helper.add("name", c.getName());
-        helper.add("url", c.getUrl());
-        helper.add("token", c.getToken());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ChannelInfo src) {
+        return new SerializationBuilder()
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("url", src.getUrl())
+                .add("token", src.getToken())
+                .build();
     }
 }

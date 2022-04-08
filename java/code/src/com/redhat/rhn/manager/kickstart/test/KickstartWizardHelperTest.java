@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -28,6 +33,7 @@ import java.util.List;
  */
 public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testVirtTypes() {
         KickstartWizardHelper helper = new KickstartWizardHelper(user);
         String origConfig = Config.get().getString(ConfigDefaults.PRODUCT_NAME);

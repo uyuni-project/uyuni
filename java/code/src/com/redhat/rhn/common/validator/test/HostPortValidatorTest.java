@@ -14,15 +14,19 @@
  */
 package com.redhat.rhn.common.validator.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.validator.HostPortValidator;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for the {@link HostPortValidator}.
  */
-public class HostPortValidatorTest extends TestCase {
+public class HostPortValidatorTest  {
 
+    @Test
     public void testIPv4() {
         assertTrue(HostPortValidator.getInstance().isValid("192.168.1.2"));
         assertTrue(HostPortValidator.getInstance().isValid("192.168.1.2:8888"));
@@ -35,6 +39,7 @@ public class HostPortValidatorTest extends TestCase {
         assertFalse(HostPortValidator.getInstance().isValid("http://192.168.2.1:8888"));
     }
 
+    @Test
     public void testIPv6() {
         assertTrue(HostPortValidator.getInstance().isValid(
             "2001:0db8:85a3:08d3:1319:8a2e:0370:7344"));
@@ -58,6 +63,7 @@ public class HostPortValidatorTest extends TestCase {
         assertFalse(HostPortValidator.getInstance().isValid("[]"));
     }
 
+    @Test
     public void testHostnames() {
         assertTrue(HostPortValidator.getInstance().isValid("myproxy"));
         assertTrue(HostPortValidator.getInstance().isValid("myproxy:8888"));
@@ -69,6 +75,7 @@ public class HostPortValidatorTest extends TestCase {
             "http://proxy.example.com:8888"));
     }
 
+    @Test
     public void testHostnameCharset() {
         assertTrue(HostPortValidator.getInstance().isValid("müller"));
         assertTrue(HostPortValidator.getInstance().isValid("pröxy.com"));

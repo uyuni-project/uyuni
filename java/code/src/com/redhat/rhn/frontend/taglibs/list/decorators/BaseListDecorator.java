@@ -23,7 +23,6 @@ import javax.servlet.jsp.PageContext;
 /**
  * General-use base class for writing decorators
  *
- * @version $Rev $
  */
 public abstract class BaseListDecorator implements ListDecorator {
 

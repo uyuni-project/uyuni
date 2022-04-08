@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -29,6 +31,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.TimeZone;
 
 /**
@@ -36,6 +41,7 @@ import java.util.TimeZone;
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/ErrataConfirm");
@@ -45,6 +51,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecuteConfirmed() throws Exception {
         Context ctx = Context.getCurrentContext();
         // DatePicker widget needs Context.getTimezone to return a non-null value
@@ -90,6 +97,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
      * Tests when an incomplete set of errata is passed into the action.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecuteIncomplete() throws Exception {
 
         Context ctx = Context.getCurrentContext();

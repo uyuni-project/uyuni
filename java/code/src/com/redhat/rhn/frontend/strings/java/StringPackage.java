@@ -19,7 +19,6 @@ package com.redhat.rhn.frontend.strings.java;
 
 /**
  * Placeholder class to identify package of StringResources.
- * @version $Rev: 1542 $
  */
 public class StringPackage {
     // empty

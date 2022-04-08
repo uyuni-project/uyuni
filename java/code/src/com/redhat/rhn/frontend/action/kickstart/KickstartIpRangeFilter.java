@@ -21,19 +21,19 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidIpAddressException;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.IpAddressRange;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 import java.util.Map;
 
 /**
  * KickstartIpRangeFilter
- * @version $Rev: 1 $
  */
 public class KickstartIpRangeFilter extends BaseListFilter {
 
     /** Logger for this class */
-    private static Logger log = Logger.getLogger(KickstartIpRangeFilter.class);
+    private static Logger log = LogManager.getLogger(KickstartIpRangeFilter.class);
 
     /**
      * ${@inheritDoc}

@@ -18,7 +18,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ConfigFile - Class representation of the table rhnConfigFile.
@@ -30,7 +31,7 @@ public class ConfigFile extends BaseDomainHelper {
     private ConfigFileName configFileName;
     private ConfigFileState configFileState;
     private ConfigRevision latestConfigRevision;
-    private static Logger log = Logger.getLogger(ConfigFile.class);
+    private static Logger log = LogManager.getLogger(ConfigFile.class);
 
 
     /**

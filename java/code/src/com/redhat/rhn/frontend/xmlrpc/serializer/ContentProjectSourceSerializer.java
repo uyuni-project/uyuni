@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ProjectSource} class and subclasses
@@ -35,29 +32,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
      #prop_desc("string", "channelLabel", "(If type is SW_CHANNEL) The label of channel associated with the source")
  * #struct_end()
  */
-public class ContentProjectSourceSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentProjectSourceSerializer extends ApiResponseSerializer<ProjectSource> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<ProjectSource> getSupportedClass() {
         return ProjectSource.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ProjectSource source = (ProjectSource) obj;
+    public SerializedApiResponse serialize(ProjectSource src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("contentProjectLabel", src.getContentProject().getLabel())
+                .add("type", ProjectSource.Type.lookupBySourceClass(src.getClass()).getLabel())
+                .add("state", src.getState().toString());
 
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("contentProjectLabel", source.getContentProject().getLabel());
-        helper.add("type", ProjectSource.Type.lookupBySourceClass(source.getClass()).getLabel());
-        helper.add("state", source.getState());
-        source.asSoftwareSource().ifPresent(s -> helper.add("channelLabel", s.getChannel().getLabel()));
-        helper.writeTo(writer);
+        src.asSoftwareSource().ifPresent(s -> builder.add("channelLabel", s.getChannel().getLabel()));
+        return builder.build();
     }
 }

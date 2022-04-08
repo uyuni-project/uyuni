@@ -62,7 +62,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +82,7 @@ public class MessageQueue {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(MessageQueue.class);
+    private static Logger logger = LogManager.getLogger(MessageQueue.class);
 
     private static final Map<Class, List<MessageAction>> ACTIONS =
             new HashMap<>();

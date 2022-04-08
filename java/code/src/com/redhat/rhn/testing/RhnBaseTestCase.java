@@ -14,8 +14,12 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.Asserts;
 
@@ -24,20 +28,16 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
-
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
 
 /**
  * RhnBaseTestCase is the base class for all RHN TestCases.
@@ -45,21 +45,12 @@ import junit.framework.TestCase;
  * test to similuate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase extends TestCase {
-
-    /**
-     * Constructs a TestCase with the given name.
-     * @param name Name of TestCase.
-     */
-    protected RhnBaseTestCase(String name) {
-        super(name);
-    }
+public abstract class RhnBaseTestCase  {
 
     /**
      * Default Constructor
      */
-    protected RhnBaseTestCase() {
-        super();
+    public RhnBaseTestCase() {
         MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
     }
 
@@ -67,18 +58,17 @@ public abstract class RhnBaseTestCase extends TestCase {
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
     }
 
     /**
      * Tears down the fixture, and closes the HibernateSession.
-     * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    public void tearDown() throws Exception {
         TestCaseHelper.tearDownHelper();
     }
 
@@ -194,37 +184,6 @@ public abstract class RhnBaseTestCase extends TestCase {
     }
 
     /**
-     * Assert that the date <code>later</code> is after the date
-     * <code>earlier</code>. The assertion succeeds if the dates
-     * are equal. Both dates must be non-null.
-     *
-     * @param earlier the earlier date to compare
-     * @param later teh later date to compare
-     */
-    public static void assertNotBefore(Date earlier, Date later) {
-        assertNotBefore(null, earlier, later);
-    }
-
-    /**
-     * Assert that the date <code>later</code> is after the date
-     * <code>earlier</code>. The assertion succeeds if the dates
-     * are equal. Both dates must be non-null.
-     *
-     * @param msg the message to print if the assertion fails
-     * @param earlier the earlier date to compare
-     * @param later the later date to compare
-     */
-    public static void assertNotBefore(String msg, Date earlier, Date later) {
-        assertNotNull(msg, earlier);
-        assertNotNull(msg, later);
-        if (earlier.after(later) && !earlier.equals(later)) {
-            String e = DateFormat.getDateTimeInstance().format(earlier);
-            String l = DateFormat.getDateTimeInstance().format(later);
-            throw new ComparisonFailure(msg, e, l);
-        }
-    }
-
-    /**
      * Assert that <code>fragment</code> is a substring of <code>body</code>
      * @param body the larger string in which to search
      * @param fragment the substring that must be contained in <code>body</code>
@@ -245,24 +204,6 @@ public abstract class RhnBaseTestCase extends TestCase {
         if (!body.contains(fragment)) {
             fail(msg);
         }
-    }
-
-    /**
-     * Util for turning of the spew from the l10n service for
-     * test cases that make calls with dummy string IDs.
-     */
-    public static void disableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.OFF);
-    }
-
-    /**
-     * Util for turning on the spew from the l10n service for
-     * test cases that make calls with dummy string IDs.
-     */
-    public static void enableLocalizationServiceLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.ERROR);
     }
 
     protected static void createDirIfNotExists(File dir) {

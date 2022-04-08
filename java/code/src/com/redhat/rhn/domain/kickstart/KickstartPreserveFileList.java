@@ -25,7 +25,6 @@ import java.util.Date;
 /**
  * kickstartpreservefilelist - Class representation of the table
  * rhnkickstartpreservefilelist.
- * @version $Rev: 1 $
  */
 public class KickstartPreserveFileList implements Serializable {
 

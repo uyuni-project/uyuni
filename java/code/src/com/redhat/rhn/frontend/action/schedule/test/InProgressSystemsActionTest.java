@@ -27,11 +27,14 @@ import com.redhat.rhn.frontend.action.schedule.InProgressSystemsAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * InProgressSystemsActionTest
  */
 public class InProgressSystemsActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testSelectAll() throws Exception {
         InProgressSystemsAction action = new InProgressSystemsAction();
         ActionHelper ah = new ActionHelper();

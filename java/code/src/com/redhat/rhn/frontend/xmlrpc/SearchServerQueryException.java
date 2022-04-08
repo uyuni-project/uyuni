@@ -20,7 +20,6 @@ import com.redhat.rhn.FaultException;
 /**
  * error with search query
  *
- * @version $Revision$
  */
 public class SearchServerQueryException extends FaultException {
     /**

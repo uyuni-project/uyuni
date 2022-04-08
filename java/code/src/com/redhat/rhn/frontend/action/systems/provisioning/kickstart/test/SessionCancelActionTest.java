@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+
+import org.junit.jupiter.api.Test;
 
 import servletunit.HttpServletRequestSimulator;
 
 /**
  * SessionCancelActionTest
- * @version $Rev: 1 $
  */
 public class SessionCancelActionTest extends BaseSessionTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");
         actionPerform();
@@ -32,6 +37,7 @@ public class SessionCancelActionTest extends BaseSessionTestCase {
         assertNotNull(request.getAttribute(RequestContext.KICKSTART_SESSION));
     }
 
+    @Test
     public void testExecuteSubmit() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");

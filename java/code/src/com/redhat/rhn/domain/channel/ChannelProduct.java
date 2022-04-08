@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * ChannelProduct - Class representation of the table rhnChannelProduct.
- * @version $Rev: 1 $
  */
 public class ChannelProduct {
 

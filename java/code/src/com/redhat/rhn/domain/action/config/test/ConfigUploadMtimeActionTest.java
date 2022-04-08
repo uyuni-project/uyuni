@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigChannelAssociation;
@@ -31,12 +35,15 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
 
     /**
      * Test fetching a ConfigUploadAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupConfigUploadAction() throws Exception {
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -68,6 +75,7 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
         assertNotNull(cfa.getConfigDateDetails().getActionId());
     }
 
+    @Test
     public void testCreate() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

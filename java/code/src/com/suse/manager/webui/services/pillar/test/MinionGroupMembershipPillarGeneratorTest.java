@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services.pillar.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -29,6 +31,8 @@ import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerat
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +48,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
             new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
@@ -51,6 +56,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+    @Test
     public void testGenerateGroupMembershipsPillarData() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 

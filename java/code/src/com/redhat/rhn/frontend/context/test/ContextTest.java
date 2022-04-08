@@ -14,8 +14,13 @@
  */
 package com.redhat.rhn.frontend.context.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
@@ -27,6 +32,7 @@ public class ContextTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testCreateContext() {
 
         Context ctx = Context.getCurrentContext();
@@ -41,6 +47,7 @@ public class ContextTest extends RhnBaseTestCase {
     /**
     * Check to make sure we can support having NULL for a context
     */
+    @Test
     public void testNullContext() {
         int originalHashcode = Context.getCurrentContext().hashCode();
         Context.freeCurrentContext();

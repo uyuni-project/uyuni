@@ -19,7 +19,6 @@ import java.util.Locale;
 /**
  * Links up potential locales with RHN supported ones
  *
- * @version $Rev $
  */
 class LocaleInfo {
 

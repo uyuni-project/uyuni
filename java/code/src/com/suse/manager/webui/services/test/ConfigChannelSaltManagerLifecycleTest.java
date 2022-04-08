@@ -17,6 +17,10 @@ package com.suse.manager.webui.services.test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -40,6 +44,8 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,8 +53,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
-
-import junit.framework.Assert;
 
 /**
  * Test for {@link ConfigChannelSaltManagerTest}
@@ -61,6 +65,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     private ConfigChannelSaltManager manager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();
@@ -70,6 +75,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         TestUtils.saveAndFlush(user);
     }
 
+    @Test
     public void testCreateAndRemoveChannel() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -82,6 +88,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(initSls.getParentFile().exists());
     }
 
+    @Test
     public void testRemoveAssignedChannel() throws Exception {
         ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel1);
@@ -105,6 +112,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         }
     }
 
+    @Test
     public void testCreatedBinaryFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
@@ -130,6 +138,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(createdFile.getParentFile().exists());
     }
 
+    @Test
     public void testRenameChannelLabel() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -148,6 +157,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         initSlsAssertions(newInitSls);
     }
 
+    @Test
     public void testRemoveFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigRevision configRevision =
@@ -167,6 +177,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(configFileOnDisk.exists());
     }
 
+    @Test
     public void testUpdateRevision() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigRevision configRevision =
@@ -203,11 +214,11 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
      */
     private static void initSlsAssertions(File initSlsFile, String ... contentChunks)
             throws IOException {
-        Assert.assertTrue(initSlsFile.exists());
-        Assert.assertTrue(initSlsFile.isFile());
+        assertTrue(initSlsFile.exists());
+        assertTrue(initSlsFile.isFile());
         String initSlsContents = FileUtils.readFileToString(initSlsFile);
         for (String contentChunk : contentChunks) {
-            Assert.assertTrue(initSlsContents.contains(contentChunk));
+            assertTrue(initSlsContents.contains(contentChunk));
         }
     }
 }

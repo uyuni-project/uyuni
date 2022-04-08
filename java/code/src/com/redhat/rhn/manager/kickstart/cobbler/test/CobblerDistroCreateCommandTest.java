@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
@@ -21,6 +24,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
@@ -36,6 +41,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tree = ksdata.getTree();
@@ -48,6 +54,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreate() throws Exception {
         CobblerDistroCreateCommand cmd = new
             CobblerDistroCreateCommand(tree, user);
@@ -62,6 +69,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreateXenCreated() throws Exception {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
@@ -80,6 +88,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreateXenNotCreated() throws Exception {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.iss.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
@@ -21,12 +23,16 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
 
     protected IssMaster masterDto;
     protected IssSlave slaveDto;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         String masterName = "testMaster" + TestUtils.randomString();
@@ -44,10 +50,12 @@ public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
         slaveDto = (IssSlave) IssFactory.reload(slaveDto);
     }
 
+    @Test
     public void testPermission() throws Exception {
         permissionCheck();
     }
 
+    @Test
     public void testList() throws Exception {
         if (getListName() == null) {
             return;

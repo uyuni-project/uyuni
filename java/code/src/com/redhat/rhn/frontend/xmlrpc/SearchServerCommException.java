@@ -21,7 +21,6 @@ import com.redhat.rhn.FaultException;
 /**
  * error communicating with the search server
  *
- * @version $Revision$
  */
 public class SearchServerCommException extends FaultException {
 

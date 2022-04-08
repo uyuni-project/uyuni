@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.rhnpackage.PackageKey;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -33,23 +30,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop("string", "type")
  *   #struct_end()
  */
-public class PackageKeySerializer extends RhnXmlRpcCustomSerializer {
+public class PackageKeySerializer extends ApiResponseSerializer<PackageKey> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<PackageKey> getSupportedClass() {
         return PackageKey.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        PackageKey key = (PackageKey)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("key", key.getKey());
-        helper.add("type", key.getType().getLabel());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageKey src) {
+        return new SerializationBuilder()
+                .add("key", src.getKey())
+                .add("type", src.getType().getLabel())
+                .build();
     }
-
 }

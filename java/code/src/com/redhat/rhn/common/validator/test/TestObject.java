@@ -20,7 +20,6 @@ import java.util.Date;
 /**
  * TODO: Implement subobject checking
  *
- * $Rev$
  */
 public class TestObject {
 

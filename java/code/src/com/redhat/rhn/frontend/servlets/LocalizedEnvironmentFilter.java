@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -45,8 +46,7 @@ import javax.servlet.jsp.jstl.core.Config;
  */
 public class LocalizedEnvironmentFilter implements Filter {
 
-    private static final Logger LOG = Logger
-            .getLogger(LocalizedEnvironmentFilter.class);
+    private static final Logger LOG = LogManager.getLogger(LocalizedEnvironmentFilter.class);
 
 
     private static final ThreadLocal<Long> CURRENT_SESSION_ID = new ThreadLocal<>();

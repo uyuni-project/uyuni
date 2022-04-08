@@ -52,14 +52,11 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  apache-mybatis
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-BuildRequires:  doc-indexes
-BuildRequires:  hadoop
 BuildRequires:  %{apache_commons_httpclient}
 BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
-BuildRequires:  nutch-core
 BuildRequires:  objectweb-asm
 BuildRequires:  picocontainer
 BuildRequires:  quartz >= 2.0
@@ -73,7 +70,6 @@ BuildRequires:  systemd-rpm-macros
 %endif
 BuildRequires:  uyuni-base-common
 BuildRequires:  zip
-Requires(pre):  doc-indexes
 Requires(pre):  uyuni-base-common
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -82,12 +78,10 @@ Requires:       apache-commons-logging
 Requires:       apache-mybatis
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       hadoop
 Requires:       %{apache_commons_httpclient}
 Requires:       %{oro}
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
-Requires:       nutch-core
 Requires:       objectweb-asm
 Requires:       picocontainer
 Requires:       quartz >= 2.0
@@ -116,12 +110,10 @@ install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
-ln -s -f %{_prefix}/share/rhn/search/indexes/docs $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes/docs
 install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/log/rhn/search
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/nutch
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/
 # using install -m does not preserve the symlinks
@@ -181,7 +173,6 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes
-%{_var}/lib/rhn/search/indexes/docs
 %dir %attr(755, root, root) %{_var}/lib/rhn
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search

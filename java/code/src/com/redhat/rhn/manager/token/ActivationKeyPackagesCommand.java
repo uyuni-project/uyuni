@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.TokenPackageFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ActivationKeyPackagesCommand {
     private static final String NEWLINE = "\n";
     private static final String DOT = ".";
 
-    private static Logger log = Logger.getLogger(ActivationKeyPackagesCommand.class);
+    private static Logger log = LogManager.getLogger(ActivationKeyPackagesCommand.class);
 
     private ActivationKey activationKey;
 

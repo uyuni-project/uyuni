@@ -14,16 +14,18 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 
 
 /**
@@ -33,21 +35,23 @@ public class ApplyStatesActionResultTest extends RhnBaseTestCase {
 
     /**
      * Tests getResult Method for invalid Output
-     * @throws AssertionFailedError exception if test fails
+     * @throws AssertionError exception if test fails
      */
-    public void testGetOptionalEmptyForMalformedOutput() throws AssertionFailedError {
+    @Test
+    public void testGetOptionalEmptyForMalformedOutput() throws AssertionError {
         ApplyStatesActionResult stateResult = new ApplyStatesActionResult();
         stateResult.setOutput("Gibberish".getBytes(StandardCharsets.UTF_8));
         Optional<List<StateResult>> result = stateResult.getResult();
 
-        Assert.assertFalse(result.isPresent());
+        assertFalse(result.isPresent());
     }
 
     /**
      * Tests getResult Method for valid Output
-     * @throws AssertionFailedError exception if test fails
+     * @throws AssertionError exception if test fails
      */
-    public void testResultIsPresentForValidStateRun() throws AssertionFailedError {
+    @Test
+    public void testResultIsPresentForValidStateRun() throws AssertionError {
         ApplyStatesActionResult stateResult = new ApplyStatesActionResult();
 
         String stdout  =
@@ -70,6 +74,6 @@ public class ApplyStatesActionResultTest extends RhnBaseTestCase {
 
         Optional<List<StateResult>> result = stateResult.getResult();
 
-        Assert.assertTrue(result.isPresent());
+        assertTrue(result.isPresent());
     }
 }

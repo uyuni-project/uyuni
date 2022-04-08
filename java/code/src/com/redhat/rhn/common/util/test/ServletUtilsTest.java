@@ -15,12 +15,18 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.ServletUtils;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.ServletTestUtils;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -47,9 +53,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
     private String param2Name;
     private String param2Value;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         mockRequest = mock(HttpServletRequest.class);
 
         param1Name = "param1";
@@ -76,6 +81,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         return URLEncoder.encode(string, "UTF-8");
     }
 
+    @Test
     public void testRequestPath() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setRequestURL("http://localhost:8080/rhnjava/index.jsp");
@@ -83,6 +89,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/rhnjava/index.jsp", ServletUtils.getRequestPath(request));
     }
 
+    @Test
     public void testPathWithParams() {
         Map<String, Object> params = new HashMap<>();
         params.put("a", new Object[] {1, 3});
@@ -100,6 +107,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals(expectedParams, actualParams);
     }
 
+    @Test
     public void testPathWithParamsValueUrlEncoding() {
         Map<String, Object> params = new HashMap<>();
         params.put("key", "some; value&");
@@ -107,6 +115,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?key=some%3B+value%26", result);
     }
 
+    @Test
     public void testPathWithParamsNullValue() {
         Map<String, Object> params = new HashMap<>();
         params.put("key", null);
@@ -114,6 +123,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo", result);
     }
 
+    @Test
     public void testPathWithParamsArrayValueUrlEncoding() {
         Map<String, Object> params = new HashMap<>();
         params.put("key", new Object[] {"value;", "value&", "$", "normal"});
@@ -121,6 +131,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?key=value%3B&key=value%26&key=%24&key=normal", result);
     }
 
+    @Test
     public void testPathWithParamsListValue() {
         Map<String, Object> params = new HashMap<>();
         List<String> values = new ArrayList<>();
@@ -134,6 +145,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
 
     }
 
+    @Test
     public void testPathWithParamsKeyUrlEncoding() {
         Map<String, Object> params = new HashMap<>();
         params.put("a;", "somevalue");
@@ -141,6 +153,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?a%3B=somevalue", result);
     }
 
+    @Test
     public void testPathWithParamsKeyArrayUrlEncoding() {
         Map<String, Object> params = new HashMap<>();
         params.put("a;", new Object[] {"1", "2", "3"});
@@ -148,6 +161,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?a%3B=1&a%3B=2&a%3B=3", result);
     }
 
+    @Test
     public final void testRequestParamsToQueryStringWithNoParams() throws Exception {
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterNames();
@@ -160,6 +174,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals(0, queryString.length());
     }
 
+    @Test
     public final void testRequestParamsToQueryStringWithParams() throws Exception {
         final Hashtable<String, String> parameterMap = createParameterMap();
         context().checking(new Expectations() { {

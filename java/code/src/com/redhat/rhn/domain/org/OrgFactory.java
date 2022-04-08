@@ -32,7 +32,8 @@ import com.redhat.rhn.manager.kickstart.KickstartLister;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.sql.Types;
@@ -50,7 +51,7 @@ public class OrgFactory extends HibernateFactory {
 
 
     private static OrgFactory singleton = new OrgFactory();
-    private static Logger log = Logger.getLogger(OrgFactory.class);
+    private static Logger log = LogManager.getLogger(OrgFactory.class);
 
     private OrgFactory() {
         super();

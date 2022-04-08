@@ -38,7 +38,6 @@ import java.util.zip.GZIPOutputStream;
 
 /**
 *
-* @version $Rev $
 *
 */
 public class DebRepositoryWriter extends RepositoryWriter {

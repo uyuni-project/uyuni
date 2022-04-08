@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Handles listing of kickstart distributions
  *
- * @version $Rev $
  */
 public class ViewTreesAction extends RhnAction implements Listable {
     /**

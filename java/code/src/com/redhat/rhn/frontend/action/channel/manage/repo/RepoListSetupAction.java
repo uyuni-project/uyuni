@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RepoListSetupAction : class to list repos
- * @version $Rev: 1 $
  */
 public class RepoListSetupAction extends RhnAction {
 

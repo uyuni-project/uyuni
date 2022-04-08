@@ -34,7 +34,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 
@@ -132,8 +133,7 @@ public class KickstartData {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger
-            .getLogger(KickstartData.class);
+    private static Logger logger = LogManager.getLogger(KickstartData.class);
 
     /**
      * Getter for id

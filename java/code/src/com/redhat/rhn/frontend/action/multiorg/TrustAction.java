@@ -109,7 +109,6 @@ abstract class FormDispatcher extends RhnAction {
 
 /**
  * UserListSetupAction
- * @version $Rev: 101893 $
  */
 public class TrustAction extends FormDispatcher {
 

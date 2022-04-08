@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.frontend.taglibs.LocalizedSubmitTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -21,15 +23,17 @@ import com.redhat.rhn.testing.TagTestUtils;
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
 
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
 /**
  * LocalizedSubmitTagTest
- * @version $Rev: 694 $
  */
 public class LocalizedSubmitTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testTagOutputDefault() {
         LocalizedSubmitTag ltag = new LocalizedSubmitTag();
         ltag.setValueKey("none.message");
@@ -55,6 +59,7 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutputWithStyle() {
         LocalizedSubmitTag ltag = new LocalizedSubmitTag();
         ltag.setValueKey("none.message");

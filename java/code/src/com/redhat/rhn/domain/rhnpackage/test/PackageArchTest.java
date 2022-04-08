@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageArchTest
@@ -29,6 +34,7 @@ public class PackageArchTest extends RhnBaseTestCase {
      * is only going to the db once.
      * @throws Exception HibernateException
      */
+    @Test
     public void testPackageArch() throws Exception {
 
         Long testid = 100L;
@@ -40,6 +46,7 @@ public class PackageArchTest extends RhnBaseTestCase {
         assertEquals(p1.getLabel(), p2.getLabel());
     }
 
+    @Test
     public void testToUniversalArchString() {
         PackageArch archx86 = PackageFactory.lookupPackageArchByLabel("x86_64");
         PackageArch archAmd64 = PackageFactory.lookupPackageArchByLabel("amd64-deb");

@@ -29,6 +29,8 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * DiffActionTest
  */
@@ -60,6 +62,7 @@ public class ConfigListActionTest extends RhnMockStrutsTestCase {
         verifyPageList(ConfigFileNameDto.class);
     }
 
+    @Test
     public void testExecute() throws Exception {
         doTheTest("/systems/ssm/config/Diff");
         doTheTest("/systems/ssm/config/Deploy");

@@ -17,6 +17,10 @@ package com.redhat.rhn.domain.image.test;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -29,6 +33,8 @@ import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +42,7 @@ import java.util.Set;
 
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testLookupById() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -49,6 +56,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdAndOrg() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -69,6 +77,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdsAndOrg() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         ImageProfile p1 = createImageProfile("myprofile1", store, user);
@@ -102,6 +111,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(p1, lookup.get(0));
     }
 
+    @Test
     public void testLookupByLabelAndOrg() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -119,6 +129,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(ImageProfileFactory.lookupByLabelAndOrg("myprofile", org).isPresent());
     }
 
+    @Test
     public void testListImageProfiles() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -128,6 +139,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(profile, list.get(0));
     }
 
+    @Test
     public void testProfileCustomData() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);

@@ -16,7 +16,8 @@ package com.redhat.rhn.common.validator;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *  The <code>LongConstraint</code> class represents a constraint of type Long,
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 public class LongConstraint extends RequiredIfConstraint {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(LongConstraint.class);
+    private static Logger log = LogManager.getLogger(LongConstraint.class);
 
     /** Minimum inclusive value allowed */
     private Long minInclusive;

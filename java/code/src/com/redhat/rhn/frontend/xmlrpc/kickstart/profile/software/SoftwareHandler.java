@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +58,7 @@ public class SoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype
      * #array_single("string", "Get a list of a kickstart profile's software packages")
      */
+    @ReadOnly
     public List<String> getSoftwareList(User loggedInUser, String ksLabel) {
 
         checkKickstartPerms(loggedInUser);
@@ -227,6 +230,7 @@ public class SoftwareHandler extends BaseHandler {
      *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
      *          #struct_end()
      */
+    @ReadOnly
     public Map<String, Boolean> getSoftwareDetails(User loggedInUser, String ksLabel) {
         KickstartData ksData = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 ksLabel, loggedInUser.getOrg().getId());

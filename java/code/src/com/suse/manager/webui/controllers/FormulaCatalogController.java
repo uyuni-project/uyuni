@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -62,9 +63,9 @@ public class FormulaCatalogController {
 
         // Formula catalog API
         get("/manager/api/formula-catalog/data",
-                withOrgAdmin(FormulaCatalogController::data));
+                asJson(withOrgAdmin(FormulaCatalogController::data)));
         get("/manager/api/formula-catalog/formula/:name/data",
-                withOrgAdmin(FormulaCatalogController::detailsData));
+                asJson(withOrgAdmin(FormulaCatalogController::detailsData)));
     }
 
     /**
@@ -89,7 +90,6 @@ public class FormulaCatalogController {
      * @return the JSON data
      */
     public static String data(Request request, Response response, User user) {
-        response.type("application/json");
         return GSON.toJson(FormulaFactory.listFormulaNames());
     }
 
@@ -121,8 +121,6 @@ public class FormulaCatalogController {
      */
     public static String detailsData(Request request, Response response, User user) {
         String formulaName = request.params("name");
-
-        response.type("application/json");
         return GSON.toJson(FormulaFactory.getMetadata(formulaName));
     }
 }

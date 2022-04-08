@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -34,7 +35,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger logger = Logger.getLogger(DataSourceParserHelper.class);
+    private static Logger logger = LogManager.getLogger(DataSourceParserHelper.class);
 
     private HashMap<String, ParsedQueryImpl> internalQueries;
     private HashMap<String, ParsedMode> modes;

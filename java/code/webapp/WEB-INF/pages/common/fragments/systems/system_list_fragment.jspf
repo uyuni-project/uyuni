@@ -15,9 +15,14 @@
   </c:otherwise>
 </c:choose>
 
-<c:if test="${current.proxy}">
-  <rhn:icon type="header-proxy" title="systemlist.jsp.isproxy" />
-</c:if>
+<c:choose>
+  <c:when test="${current.proxy}">
+    <rhn:icon type="header-proxy" title="systemlist.jsp.isproxy" />
+  </c:when>
+  <c:when test="${current.mgrServer}">
+    <rhn:icon type="header-mgr-server" title="systemlist.jsp.ismgrserver" />
+  </c:when>
+</c:choose>
 
 <c:choose>
   <c:when test="${empty current.name}">

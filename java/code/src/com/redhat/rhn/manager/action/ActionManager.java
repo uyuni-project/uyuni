@@ -105,7 +105,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ import java.util.Set;
  * Objects.
  */
 public class ActionManager extends BaseManager {
-    private static Logger log = Logger.getLogger(ActionManager.class);
+    private static Logger log = LogManager.getLogger(ActionManager.class);
 
     // List of package names that we want to make sure we dont
     // remove when doing a package sync.  Never remove running kernel

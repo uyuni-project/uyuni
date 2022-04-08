@@ -18,7 +18,8 @@ import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class MessageQueueThreadPool extends ThreadPoolExecutor {
 
     /* Logger for this class */
-    private final Logger log = Logger.getLogger(MessageQueueThreadPool.class);
+    private final Logger log = LogManager.getLogger(MessageQueueThreadPool.class);
 
     /* A warning is logged if the queue is growing bigger than this */
     private static final int QUEUE_SIZE_WARNING_THRESHOLD = 100;

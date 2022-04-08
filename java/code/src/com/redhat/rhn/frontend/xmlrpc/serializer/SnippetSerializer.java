@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -36,25 +33,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "file", "The local path to the file containing this snippet.")
  *   #struct_end()
  */
-public class SnippetSerializer extends RhnXmlRpcCustomSerializer {
+public class SnippetSerializer extends ApiResponseSerializer<CobblerSnippet> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CobblerSnippet> getSupportedClass() {
         return CobblerSnippet.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        CobblerSnippet snippet = (CobblerSnippet)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", snippet.getName());
-        helper.add("contents", snippet.getContents());
-        helper.add("fragment", snippet.getFragment());
-        helper.add("file", snippet.getPath().getAbsolutePath());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(CobblerSnippet src) {
+        return new SerializationBuilder()
+                .add("name", src.getName())
+                .add("contents", src.getContents())
+                .add("fragment", src.getFragment())
+                .add("file", src.getPath().getAbsolutePath())
+                .build();
     }
-
 }

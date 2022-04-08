@@ -15,6 +15,10 @@
 package com.suse.manager.matcher.test;
 
 import static java.util.Collections.singleton;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -60,6 +64,8 @@ import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -93,6 +99,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -111,6 +118,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         );
     }
 
+    @Test
     public void testSystemsToJson() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -193,12 +201,14 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(sumaItself.getProductIds().contains(1899L));
     }
 
+    @Test
     public void testSystemsToJsonIssSlave() {
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, false);
         assertTrue(result.stream().noneMatch(
                 s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID)));
     }
 
+    @Test
     public void testSystemsToJsonMonitoringEnabled() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, true);
@@ -219,6 +229,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
     }
 
+    @Test
     public void testSystemsToJsonIssMasterWithMonitoring() {
         // x86_64
         List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, true);
@@ -239,6 +250,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals(new HashSet<>(Arrays.asList(1897L, 1201L)), sumaItself.getProductIds());
     }
 
+    @Test
     public void testProductsToJson() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -261,6 +273,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testLifecycleProductsReporting() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -302,6 +315,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testMonitoringProductsReporting() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -369,6 +383,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      *
      * @throws java.lang.Exception if anything goes wrong
      */
+    @Test
     public void testFilteringToolsProducts() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -390,6 +405,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertFalse(system.getProductIds().contains(instPrd.getSUSEProduct().getProductId()));
     }
 
+    @Test
     public void testSubscriptionsToJson() throws Exception {
         withSetupContentSyncManager(JARPATH, () -> {
             List<SubscriptionJson> result = new MatcherJsonIO().getJsonSubscriptions();
@@ -416,6 +432,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testLifecycleProductsInSubscriptions() throws Exception {
         withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
             List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
@@ -487,6 +504,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testVirtualHostManagersToJson() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -522,6 +540,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertTrue(virtualizationGroup.getVirtualGuestIds().containsAll(guestIds));
     }
 
+    @Test
     public void testPinsToJson() throws Exception {
         File subJson = new File(TestUtils.findTestData(
                 new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());

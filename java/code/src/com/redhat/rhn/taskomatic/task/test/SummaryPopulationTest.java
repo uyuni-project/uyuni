@@ -14,13 +14,18 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SummaryPopulationTest
  */
 public class SummaryPopulationTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() {
         assertTrue(true);
 

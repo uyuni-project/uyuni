@@ -18,13 +18,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -47,33 +44,25 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc($date, "last_modified","Last Modified Date")
  * #struct_end()
  */
-public class ConfigFileNameDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class ConfigFileNameDtoSerializer extends ApiResponseSerializer<ConfigFileNameDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ConfigFileNameDto> getSupportedClass() {
         return ConfigFileNameDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ConfigFileNameDto dto = (ConfigFileNameDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("type", dto.getConfigFileType());
-        helper.add("path", dto.getPath());
-        ConfigChannelType type =
-            ConfigChannelType.lookup(dto.getConfigChannelType());
-        helper.add("channel_type", type);
+    @Override
+    public SerializedApiResponse serialize(ConfigFileNameDto src) {
+        SerializationBuilder builder = new SerializationBuilder();
+        builder.add("type", src.getConfigFileType());
+        builder.add("path", src.getPath());
+        ConfigChannelType type = ConfigChannelType.lookup(src.getConfigChannelType());
+        builder.add("channel_type", type);
         if (type.equals(ConfigChannelType.normal())) {
-            helper.add("channel_label", dto.getConfigChannelLabel());
+            builder.add("channel_label", src.getConfigChannelLabel());
         }
-        helper.add("last_modified", dto.getLastModifiedDate());
-        helper.writeTo(output);
+        builder.add("last_modified", src.getLastModifiedDate());
+        return builder.build();
     }
 
     /**

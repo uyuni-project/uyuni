@@ -23,7 +23,6 @@ import com.redhat.rhn.FaultException;
 /**
  * user not updated
  *
- * @version definition($Rev$)/template($Rev$)
  */
 public class UserNotUpdatedException extends FaultException  {
 

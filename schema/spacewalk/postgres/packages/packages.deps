@@ -56,7 +56,7 @@ rhn_server.pkb          :: rhnServerChannel rhnConfigFileName \
                            rhnServerGroupMembers rhnServerPackage rhnServer \
                            rhnServerCustomDataValue rhnCustomDataKey \
                            rhnUserManagedServerGroups rhnServerEntitlementVirtual \
-                           rhnSatelliteInfo rhnProxyInfo \
+                           suseMgrServerInfo rhnProxyInfo \
                            lookup_functions lookup_first_matching_cf \
                            set_ks_session_history_message \
                            rhnPackage rhnChannelNewestPackage \

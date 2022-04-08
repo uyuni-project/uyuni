@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * IndexAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class GenericIndexAction extends RhnAction {
 

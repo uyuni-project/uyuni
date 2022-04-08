@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -31,6 +35,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
      * Test tag output
      * @throws java.lang.Exception something bad happened
      */
+    @Test
     public void testTagOutput() throws Exception {
 
         FormatDateTag ht = new FormatDateTag();
@@ -53,6 +58,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutputNullValue() throws Exception {
 
         FormatDateTag ht = new FormatDateTag();

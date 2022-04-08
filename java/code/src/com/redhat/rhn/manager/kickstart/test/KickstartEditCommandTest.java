@@ -14,16 +14,24 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartEditCommandTest - test for KickstartDetailsCommand
  */
 public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testKickstartEditCommand() throws Exception {
 
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
@@ -41,6 +49,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         assertEquals(command.getLabel(), k2.getLabel());
     }
 
+    @Test
     public void testKickstartLabel() throws Exception {
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setLabel("shaggy-ks-rhel4");
@@ -48,6 +57,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         assertEquals(ksdata.getLabel(), command.getLabel());
     }
 
+    @Test
     public void testOrgDefault() throws Exception {
         assertFalse(ksdata.isOrgDefault());
         KickstartData k1 = KickstartDataTest.createKickstartWithChannel(user.getOrg());

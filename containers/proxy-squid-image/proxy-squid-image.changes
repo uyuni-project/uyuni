@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr  1 20:37:42 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Adapt caching for big images and initrd/kernel files
+  Part of saltboot containerization workflow
+
+-------------------------------------------------------------------
 Tue Mar 15 14:42:01 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Initial version 

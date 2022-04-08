@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * TreeCreate class for creating Kickstart Trees
- * @version $Rev: 1 $
  */
 public abstract class BaseTreeAction extends BaseEditAction {
 

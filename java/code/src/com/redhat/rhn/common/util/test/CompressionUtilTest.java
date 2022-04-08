@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.util.CompressionUtil;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
 
 public class CompressionUtilTest extends RhnBaseTestCase {
 
+    @Test
     public void testCompress() {
         String toComp = "<xml> my foo xml</xml>";
         byte[] gzip = CompressionUtil.gzipCompress(toComp);

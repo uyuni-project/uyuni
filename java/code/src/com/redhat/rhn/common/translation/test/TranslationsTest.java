@@ -12,11 +12,17 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.common.translation.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TranslationsTest extends RhnBaseTestCase {
+    @Test
     public void testNoTranslator() throws Exception {
         try {
             // Try a translation that should be impossible.  This should make
@@ -37,6 +44,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testlongDateTranslation() throws Exception {
 
         long current = System.currentTimeMillis();
@@ -45,6 +53,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         assertEquals(new Date(current), translated);
     }
 
+    @Test
     public void testFailedTranslation() throws Exception {
         try {
             TestTranslations.convert("hmmm", java.lang.Integer.class);
@@ -56,6 +65,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testPrivateTranslator() throws Exception {
         try {
             TestTranslations.convert(1, java.lang.Long.class);
@@ -66,6 +76,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testListToString() {
         List list = new ArrayList();
         list.add(10);

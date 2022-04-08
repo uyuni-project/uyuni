@@ -22,7 +22,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 public class AdminPaygHandler extends BaseHandler {
 
-    private static final Logger LOG = Logger.getLogger(AdminPaygHandler.class);
+    private static final Logger LOG = LogManager.getLogger(AdminPaygHandler.class);
 
     private PaygAdminManager paygAdminManager;
 

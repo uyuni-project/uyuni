@@ -16,6 +16,10 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Optional.empty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -29,6 +33,9 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
 import com.suse.manager.webui.utils.ViewHelper;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 public class ResponseMappersTest extends BaseTestCaseWithUser {
@@ -36,6 +43,7 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
     private ContentManager manager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = new ContentManager();
@@ -45,6 +53,7 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
     /**
      * Test if a project's properties are properly mapped
      */
+    @Test
     public void testMapProjectPropertiesFromDB() throws Exception {
         ContentProject cp = new ContentProject("myproject", "My Project", "My CLM project", user.getOrg());
         ContentProjectFactory.save(cp);

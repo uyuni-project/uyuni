@@ -14,25 +14,32 @@
  */
 package com.redhat.rhn.common.errors.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.PermissionExceptionHandler;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -43,22 +50,24 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
-    public void setUp() {
+    @BeforeEach
+    public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);
         MessageQueue.startMessaging();
     }
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
          * Turn off logging and tracebacks Logging complains and sends warnings
          * (expected) Tracebacks will get sent to root@localhost
          */
-        Logger log = Logger.getLogger(PermissionExceptionHandler.class);
+        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
         Level orig = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail", "");
         try {
@@ -93,11 +102,12 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
             // Turn tracebacks and logging back on
             Thread.sleep(1000); // wait for message to be sent
             c.setString("web.traceback_mail", mail);
-            log.setLevel(orig);
+            Configurator.setLevel(this.getClass().getName(), orig);
         }
     }
 
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

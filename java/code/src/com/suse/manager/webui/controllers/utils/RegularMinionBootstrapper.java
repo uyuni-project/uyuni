@@ -28,7 +28,8 @@ import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.wheel.Key;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.Optional;
  */
 public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static final Logger LOG = Logger.getLogger(RegularMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(RegularMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use

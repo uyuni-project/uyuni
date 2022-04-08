@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task.gatherer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -30,6 +36,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.gatherer.HostJson;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +54,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -60,6 +70,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * about the id of the Virtual Host Manager and the hostIdentifier (reported from
      * gatherer).
      */
+    @Test
     public void testCreateServer() {
         Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
@@ -76,6 +87,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that the VirtualHostManagerProcessor creates a new VirtualInstance entity
      * for a host reported from gatherer.
      */
+    @Test
     public void testCreateVirtualInstance() {
         Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
@@ -102,6 +114,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testServerExists() throws Exception {
         // create a host
         Server existingHost = ServerTestUtils
@@ -121,6 +134,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testCreateVirtInstanceWithExistingServer() throws Exception {
         // create a host
         Server existingHost = ServerTestUtils
@@ -149,6 +163,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testExistingVirtInstanceWithExistingServer() throws Exception {
         // create a host
         Server existingHost =
@@ -177,6 +192,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * entity for VM(s) reported from gatherer and that this entity is correctly linked with
      * the host server.
      */
+    @Test
     public void testGuestVirtInstanceInserted() {
         Map<String, HostJson> data = createHostData("esxi_host_1",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
@@ -212,6 +228,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testGuestVirtInstanceUpdated() throws Exception {
         createRegisteredGuestWithForeignHost("42309db29d991a2f681f74f4c851f4bd", "101-existing_host_id");
 
@@ -250,6 +267,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertFalse(host.getGuests().contains(guest));
     }
 
+    @Test
     public void testGuestNameUpdated() {
         Map<String, HostJson> data = createHostData("my-host-id",
                 pairsToMap("old name", "38a4e1c14d8e440780b3b59745ba9ce5"));
@@ -268,6 +286,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testGuestStateSetToUnknown() throws Exception {
         VirtualInstance guest =
                 createRegisteredGuestWithForeignHost("1d7d250e9fca4d3ebb04099fe9a3e129", "101-hostid");
@@ -292,6 +311,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
         // guest already registered by usual registration process
         String vmUuid = "51283028dab94084b66117b5bf1d3661";
@@ -332,6 +352,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * VirtualHostManagers are both processed, but no duplicate VirtualInstances should
      * be created for the guest in the database.).
      */
+    @Test
     public void testTwoVHMsSameVM() {
         Map<String, HostJson> data = createHostData("esxi_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
@@ -359,6 +380,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that the virtual instance type is correctly set for the host and that its
      * guests inherit this virtualization type.
      */
+    @Test
     public void testGuestVirtualizationType() {
         VirtualInstanceType fullyVirtType =
                 VirtualInstanceFactory.getInstance().getFullyVirtType();
@@ -385,6 +407,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     /**
      * Tests that VirtualHostManagerProcessor removes hyphens from UUIDs from guests.
      */
+    @Test
     public void testUuidNormalization() {
         Map<String, HostJson> data = createHostData("foreign_system_id",
                 pairsToMap("my vm", "06b6-0065-9810-4186b513b33bd6190360"));
@@ -405,6 +428,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testMultipleUuidInDb() throws Exception {
         String guestUuid = "00e0997d581a48ad8defc2c6769bedec";
         // create a GUEST virt. instances with same uuid
@@ -441,6 +465,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testSwappedUuidInDb() throws Exception {
         String guestUuid = "420ea57f7035ee1de2c1e23fe29f5ca7";
         String swappedUuid = "7fa50e4235701deee2c1e23fe29f5ca7";
@@ -479,6 +504,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * VirtualHostManagerProcessor is run again on the same gatherer data. We check that the
      * guest still belongs to the first host and the name of this host is unchanged.
      */
+    @Test
     public void testRenameServer() {
         Map<String, HostJson> data = createHostData("esxi_host_1_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
@@ -508,6 +534,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that VirtualHostManagerProcessor removes VirtualInstance
      * entity for VM(s) when not anymore reported from gatherer.
      */
+    @Test
     public void testGuestRemoved() {
 
         HostJson myHost = createMinimalHost("esx_host_1",
@@ -550,6 +577,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that the VirtualHostManagerProcessor does not automatically create a new Server entity
      * for a Kubernetes virtual host manager.
      */
+    @Test
     public void testCreateNodeInfo() {
         Map<String, HostJson> data = createHostData("kubernetes_host_1_id", "Kubernetes", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
@@ -571,6 +599,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals("x86_64-redhat-linux", nodeInfo.getNodeArch().getLabel());
     }
 
+    @Test
     public void testRemoveNodeInfo() {
         Map<String, HostJson> dataCreate = new HashMap<>();
         dataCreate.putAll(createHostData("kubernetes_host_1_id", "Kubernetes", null));

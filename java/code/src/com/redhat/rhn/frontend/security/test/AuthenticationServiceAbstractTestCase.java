@@ -15,8 +15,9 @@
 package com.redhat.rhn.frontend.security.test;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -38,23 +39,9 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     protected String[] requestParamValues;
     private String requestUrl;
 
-    /**
-     * @param name The test case name
-     */
-    protected AuthenticationServiceAbstractTestCase(String name) {
-        super(name);
-    }
 
-
-    protected AuthenticationServiceAbstractTestCase() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
         mockPxtDelegate = mock(PxtSessionDelegate.class);

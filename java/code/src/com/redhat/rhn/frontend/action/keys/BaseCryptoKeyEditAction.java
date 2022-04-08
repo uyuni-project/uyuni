@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * BaseCryptoKeyEditAction - abstract base class for cryptokeys
  *
- * @version $Rev: 1 $
  */
 public abstract class BaseCryptoKeyEditAction extends RhnAction {
 

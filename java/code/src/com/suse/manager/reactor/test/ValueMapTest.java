@@ -14,19 +14,24 @@
  */
 package com.suse.manager.reactor.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.manager.reactor.utils.ValueMap;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
  */
-public class ValueMapTest extends TestCase {
+public class ValueMapTest  {
 
+    @Test
     public void testGetValueAsMaxLengthString() {
 
         Map<String, Object> map = new HashMap<>();
@@ -41,6 +46,7 @@ public class ValueMapTest extends TestCase {
         assertEquals("", vmap.getValueAsString(null, 1));
     }
 
+    @Test
     public void testGetValueAsCollection() {
         Map<String, Object> map = new HashMap<>();
         map.put("list", Arrays.asList("one"));

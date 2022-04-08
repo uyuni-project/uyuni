@@ -15,6 +15,13 @@
 
 package com.redhat.rhn.frontend.xmlrpc.ansible.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -54,28 +61,35 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
+@ExtendWith(JUnit5Mockery.class)
 public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private AnsibleHandler handler;
 
     private static TaskomaticApi taskomaticApi;
-    private final Mockery context = new JUnit3Mockery() {{
+
+    @RegisterExtension
+    protected final JUnit5Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
     private SaltApi saltApi;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -86,6 +100,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         handler = new AnsibleHandler(manager);
     }
 
+    @Test
     public void testSchedulePlaybook() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
@@ -112,6 +127,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertFalse(details.isTestMode());
     }
 
+    @Test
     public void testSchedulePlaybookTestMode() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
@@ -139,6 +155,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertTrue(details.isFlushCache());
     }
 
+    @Test
     public void testCreateAndGetAnsiblePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
@@ -171,6 +188,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertEquals(playbookPath, handler.lookupAnsiblePathById(admin, playbookPath.getId().intValue()));
     }
 
+    @Test
     public void testCreateInvalidAnsiblePath() {
         try {
             handler.createAnsiblePath(admin, Map.of());
@@ -181,6 +199,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testUpdateAnsiblePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
@@ -197,6 +216,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
     }
 
+    @Test
     public void testUpdateInvalidAnsiblePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
@@ -217,6 +237,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemoveAnsiblePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
@@ -239,6 +260,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemoveInvalidAnsiblePath() throws Exception {
         try {
             handler.lookupAnsiblePathById(admin, -1234);
@@ -249,6 +271,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testFetchPlaybookContentsInvalidPath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
         try {
@@ -260,6 +283,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testFetchPlaybookContentsInvalidRelPath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
         AnsiblePath playbookPath = handler.createAnsiblePath(
@@ -279,6 +303,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testFetchPlaybookContents() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(admin);
         AnsiblePath playbookPath = handler.createAnsiblePath(

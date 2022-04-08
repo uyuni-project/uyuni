@@ -22,6 +22,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
@@ -97,6 +99,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $ImageStoreTypeSerializer #array_end()
      */
+    @ReadOnly
     public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageStoreFactory.listImageStoreTypes();
@@ -111,6 +114,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $ImageStoreSerializer #array_end()
      */
+    @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream().collect(Collectors.toList());
@@ -127,6 +131,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype $ImageStoreSerializer
      */
+    @ReadOnly
     public ImageStore getDetails(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
 

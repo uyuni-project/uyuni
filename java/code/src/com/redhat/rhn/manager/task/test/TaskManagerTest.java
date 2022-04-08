@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -26,11 +28,14 @@ import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.Map;
 
 public class TaskManagerTest extends JMockBaseTestCaseWithUser {
 
+    @Test
     public void testGetChannelPackageExtraTags() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(user);
 

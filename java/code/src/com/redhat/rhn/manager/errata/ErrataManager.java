@@ -84,7 +84,8 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.utils.MinionServerUtils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -114,7 +115,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class ErrataManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(ErrataManager.class);
+    private static Logger log = LogManager.getLogger(ErrataManager.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     public static final String DATE_FORMAT_PARSE_STRING = "yyyy-MM-dd";
     public static final long MAX_ADVISORY_RELEASE = 9999;
@@ -1455,7 +1456,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void cloneErrataApiAsync(Channel chan, List<Long> errata,
             User user, boolean inheritPackages) {
-        Logger.getLogger(ErrataManager.class).debug("Cloning");
+        LogManager.getLogger(ErrataManager.class).debug("Cloning");
         ChannelFactory.lock(chan);
         for (long eid : errata) {
             NewCloneErrataEvent neve = new NewCloneErrataEvent(chan, eid, user,

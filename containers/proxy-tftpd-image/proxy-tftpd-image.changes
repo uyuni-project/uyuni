@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr  1 20:38:48 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Change tftp server for smart tftp wrapper
+  Part of saltboot containerization workflow
+
+-------------------------------------------------------------------
 Mon Mar 28 09:34:34 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
 
 - Finalize server configuration and start command

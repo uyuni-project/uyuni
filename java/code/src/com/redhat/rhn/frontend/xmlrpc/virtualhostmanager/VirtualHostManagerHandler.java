@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 
@@ -49,6 +50,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *         $VirtualHostManagerSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<VirtualHostManager> listVirtualHostManagers(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return VirtualHostManagerFactory.getInstance()
@@ -139,6 +141,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "Virtual Host Manager label")
      * @xmlrpc.returntype $VirtualHostManagerSerializer
      */
+    @ReadOnly
     public VirtualHostManager getDetail(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
         return VirtualHostManagerFactory.getInstance().lookupByLabel(label);
@@ -154,6 +157,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array_single("string", "moduleName")
      */
+    @ReadOnly
     public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return new GathererRunner().listModules().keySet();
@@ -173,6 +177,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "moduleName", "The name of the module")
      * @xmlrpc.returntype #param_desc("map", "module_params", "module parameters")
      */
+    @ReadOnly
     public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {
         ensureOrgAdmin(loggedInUser);
 

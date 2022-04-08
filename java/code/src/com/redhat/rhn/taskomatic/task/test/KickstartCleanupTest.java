@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -35,17 +38,20 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Statement;
 import java.util.Date;
 
 public class KickstartCleanupTest extends RhnBaseTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         verifyDatasourceConfig();
     }
 
+    @Test
     public void testHungKickstart() throws Exception {
 
         Session session = HibernateFactory.getSession();
@@ -66,6 +72,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         assertTrue(ksession.getState().getId().equals(failedState.getId()));
     }
 
+    @Test
     public void testAbandonedKickstart() throws Exception {
         Session session = HibernateFactory.getSession();
         KickstartSessionState failedState = lookupByLabel("failed");

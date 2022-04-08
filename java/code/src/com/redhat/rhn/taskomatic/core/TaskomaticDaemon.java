@@ -21,7 +21,8 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class TaskomaticDaemon {
 
     public static final int ERR_SCHED_CREATE = -5;
     public static final int SUCCESS = Integer.MIN_VALUE;
-    public static final Logger LOG = Logger.getLogger(TaskomaticDaemon.class);
+    public static final Logger LOG = LogManager.getLogger(TaskomaticDaemon.class);
 
     private Map masterOptionsMap = new HashMap();
     private SchedulerKernel kernel;

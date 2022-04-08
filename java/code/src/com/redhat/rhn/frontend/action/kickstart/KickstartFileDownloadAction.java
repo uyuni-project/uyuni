@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartFileDownloadAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class KickstartFileDownloadAction extends BaseKickstartEditAction {
 

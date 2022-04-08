@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -45,6 +49,9 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,6 +67,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/kickstart/ScheduleWizard");
@@ -89,6 +97,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         ctx.setLocale(Locale.getDefault());
     }
 
+    @Test
     public void testStepOneWithProxy() throws Exception {
         addProxy(user, s);
         actionPerform();
@@ -109,6 +118,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         return proxy;
     }
 
+    @Test
     public void testStepOne() throws Exception {
         actionPerform();
         verifyNoActionErrors();
@@ -116,10 +126,12 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(ScheduleKickstartWizardAction.HAS_PROFILES));
     }
 
+    @Test
     public void testStepTwo() throws Exception {
         executeStepTwo();
     }
 
+    @Test
     public void testStepTwoWithProxy() throws Exception {
        Server proxy = addProxy(user, s);
         /** Assign a proxy host, this would be the case
@@ -232,10 +244,12 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         }
     }
 
+    @Test
     public void testStepThreeNoProxy() throws Exception {
         executeStepThree(false);
     }
 
+    @Test
     public void testStepThreeWithProxy() throws Exception {
          executeStepThree(true);
      }

@@ -45,7 +45,6 @@ public class MinionActionChainCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        minionActionUtils.cleanupMinionActionChains();
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

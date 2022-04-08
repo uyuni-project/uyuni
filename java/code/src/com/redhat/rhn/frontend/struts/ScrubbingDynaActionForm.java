@@ -24,7 +24,6 @@ import java.util.Set;
 
 /**
  * A DynaActionForm which knows how to scrub its input for malicious content.
- * @version $Rev $
  */
 public class ScrubbingDynaActionForm extends DynaActionForm {
 

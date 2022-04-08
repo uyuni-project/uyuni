@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -29,6 +34,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +48,14 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
     private ChannelOrgHandler handler = new ChannelOrgHandler();
     private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(admin);
     }
 
+    @Test
     public void testList() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -92,6 +102,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundOrg3);
     }
 
+    @Test
     public void testEnableAccess() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -123,6 +134,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
         assertTrue(channel.getTrustedOrgs().contains(org3));
     }
 
+    @Test
     public void testDisableAccess() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);

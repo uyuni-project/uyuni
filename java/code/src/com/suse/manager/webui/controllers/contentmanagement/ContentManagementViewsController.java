@@ -35,7 +35,8 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class ContentManagementViewsController {
 
-    private static Logger log = Logger.getLogger(ContentManagementViewsController.class);
+    private static Logger log = LogManager.getLogger(ContentManagementViewsController.class);
     private static final Gson GSON = ControllerApiUtils.GSON;
 
     private ContentManagementViewsController() {

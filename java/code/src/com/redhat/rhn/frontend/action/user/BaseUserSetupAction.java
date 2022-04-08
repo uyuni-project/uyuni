@@ -32,7 +32,6 @@ import java.util.Objects;
 /**
  * User locale override stuff
  *
- * @version $Rev $
  */
 public class BaseUserSetupAction extends RhnAction {
 

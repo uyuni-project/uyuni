@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.common.security.acl.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.acl.action.ActionAclHandler;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +33,7 @@ import java.util.Map;
  */
 public class ActionAclHandlerTest extends RhnBaseTestCase {
 
+    @Test
     public void testAclGenericActionType() throws Exception {
         ActionAclHandler access = new ActionAclHandler();
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(

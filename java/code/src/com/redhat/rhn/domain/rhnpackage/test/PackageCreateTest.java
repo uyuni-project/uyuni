@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.rhnpackage.test;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -25,6 +27,7 @@ import java.util.Vector;
  */
 public class PackageCreateTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testPackageCreate() throws Exception {
         String randomString = TestUtils.randomString();
         Thread[] threads = new Thread[10];

@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 
 public class LoginTest extends RhnBaseTestCase {
 
+    @Test
     public void testLogin() throws Exception {
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         assertNotNull(cmd.login("testUserHUbHd7j8HEVjg", "password"));

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.channel.DistChannelMap;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -36,30 +33,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop_desc("string", "org_specific", "'Y' organization specific, 'N' default")
  *     #struct_end()
  */
-public class DistChannelMapSerializer extends RhnXmlRpcCustomSerializer {
+public class DistChannelMapSerializer extends ApiResponseSerializer<DistChannelMap> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<DistChannelMap> getSupportedClass() {
         return DistChannelMap.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        DistChannelMap dstChannelMap = (DistChannelMap) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("os", dstChannelMap.getOs());
-        helper.add("release", dstChannelMap.getRelease());
-        helper.add("arch_name", dstChannelMap.getChannelArch().getName());
-        helper.add("channel_label", dstChannelMap.getChannel().getLabel());
-        helper.add("org_specific", dstChannelMap.getOrg() == null ? "N" : "Y");
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(DistChannelMap src) {
+        return new SerializationBuilder()
+                .add("os", src.getOs())
+                .add("release", src.getRelease())
+                .add("arch_name", src.getChannelArch().getName())
+                .add("channel_label", src.getChannel().getLabel())
+                .add("org_specific", src.getOrg() == null ? "N" : "Y")
+                .build();
     }
 }

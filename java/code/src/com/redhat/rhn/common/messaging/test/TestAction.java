@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.common.messaging.test;
 
 import com.redhat.rhn.common.messaging.EventMessage;

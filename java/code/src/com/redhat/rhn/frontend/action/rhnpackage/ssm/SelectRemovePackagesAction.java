@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Handles listing and selecting a number of packages to remove from systems in the SSM.
  *
- * @version $Revision$
  */
 public class SelectRemovePackagesAction extends RhnAction implements Listable {
 

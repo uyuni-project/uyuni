@@ -31,7 +31,8 @@ import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class BaseSetHelper {
     public static final String KEY = "key";
     public static final String SELECTABLE = "selectable";
     public static final String SELECTED = "selected";
-    private static final Logger LOG = Logger.getLogger(BaseSetHelper.class);
+    private static final Logger LOG = LogManager.getLogger(BaseSetHelper.class);
 
     /**
      * Default struts action one might want to execute

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
@@ -24,6 +28,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +40,8 @@ import java.util.List;
 public class PreservationListDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         action = new PreservationListDeleteAction();
     }
 
@@ -43,6 +49,7 @@ public class PreservationListDeleteActionTest extends RhnBaseTestCase {
      * Test to make sure we delete the FileLists.
      * @throws Exception if test fails
      */
+    @Test
     public void testOperateOnSelectedSet() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action);

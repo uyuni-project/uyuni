@@ -24,7 +24,6 @@ import java.util.Map;
 /**
  * Errata Severity
  *
- * @version $Rev $
  */
 public class Severity {
 

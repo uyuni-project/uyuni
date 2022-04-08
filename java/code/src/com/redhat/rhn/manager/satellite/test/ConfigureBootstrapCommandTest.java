@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.satellite.ConfigureBootstrapCommand;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ConfigureBootstrapCommandTest - test for ConfigureBootstrapCommand
@@ -26,6 +31,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
 
     private ConfigureBootstrapCommand cmd;
 
+    @Test
     public void testCreateCommand() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new ConfigureBootstrapCommand(user) {

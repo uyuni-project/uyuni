@@ -42,7 +42,8 @@ import com.suse.manager.webui.utils.SaltTop;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -74,7 +75,7 @@ import java.util.stream.Collectors;
 public class SaltActionChainGeneratorService {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(SaltActionChainGeneratorService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltActionChainGeneratorService.class);
 
     // Singleton instance of this class
     public static final SaltActionChainGeneratorService INSTANCE = new SaltActionChainGeneratorService();

@@ -21,7 +21,8 @@ import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -33,7 +34,7 @@ public class MailHelper {
 
     public static final String PRODUCT_PREFIX = Config.get().getString("web.product_name") + " ";
 
-    private static final Logger LOG = Logger.getLogger(MailHelper.class);
+    private static final Logger LOG = LogManager.getLogger(MailHelper.class);
     private Mail mailer;
 
     /**

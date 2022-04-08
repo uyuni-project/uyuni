@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CryptoKeysListSetupAction : class to list set of crypto keys
- * @version $Rev: 1 $
  */
 public class CryptoKeysListSetupAction extends RhnAction {
 

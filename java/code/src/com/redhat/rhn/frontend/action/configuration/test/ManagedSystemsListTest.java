@@ -27,8 +27,12 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -46,7 +50,7 @@ public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
 
-        assertTrue("Your list: pageList is NOT Empty", dr.isEmpty());
+        Assertions.assertTrue(dr.isEmpty(), "Your list: pageList is NOT Empty");
 
         ConfigTestUtils.giveConfigCapabilities(serv);
         actionPerform();

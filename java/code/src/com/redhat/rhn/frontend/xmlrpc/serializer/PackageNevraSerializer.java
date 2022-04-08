@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -38,30 +35,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #prop("string", "arch")
  *  #struct_end()
  */
-public class PackageNevraSerializer extends RhnXmlRpcCustomSerializer {
+public class PackageNevraSerializer extends ApiResponseSerializer<PackageNevra> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<PackageNevra> getSupportedClass() {
         return PackageNevra.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        PackageNevra pack = (PackageNevra)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", pack.getName().getName());
-        helper.add("epoch", pack.getEvr().getEpoch());
-        helper.add("version", pack.getEvr().getVersion());
-        helper.add("release", pack.getEvr().getRelease());
-        helper.add("arch", pack.getArch().getLabel());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageNevra src) {
+        return new SerializationBuilder()
+                .add("name", src.getName().getName())
+                .add("epoch", src.getEvr().getEpoch())
+                .add("version", src.getEvr().getVersion())
+                .add("release", src.getEvr().getRelease())
+                .add("arch", src.getArch().getLabel())
+                .build();
     }
-
-
 }

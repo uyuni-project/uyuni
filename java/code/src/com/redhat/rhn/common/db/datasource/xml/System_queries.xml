@@ -5,11 +5,11 @@
 select * from (
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS IS_RHN_SATELLITE,
+                   SI.server_id AS IS_MGR_SERVER,
                    PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
-    LEFT OUTER JOIN rhnSatelliteInfo SI ON S.id = SI.server_id
+    LEFT OUTER JOIN suseMgrServerInfo SI ON S.id = SI.server_id
     LEFT OUTER JOIN rhnProxyInfo PI ON S.id = PI.server_id
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
@@ -1248,7 +1248,7 @@ SELECT  DISTINCT ST.element AS ID
 <query name="available_to_user_with_errata" params="user_id">
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS IS_RHN_SATELLITE,
+                   SI.server_id AS IS_MGR_SERVER,
                    PI.server_id AS IS_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
                    SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
@@ -1260,7 +1260,7 @@ SELECT  DISTINCT ST.element AS ID
                     WHERE SFV.server_id = S.id
                       AND SFV.label = 'ftr_system_grouping') AS selectable
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
-    LEFT OUTER JOIN rhnSatelliteInfo SI ON S.id = SI.server_id
+    LEFT OUTER JOIN suseMgrServerInfo SI ON S.id = SI.server_id
     LEFT OUTER JOIN rhnProxyInfo PI ON S.id = PI.server_id
     LEFT OUTER JOIN rhnServerOverview SO ON S.id = SO.server_id
    WHERE  USP.user_id = :user_id
@@ -1310,7 +1310,7 @@ ORDER BY S.ID
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
           LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
-          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_PROXY
+          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_PROXY, MGR_SERVER_ID AS IS_MGR_SERVER
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
@@ -1649,10 +1649,10 @@ ORDER BY UPPER(S.name)
 ORDER BY CASE SEV.is_base WHEN 'Y' THEN 1 WHEN 'N' THEN 2 END, SEV.label
 </query>
 
-<mode name="is_satellite">
+<mode name="is_mgr_server">
   <query params="sid">
 SELECT  1
-  FROM  rhnSatelliteInfo SI
+  FROM  suseMgrServerInfo SI
  WHERE  SI.server_id=:sid
   </query>
 </mode>

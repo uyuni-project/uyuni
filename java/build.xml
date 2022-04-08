@@ -387,6 +387,7 @@
         <path location="${build.dir}/src" />
         <path location="code/src" />
       </src>
+      <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
     </javac>
 
     <copy toDir="${build.dir}/classes">
@@ -430,6 +431,7 @@
         <path location="${build.dir}/src" />
         <path location="code/src" />
       </src>
+      <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
     </javac>
 
     <copy toDir="${build.dir}/classes">

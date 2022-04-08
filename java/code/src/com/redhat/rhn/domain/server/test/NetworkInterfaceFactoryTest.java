@@ -15,12 +15,16 @@
 
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
 
@@ -30,6 +34,7 @@ public class NetworkInterfaceFactoryTest extends RhnBaseTestCase {
      * Tests retrieval of network interfaces by their hardware address
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupNetInterfaceByHwAddress() throws Exception {
         String hwAddress = "aa:bb:cc:dd:ee:00";
         String hwAddressUppercase = hwAddress.toUpperCase();

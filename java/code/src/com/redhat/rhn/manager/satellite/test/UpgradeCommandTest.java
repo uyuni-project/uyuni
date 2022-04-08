@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -23,10 +27,13 @@ import com.redhat.rhn.frontend.action.kickstart.test.KickstartTestHelper;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testUpgradeProfiles() throws Exception {
         TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
         List l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);

@@ -14,8 +14,17 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.security.acl.BaseHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * BaseHandlerTest
@@ -24,11 +33,12 @@ public class BaseHandlerTest extends RhnBaseTestCase {
 
     private TestHandler th;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         th = new TestHandler();
     }
 
+    @Test
     public void testMutlivaluedStringArray() {
         String[] s = { "10", "20" };
         Long rc = th.getAsLong(s);
@@ -36,6 +46,7 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         assertEquals(Long.valueOf(10), rc);
     }
 
+    @Test
     public void testSingleStringArray() {
         String[] s = { "20" };
         Long rc = th.getAsLong(s);
@@ -43,17 +54,20 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         assertEquals(Long.valueOf(20), rc);
     }
 
+    @Test
     public void testString() {
         Long rc = th.getAsLong("20");
         assertNotNull(rc);
         assertEquals(Long.valueOf(20), rc);
     }
 
+    @Test
     public void testNull() {
         Long rc = th.getAsLong(null);
         assertNull(rc);
     }
 
+    @Test
     public void testUnparsable() {
         try {
             th.getAsLong("foobar");
@@ -73,6 +87,7 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLongParam() {
         Long param = 10L;
         Long rc = th.getAsLong(param);

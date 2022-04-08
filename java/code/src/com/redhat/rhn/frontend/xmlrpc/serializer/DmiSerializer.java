@@ -16,15 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.server.Dmi;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -41,33 +38,26 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop_desc("string", "bios_version", "(optional)")
  *      #struct_end()
  */
-public class DmiSerializer extends RhnXmlRpcCustomSerializer {
+public class DmiSerializer extends ApiResponseSerializer<Dmi> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Dmi> getSupportedClass() {
         return Dmi.class;
     }
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper bean = new SerializerHelper(serializer);
-        Dmi dmi = (Dmi) value;
 
-        bean.add("vendor", StringUtils.defaultString(dmi.getVendor()));
-        bean.add("system", StringUtils.defaultString(dmi.getSystem()));
-        bean.add("product", StringUtils.defaultString(dmi.getProduct()));
-        bean.add("asset", StringUtils.defaultString(dmi.getAsset()));
-        bean.add("board", StringUtils.defaultString(dmi.getBoard()));
-        if (dmi.getBios() != null) {
-            bean.add("bios_release", StringUtils.defaultString(dmi.getBios().getRelease()));
-            bean.add("bios_vendor", StringUtils.defaultString(dmi.getBios().getVendor()));
-            bean.add("bios_version", StringUtils.defaultString(dmi.getBios().getVersion()));
+    @Override
+    public SerializedApiResponse serialize(Dmi src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("vendor", StringUtils.defaultString(src.getVendor()))
+                .add("system", StringUtils.defaultString(src.getSystem()))
+                .add("product", StringUtils.defaultString(src.getProduct()))
+                .add("asset", StringUtils.defaultString(src.getAsset()))
+                .add("board", StringUtils.defaultString(src.getBoard()));
+        if (src.getBios() != null) {
+            builder.add("bios_release", StringUtils.defaultString(src.getBios().getRelease()))
+                    .add("bios_vendor", StringUtils.defaultString(src.getBios().getVendor()))
+                    .add("bios_version", StringUtils.defaultString(src.getBios().getVersion()));
         }
-        bean.writeTo(output);
+        return builder.build();
     }
-
 }

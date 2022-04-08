@@ -19,7 +19,8 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.salt.netapi.datatypes.Event;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class ImageDeployedEvent {
 
     private ValueMap grains;
 
-    private static final Logger LOG = Logger.getLogger(ImageDeployedEvent.class);
+    private static final Logger LOG = LogManager.getLogger(ImageDeployedEvent.class);
 
     /**
      * Standard constructor.

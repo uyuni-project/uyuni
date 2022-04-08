@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * OrgCreateAction - Action to create an org.
- * @version $Rev: 119601 $
  */
 public class OrgCreateAction extends RhnAction {
 

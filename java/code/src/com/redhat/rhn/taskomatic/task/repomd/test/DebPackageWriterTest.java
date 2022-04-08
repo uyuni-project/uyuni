@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -31,6 +33,9 @@ import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -43,11 +48,13 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
     private Path tmpDir;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tmpDir = Files.createTempDirectory("debPkgWriterTest");
     }
 
+    @Test
     public void testWritePackages() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(user);
 
@@ -152,6 +159,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());

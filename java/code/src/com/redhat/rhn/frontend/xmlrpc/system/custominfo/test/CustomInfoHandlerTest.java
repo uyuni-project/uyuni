@@ -14,11 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.custominfo.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CustomInfoHandlerTest
@@ -27,6 +33,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
 
     private CustomInfoHandler handler = new CustomInfoHandler();
 
+    @Test
     public void testCreateKey() throws Exception {
 
         // default setup already includes a custom key; therefore, let's
@@ -51,6 +58,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundKey);
     }
 
+    @Test
     public void testDeleteKey() throws Exception {
 
         // default setup already includes a custom key; therefore, let's
@@ -88,6 +96,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertFalse(foundKey);
     }
 
+    @Test
     public void testListAllKeys() throws Exception {
 
         // default setup already includes a custom key; therefore, we don't

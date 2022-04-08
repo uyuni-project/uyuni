@@ -14,33 +14,30 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.DynaActionForm;
-
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * StrutsDelegateImplTest
  */
-public class StrutsDelegateTest extends TestCase {
+public class StrutsDelegateTest  {
 
     private class StrutsDelegateStub extends StrutsDelegate {
     }
 
     /**
-     * @param name The name of the TestCase
-     */
-    public StrutsDelegateTest(String name) {
-        super(name);
-    }
-
-    /**
      *
      */
+    @Test
     public final void testForwardParams() {
         ActionForward success = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
 
@@ -54,6 +51,7 @@ public class StrutsDelegateTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
         DynaActionForm form = new RhnMockDynaActionForm();

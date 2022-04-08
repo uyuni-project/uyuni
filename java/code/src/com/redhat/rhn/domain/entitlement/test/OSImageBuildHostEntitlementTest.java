@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.entitlement.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
@@ -35,6 +38,9 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
     private final SystemQuery systemQuery = new TestSystemQuery();
@@ -47,7 +53,9 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
-    @Override public void setUp() throws Exception {
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
@@ -63,6 +71,7 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         traditional.setOs("SLES");
@@ -87,6 +96,7 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() {
         // Nothing to test
     }

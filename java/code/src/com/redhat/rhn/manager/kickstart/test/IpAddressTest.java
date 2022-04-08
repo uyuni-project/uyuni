@@ -14,14 +14,20 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * IpAddressTest - test for KickstartDetailsCommand
  */
 public class IpAddressTest extends RhnBaseTestCase {
 
+    @Test
     public void testIp() throws Exception {
 
         long [] ip = { 192 , 168 , 1 , 1 };

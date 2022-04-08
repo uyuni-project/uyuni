@@ -14,6 +14,11 @@
  */
 package com.suse.scc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
@@ -26,6 +31,7 @@ import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemJson;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,16 +41,15 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 /**
  * Tests for {@link SCCClient} methods.
  */
-public class SCCClientTest extends TestCase {
+public class SCCClientTest  {
 
     /**
-     * Test for {@link SCCWebClient#listProducts()}.
+     * Test for {@link com.suse.scc.client.SCCWebClient#listProducts()}.
      */
+    @Test
     public void testListProducts() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -106,8 +111,9 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCWebClient#listRepositories()}.
+     * Test for {@link com.suse.scc.client.SCCWebClient#listRepositories()}.
      */
+    @Test
     public void testListRepositories() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -133,8 +139,9 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCWebClient#listSubscriptions()}.
+     * Test for {@link com.suse.scc.client.SCCWebClient#listSubscriptions()}.
      */
+    @Test
     public void testListSubscriptions() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -199,9 +206,10 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCWebClient#listRepositories()} but from the directory.
+     * Test for {@link com.suse.scc.client.SCCWebClient#listRepositories()} but from the directory.
      * @throws java.lang.Exception
      */
+    @Test
     public void testListRepositoriesFromDirectory() throws Exception {
         File tmpDir = this.createTempDir();
         FileUtils.copyURLToFile(this.getClass().getResource(
@@ -231,6 +239,7 @@ public class SCCClientTest extends TestCase {
      * Test for SCC error responses.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testErrorResponse() throws Exception {
         Responder errorResponder = (requestIn, responseIn) -> {
             responseIn.setCode(HttpURLConnection.HTTP_INTERNAL_ERROR);

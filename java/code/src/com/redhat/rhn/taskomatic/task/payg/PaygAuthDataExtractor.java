@@ -28,7 +28,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,8 +45,7 @@ public class PaygAuthDataExtractor {
     private static final int CONNECTION_TIMEOUT = Config.get().getInt(CONNECTION_TIMEOUT_PROPEERRTY, DEFAULT_TIMEOUT);
     private static final int RESPONSE_TIMEOUT = Config.get().getInt(WAIT_RESPONSE_TIMEOUT_PROPEERRTY, DEFAULT_TIMEOUT);
 
-    private static final Logger LOG = Logger
-            .getLogger(PaygAuthDataExtractor.class);
+    private static final Logger LOG = LogManager.getLogger(PaygAuthDataExtractor.class);
 
     private final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())

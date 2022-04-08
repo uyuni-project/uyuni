@@ -14,13 +14,16 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.servlets.SetCharacterEncodingFilter;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 /**
  * AuthFilterTest
- * @version $Rev: 2593 $
  */
 public class I18NFilterTest extends BaseFilterTst {
 
@@ -29,6 +32,7 @@ public class I18NFilterTest extends BaseFilterTst {
     /** Test the CheckCharSet functionality
      * @throws Exception if something fails
      */
+    @Test
     public void testCheckCharset() throws Exception {
 
         SetCharacterEncodingFilter filter = new SetCharacterEncodingFilter();

@@ -14,10 +14,14 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.FilePreservationListsCommand;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
@@ -26,6 +30,7 @@ import java.util.ArrayList;
  */
 public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testCommand() {
         FilePreservationListsCommand cmd =
             new FilePreservationListsCommand(ksdata.getId(), user);

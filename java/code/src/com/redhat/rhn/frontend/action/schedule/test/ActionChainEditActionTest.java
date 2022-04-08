@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -27,6 +31,8 @@ import com.redhat.rhn.frontend.action.schedule.ActionChainEditAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -43,6 +49,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
      * @throws Exception if something bad happens
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testNotSubmitted() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -69,6 +76,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
      * Tests the Action's delete dispatch call.
      * @throws Exception if something bad happens
      */
+    @Test
     public void testDelete() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -88,6 +96,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
      * Tests the Action's schedule dispatch call.
      * @throws Exception if something bad happens
      */
+    @Test
     public void testSchedule() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);

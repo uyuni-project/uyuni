@@ -24,12 +24,15 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ErrataConfirmActionTest - test that ErrataConfirmAction correctly
  * schedules the Actions associated with the Errata
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/errata/details/ErrataConfirmSubmit");
         addDispatchCall("confirm.jsp.confirm");

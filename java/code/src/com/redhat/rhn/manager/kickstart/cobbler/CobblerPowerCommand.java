@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
@@ -36,7 +37,7 @@ import java.util.Date;
 public class CobblerPowerCommand extends CobblerCommand {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerPowerCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerPowerCommand.class);
 
     /** The server to power on or off. */
     private Server server;
