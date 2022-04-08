@@ -66,8 +66,7 @@
 
   <available file="${java.lib.dir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
   <available file="${java.lib.dir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
-  <available file="${java.lib.dir}/log4j/log4j-jcl.jar" type="file" property="log4j-jcl" value="log4j/log4j-jcl" />
-  <property name="log4j-jars" value="${log4j-core} ${log4j-api} ${log4j-jcl}"/>
+  <property name="log4j-jars" value="${log4j-core} ${log4j-api}"/>
 
   <condition property="jta11-jars" value="geronimo-jta-1.1-api" else="jta">
     <available file="${java.lib.dir}/geronimo-jta-1.1-api.jar" />

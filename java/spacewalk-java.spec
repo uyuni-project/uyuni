@@ -137,7 +137,6 @@ BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  log4j
 BuildRequires:  log4j-slf4j
-BuildRequires:  log4j-jcl
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
