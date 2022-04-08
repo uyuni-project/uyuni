@@ -19,7 +19,8 @@ import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.parser.JsonParser;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,7 +28,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,16 +38,16 @@ public class PXEEvent {
     private static final Gson GSON = JsonParser.GSON;
 
     private final String minionId;
-    private final JsonElement data;
+    private final Map<String, Object> data;
 
     /**
      * Creates a new SaltbootEvent
      * @param minionIdIn the id of the minion sending the event
      * @param dataIn data containing more information about this event
      */
-    private PXEEvent(String minionIdIn, JsonElement dataIn) {
+    private PXEEvent(String minionIdIn, Map<String, Object> dataIn) {
         this.minionId = minionIdIn;
-        this.data = dataIn.getAsJsonObject().get("data");
+        this.data = dataIn;
     }
 
     /**
@@ -60,15 +60,15 @@ public class PXEEvent {
     }
 
     public String getAction() {
-        return data.getAsJsonObject().get("action").getAsString();
+        return (String)data.get("action");
     }
 
     public String getSaltbootGroup() {
-        return data.getAsJsonObject().get("minion_id_prefix").getAsString();
+        return (String)data.get("minion_id_prefix");
     }
 
     public String getRoot() {
-        return data.getAsJsonObject().get("root").getAsString();
+        return (String)data.get("root");
     }
 
     /**
@@ -77,11 +77,7 @@ public class PXEEvent {
      * @return Optional of salt device string
      */
     public Optional<String> getSaltDevice() {
-        JsonElement sd = data.getAsJsonObject().get("salt_device");
-        if (sd == null) {
-            return Optional.empty();
-        }
-        return Optional.of(sd.getAsString());
+        return Optional.ofNullable((String)data.get("salt_device"));
     }
 
     /**
@@ -90,15 +86,11 @@ public class PXEEvent {
      * @return Optional of kernel parameters string
      */
     public Optional<String> getKernelParameters() {
-        JsonElement kp = data.getAsJsonObject().get("terminal_kernel_parameters");
-        if (kp == null) {
-            return Optional.empty();
-        }
-        return Optional.of(kp.getAsString());
+        return Optional.ofNullable((String)data.get("terminal_kernel_parameters"));
     }
 
     public String getBootImage() {
-        return data.getAsJsonObject().get("boot_image").getAsString();
+        return (String)data.get("boot_image");
     }
 
     /**
@@ -107,32 +99,11 @@ public class PXEEvent {
      * @return List of string of MAC addresses
      */
     public List<String> getHwAddresses() {
-        Set<Map.Entry<String, JsonElement>> macGrains = data.getAsJsonObject().get("hwaddr_interfaces")
-                .getAsJsonObject().entrySet();
-        return macGrains.stream()
-                .filter(e -> e.getKey().equals("lo"))
-                .map(e -> e.getValue().getAsString())
+        LinkedTreeMap<String, Object> macGrains = (LinkedTreeMap<String, Object>)data.get("hwaddr_interfaces");
+        return macGrains.entrySet().stream()
+                .filter(e -> !e.getKey().equals("lo"))
+                .map(e -> (String)e.getValue())
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Return the event data parsed into the given type.
-     * @param type type token to parse data
-     * @param <R> type to parse the data into
-     * @return the event data
-     */
-    public <R> R getData(TypeToken<R> type) {
-        return GSON.fromJson(data, type.getType());
-    }
-
-    /**
-     * Return event data as Map
-     * @return event data as map
-     */
-    public Map<String, Object> getData() {
-        TypeToken<Map<String, Object>> typeToken = new TypeToken<>() {
-        };
-        return getData(typeToken);
     }
 
     /**
@@ -143,15 +114,43 @@ public class PXEEvent {
     public static Optional<PXEEvent> parse(Event event) {
         Matcher matcher = PATTERN.matcher(event.getTag());
         if (matcher.matches()) {
+            TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() {
+            };
+            Map<String, Object> data;
+
+            // Validate input data are not empty and correct format
+            try {
+                data = GSON.fromJson((JsonObject) event.getData().get("data"), typeToken.getType());
+            }
+            catch (ClassCastException e) {
+                return Optional.empty();
+            }
+
+            if (data.isEmpty()) {
+                return Optional.empty();
+            }
+
             PXEEvent result = new PXEEvent(
                     (String) event.getData().get("id"),
-                    event.getData(JsonElement.class)
+                    data
             );
+
+            try {
+                // Validate we have all required data, some may trigger NPE if missing
+                if (result.getSaltbootGroup().isEmpty() ||
+                    result.getRoot().isEmpty() ||
+                    result.getMinionId().isEmpty() ||
+                    result.getHwAddresses().isEmpty() ||
+                    result.getBootImage().isEmpty()) {
+                    return Optional.empty();
+                }
+            }
+            catch (NullPointerException e) {
+                return Optional.empty();
+            }
             return Optional.of(result);
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
     @Override
