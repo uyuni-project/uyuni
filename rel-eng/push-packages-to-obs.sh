@@ -258,6 +258,7 @@ while read PKG_NAME; do
       sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
       sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
       sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "s/%PKG_VERSION%/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   # update from obs (create missing package on the fly)
