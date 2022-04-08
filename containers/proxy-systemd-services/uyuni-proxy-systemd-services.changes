@@ -1,6 +1,10 @@
-- Harmonize systemd services names and container names  
-- Adapted to work on Enterprise Linux.
-- Add package to SLE and Client tools (jsc#SLE-24145)
+-------------------------------------------------------------------
+Fri Apr 08 13:39:38 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Harmonize systemd services names and container names  
+  * Adapted to work on Enterprise Linux.
+  * Add package to SLE and Client tools (jsc#SLE-24145)
 
 -------------------------------------------------------------------
 Fri Mar 11 16:50:18 CET 2022 - jgonzalez@suse.com
