@@ -110,7 +110,7 @@ public class PXEEvent {
         Set<Map.Entry<String, JsonElement>> macGrains = data.getAsJsonObject().get("hwaddr_interfaces")
                 .getAsJsonObject().entrySet();
         return macGrains.stream()
-                .filter(e -> e.getKey() != "lo")
+                .filter(e -> e.getKey().equals("lo"))
                 .map(e -> e.getValue().getAsString())
                 .collect(Collectors.toList());
     }

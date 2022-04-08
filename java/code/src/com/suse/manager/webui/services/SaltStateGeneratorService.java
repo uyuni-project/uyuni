@@ -144,14 +144,13 @@ public enum SaltStateGeneratorService {
         Map<String, Object> imagePillarDetails = new TreeMap<>();
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
-        Boolean isBundle = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("bundle")).findFirst().isPresent();
+        // Saltboot images have only one bundle file, even though technically more are possible
+        Optional<ImageFile> bundle = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("bundle")).findFirst();
 
-        if (isBundle) {
-            ImageFile bundle = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("bundle")).findFirst().get();
+        if (bundle.isPresent()) {
             imagePillarDetailsSync.put("bundle_hash", image.getChecksum().getChecksum());
-            imagePillarDetailsSync.put("bundle_url", OSImageStoreUtils.getOSImageFileURI(bundle));
+            imagePillarDetailsSync.put("bundle_url", OSImageStoreUtils.getOSImageFileURI(bundle.get()));
         }
         else {
             ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
@@ -193,6 +192,7 @@ public enum SaltStateGeneratorService {
         Map<String, Object> bootImagePillarKernel = new TreeMap<>();
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
+        // We are interested only if bundles are present, not actual value
         Boolean isBundle = imageInfo.getImageFiles().stream().filter(
                 f -> f.getType().equals("bundle")).findFirst().isPresent();
 
