@@ -250,15 +250,26 @@ while read PKG_NAME; do
     continue
   }
 
-  if [ "${OSCAPI}" = "https://api.suse.de" -a -f "$SRPM_PKG_DIR/Dockerfile" ]; then
-      VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
-      sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
-      sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
-      sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
-      sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
-      sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
-      sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
-      sed "s/%PKG_VERSION%/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+  if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
+      # check which endpoint we are using to match the product
+      if [ "${OSCAPI}" = "https://api.suse.de"]; then
+          # SUSE Manager settings
+          VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
+          sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+          sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
+
+          PRODUCT_VERSION=$(sed -n 's/.*web.version = \(.*\)/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+      else
+          # Uyuni settings
+          PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni = \(.*\)/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+      fi
+      # to lowercase with ",," and replace spaces " " with "-"
+      PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+      sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   # update from obs (create missing package on the fly)
