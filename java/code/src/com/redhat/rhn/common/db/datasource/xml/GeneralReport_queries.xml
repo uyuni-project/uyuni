@@ -72,16 +72,16 @@
 <mode name="AccountGroup" class="">
     <query params="offset, limit">
           SELECT web_contact.id AS account_id
-                    , web_contact.login AS username
                     , rhnusergroupmembers.user_group_id AS account_group_id
+                    , web_contact.login AS username
                     , rhnusergroup.name AS account_group_name
                     , rhnusergrouptype.id AS account_group_type_id
                     , rhnusergrouptype.name AS account_group_type_name
                     , rhnusergrouptype.label AS account_group_type_label
-            FROM web_contact
-                    LEFT JOIN rhnusergroupmembers ON web_contact.id = rhnusergroupmembers.user_id
-                    LEFT JOIN rhnusergroup ON rhnusergroupmembers.user_group_id = rhnusergroup.id
-                    LEFT JOIN rhnusergrouptype ON rhnusergroup.group_type = rhnusergrouptype.id
+            FROM rhnusergroupmembers
+                    INNER JOIN web_contact ON web_contact.id = rhnusergroupmembers.user_id
+                    INNER JOIN rhnusergroup ON rhnusergroupmembers.user_group_id = rhnusergroup.id
+                    INNER JOIN rhnusergrouptype ON rhnusergroup.group_type = rhnusergrouptype.id
         ORDER BY account_id, account_group_id OFFSET :offset LIMIT :limit
     </query>
 </mode>
