@@ -44,8 +44,8 @@
 <mode name="ChannelPackage" class="">
     <query params="offset, limit">
           SELECT rhnchannel.id AS channel_id
-                      , rhnchannel.label AS channel_label
                       , rhnpackage.id AS package_id
+                      , rhnchannel.label AS channel_label
                       , rhnpackagename.name AS package_name
                       , rhnpackageevr.epoch AS package_epoch
                       , rhnpackageevr.version AS package_version
@@ -65,8 +65,8 @@
 <mode name="ChannelErrata" class="">
     <query params="offset, limit">
           SELECT rhnchannel.id AS channel_id
-                    , rhnchannel.label AS channel_label
                     , rhnerrata.id AS errata_id
+                    , rhnchannel.label AS channel_label
                     , rhnerrata.advisory_name
             FROM rhnchannelerrata
                     INNER JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
