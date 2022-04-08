@@ -243,7 +243,8 @@ public abstract class ApiDoclet implements Doclet {
                 // Less robust that the old implementation but should still do the job
                 if (element.getSuperclass() != null) {
                     Element parent = types.asElement(element.getSuperclass());
-                    return parent.getSimpleName().contentEquals("RhnXmlRpcCustomSerializer");
+                    return parent.getSimpleName().contentEquals("RhnXmlRpcCustomSerializer") ||
+                            parent.getSimpleName().contentEquals("ApiResponseSerializer");
                 }
                 return false;
             })
