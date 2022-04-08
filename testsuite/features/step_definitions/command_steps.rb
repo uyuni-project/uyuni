@@ -1174,7 +1174,7 @@ When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host
   node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
 
   # Ensure the pool is started
-  node.run("virsh pool-start #{pool_name}", check_errors: false)Remove the sleep to catch the cached package
+  node.run("virsh pool-start #{pool_name}", check_errors: false)
 end
 
 When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
