@@ -156,9 +156,6 @@ artifacts:
     jar: log4j-api.jar
     package: log4j
     repository: Leap
-  - artifact: log4j-jcl
-    jar: log4j-jcl.jar
-    repository: Leap
   - artifact: log4j-slf4j-impl
     jar: log4j-slf4j-impl.jar
     package: log4j-slf4j
