@@ -458,9 +458,7 @@ public class SaltServerActionService {
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type " +
-                        (actionType != null ? actionType.getName() : "") +
-                        " is not supported with Salt");
+                LOG.debug("Action type {} is not supported with Salt", actionType != null ? actionType.getName() : "");
             }
             return Collections.emptyMap();
         }
@@ -504,8 +502,7 @@ public class SaltServerActionService {
                     taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
                 }
                 catch (TaskomaticApiException e) {
-                    LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
-                            " minion=" + sshMinion.getMinionId(), e);
+                    LOG.error("Couldn't schedule SSH action id={} minion={}", actionIn.getId(), sshMinion.getMinionId(), e);
                 }
             }
         }
@@ -559,8 +556,7 @@ public class SaltServerActionService {
                 callAsyncActionChainStart(actionChain, targetMinions);
 
         results.get(false).forEach(minionSummary -> {
-            LOG.warn("Failed to schedule action chain for minion: " +
-                    minionSummary.getMinionId());
+            LOG.warn("Failed to schedule action chain for minion: {}", minionSummary.getMinionId());
             Optional<Long> firstActionId = actionChain.getEntries().stream()
                     .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
                     .map(ActionChainEntry::getAction)
@@ -596,13 +592,13 @@ public class SaltServerActionService {
                     .filter(sshMinion -> {
                         Optional<Map<String, String>> confValues = pendingResumeConf.get(sshMinion.getMinionId())
                                 .fold(err -> {
-                                        LOG.error("mgractionchains.get_pending_resume failed: " + err.fold(
-                                                Object::toString,
-                                                Object::toString,
-                                                Object::toString,
-                                                Object::toString,
-                                                Object::toString
-                                        ));
+                                            LOG.error("mgractionchains.get_pending_resume failed: {}", err.fold(
+                                                    Object::toString,
+                                                    Object::toString,
+                                                    Object::toString,
+                                                    Object::toString,
+                                                    Object::toString
+                                            ));
                                         return Optional.empty();
                                     },
                                         Optional::of);
@@ -611,7 +607,7 @@ public class SaltServerActionService {
                             return true;
                         }
                         // fail the action chain because concurrent execution is not possible
-                        LOG.warn("Minion " + sshMinion.getMinionId() + " has an action chain execution in progress");
+                        LOG.warn("Minion {} has an action chain execution in progress", sshMinion.getMinionId());
                         failActionChain(sshMinion.getMinionId(), Optional.of(actionChain.getId()), firstActionId,
                                 Optional.of("An action chain execution is already in progress. " +
                                         "Concurrent action chain execution is not allowed. " +
@@ -694,13 +690,13 @@ public class SaltServerActionService {
             }
 
             if (stateApplyResult == null) {
-                LOG.error("No action chain result for minion " + minionId);
+                LOG.error("No action chain result for minion {}", minionId);
                 failActionChain(minionId, firstChunkActionId, Optional.of("No action chain result"));
             }
             else if (!stateApplyResult.isResult() && (stateApplyResult.getChanges() == null ||
                     (stateApplyResult.getChanges().isJsonObject()) &&
                             ((JsonObject)stateApplyResult.getChanges()).size() == 0)) {
-                LOG.error("Error handling action chain execution: " + stateApplyResult.getComment());
+                LOG.error("Error handling action chain execution: {}", stateApplyResult.getComment());
                 failActionChain(minionId, firstChunkActionId, Optional.of(stateApplyResult.getComment()));
             }
             else if (stateApplyResult.getChanges() != null) {
@@ -714,7 +710,7 @@ public class SaltServerActionService {
                     actionChainResult = actionChainRet.getRet();
                 }
                 catch (JsonSyntaxException e) {
-                    LOG.error("Unexpected response: " + stateApplyResult.getChanges(), e);
+                    LOG.error("Unexpected response: {}", stateApplyResult.getChanges(), e);
                     String msg = stateApplyResult.getChanges().toString();
                     if ((stateApplyResult.getChanges().isJsonObject()) &&
                             ((JsonObject)stateApplyResult.getChanges()).get("ret") != null) {
@@ -756,9 +752,7 @@ public class SaltServerActionService {
                                                 rebootServerAction.get().setPickupTime(new Date());
                                             }
                                         },
-                                        () -> LOG.error("Action of type " + SYSTEM_REBOOT +
-                                                " found in action chain result but not in actions for minion " +
-                                                minionId));
+                                        () -> LOG.error("Action of type " + SYSTEM_REBOOT + " found in action chain result but not in actions for minion {}", minionId));
                             }
                         }
 
@@ -771,15 +765,14 @@ public class SaltServerActionService {
                 }
                 if (refreshPkg) {
                     MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
-                        LOG.info("Scheduling a package profile update for minion " + minionId);
+                        LOG.info("Scheduling a package profile update for minion {}", minionId);
                         try {
                             Action pkgList = ActionManager
                                     .schedulePackageRefresh(minion.getOrg(), minion);
                             executeSSHAction(pkgList, minion);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                    minion.getMinionId(), e);
+                            LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
                         }
                     });
                 }
@@ -794,8 +787,7 @@ public class SaltServerActionService {
             }
         }
         catch (Exception e) {
-            LOG.error("Error handling action chain result for SSH minion " +
-                    minionId, e);
+            LOG.error("Error handling action chain result for SSH minion {}", minionId, e);
             failActionChain(minionId, firstChunkActionId,
                     Optional.of("Error handling action chain result:" + e.getMessage()));
             return false;
@@ -843,7 +835,7 @@ public class SaltServerActionService {
                     if (minions.isEmpty()) {
                         // When an Action Chain contains an Action which does not target
                         // any minion we don't generate any Salt call.
-                        LOG.warn("No server actions for action id=" + actionIn.getId());
+                        LOG.warn("No server actions for action id={}", actionIn.getId());
                         return;
                     }
 
@@ -1738,8 +1730,7 @@ public class SaltServerActionService {
                         }
                     }
                     else {
-                        LOG.error("Failed to retrieve domain name for server " + minion.getServerId() +
-                                " uuid " + uuid);
+                        LOG.error("Failed to retrieve domain name for server {} uuid {}", minion.getServerId(), uuid);
                     }
                     return null;
                 },
@@ -1767,8 +1758,7 @@ public class SaltServerActionService {
                                 Optional.of(pillar));
                     }
                     else {
-                        LOG.error("Failed to retrieve domain name for server " + minion.getServerId() +
-                                " uuid " + uuid);
+                        LOG.error("Failed to retrieve domain name for server {} uuid {}", minion.getServerId(), uuid);
                     }
                     return null;
                 },
@@ -2368,8 +2358,7 @@ public class SaltServerActionService {
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Executing action for: " +
-                    minionIds.stream().collect(Collectors.joining(", ")));
+            LOG.debug("Executing action for: {}", minionIds.stream().collect(Collectors.joining(", ")));
         }
 
         try {
@@ -2388,7 +2377,7 @@ public class SaltServerActionService {
             return result;
         }
         catch (SaltException ex) {
-            LOG.debug("Failed to execute action: " + ex.getMessage());
+            LOG.debug("Failed to execute action: {}", ex.getMessage());
             Map<Boolean, List<MinionSummary>> result = new HashMap<>();
             result.put(true, Collections.emptyList());
             result.put(false, minionSummaries);
@@ -2408,7 +2397,7 @@ public class SaltServerActionService {
                 .collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Executing action chain for: " + String.join(", ", minionIds));
+            LOG.debug("Executing action chain for: {}", String.join(", ", minionIds));
         }
 
         try {
@@ -2426,7 +2415,7 @@ public class SaltServerActionService {
             return result;
         }
         catch (SaltException ex) {
-            LOG.debug("Failed to execute action chain: " + ex.getMessage());
+            LOG.debug("Failed to execute action chain: {}", ex.getMessage());
             Map<Boolean, Set<MinionSummary>> result = new HashMap<>();
             result.put(true, Collections.emptySet());
             result.put(false, minionSummaries);
@@ -2459,20 +2448,17 @@ public class SaltServerActionService {
             ServerAction sa = serverAction.get();
             if (sa.getStatus().equals(STATUS_FAILED) ||
                     sa.getStatus().equals(STATUS_COMPLETED)) {
-                LOG.info("Action '" + action.getName() + "' is completed or failed." +
-                        " Skipping.");
+                LOG.info("Action '{}' is completed or failed. Skipping.", action.getName());
                 return;
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
-                LOG.info("Prerequisite of action '" + action.getName() + "' is still" +
-                        " queued. Skipping executing of the action.");
+                LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.", action.getName());
                 return;
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
-                LOG.info("Failing action '" + action.getName() + "' as its prerequisite '" +
-                        action.getPrerequisite().getName() + "' failed.");
+                LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(), action.getPrerequisite().getName());
                 sa.fail(-100L, "Prerequisite failed.");
                 return;
             }
@@ -2489,8 +2475,7 @@ public class SaltServerActionService {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
-                    LOG.error("Error executing Salt call for action: " + action.getName() +
-                            "on minion " + minion.getMinionId(), e);
+                    LOG.error("Error executing Salt call for action: {}on minion {}", action.getName(), minion.getMinionId(), e);
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
@@ -2498,8 +2483,7 @@ public class SaltServerActionService {
                 }
 
                 if (!result.isPresent()) {
-                    LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
-                            " probably minion is down or could not be contacted.");
+                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or could not be contacted.", action.getName());
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
@@ -2508,7 +2492,7 @@ public class SaltServerActionService {
 
                 result.ifPresent(r -> {
                     if (LOG.isTraceEnabled()) {
-                        LOG.trace("Salt call result: " + r);
+                        LOG.trace("Salt call result: {}", r);
                     }
 
                     r.consume(error -> {
@@ -2548,8 +2532,7 @@ public class SaltServerActionService {
                                 executeSSHAction(pkgList, minion);
                             }
                             catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: " +
-                                    minion.getMinionId());
+                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId());
                                 LOG.error(e);
                             }
                         }
@@ -2645,7 +2628,7 @@ public class SaltServerActionService {
         if (action.isPresent()) {
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Matched salt job with action (id=" + actionId + ")");
+                LOG.debug("Matched salt job with action (id={})", actionId);
             }
 
             Optional<MinionServer> minionServerOpt = MinionServerFactory.findByMinionId(minionId);
@@ -2658,7 +2641,7 @@ public class SaltServerActionService {
 
                 serverAction.ifPresent(sa -> {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("Updating action for server: " + minionServer.getId());
+                        LOG.debug("Updating action for server: {}", minionServer.getId());
                     }
                     try {
                         // Reboot has been scheduled so set reboot action to PICKED_UP.
@@ -2711,7 +2694,7 @@ public class SaltServerActionService {
             });
         }
         else {
-            LOG.warn("Action referenced from Salt job was not found: " + actionId);
+            LOG.warn("Action referenced from Salt job was not found: {}", actionId);
         }
     }
 
@@ -2760,7 +2743,7 @@ public class SaltServerActionService {
                         actionStateApply.getName());
             }
             else if (!key.contains("schedule_next_chunk")) {
-                LOG.warn("Could not find action id in action chain state key: " + key);
+                LOG.warn("Could not find action id in action chain state key: {}", key);
             }
         }
 

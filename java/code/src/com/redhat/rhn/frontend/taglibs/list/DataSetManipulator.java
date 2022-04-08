@@ -131,7 +131,7 @@ public class DataSetManipulator {
             dataset.sort(new DynamicComparator(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
-            log.warn("Unable to sort dataset according to: " + sortAttr);
+            log.warn("Unable to sort dataset according to: {}", sortAttr);
             dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
         }
     }

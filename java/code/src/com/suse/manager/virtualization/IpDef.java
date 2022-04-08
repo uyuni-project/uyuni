@@ -166,7 +166,7 @@ public class IpDef {
                 prefix = Ip.netmaskToPrefix(netmask);
             }
             catch (UnknownHostException e) {
-                LOG.error("Invalid netmask: " + netmask);
+                LOG.error("Invalid netmask: {}", netmask);
                 return Optional.empty();
             }
         }
@@ -177,7 +177,7 @@ public class IpDef {
             def.setAddress(Ip.getNetworkAddress(address, prefix));
         }
         catch (UnknownHostException e) {
-            LOG.error("Invalid IP address: " + address);
+            LOG.error("Invalid IP address: {}", address);
             return Optional.empty();
         }
 

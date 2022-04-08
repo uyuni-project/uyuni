@@ -70,7 +70,7 @@ public class PackageSearchHelper {
             Long filterChannelId, String searchType) throws XmlRpcFault,
             MalformedURLException, SearchServerIndexException {
 
-        log.info("Performing pkg search: " + searchString + ", " + mode);
+        log.info("Performing pkg search: {}, {}", searchString, mode);
 
         List<String> pkgArchLabels = null;
         if (selectedArches != null) {
@@ -88,7 +88,7 @@ public class PackageSearchHelper {
         List results = (List)client.invoke("index.search", args);
 
         if (log.isDebugEnabled()) {
-            log.debug("results = [" + results + "]");
+            log.debug("results = [{}]", results);
         }
 
         if (results.isEmpty()) {

@@ -279,7 +279,7 @@ public class SsmManager {
             return new ChannelSelectionResult(srv, new ChannelSelection(Optional.empty(), childChannels));
         }
         else {
-            LOG.error("Invalid channel change for serverId=" + srv.getId());
+            LOG.error("Invalid channel change for serverId={}", srv.getId());
             return new ChannelSelectionResult(srv, "invalid_change");
         }
     }
@@ -312,10 +312,7 @@ public class SsmManager {
         }
 
         if (!newBaseIsCompatible) {
-            LOG.error("New base id=" + srvChange.getNewBaseId().get() +
-                    " not compatible with base id=" +
-                    Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none") +
-                    " for serverId=" + srv.getId());
+            LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(), Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none"), srv.getId());
             return new ChannelSelectionResult(srv, "incompatible_base");
         }
         else {
@@ -331,10 +328,7 @@ public class SsmManager {
         Optional<Channel> guessedChannel =
                 ChannelManager.guessServerBaseChannel(user, srv.getId());
         if (!guessedChannel.isPresent()) {
-            LOG.error("Could not guess base channel for serverId=" +
-                    srv.getId() +
-                    " user=" +
-                    user.getLogin());
+            LOG.error("Could not guess base channel for serverId={} user={}", srv.getId(), user.getLogin());
             return new ChannelSelectionResult(srv, "no_base_channel_guess");
         }
         Optional<ChannelChangeDto> srvChange = getChangeByDefaultBase(srvChanges, guessedChannel.get());
@@ -345,7 +339,7 @@ public class SsmManager {
             return new ChannelSelectionResult(srv, new ChannelSelection(Optional.of(newBaseChannel), childChannels));
         }
         else {
-            LOG.warn("No base channel change found for serverId=" + srv.getId());
+            LOG.warn("No base channel change found for serverId={}", srv.getId());
             return new ChannelSelectionResult(srv, "no_base_change_found");
         }
     }
@@ -394,11 +388,7 @@ public class SsmManager {
                     result.add(childToSubscribe.get());
                 }
                 else {
-                    LOG.warn("Child channel id=" + childId +
-                            " not found in accessible children of " +
-                            newBaseChannel.getName() +
-                            " for user=" +
-                            user.getLogin());
+                    LOG.warn("Child channel id={} not found in accessible children of {} for user={}", childId, newBaseChannel.getName(), user.getLogin());
                 }
             }
             else if (action == ChannelChangeDto.ChannelAction.NO_CHANGE) {

@@ -605,15 +605,14 @@ public class KickstartData {
         Set<KickstartCommand> retval = new LinkedHashSet<>();
         if (this.commands != null && this.commands.size() > 0) {
             for (KickstartCommand cmd : this.commands) {
-                logger.debug("getCommandSubset : working with: " +
-                        cmd.getCommandName().getName());
+                logger.debug("getCommandSubset : working with: {}", cmd.getCommandName().getName());
                 if (cmd.getCommandName().getName().equals(name)) {
                     logger.debug("getCommandSubset : name equals, returning");
                     retval.add(cmd);
                 }
             }
         }
-        logger.debug("getCommandSubset : returning: " + retval);
+        logger.debug("getCommandSubset : returning: {}", retval);
         return Collections.unmodifiableSet(retval);
     }
 
@@ -686,11 +685,11 @@ public class KickstartData {
 
     private void replaceSet(Collection<KickstartCommand> oldSet,
             Collection<KickstartCommand> newSet) {
-        logger.debug("replaceSet co.pre: " + this.getCustomOptions());
+        logger.debug("replaceSet co.pre: {}", this.getCustomOptions());
         this.commands.removeAll(oldSet);
-        logger.debug("replaceSet co.post: " + this.getCustomOptions());
+        logger.debug("replaceSet co.post: {}", this.getCustomOptions());
         this.commands.addAll(newSet);
-        logger.debug("replaceSet co.done: " + this.getCustomOptions());
+        logger.debug("replaceSet co.done: {}", this.getCustomOptions());
     }
 
     /**
@@ -699,18 +698,18 @@ public class KickstartData {
      */
     public Set<KickstartCommand> getOptions() {
         // 'partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom'
-        logger.debug("returning all commands except: " + ADANCED_OPTIONS);
+        logger.debug("returning all commands except: {}", ADANCED_OPTIONS);
         Set<KickstartCommand> retval = new HashSet<>();
         if (this.commands != null && this.commands.size() > 0) {
             for (KickstartCommand cmd : this.commands) {
-                logger.debug("working with: " + cmd.getCommandName().getName());
+                logger.debug("working with: {}", cmd.getCommandName().getName());
                 if (!ADANCED_OPTIONS.contains(cmd.getCommandName().getName())) {
                     logger.debug("not contained within filtered list. adding to retval");
                     retval.add(cmd);
                 }
             }
         }
-        logger.debug("returning: " + retval);
+        logger.debug("returning: {}", retval);
         return Collections.unmodifiableSet(retval);
     }
 

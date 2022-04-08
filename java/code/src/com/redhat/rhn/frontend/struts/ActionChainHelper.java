@@ -78,7 +78,7 @@ public class ActionChainHelper {
             String label = sanitizeLabel((String) form.get(LABEL_PROPERTY_NAME));
 
             if (!StringUtils.isBlank(label)) {
-                log.debug("Reading Action Chain from label " + label);
+                log.debug("Reading Action Chain from label {}", label);
                 return ActionChainFactory.getOrCreateActionChain(label, user);
             }
         }

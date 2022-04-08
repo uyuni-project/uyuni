@@ -55,8 +55,7 @@ public class KickstartTroubleshootingCommand extends BaseKickstartCommand {
      * @param bootloaderTypeIn lilo or grub
      */
     public void setBootloaderType(String bootloaderTypeIn) {
-        logger.debug("setBootloaderType(String bootloaderTypeIn=" + bootloaderTypeIn +
-                     ") - start");
+        logger.debug("setBootloaderType(String bootloaderTypeIn={}) - start", bootloaderTypeIn);
 
         KickstartCommand bootloaderCommand = getKickstartData().getCommand("bootloader");
 
@@ -105,8 +104,7 @@ public class KickstartTroubleshootingCommand extends BaseKickstartCommand {
      * @param kernelParamsIn the kernel parameters to set
      */
     public void setKernelParams(String kernelParamsIn) {
-        logger.debug("setKernelParams(String kernelParamsIn=" + kernelParamsIn +
-                     ") - start");
+        logger.debug("setKernelParams(String kernelParamsIn={}) - start", kernelParamsIn);
 
         getKickstartData().setKernelParams(kernelParamsIn);
 

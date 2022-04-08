@@ -85,7 +85,7 @@ public class SetController {
                         changes.toArray(new String[0]), add, user);
             }
             catch (Exception e) {
-                LOG.error("Failed to change set " + setLabel);
+                LOG.error("Failed to change set {}", setLabel);
                 return null;
             }
         }).collect(Collectors.toList());

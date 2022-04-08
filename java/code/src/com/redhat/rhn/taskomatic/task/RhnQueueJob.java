@@ -99,7 +99,7 @@ public abstract class RhnQueueJob implements RhnJob {
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
             logToNewFile();
-            getLogger().debug("Starting run " + jobRun.getId());
+            getLogger().debug("Starting run {}", jobRun.getId());
         }
         else {
             // close current run
@@ -118,7 +118,7 @@ public abstract class RhnQueueJob implements RhnJob {
                 "_max_work_items", defaultItems);
         int queueSize = queue.getQueueSize();
         if (getLogger().isDebugEnabled()) {
-            getLogger().debug("Queue size (before run): " + queueSize);
+            getLogger().debug("Queue size (before run): {}", queueSize);
         }
         if (queueSize < maxWorkItems) {
             queue.run();

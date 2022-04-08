@@ -124,7 +124,7 @@ public class UserEditSetupAction extends RhnAction {
         StringBuilder disabledRoles = new StringBuilder();
 
         for (Role currRole : orgRoles) {
-            log.debug("currRole = " + currRole.getLabel());
+            log.debug("currRole = {}", currRole.getLabel());
 
             boolean selected = false; // does user have this role?
             boolean disabled = false; // is the role modifiable?
@@ -155,8 +155,8 @@ public class UserEditSetupAction extends RhnAction {
                 log.debug("4");
             }
 
-            log.debug("   selected = " + selected);
-            log.debug("   disabled = " + disabled);
+            log.debug("   selected = {}", selected);
+            log.debug("   disabled = {}", disabled);
             if (currRole.equals(RoleFactory.SAT_ADMIN) ||
                     currRole.equals(RoleFactory.ORG_ADMIN)) {
                 adminRoles.add(new UserRoleStatusBean(uilabel, uivalue, selected,

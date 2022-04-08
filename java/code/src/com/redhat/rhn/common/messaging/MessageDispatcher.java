@@ -50,7 +50,7 @@ public class MessageDispatcher implements Runnable {
         log.info("Awaiting termination of threads (for 1 minute)");
         try {
             final boolean done = threadPool.awaitTermination(1, TimeUnit.MINUTES);
-            log.info("Thread pool shut down: " + done);
+            log.info("Thread pool shut down: {}", done);
         }
         catch (InterruptedException e) {
             log.error("Interrupted while awaiting termination", e);
@@ -84,7 +84,7 @@ public class MessageDispatcher implements Runnable {
                     continue;
                 }
                 else if (actionHandler.canRunConcurrently()) {
-                    log.info("Executing in thread pool: " + actionHandler);
+                    log.info("Executing in thread pool: {}", actionHandler);
                     threadPool.execute(actionHandler);
                 }
                 else {

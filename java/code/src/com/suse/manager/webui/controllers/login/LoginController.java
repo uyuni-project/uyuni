@@ -106,7 +106,7 @@ public class LoginController {
 
             // In case we are authenticated go directly to redirect target
             if (AclManager.hasAcl("user_authenticated()", request.raw(), null)) {
-                log.debug("Already authenticated, redirecting to: " + urlBounce);
+                log.debug("Already authenticated, redirecting to: {}", urlBounce);
                 response.redirect(urlBounce);
             }
 
@@ -149,16 +149,16 @@ public class LoginController {
             user = LoginHelper.loginUser(creds.getLogin(), creds.getPassword(), errors);
             if (errors.isEmpty()) {
                 // No errors, log success
-                log.info("LOCAL AUTH SUCCESS: [" + user.getLogin() + "]");
+                log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
             }
             else {
                 // Errors, log failure
-                log.error("LOCAL AUTH FAILURE: [" + creds.getLogin() + "]");
+                log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
             }
         }
         // External-auth returned a user and no errors
         else {
-            log.info("EXTERNAL AUTH SUCCESS: [" + user.getLogin() + "]");
+            log.info("EXTERNAL AUTH SUCCESS: [{}]", user.getLogin());
         }
 
         if (errors.isEmpty()) {
@@ -166,7 +166,7 @@ public class LoginController {
             return json(response, new LoginResult(true));
         }
         else {
-            log.error("LOCAL AUTH FAILURE: [" + creds.getLogin() + "]");
+            log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
             return json(response, new LoginResult(false, errors.toArray(new String[0])));
         }
     }
@@ -180,7 +180,7 @@ public class LoginController {
      */
     public static String logout(Request request, Response response, User user) {
         AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
-        log.info("WEB LOGOUT: [" + user.getLogin() + "]");
+        log.info("WEB LOGOUT: [{}]", user.getLogin());
         return json(response, new LoginResult(true));
     }
 

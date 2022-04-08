@@ -79,7 +79,7 @@ public class AutoErrataTask extends RhnJavaJob {
             return;
         }
 
-        log.debug("=== Scheduling " + results.size() + " auto errata updates");
+        log.debug("=== Scheduling {} auto errata updates", results.size());
 
         for (Map<String, Long> result : results) {
             Long errataId = result.get("errata_id");
@@ -95,11 +95,10 @@ public class AutoErrataTask extends RhnJavaJob {
                 actionsToSchedule.add(errataAction);
             }
             catch (Exception e) {
-                log.error("Errata: " + errataId + ", Org Id: " + orgId + ", Server: " +
-                        serverId, e);
+                log.error("Errata: {}, Org Id: {}, Server: {}", errataId, orgId, serverId, e);
                 throw new JobExecutionException(e);
             }
-            log.debug("Scheduling auto update actions for server " + serverId + " and erratum " + errataId);
+            log.debug("Scheduling auto update actions for server {} and erratum {}", serverId, errataId);
         }
     }
 

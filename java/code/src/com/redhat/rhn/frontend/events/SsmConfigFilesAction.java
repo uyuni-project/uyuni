@@ -50,8 +50,7 @@ public class SsmConfigFilesAction implements MessageAction {
                     actionChain);
         }
         catch (Exception e) {
-            LOG.error("Error scheduling configuration files deployment for event " +
-                    event, e);
+            LOG.error("Error scheduling configuration files deployment for event {}", event, e);
         }
 
     }

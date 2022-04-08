@@ -706,9 +706,8 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     public boolean isSubscribable(Org orgIn, Server server) {
 
         if (log.isDebugEnabled()) {
-            log.debug("isSubscribable.archComp: " +
-                    SystemManager.verifyArchCompatibility(server, this));
-            log.debug("isSatellite: " + this.isMgrServer());
+            log.debug("isSubscribable.archComp: {}", SystemManager.verifyArchCompatibility(server, this));
+            log.debug("isSatellite: {}", this.isMgrServer());
         }
 
         return SystemManager.verifyArchCompatibility(server, this);

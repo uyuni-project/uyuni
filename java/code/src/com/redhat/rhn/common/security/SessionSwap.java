@@ -160,7 +160,7 @@ public class SessionSwap {
         StringBuilder swapKey = new StringBuilder(20);
         if (log.isDebugEnabled()) {
             for (String tmp : text) {
-                log.debug("val : " + tmp);
+                log.debug("val : {}", tmp);
             }
         }
         swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4));
@@ -172,12 +172,12 @@ public class SessionSwap {
 
 
         if (log.isDebugEnabled()) {
-            log.debug("Data     : [" + joinedText + "]");
-            log.debug("Key      : [" + swapKey + "]");
+            log.debug("Data     : [{}]", joinedText);
+            log.debug("Key      : [{}]", swapKey);
         }
         String retval = HMAC.sha1(joinedText, swapKey.toString());
         if (log.isDebugEnabled()) {
-            log.debug("retval: " + retval);
+            log.debug("retval: {}", retval);
         }
         return retval;
     }

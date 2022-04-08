@@ -202,8 +202,7 @@ public class ServerFactory extends HibernateFactory {
     public static Optional<Server> lookupProxyServer(String name) {
         boolean nameIsFullyQualified = name.contains(".");
         if (!nameIsFullyQualified) {
-            log.warn("Specified master name \"" + name + "\" is not fully-qualified," +
-                    "proxy attachment might not be correct");
+            log.warn("Specified master name \"{}\" is not fully-qualified,proxy attachment might not be correct", name);
             log.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
         }
 

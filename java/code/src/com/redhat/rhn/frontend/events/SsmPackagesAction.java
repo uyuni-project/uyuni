@@ -89,8 +89,7 @@ public abstract class SsmPackagesAction implements MessageAction {
             scheduleAction(event, user);
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Time to schedule all actions: " +
-                        (System.currentTimeMillis() - actionStart));
+                LOG.debug("Time to schedule all actions: {}", System.currentTimeMillis() - actionStart);
             }
         }
         catch (TaskomaticApiException e) {
@@ -99,7 +98,7 @@ public abstract class SsmPackagesAction implements MessageAction {
             throw new RuntimeException(e);
         }
         catch (Exception e) {
-            LOG.error("Error scheduling package installations for event " + event, e);
+            LOG.error("Error scheduling package installations for event {}", event, e);
         }
         finally {
             // This should stay in the finally block so the operation is

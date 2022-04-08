@@ -120,7 +120,7 @@ public class DownloadFile extends DownloadAction {
             return mapping.findForward("error");
         }
         if (log.isDebugEnabled()) {
-            log.debug("url : [" + url + "]");
+            log.debug("url : [{}]", url);
         }
         if (url.startsWith("/ty/")) {
             url = url.replaceFirst("/ty/", "");
@@ -173,7 +173,7 @@ public class DownloadFile extends DownloadAction {
         }
         catch (Exception e) {
             e.printStackTrace();
-            log.error("Package retrieval error on file download url: " + url);
+            log.error("Package retrieval error on file download url: {}", url);
             return mapping.findForward("error");
         }
 
@@ -239,7 +239,7 @@ public class DownloadFile extends DownloadAction {
             ActionMapping mapping) throws IOException {
 
         if (log.isDebugEnabled()) {
-            log.debug("URL : " + url);
+            log.debug("URL : {}", url);
         }
 
         Map<String, String> map = DownloadFile.parseDistUrl(url);
@@ -272,8 +272,8 @@ public class DownloadFile extends DownloadAction {
 
 
         if (log.isDebugEnabled()) {
-            log.debug("computed path to just the file: " + path);
-            log.debug("Tree label to lookup: " + label);
+            log.debug("computed path to just the file: {}", path);
+            log.debug("Tree label to lookup: {}", label);
         }
 
         KickstartableTree tree = null;
@@ -343,7 +343,7 @@ public class DownloadFile extends DownloadAction {
             fileId = Long.valueOf(getNextValue(it));
         }
         catch (NumberFormatException e) {
-            log.error("Error parsing file download url: " + url);
+            log.error("Error parsing file download url: {}", url);
             return mapping.findForward("error");
         }
         String filename = getNextValue(it);
@@ -360,14 +360,14 @@ public class DownloadFile extends DownloadAction {
         //    we'll validate the SHA1 token to make sure someone didn't hack
         //      it in the next step.
         if (expire != 0 && Calendar.getInstance().getTimeInMillis() > expire) {
-            log.error("File download url has expired: " + url);
+            log.error("File download url has expired: {}", url);
             return mapping.findForward("error");
         }
 
         User user = UserFactory.lookupById(userId);
         if (!hash.equals(DownloadManager.getFileSHA1Token(fileId,
                 filename, user, expire, type))) {
-            log.error("Invalid hash on file download url: " + url);
+            log.error("Invalid hash on file download url: {}", url);
             return mapping.findForward("error");
         }
 
@@ -521,7 +521,7 @@ public class DownloadFile extends DownloadAction {
         Map params = (Map) request.getAttribute(PARAMS);
         path = (String) params.get(FILENAME);
         if (log.isDebugEnabled()) {
-            log.debug("getStreamInfo KICKSTART type, path: " + path);
+            log.debug("getStreamInfo KICKSTART type, path: {}", path);
         }
         String diskPath = null;
         String kickstartMount = Config.get().getString(ConfigDefaults.MOUNT_POINT);
@@ -554,7 +554,7 @@ public class DownloadFile extends DownloadAction {
                 fileName = checksum + "/" + fileName;
             }
             if (log.isDebugEnabled()) {
-                log.debug("RPM filename: " + fileName);
+                log.debug("RPM filename: {}", fileName);
             }
             Channel channel = tree.getChannel();
             if (child != null) {
@@ -591,7 +591,7 @@ public class DownloadFile extends DownloadAction {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
                     rpmPackage.getPath();
                 if (log.isDebugEnabled()) {
-                    log.debug("found package :: diskPath path: " + diskPath);
+                    log.debug("found package :: diskPath path: {}", diskPath);
                 }
                 newState = KickstartFactory.
                     lookupSessionStateByLabel(KickstartSessionState.IN_PROGRESS);
@@ -662,7 +662,7 @@ public class DownloadFile extends DownloadAction {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("DirCheck path: " + diskPath);
+                log.debug("DirCheck path: {}", diskPath);
             }
             File actualFile = new File(diskPath);
             if (actualFile.exists() && actualFile.isDirectory()) {
@@ -678,20 +678,20 @@ public class DownloadFile extends DownloadAction {
 
             }
             else {
-                log.error(diskPath + " Not Found .. 404!");
+                log.error("{} Not Found .. 404!", diskPath);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return getStream("".getBytes(), CONTENT_TYPE_TEXT_PLAIN);
             }
 
         }
         if (log.isDebugEnabled()) {
-            log.debug("Final path before returning getStreamForPath(): " + diskPath);
+            log.debug("Final path before returning getStreamForPath(): {}", diskPath);
         }
         if (log.isDebugEnabled()) {
             Enumeration e = request.getHeaderNames();
             while (e.hasMoreElements()) {
                 String name = (String) e.nextElement();
-                log.debug("header: [" + name + "]: " + request.getHeader(name));
+                log.debug("header: [{}]: {}", name, request.getHeader(name));
             }
         }
         if (request.getMethod().equals("HEAD")) {
@@ -778,7 +778,7 @@ public class DownloadFile extends DownloadAction {
         else {
             File f = new File(diskPath);
             if (!f.exists()) {
-                log.error("manualServeChecksum :: File not found: " + diskPath);
+                log.error("manualServeChecksum :: File not found: {}", diskPath);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return getStream(new byte[0], CONTENT_TYPE_TEXT_PLAIN);
             }
@@ -821,13 +821,13 @@ public class DownloadFile extends DownloadAction {
             end = Long.parseLong(rangeMatcher.group(2));
         }
         if (log.isDebugEnabled()) {
-            log.debug("manualServeByteRange Start    : " + start);
-            log.debug("manualServeByteRange End      : " + end);
+            log.debug("manualServeByteRange Start    : {}", start);
+            log.debug("manualServeByteRange End      : {}", end);
         }
         long size = end - start + 1;
 
         if (log.isDebugEnabled()) {
-            log.debug("manualServeByteRange totalsize: " + totalSize);
+            log.debug("manualServeByteRange totalsize: {}", totalSize);
         }
 
         if (size <= 0) {
@@ -846,10 +846,9 @@ public class DownloadFile extends DownloadAction {
                 "/" + totalSize);
         response.addHeader("Accept-Ranges", "bytes");
         if (log.isDebugEnabled()) {
-            log.debug("Added header last-modified: " + fdate);
-            log.debug("Added header Content-Length: " + size);
-            log.debug("Added header Content-Range: " + "bytes " + start +
-                    "-" + end + "/" + totalSize);
+            log.debug("Added header last-modified: {}", fdate);
+            log.debug("Added header Content-Length: {}", size);
+            log.debug("Added header Content-Range: bytes {}-{}/{}", start, end, totalSize);
             log.debug("Added header Accept-Ranges: bytes");
         }
         // TODO: it's a bad idea to read file from filesystem into memory.
@@ -862,7 +861,7 @@ public class DownloadFile extends DownloadAction {
         // gotta make sure it is end + 1
         byte[] chunk = FileUtils.readByteArrayFromFile(actualFile, start, end + 1);
         if (log.isDebugEnabled()) {
-            log.debug("chunk size: " + chunk.length);
+            log.debug("chunk size: {}", chunk.length);
             log.debug("read chunk into byte array.  returning ByteArrayStreamInfo");
         }
         return new ByteArrayStreamInfo(CONTENT_TYPE_OCTET_STREAM, chunk);

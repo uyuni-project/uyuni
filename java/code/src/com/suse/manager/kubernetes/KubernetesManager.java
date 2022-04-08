@@ -129,15 +129,11 @@ public class KubernetesManager {
                                     (infoId) -> new ImageUsage(imageInfo)));
                         }
                         else {
-                            LOG.debug("Image build history not found for digest: " +
-                                    imgDigest + " (maybe the image was not built " +
-                                    "by SUSE Manager).");
+                            LOG.debug("Image build history not found for digest: {} (maybe the image was not built by SUSE Manager).", imgDigest);
                             String[] tokens =
                                     StringUtils.split(container.getImage(), "/", 2);
                             if (tokens.length < 2) {
-                                LOG.debug("No repository available in the image name '" +
-                                        container.getImage() +
-                                        "'. Ignoring the image.");
+                                LOG.debug("No repository available in the image name '{}'. Ignoring the image.", container.getImage());
                                 return;
                             }
 
@@ -175,9 +171,7 @@ public class KubernetesManager {
                     });
                 }
                 else {
-                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel() +
-                            " lacks 'kubeconfig' and/or 'currentContext'" +
-                            " config parameters.");
+                    LOG.debug("VirtualHostManager {} lacks 'kubeconfig' and/or 'currentContext' config parameters.", virtHostMgr.getLabel());
                 }
             }
         };

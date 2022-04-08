@@ -132,8 +132,7 @@ public class SmtpMail implements Mail {
         try {
             Address[] addrs = message.getRecipients(RecipientType.TO);
             if (addrs == null || addrs.length == 0) {
-                log.warn("Aborting mail message " + message.getSubject() +
-                        ": No recipients");
+                log.warn("Aborting mail message {}: No recipients", message.getSubject());
                 return;
             }
             Transport.send(message);
@@ -179,9 +178,9 @@ public class SmtpMail implements Mail {
             List tmp = new LinkedList();
             for (String sIn : recipIn) {
                 InternetAddress addr = new InternetAddress(sIn);
-                log.debug("checking: " + addr.getAddress());
+                log.debug("checking: {}", addr.getAddress());
                 if (verifyAddress(addr)) {
-                    log.debug("Address verified.  Adding: " + addr.getAddress());
+                    log.debug("Address verified.  Adding: {}", addr.getAddress());
                     tmp.add(addr);
                 }
             }
@@ -274,26 +273,23 @@ public class SmtpMail implements Mail {
 
         }
         if (log.isDebugEnabled()) {
-            log.debug("Restricted domains: " +
-                    StringUtils.join(restrictedDomains, " | "));
-            log.debug("disallowedDomains domains: " +
-                    StringUtils.join(disallowedDomains, " | "));
+            log.debug("Restricted domains: {}", StringUtils.join(restrictedDomains, " | "));
+            log.debug("disallowedDomains domains: {}", StringUtils.join(disallowedDomains, " | "));
         }
         if (restrictedDomains != null && restrictedDomains.length > 0) {
             if (ArrayUtils.lastIndexOf(restrictedDomains, domain) == -1) {
-                log.warn("Address " + addr.getAddress() +
-                        " not in restricted domains list");
+                log.warn("Address {} not in restricted domains list", addr.getAddress());
                 retval = false;
             }
         }
 
         if (retval &&  disallowedDomains != null && disallowedDomains.length > 0) {
             if (ArrayUtils.lastIndexOf(disallowedDomains, domain) > -1) {
-                log.warn("Address " + addr.getAddress() + " in disallowed domains list");
+                log.warn("Address {} in disallowed domains list", addr.getAddress());
                 retval = false;
             }
         }
-        log.debug("verifyAddress returning: " + retval);
+        log.debug("verifyAddress returning: {}", retval);
         return retval;
     }
 }

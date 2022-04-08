@@ -77,7 +77,7 @@ public class RepoSyncTask extends RhnJavaJob {
         for (Long channelId : channelIds) {
             Channel channel = ChannelFactory.lookupById(channelId);
             if (channel != null) {
-                log.info("Syncing repos for channel: " + channel.getName());
+                log.info("Syncing repos for channel: {}", channel.getName());
 
                 try {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
@@ -111,7 +111,7 @@ public class RepoSyncTask extends RhnJavaJob {
                 }
             }
             else {
-                log.error("No such channel with channel_id " + channelId);
+                log.error("No such channel with channel_id {}", channelId);
             }
         }
         try {

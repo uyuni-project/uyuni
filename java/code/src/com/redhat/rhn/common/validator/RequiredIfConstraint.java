@@ -93,9 +93,9 @@ public class RequiredIfConstraint extends ParsedConstraint {
                     required = true; // set this required = true
                 }
                 else if (requiredIfValue.equals(fieldValue)) {
-                    log.debug("RequiredIf actual Value: " + requiredIfValue);
-                    log.debug("Requiredvalue: " + fieldValue);
-                    log.debug("Actual fieldvalue: " + value);
+                    log.debug("RequiredIf actual Value: {}", requiredIfValue);
+                    log.debug("Requiredvalue: {}", fieldValue);
+                    log.debug("Actual fieldvalue: {}", value);
                     required = true;
                 }
                 // If any of the fields match, we return true immediately

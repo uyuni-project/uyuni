@@ -1722,8 +1722,7 @@ public class SystemHandler extends BaseHandler {
                 deletion.add(sysId.longValue());
             }
             else {
-                log.warn("system " + sysId +
-                        " is not available to user, hence will not be deleted");
+                log.warn("system {} is not available to user, hence will not be deleted", sysId);
                 skippedSids.add(sysId);
             }
         }
@@ -5450,8 +5449,7 @@ public class SystemHandler extends BaseHandler {
 
             // Ignore if the system already has this entitlement:
             if (server.hasEntitlement(ent)) {
-                log.debug("System " + server.getName() + " already has entitlement: " +
-                        ent.getLabel());
+                log.debug("System {} already has entitlement: {}", server.getName(), ent.getLabel());
                 continue;
             }
 
@@ -5598,7 +5596,7 @@ public class SystemHandler extends BaseHandler {
                 }
                 catch (NumberFormatException nfe) {
                     // not our file, skip it
-                    log.debug("Skipping " + file.getName());
+                    log.debug("Skipping {}", file.getName());
                     break;
                 }
 
@@ -5619,15 +5617,14 @@ public class SystemHandler extends BaseHandler {
                                 }
                             }
                             if (uuidPos == null || systemIdPos == null) {
-                                log.warn("Unexpected format of mapping file " +
-                                        file.getName());
+                                log.warn("Unexpected format of mapping file {}", file.getName());
                                 break;
                             }
                             continue;
                         }
                         String[] record = line.split(",");
                         if (record.length <= uuidPos || record.length <= systemIdPos) {
-                            log.warn("Unexpected format of mapping file " + file.getName());
+                            log.warn("Unexpected format of mapping file {}", file.getName());
                             break;
                         }
                         if (record[systemIdPos].equals(systemIdStr) &&
@@ -5653,7 +5650,7 @@ public class SystemHandler extends BaseHandler {
                     br.close();
                 }
                 catch (IOException e) {
-                    log.warn("Cannot read " + file.getName());
+                    log.warn("Cannot read {}", file.getName());
                 }
             }
         }
@@ -7639,17 +7636,17 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug(ps.toString() + " is completely synced.");
+                                    log.debug("{} is completely synced.", ps.toString());
                                 }
                                 else {
-                                    log.debug("Discarding " + ps.toString() + ". Is not completely synced.");
+                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
                                 }
                             }
                             return ps.getIsEveryChannelSynced();
                         })
                         .collect(toList());
                 targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
-                log.info("Using migration target: " + targetProducts);
+                log.info("Using migration target: {}", targetProducts);
             }
             else {
                 for (SUSEProductSet target : targets) {
@@ -7666,7 +7663,7 @@ public class SystemHandler extends BaseHandler {
                         targets.stream().map(t -> t + " : " +
                                 t.getMissingChannelsMessage())
                                 .collect(Collectors.joining(System.getProperty("line.separator")));
-                log.error("No target products found for migration: " + targetsInfo);
+                log.error("No target products found for migration: {}", targetsInfo);
                 throw new FaultException(-1, "productMigrationNoTarget",
                         "No target found for Product migration. " + targetsInfo);
             }
@@ -7907,7 +7904,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, empty());
-        log.debug("bootstrap called: " + params);
+        log.debug("bootstrap called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7945,7 +7942,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called: " + params);
+        log.debug("bootstrapWithPrivateSshKey called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7981,7 +7978,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with proxyId: " + params);
+        log.debug("bootstrap called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8021,7 +8018,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8057,7 +8054,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, empty());
-        log.debug("bootstrap called with re-activation key: " + params);
+        log.debug("bootstrap called with re-activation key: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8098,7 +8095,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8137,7 +8134,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        log.debug("bootstrap called with re-activation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8181,7 +8178,7 @@ public class SystemHandler extends BaseHandler {
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
                 of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8465,13 +8462,13 @@ public class SystemHandler extends BaseHandler {
                         }
                     },
                     () -> {
-                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        log.warn("system {} is not a salt minion, hence pillar will not be updated", sysId);
                         skipped.add(sysId);
                     }
                 );
             }
             else {
-                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                log.warn("system {} is not available to user, hence pillar will not be refreshed", sysId);
                 skipped.add(sysId);
             }
         }

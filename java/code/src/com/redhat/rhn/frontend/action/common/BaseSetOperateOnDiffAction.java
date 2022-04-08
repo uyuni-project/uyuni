@@ -93,14 +93,14 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
                 request));
 
         if (log.isDebugEnabled()) {
-            log.debug("current set  : " + currentset.getElements());
+            log.debug("current set  : {}", currentset.getElements());
         }
 
         while (originalItems.hasNext()) {
             Identifiable ido = originalItems.next();
 
             if (log.isDebugEnabled()) {
-                log.debug("original item  : " + ido.getId());
+                log.debug("original item  : {}", ido.getId());
             }
             diffmap.put(new RhnSetElement(user.getId(),
                     getSetDecl().getLabel(), ido.getId(), null),
@@ -129,8 +129,8 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("removed : " + removed);
-            log.debug("added : " + added);
+            log.debug("removed : {}", removed);
+            log.debug("added : {}", added);
         }
 
         operateOnRemovedElements(removed, request);

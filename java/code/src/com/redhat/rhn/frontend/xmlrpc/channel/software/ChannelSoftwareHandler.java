@@ -234,7 +234,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
+                log.fatal("Tried to sync errata with id {} but it was not cloned", eid);
             }
         }
         return 1;
@@ -1417,8 +1417,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [" +
-                    sw.getTime() + "]");
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
         }
     }
 
@@ -1997,7 +1996,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         if (channelFrom.isModular()) {
-            log.info("Aligning modular metadata of " + channelTo + " to " + channelFrom);
+            log.info("Aligning modular metadata of {} to {}", channelTo, channelFrom);
             channelTo.cloneModulesFrom(channelFrom);
             return 1;
         }
@@ -3018,7 +3017,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can list vendor repo filters.");
         }
-        log.warn("Unsupported XMLRPC call used: listVendorRepoFilters " + label);
+        log.warn("Unsupported XMLRPC call used: listVendorRepoFilters {}", label);
 
         ContentSource cs = lookupVendorContentSourceByLabel(label);
 
@@ -3041,7 +3040,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can add repo filters.");
         }
-        log.warn("Unsupported XMLRPC call used: addVendorRepoFilters " + label);
+        log.warn("Unsupported XMLRPC call used: addVendorRepoFilters {}", label);
 
         ContentSource cs = lookupVendorContentSourceByLabel(label);
 
@@ -3084,7 +3083,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can remove repo filters.");
         }
-        log.warn("Unsupported XMLRPC call used: removeVendorRepoFilters " + label);
+        log.warn("Unsupported XMLRPC call used: removeVendorRepoFilters {}", label);
 
         String flag = filterIn.get("flag");
         String filter = filterIn.get("filter");
@@ -3127,7 +3126,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can set repo filters.");
         }
-        log.warn("Unsupported XMLRPC call used: setVendorRepoFilters " + label);
+        log.warn("Unsupported XMLRPC call used: setVendorRepoFilters {}", label);
 
         ContentSource cs = lookupVendorContentSourceByLabel(label);
 
@@ -3175,7 +3174,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!loggedInUser.hasRole(orgAdminRole)) {
             throw new PermissionException("Only Org Admins can remove repo filters.");
         }
-        log.warn("Unsupported XMLRPC call used: clearVendorRepoFilters " + label);
+        log.warn("Unsupported XMLRPC call used: clearVendorRepoFilters {}", label);
 
         ContentSource cs = lookupVendorContentSourceByLabel(label);
 

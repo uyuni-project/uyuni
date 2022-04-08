@@ -127,8 +127,7 @@ public class LoginHelper {
                     }
                     updateCmd.setTemporaryRoles(roles);
                     updateCmd.updateUser();
-                    log.warn("Externally authenticated login " + remoteUserString +
-                                 " (" + firstname + " " + lastname + ")");
+                    log.warn("Externally authenticated login {} ({} {})", remoteUserString, firstname, lastname);
                 }
             }
             catch (LookupException le) {
@@ -140,7 +139,7 @@ public class LoginHelper {
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
                     newUserOrg = OrgFactory.lookupByName(orgUnitString);
                     if (newUserOrg == null) {
-                        log.error("Cannot find organization with name: " + orgUnitString);
+                        log.error("Cannot find organization with name: {}", orgUnitString);
                     }
                 }
                 if (newUserOrg == null) {
@@ -149,7 +148,7 @@ public class LoginHelper {
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {
-                            log.error("Cannot find organization with id: " + defaultOrgId);
+                            log.error("Cannot find organization with id: {}", defaultOrgId);
                         }
                     }
                 }
@@ -169,12 +168,10 @@ public class LoginHelper {
                         createCmd.validate();
                         createCmd.storeNewUser();
                         remoteUser = createCmd.getUser();
-                        log.warn("Externally authenticated login " + remoteUserString +
-                                " (" + firstname + " " + lastname + ") created in " +
-                                newUserOrg.getName() + ".");
+                        log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString, firstname, lastname, newUserOrg.getName());
                     }
                     catch (WrappedSQLException wse) {
-                        log.error("Creation of user failed with: " + wse.getMessage());
+                        log.error("Creation of user failed with: {}", wse.getMessage());
                         HibernateFactory.rollbackTransaction();
                     }
                 }
@@ -196,7 +193,7 @@ public class LoginHelper {
             }
         }
         catch (UnsupportedEncodingException e) {
-            log.warn("Unable to decode: " + string);
+            log.warn("Unable to decode: {}", string);
         }
         return defaultString;
     }
@@ -206,8 +203,7 @@ public class LoginHelper {
         for (String extGroupName : groupNames) {
             UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
             if (extGroup == null) {
-                log.info("No role mapping defined for external group '" + extGroupName +
-                        "'.");
+                log.info("No role mapping defined for external group '{}'.", extGroupName);
                 continue;
             }
             roles.addAll(extGroup.getRoles());
@@ -221,8 +217,7 @@ public class LoginHelper {
             OrgUserExtGroup extGroup =
                     UserGroupFactory.lookupOrgExtGroupByLabelAndOrg(extGroupName, org);
             if (extGroup == null) {
-                log.info("No sg mapping defined for external group '" + extGroupName +
-                        "'.");
+                log.info("No sg mapping defined for external group '{}'.", extGroupName);
                 continue;
             }
             sgs.addAll(extGroup.getServerGroups());
@@ -249,14 +244,13 @@ public class LoginHelper {
         for (int i = 1; i <= nGroups; i++) {
             String extGroupName = (String) requestIn.getAttribute("REMOTE_USER_GROUP_" + i);
             if (extGroupName == null) {
-                log.warn("REMOTE_USER_GROUP_" + i + " not set!");
+                log.warn("REMOTE_USER_GROUP_{} not set!", i);
                 continue;
             }
             extGroups.add(extGroupName);
 
         }
-        log.warn("REMOTE_USER_GROUP_" + nGroupsStr + ": " +
-                StringUtils.join(extGroups.toArray(), ";"));
+        log.warn("REMOTE_USER_GROUP_{}: {}", nGroupsStr, StringUtils.join(extGroups.toArray(), ";"));
         return extGroups;
     }
 
@@ -321,8 +315,7 @@ public class LoginHelper {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [" +
-                    sw.getTime() + "]");
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
         }
     }
 
@@ -360,7 +353,7 @@ public class LoginHelper {
                     osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
                 }
                 catch (NumberFormatException e) {
-                    log.error("Unable to parse OS versionnumber " + resultKV[1]);
+                    log.error("Unable to parse OS versionnumber {}", resultKV[1]);
                 }
             }
             else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
@@ -368,8 +361,8 @@ public class LoginHelper {
             }
         }
         if (log.isDebugEnabled()) {
-            log.debug("PG DB version is: " + serverVersion);
-            log.debug("OS Version is: " + osVersion + " " + osVersion);
+            log.debug("PG DB version is: {}", serverVersion);
+            log.debug("OS Version is: {} {}", osVersion, osVersion);
         }
         if (serverVersion < MIN_PG_DB_VERSION) {
             validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
@@ -415,10 +408,8 @@ public class LoginHelper {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("RPM version of schema: " +
-                (rpmSchemaVersion == null ? "null" : rpmSchemaVersion));
-            log.debug("Version of installed database schema: " +
-                (installedSchemaVersion == null ? "null" : installedSchemaVersion));
+            log.debug("RPM version of schema: {}", rpmSchemaVersion == null ? "null" : rpmSchemaVersion);
+            log.debug("Version of installed database schema: {}", installedSchemaVersion == null ? "null" : installedSchemaVersion);
         }
 
         return rpmSchemaVersion != null && installedSchemaVersion != null &&

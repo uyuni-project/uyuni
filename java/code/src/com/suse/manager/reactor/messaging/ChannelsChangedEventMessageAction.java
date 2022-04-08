@@ -74,7 +74,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
         Server s = ServerFactory.lookupById(serverId);
         if (s == null) {
-            log.error("Server with id " + serverId + " not found.");
+            log.error("Server with id {} not found.", serverId);
             return;
         }
         Optional<MinionServer> optMinion = s.asMinionServer();
@@ -100,8 +100,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                     TASKOMATIC_API.scheduleActionExecution(action, false);
                 }
                 catch (TaskomaticApiException e) {
-                    log.error("Could not schedule channels state application for system: " +
-                            s.getId());
+                    log.error("Could not schedule channels state application for system: {}", s.getId());
                 }
             }
 
@@ -121,7 +120,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                 }
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule state application for system: " + s.getId());
+                log.error("Could not schedule state application for system: {}", s.getId());
                 throw new RuntimeException(e);
             }
         }

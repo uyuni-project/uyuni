@@ -207,7 +207,7 @@ public class CVEAuditController {
                 cveAuditSystems = handleRequest(cveAuditRequest, user);
             }
             catch (UnknownCVEIdentifierException e) {
-                log.warn("Unknown CVE Identifier '" + cveIdentifier + "'");
+                log.warn("Unknown CVE Identifier '{}'", cveIdentifier);
             }
         }
         String result = cveAuditSystems.stream().map(

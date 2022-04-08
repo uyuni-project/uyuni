@@ -174,7 +174,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Integer> sshPort, Optional<Long> proxyId,
                                 Optional<String> activationKeyOverride, Optional<MinionStartupGrains> startupGrains) {
         Opt.consume(startupGrains,
-            ()-> LOG.error("Aborting: needed grains are not found for minion: " + minionId),
+            ()-> LOG.error("Aborting: needed grains are not found for minion: {}", minionId),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
                 Optional<String> mkey = grains.getSuseManagerGrain()
@@ -186,7 +186,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 updateKickStartSession(managementKey);
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
-                    ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
+                    ()-> LOG.error("Aborting: cannot find machine id for minion: {}", minionId),
                     machineId -> registerMinion(minionId, isSaltSSH, sshPort, proxyId, activationKeyOverride,
                             validReactivationKey, machineId, saltbootInitrd));
             });
@@ -291,13 +291,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private boolean isValidReactivationKey(Optional<ActivationKey> activationKey, String minionId) {
         return Opt.fold(activationKey,
             () -> {
-                LOG.info("Outdated Management Key defined for " + minionId + ": " + activationKey);
+                LOG.info("Outdated Management Key defined for {}: {}", minionId, activationKey);
                 return false;
             },
             ak -> {
                 if (Objects.isNull(ak.getServer())) {
                     if (Objects.isNull(ak.getKickstartSession())) {
-                        LOG.error("Management Key is not a reactivation key: " + ak.getKey());
+                        LOG.error("Management Key is not a reactivation key: {}", ak.getKey());
                     }
                     return false;
                 }
@@ -316,7 +316,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void applySaltBootStates(String minionId, MinionServer registeredMinion, boolean saltbootInitrd) {
         if (saltbootInitrd) {
             // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
-            LOG.info("Applying saltboot for minion " + minionId);
+            LOG.info("Applying saltboot for minion {}", minionId);
             applySaltboot(registeredMinion);
         }
     }
@@ -349,8 +349,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         String oldMinionId = registeredMinion.getMinionId();
         String oldMachineId = registeredMinion.getMachineId();
         if (!minionId.equals(oldMinionId)) {
-            LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
-                    "profile to '" + minionId + "' [" + registeredMinion.getMachineId() + "]");
+            LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId, registeredMinion.getMachineId());
             MinionPillarManager.INSTANCE.removePillar(registeredMinion);
             registeredMinion.setName(minionId);
             registeredMinion.setMinionId(minionId);
@@ -445,9 +444,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             else if (!minion.getOrg().equals(org)) {
                 // only log activation key ignore message when the activation key is not empty
                 String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
-                LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
-                        "organization selected for registration (" + org + "). Keeping the " +
-                        "existing server organization. " + ignoreAKMessage);
+                LOG.error("The existing server organization ({}) does not match the organization selected for registration ({}). Keeping the existing server organization. {}", minion.getOrg(), org, ignoreAKMessage);
                 activationKey = empty();
                 org = minion.getOrg();
                 SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
@@ -517,7 +514,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
-                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
+                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion {}", minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
                 return;
@@ -526,7 +523,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
         }
         catch (Throwable t) {
-            LOG.error("Error registering minion id: " + minionId, t);
+            LOG.error("Error registering minion id: {}", minionId, t);
             throw new RegisterMinionException(minionId, minion.getOrg());
         }
         finally {
@@ -627,8 +624,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (hwGroup != null) {
             // if the system is already assigned to some HWTYPE group, skip assignment and log this only
             if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
-                LOG.info("Skipping assignment of the minion " + minion + " to HW group " + hwGroup +
-                        ". The minion is already in a HW group.");
+                LOG.info("Skipping assignment of the minion {} to HW group {}. The minion is already in a HW group.", minion, hwGroup);
             }
             else {
                 systemManager.addServerToServerGroup(minion, hwGroup);
@@ -765,9 +761,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         ServerFactory.findContactMethodByLabel("default"),
                 ak -> {
                     if (!isSshPush && isSSHPushContactMethod(ak.getContactMethod())) {
-                        LOG.warn("Contact method changed from ssh-push to default for " +
-                                "minion id " + minionId + ". Please use webui " +
-                                "for salt-ssh minions.");
+                        LOG.warn("Contact method changed from ssh-push to default for minion id {}. Please use webui for salt-ssh minions.", minionId);
                         return ServerFactory.findContactMethodByLabel("default");
                     }
                     return ak.getContactMethod();
@@ -780,8 +774,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
         Optional<Channel> baseChannel = productBaseChannelDto
                 .flatMap(base -> ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
-            LOG.info("Base channel " + c.getName() + " found for OS: " + sp.getName() +
-                    ", version: " + sp.getVersion() + ", arch: " + arch.getName());
+                    LOG.info("Base channel {} found for OS: {}, version: {}, arch: {}", c.getName(), sp.getName(), sp.getVersion(), arch.getName());
             return c;
         }));
         if (!baseChannel.isPresent()) {
@@ -792,18 +785,17 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
-        LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
+        LOG.error("No package providing 'redhat-release' found on RHEL minion {}", minionId);
         return empty();
     }
 
     private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
-        LOG.error("Error querying 'redhat-release' package on RHEL minion " +
-                minionId + ": " + err);
+        LOG.error("Error querying 'redhat-release' package on RHEL minion {}: {}", minionId, err);
         return empty();
     }
 
     private String unknownRHELVersion(String minionId) {
-        LOG.error("Could not determine OS release version for RHEL minion " + minionId);
+        LOG.error("Could not determine OS release version for RHEL minion {}", minionId);
         return "unknown";
     }
 
@@ -862,7 +854,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             .flatMap(pkgStr -> {
                 String[] pkgs = StringUtils.split(pkgStr);
                 if (pkgs.length > 1) {
-                    LOG.warn("Multiple release packages are installed on minion: " + minionId);
+                    LOG.warn("Multiple release packages are installed on minion: {}", minionId);
                     // Pick the package with the biggest precedence:
                     // sles_es > redhat > others (centos etc.)
                     return Arrays.stream(pkgs).max(Comparator.comparingInt(s -> {

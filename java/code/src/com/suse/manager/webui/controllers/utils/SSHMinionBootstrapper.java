@@ -97,14 +97,13 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
             return new BootstrapResult(false, Optional.empty(), "Could not generate salt-ssh public key.");
         }
         if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
+            LOG.error("Generating salt-ssh public key failed: {}", res.get().getStderr());
             return new BootstrapResult(false, Optional.empty(),
                     "Generating salt-ssh public key failed: " + res.get().getStderr());
         }
 
         BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);
-        LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
-                ", proceeding with registration.");
+        LOG.info("salt-ssh system bootstrap success: {}, proceeding with registration.", result.isSuccess());
         String minionId = params.getHost();
         try {
             if (result.isSuccess()) {

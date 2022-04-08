@@ -196,7 +196,7 @@ public class SchedulerKernel {
             for (TaskoSchedule schedule : TaskoFactory.listActiveSchedulesByOrg(null)) {
                 if (!jobNames.contains(schedule.getJobLabel())) {
                     schedule.sanityCheckForPredefinedSchedules();
-                    log.info("Initializing " + schedule.getJobLabel());
+                    log.info("Initializing {}", schedule.getJobLabel());
                     TaskoQuartzHelper.createJob(schedule);
                 }
                 else {
@@ -205,8 +205,7 @@ public class SchedulerKernel {
                     if (!runList.isEmpty()) {
                         // there're runs in the future
                         // reinit the schedule
-                        log.warn("Reinitializing " + schedule.getJobLabel() + ", found " +
-                        runList.size() + " runs in the future.");
+                        log.warn("Reinitializing {}, found {} runs in the future.", schedule.getJobLabel(), runList.size());
                         TaskoFactory.reinitializeScheduleFromNow(schedule, now);
                         for (TaskoRun run : runList) {
                             TaskoFactory.deleteRun(run);
@@ -219,8 +218,7 @@ public class SchedulerKernel {
             for (Org org : OrgFactory.lookupAllOrgs()) {
                 int removed = tasko.unscheduleInvalidRepoSyncSchedules(org);
                 if (removed > 0) {
-                    log.warn("" + removed + " outdated repo-sync schedules detected and " +
-                            "removed within org " + org.getId());
+                    log.warn("{} outdated repo-sync schedules detected and removed within org {}", removed, org.getId());
                 }
             }
             // close unfinished runs
@@ -232,7 +230,7 @@ public class SchedulerKernel {
                 interrupted++;
             }
             if (interrupted > 0) {
-                log.warn("Number of interrupted runs: " + interrupted);
+                log.warn("Number of interrupted runs: {}", interrupted);
             }
             TaskoFactory.closeSession();
         }

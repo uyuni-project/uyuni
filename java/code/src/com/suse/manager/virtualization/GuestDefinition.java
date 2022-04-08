@@ -292,7 +292,7 @@ public class GuestDefinition {
                     .map(node -> GuestDiskDef.parse(node, vmInfo)).collect(Collectors.toList());
         }
         catch (Exception e) {
-            LOG.error("failed to parse libvirt XML definition: " + e.getMessage());
+            LOG.error("failed to parse libvirt XML definition: {}", e.getMessage());
         }
 
         return def;

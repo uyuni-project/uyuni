@@ -47,7 +47,7 @@ public class ChannelRepodataDriver implements QueueDriver {
         try {
             int eqReset = resetChannelRepodata.executeUpdate(new HashMap());
             if (eqReset > 0) {
-                logger.info("Resetting " + eqReset + " unfinished channel repodata tasks");
+                logger.info("Resetting {} unfinished channel repodata tasks", eqReset);
             }
             HibernateFactory.commitTransaction();
         }

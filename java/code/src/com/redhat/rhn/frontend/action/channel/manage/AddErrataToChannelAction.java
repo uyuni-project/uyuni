@@ -78,7 +78,7 @@ public class AddErrataToChannelAction extends RhnListAction {
 
         Logger log = LogManager.getLogger(this.getClass());
         if (log.isDebugEnabled()) {
-            log.debug("Set in Publish: "  +  packageSet.size());
+            log.debug("Set in Publish: {}", packageSet.size());
         }
 
         List<Long> channelPacks = ChannelFactory.getPackageIds(currentChan.getId());

@@ -55,14 +55,14 @@ public class SystemSearchHandler extends BaseHandler {
                     whereToSearch, true);
         }
         catch (MalformedURLException | XmlRpcException e) {
-            log.info("Caught Exception :" + e);
+            log.info("Caught Exception :{}", e);
             e.printStackTrace();
             throw new SearchServerCommException();
             // Connection error to XMLRPC search server
         }
         catch (XmlRpcFault e) {
-            log.info("Caught Exception :" + e);
-            log.info("ErrorCode = " + e.getErrorCode());
+            log.info("Caught Exception :{}", e);
+            log.info("ErrorCode = {}", e.getErrorCode());
             e.printStackTrace();
             if (e.getErrorCode() == 100) {
                 log.error("Invalid search query", e);

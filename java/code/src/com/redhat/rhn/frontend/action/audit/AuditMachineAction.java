@@ -71,8 +71,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
             end = Long.parseLong(request.getParameter("endMilli"));
             username = requestContext.getCurrentUser().getLogin();
 
-            log.debug("reviewed: " + machine + ", " + start + ", " + end +
-                ", " + username);
+            log.debug("reviewed: {}, {}, {}, {}", machine, start, end, username);
 
             try {
                 AuditManager.markReviewed(machine, start, end, username);

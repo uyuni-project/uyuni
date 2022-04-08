@@ -261,7 +261,7 @@ public class CachedStatement implements Serializable {
 
             }
             catch (RhnRuntimeException e) {
-                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                log.error("Error while processing cached statement sql: {}", getQuery(), e);
                 throw e;
             }
         });
@@ -465,7 +465,7 @@ public class CachedStatement implements Serializable {
             }
             catch (RhnRuntimeException e) {
                 // we just add more information for better bug tracking
-                log.error("Error while processing cached statement sql: " + sql, e);
+                log.error("Error while processing cached statement sql: {}", sql, e);
                 throw e;
             }
         });
@@ -489,8 +489,8 @@ public class CachedStatement implements Serializable {
             List<Object> dr)
         throws SQLException {
         if (log.isDebugEnabled()) {
-            log.debug("execute() - Executing: " + sql);
-            log.debug("execute() - With: " + parameters);
+            log.debug("execute() - Executing: {}", sql);
+            log.debug("execute() - With: {}", parameters);
         }
 
         PreparedStatement ps = null;
@@ -499,7 +499,7 @@ public class CachedStatement implements Serializable {
             boolean returnType = NamedPreparedStatement.execute(ps, parameterMap,
                     setupParamMap(parameters));
             if (log.isDebugEnabled()) {
-                log.debug("execute() - Return type: " + returnType);
+                log.debug("execute() - Return type: {}", returnType);
             }
             if (returnType) {
                 return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);

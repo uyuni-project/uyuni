@@ -178,7 +178,7 @@ public class ActivationKeyHandler extends BaseHandler {
         if (!result.isEmpty()) {
             log.error("Validation errors:");
             for (ValidatorError error : result.getErrors()) {
-                log.error("   " + error.getMessage());
+                log.error("   {}", error.getMessage());
             }
             // Multiple errors could return here, but we'll have to just throw an
             // exception for the first one and return that to the user.

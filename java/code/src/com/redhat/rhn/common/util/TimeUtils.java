@@ -47,7 +47,7 @@ public class TimeUtils {
         long start = System.nanoTime();
         fun.run();
         long end = System.nanoTime();
-        log.info(name + " took " + ((end - start) / 1e9) + " seconds.");
+        log.info("{} took {} seconds.", name, (end - start) / 1e9);
     }
 
     /**
@@ -62,7 +62,7 @@ public class TimeUtils {
         long start = System.nanoTime();
         T result = fun.get();
         long end = System.nanoTime();
-        log.info(name + " took " + ((end - start) / 1e9) + " seconds.");
+        log.info("{} took {} seconds.", name, (end - start) / 1e9);
         return result;
     }
 }

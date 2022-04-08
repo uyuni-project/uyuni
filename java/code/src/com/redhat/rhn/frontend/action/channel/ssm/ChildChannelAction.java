@@ -123,8 +123,7 @@ public class ChildChannelAction extends RhnAction {
         }
 
         if (debugFound != children.size()) {
-            LOG.error("Did not process an equal number of children originally found. " +
-                "Children: " + children.size() + ", Found: " + debugFound);
+            LOG.error("Did not process an equal number of children originally found. Children: {}, Found: {}", children.size(), debugFound);
         }
     }
 
@@ -177,7 +176,7 @@ public class ChildChannelAction extends RhnAction {
             }
             catch (NumberFormatException nfe) {
                 // Should never get here
-                LOG.error("Attempting to parse a channel id from: " + idStr, nfe);
+                LOG.error("Attempting to parse a channel id from: {}", idStr, nfe);
             }
         }
 
@@ -188,7 +187,7 @@ public class ChildChannelAction extends RhnAction {
             }
             catch (NumberFormatException nfe) {
                 // Should never get here
-                LOG.error("Attempting to parse a channel id from: " + idStr, nfe);
+                LOG.error("Attempting to parse a channel id from: {}", idStr, nfe);
             }
         }
 

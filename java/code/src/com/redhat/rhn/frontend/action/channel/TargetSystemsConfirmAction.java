@@ -109,7 +109,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
                 scheduleSubscribeChannels(form, user, servers, chan, request);
             }
             catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule subscribe to channel " + chan.getName(), e);
+                LOG.error("Could not schedule subscribe to channel {}", chan.getName(), e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError("taskscheduler.down", errors);
                 getStrutsDelegate().saveMessages(request, errors);

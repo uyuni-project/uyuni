@@ -50,7 +50,7 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
      */
     @Override
     public Optional<Pillar> generatePillarData(MinionServer minion) {
-        LOG.debug("Generating group memberships pillar file for minion: " + minion.getMinionId());
+        LOG.debug("Generating group memberships pillar file for minion: {}", minion.getMinionId());
         Pillar pillar = minion.getPillarByCategory(CATEGORY).orElseGet(() -> {
             Pillar newPillar = new Pillar(CATEGORY, new HashMap<>(), minion);
             minion.getPillars().add(newPillar);

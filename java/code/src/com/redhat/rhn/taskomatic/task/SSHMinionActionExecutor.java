@@ -55,12 +55,12 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
         String sshMinionId = context.getJobDetail().getJobDataMap().getString("ssh_minion_id");
         Optional<MinionServer> sshMinionOpt = MinionServerFactory.findByMinionId(sshMinionId);
         if (sshMinionOpt.isEmpty()) {
-            log.error("SSH Minion " + sshMinionId + " not found. Aborting execution of action " + actionId);
+            log.error("SSH Minion {} not found. Aborting execution of action {}", sshMinionId, actionId);
             return;
         }
         Action action = ActionFactory.lookupById(actionId);
         if (action == null) {
-            log.error("Action not found: " + actionId);
+            log.error("Action not found: {}", actionId);
             return;
         }
 
@@ -72,7 +72,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
                     HibernateFactory.commitTransaction();
                 });
 
-        log.info("Executing action: " + actionId + " on ssh minion: " + sshMinionId);
+        log.info("Executing action: {} on ssh minion: {}", actionId, sshMinionId);
         GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, sshMinionOpt.get(), forcePkgRefresh);
     }
 }

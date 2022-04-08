@@ -51,7 +51,7 @@ public class SsmChangeChannelSubscriptionsAction implements MessageAction {
             SsmManager.performChannelActions(user, changes);
         }
         catch (Exception e) {
-            LOG.error("Error changing channel subscriptions " + event, e);
+            LOG.error("Error changing channel subscriptions {}", event, e);
         }
         finally {
             // Complete the action

@@ -31,8 +31,7 @@ public class PXEEventMessageAction implements MessageAction {
         PXEEvent pxeEvent = ((PXEEventMessage) msg).getPXEEventMessage();
 
         if (pxeEvent.getRoot().isEmpty()) {
-            LOG.error("Root device not specified in PXE event for minion " +
-                    pxeEvent.getMinionId() + ". Ignoring event");
+            LOG.error("Root device not specified in PXE event for minion {}. Ignoring event", pxeEvent.getMinionId());
             return;
         }
         String kernelParameters = "root=" + pxeEvent.getRoot();

@@ -468,8 +468,7 @@ public class ActivationKeyManager {
     private boolean subscribeToChildChannelWithPackageName(
                             ActivationKey key, String packageName) {
 
-        log.debug("subscribeToChildChannelWithPackageName: " + key.getId() +
-                " name: " + packageName);
+        log.debug("subscribeToChildChannelWithPackageName: {} name: {}", key.getId(), packageName);
         /*
          * null base channel implies Red Hat default
          * so we have to subscribe all the child channels
@@ -485,7 +484,7 @@ public class ActivationKeyManager {
         }
         else {
             Long bcid = key.getBaseChannel().getId();
-            log.debug("found basechannel: " + bcid);
+            log.debug("found basechannel: {}", bcid);
             // check, whether the package is available in the base channel already
             // f.e. libvirt available in RHEL5VT (child channel),
             // but in RHEL6Server (base channel)
@@ -493,10 +492,10 @@ public class ActivationKeyManager {
                 List<Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
                         bcid, packageName, false);
                 Collections.sort(cids);
-                log.warn("sorted cids: " + cids.toString());
+                log.warn("sorted cids: {}", cids.toString());
                 if (cids.isEmpty()) {
                     // nothing to do
-                    log.warn("No child channel of " + bcid + " contains " + packageName);
+                    log.warn("No child channel of {} contains {}", bcid, packageName);
                 }
                 else if (cids.size() > 1) {
                     // if there're more channels, just do some harakiri to pick one

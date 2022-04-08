@@ -119,7 +119,7 @@ public class HardwareMapper {
 
         if (StringUtils.isBlank(cpuarch)) {
             errors.add("CPU: Grain 'cpuarch' has no value");
-            LOG.error("Grain 'cpuarch' has no value for minion: " + server.getMinionId());
+            LOG.error("Grain 'cpuarch' has no value for minion: {}", server.getMinionId());
             return;
         }
 
@@ -195,8 +195,7 @@ public class HardwareMapper {
         else {
             // should not happen but cpu.arch is not nullable so if we don't have
             // the arch we cannot persist the cpu
-            LOG.warn("Did not set server CPU. Could not find CPUArch in db " +
-                    "for value '" + cpuarch + "' for minion '" + server.getMinionId());
+            LOG.warn("Did not set server CPU. Could not find CPUArch in db for value '{}' for minion '{}", cpuarch, server.getMinionId());
         }
     }
 
@@ -277,8 +276,7 @@ public class HardwareMapper {
 
         if (udevdb == null || udevdb.isEmpty()) {
             errors.add("Devices: Salt module 'udevdb.exportdb' returned an empty list");
-            LOG.error("Salt module 'udevdb.exportdb' returned an empty list " +
-                    "for minion: " + server.getMinionId());
+            LOG.error("Salt module 'udevdb.exportdb' returned an empty list for minion: {}", server.getMinionId());
             return;
         }
 
@@ -439,7 +437,7 @@ public class HardwareMapper {
                 totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs Total", "0"));
             }
             catch (NumberFormatException e) {
-                LOG.warn("Invalid 'CPUs Total' value: " + e.getMessage());
+                LOG.warn("Invalid 'CPUs Total' value: {}", e.getMessage());
             }
             String type = sysvalues.get("Type");
 
@@ -478,17 +476,17 @@ public class HardwareMapper {
 
                 GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(zhost, EntitlementManager
                         .getByName(EntitlementManager.FOREIGN_ENTITLED));
-                LOG.debug("New host created: " + identifier);
+                LOG.debug("New host created: {}", identifier);
             }
 
             // update checkin for new as well as already existing servers
-            LOG.debug("Update server info for: " + identifier);
+            LOG.debug("Update server info for: {}", identifier);
             zhost.updateServerInfo();
 
             CPU hostcpu = zhost.getCpu();
             if (hostcpu == null || (hostcpu.getNrsocket() != null &&
                     hostcpu.getNrsocket().longValue() != totalIfls)) {
-                LOG.debug("Update host cpu: " + totalIfls);
+                LOG.debug("Update host cpu: {}", totalIfls);
                 hostcpu = Optional.ofNullable(hostcpu).orElseGet(CPU::new);
                 hostcpu.setNrCPU(totalIfls);
                 hostcpu.setVersion(null);
@@ -535,8 +533,7 @@ public class HardwareMapper {
                 vinstFactory.saveVirtualInstance(vinstGuest);
             }
             else if (!vinst.getHostSystem().getId().equals(zhost.getId())) {
-                LOG.debug("Updating virtual instance " + vinst.getId() +
-                        " with " + zhost.getId());
+                LOG.debug("Updating virtual instance {} with {}", vinst.getId(), zhost.getId());
                 vinst.setHostSystem(zhost);
                 vinstFactory.saveVirtualInstance(vinst);
             }
@@ -650,8 +647,7 @@ public class HardwareMapper {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);
                 // Fix the "uuid" for already wrong created virtual instances
                 for (VirtualInstance virtualInstance : virtualInstances) {
-                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [" +
-                            virtualInstance.getUuid() + "] -> [" + virtUuid + "]");
+                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [{}] -> [{}]", virtualInstance.getUuid(), virtUuid);
                     VirtualInstanceFactory.getInstance()
                             .deleteVirtualInstanceOnly(virtualInstance);
                     VirtualInstanceManager.addGuestVirtualInstance(
@@ -702,8 +698,7 @@ public class HardwareMapper {
             name = server.getName();
         }
         if (virtType != virtualInstance.getType()) {
-            LOG.info("Changing the type from -> " + virtualInstance.getType().getLabel() +
-                    " to -> " + virtType.getLabel());
+            LOG.info("Changing the type from -> {} to -> {}", virtualInstance.getType().getLabel(), virtType.getLabel());
             // Set rereg manual as DB trigger fire on update only, but we delete/insert.
             Optional.ofNullable(virtualInstance.getGuestSystem()).ifPresent(
                     gSrv -> SCCCachingFactory.setReregRequired(gSrv, true));
@@ -727,8 +722,7 @@ public class HardwareMapper {
         // Fix the wrong "uuid" reported by the minion
         // and remove buggy VirtualInstances with such wrong "uuid" from the DB.
         String virtUuidSwapped = SaltUtils.uuidToLittleEndian(virtUuid);
-        LOG.warn("Virtual machine doesn't report correct virtual UUID: " + virtUuid +
-                ". Coercing to : " + virtUuidSwapped + ".");
+        LOG.warn("Virtual machine doesn't report correct virtual UUID: {}. Coercing to : {}.", virtUuid, virtUuidSwapped);
         List<VirtualInstance> wrongVirtualInstances = VirtualInstanceFactory
                 .getInstance().lookupVirtualInstanceByUuid(virtUuid);
         wrongVirtualInstances.forEach(virtInstance ->
@@ -740,7 +734,7 @@ public class HardwareMapper {
 
     private void setFqdns(MinionServer serverIn, List<String> fqdns) {
         if (fqdns.isEmpty()) {
-            LOG.warn("Salt module 'network.fqdns' returned en empty value for minion: " + server.getMinionId());
+            LOG.warn("Salt module 'network.fqdns' returned en empty value for minion: {}", server.getMinionId());
         }
         else {
             Collection<ServerFQDN> serverFQDNs = serverIn.getFqdns();
@@ -763,8 +757,7 @@ public class HardwareMapper {
             SumaUtil.IPRoute>> primaryIps, Map<String, Optional<String>> netModules, List<String> fqdns) {
         if (interfaces.isEmpty()) {
             errors.add("Network: Salt module 'network.interfaces' returned en empty value");
-            LOG.error("Salt module 'network.interfaces' returned en empty value " +
-                    "for minion: " + server.getMinionId());
+            LOG.error("Salt module 'network.interfaces' returned en empty value for minion: {}", server.getMinionId());
             return;
         }
         Optional<String> primaryIPv4 = primaryIps

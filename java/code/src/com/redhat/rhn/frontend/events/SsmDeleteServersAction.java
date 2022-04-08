@@ -83,7 +83,7 @@ public class SsmDeleteServersAction implements MessageAction {
             }
         }
         catch (Exception e) {
-            LOG.error("Error deleting servers " + event, e);
+            LOG.error("Error deleting servers {}", event, e);
         }
         finally {
             // Complete the action

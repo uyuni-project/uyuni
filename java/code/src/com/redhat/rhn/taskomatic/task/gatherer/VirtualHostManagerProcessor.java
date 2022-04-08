@@ -79,24 +79,23 @@ public class VirtualHostManagerProcessor {
      * mapping.
      */
     public void processMapping() {
-        log.debug("Processing Virtual Host Manager: " + virtualHostManager);
+        log.debug("Processing Virtual Host Manager: {}", virtualHostManager);
         if (virtualHosts == null) {
-            log.error("Virtual Host Manager " + virtualHostManager.getLabel() +
-                      ": Please check the virtual-host-gatherer logfile.");
+            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.", virtualHostManager.getLabel());
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());
         nodesToDelete.addAll(virtualHostManager.getNodes());
         virtualHosts.forEach((key, value) -> {
-            log.debug("Processing host: " + key);
+            log.debug("Processing host: {}", key);
             processVirtualHost(key, value);
         });
         serversToDelete.forEach(srv -> {
-            log.debug("Removing link to virtual host: " + srv.getName());
+            log.debug("Removing link to virtual host: {}", srv.getName());
             virtualHostManager.removeServer(srv);
         });
         nodesToDelete.forEach(node -> {
-            log.debug("Removing virtual host node: " + node.getName());
+            log.debug("Removing virtual host node: {}", node.getName());
             virtualHostManager.removeNode(node);
         });
     }

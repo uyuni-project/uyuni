@@ -834,7 +834,7 @@ public class ContentManager {
         tgt.asCloned().ifPresentOrElse(
                 t -> t.setOriginal(newSource),
                 () -> {
-                    log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
+                    log.info("Channel is not a clone: {}. Adding clone info.", tgt);
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
 

@@ -138,7 +138,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
     private ActionErrors updateRoles(HttpServletRequest request,
                                         User targetUser,
                                         User loggedInUser) {
-        log.debug(this.getClass().getName() + ".updateRoles()");
+        log.debug("{}.updateRoles()", this.getClass().getName());
 
         Set<String> disabledRoles = extractDisabledRoles(request);
 
@@ -165,7 +165,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
             String roleSetting = request.getParameter(ROLE_SETTING_PREFIX +
                     role.getLabel());
-            log.debug("   " + role.getName() + " / " + roleSetting);
+            log.debug("   {} / {}", role.getName(), roleSetting);
 
             if (roleSetting != null && !existingRoles.contains(role.getLabel())) {
                 // Must have been newly checked:
@@ -211,7 +211,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
         String hiddenInput = request.getParameter("disabledRoles");
         Set<String> returnVal = new HashSet<>(
                 Arrays.asList(hiddenInput.split("\\|")));
-        log.debug("Found disabled inputs: " + returnVal);
+        log.debug("Found disabled inputs: {}", returnVal);
         return returnVal;
     }
 }

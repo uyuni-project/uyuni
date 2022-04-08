@@ -50,7 +50,7 @@ public class ImageSyncedEventMessageAction implements MessageAction {
                 minion.getOrg());
 
             if (!minion.getGroups().contains(branchGroup)) {
-                LOG.error("Branch server " + minionId + " is not in group " + imageSyncedEvent.getBranch());
+                LOG.error("Branch server {} is not in group {}", minionId, imageSyncedEvent.getBranch());
                 return;
             }
 
@@ -64,7 +64,7 @@ public class ImageSyncedEventMessageAction implements MessageAction {
                     imageSyncedEvent.getImageName(), imageSyncedEvent.getImageVersion());
             }
             else {
-                LOG.warn("Unknown image_synced action: " + action);
+                LOG.warn("Unknown image_synced action: {}", action);
             }
         });
     }

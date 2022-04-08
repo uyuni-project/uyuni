@@ -872,13 +872,12 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("pids", pids);
         if (log.isDebugEnabled()) {
-            log.debug("pids = " + pids);
+            log.debug("pids = {}", pids);
         }
         List results = singleton.listObjectsByNamedQuery(
                 "Errata.searchByPackageIds", params);
         if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIds' returned " +
-                    results.size() + " entries");
+            log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
         }
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
@@ -906,9 +905,8 @@ public class ErrataFactory extends HibernateFactory {
                 lastId = curId;
             }
             if (log.isDebugEnabled()) {
-                log.debug("curId = " + curId + ", lastId = " + lastId);
-                log.debug("ErrataOverview formed: " + eo.getAdvisoryName() + " for " +
-                        eo.getPackageNames());
+                log.debug("curId = {}, lastId = {}", curId, lastId);
+                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
             }
         }
 
@@ -929,14 +927,13 @@ public class ErrataFactory extends HibernateFactory {
         params.put("pids", pids);
         params.put("org_id", org.getId());
         if (log.isDebugEnabled()) {
-            log.debug("org_id = " + org.getId());
-            log.debug("pids = " + pids);
+            log.debug("org_id = {}", org.getId());
+            log.debug("pids = {}", pids);
         }
         List results = singleton.listObjectsByNamedQuery(
                 "Errata.searchByPackageIdsWithOrg", params);
         if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned " +
-                    results.size() + " entries");
+            log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
         }
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
@@ -965,9 +962,8 @@ public class ErrataFactory extends HibernateFactory {
                 lastId = curId;
             }
             if (log.isDebugEnabled()) {
-                log.debug("curId = " + curId + ", lastId = " + lastId);
-                log.debug("ErrataOverview formed: " + eo.getAdvisoryName() + " for " +
-                        eo.getPackageNames());
+                log.debug("curId = {}, lastId = {}", curId, lastId);
+                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
             }
         }
 
