@@ -41,8 +41,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ import java.util.stream.Stream;
  */
 public class SsmManager {
 
-    private static final Log LOG = LogFactory.getLog(SsmManager.class);
+    private static final Logger LOG = LogManager.getLogger(SsmManager.class);
 
     public static final String SSM_SYSTEM_FEATURE = "ftr_system_grouping";
 

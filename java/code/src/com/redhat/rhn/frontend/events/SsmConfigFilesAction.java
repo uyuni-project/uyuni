@@ -22,15 +22,15 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Schedules config files actions for systems.
  */
 public class SsmConfigFilesAction implements MessageAction {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Logger LOG = LogManager.getLogger(SsmConfigFilesAction.class);
 
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {
@@ -50,7 +50,7 @@ public class SsmConfigFilesAction implements MessageAction {
                     actionChain);
         }
         catch (Exception e) {
-            log.error("Error scheduling configuration files deployment for event " +
+            LOG.error("Error scheduling configuration files deployment for event " +
                     event, e);
         }
 
