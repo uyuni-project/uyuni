@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-27 18:14+0000\n"
+"POT-Creation-Date: 2022-04-09 09:35+0000\n"
 "PO-Revision-Date: 2022-03-23 05:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -8589,40 +8589,40 @@ msgstr "유효하지 않은 순위"
 msgid "Clearing current selections"
 msgstr "현재 선택을 지우는 중"
 
-#: ../src/spacecmd/utils.py:694
+#: ../src/spacecmd/utils.py:697
 msgid "Could not generate json data object!"
 msgstr "json 데이터 객체를 생성할 수 없습니다!"
 
-#: ../src/spacecmd/utils.py:701
+#: ../src/spacecmd/utils.py:704
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "쓰기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "읽기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:717
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "%s에서 JSON 데이터의 구문을 분석할 수 없음: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:719
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "%s 파일 처리 중 오류: %s"
 
-#: ../src/spacecmd/utils.py:744
+#: ../src/spacecmd/utils.py:747
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "공통 문자열 사용 건너뛰기: 두 문자열이 동일함"
 
-#: ../src/spacecmd/utils.py:760
+#: ../src/spacecmd/utils.py:763
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
-#: ../src/spacecmd/utils.py:846
+#: ../src/spacecmd/utils.py:849
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 
