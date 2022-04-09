@@ -11249,7 +11249,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>Alternativ können Sie eine andere Distribution mit diesem Kickstart-Profil verknüpfen, indem Sie eine Distribution wählen und '{0}' auswählen.</target>
+        <target> Alternativ können Sie eine andere Distribution mit diesem Kickstart-Profil verknüpfen, indem Sie eine Distribution wählen und '{0}' auswählen.</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.updatekickstart" xml:space="preserve">
         <source>Update Kickstart</source>
@@ -29269,13 +29269,13 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Update Reporting Database</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
