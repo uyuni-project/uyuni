@@ -682,63 +682,63 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason3" xml:space="preserve">
           <source>You've found an error in our site.</source>
-        <target/>
+        <target>Na našej stránke ste našli chybu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issslave.title" xml:space="preserve">
           <source>We're sorry, but the requested slave could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný podriadený sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issslave.reason1" xml:space="preserve">
           <source>No slave with the name {0} is identified on this master.</source>
-        <target/>
+        <target>Na tomto nadradenom nie je identifikovaný žiadny podriadený s názvom {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.title" xml:space="preserve">
           <source>We're sorry, but the requested master could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovaný nadradený sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.reason1" xml:space="preserve">
           <source>No master with the label {0} is identified to this slave.</source>
-        <target/>
+        <target>K tomuto podriadenému nie je identifikovaný žiadny nadradený s označením {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.local.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovanú organizáciu sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmaster.local.reason1" xml:space="preserve">
           <source>No local organization with the ID  {0} exists on this slave.</source>
-        <target/>
+        <target>Na tomto podriadenom neexistuje žiadna lokálna organizácia s ID {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmasterorg.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target/>
+        <target>Je nám ľúto, ale požadovanú organizáciu sa nepodarilo nájsť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.issmasterorg.reason1" xml:space="preserve">
           <source>No master organization with the ID {0} is identified to this slave.</source>
-        <target/>
+        <target>Žiadna nadradená organizácia s ID {0} nie je identifikovaná pre tohto podriadeného.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -25812,97 +25812,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/software/packages/NameOverview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="docsearch.content" xml:space="preserve">
-        <source>Content</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.free_form" xml:space="preserve">
-        <source>Free Form</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.content_title" xml:space="preserve">
-        <source>Content &amp; Title</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.title" xml:space="preserve">
-        <source>Title</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
-        <source>Summary</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
-        <source>search</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
-        <source>Document Search</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
-        <source>Document Search will return links to pages matching your search term. </source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
-        <source>Specify your search criteria below.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
-        <source>Search For:</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
-        <source>What to search:</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
-        <source>No pages found.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
-        <source>Page Title</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault" xml:space="preserve">
         <source>This is your organizations default autoinstallation profile.</source>
         <target/>
@@ -29513,6 +29422,29 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Overview</context>
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+          <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
+          <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

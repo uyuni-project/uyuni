@@ -10105,6 +10105,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Proxy Configuration</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

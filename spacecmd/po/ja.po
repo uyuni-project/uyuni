@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-27 18:14+0000\n"
+"POT-Creation-Date: 2022-04-09 09:35+0000\n"
 "PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -8774,43 +8774,43 @@ msgstr "順位が正しくありません"
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:694
+#: ../src/spacecmd/utils.py:697
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:701
+#: ../src/spacecmd/utils.py:704
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:717
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:719
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:744
+#: ../src/spacecmd/utils.py:747
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:760
+#: ../src/spacecmd/utils.py:763
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:846
+#: ../src/spacecmd/utils.py:849
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

@@ -25908,97 +25908,6 @@ given channel.</source>
         <target>참고: 동일한 패키지의 다른 아키텍처가 단일 채널에 존재할 수 있습니다.
 이로 인해 패키지가 주어진 채널에 두 번 나열될 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="docsearch.content" xml:space="preserve">
-        <source>Content</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>내용</target>
-      </trans-unit>
-      <trans-unit id="docsearch.free_form" xml:space="preserve">
-        <source>Free Form</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>자유 형식</target>
-      </trans-unit>
-      <trans-unit id="docsearch.content_title" xml:space="preserve">
-        <source>Content &amp; Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>내용 &amp; 제목</target>
-      </trans-unit>
-      <trans-unit id="docsearch.title" xml:space="preserve">
-        <source>Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>제목</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
-        <source>Summary</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>요약</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
-        <source>search</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>검색</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
-        <source>Document Search</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>문서 검색</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
-        <source>Document Search will return links to pages matching your search term. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search.do</context>
-        </context-group>
-        <target>문서 검색을 사용하면 검색어와 일치하는 페이지로의 링크가 나타납니다. </target>
-      </trans-unit>
-      <trans-unit approved="yes" id="docsearch.jsp.instructions" xml:space="preserve">
-        <source>Specify your search criteria below.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>아래에서 검색 기준을 지정하십시오.</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
-        <source>Search For:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>검색:</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
-        <source>What to search:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>검색 내용:</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
-        <source>No pages found.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>페이지를 찾을 수 없습니다.</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
-        <source>Page Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>페이지 제목</target>
-      </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault" xml:space="preserve">
         <source>This is your organizations default autoinstallation profile.</source>
         <context-group name="ctx">
@@ -29783,6 +29692,29 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Overview</context>
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+          <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
+          <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
+        <source>Update Hub Reporting Database</source>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 08:42+0000\n"
-"PO-Revision-Date: 2022-03-24 18:12+0000\n"
+"POT-Creation-Date: 2022-04-09 09:35+0000\n"
+"PO-Revision-Date: 2022-04-05 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -143,8 +143,8 @@ msgstr ""
 "vyhľadávanie."
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:807
-#: ../html/src/manager/images/image-view.tsx:809
+#: ../html/src/manager/images/image-view.tsx:816
+#: ../html/src/manager/images/image-view.tsx:818
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -255,9 +255,9 @@ msgstr "Zrušiť"
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
 #: ../html/src/manager/images/image-stores.tsx:204
-#: ../html/src/manager/images/image-view.tsx:347
-#: ../html/src/manager/images/image-view.tsx:357
-#: ../html/src/manager/images/image-view.tsx:694
+#: ../html/src/manager/images/image-view.tsx:349
+#: ../html/src/manager/images/image-view.tsx:359
+#: ../html/src/manager/images/image-view.tsx:696
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -1092,7 +1092,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:371
+#: ../html/src/manager/images/image-view.tsx:373
 #: ../html/src/manager/notifications/notification-messages.tsx:444
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
@@ -1113,7 +1113,7 @@ msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:685
+#: ../html/src/manager/images/image-view.tsx:687
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
@@ -1462,8 +1462,9 @@ msgstr "Odkaz SUSE Security CVE"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:639
+#: ../html/src/manager/images/image-view.tsx:641
 #: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
@@ -1478,7 +1479,7 @@ msgstr "Názov"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:679
+#: ../html/src/manager/images/image-view.tsx:681
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:195
@@ -2001,7 +2002,8 @@ msgstr "Obdobie"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:642
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
 msgstr "Verzia"
 
@@ -2085,7 +2087,7 @@ msgstr "Vybrať nepoužité"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:144
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-stores.tsx:137
-#: ../html/src/manager/images/image-view.tsx:348
+#: ../html/src/manager/images/image-view.tsx:350
 msgid "Delete selected"
 msgstr "Vymazať vybrané"
 
@@ -2327,7 +2329,7 @@ msgstr "Zostaviť ({0})"
 #: ../html/src/manager/images/image-profiles.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:626
 #: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:667
+#: ../html/src/manager/images/image-view.tsx:669
 msgid "Build"
 msgstr "Zostaviť"
 
@@ -2418,18 +2420,17 @@ msgid "Cloning channels"
 msgstr "Klonovanie kanálov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "Generovanie údajov repozitárov"
+msgstr "Čakanie na vygenerovanie dát repozitárov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr "Zostavené"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr "Neúspešné"
 
@@ -2602,7 +2603,7 @@ msgstr "žiadne kanály potomkov"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:638
+#: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2717,14 +2718,14 @@ msgid "Systems"
 msgstr "Systémy"
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:663
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:665
+#: ../html/src/manager/images/image-view.tsx:790
 msgid "Packages"
 msgstr "Balíky"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:650
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:652
+#: ../html/src/manager/images/image-view.tsx:789
 msgid "Patches"
 msgstr "Opravy"
 
@@ -2854,7 +2855,7 @@ msgid "Image version is required."
 msgstr "Vyžaduje sa verzia obrazu."
 
 #: ../html/src/manager/images/image-import.tsx:305
-#: ../html/src/manager/images/image-view.tsx:366
+#: ../html/src/manager/images/image-view.tsx:368
 msgid "Import"
 msgstr "Import"
 
@@ -3041,6 +3042,17 @@ msgstr "Naozaj chcete vymazať vybrané úložisko?"
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr "Naozaj chcete vymazať vybrané úložiská? ({0} vybraných úložísk)"
 
+#: ../html/src/manager/images/image-view-buildlog.tsx:5
+#: ../html/src/manager/images/image-view.tsx:791
+#, fuzzy
+msgid "Build Log"
+msgstr "Zostaviť hostiteľa"
+
+#: ../html/src/manager/images/image-view-buildlog.tsx:10
+#, fuzzy
+msgid "Build log is not available."
+msgstr "Nie sú k dispozícii žiadne kanály potomkov."
+
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
 #: ../html/src/manager/images/image-view-overview.tsx:93
@@ -3051,13 +3063,13 @@ msgstr "Naozaj chcete vymazať vybrané úložiská? ({0} vybraných úložísk)
 #: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:478
-#: ../html/src/manager/images/image-view.tsx:527
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr "Žiadne informácie"
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr "Zaradené"
 
@@ -3094,7 +3106,7 @@ msgstr " zlyhalo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:497
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr "Zostavené externe"
 
@@ -3107,37 +3119,37 @@ msgid "Picked Up"
 msgstr "Vyzdvihnuté"
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:553
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr "Klaster"
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:554
-#: ../html/src/manager/images/image-view.tsx:606
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr "Inštancie"
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:515
-#: ../html/src/manager/images/image-view.tsx:564
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr "Čaká sa na aktualizáciu ..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:581
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr "Zobraziť súhrn klastrov"
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:523
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr "Všetky inštancie sú v súlade so SUSE Manager"
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr "Boli nájdené zastarané inštancie"
 
@@ -3150,31 +3162,31 @@ msgid "Edit store"
 msgstr "Upraviť úložisko"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:747
+#: ../html/src/manager/images/image-view.tsx:749
 msgid "Instance Details for '{0}'"
 msgstr "Podrobnosti inštancie pre '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
-#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr "K dispozícii sú kritické aktualizácie"
 
 #: ../html/src/manager/images/image-view-overview.tsx:527
 #: ../html/src/manager/images/image-view-overview.tsx:528
-#: ../html/src/manager/images/image-view.tsx:483
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr "K dispozícii sú nekritické aktualizácie"
 
 #: ../html/src/manager/images/image-view-overview.tsx:534
 #: ../html/src/manager/images/image-view-overview.tsx:535
-#: ../html/src/manager/images/image-view.tsx:486
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr "K dispozícii sú aktualizácie balíkov"
 
 #: ../html/src/manager/images/image-view-overview.tsx:541
 #: ../html/src/manager/images/image-view-overview.tsx:542
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr "Obraz je aktuálny"
 
@@ -3212,13 +3224,13 @@ msgid "Custom Image Information"
 msgstr "Informácie o vlastnom obraze"
 
 #: ../html/src/manager/images/image-view-overview.tsx:678
-#: ../html/src/manager/images/image-view.tsx:358
-#: ../html/src/manager/images/image-view.tsx:716
+#: ../html/src/manager/images/image-view.tsx:360
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Delete Image"
 msgstr "Vymazať obraz"
 
 #: ../html/src/manager/images/image-view-overview.tsx:681
-#: ../html/src/manager/images/image-view.tsx:719
+#: ../html/src/manager/images/image-view.tsx:721
 msgid "Are you sure you want to delete image"
 msgstr "Naozaj chcete vymazať obraz"
 
@@ -3319,72 +3331,72 @@ msgstr "Zhluk"
 msgid "Namespace"
 msgstr "Menný priestor"
 
-#: ../html/src/manager/images/image-view.tsx:305
+#: ../html/src/manager/images/image-view.tsx:307
 msgid "Deleted successfully."
 msgstr "Úspešne vymazané."
 
-#: ../html/src/manager/images/image-view.tsx:317
+#: ../html/src/manager/images/image-view.tsx:319
 msgid "Image inspect has been scheduled."
 msgstr "Bola naplánovaná kontrola obrazu."
 
-#: ../html/src/manager/images/image-view.tsx:333
+#: ../html/src/manager/images/image-view.tsx:335
 msgid "Image build has been scheduled."
 msgstr "Zostavenie obrazu bolo naplánované."
 
-#: ../html/src/manager/images/image-view.tsx:381
+#: ../html/src/manager/images/image-view.tsx:383
 msgid "Images"
 msgstr "Obrazy"
 
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr "Zostavovanie"
 
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr "Neznáme"
 
-#: ../html/src/manager/images/image-view.tsx:601
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:792
 msgid "Runtime"
 msgstr "Beh programu"
 
-#: ../html/src/manager/images/image-view.tsx:621
+#: ../html/src/manager/images/image-view.tsx:623
 msgid "Show obsolete"
 msgstr "Zobraziť zastarané"
 
-#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
 msgstr "Revízia"
 
-#: ../html/src/manager/images/image-view.tsx:645
+#: ../html/src/manager/images/image-view.tsx:647
 msgid "(obsolete)"
 msgstr "(zastarané)"
 
-#: ../html/src/manager/images/image-view.tsx:647
+#: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "Aktualizácie"
 
-#: ../html/src/manager/images/image-view.tsx:671
+#: ../html/src/manager/images/image-view.tsx:673
 msgid "Last Modified"
 msgstr "Naposledy zmenené"
 
-#: ../html/src/manager/images/image-view.tsx:732
+#: ../html/src/manager/images/image-view.tsx:734
 msgid "Delete Selected Image(s)"
 msgstr "Vymazať vybrané obraz(y)"
 
-#: ../html/src/manager/images/image-view.tsx:736
+#: ../html/src/manager/images/image-view.tsx:738
 msgid "Are you sure you want to delete the selected image?"
 msgstr "Naozaj chcete vymazať vybraný obraz?"
 
-#: ../html/src/manager/images/image-view.tsx:738
+#: ../html/src/manager/images/image-view.tsx:740
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "Naozaj chcete vymazať vybrané obrazy? ({0} vybraných obrazov)"
 
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "Prehľad"
@@ -4134,23 +4146,22 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
 msgstr ""
+"Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
-"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
-"Prosím, skúste znova."
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "Konfigurácia proxy založeného na kontajneroch"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4158,34 +4169,33 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"Môžete vygenerovať sadu konfiguračných súborov a certifikátov na registráciu "
+"a spustenie proxy servera založeného na kontajneroch. Po vyplnení a odoslaní "
+"nasledujúceho formulára dostanete na stiahnutie archív .zip."
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "Proxy"
+msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
 msgid "e.g., proxy.domain.com"
-msgstr "napr. host.domain.com"
+msgstr "napr. proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Server FQDN"
-msgstr ""
+msgstr "Server FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:201
-#, fuzzy
 msgid "e.g., server.domain.com"
-msgstr "napr. host.domain.com"
+msgstr "napr. server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
 
 #: ../html/src/manager/proxy/container-config.tsx:208
-#, fuzzy
 msgid "Proxy SSH port"
-msgstr "Port SSH"
+msgstr "Port Proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
@@ -4194,12 +4204,11 @@ msgstr "Rozsah portov: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:218
 msgid "Max Squid cache size (MB)"
-msgstr ""
+msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
 
 #: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
 msgid "e.g., 2048"
-msgstr "napr. SLE12"
+msgstr "napr. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Proxy administrator email"
@@ -4815,6 +4824,50 @@ msgstr "Vymazať profil bez vyčistenia"
 #: ../html/src/manager/systems/delete-system.tsx:91
 msgid "An error occurred during cleanup"
 msgstr "Počas čistenia sa vyskytla chyba"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:30
+#, fuzzy
+msgid "Not a system id"
+msgstr "Nenašli sa žiadne cieľové systémy"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:31
+#, fuzzy
+msgid "Unknown System"
+msgstr "Neznámy hosť"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:32
+msgid "System is not a peripheral server"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:50
+msgid "New password generated and action for peripheral server scheduled"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+msgid "Report Database Name"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+msgid "Report Database Host"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+msgid "Report Database User"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+msgid "Report Database Last Synced"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:112
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:113
+#, fuzzy
+msgid "Regenerate Reporting Database Password"
+msgstr "Vygenerovať nové heslo"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
