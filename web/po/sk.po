@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-04-05 19:12+0000\n"
+"PO-Revision-Date: 2022-04-09 14:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3044,14 +3044,12 @@ msgstr "Naozaj chcete vymazať vybrané úložiská? ({0} vybraných úložísk)
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:791
-#, fuzzy
 msgid "Build Log"
-msgstr "Zostaviť hostiteľa"
+msgstr "Záznam o zostavení"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
-#, fuzzy
 msgid "Build log is not available."
-msgstr "Nie sú k dispozícii žiadne kanály potomkov."
+msgstr "Nie je k dispozícii záznam o zostavení."
 
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
