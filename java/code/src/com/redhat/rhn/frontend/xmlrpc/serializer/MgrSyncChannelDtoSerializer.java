@@ -61,7 +61,7 @@ public class MgrSyncChannelDtoSerializer extends ApiResponseSerializer<MgrSyncCh
                 .add("is_signed", src.isSigned())
                 .add("label", src.getLabel())
                 .add("name", src.getName())
-                .add("optional", src.isMandatory())
+                .add("optional", !src.isMandatory())
                 .add("parent", Optional.ofNullable(src.getParentLabel()).orElse("BASE"))
                 .add("product_name", src.getProductName())
                 .add("product_version", src.getProductVersion())
