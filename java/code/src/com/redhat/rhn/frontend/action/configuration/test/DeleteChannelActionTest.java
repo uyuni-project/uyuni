@@ -21,7 +21,10 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 public class DeleteChannelActionTest extends RhnMockStrutsTestCase {
+    @Test
     public void testExecuteNoFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

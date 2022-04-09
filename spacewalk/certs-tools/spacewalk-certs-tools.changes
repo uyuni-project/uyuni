@@ -1,3 +1,6 @@
+- deploy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+- Adapted openssl call in mgr_ssl_cert_setup.py to work on Python 3.9.
 - Add randomness to first generated server serial
 
 -------------------------------------------------------------------

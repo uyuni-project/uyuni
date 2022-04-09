@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
@@ -41,7 +42,7 @@ public class SerializerRegistry {
         // Hide the default constructor.
     }
 
-    private static final List<Class> SERIALIZER_CLASSES;
+    private static final List<Class<? extends ApiResponseSerializer<?>>> SERIALIZER_CLASSES;
     static {
         SERIALIZER_CLASSES = new LinkedList<>();
         SERIALIZER_CLASSES.add(ActivationKeySerializer.class);
@@ -58,7 +59,6 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ErrataSerializer.class);
         SERIALIZER_CLASSES.add(HistoryEventSerializer.class);
         SERIALIZER_CLASSES.add(ManagedServerGroupSerializer.class);
-        SERIALIZER_CLASSES.add(ObjectSerializer.class);
         SERIALIZER_CLASSES.add(OrgSerializer.class);
         SERIALIZER_CLASSES.add(OrgTrustOverviewSerializer.class);
         SERIALIZER_CLASSES.add(PackageMetadataSerializer.class);
@@ -77,7 +77,6 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(UserSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeDetailSerializer.class);
-        SERIALIZER_CLASSES.add(BigDecimalSerializer.class);
         SERIALIZER_CLASSES.add(ConfigRevisionSerializer.class);
         SERIALIZER_CLASSES.add(ConfigChannelSerializer.class);
         SERIALIZER_CLASSES.add(ConfigChannelDtoSerializer.class);
@@ -167,7 +166,7 @@ public class SerializerRegistry {
      * Returns the list of all available custom XMLRPC serializers.
      * @return List of serializer classes.
      */
-    public static List<Class> getSerializationClasses() {
+    public static List<Class<? extends ApiResponseSerializer<?>>> getSerializationClasses() {
         return SERIALIZER_CLASSES;
     }
 }

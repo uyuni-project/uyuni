@@ -20,7 +20,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 /**
  * Provides a container for the new-style lists
  *
- * @version $Rev $
  */
 public class ListSetTag extends BodyTagSupport {
 

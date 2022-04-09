@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -33,6 +35,8 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -104,6 +108,7 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
         assertEquals(expectedSize, dr.size());
     }
 
+    @Test
     public void testDeploy() throws Exception {
 
         runTheTest("/systems/details/configuration/DeployFileConfirm",
@@ -111,18 +116,21 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
                 SystemManager.CAP_CONFIGFILES_DEPLOY);
     }
 
+    @Test
     public void testDiff() throws Exception {
         runTheTest("/systems/details/configuration/DiffFileConfirm",
                 RhnSetDecl.CONFIG_FILE_NAMES.get(user),
                 SystemManager.CAP_CONFIGFILES_DIFF);
     }
 
+    @Test
     public void testImport() throws Exception {
         runTheTest("/systems/details/configuration/addfiles/ImportFileConfirm",
                 RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(user),
                 SystemManager.CAP_CONFIGFILES_UPLOAD);
     }
 
+    @Test
     public void testImportWithNewPath() throws Exception {
         //create the server
         Server server = ServerFactoryTest.createTestServer(user, true);

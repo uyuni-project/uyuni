@@ -17,13 +17,15 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Tests the View Kickstartable Distributions page
  *
- * @version $Rev $
  */
 public class ViewTreesTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testTrees() throws Exception {
         KickstartableTreeTest.createTestKickstartableTree();
         setRequestPathInfo("/kickstart/ViewTrees");

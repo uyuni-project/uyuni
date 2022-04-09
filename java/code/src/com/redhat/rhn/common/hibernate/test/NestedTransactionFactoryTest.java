@@ -14,17 +14,23 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.HibernateException;
+import org.junit.jupiter.api.Test;
 
 public class NestedTransactionFactoryTest extends RhnBaseTestCase {
 
     private static final long EXP_TIME = 60 * 60 * 1000;
 
+    @Test
     public void testRollback() throws HibernateException {
         WebSession s = createWebSession();
         HibernateFactory.rollbackTransaction();
@@ -33,6 +39,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertNotExists(s);
     }
 
+    @Test
     public void testCommit() throws HibernateException {
         WebSession s = createWebSession();
         HibernateFactory.commitTransaction();
@@ -40,6 +47,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertExists(s);
     }
 
+    @Test
     public void testSeqRollbackCommit() throws HibernateException {
         WebSession s1 = createWebSession();
         HibernateFactory.rollbackTransaction();
@@ -52,6 +60,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertExists(s2);
     }
 
+    @Test
     public void testSeqCommitRollback() throws HibernateException {
         WebSession s1 = createWebSession();
         HibernateFactory.commitTransaction();

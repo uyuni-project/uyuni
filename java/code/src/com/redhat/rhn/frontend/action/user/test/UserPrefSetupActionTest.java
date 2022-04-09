@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserPrefSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * UserPrefSetupActionTest - Good **EXAMPLE** of a basic SetupActionTest class.
@@ -30,6 +34,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testPerformExecute() throws Exception {
         UserPrefSetupAction action = new UserPrefSetupAction();
         ActionHelper sah = new ActionHelper();
@@ -46,6 +51,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testNoParamExecute() throws Exception {
         UserPrefSetupAction action = new UserPrefSetupAction();
         ActionHelper sah = new ActionHelper();

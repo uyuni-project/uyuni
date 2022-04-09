@@ -14,6 +14,9 @@
  */
 package com.suse.manager.ssl.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
@@ -25,6 +28,9 @@ import com.suse.manager.utils.ExecHelper;
 import org.hamcrest.collection.IsArrayContainingInAnyOrder;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,9 +45,8 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
     private File tempDir;
     private SSLCertManager certManager;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         runtime = mock(Runtime.class);
         process = mock(Process.class);
@@ -49,12 +54,14 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
         certManager = new SSLCertManager(new ExecHelper(() -> runtime), tempDir);
     }
 
+    @AfterEach
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(tempDir);
     }
 
+    @Test
     public void testGenerateSSLCert() throws Exception {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         context().checking(new Expectations() {{

@@ -16,7 +16,8 @@
 package com.redhat.rhn.frontend.nav;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public class NavTreeIndex {
-    private static Logger log = Logger.getLogger(NavTreeIndex.class);
+    private static Logger log = LogManager.getLogger(NavTreeIndex.class);
 
     private Map<String, NavNode> nodesByLabel;
     private Map<NavNode, NavNode> childToParentMap;

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.server.Device;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -38,36 +35,26 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #prop("string", "pcitype")
  *   #struct_end()
  */
-public class DeviceSerializer extends RhnXmlRpcCustomSerializer {
+public class DeviceSerializer extends ApiResponseSerializer<Device> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-    throws XmlRpcException, IOException {
-
-        Device dev = (Device) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("device", dev.getDevice());
-        helper.add("device_class", dev.getDeviceClass());
-        helper.add("driver", dev.getDriver());
-        helper.add("description", dev.getDescription());
-        helper.add("pcitype", dev.getPcitype());
-        helper.add("bus", dev.getBus());
-        helper.add("prop1", dev.getProp1());
-        helper.add("prop2", dev.getProp2());
-        helper.add("prop3", dev.getProp3());
-        helper.add("prop4", dev.getProp4());
-        helper.writeTo(output);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Device> getSupportedClass() {
         return Device.class;
     }
 
-
+    @Override
+    public SerializedApiResponse serialize(Device src) {
+        return new SerializationBuilder()
+                .add("device", src.getDevice())
+                .add("device_class", src.getDeviceClass())
+                .add("driver", src.getDriver())
+                .add("description", src.getDescription())
+                .add("pcitype", src.getPcitype())
+                .add("bus", src.getBus())
+                .add("prop1", src.getProp1())
+                .add("prop2", src.getProp2())
+                .add("prop3", src.getProp3())
+                .add("prop4", src.getProp4())
+                .build();
+    }
 }

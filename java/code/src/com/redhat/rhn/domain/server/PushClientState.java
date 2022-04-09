@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.AbstractLabelNameHelper;
 
 /**
  * PushClientState - Class representation of the table rhnPushClientState.
- * @version $Rev: 1 $
  */
 public class PushClientState extends AbstractLabelNameHelper {
 

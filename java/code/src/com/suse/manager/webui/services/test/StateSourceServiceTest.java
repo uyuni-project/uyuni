@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.org.Org;
@@ -28,6 +31,9 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.suse.manager.webui.services.StateSourceService;
 import com.suse.manager.webui.utils.gson.StateSourceDto;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,11 +42,13 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
     private MinionServer server;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         server = MinionServerFactoryTest.createTestMinionServer(user);
     }
 
+    @Test
     public void testInternalStates() {
         List<StateSourceDto> result = StateSourceService.getSystemStateSources(server);
 
@@ -49,6 +57,7 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
         assertEquals("INTERNAL", result.get(0).getType());
     }
 
+    @Test
     public void testSystemStates() {
         ConfigChannel stateChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
         server.subscribeConfigChannel(stateChannel, user);
@@ -63,6 +72,7 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
         assertTrue(result.stream().anyMatch(s -> "INTERNAL".equals(s.getType())));
     }
 
+    @Test
     public void testGroupAndOrgStates() {
         ServerGroup group1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup group2 = ServerGroupTestUtils.createManaged(user);

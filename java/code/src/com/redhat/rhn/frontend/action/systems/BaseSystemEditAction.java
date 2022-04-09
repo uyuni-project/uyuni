@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseSystemEditAction - base class for editing a System
- * @version $Rev: 1 $
  */
 public abstract class BaseSystemEditAction extends RhnAction {
 

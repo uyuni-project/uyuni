@@ -14,12 +14,19 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.manager.kickstart.KickstartScriptCreateCommand;
 import com.redhat.rhn.manager.kickstart.KickstartScriptDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartScriptEditCommand;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartScriptTest
@@ -30,11 +37,13 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
     }
 
+    @Test
     public void testPreCreate() throws Exception {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
@@ -60,6 +69,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         assertTrue(ksdata.getScripts().size() > 0);
     }
 
+    @Test
     public void testPreEdit() throws Exception {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         String language = "/usr/bin/perl";
@@ -76,6 +86,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         assertTrue(ksdata.getScripts().size() > 0);
     }
 
+    @Test
     public void testScriptDelete() throws Exception {
 
         KickstartScript kss = ksdata.getScripts().iterator().next();

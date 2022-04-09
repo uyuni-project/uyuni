@@ -16,15 +16,14 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.script.ScriptResult;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -42,34 +41,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class ScriptResultSerializer extends RhnXmlRpcCustomSerializer {
+public class ScriptResultSerializer extends ApiResponseSerializer<ScriptResult> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ScriptResult> getSupportedClass() {
         return ScriptResult.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ScriptResult scriptResult = (ScriptResult)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("serverId", scriptResult.getServerId());
-        helper.add("startDate", scriptResult.getStartDate());
-        helper.add("stopDate", scriptResult.getStopDate());
-        helper.add("returnCode", scriptResult.getReturnCode());
-        String outputContents = scriptResult.getOutputContents();
+    @Override
+    public SerializedApiResponse serialize(ScriptResult src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("serverId", src.getServerId())
+                .add("startDate", src.getStartDate())
+                .add("stopDate", src.getStopDate())
+                .add("returnCode", src.getReturnCode());
+
+        String outputContents = src.getOutputContents();
         if (StringUtil.containsInvalidXmlChars2(outputContents)) {
-            helper.add("output_enc64", Boolean.TRUE);
-            helper.add("output", new String(Base64.encodeBase64(outputContents
-                    .getBytes("UTF-8")), "UTF-8"));
+            builder.add("output_enc64", Boolean.TRUE);
+            builder.add("output", new String(Base64.encodeBase64(outputContents
+                    .getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
         }
         else {
-            helper.add("output_enc64", Boolean.FALSE);
-            helper.add("output", scriptResult.getOutputContents());
+            builder.add("output_enc64", Boolean.FALSE);
+            builder.add("output", src.getOutputContents());
         }
-        helper.writeTo(output);
+        return builder.build();
     }
 }

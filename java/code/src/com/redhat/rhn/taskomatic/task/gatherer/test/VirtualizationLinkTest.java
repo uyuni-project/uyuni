@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.gatherer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,6 +30,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.HostJson;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +47,7 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
      * corresponding VirtualInstances are created.
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testLinking() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData("gatherer.out.json").getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);

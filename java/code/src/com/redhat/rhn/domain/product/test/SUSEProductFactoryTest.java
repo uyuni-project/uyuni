@@ -16,11 +16,14 @@ package com.redhat.rhn.domain.product.test;
 
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class SUSEProductFactoryTest extends BaseTestCaseWithUser {
      * Tests {@link SUSEProductFactory#removeAllExcept}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRemoveAllExcept() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
 

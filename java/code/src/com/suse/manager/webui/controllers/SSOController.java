@@ -34,7 +34,8 @@ import com.onelogin.saml2.servlet.ServletUtils;
 import com.onelogin.saml2.settings.Saml2Settings;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
@@ -54,7 +55,7 @@ import spark.Response;
  */
 public final class SSOController {
 
-    private static final Logger LOG = Logger.getLogger(SSOController.class);
+    private static final Logger LOG = LogManager.getLogger(SSOController.class);
 
     private static Optional<Saml2Settings> ssoConfig;
 
@@ -207,7 +208,7 @@ public final class SSOController {
                 auth.logout();
                 return response;
             }
-            catch (SettingsException | ServletException | IOException | XMLEntityException e) {
+            catch (SettingsException | IOException | XMLEntityException e) {
                 LOG.error("Unable to parse settings for SSO and/or XML parsing: " + e.getMessage());
             }
         }

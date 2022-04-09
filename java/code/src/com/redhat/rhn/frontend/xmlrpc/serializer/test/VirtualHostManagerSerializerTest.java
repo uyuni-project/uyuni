@@ -15,11 +15,17 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.frontend.xmlrpc.serializer.VirtualHostManagerSerializer;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -40,6 +46,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = new VirtualHostManager();
@@ -52,6 +59,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Minimal test
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testSimple() throws IOException {
         VirtualHostManagerSerializer serializer = new VirtualHostManagerSerializer();
         Writer output = new StringWriter();
@@ -70,6 +78,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Test serializing VirtualHostManager with credentials
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testWithCreds() throws IOException {
         Credentials creds = new Credentials();
         creds.setUsername("Somebody");
@@ -92,6 +101,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Test serializing VirtualHostManager with configs
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testWithConfigs() throws IOException {
         Set<VirtualHostManagerConfig> configs = new HashSet<>();
         VirtualHostManagerConfig config = new VirtualHostManagerConfig();

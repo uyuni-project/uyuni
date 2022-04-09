@@ -15,14 +15,18 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssMasterOrg;
 import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterOrgSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterSerializer;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -36,6 +40,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class IssMasterSerializerTest extends MockObjectTestCase {
     private String[] masterOrgNames = {"masterOrg1", "masterOrg2", "masterOrg3"};
 
+    @Test
     public void testMasterSerialize() throws XmlRpcException, IOException {
         IssMasterSerializer os = new IssMasterSerializer();
         IssMaster master = setUpMaster();
@@ -54,6 +59,7 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
         assertTrue(result.contains(">" + (master.getCaCert()) + "<"));
     }
 
+    @Test
     public void testMasterOrgSerialize() throws XmlRpcException, IOException {
         IssMasterOrgSerializer os = new IssMasterOrgSerializer();
         IssMaster master = setUpMaster();

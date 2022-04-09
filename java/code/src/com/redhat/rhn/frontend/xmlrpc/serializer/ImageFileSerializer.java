@@ -15,39 +15,37 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.ImageFile;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ImageFileSerializer
  * @xmlrpc.doc
  * #struct_begin("Image information")
- *   #prop_desc("string", "file", "file name")
+ *   #prop_desc("string", "file", "file name without path")
  *   #prop_desc("string", "type", "file type")
  *   #prop_desc("boolean", "external", "true if the file is external,
  *          false otherwise")
+ *   #prop_desc("string", "url", "file url")
  * #struct_end()
  */
-public class ImageFileSerializer extends RhnXmlRpcCustomSerializer {
+public class ImageFileSerializer extends ApiResponseSerializer<ImageFile> {
 
     @Override
-    protected void doSerialize(Object value, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ImageFile file = (ImageFile) value;
-        helper.add("file", file.getFile());
-        helper.add("type", file.getType());
-        helper.add("external", file.isExternal());
-        helper.writeTo(writer);
+    public Class<ImageFile> getSupportedClass() {
+        return ImageFile.class;
     }
 
     @Override
-    public Class getSupportedClass() {
-        return ImageFile.class;
+    public SerializedApiResponse serialize(ImageFile src) {
+        return new SerializationBuilder()
+                .add("file", src.getFile())
+                .add("type", src.getType())
+                .add("external", src.isExternal())
+                .add("url", OSImageStoreUtils.getOSImageFileURI(src))
+                .build();
     }
 }

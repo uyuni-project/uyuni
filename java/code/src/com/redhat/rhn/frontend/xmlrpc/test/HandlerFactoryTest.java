@@ -15,29 +15,39 @@
 
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class HandlerFactoryTest extends RhnBaseTestCase {
     private HandlerFactory factory = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         factory = HandlerFactory.getDefaultHandlerFactory();
     }
 
+    @Test
     public void testHandlerFactoryNotFound() {
-        assertTrue("handler should not exist.", factory.getHandler("NoHandler").isEmpty());
+        assertTrue(factory.getHandler("NoHandler").isEmpty(), "handler should not exist.");
     }
 
+    @Test
     public void testHandlerFactory() {
         BaseHandler handler = factory.getHandler("channel").get();
         assertEquals(ChannelHandler.class, handler.getClass());
     }
 
+    @Test
     public void testDescendingClass() {
         BaseHandler handler = factory.getHandler("channel.software").get();
         assertNotNull(handler);

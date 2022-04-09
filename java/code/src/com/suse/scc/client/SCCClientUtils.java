@@ -80,11 +80,12 @@ public class SCCClientUtils {
      * @param response the HTTP response
      * @param user the user name
      * @param logDir where to save the log file
+     * @param setOwner false to skip owner setting
      * @return the logging reader
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public static BufferedReader getLoggingReader(URI requestUri, HttpResponse response,
-            String user, String logDir) throws IOException {
+            String user, String logDir, boolean setOwner) throws IOException {
         InputStream inputStream = null;
         try {
             if (response.getEntity() == null) {
@@ -104,16 +105,20 @@ public class SCCClientUtils {
             throw e;
         }
 
-        FileSystem fileSystem = FileSystems.getDefault();
-        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-        UserPrincipal rootUser = service.lookupPrincipalByName("root");
+        UserPrincipal tomcatUser = null;
+        UserPrincipal rootUser = null;
+        if (setOwner) {
+            FileSystem fileSystem = FileSystems.getDefault();
+            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+            tomcatUser = service.lookupPrincipalByName("tomcat");
+            rootUser = service.lookupPrincipalByName("root");
+        }
 
         File logDirFile = new File(logDir);
         if (!logDirFile.exists()) {
             FileUtils.forceMkdir(logDirFile);
             Path logDirPath = logDirFile.toPath();
-            if (Files.getOwner(logDirPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+            if (setOwner && Files.getOwner(logDirPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
                 Files.setOwner(logDirPath, tomcatUser);
             }
         }
@@ -124,7 +129,7 @@ public class SCCClientUtils {
             FileUtils.touch(logFile);
         }
         Path logPath = logFile.toPath();
-        if (Files.getOwner(logPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+        if (setOwner && Files.getOwner(logPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
             Files.setOwner(logPath, tomcatUser);
         }
 

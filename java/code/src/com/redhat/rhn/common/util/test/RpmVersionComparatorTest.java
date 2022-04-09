@@ -14,33 +14,38 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 /**
  * RpmVersionComparatorTest
  */
-public class RpmVersionComparatorTest extends TestCase {
+public class RpmVersionComparatorTest  {
 
     private RpmVersionComparator cmp;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         cmp = new RpmVersionComparator();
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         cmp = null;
-        super.tearDown();
     }
 
+    @Test
     public void testBasicComparisons() {
         // Some equality
         assertCompareSymm(0, "0", "0");
@@ -60,6 +65,7 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(-1, "1.1", "1.1.PTF");
     }
 
+    @Test
     public void testBugzilla50977() {
         // From comment #2
         assertCompareSymm(1, "10mdk", "10");
@@ -74,6 +80,7 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(-1, "2.0e", "2.0.11");
     }
 
+    @Test
     public void testBugzilla82639() {
         // Some test cases from that bz. Note that the
         // results being tested for are not necessarily the ones from
@@ -86,6 +93,7 @@ public class RpmVersionComparatorTest extends TestCase {
     }
 
     /* from official rpm tests */
+    @Test
     public void testTildeSorting() {
         assertCompareSymm(0, "1.0~rc1", "1.0~rc1");
         assertCompareSymm(-1, "1.0~rc1", "1.0");
@@ -98,6 +106,7 @@ public class RpmVersionComparatorTest extends TestCase {
     }
 
     /* from official rpm tests */
+    @Test
     public void testCaretSorting() {
         assertCompareSymm(1, "1.0^", "1.0");
         assertCompareSymm(1, "1.0^git1", "1.0");
@@ -110,6 +119,7 @@ public class RpmVersionComparatorTest extends TestCase {
     /**
      * Test comparing strings of modular package releases.
      */
+    @Test
     public void testRhel8ModuleReleaseComparison() {
         // some packages have "module_el8" in the release
         assertCompareSymm(-1, "7.module_el8.2.0+305+5e198a41", "7.module_el8.2.0+458+dab581ed");
@@ -121,12 +131,14 @@ public class RpmVersionComparatorTest extends TestCase {
     /*
      * Test for https://github.com/uyuni-project/uyuni/issues/2531
      */
+    @Test
     public void testUyuniIssue2531() {
         assertCompareSymm(1, "1.27+1.3.9", "1.27.1+1.3.9");
         assertCompareSymm(1, "1.27", "1.3.11");
     }
 
     /* from official rpm tests */
+    @Test
     public void testTildeAndCaretSorting() {
         assertCompareSymm(1, "1.0~rc1^git1", "1.0~rc1");
         assertCompareSymm(1, "1.0^git1", "1.0^git1~pre");

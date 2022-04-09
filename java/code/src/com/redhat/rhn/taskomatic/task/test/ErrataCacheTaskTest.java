@@ -14,10 +14,13 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.taskomatic.task.ErrataCacheTask;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.junit.jupiter.api.Test;
 
 /**
  * ErrataCacheTaskTest
@@ -35,6 +38,7 @@ public class ErrataCacheTaskTest extends RhnBaseTestCase {
         System.out.println("ErrataCacheTask took [" + sw.getTime() + "]");
     }
 
+    @Test
     public void testNothing() {
         assertTrue(true);
     }

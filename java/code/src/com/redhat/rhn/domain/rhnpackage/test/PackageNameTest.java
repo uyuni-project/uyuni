@@ -14,10 +14,14 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageNameTest
@@ -28,6 +32,7 @@ public class PackageNameTest extends RhnBaseTestCase {
      * PackageNames and write them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackageName() throws Exception {
         PackageName p = createTestPackageName();
         assertNotNull(p);

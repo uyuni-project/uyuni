@@ -14,6 +14,11 @@
  */
 package com.suse.manager.webui.controllers.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -51,6 +56,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +76,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -117,6 +125,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
+    @Test
     public void testData() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
@@ -136,6 +145,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertNull(net0.getBridge());
     }
 
+    @Test
     public void testDevices() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.devices(getRequestWithCsrf(
@@ -162,6 +172,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("down", eth4.get("state").getAsString());
     }
 
+    @Test
     public void testStart() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.start(
@@ -185,6 +196,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testStop() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.stop(
@@ -208,6 +220,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testDelete() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.delete(
@@ -231,6 +244,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testCreate() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.create(
@@ -262,6 +276,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testCreateNat() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.create(

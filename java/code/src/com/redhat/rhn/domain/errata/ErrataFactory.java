@@ -46,7 +46,8 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -73,7 +74,7 @@ import java.util.stream.Collectors;
 public class ErrataFactory extends HibernateFactory {
 
     private static ErrataFactory singleton = new ErrataFactory();
-    private static Logger log = Logger.getLogger(ErrataFactory.class);
+    private static Logger log = LogManager.getLogger(ErrataFactory.class);
 
     public static final String ERRATA_TYPE_BUG = "Bug Fix Advisory";
     public static final String ERRATA_TYPE_ENHANCEMENT = "Product Enhancement Advisory";

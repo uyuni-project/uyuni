@@ -25,12 +25,14 @@ import com.redhat.rhn.testing.TagTestUtils;
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.Tag;
 
 /**
  * AddressMenuTagTest
- * @version $Rev: 694 $
  */
 public class AddressTagTest extends RhnBaseTestCase {
 
@@ -40,8 +42,8 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         sah = new ActionHelper();
         sah.setUpAction(new AddressesAction());
         sah.getRequest().setRequestURL("foo");
@@ -52,6 +54,7 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Test tag output
      * @throws Exception something bad happened
      */
+    @Test
     public void testTagOutput() throws Exception {
 
         AddressTag addtg = new AddressTag();
@@ -74,6 +77,7 @@ public class AddressTagTest extends RhnBaseTestCase {
 
     /* Test rendering an empty Address
      */
+    @Test
     public void testEmptyAddress() throws Exception {
         AddressTag addtg = new AddressTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(addtg, null, sah.getRequest());

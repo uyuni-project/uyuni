@@ -14,6 +14,8 @@
  */
 package com.suse.manager.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -26,10 +28,11 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class SaltUtilsTest extends TestCase {
+public class SaltUtilsTest  {
 
+    @Test
     public void testPackageToKey() throws Exception {
         // atom package, openSUSE style, from database
         var atomName = new PackageName();

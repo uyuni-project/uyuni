@@ -56,6 +56,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import java.io.UnsupportedEncodingException;
@@ -234,6 +235,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ConfigRevisionSerializer
      * #array_end()
      */
+    @ReadOnly
     public List getFileRevisions(User loggedInUser, String configChannelLabel,
                                  String filePath) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -266,6 +268,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.returntype
      * $ConfigRevisionSerializer
      */
+    @ReadOnly
     public ConfigRevision getFileRevision(User loggedInUser, String configChannelLabel,
                                String filePath, Integer revision) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -326,6 +329,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.returntype
      * $ConfigRevisionSerializer
      */
+    @ReadOnly
     public EncodedConfigRevision getEncodedFileRevision(User loggedInUser,
             String configChannelLabel, String filePath, Integer revision) {
          return new EncodedConfigRevision(getFileRevision(loggedInUser, configChannelLabel,
@@ -344,6 +348,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.returntype
      *   $ConfigChannelSerializer
      */
+    @ReadOnly
     public ConfigChannel getDetails(User loggedInUser, String configChannelLabel) {
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         return helper.lookupGlobal(loggedInUser, configChannelLabel);
@@ -361,6 +366,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.returntype
      *    $ConfigChannelSerializer
      */
+    @ReadOnly
     public ConfigChannel getDetails(User loggedInUser, Integer configChannelId) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
 
@@ -442,6 +448,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *  $ConfigChannelDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigChannelDto> listGlobals(User loggedInUser) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         DataResult<ConfigChannelDto> list = manager.
@@ -744,6 +751,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ConfigFileDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigFileDto> listFiles(User loggedInUser, String channelLabel) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
@@ -1043,6 +1051,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ConfigSystemDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigSystemDto> listSubscribedSystems(User loggedInUser,
             String channelLabel) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -1067,6 +1076,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ManagedServerGroupSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ManagedServerGroup> listAssignedSystemGroups(User loggedInUser, String channelLabel) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,

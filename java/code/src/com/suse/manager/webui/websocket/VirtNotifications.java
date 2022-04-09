@@ -31,7 +31,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -66,7 +67,7 @@ import javax.websocket.server.ServerEndpoint;
 public class VirtNotifications {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(VirtNotifications.class);
+    private static final Logger LOG = LogManager.getLogger(VirtNotifications.class);
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())

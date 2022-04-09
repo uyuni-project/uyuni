@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.BeforeEach;
+
 public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
 
     protected KickstartData ksdata;
@@ -25,6 +27,7 @@ public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.

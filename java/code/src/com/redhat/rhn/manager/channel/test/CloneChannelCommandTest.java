@@ -15,12 +15,19 @@
 
 package com.redhat.rhn.manager.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
@@ -29,6 +36,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNoParentOnClone() throws Exception {
         Channel originalBase = ChannelTestUtils.createBaseChannel(user);
         Channel originalChild = ChannelTestUtils.createChildChannel(user, originalBase);
@@ -47,6 +55,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testCloneNoModular() throws Exception {
         Channel original = createBaseChannel();
         assertFalse(original.isModular());
@@ -62,6 +71,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testCloneModularSource() throws Exception {
         Channel original = createBaseChannel();
         Modules modules = new Modules();
@@ -83,6 +93,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     /**
      * Test cloning a modular channel as a regular channel, stripping modular metadata
      */
+    @Test
     public void testStripModularMetadata() throws Exception {
         Channel original = createBaseChannel();
         Modules modules = new Modules();

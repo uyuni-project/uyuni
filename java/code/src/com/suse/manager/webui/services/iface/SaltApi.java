@@ -96,6 +96,16 @@ public interface SaltApi {
     Optional<Boolean> removeFile(Path path);
 
     /**
+     * Copy given file using RunnerCall
+     *
+     * @param src the source path of file to be removed
+     * @param dst the destination path of file to be removed
+     * @throws IllegalStateException if the given path is not absolute
+     * @return Optional with true if the file deletion succeeded.
+     */
+    Optional<Boolean> copyFile(Path src, Path dst);
+
+    /**
      * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
      * @return the LocalAsyncResult of the test.echo call

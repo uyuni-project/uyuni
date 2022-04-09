@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserPreferencesAction, edit action for user detail page
- * @version $Rev: 1226 $
  */
 public class ActionDetailsSetupAction extends RhnAction {
 

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -54,11 +57,13 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.AssertionFailedError;
 
 /**
  * ProvisionVirtualizationWizardActionTest
@@ -79,6 +84,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/virtualization/ProvisionVirtualizationWizard");
@@ -108,11 +114,13 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         addRequestParameter(RequestContext.SID, s.getId().toString());
     }
 
+    @Test
     public void testStepOne() throws Exception {
         actionPerform();
         verifyNoActionErrors();
     }
 
+    @Test
     public void testStepTwo() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithProfile(user);
         ProfileManagerTest.createProfileWithServer(user);
@@ -157,7 +165,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         try {
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
-        catch (AssertionFailedError e) {
+        catch (AssertionError e) {
             verifyActionMessages(new String[] {"kickstart.schedule.noprofiles",
                     "system.virtualization.help"});
         }
@@ -219,10 +227,12 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
     }
 
 
+    @Test
     public void testStepThreeWithProxy() throws Exception {
          executeStepThree(true);
     }
 
+    @Test
     public void testStepThreeNoProxy() throws Exception {
         executeStepThree(false);
     }

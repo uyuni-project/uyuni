@@ -25,7 +25,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -36,7 +37,7 @@ import java.util.Optional;
 public class PackageStateJson {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(PackageStateJson.class);
+    private static final Logger LOG = LogManager.getLogger(PackageStateJson.class);
 
     /** Name of the package */
     private final String name;

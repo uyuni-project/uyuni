@@ -14,14 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link MirrorCredentialsDto} objects.
@@ -33,24 +30,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("boolean", "isPrimary", "primary")
  *   #struct_end()
  */
-public class MirrorCredentialsDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class MirrorCredentialsDtoSerializer extends ApiResponseSerializer<MirrorCredentialsDto> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<MirrorCredentialsDto> getSupportedClass() {
         return MirrorCredentialsDto.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        MirrorCredentialsDto credentials = (MirrorCredentialsDto) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", credentials.getId());
-        helper.add("user", credentials.getUser());
-        helper.add("isPrimary", credentials.isPrimary());
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(MirrorCredentialsDto src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("user", src.getUser())
+                .add("isPrimary", src.isPrimary())
+                .build();
     }
 }

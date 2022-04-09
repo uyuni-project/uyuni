@@ -15,6 +15,10 @@
 package com.suse.manager.reactor.messaging.test;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
@@ -51,6 +55,8 @@ import com.suse.salt.netapi.parser.JsonParser;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +83,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     private TaskomaticApi taskomaticMock;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -120,6 +127,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned.
      */
+    @Test
     public void testChannelsAssigned() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
@@ -138,6 +146,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned. Old channel assignments will be overridden.
      */
+    @Test
     public void testBaseChannelChanged() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
@@ -161,6 +170,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     /**
      * machine_id grain is missing -> no channels should be assigned
      */
+    @Test
     public void testMachineIdMissing() {
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
         ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);

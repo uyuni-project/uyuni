@@ -22,7 +22,6 @@ import com.redhat.rhn.FaultException;
  * <p>
  *
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class NoSuchCobblerSystemRecordException extends FaultException {
 

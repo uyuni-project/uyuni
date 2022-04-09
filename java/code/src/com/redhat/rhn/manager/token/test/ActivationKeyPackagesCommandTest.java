@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.token.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
@@ -23,11 +28,14 @@ import com.redhat.rhn.manager.token.ActivationKeyPackagesCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ActivationKeyPackagesCommandTest
  */
 public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testPopulatePackages() throws Exception {
 
         // setup
@@ -61,6 +69,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
 
     }
+    @Test
     public void testParseAndUpdate() throws Exception {
 
         // setup

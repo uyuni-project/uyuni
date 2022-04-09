@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
@@ -22,6 +27,8 @@ import com.redhat.rhn.manager.common.BaseFileListEditCommand;
 import com.redhat.rhn.manager.common.CreateFileListCommand;
 import com.redhat.rhn.manager.common.EditFileListCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * FileListEditCommandTest - test for FileListEditCommand
@@ -37,6 +44,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
         cmd.store();
     }
 
+    @Test
     public void testBaseFileListEditCommand() throws Exception {
         setupKey(new CreateFileListCommand(user));
         int version = 1;
@@ -67,6 +75,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testCreateCommand() throws Exception {
         setupKey(new CreateFileListCommand(user));
         FileList list = cmd.getFileList();
@@ -85,6 +94,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testEdit() throws Exception {
         FileList list = FileListTest.createTestFileList(user.getOrg());
         CommonFactory.saveFileList(list);

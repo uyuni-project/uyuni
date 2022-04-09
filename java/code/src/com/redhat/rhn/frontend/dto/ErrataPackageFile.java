@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ErrataPackageFile
- * @version $Rev: 94459 $
  */
 public class ErrataPackageFile {
     private Long packageId;

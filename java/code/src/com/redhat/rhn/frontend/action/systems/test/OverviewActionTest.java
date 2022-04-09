@@ -14,8 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -23,6 +27,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class OverviewActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testOverview() throws Exception {
         UserTestUtils.addManagement(user.getOrg());
         setRequestPathInfo("/systems/Overview");

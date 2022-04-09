@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -41,7 +42,7 @@ import java.util.function.Consumer;
  */
 public class AlignSoftwareTargetAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(AlignSoftwareTargetAction.class);
+    private static final Logger LOG = LogManager.getLogger(AlignSoftwareTargetAction.class);
 
     @Override
     public void execute(EventMessage msgIn) {

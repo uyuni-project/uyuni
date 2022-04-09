@@ -15,15 +15,10 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * XMLRPC Serializer for {@link AnsiblePlaybookSlsResult}
@@ -34,22 +29,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop("string", "custom_inventory")
  *   #struct_end()
  */
-public class AnsiblePlaybookSerializer extends RhnXmlRpcCustomSerializer {
+public class AnsiblePlaybookSerializer extends ApiResponseSerializer<AnsiblePlaybookSlsResult> {
 
     @Override
-    public Class getSupportedClass() {
+    public Class<AnsiblePlaybookSlsResult> getSupportedClass() {
         return AnsiblePlaybookSlsResult.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        AnsiblePlaybookSlsResult playbook = (AnsiblePlaybookSlsResult) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("fullpath", playbook.getFullPath());
-        helper.add("custom_inventory", playbook.getCustomInventory());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(AnsiblePlaybookSlsResult src) {
+        return new SerializationBuilder()
+                .add("fullpath", src.getFullPath())
+                .add("custom_inventory", src.getCustomInventory())
+                .build();
     }
 }

@@ -14,22 +14,29 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.RenderGuardComposite;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * RenderGuardCompositeTest
  */
 public class RenderGuardCompositeTest extends RhnBaseTestCase {
 
+    @Test
     public void testNoGuards() {
         RenderGuardComposite comp = new RenderGuardComposite();
         boolean rc = comp.canRender(null, 0);
         assertTrue(rc);
     }
 
+    @Test
     public void testNullGuards() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(null);
@@ -38,6 +45,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
     }
 
     // 0 = false
+    @Test
     public void testRenderGuard0() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new FalseGuard());
@@ -46,6 +54,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
     }
 
     // 1 = true
+    @Test
     public void testRenderGuard1() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new TrueGuard());
@@ -54,6 +63,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
     }
 
     // 2 -> 10 -> true & false -> false
+    @Test
     public void testRenderGuard2() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new TrueGuard());
@@ -63,6 +73,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
     }
 
     // 3 -> 11 -> true & true -> true
+    @Test
     public void testRenderGuard3() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new TrueGuard());
@@ -72,6 +83,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
     }
 
     // 7 -> 111 -> true & true & true -> true
+    @Test
     public void testRenderGuard7() {
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new TrueGuard());

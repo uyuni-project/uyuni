@@ -21,7 +21,8 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.Optional;
  */
 public class HwProfileUpdateSlsResult {
 
-    private static final Logger LOG = Logger.getLogger(HwProfileUpdateSlsResult.class);
+    private static final Logger LOG = LogManager.getLogger(HwProfileUpdateSlsResult.class);
 
     @SerializedName("mgrcompat_|-grains_|-grains.items_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;

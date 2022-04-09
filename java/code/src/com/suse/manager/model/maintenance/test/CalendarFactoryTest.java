@@ -14,6 +14,8 @@
  */
 package com.suse.manager.model.maintenance.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.model.maintenance.CalendarAssignment;
@@ -21,6 +23,9 @@ import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.ScheduleFactory;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +41,7 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     private ScheduleFactory scheduleFactory;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.calendarFactory = new CalendarFactory();
@@ -45,6 +51,7 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     /**
      * Test listing all calendars with their schedules
      */
+    @Test
     public void testListCalendarsWithSchedules() {
         MaintenanceCalendar calendarNoSchedule = new MaintenanceCalendar();
         calendarNoSchedule.setLabel("my-calendar-no-schedule");

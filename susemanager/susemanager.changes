@@ -1,4 +1,7 @@
-* Add pg-migrate-13-to-14.sh script
+- delopy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+- Add pg-migrate-12-to-14.sh script
+- Add pg-migrate-13-to-14.sh script
 
 -------------------------------------------------------------------
 Thu Mar 31 12:26:36 CEST 2022 - jgonzalez@suse.com

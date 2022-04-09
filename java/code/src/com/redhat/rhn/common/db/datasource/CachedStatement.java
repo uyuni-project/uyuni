@@ -23,7 +23,8 @@ import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
@@ -61,7 +62,7 @@ public class CachedStatement implements Serializable {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(CachedStatement.class);
+    private static Logger log = LogManager.getLogger(CachedStatement.class);
 
     /**
      * The size above which queries are split into multiple queries, each of

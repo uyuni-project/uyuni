@@ -20,6 +20,9 @@ import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleTyp
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -42,6 +45,8 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -63,6 +68,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -83,6 +89,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
      * (= it's not in the maintenance mode)
      *
      */
+    @Test
     public void testScheduleHighstateNoMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
         assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
@@ -118,6 +125,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a state apply outside maintenance window (= not in maintenance mode)
      */
+    @Test
     public void testScheduleHighstateOutsideMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
         assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
@@ -150,6 +158,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a hardware refresh with no maintenance window (= system not in maintenance mode)
      */
+    @Test
     public void testScheduleHwRefreshNoMaintWindow() throws Exception {
         // this tests assumes that HW refresh is not a maintenance-mode-only action
         assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
@@ -172,6 +181,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a just a channel state (part of channel change which should be allowed)
      */
+    @Test
     public void testScheduleChannelChangeNoMaintWindow() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());

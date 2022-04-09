@@ -247,13 +247,13 @@ if [ -n "${VENV_SOURCE}" ]; then
             mv usr usr.tmp
             mv usr.tmp/lib/venv-salt-minion/* .
             rm -rf usr.tmp
+            if [ ! -x bin/python ]; then
+                rm -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
+                exit_with_message_code "Error: Unable to extract the bundle from ${TEMP_DIR}/${VENV_PKG_FILE}!" 6
+            fi
         else
             cp -r "${VENV_INST_DIR}" "${VENV_TMP_DIR}"
             pushd "${VENV_TMP_DIR}" > /dev/null
-        fi
-        if [ -x bin/python ]; then
-            rm -f "${VENV_TMP_DIR}/${VENV_HASH_FILE}"
-            exit_with_message_code "Error: Unable to extract the bundle from ${TEMP_DIR}/${VENV_PKG_FILE}!" 6
         fi
         grep -m1 -r "^#\!${VENV_INST_DIR}" bin/ | sed 's/:.*//' | sort | uniq | xargs -I '{}' sed -i "1s=^#!${VENV_INST_DIR}/bin/.*=#!${VENV_TMP_DIR}/bin/python=" {}
         sed -i "s#${VENV_INST_DIR}#${VENV_TMP_DIR}#g" bin/python

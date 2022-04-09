@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class FrontendLogController {
 
     private static final Gson GSON = new GsonBuilder().create();
 
-    private static Logger log = Logger.getLogger(FrontendLogController.class);
+    private static Logger log = LogManager.getLogger(FrontendLogController.class);
 
     private FrontendLogController() { }
 
@@ -66,7 +67,6 @@ public class FrontendLogController {
 
         Map<String, Boolean> data = new HashMap<>();
         data.put("success", true);
-        response.type("application/json");
         return GSON.toJson(data);
     }
 }

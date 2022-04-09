@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * OrgDetailsAction extends RhnAction - Class representation of the table web_customer
- * @version $Rev: 1 $
  */
 public class OrganizationAction extends RhnAction {
     public static final String ORG_LIST = "orgList";

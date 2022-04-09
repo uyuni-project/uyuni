@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +37,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link MinionServerFactory#findByMachineId(String)}.
      */
+    @Test
     public void testFindByMachineId() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
@@ -43,6 +49,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link MinionServerFactory#findByMinionId(String)}.
      */
+    @Test
     public void testFindByMinionId() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
@@ -54,6 +61,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link MinionServerFactory#listMinions()}.
      */
+    @Test
     public void testListMinions() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
         List<MinionServer> minions = MinionServerFactory.listMinions();
@@ -63,6 +71,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link MinionServerFactory#lookupById(Long)}.
      */
+    @Test
     public void testLookupById() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
@@ -71,6 +80,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(minionServer, minion.get());
     }
 
+    @Test
     public void testListMinionIdsAndContactMethods() throws Exception  {
         MinionServer minionServer1 = createTestMinionServer(user);
         minionServer1.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));

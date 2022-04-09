@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -36,33 +33,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("boolean", "is_org_admin")
  * #struct_end()
  */
-public class MultiOrgUserOverviewSerializer extends RhnXmlRpcCustomSerializer {
+public class MultiOrgUserOverviewSerializer extends ApiResponseSerializer<MultiOrgUserOverview> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
-        // TODO Auto-generated method stub
+    @Override
+    public Class<MultiOrgUserOverview> getSupportedClass() {
         return MultiOrgUserOverview.class;
     }
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper se = new SerializerHelper(serializer);
-        MultiOrgUserOverview dto = (MultiOrgUserOverview) value;
 
-        se.add("login", dto.getLogin());
-        se.add("login_uc", dto.getLoginUc());
-        se.add("name", dto.getUserDisplayName());
-        se.add("email", dto.getAddress());
-        se.add("is_org_admin", dto.getOrgAdmin() == 1);
-        se.writeTo(output);
-
+    @Override
+    public SerializedApiResponse serialize(MultiOrgUserOverview src) {
+        return new SerializationBuilder()
+                .add("login", src.getLogin())
+                .add("login_uc", src.getLoginUc())
+                .add("name", src.getUserDisplayName())
+                .add("email", src.getAddress())
+                .add("is_org_admin", src.getOrgAdmin() == 1)
+                .build();
     }
-
 }

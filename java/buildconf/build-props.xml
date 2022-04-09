@@ -64,9 +64,9 @@
     <available file="${java.lib.dir}/apache-commons-validator.jar" />
   </condition>
 
-  <available file="${java.lib.dir}/log4j-1.jar" type="file" property="log4j-jars" value="log4j-1" />
-  <available file="${java.lib.dir}/log4j12/log4j-12.jar" type="file" property="log4j-jars" value="log4j12/log4j-12" />
-  <available file="${java.lib.dir}/log4j.jar" type="file" property="log4j-jars" value="log4j" />
+  <available file="${java.lib.dir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
+  <available file="${java.lib.dir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
+  <property name="log4j-jars" value="${log4j-core} ${log4j-api}"/>
 
   <condition property="jta11-jars" value="geronimo-jta-1.1-api" else="jta">
     <available file="${java.lib.dir}/geronimo-jta-1.1-api.jar" />
@@ -106,15 +106,12 @@
   <property name="jaxb" value="${jaxb-api} ${jaxb-core} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
 
 
-  <property name="hibernate3.2deps" value="hibernate3"/>
+  <property name="hibernate5deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jakarta-persistence-api byte-buddy jboss-logging javassist slf4j/log4j ${ehcache} classmate statistics hibernate-types-52-2.12.1 jackson-databind jackson-core jackson-annotations"/>
 
-  <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.0-api"/>
-
-  <property name="hibernate5deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jakarta-persistence-api byte-buddy jboss-logging javassist slf4j/log4j12 ${ehcache} classmate statistics hibernate-types-52-2.12.1 jackson-databind jackson-core jackson-annotations"/>
-
-  <available file="${java.lib.dir}/hibernate3.jar" type="file" property="hibernate" value="${hibernate3.2deps}" />
-  <available file="${java.lib.dir}/hibernate3/hibernate-core-3.jar" type="file" property="hibernate" value="${hibernate3.6deps}" />
   <available file="${java.lib.dir}/hibernate-core-5.jar" type="file" property="hibernate" value="${hibernate5deps}" />
+
+  <property name="c3p0" value="c3p0"/>
+  <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
 
   <condition property="jmock-jars"
                 value="jmock jmock-cglib"
@@ -141,14 +138,11 @@
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
-             taglibs-standard-spec logdriver quartz dwr slf4j-api slf4j-log4j12
-             concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
+             taglibs-standard-spec logdriver quartz dwr slf4j-api slf4j-log4j
+             concurrent velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
 
   <!-- deps needed for testing, but required to build -->
-  <property name="test.build.jar.dependencies"
-      value="junit commons-lang
-             ${log4j-jars}
-             regexp ${jmock-jars} postgresql-jdbc" />
+  <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
@@ -166,7 +160,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -181,14 +175,14 @@
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} concurrentlinkedhashmap-lru
-    slf4j/api slf4j/log4j12 ${product-runtime-jars}" />
+    slf4j/api slf4j/log4j ${product-runtime-jars}" />
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} c3p0 commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j dwr ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
@@ -200,11 +194,11 @@
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
-             taglibs-standard-spec quartz ${suse-common-jars} velocity
+             taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
-      value="antlr objectweb-asm/asm bcel c3p0 ${cglib-jar}
+      value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging

@@ -21,7 +21,8 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ import java.util.stream.Stream;
  */
 public class RecurringActionFactory extends HibernateFactory {
 
-    private static final Logger LOG = Logger.getLogger(RecurringActionFactory.class);
+    private static final Logger LOG = LogManager.getLogger(RecurringActionFactory.class);
     private static final RecurringActionFactory INSTANCE = new RecurringActionFactory();
 
     /**

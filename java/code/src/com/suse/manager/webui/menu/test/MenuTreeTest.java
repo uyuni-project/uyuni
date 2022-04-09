@@ -15,6 +15,10 @@
 
 package com.suse.manager.webui.menu.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 
@@ -22,12 +26,13 @@ import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.menu.MenuTree.MenuItemList;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
-import junit.framework.TestCase;
+public class MenuTreeTest  {
 
-public class MenuTreeTest extends TestCase {
-
+    @Test
     public void testActiveNode() {
         // the requested url
         String url = "/rhn/account/UserDetails.do";
@@ -50,6 +55,7 @@ public class MenuTreeTest extends TestCase {
         assertFalse(activeNode.getLabel().equalsIgnoreCase("Home"));
     }
 
+    @Test
     public void testBestActiveDir() {
         // the requested url
         String url = "/rhn/errata/manage/Create.do";
@@ -99,6 +105,7 @@ public class MenuTreeTest extends TestCase {
     /**
      * Test the correct functionality of {@link MenuItemList} regarding visibility.
      */
+    @Test
     public void testVisibility() {
         MenuItem home = new MenuItem("Home");
         MenuItem systems = new MenuItem("Systems").withVisibility(true);

@@ -14,16 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ErrataConfirmSetupActionTest
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/ErrataConfirm");
 

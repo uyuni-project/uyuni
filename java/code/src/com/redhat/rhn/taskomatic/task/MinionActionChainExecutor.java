@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 
 import com.suse.manager.webui.services.SaltServerActionService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
@@ -34,7 +35,7 @@ import java.time.ZonedDateTime;
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
 
-    private static final Logger LOG = Logger.getLogger(MinionActionChainExecutor.class);
+    private static final Logger LOG = LogManager.getLogger(MinionActionChainExecutor.class);
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours

@@ -1,0 +1,26 @@
+mount_point = /var/spacewalk
+kickstart_mount_point = /var/spacewalk
+repomd_cache_mount_point = /var/cache 
+
+# db settings
+db_backend = postgresql
+db_user = spacewalk
+db_password = spacewalk
+db_name = susemanager
+db_host = localhost
+db_port = 5432
+db_ssl_enabled = 
+
+# reportdb settings
+report_db_backend = postgresql
+report_db_user = pythia_susemanager
+report_db_password = secret
+report_db_name = reportdb
+report_db_host = localhost
+report_db_port = 5432
+report_db_ssl_enabled = 1
+report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+
+web.satellite = 1
+web.satellite_install =
+

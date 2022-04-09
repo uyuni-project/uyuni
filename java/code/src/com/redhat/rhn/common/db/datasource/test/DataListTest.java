@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.common.db.datasource.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CachedStatement;
@@ -22,6 +26,10 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +44,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_sufix;
     private String db_user;
 
+    @BeforeEach
     public void setUp() {
         db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
@@ -47,18 +56,22 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", db_user);
     }
 
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         hsm = null;
         params = null;
         elabParams = null;
     }
 
+    @Test
     public void testElaborate() {
         DataList list = getList();
         list.iterator();
         assertTrue(hsm.isElaborated());
     }
 
+    @Test
     public void testSubList() {
         //work it like a list
         DataList list = getList();
@@ -75,6 +88,7 @@ public class DataListTest extends RhnBaseTestCase {
         assertTrue(hsm.isElaborated());
     }
 
+    @Test
     public void testElaborateOnce() {
         //at first, nothing is elaborated
         List list = getList();

@@ -19,8 +19,8 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * PackageLockAction
@@ -36,8 +36,7 @@ public class PackageLockAction extends PackageAction {
                 PackageManager.syncLockedPackages(action.getServer().getId(), this.getId());
             }
             catch (Exception e) {
-                Logger.getLogger(PackageLockAction.class.getName()).log(
-                        Level.SEVERE, null, e);
+                LogManager.getLogger(PackageLockAction.class.getName()).log(Level.ERROR, e);
             }
         }
 

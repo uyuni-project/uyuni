@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -69,13 +70,13 @@ public class SubscriptionMatchingController {
 
         // Subscription Matching API
         get("/manager/api/subscription-matching/data",
-                withProductAdmin(SubscriptionMatchingController::data));
+                asJson(withProductAdmin(SubscriptionMatchingController::data)));
         post("/manager/api/subscription-matching/schedule-matcher-run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
         post("/manager/api/subscription-matching/pins",
-                withProductAdmin(SubscriptionMatchingController::createPin));
+                asJson(withProductAdmin(SubscriptionMatchingController::createPin)));
         post("/manager/api/subscription-matching/pins/:id/delete",
-                withProductAdmin(SubscriptionMatchingController::deletePin));
+                asJson(withProductAdmin(SubscriptionMatchingController::deletePin)));
     }
 
     /**
@@ -103,7 +104,6 @@ public class SubscriptionMatchingController {
         Object data = new SubscriptionMatchProcessor().getData(
                 matcherJsonIO.getLastMatcherInput(),
                 matcherJsonIO.getLastMatcherOutput());
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -167,7 +167,6 @@ public class SubscriptionMatchingController {
                 matcherJsonIO.getLastMatcherInput().get(),
                 matcherJsonIO.getLastMatcherOutput().get());
 
-        response.type("application/json");
         return GSON.toJson(data);
     }
 
@@ -190,7 +189,6 @@ public class SubscriptionMatchingController {
                 matcherJsonIO.getLastMatcherInput().get(),
                 matcherJsonIO.getLastMatcherOutput().get());
 
-        response.type("application/json");
         return GSON.toJson(data);
     }
 }

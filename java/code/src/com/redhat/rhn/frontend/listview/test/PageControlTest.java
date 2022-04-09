@@ -15,14 +15,21 @@
 
 package com.redhat.rhn.frontend.listview.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class PageControlTest extends RhnBaseTestCase {
 
     /**
      * Test the basic functionality of PageControl
      */
+    @Test
     public void testPageControl() {
         PageControl pc = new PageControl();
         pc.setStart(5);
@@ -40,6 +47,7 @@ public class PageControlTest extends RhnBaseTestCase {
     /**
      * Test the exception case of setStart.
      */
+    @Test
     public void testIllegalArgument() {
         PageControl pc = new PageControl();
         boolean noexception = false;

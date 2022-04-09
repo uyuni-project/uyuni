@@ -32,7 +32,8 @@ import com.suse.manager.admin.validator.PaygAdminValidator;
 import com.suse.manager.webui.controllers.admin.beans.PaygProperties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,7 @@ import java.util.Optional;
 
 public class PaygAdminManager {
 
-    private static final Logger LOG = Logger.getLogger(PaygAdminManager.class);
+    private static final Logger LOG = LogManager.getLogger(PaygAdminManager.class);
     private TaskomaticApi taskomaticApi;
 
     /**

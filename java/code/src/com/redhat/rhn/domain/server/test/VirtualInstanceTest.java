@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -21,6 +25,9 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.Sequence;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -36,11 +43,12 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private Sequence idSequence;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         idSequence = new Sequence();
     }
 
+    @Test
     public void testIsRegisteredGuest() {
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setGuestSystem(ServerFactory.createServer());
@@ -48,10 +56,12 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
         assertTrue(virtualInstance.isRegisteredGuest());
     }
 
+    @Test
     public void testIsNotRegisteredGuest() {
         assertFalse(new VirtualInstance().isRegisteredGuest());
     }
 
+    @Test
     public void testEqualsAndHashCode() throws Exception {
         Server host = ServerTestUtils.createTestSystem();
         Server guest = ServerTestUtils.createTestSystem();
@@ -72,6 +82,7 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
         return virtualInstance;
     }
 
+    @Test
     public void testGetNullInfo() {
         VirtualInstance instance = new GuestStub(idSequence.nextLong());
         instance.getName();

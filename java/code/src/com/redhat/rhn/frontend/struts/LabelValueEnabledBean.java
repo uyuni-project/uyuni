@@ -22,7 +22,6 @@ import org.apache.struts.util.LabelValueBean;
  * an extra attribute that can be defined.  Useful for configuring
  * UI widgets that have display value, actual value and a 'checked' or
  * 'enabled' attribute.
- * @version $Rev: 1591 $
  */
 
 public class LabelValueEnabledBean extends LabelValueBean {

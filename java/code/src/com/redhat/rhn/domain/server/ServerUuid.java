@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.server;
 
 /**
  * ServerUuid - Class representation of the table rhnServeruuid.
- * @version $Rev: 1 $
  */
 public class ServerUuid {
 

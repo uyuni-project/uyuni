@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * ServerLock - Class representation of the table rhnServerLock.
- * @version $Rev: 1 $
  */
 public class ServerLock {
 

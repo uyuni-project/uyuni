@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.taskomatic.task.SessionCleanup;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SessionCleanupTest
@@ -30,6 +35,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
 /**
  * @throws Exception something bad happened
  */
+    @Test
     public void testExecute() throws Exception {
 
         WebSession s = WebSessionFactory.createSession();

@@ -26,7 +26,6 @@ package com.redhat.rhn.frontend.dto;
  *   |                  |             |
  * description         name          value
  * }</pre>
- * @version $Rev: 50942 $
  */
 public class NameDescriptionValue {
     private String name;

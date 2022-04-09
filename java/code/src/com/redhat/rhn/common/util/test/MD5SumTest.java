@@ -14,21 +14,25 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.util.MD5Sum;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.Random;
-
-import junit.framework.TestCase;
 
 
 /**
  * @author mmccune
  *
  */
-public class MD5SumTest extends TestCase {
+public class MD5SumTest  {
 
+    @Test
     public void testMD5Sum() throws Exception {
         File testFile = new File(TestUtils.findTestData("test.file").getFile());
         String sum = MD5Sum.getFileMD5Sum(testFile);
@@ -52,6 +56,7 @@ public class MD5SumTest extends TestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOOMEMD5Sum() throws Exception {
         File large = new File("/tmp/large-file.dat");
         // Create a large 100mb file

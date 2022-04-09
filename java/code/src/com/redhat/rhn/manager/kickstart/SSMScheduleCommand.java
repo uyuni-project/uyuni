@@ -26,7 +26,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.List;
  * SSMScheduleCommand
  */
 public class SSMScheduleCommand {
-    private static Logger log = Logger.getLogger(SSMScheduleCommand.class);
+    private static Logger log = LogManager.getLogger(SSMScheduleCommand.class);
 
     // Required attributes
     private User user;

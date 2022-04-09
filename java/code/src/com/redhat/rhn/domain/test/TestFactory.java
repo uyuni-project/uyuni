@@ -16,18 +16,18 @@ package com.redhat.rhn.domain.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /*
- * $Rev$
  */
 public class TestFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(TestFactory.class);
+    private static Logger log = LogManager.getLogger(TestFactory.class);
     private static TestFactory singleton = new TestFactory();
 
     private TestFactory() {

@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
+import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
@@ -384,21 +385,33 @@ public class SparkApplicationHelper {
     }
 
     /**
-     * Use in routes to automatically get the current user, which must have the
-     * role specified, in your controller. Example:
-     * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
+     * Sets the content type to "application/json" for a {@link Route}
      * @param route the route
-     * @param role the required role to have access to the route
      * @return the route
      */
-    private static TemplateViewRoute withRole(TemplateViewRoute route, Role role) {
+    public static Route asJson(Route route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(role)) {
-                throw new PermissionException("no perms");
-            }
+            response.type("application/json");
             return route.handle(request, response);
         };
+    }
+
+    /**
+     * Returns true if the response content type is application/json
+     * @param response the response
+     * @return true if the content type is application/json
+     */
+    public static boolean isJson(Response response) {
+        return response.type().contains("application/json");
+    }
+
+    /**
+     * Returns true if the request is made to the API root
+     * @param request the request
+     * @return true if the request is made to the API root
+     */
+    public static boolean isApiRequest(Request request) {
+        return request.pathInfo().startsWith("/manager/api/");
     }
 
     /**
@@ -416,7 +429,7 @@ public class SparkApplicationHelper {
 
         // capture json endpoint exceptions, let others pass (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
-            if (request.headers("accept").contains("json")) {
+            if (request.headers("accept").contains("json") || isJson(response)) {
                 Map<String, Object> exc = new HashMap<>();
                 exc.put("message", e.getMessage());
                 response.type("application/json");

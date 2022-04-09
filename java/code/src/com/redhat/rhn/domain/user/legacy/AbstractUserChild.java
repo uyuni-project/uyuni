@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 /**
  * Class that contains webUserId field to be used by children of the User object
  * (parent key)
- * @version $Rev: 76633 $
  */
 public abstract class AbstractUserChild extends BaseDomainHelper {
     private Long webUserId;

@@ -46,7 +46,8 @@ import com.suse.salt.netapi.calls.modules.Network;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -69,7 +70,7 @@ import java.util.stream.Collectors;
 public class HardwareMapper {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(HardwareMapper.class);
+    private static final Logger LOG = LogManager.getLogger(HardwareMapper.class);
 
     private final MinionServer server;
     private final ValueMap grains;

@@ -15,14 +15,11 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializes {@link MgrSyncProductDto}.
@@ -48,29 +45,22 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("boolean", "recommended", "Recommended")
  *   #struct_end()
  */
-public class MgrSyncProductDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class MgrSyncProductDtoSerializer extends ApiResponseSerializer<MgrSyncProductDto> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<MgrSyncProductDto> getSupportedClass() {
         return MgrSyncProductDto.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        MgrSyncProductDto product = (MgrSyncProductDto) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("friendly_name", product.getFriendlyName());
-        helper.add("arch", product.getArch().orElse("noarch"));
-        helper.add("status", product.getStatus().toString().toLowerCase());
-        helper.add("channels", product.getChannels());
-        helper.add("extensions", product.getExtensions());
-        helper.add("recommended", product.isRecommended());
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(MgrSyncProductDto src) {
+        return new SerializationBuilder()
+                .add("friendly_name", src.getFriendlyName())
+                .add("arch", src.getArch().orElse("noarch"))
+                .add("status", src.getStatus().toString().toLowerCase())
+                .add("channels", src.getChannels())
+                .add("extensions", src.getExtensions())
+                .add("recommended", src.isRecommended())
+                .build();
     }
 }

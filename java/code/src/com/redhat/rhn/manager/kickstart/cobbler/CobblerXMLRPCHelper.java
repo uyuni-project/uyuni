@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
 import java.net.MalformedURLException;
@@ -41,7 +42,7 @@ import redstone.xmlrpc.XmlRpcFault;
 public class CobblerXMLRPCHelper implements XMLRPCInvoker {
 
     private XmlRpcClient client;
-    private static Logger log = Logger.getLogger(CobblerXMLRPCHelper.class);
+    private static Logger log = LogManager.getLogger(CobblerXMLRPCHelper.class);
     /**
      * Constructor
      */

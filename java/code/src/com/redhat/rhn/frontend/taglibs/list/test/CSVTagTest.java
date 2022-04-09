@@ -14,16 +14,22 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
 import com.redhat.rhn.frontend.taglibs.list.CSVTag;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -43,10 +49,10 @@ public class CSVTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        RhnBaseTestCase.disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
 
         req = mock(HttpServletRequest.class);
         session = mock(HttpSession.class);
@@ -78,6 +84,7 @@ public class CSVTagTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testCreateRequestParameters() throws Exception {
         boolean stat = false;
         csv.setExportColumns("column1,column2,column3");
@@ -98,6 +105,7 @@ public class CSVTagTest extends MockObjectTestCase {
      * requesting URL.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExport() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(context).getOut();
@@ -112,12 +120,9 @@ public class CSVTagTest extends MockObjectTestCase {
         assertEquals(Tag.EVAL_PAGE, tagval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        RhnBaseTestCase.enableLocalizationServiceLogging();
+    @AfterEach
+    public void tearDown() throws Exception {
+        TestUtils.enableLocalizationLogging();
     }
 
 }

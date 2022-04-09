@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -21,6 +24,8 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataDetailsSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -30,6 +35,7 @@ import java.util.GregorianCalendar;
  */
 public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         ErrataDetailsSetupAction action = new ErrataDetailsSetupAction();
         ActionHelper sah = new ActionHelper();

@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartIpRangeAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class KickstartIpRangeDeleteAction extends RhnAction {
 

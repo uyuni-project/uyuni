@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
  * ready or something, as now they'll just be scheduled the next time this job runs
  * after the errata cache is done.
  *
- * @version $Rev.$
  */
 
 public class AutoErrataTask extends RhnJavaJob {

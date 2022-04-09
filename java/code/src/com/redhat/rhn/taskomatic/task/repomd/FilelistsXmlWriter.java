@@ -35,7 +35,6 @@ import java.util.Collection;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class FilelistsXmlWriter extends RepomdWriter {

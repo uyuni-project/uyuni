@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.task.Task;
@@ -21,7 +23,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ErrataCacheDriver class.
@@ -33,6 +36,7 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of a problem
      */
+    @Test
     public void testGetCandidates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ErrataManager.insertErrataCacheTask(server);
@@ -42,7 +46,7 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
 
         // Get the candidates and verify
         ErrataCacheDriver driver = new ErrataCacheDriver();
-        driver.setLogger(Logger.getLogger(ErrataCacheDriverTest.class));
+        driver.setLogger(LogManager.getLogger(ErrataCacheDriverTest.class));
         int candidateCount = 0;
         for (Task task : driver.getCandidates()) {
             if (task.getData().equals(server.getId())) {

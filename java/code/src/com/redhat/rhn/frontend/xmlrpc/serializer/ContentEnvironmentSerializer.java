@@ -17,13 +17,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentEnvironment}
@@ -41,35 +38,27 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "nextEnvironmentLabel")
  * #struct_end()
  */
-public class ContentEnvironmentSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentEnvironmentSerializer extends ApiResponseSerializer<ContentEnvironment> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<ContentEnvironment> getSupportedClass() {
         return ContentEnvironment.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ContentEnvironment environment = (ContentEnvironment) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", environment.getId());
-        helper.add("label", environment.getLabel());
-        helper.add("name", environment.getName());
-        helper.add("description", environment.getDescription());
-        helper.add("version", environment.getVersion());
-        helper.add("status", environment.computeStatus().map(EnvironmentTarget.Status::getLabel).orElse("unknown"));
-        helper.add("contentProjectLabel", environment.getContentProject().getLabel());
-        helper.add("previousEnvironmentLabel", environment.getPrevEnvironmentOpt()
-                .map(ContentEnvironment::getLabel).orElse(null));
-        helper.add("nextEnvironmentLabel", environment.getNextEnvironmentOpt()
-                .map(ContentEnvironment::getLabel).orElse(null));
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(ContentEnvironment src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add("version", src.getVersion())
+                .add("status", src.computeStatus().map(EnvironmentTarget.Status::getLabel).orElse("unknown"))
+                .add("contentProjectLabel", src.getContentProject().getLabel())
+                .add("previousEnvironmentLabel", src.getPrevEnvironmentOpt()
+                        .map(ContentEnvironment::getLabel).orElse(null))
+                .add("nextEnvironmentLabel", src.getNextEnvironmentOpt()
+                        .map(ContentEnvironment::getLabel).orElse(null))
+                .build();
     }
 }

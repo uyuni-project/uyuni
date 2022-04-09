@@ -31,7 +31,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * it has setup the header.  The column has five main attributes: header,
  * align, cssClass, url, width.  Header is <strong>REQUIRED</strong>.  All
  * others are optional.
- * @version $Rev: 1793 $
  */
 public class SystemSetDisplayTag extends TagSupport {
 

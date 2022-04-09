@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserPreferencesAction, edit action for user detail page
- * @version $Rev: 742 $
  */
 public class EditAddressAction extends RhnAction {
 

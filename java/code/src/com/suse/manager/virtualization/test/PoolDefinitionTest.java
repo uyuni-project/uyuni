@@ -14,14 +14,19 @@
  */
 package com.suse.manager.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.manager.virtualization.PoolDefinition;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
+public class PoolDefinitionTest  {
 
-public class PoolDefinitionTest extends TestCase {
-
+    @Test
     public void testParseRbd() {
         String xml =
                 "<pool type='rbd'>\n" +
@@ -52,6 +57,7 @@ public class PoolDefinitionTest extends TestCase {
         assertTrue(Arrays.asList("ses2.tf.local:1234", "ses3.tf.local").equals(actual.getSource().getHosts()));
     }
 
+    @Test
     public void testParseDir() {
         String xml =
                 "<pool type='dir'>\n" +
@@ -83,6 +89,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("virt_image_t", actual.getTarget().getSeclabel());
     }
 
+    @Test
     public void testParseFs() {
         String xml =
                 "<pool type=\"fs\">\n" +
@@ -105,6 +112,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("ocfs2", actual.getSource().getFormat());
     }
 
+    @Test
     public void testParseNetfs() {
         String xml =
                 "<pool type='netfs'>\n" +
@@ -128,6 +136,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("nfs", actual.getSource().getFormat());
     }
 
+    @Test
     public void testParseLogical() {
         String xml =
                 "<pool type='logical'>\n" +
@@ -150,6 +159,7 @@ public class PoolDefinitionTest extends TestCase {
         assertTrue(actual.getSource().getDevices().get(1).isSeparator().isEmpty());
     }
 
+    @Test
     public void testParseScsi() {
         String xml =
                 "<pool type='scsi'>\n" +
@@ -165,6 +175,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("host0", actual.getSource().getAdapter().getName());
     }
 
+    @Test
     public void testParseIscsiDirect() {
         String xml =
                 "<pool type='iscsi-direct'>\n" +
@@ -188,6 +199,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("2ec115d7-3a88-3ceb-bc12-0ac909a6fd87", actual.getSource().getAuth().getSecretValue());
     }
 
+    @Test
     public void testParseIscsiAddress() {
         String xml =
                 "<pool type=\"iscsi\">\n" +
@@ -211,6 +223,7 @@ public class PoolDefinitionTest extends TestCase {
         assertEquals("0000:00:1f.2", actual.getSource().getAdapter().getParentAddress());
     }
 
+    @Test
     public void testParseIscsiWwnn() {
         String xml =
                 "<pool type=\"iscsi\">\n" +

@@ -4,6 +4,16 @@
 
     <property file="build.properties" />
 
+    <property name="deploy.host" value="deployhost" />
+    <property name="deploy.port" value="22" />
+    <property name="deploy.dir" value="/usr/share/rhn/search/lib" />
+    <property name="deploy.user" value="root" />
+
+    <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
+    <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
+    <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
+    <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
+
     <path id="project.classpath">
         <fileset dir="${java.lib.dir}" includes="**/*.jar" />
     </path>
@@ -152,5 +162,35 @@
     </target>
 
     <target name="install" depends="init-install,package" />
+
+    <target name="check-ssh-socket">
+      <available file="${ssh.socket.file}" property="ssh-socket.present"/>
+    </target>
+
+    <target name="open-ssh-socket" depends="check-ssh-socket" unless="ssh-socket.present">
+      <exec executable="ssh">
+        <arg line="-M -f -N -C ${ssh.command.args}" />
+      </exec>
+    </target>
+
+    <target name="deploy" depends="open-ssh-socket" description="Deploy a new copy of SUSE Manager">
+      <echo message="Copying files to remote host..." />
+      <exec failonerror="true" executable="rsync">
+        <arg line="-a --rsh '${rsync.arg.rsh}' ${dist.dir}/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+      </exec>
+
+      <exec failonerror="true" executable="ssh">
+        <arg line="${ssh.command.args} ln -sf ${deploy.dir}/${jar.file.name} /usr/share/rhn/search/lib/spacewalk-search.jar"/>
+      </exec>
+    </target>
+
+    <target name="restart-rhn-search" depends="open-ssh-socket" description="Restart the rhn-search process">
+      <echo message="Launching rhn-search restart..."/>
+      <exec executable="ssh">
+        <arg line="${ssh.command.args}  nohup rcrhn-search restart > /dev/null 2>&amp;1 &amp;"/>
+      </exec>
+    </target>
+
+    <target name="deploy-restart" depends="deploy, restart-rhn-search" />
 
 </project>

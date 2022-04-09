@@ -20,21 +20,71 @@
           SELECT rhnchannel.id AS channel_id
                       , rhnchannel.name
                       , rhnchannel.label
-                      , CASE 
+                      , CASE
                           WHEN rhnchannel.org_id IS NULL THEN 'Vendor'
                           ELSE 'Custom'
                         END AS type
-                      , rhnchannelarch.name AS arch
+                      , rhnchannelarch.label AS arch
+                      , rhnchecksumtype.label AS checksum_type
                       , rhnchannel.summary
                       , rhnchannel.description
                       , rhnparentchannel.label AS parent_channel_label
-                      , web_customer.name AS organization 
+                      , rhnchannelcloned.original_id AS original_channel_id
+                      , web_customer.name AS organization
             FROM rhnchannel
                       LEFT JOIN rhnchannelarch ON rhnchannel.channel_arch_id = rhnchannelarch.id
+                      LEFT JOIN rhnchecksumtype on rhnchecksumtype.id = rhnchannel.checksum_type_id
                       LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
+                      LEFT JOIN rhnchannelcloned ON rhnchannel.id = rhnchannelcloned.id
                       LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
         ORDER BY channel_id OFFSET :offset LIMIT :limit
   </query>
+</mode>
+
+<mode name="ChannelPackage" class="">
+    <query params="offset, limit">
+          SELECT rhnchannel.id AS channel_id
+                      , rhnpackage.id AS package_id
+                      , rhnchannel.label AS channel_label
+                      , rhnpackagename.name AS package_name
+                      , rhnpackageevr.epoch AS package_epoch
+                      , rhnpackageevr.version AS package_version
+                      , rhnpackageevr.release AS package_release
+                      , rhnpackageevr.type AS package_type
+                      , rhnpackagearch.label AS package_arch
+            FROM rhnchannel
+                      INNER JOIN rhnchannelpackage ON rhnchannel.id = rhnchannelpackage.channel_id
+                      INNER JOIN rhnpackage ON rhnpackage.id = rhnchannelpackage.package_id
+                      INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+                      INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+                      INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+        ORDER BY channel_id, package_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="ChannelErrata" class="">
+    <query params="offset, limit">
+          SELECT rhnchannel.id AS channel_id
+                    , rhnerrata.id AS errata_id
+                    , rhnchannel.label AS channel_label
+                    , rhnerrata.advisory_name
+            FROM rhnchannelerrata
+                    INNER JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
+                    INNER JOIN rhnerrata ON rhnchannelerrata.errata_id = rhnerrata.id
+        ORDER BY channel_id, errata_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="ChannelRepository" class="">
+    <query params="offset, limit">
+          SELECT rhnchannelcontentsource.channel_id
+                    , rhnchannelcontentsource.source_id AS repository_id
+                    , rhncontentsource.label AS repository_label
+            FROM rhnchannelcontentsource
+                    INNER JOIN rhncontentsource ON rhnchannelcontentsource.source_id = rhncontentsource.id
+                    INNER JOIN rhncontentsourcetype ON rhncontentsource.type_id = rhncontentsourcetype.id
+        ORDER BY channel_id, repository_id OFFSET :offset LIMIT :limit
+    </query>
 </mode>
 
 <mode name="Errata" class="">
@@ -78,7 +128,7 @@
                       , rhnpackageevr.version
                       , rhnpackageevr.release
                       , rhnpackageevr.type
-                      , rhnpackagearch.name AS arch
+                      , rhnpackagearch.label AS arch
                       , rhnpackage.package_size
                       , rhnpackage.payload_size
                       , rhnpackage.installed_size
@@ -91,6 +141,21 @@
                       LEFT JOIN web_customer ON rhnpackage.org_id = web_customer.id
         ORDER BY package_id OFFSET :offset LIMIT :limit
   </query>
+</mode>
+
+<mode name="Repository" class="">
+    <query params="offset, limit">
+          SELECT rhncontentsource.id AS repository_id
+                    , rhncontentsource.label
+                    , rhncontentsource.source_url AS url
+                    , rhncontentsourcetype.label AS type
+                    , rhncontentsource.metadata_signed = 'Y' AS metadata_signed
+                    , web_customer.name AS organization
+            FROM rhncontentsource
+                    INNER JOIN rhncontentsourcetype ON rhncontentsource.type_id = rhncontentsourcetype.id
+                    LEFT JOIN web_customer ON rhncontentsource.org_id = web_customer.id
+        ORDER BY repository_id OFFSET :offset LIMIT :limit
+    </query>
 </mode>
 
 </datasource_modes>

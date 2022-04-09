@@ -239,18 +239,4 @@
         </emma>
     </target>
 
-
-    <target name="indexDocs" depends="package"
-        description="Crawls help docs with nutch and generates a lucene index">
-        <java
-            classname="com.redhat.satellite.search.index.docs.WebCrawl"
-            dir="${basedir}"
-            fork="true"
-            failonerror="true">
-
-            <arg value="-h"/>
-            <classpath refid="run.classpath" />
-        </java>
-    </target>
-
 </project>

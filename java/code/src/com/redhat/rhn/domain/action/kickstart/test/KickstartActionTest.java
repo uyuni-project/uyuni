@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -27,6 +30,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -38,6 +43,7 @@ public class KickstartActionTest extends RhnBaseTestCase {
      * Test fetching a KickstartAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupKickstartAction() throws Exception {
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -52,6 +58,7 @@ public class KickstartActionTest extends RhnBaseTestCase {
         assertNotNull(k.getEarliestAction());
     }
 
+    @Test
     public void testKickstartInitiateAction() throws Exception {
 
         Action newA = ActionFactoryTest
@@ -87,6 +94,7 @@ public class KickstartActionTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testKickstartScheduleSyncAction() throws Exception {
 
         Action newA = ActionFactoryTest

@@ -28,6 +28,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -35,6 +37,7 @@ import java.util.Date;
  */
 public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         RetiredChannelTreeAction action = new RetiredChannelTreeAction() {
             protected DataResult<ChannelTreeNode> getDataResult(User user, ListControl lc) {

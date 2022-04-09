@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditSlaveSetupAction extends RhnAction
- * @version $Rev: 1 $
  */
 public class EditSlaveSetupAction extends RhnAction {
 

@@ -22,6 +22,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $DeltaImageSerializer #array_end()
      */
+    @ReadOnly
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listDeltaImageInfos(loggedInUser.getOrg());
@@ -60,6 +63,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "targetImageId")
      * @xmlrpc.returntype $DeltaImageSerializer
      */
+    @ReadOnly
     public DeltaImageInfo getDetails(User loggedInUser, Integer sourceImageId, Integer targetImageId) {
         ensureImageAdmin(loggedInUser);
         Optional<DeltaImageInfo> opt = ImageInfoFactory.lookupDeltaImageInfo(sourceImageId, targetImageId);
@@ -76,7 +80,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @param targetImageId the target Image id
      * @param file the file path
      * @param pillar pillar data
-     * @return the image inspect action id
+     * @return 1 on success
      *
      * @xmlrpc.doc Import an image and schedule an inspect afterwards
      * @xmlrpc.param #param("string", "sessionKey")
@@ -84,7 +88,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "targetImageId")
      * @xmlrpc.param #param("string", "file")
      * @xmlrpc.param #param("struct", "pillar")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the inspect action created")
+     * @xmlrpc.returntype #return_int_success()
      */
     public Long createDeltaImage(User loggedInUser, Integer sourceImageId, Integer targetImageId,
             String file, Map<String, Object> pillar) {

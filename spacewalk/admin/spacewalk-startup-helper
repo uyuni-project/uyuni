@@ -124,6 +124,12 @@ check_database() {
                                           --address '*' --remote '0.0.0.0/0,::/0' && {
                 REPORTDB_EXISTS='y'
             }
+            
+            if [ $? -ne 0 ]; then
+                echo "Report Database creation has failed. Please check the logs."
+                exit 1
+            fi
+
         else
             logger -p user.notice "Database not local - skipping setup of report database"
         fi

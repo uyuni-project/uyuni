@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
@@ -28,6 +31,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +42,14 @@ import java.util.List;
  */
 public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/errata/manage/CloneConfirmSubmit");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testExecute() throws Exception {
 
         List list = new ArrayList();

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
@@ -27,6 +28,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,6 +51,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected Path tmpSaltRoot;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();

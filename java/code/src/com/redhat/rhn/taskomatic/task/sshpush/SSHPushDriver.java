@@ -33,7 +33,7 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import com.suse.manager.utils.SaltUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Collections;

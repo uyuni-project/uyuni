@@ -15,9 +15,15 @@
 
 package com.suse.manager.webui.services.impl.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import com.suse.manager.webui.services.impl.MonitoringService;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.util.Optional;
@@ -25,6 +31,7 @@ import java.util.function.BiFunction;
 
 public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
+    @Test
     public void testGetStatusWithTaskomaticEnableNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
@@ -48,6 +55,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testGetStatusWithSelfMonitoringRestartNeeded() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
@@ -71,6 +79,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals("restart", res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testGetStatusWithTaskomaticRestartNeeded() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
@@ -93,6 +102,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
     }
 
+    @Test
     public void testGetStatusNoMessage() {
         String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
@@ -116,6 +126,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testEnableWithTomcatRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
@@ -137,6 +148,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("taskomatic"));
     }
 
+    @Test
     public void testDisableWithTaskomaticRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()

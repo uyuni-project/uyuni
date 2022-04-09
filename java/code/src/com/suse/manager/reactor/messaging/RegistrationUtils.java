@@ -56,7 +56,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +80,7 @@ public class RegistrationUtils {
     private static final String OS = "os";
     private static final String OS_ARCH = "osarch";
 
-    private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
+    private static final Logger LOG = LogManager.getLogger(RegistrationUtils.class);
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -148,6 +149,7 @@ public class RegistrationUtils {
         if (applyHighstate) {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
+        SystemManager.setReportDbUser(minion, false);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {

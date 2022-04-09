@@ -16,7 +16,8 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  * Represents the virtual network create action request body structure.
  */
 public class NetworkDefinition {
-    private static final Logger LOG = Logger.getLogger(NetworkDefinition.class);
+    private static final Logger LOG = LogManager.getLogger(NetworkDefinition.class);
 
     private String type;
 

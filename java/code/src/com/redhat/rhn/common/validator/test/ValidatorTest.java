@@ -14,22 +14,29 @@
  */
 package com.redhat.rhn.common.validator.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.validator.Constraint;
 import com.redhat.rhn.common.validator.DataConverter;
 import com.redhat.rhn.common.validator.Validator;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.util.Date;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import java.util.Date;
 
 /**
  * ValidatorTest
  */
-public class ValidatorTest extends TestCase {
+public class ValidatorTest  {
 
     private Validator validator;
 
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         validator = Validator.getInstance(TestUtils.findTestData("TestObject.xsd"));
@@ -38,13 +45,14 @@ public class ValidatorTest extends TestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
-        super.tearDown();
     }
 
 
 
+    @Test
     public void testDataConverter() throws Exception {
         DataConverter dc = DataConverter.getInstance();
         assertNotNull(dc.getJavaType("date"));
@@ -57,17 +65,20 @@ public class ValidatorTest extends TestCase {
 
     }
 
+    @Test
     public void testGetConstraints() {
         assertTrue(validator.getConstraints().size() > 0);
         Object constraint = validator.getConstraints().get(0);
         assertTrue(constraint instanceof Constraint);
     }
 
+    @Test
     public void testNullValue() throws Exception {
         TestObject to = new TestObject();
         assertNotNull(validator.validate("stringField", to));
     }
 
+    @Test
     public void testStringLength() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("short");
@@ -82,6 +93,7 @@ public class ValidatorTest extends TestCase {
         assertNull(validator.validate("twoCharField", to));
     }
 
+    @Test
     public void testASCIIString() throws Exception {
         TestObject to = new TestObject();
         to.setAsciiString("shughes_login");
@@ -90,6 +102,7 @@ public class ValidatorTest extends TestCase {
         assertNotNull(validator.validate("asciiString", to));
     }
 
+    @Test
     public void testUserNameString() throws Exception {
         TestObject to = new TestObject();
 
@@ -141,6 +154,7 @@ public class ValidatorTest extends TestCase {
 
     }
 
+    @Test
     public void testPosixUsername() {
         TestObject to = new TestObject();
 
@@ -207,12 +221,14 @@ public class ValidatorTest extends TestCase {
         assertNotNull(validator.validate("posixString", to));
     }
 
+    @Test
     public void testDateField() throws Exception {
         TestObject to = new TestObject();
         to.setDateField(new Date());
         assertNull(validator.validate("dateField", to));
     }
 
+    @Test
     public void testLongField() throws Exception {
 
         TestObject to = new TestObject();
@@ -235,6 +251,7 @@ public class ValidatorTest extends TestCase {
     }
 
     /* TODO: Implement the multi-value fields */
+    @Test
     public void testMultiValueField() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("ZZZ");
@@ -253,6 +270,7 @@ public class ValidatorTest extends TestCase {
         assertNotNull(validator.validate("compoundField", to));
     }
 
+    @Test
     public void testRequiredIfConstraint() {
         TestObject to = new TestObject();
         //init both to empty strings

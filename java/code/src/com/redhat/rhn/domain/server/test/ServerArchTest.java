@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ServerArchTest
@@ -29,6 +34,7 @@ public class ServerArchTest extends RhnBaseTestCase {
      * is only going to the db once.
      * @throws Exception HibernateException
      */
+    @Test
     public void testServerArch() throws Exception {
 
         String testname = "alpha-redhat-linux";

@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
@@ -56,7 +57,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class KickstartHelper {
 
-    private static Logger log = Logger.getLogger(KickstartHelper.class);
+    private static Logger log = LogManager.getLogger(KickstartHelper.class);
 
     private HttpServletRequest request;
     private static final String VIEW_LABEL = "view_label";

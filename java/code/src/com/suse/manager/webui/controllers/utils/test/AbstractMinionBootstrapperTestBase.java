@@ -17,6 +17,9 @@ package com.suse.manager.webui.controllers.utils.test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -39,6 +42,8 @@ import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +62,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     protected AbstractMinionBootstrapper bootstrapper;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -67,6 +73,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Tests that the bootstrap fails when the keys for the host already exist.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapFailsWhenKeysExist() throws Exception {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
@@ -125,6 +132,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Tests that the bootstrap fails when the system for the host already exist.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapFailsWhenMinionExists()
             throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -148,6 +156,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapSuccess() throws Exception {
 
         Key.Pair keyPair = mockKeyPair();

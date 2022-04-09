@@ -22,11 +22,14 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ChannelListActionTest
  */
 public class ChannelListActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         //Create a config channel and a server
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());

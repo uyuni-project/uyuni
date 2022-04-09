@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ActivationKeyPackagesAction
- * @version $Rev: 1 $
  */
 public class ActivationKeyPackagesAction extends RhnAction {
     public static final String PACKAGES = "packages";

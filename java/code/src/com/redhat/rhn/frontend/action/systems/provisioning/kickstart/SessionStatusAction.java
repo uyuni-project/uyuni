@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SessionStatusAction
- * @version $Rev: 1 $
  */
 public class SessionStatusAction extends RhnAction {
 

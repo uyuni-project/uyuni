@@ -14,23 +14,30 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.BaseKickstartEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartCloneActionTest
- * @version $Rev: 1 $
  */
 public class KickstartCloneActionTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartClone");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testExecuteSubmit() throws Exception {
         addRequestParameter(BaseKickstartEditAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RequestContext.LABEL,

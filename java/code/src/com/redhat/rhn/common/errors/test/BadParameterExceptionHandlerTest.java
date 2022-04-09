@@ -20,19 +20,24 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -43,6 +48,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
+    @BeforeEach
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
@@ -51,6 +57,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
@@ -58,9 +65,9 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
          * Logging complains and sends warnings (expected)
          * Tracebacks will get sent to root@localhost
          */
-        Logger log = Logger.getLogger(BadParameterExceptionHandler.class);
+        Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         Level origLevel = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail");
         try {
@@ -104,11 +111,12 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             if (mail != null) {
                 c.setString("web.traceback_mail", mail);
             }
-            log.setLevel(origLevel);
+            Configurator.setLevel(this.getClass().getName(), origLevel);
         }
     }
 
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

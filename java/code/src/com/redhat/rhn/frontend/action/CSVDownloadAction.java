@@ -48,7 +48,6 @@ import javax.servlet.http.HttpSession;
  *      from the CSVTag
  *
  * @author jmatthews
- * @version $Rev: $
  */
 public class CSVDownloadAction extends DownloadAction {
     public static final String EXPORT_COLUMNS = "__CSV__exportColumnsParam";

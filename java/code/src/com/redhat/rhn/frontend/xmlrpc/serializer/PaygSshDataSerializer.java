@@ -17,13 +17,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -46,37 +43,29 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *              #prop("string", "bastion_key_password")
  *      #struct_end()
  */
-public class PaygSshDataSerializer extends RhnXmlRpcCustomSerializer {
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+public class PaygSshDataSerializer extends ApiResponseSerializer<PaygSshData> {
+
+    @Override
+    public Class<PaygSshData> getSupportedClass() {
         return PaygSshData.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        PaygSshData sshData = (PaygSshData) value;
-        helper.add("description", sshData.getDescription());
-
-        helper.add("hostname", sshData.getHost());
-        helper.add("port", sshData.getPort());
-        helper.add("username", sshData.getUsername());
-        helper.add("password", sshData.getPassword());
-        helper.add("key", sshData.getKey());
-        helper.add("key_password", sshData.getKeyPassword());
-
-        helper.add("bastion_hostname", sshData.getBastionHost());
-        helper.add("bastion_port", sshData.getBastionPort());
-        helper.add("bastion_username", sshData.getBastionUsername());
-        helper.add("bastion_password", sshData.getBastionPassword());
-        helper.add("bastion_key", sshData.getBastionKey());
-        helper.add("bastion_key_password", sshData.getBastionKeyPassword());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PaygSshData src) {
+        return new SerializationBuilder()
+                .add("description", src.getDescription())
+                .add("hostname", src.getHost())
+                .add("port", src.getPort())
+                .add("username", src.getUsername())
+                .add("password", src.getPassword())
+                .add("key", src.getKey())
+                .add("key_password", src.getKeyPassword())
+                .add("bastion_hostname", src.getBastionHost())
+                .add("bastion_port", src.getBastionPort())
+                .add("bastion_username", src.getBastionUsername())
+                .add("bastion_password", src.getBastionPassword())
+                .add("bastion_key", src.getBastionKey())
+                .add("bastion_key_password", src.getBastionKeyPassword())
+                .build();
     }
 }

@@ -14,20 +14,25 @@
  */
 package com.suse.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.utils.Lists;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
+public class ListsTest  {
 
-public class ListsTest extends TestCase {
-
+    @Test
    public void testEmpty() {
        assertTrue(Lists.combinations(Collections.emptyList()).isEmpty());
    }
 
+    @Test
    public void testCombinations() {
       assertTrue(
           Lists.combinations(Arrays.asList(
@@ -52,6 +57,7 @@ public class ListsTest extends TestCase {
       );
    }
 
+    @Test
    public void testCombination() {
        List<List<Integer>> combinations = Lists.combinations(Arrays.asList(
                Arrays.asList(1, 2),

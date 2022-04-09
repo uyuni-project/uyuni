@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * Buffers servlet output
- * @version $Rev $
  */
 class BufferedResponseWrapper extends HttpServletResponseWrapper {
 

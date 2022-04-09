@@ -18,7 +18,8 @@ import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 
@@ -30,8 +31,7 @@ public class BaseKickstartScriptCommand extends BaseKickstartCommand {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger
-            .getLogger(BaseKickstartScriptCommand.class);
+    private static Logger logger = LogManager.getLogger(BaseKickstartScriptCommand.class);
 
 
     protected KickstartScript script;

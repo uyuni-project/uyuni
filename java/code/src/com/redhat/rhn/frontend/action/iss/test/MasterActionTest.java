@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.action.iss.MasterAction;
 
 /**
  * IssMasterActionTest
- * @version $Rev: 1 $
  */
 public class MasterActionTest extends BaseIssTestAction {
 

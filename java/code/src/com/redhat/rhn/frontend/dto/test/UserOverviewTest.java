@@ -14,8 +14,13 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * UserOverviewTest
@@ -26,11 +31,12 @@ public class UserOverviewTest extends RhnBaseTestCase {
     /*
      * @see RhnBaseTestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         uo = new UserOverview();
     }
 
+    @Test
     public void testHtmlEscapeOfLogin() {
         assertUserOverview("hello<sometext>user", "hello&lt;sometext&gt;user");
         assertUserOverview("jesusr_redhat", "jesusr_redhat");

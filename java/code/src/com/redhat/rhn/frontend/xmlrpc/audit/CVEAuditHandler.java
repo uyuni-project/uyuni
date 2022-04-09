@@ -25,6 +25,8 @@ import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -53,6 +55,7 @@ public class CVEAuditHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "cveIdentifier")
      * @xmlrpc.returntype #array_begin() $CVEAuditServerSerializer #array_end()
      */
+    @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier) {
         return listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
@@ -87,6 +90,7 @@ public class CVEAuditHandler extends BaseHandler {
      *  #options_end()
      * @xmlrpc.returntype #array_begin() $CVEAuditServerSerializer #array_end()
      */
+    @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
 
@@ -136,6 +140,7 @@ public class CVEAuditHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "cveIdentifier")
      * @xmlrpc.returntype #array_begin() $CVEAuditImageSerializer #array_end()
      */
+    @ReadOnly
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
             String cveIdentifier) {
         return listImagesByPatchStatus(loggedInUser, cveIdentifier, null);
@@ -170,6 +175,7 @@ public class CVEAuditHandler extends BaseHandler {
      *  #options_end()
      * @xmlrpc.returntype #array_begin() $CVEAuditImageSerializer #array_end()
      */
+    @ReadOnly
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
             String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
 

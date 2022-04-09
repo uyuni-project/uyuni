@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.nav.DialognavRenderer;
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
@@ -22,6 +24,8 @@ import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.nav.TextRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +39,7 @@ public class RendererTest extends RhnBaseTestCase {
     // TEST: DialognavRenderer
     ////////////////////////////////////////////////////////////////
 
+    @Test
     public void testDialognavTrue() {
         Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "<ul class=\"nav nav-tabs nav-tabs-pf\">");
@@ -61,6 +66,7 @@ public class RendererTest extends RhnBaseTestCase {
         rendererTest(new DialognavRenderer(), new TrueRenderGuard(), expectations, 0);
     }
 
+    @Test
     public void testDialognavFalse() {
         Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");
@@ -78,6 +84,7 @@ public class RendererTest extends RhnBaseTestCase {
     // TEST: TextRenderer
     ////////////////////////////////////////////////////////////////
 
+    @Test
     public void testTextTrue() {
         Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");
@@ -98,6 +105,7 @@ public class RendererTest extends RhnBaseTestCase {
         rendererTest(new TextRenderer(), node, new TrueRenderGuard(), expectations, 4);
     }
 
+    @Test
     public void testTextFalse() {
         Map<String, Object> expectations = new HashMap<>();
         expectations.put("preNavLevel", "");

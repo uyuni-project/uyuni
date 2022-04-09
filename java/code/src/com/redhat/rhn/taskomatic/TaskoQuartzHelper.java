@@ -23,7 +23,8 @@ import static org.quartz.TriggerKey.triggerKey;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
@@ -41,7 +42,7 @@ import java.util.Date;
  */
 public class TaskoQuartzHelper {
 
-    private static Logger log = Logger.getLogger(TaskoQuartzHelper.class);
+    private static Logger log = LogManager.getLogger(TaskoQuartzHelper.class);
 
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
             .withZone(ZoneId.systemDefault());

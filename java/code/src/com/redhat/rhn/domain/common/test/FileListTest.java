@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -23,6 +27,8 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -30,6 +36,7 @@ import java.util.Date;
  */
 public class FileListTest extends RhnBaseTestCase {
 
+    @Test
     public void testDeleteFileList() {
         Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
         FileList f = createTestFileList(o);
@@ -46,6 +53,7 @@ public class FileListTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testFileList() throws Exception {
         Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
         FileList f = createTestFileList(o);

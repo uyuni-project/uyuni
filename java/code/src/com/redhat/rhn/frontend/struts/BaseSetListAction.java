@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
  * BaseSetListAction - extension of BaseListAction that includes necessary
  * logic to provide functionality for displaying an RhnSet.
  *
- * @version $Rev: 55183 $
  */
 public abstract class BaseSetListAction extends BaseListAction {
 

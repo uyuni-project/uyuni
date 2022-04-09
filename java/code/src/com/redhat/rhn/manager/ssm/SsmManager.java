@@ -65,7 +65,6 @@ import java.util.stream.Stream;
  * managers to keep it from becoming unwieldly.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public class SsmManager {
 

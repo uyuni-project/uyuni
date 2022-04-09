@@ -16,7 +16,8 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushDriver;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
@@ -37,7 +38,7 @@ public class SSHPush extends RhnQueueJob {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(SSHPush.class);
+            log = LogManager.getLogger(SSHPush.class);
         }
         return log;
     }

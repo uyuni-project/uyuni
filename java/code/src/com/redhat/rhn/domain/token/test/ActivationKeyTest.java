@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.domain.token.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -40,6 +47,9 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,10 +57,12 @@ import java.util.List;
  * ActivationKeyTest
  */
 public class ActivationKeyTest extends BaseTestCaseWithUser {
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
     }
+    @Test
     public void testKeyGeneration() throws Exception {
 
         ActivationKey k = createTestActivationKey(user);
@@ -110,6 +122,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
             // great!.. Exception for passing in invalid keys always welcome
         }
      }
+    @Test
     public void testBadKeys()  throws Exception {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         try {
@@ -121,6 +134,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testKeyTrimming()  throws Exception  {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         String keyName = " Test Space  ";
@@ -133,6 +147,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         assertNotNull(ActivationKey.makePrefix(user.getOrg()) + newKey.trim());
     }
 
+    @Test
     public void testLookupBySession() throws Exception {
         // Still have that weird error creating a test server
         // sometimes in hosted.
@@ -151,6 +166,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         assertNotNull(lookedUp);
     }
 
+    @Test
     public void testNullServer() throws Exception {
         ActivationKey key = ActivationKeyFactory.createNewKey(user,
                 TestUtils.randomString());
@@ -159,6 +175,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     // See BZ: 191007
+    @Test
     public void testCreateWithCustomGroups() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -174,6 +191,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         assertNotNull(key.getId());
     }
 
+    @Test
     public void testAddGetKeys() throws Exception {
 
         ActivationKey k = createTestActivationKey(user);
@@ -186,6 +204,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         assertTrue(k.getChannels().size() == 5);
     }
 
+    @Test
     public void testLookupByServer() throws Exception {
         ActivationKey k = createTestActivationKey(user);
         Server s = k.getServer();
@@ -196,6 +215,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         assertTrue(keys.size() == 4);
     }
 
+    @Test
     public void testCreateNewKeys() throws Exception {
         ActivationKey k = createTestActivationKey(user);
         Server s = k.getServer();
@@ -223,6 +243,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         return key;
     }
 
+    @Test
     public void testDuplicateKeyCreation() throws Exception {
         String keyName = "Hey!";
         ActivationKeyManager.getInstance().createNewActivationKey
@@ -245,6 +266,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     // Allowed values: numbers, upper and lower case letters, '-', '_' and '.'
+    @Test
     public void testActivationKeyValidation() {
         List<String> validKeys = new LinkedList<>();
         validKeys.add("1234567890");

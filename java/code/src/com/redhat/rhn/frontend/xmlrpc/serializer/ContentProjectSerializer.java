@@ -18,14 +18,12 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Comparator;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentProject}
@@ -41,35 +39,28 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "firstEnvironment label")
  * #struct_end()
  */
-public class ContentProjectSerializer extends RhnXmlRpcCustomSerializer {
+public class ContentProjectSerializer extends ApiResponseSerializer<ContentProject> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<ContentProject> getSupportedClass() {
         return ContentProject.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        ContentProject contentProject = (ContentProject) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", contentProject.getId());
-        helper.add("label", contentProject.getLabel());
-        helper.add("name", contentProject.getName());
-        helper.add("description", contentProject.getDescription());
-        helper.add("lastBuildDate", contentProject.getHistoryEntries().stream()
-                .map(ContentProjectHistoryEntry::getCreated)
-                .max(Comparator.naturalOrder())
-                .orElse(null));
-        helper.add("orgId", contentProject.getOrg().getId());
-        helper.add("firstEnvironment",
-                contentProject.getFirstEnvironmentOpt().map(ContentEnvironment::getLabel).orElse(null));
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(ContentProject src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add("lastBuildDate", src.getHistoryEntries().stream()
+                        .map(ContentProjectHistoryEntry::getCreated)
+                        .max(Comparator.naturalOrder())
+                        .orElse(null))
+                .add("orgId", src.getOrg().getId())
+                .add("firstEnvironment", src.getFirstEnvironmentOpt()
+                        .map(ContentEnvironment::getLabel)
+                        .orElse(null))
+                .build();
     }
 }

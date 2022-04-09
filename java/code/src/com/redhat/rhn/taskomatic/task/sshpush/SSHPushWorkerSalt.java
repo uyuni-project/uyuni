@@ -35,7 +35,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

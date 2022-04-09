@@ -25,7 +25,6 @@ import java.util.Map;
  * SSM.
  *
  * @see com.redhat.rhn.frontend.events.SsmRemovePackagesAction
- * @version $Revision$
  */
 public class SsmRemovePackagesEvent extends SsmPackageEvent {
 

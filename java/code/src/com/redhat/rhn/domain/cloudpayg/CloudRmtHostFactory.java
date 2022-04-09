@@ -16,7 +16,8 @@ package com.redhat.rhn.domain.cloudpayg;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
@@ -29,7 +30,7 @@ import javax.persistence.criteria.Root;
 
 public class CloudRmtHostFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(CloudRmtHostFactory.class);
+    private static Logger log = LogManager.getLogger(CloudRmtHostFactory.class);
     private static final CloudRmtHostFactory SINGLETON = new CloudRmtHostFactory();
 
     private CloudRmtHostFactory() {

@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
  * us to log method calls.
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
-    private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
+    private static Logger log = LogManager.getLogger(LoggingInvocationProcessor.class);
     private static ThreadLocal<User> caller = new ThreadLocal<>();
 
     private static ThreadLocal timer = new ThreadLocal() {

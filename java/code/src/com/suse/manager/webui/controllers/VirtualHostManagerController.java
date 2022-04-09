@@ -47,7 +47,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.reader.ReaderException;
 
@@ -78,7 +79,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualHostManagerController {
 
-    private static final Logger LOG = Logger.getLogger(VirtualHostManagerController.class);
+    private static final Logger LOG = LogManager.getLogger(VirtualHostManagerController.class);
 
     private VirtualHostManagerController() { }
 

@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +37,7 @@ import java.util.Set;
  * @see com.redhat.rhn.frontend.events.SsmRemovePackagesEvent
  */
 public class SsmRemovePackagesAction extends SsmPackagesAction {
-    private static Logger log = Logger.getLogger(SsmRemovePackagesAction.class);
+    private static Logger log = LogManager.getLogger(SsmRemovePackagesAction.class);
 
     protected String getOperationName() {
         return "ssm.package.remove.operationname";

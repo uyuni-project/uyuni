@@ -35,7 +35,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -64,7 +65,7 @@ public class ProxyController {
     }
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(ProxyController.class);
+    private static final Logger LOG = LogManager.getLogger(ProxyController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())

@@ -24,11 +24,14 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * PackageListSetupTest
  */
 public class PackageListSetupTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);

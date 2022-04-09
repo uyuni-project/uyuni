@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -27,6 +29,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FileListSetupActionTest extends RhnMockStrutsTestCase {
@@ -65,16 +69,19 @@ public class FileListSetupActionTest extends RhnMockStrutsTestCase {
         assertEquals(expectedSize, dr.size());
     }
 
+    @Test
     public void testDeploy() throws Exception {
         doTheTest("/systems/details/configuration/DeployFile",
                             SystemManager.CAP_CONFIGFILES_DEPLOY);
     }
 
+    @Test
     public void testDiff() throws Exception {
         doTheTest("/systems/details/configuration/DiffFile",
                                 SystemManager.CAP_CONFIGFILES_DIFF);
     }
 
+    @Test
     public void testImport() throws Exception {
         doTheTest("/systems/details/configuration/addfiles/ImportFile",
                                     SystemManager.CAP_CONFIGFILES_UPLOAD);

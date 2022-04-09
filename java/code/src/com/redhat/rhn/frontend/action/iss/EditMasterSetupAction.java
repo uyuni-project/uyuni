@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * EditMasterSetupAction extends RhnAction
  *
- * @version $Rev: 1 $
  */
 public class EditMasterSetupAction extends RhnAction {
     private static final String DATA_SET = "all";

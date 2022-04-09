@@ -24,7 +24,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 public class ScheduleRepoSyncAction implements MessageAction {
 
     /** The logger. */
-    protected static Logger logger = Logger.getLogger(ScheduleRepoSyncAction.class);
+    protected static Logger logger = LogManager.getLogger(ScheduleRepoSyncAction.class);
 
     /**
      * {@inheritDoc}

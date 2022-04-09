@@ -30,7 +30,8 @@ import com.redhat.rhn.frontend.struts.wizard.WizardStep;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -50,7 +51,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Manages the workflow for the Create New Kickstart Profile wizard
  *
- * @version $Rev $
  */
 public class CreateProfileWizardAction extends RhnWizardAction {
 
@@ -79,7 +79,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     public static final String VIRTUALIZATION_TYPES_PARAM = "virtualizationTypes";
     public static final String VIRTUALIZATION_TYPE_LABEL_PARAM = "virtualizationTypeLabel";
 
-    private static Logger log = Logger.getLogger(CreateProfileWizardAction.class);
+    private static Logger log = LogManager.getLogger(CreateProfileWizardAction.class);
 
     /**
      *

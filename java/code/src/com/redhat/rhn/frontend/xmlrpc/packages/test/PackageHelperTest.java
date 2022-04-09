@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
@@ -21,6 +24,8 @@ import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
@@ -32,6 +37,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         assertEquals(value, map.get(key));
     }
 
+    @Test
     public void testPackageToMap() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -61,6 +67,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         assertKey(map, "providing_channels", Collections.EMPTY_LIST);
     }
 
+    @Test
     public void testPackage2MapWithNulls() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());

@@ -82,6 +82,7 @@ public class ImageInfo extends BaseDomainHelper {
     private Pillar pillar;
     private Set<DeltaImageInfo> deltaSourceFor = new HashSet<>();
     private Set<DeltaImageInfo> deltaTargetFor = new HashSet<>();
+    private String buildLog;
 
     /**
      * @return the id
@@ -315,6 +316,14 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
+     * @return build log
+     */
+    @Column(name = "log")
+    public String getBuildLog() {
+        return buildLog;
+    }
+
+    /**
      * @param idIn id to set
      */
     public void setId(Long idIn) {
@@ -465,6 +474,10 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setPillar(Pillar pillarIn) {
         this.pillar = pillarIn;
+    }
+
+    public void setBuildLog(String buildLogIn) {
+        buildLog = buildLogIn;
     }
 
     public void setDeltaSourceFor(Set<DeltaImageInfo> deltaSourceForIn) {

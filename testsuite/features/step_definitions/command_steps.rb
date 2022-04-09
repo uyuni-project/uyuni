@@ -770,7 +770,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   # perform the registration
   filename = File.basename(path)
   bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout)
+  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
   # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
@@ -961,7 +961,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
-    sleep 2
   end
 end
 

@@ -15,15 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.NetworkDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -38,28 +35,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *              successfully checked in")
  * #struct_end()
  */
-public class NetworkDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class NetworkDtoSerializer extends ApiResponseSerializer<NetworkDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<NetworkDto> getSupportedClass() {
         return NetworkDto.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        NetworkDto net = (NetworkDto)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("systemId", net.getId());
-        String name = net.getName();
-        if (StringUtils.isBlank(name)) {
-            name = "unknown";
-        }
-        helper.add("systemName", name);
-        helper.add("last_checkin", net.getLastCheckin());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(NetworkDto src) {
+        return new SerializationBuilder()
+                .add("systemId", src.getId())
+                .add("systemName", StringUtils.defaultString(src.getName(), "unknown"))
+                .add("last_checkin", src.getLastCheckin())
+                .build();
     }
-
 }

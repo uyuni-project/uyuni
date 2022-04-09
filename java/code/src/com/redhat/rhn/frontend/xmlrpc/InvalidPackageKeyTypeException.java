@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * invalid channel arch
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class InvalidPackageKeyTypeException extends FaultException  {
 

@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -60,7 +61,7 @@ public class LookupExceptionHandler extends ExceptionHandler {
      * {@inheritDoc}
      */
     protected void logException(Exception ex) {
-        Logger log = Logger.getLogger(LookupExceptionHandler.class);
+        Logger log = LogManager.getLogger(LookupExceptionHandler.class);
         log.warn(ex.getMessage());
     }
 

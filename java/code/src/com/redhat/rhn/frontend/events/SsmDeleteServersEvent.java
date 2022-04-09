@@ -25,7 +25,6 @@ import java.util.List;
  * for servers in the SSM.
  *
  * @see com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction
- * @version $Revision$
  */
 public class SsmDeleteServersEvent implements EventMessage {
 

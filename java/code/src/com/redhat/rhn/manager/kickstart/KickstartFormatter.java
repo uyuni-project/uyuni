@@ -40,7 +40,8 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,11 +53,10 @@ import java.util.List;
 /**
  * Simple class to reduce dependencies between Struts and database layers
  *
- * @version $Rev $
  */
 public class KickstartFormatter {
 
-    private static Logger log = Logger.getLogger(KickstartFormatter.class);
+    private static Logger log = LogManager.getLogger(KickstartFormatter.class);
 
 
     private static final String REDHAT_REGISTER_SNIPPET = "spacewalk/redhat_register";

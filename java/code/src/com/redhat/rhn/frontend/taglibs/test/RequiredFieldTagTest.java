@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.taglibs.RequiredFieldTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -22,6 +24,8 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 
@@ -32,6 +36,7 @@ import javax.servlet.jsp.tagext.Tag;
  * RequiredFieldTagTest
  */
 public class RequiredFieldTagTest extends RhnBaseTestCase {
+    @Test
     public void testRender() throws Exception {
         RequiredFieldTag tag = new RequiredFieldTag();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();

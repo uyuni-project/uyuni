@@ -26,11 +26,14 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * BaseSystemListActionTest
  */
 public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
 
+    @Test
     public void testAddOne() throws Exception {
         BaseSystemListAction action = createAction();
         ActionHelper ah = new ActionHelper();
@@ -55,6 +58,7 @@ public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
         RhnSetActionTest.verifyRhnSetData(ah.getUser(), RhnSetDecl.SYSTEMS, 1);
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         BaseSystemListAction action = createAction();
         ActionHelper ah = new ActionHelper();

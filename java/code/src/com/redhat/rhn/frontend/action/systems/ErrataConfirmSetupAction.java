@@ -37,7 +37,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -64,7 +65,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
     public static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ErrataConfirmSetupAction.class);
+    private static Logger log = LogManager.getLogger(ErrataConfirmSetupAction.class);
 
     /** {@inheritDoc} */
     @Override

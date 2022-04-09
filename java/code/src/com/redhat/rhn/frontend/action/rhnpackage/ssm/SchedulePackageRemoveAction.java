@@ -43,7 +43,8 @@ import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -69,7 +70,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SchedulePackageRemoveAction extends RhnListAction implements
         Listable<Map<String, Object>>, MaintenanceWindowsAware {
 
-    private static Logger log = Logger.getLogger(SchedulePackageRemoveAction.class);
+    private static Logger log = LogManager.getLogger(SchedulePackageRemoveAction.class);
 
     /** Taskomatic API instance */
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();

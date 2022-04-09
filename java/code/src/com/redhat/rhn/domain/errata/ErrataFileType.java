@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.errata;
 /**
  * ErrataFileType
  *
- * @version $Rev: $
  */
 public class ErrataFileType {
 

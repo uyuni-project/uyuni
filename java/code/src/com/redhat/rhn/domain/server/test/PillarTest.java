@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +32,7 @@ import java.util.Map;
  */
 public class PillarTest extends RhnBaseTestCase {
 
+    @Test
     public void testGlobalPillarPersistence() {
         for (int i = 0; i < 2; i++) {
             Map<String, Object> data = Collections.singletonMap("key", String.format("value%d", i));

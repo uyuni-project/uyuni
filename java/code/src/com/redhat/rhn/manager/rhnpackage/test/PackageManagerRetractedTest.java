@@ -16,6 +16,9 @@
 package com.redhat.rhn.manager.rhnpackage.test;
 
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -38,6 +41,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.PackageTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +61,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     private Channel channel;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -81,6 +88,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSystemPackageList() throws Exception {
         // create a null-org patch with a package and add it to the channel
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
@@ -117,6 +125,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertFalse(pkg.isRetracted()); // the package is now NOT retracted for this server!
     }
 
+    @Test
     public void testSystemAvailablePackages() throws Exception {
         // create a null-org patch with a newest package and add it to the channel
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
@@ -149,6 +158,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertEquals(newestPkg.getId(), pkg.getPackageId());
     }
 
+    @Test
     public void testListPackagesInChannelForList() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newerPkg);
@@ -182,6 +192,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
     }
 
+    @Test
     public void testChannelListAllPackages() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newerPkg);
@@ -215,6 +226,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertFalse(pkgsCloneMap.get(newestPkg.getId()).getRetracted());
     }
 
+    @Test
     public void testPotentialSystemsForPackage() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newestPkg);

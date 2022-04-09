@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -27,6 +31,9 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,11 +49,13 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     private Path tmpDir;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tmpDir = Files.createTempDirectory("debPkgWriterTest");
     }
 
+    @Test
     public void testWriteRepoMetadata() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(user);
 
@@ -93,6 +102,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 //        System.out.println(releaseContent);
     }
 
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());

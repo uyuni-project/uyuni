@@ -21,7 +21,6 @@ import java.util.Date;
  * Class Address that reflects the DB representation of WEB_USER_SITE_INFO
  * and ancillary tables.
  * DB table: WEB_USER_SITE_INFO
- * @version $Rev: 623 $
  */
 public interface Address {
 

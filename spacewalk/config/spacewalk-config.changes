@@ -1,3 +1,5 @@
+- Made tftp root available through apache configuration
+- Enable HSTS for Apache to force traffic to be in HTTPS
 - Upgrade build tooling, and corresponding cache configuration
 
 -------------------------------------------------------------------

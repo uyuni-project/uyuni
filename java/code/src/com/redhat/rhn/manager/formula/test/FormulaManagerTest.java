@@ -15,6 +15,12 @@
 package com.redhat.rhn.manager.formula.test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.dto.EndpointInfo;
@@ -46,6 +52,9 @@ import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -76,6 +85,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public FormulaManagerTest() { }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -89,6 +99,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
@@ -100,6 +111,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
 
+    @Test
     public void testValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -116,6 +128,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Validate the input data(invalid) with the definition of formula
      * @throws Exception
      */
+    @Test
     public void testInValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -139,6 +152,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the saved group formula data
      * @throws Exception
      */
+    @Test
     public void testSaveGroupFormulaData() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -160,6 +174,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the enable formula method
      * @throws Exception if the formula cannot be enabled
      */
+    @Test
     public void testEnableFormula() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -179,6 +194,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the saved server formula data
      * @throws Exception
      */
+    @Test
     public void testSaveServerFormulaData() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -201,6 +217,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test if unauthorized user can save formula data
      * @throws Exception
      */
+    @Test
     public void testSaveServerFormulaDataForUnAuthorized() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -217,6 +234,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGetCombinedFormulaDataForSystems() throws Exception {
         // minion with only group formulas
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
@@ -283,6 +301,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(combinedFormulaData.getFormulaValues().get(FORMULA_NAME));
     }
 
+    @Test
     public void testListEndpoints() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String formulaValues = TestUtils.readAll(TestUtils.findTestData(PROMETHEUS_EXPORTERS_FORMULA_DATA));

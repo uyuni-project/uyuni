@@ -22,7 +22,8 @@ import com.suse.manager.webui.controllers.SSOController;
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,7 @@ import java.util.Optional;
  */
 public final class SSOConfig {
 
-    private static final Logger LOG = Logger.getLogger(SSOController.class);
+    private static final Logger LOG = LogManager.getLogger(SSOController.class);
 
     private static Saml2Settings singletonConfig;
 

@@ -22,11 +22,14 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CompareDeployedActionTest
  */
 public class CompareDeployedActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         //Make the user a config admin
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);

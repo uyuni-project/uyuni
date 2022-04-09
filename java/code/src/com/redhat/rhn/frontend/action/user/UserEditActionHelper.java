@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 
 /**
  * UserEditSubmitAction, edit action submit handler for user detail page
- * @version $Rev: 1196 $
  */
 public abstract class UserEditActionHelper extends RhnAction {
 

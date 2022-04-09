@@ -32,7 +32,6 @@ import java.util.Map;
 
 /**
  * PreservationListConfirmDeleteAction
- * @version $Rev: 55183 $
  */
 public class PreservationListConfirmDeleteAction extends BaseSetListAction {
 

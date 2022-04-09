@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -39,7 +41,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
-import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -51,6 +52,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -75,6 +78,7 @@ import java.util.stream.Collectors;
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -85,6 +89,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testMinionActionCleanup() throws Exception {
         // Prepare test objects: minion servers, products and action
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -110,16 +115,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).running(with(any(MinionList.class)));
             will(returnValue(running));
-            if (MinionActionUtils.POSTGRES) {
-                never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-                never(saltServiceMock).listJob(with(any(String.class)));
-            }
-            else {
-                atLeast(1).of(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-                will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId()))));
-                atLeast(1).of(saltServiceMock).listJob(with(equal("20160602085832364245")));
-                will(returnValue(Optional.of(listJobResult)));
-            }
+            never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+            never(saltServiceMock).listJob(with(any(String.class)));
         } });
 
         SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
@@ -128,21 +125,6 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActions();
-
-        if (!MinionActionUtils.POSTGRES) {
-            action.getServerActions().stream().forEach(sa -> {
-                assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-                assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
-                assertEquals(0L, sa.getResultCode().longValue());
-            });
-
-            String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion1.getMinionId(), Object.class).get());
-
-            action.getDetails().getResults().stream().forEach(result -> {
-                assertEquals(0L, result.getReturnCode().longValue());
-                assertEquals(dump, new String(result.getOutput()));
-            });
-        }
     }
 
     private Jobs.Info listJob(String filename, long actionId) throws Exception {
@@ -183,6 +165,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         return jsonParser.parse(eventString);
     }
 
+    @Test
     public void testMinionActionChainCleanupAllCompleted() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -254,17 +237,9 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 mockListJob("20180317134233760065");
             }
 
-            private void mockListJob(String jid) throws Exception {
-                if (MinionActionUtils.POSTGRES) {
-                    never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-                    never(saltServiceMock).listJob(with(any(String.class)));
-                }
-                else {
-                    atLeast(1).of(saltServiceMock).listJob(jid);
-                    will(returnValue(Optional.of(listJob("jobs.list_jobs." + jid + ".json",
-                            minion1.getMinionId(), Arrays.asList(action11.getId() + "", action12.getId() + ""),
-                            minion2.getMinionId(), Arrays.asList(action21.getId() + "", action22.getId() + "")))));
-                }
+            private void mockListJob(String jid) {
+                never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+                never(saltServiceMock).listJob(with(any(String.class)));
             }
         });
 
@@ -277,18 +252,5 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
-        minionActionUtils.cleanupMinionActionChains();
-
-        if (!MinionActionUtils.POSTGRES) {
-            assertActionCompleted(action11);
-            assertActionCompleted(action12);
-            assertActionCompleted(action21);
-            assertActionCompleted(action22);
-        }
-    }
-
-    private void assertActionCompleted(Action action) {
-        assertEquals(1, action.getServerActions().size());
-        assertEquals(ActionFactory.STATUS_COMPLETED, action.getServerActions().stream().findFirst().get().getStatus());
     }
 }

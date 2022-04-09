@@ -19,7 +19,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EnvironmentFilter implements Filter {
 
-    private static Logger log = Logger.getLogger(EnvironmentFilter.class);
+    private static Logger log = LogManager.getLogger(EnvironmentFilter.class);
 
     private static String[] nosslurls = {"/rhn/kickstart/DownloadFile",
                                          "/rhn/common/DownloadFile",

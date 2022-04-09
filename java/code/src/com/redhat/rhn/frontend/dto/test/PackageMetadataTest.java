@@ -14,21 +14,21 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageMetadataTest
  */
 public class PackageMetadataTest extends RhnBaseTestCase {
 
-    /*
-     * @see RhnBaseTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
+    @Test
     public void testParameterizedCtor() {
         PackageMetadata pm = new PackageMetadata(null, null);
 
@@ -48,6 +48,7 @@ public class PackageMetadataTest extends RhnBaseTestCase {
         assertEquals(PackageMetadata.ACTION_NONE, pm.getActionStatusAsInt());
     }
 
+    @Test
     public void testDefaultCtor() {
         PackageMetadata pm = new PackageMetadata();
 
@@ -67,6 +68,7 @@ public class PackageMetadataTest extends RhnBaseTestCase {
         assertEquals(PackageMetadata.ACTION_NONE, pm.getActionStatusAsInt());
     }
 
+    @Test
     public void testGetActionStatusAsInt() {
         PackageMetadata pm = new PackageMetadata();
         pm.setComparison(PackageMetadata.KEY_OTHER_NEWER);
@@ -86,6 +88,7 @@ public class PackageMetadataTest extends RhnBaseTestCase {
         assertEquals(PackageMetadata.ACTION_INSTALL, pm.getActionStatusAsInt());
     }
 
+    @Test
     public void testGetComparison() {
         PackageMetadata pm = new PackageMetadata();
 

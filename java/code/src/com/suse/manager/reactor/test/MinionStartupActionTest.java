@@ -26,6 +26,8 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MinionStartEventMessageAction}.
@@ -36,6 +38,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -44,6 +47,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testStarupEventFired() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId(MINION_ID);

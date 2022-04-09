@@ -31,7 +31,8 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
@@ -54,7 +55,7 @@ public class ServerGroupFactory extends HibernateFactory {
 
     public static final String NULL_DESCRIPTION = "none";
     public static final ServerGroupFactory SINGLETON = new ServerGroupFactory();
-    private static Logger log = Logger.getLogger(ServerGroupFactory.class);
+    private static Logger log = LogManager.getLogger(ServerGroupFactory.class);
 
     @Override
     protected Logger getLogger() {

@@ -21,7 +21,6 @@ package com.redhat.rhn.common.validator;
  *  The <code>ValidatorError</code> class represents an error while
  *  validating an object.
  * </p>
- * @version $Rev: 1710 $
  */
 public class ValidatorError extends ValidationMessage {
 

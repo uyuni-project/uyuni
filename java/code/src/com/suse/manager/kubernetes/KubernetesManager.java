@@ -30,7 +30,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
 public class KubernetesManager {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
+    private static final Logger LOG = LogManager.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
     private final SaltApi saltApi;

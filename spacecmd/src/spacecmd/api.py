@@ -109,6 +109,7 @@ def do_api(self, args):
         if (output != sys.stdout):
             output.close()
 
-    except xmlrpclib.Fault:
+    except xmlrpclib.Fault as e:
+        logging.error(e)
         if (output != sys.stdout):
             output.close()

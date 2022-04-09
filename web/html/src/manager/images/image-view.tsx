@@ -19,6 +19,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import { ImageViewBuildLog } from "./image-view-buildlog";
 import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
@@ -238,7 +239,8 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
 
   getImageInfoDetails(id, tab) {
     let url;
-    if (tab === "patches" || tab === "packages") url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
+    if (tab === "patches" || tab === "packages" || tab === "buildlog")
+      url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
     //overview, runtime
     else url = "/rhn/manager/api/cm/images/" + id;
 
@@ -782,8 +784,14 @@ class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
     return (
       <div>
         <TabContainer
-          labels={[t("Overview"), t("Patches"), t("Packages"), this.props.runtimeInfoEnabled ? t("Runtime") : null]}
-          hashes={this.getHashUrls(["overview", "patches", "packages", "runtime"])}
+          labels={[
+            t("Overview"),
+            t("Patches"),
+            t("Packages"),
+            t("Build Log"),
+            this.props.runtimeInfoEnabled ? t("Runtime") : null,
+          ]}
+          hashes={this.getHashUrls(["overview", "patches", "packages", "buildlog", "runtime"])}
           initialActiveTabHash={window.location.hash}
           onTabHashChange={this.onTabChange}
           tabs={[
@@ -798,8 +806,9 @@ class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
             />,
             <ImageViewPatches key="2" data={data} />,
             <ImageViewPackages key="3" data={data} />,
+            <ImageViewBuildLog key="4" data={data} />,
             this.props.runtimeInfoEnabled ? (
-              <ImageViewRuntime key="4" data={data} gotRuntimeInfo={this.props.gotRuntimeInfo} />
+              <ImageViewRuntime key="5" data={data} gotRuntimeInfo={this.props.gotRuntimeInfo} />
             ) : null,
           ]}
         />

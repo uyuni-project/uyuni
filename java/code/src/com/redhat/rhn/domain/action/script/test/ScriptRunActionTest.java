@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.script.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
@@ -26,6 +30,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -36,6 +42,7 @@ import java.util.GregorianCalendar;
  */
 public class ScriptRunActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testScriptAction() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -98,6 +105,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testScriptActionDetails() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

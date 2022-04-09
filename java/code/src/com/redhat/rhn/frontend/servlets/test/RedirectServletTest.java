@@ -15,9 +15,11 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.frontend.security.RedirectServlet;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -48,9 +50,8 @@ public class RedirectServletTest extends MockObjectTestCase {
     private String requestURI;
     private String redirectURI;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         redirect = new RedirectServletStub();
 
         mockRequest = mock(HttpServletRequest.class);
@@ -80,6 +81,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         return mockResponse;
     }
 
+    @Test
     public final void testDoGet() throws Exception {
         context().checking(new Expectations() { {
            oneOf(mockResponse).sendRedirect("https://" + serverName + redirectURI);
@@ -90,6 +92,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         redirect.doGet(getRequest(), getResponse());
     }
 
+    @Test
     public final void testDoGetWithQueryString() throws Exception {
         final String queryString = encode("myparam") + "=" + encode("neo is the one!");
 

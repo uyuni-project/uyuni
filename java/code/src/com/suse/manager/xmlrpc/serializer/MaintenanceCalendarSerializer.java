@@ -14,16 +14,10 @@
  */
 package com.suse.manager.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Serializer for {@link com.suse.manager.model.maintenance.MaintenanceCalendar}
@@ -37,29 +31,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "ical")
  * #struct_end()
  */
-public class MaintenanceCalendarSerializer extends RhnXmlRpcCustomSerializer {
+public class MaintenanceCalendarSerializer extends ApiResponseSerializer<MaintenanceCalendar> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<MaintenanceCalendar> getSupportedClass() {
         return MaintenanceCalendar.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        MaintenanceCalendar calendar = (MaintenanceCalendar) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", calendar.getId());
-        helper.add("orgId", calendar.getOrg().getId());
-        helper.add("label", calendar.getLabel());
-        calendar.getUrlOpt().ifPresent(u -> helper.add("url", u));
-        helper.add("ical", calendar.getIcal());
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(MaintenanceCalendar src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("orgId", src.getOrg().getId())
+                .add("label", src.getLabel());
+        src.getUrlOpt().ifPresent(u -> builder.add("url", u));
+        builder.add("ical", src.getIcal());
+        return builder.build();
     }
 }

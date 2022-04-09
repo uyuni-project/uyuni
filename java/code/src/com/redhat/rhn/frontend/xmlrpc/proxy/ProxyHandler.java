@@ -39,11 +39,13 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertPair;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ import java.util.List;
  * server.
  */
 public class ProxyHandler extends BaseHandler {
-    private static final Logger LOG = Logger.getLogger(ProxyHandler.class);
+    private static final Logger LOG = LogManager.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemManager systemManager;
 
@@ -100,6 +102,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
      * @xmlrpc.returntype #return_int_success()
      */
+    @ReadOnly
     public int isProxy(String clientcert)
         throws MethodInvalidParamException {
         Server server = validateClientCertificate(clientcert);
@@ -178,6 +181,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
      * @xmlrpc.returntype  #array_single ("string", "version")
      */
+    @ReadOnly
     public List<String> listAvailableProxyChannels(String clientcert) {
 
         Server server = validateClientCertificate(clientcert);
@@ -217,6 +221,7 @@ public class ProxyHandler extends BaseHandler {
      *   $SystemOverviewSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listProxies(User loggedInUser) {
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
         List<Object> toReturn = new ArrayList<>();
@@ -238,6 +243,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.param #param("int","proxyId","the Proxy ID")
      * @xmlrpc.returntype #array_single("int", "clientId")
      */
+    @ReadOnly
     public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, proxyId);
         if (!server.isProxy()) {

@@ -15,6 +15,11 @@
 
 package com.suse.manager.webui.controllers.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -56,6 +61,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +95,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      */
     @SuppressWarnings("unchecked")
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -181,6 +189,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      * @throws Exception if anything unexpected happens during the test
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testData() throws Exception {
         int size = host.getGuests().size();
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[size]);
@@ -210,6 +219,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testStateChangeAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -240,6 +250,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetVcpuAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -270,6 +281,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetVcpuInvalidAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -293,6 +305,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetMemMultiAction() throws Exception {
 
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[host.getGuests().size()]);
@@ -337,6 +350,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testGetGuest() throws Exception {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
@@ -398,6 +412,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testGetDomainsCapabilities() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");
@@ -415,6 +430,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertFalse(caps.getDomainsCaps().get(1).getDevices().get("disk").get("bus").contains("virtio"));
     }
 
+    @Test
     public void testShow() {
         ModelAndView page = virtualGuestsController.show(
                 getRequestWithCsrf("/manager/systems/details/virtualization/guests/:sid",
@@ -423,6 +439,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("{\"hypervisor\":\"kvm\",\"cluster_other_nodes\":[]}", model.get("hostInfo"));
     }
 
+    @Test
     public void testShowVHM() throws Exception {
         Server vhmHost = ServerTestUtils.createForeignSystem(user, "server_digital_id");
         ModelAndView page = virtualGuestsController.show(

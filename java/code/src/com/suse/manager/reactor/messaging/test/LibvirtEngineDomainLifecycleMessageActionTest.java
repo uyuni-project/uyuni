@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -48,6 +50,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.States;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -74,7 +78,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             new JsonParser<>(new TypeToken<>() {
             });
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -105,6 +109,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         host.asMinionServer().get().setMinionId("testminion.local");
     }
 
+    @Test
     public void testNewGuestNoRestart() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -136,6 +141,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         action.execute(stopMessage);
     }
 
+    @Test
     public void testNewGuestFirstReboot() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -162,6 +168,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         action.execute(stopMessage);
     }
 
+    @Test
     public void testNewGuestFirstRebootAborted() throws Exception {
         States vmState = context().states("vm").startsAs("started");
 
@@ -195,6 +202,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         action.execute(stopMessage);
     }
 
+    @Test
     public void testShutdownPersistent() throws Exception {
         expectGuestDefinition(uuid,
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);
@@ -214,6 +222,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
                      matchingGuests.get(0).getStateLabel());
     }
 
+    @Test
     public void testShutdownTransient() throws Exception {
         expectGuestDefinition(uuid, null, null);
         context().checking(new Expectations() {{
@@ -232,6 +241,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         assertEquals(0, matchingGuests.size());
     }
 
+    @Test
     public void testUpdate() throws Exception {
         expectGuestDefinition(uuid,
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);

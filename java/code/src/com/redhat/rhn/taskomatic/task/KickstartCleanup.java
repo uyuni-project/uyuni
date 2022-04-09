@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * Cleans up stale Kickstarts
  *
- * @version $Rev $
  */
 
 public class KickstartCleanup extends RhnJavaJob {

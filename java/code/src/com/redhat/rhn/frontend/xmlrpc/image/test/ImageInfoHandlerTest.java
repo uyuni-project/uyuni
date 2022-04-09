@@ -21,6 +21,9 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createKiwiImageProfile;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -47,6 +50,8 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -73,20 +78,27 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
-    private ImageInfoHandler handler = new ImageInfoHandler();
+    private ImageInfoHandler handler;
 
-    private Mockery context = new JUnit3Mockery() {{
+    @RegisterExtension
+    protected final Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
@@ -95,6 +107,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -107,12 +120,17 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
         );
+        handler = new ImageInfoHandler(saltServiceMock);
         context.checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+            allowing(saltServiceMock).removeFile(
+                with(equal(Paths.get(String.format("/srv/www/os-images/%d/testimg.tgz", admin.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
         }});
     }
 
-    public final void testImportImage() throws Exception {
+    @Test
+    public final void testimportContainerImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
         MinionServer server = ImageTestUtils.createBuildHost(systemEntitlementManager, admin);
@@ -122,7 +140,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
 
-        long ret = handler.importImage(admin, "my-external-image", "1.0",
+        long ret = handler.importContainerImage(admin, "my-external-image", "1.0",
                 server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
         assertTrue(ret > 0);
 
@@ -135,7 +153,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Inspect an Image", ((ScheduledAction)dr.get(0)).getTypeName());
 
         try {
-            handler.importImage(admin, "my-external-image", "1.0",
+            handler.importContainerImage(admin, "my-external-image", "1.0",
                     server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
             fail("Overwriting image.");
         }
@@ -144,11 +162,12 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         }
 
         ImageInfoFactory.delete(info.get(), saltServiceMock);
-        ret = handler.importImage(admin, "my-external-image", "1.0",
+        ret = handler.importContainerImage(admin, "my-external-image", "1.0",
                 server.getId().intValue(), store.getLabel(), "", getNow());
         assertTrue(ret > 0);
     }
 
+    @Test
     public final void testScheduleContainerImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
@@ -170,6 +189,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
@@ -197,6 +217,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testListImages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         createImageInfo("myimage", "1.0.0", store, admin);
@@ -206,6 +227,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, listInfo.size());
     }
 
+    @Test
     public final void testGetImageDetails() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -214,6 +236,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(inf1.getVersion(), imageOverview.getVersion());
     }
 
+    @Test
     public final void testGetRelevantErrata() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(admin);
         Set<Channel> errataChannels = new HashSet<>();
@@ -242,6 +265,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(e.getId().intValue(), errata.getId().intValue());
     }
 
+    @Test
     public final void testGetPackages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -254,6 +278,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public final void testGetCustomValues() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -273,6 +298,57 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("newvalue2", result.get(orgKey2.getLabel()));
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
     }
+
+    public final void testImportOSImage() throws Exception {
+        Integer id1 = handler.importOSImage(admin, "testimg", "1.0.0", "x86_64-redhat-linux").intValue();
+        handler.setPillar(admin, id1, Map.of("name1", "val1", "name2", "val2"));
+        handler.addImageFile(admin, id1, "testimg.tgz", "bundle", false);
+
+        try {
+            handler.addImageFile(admin, id1, "testimg.tgz", "bundle", false);
+            fail("Add existing file.");
+        }
+        catch (EntityExistsFaultException e) {
+            assertEquals("Entity already exists: testimg.tgz", e.getMessage());
+        }
+
+        Integer id2 = handler.importOSImage(admin, "testimg", "1.0.0", "x86_64-redhat-linux").intValue();
+
+        ImageOverview details1 = handler.getDetails(admin, id1);
+        assertEquals("testimg.tgz", details1.getImageFiles().iterator().next().getFile());
+        assertEquals(1, (int)details1.getCurrRevisionNum());
+
+        Map<String, Object> pillar1 = handler.getPillar(admin, id1);
+        assertEquals("val1", pillar1.get("name1"));
+
+        ImageOverview details2 = handler.getDetails(admin, id2);
+        System.out.println("details" + details2.getCurrRevisionNum());
+        assertEquals(2, (int)details2.getCurrRevisionNum());
+
+        Map<String, Object> pillar2 = handler.getPillar(admin, id2);
+        assertTrue(pillar2.isEmpty());
+
+        try {
+            handler.deleteImageFile(admin, id2, "testimg.tgz");
+            fail("Delete file attached to different image.");
+        }
+        catch (EntityNotExistsFaultException e) {
+            assertEquals("testimg.tgz", e.getMessage());
+        }
+
+        handler.deleteImageFile(admin, id1, "testimg.tgz");
+
+        try {
+            handler.deleteImageFile(admin, id1, "testimg.tgz");
+            fail("Delete file second time.");
+        }
+        catch (EntityNotExistsFaultException e) {
+            assertEquals("testimg.tgz", e.getMessage());
+        }
+
+
+    }
+
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {

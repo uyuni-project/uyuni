@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.servlets.AuthFilter;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -48,9 +52,8 @@ public class AuthFilterTest extends MockObjectTestCase {
 
     private AuthenticationService mockAuthService;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         filter = new AuthFilterStub();
 
         mockRequest = mock(HttpServletRequest.class);
@@ -104,6 +107,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         return mockFilterChain;
     }
 
+    @Test
     public final void testDoFilterWhenAuthenticationSucceeds() throws Exception {
         context().checking(new Expectations() { {
             allowing(mockRequest).setAttribute(with("session"),
@@ -120,6 +124,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
     }
 
+    @Test
     public final void testDoFilterWhenAuthenticationFails() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(mockAuthService).validate(with(any(HttpServletRequest.class)),
@@ -132,6 +137,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
     }
 
+    @Test
     public final void testDoFilterWhenAuthServiceThrowsException() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(mockAuthService).validate(with(any(HttpServletRequest.class)),

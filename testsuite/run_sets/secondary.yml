@@ -65,4 +65,6 @@
 - features/secondary/proxy_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
+- features/secondary/min_move_from_and_to_proxy.feature
+- features/secondary/minssh_move_from_and_to_proxy.feature
 ## Secondary features END ##

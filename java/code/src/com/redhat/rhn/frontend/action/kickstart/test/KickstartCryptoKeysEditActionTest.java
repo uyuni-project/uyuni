@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -21,9 +24,11 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartCryptoKeysSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartKeysEditActionTest
- * @version $Rev: 1 $
  */
 public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase {
 
@@ -32,6 +37,7 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         key = CryptoTest.createTestKey(user.getOrg());
@@ -39,12 +45,14 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
         TestUtils.flushAndEvict(key);
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartCryptoKeysList");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
         addSelectedItem(key.getId());
         addDispatchCall(KickstartCryptoKeysSubmitAction.UPDATE_METHOD);

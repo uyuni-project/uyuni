@@ -30,7 +30,8 @@ import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 import org.cobbler.Distro;
@@ -46,11 +47,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartSoftwareEditAction
- * @version $Rev: 1 $
  */
 public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
 
-    private static Logger log = Logger.getLogger(KickstartSoftwareEditAction.class);
+    private static Logger log = LogManager.getLogger(KickstartSoftwareEditAction.class);
 
     public static final String URL = "url";
     public static final String CHANNELS = "channels";

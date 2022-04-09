@@ -1,3 +1,5 @@
+- prevent configuration of invalid IPv6 addresses
+
 -------------------------------------------------------------------
 Tue Jan 18 14:08:42 CET 2022 - jgonzalez@suse.com
 

@@ -1,13 +1,13 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.2
+    project: openSUSE:Leap:15.3
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
 artifacts:
   - artifact: simple-core
     # How comes that package is not noarch?
@@ -39,12 +39,10 @@ artifacts:
   - artifact: log4j
     package: log4j12
     repository: Leap
-  - artifact: nutch-core
-    jar: nutch-core
-    repository: Uyuni_Other
   - artifact: c3p0
     repository: Uyuni_Other
-  - artifact: picocontainer
+  - artifact: mchange-commons-java
+    package: mchange-commons
     repository: Uyuni_Other
-  - artifact: hadoop
+  - artifact: picocontainer
     repository: Uyuni_Other

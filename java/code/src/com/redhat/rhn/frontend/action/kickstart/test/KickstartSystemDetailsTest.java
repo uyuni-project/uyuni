@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
@@ -23,11 +26,15 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
 
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();
@@ -35,6 +42,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         cmd.createCommand("selinux", "--permissive", ksdata);
     }
 
+    @Test
     public void testDisplay() throws Exception {
 
         // Create a kickstart and the ranges so the list
@@ -44,6 +52,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
      }
 
+    @Test
     public void testEditSELinux() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "enforcing");
@@ -55,6 +64,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyFormValue("selinuxMode", "enforcing");
     }
 
+    @Test
     public void testEditRootPasswordErr() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("rootPassword", "blahblah");
@@ -65,6 +75,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyActionErrors(errMessages);
     }
 
+    @Test
     public void testEditRootPasswordSuccess() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "permissive");
@@ -75,6 +86,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testEditNetworkSuccess() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "permissive");
@@ -85,6 +97,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testRHEL3Execute() throws Exception {
         ksdata.getKickstartDefaults().getKstree().
             setInstallType(KickstartFactory.
@@ -103,6 +116,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testRHEL4Execute() throws Exception {
         ksdata.getKickstartDefaults().getKstree().
         setInstallType(KickstartFactory.

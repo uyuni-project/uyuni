@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.TrustedOrgDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * TrustedOrgDtoSerializer is a custom serializer for the XMLRPC library.
@@ -33,21 +30,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *       #prop("int", "shared_channels")
  *     #struct_end()
  */
-public class TrustedOrgDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class TrustedOrgDtoSerializer extends ApiResponseSerializer<TrustedOrgDto> {
 
-    /** {@inheritDoc} */
+    @Override
     public Class<TrustedOrgDto> getSupportedClass() {
         return TrustedOrgDto.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        TrustedOrgDto tr = (TrustedOrgDto) value;
-        helper.add("org_id", tr.getId());
-        helper.add("org_name", tr.getName());
-        helper.add("shared_channels", tr.getSharedChannels());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(TrustedOrgDto src) {
+        return new SerializationBuilder()
+                .add("org_id", src.getId())
+                .add("org_name", src.getName())
+                .add("shared_channels", src.getSharedChannels())
+                .build();
     }
 }

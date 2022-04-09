@@ -23,7 +23,6 @@ CREATE TABLE Package
     payload_size        NUMERIC,
     installed_size      NUMERIC,
     vendor              VARCHAR(64),
-    channel_label       VARCHAR(128),
     organization        VARCHAR(128),
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );

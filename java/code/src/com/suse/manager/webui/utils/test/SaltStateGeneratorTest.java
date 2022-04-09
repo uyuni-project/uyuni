@@ -15,9 +15,15 @@
 
 package com.suse.manager.webui.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -26,18 +32,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 /**
  * Test for SparkTestUtils.
  */
-public class SaltStateGeneratorTest extends TestCase {
+public class SaltStateGeneratorTest  {
     private SaltStateGenerator generator;
     private StringWriter writer;
     private Yaml yaml;
 
-    @Override
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         this.writer = new StringWriter();
         this.generator = new SaltStateGenerator(this.writer);
         this.yaml = new Yaml();
@@ -61,6 +65,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSTestBasicTree() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
@@ -82,6 +87,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackageInstalledNoVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
@@ -101,6 +107,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackageInstalledVersion() throws IOException {
         String ver = "24.5.1";
         SaltPkgInstalled obj = new SaltPkgInstalled();
@@ -119,6 +126,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackageInstalledOpVersion() throws IOException {
         String ver = "24.5.1";
         SaltPkgInstalled obj = new SaltPkgInstalled();
@@ -135,6 +143,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackagesInstalledNoVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
@@ -158,6 +167,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackagesInstalledVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackageNameArchVersion("emacs", "x86_64", "24.5.1");
@@ -192,6 +202,7 @@ public class SaltStateGeneratorTest extends TestCase {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSLSPackagesInstalledOpVersion() throws IOException {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackageNameArchVersionOp("emacs", "x86_64", "24.5.1", ">");
