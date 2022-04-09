@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 08:42+0000\n"
+"POT-Creation-Date: 2022-04-09 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,8 +133,8 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:807
-#: ../html/src/manager/images/image-view.tsx:809
+#: ../html/src/manager/images/image-view.tsx:816
+#: ../html/src/manager/images/image-view.tsx:818
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -245,9 +245,9 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
 #: ../html/src/manager/images/image-stores.tsx:204
-#: ../html/src/manager/images/image-view.tsx:347
-#: ../html/src/manager/images/image-view.tsx:357
-#: ../html/src/manager/images/image-view.tsx:694
+#: ../html/src/manager/images/image-view.tsx:349
+#: ../html/src/manager/images/image-view.tsx:359
+#: ../html/src/manager/images/image-view.tsx:696
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -1059,7 +1059,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:371
+#: ../html/src/manager/images/image-view.tsx:373
 #: ../html/src/manager/notifications/notification-messages.tsx:444
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
@@ -1080,7 +1080,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:685
+#: ../html/src/manager/images/image-view.tsx:687
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
@@ -1412,8 +1412,9 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:639
+#: ../html/src/manager/images/image-view.tsx:641
 #: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
@@ -1428,7 +1429,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:679
+#: ../html/src/manager/images/image-view.tsx:681
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:195
@@ -1922,7 +1923,8 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:642
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
 msgstr ""
 
@@ -2005,7 +2007,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:144
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-stores.tsx:137
-#: ../html/src/manager/images/image-view.tsx:348
+#: ../html/src/manager/images/image-view.tsx:350
 msgid "Delete selected"
 msgstr ""
 
@@ -2247,7 +2249,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:626
 #: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:667
+#: ../html/src/manager/images/image-view.tsx:669
 msgid "Build"
 msgstr ""
 
@@ -2338,13 +2340,13 @@ msgid "Waiting for repositories data to be generated"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr ""
 
@@ -2516,7 +2518,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:638
+#: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2619,14 +2621,14 @@ msgid "Systems"
 msgstr ""
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:663
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:665
+#: ../html/src/manager/images/image-view.tsx:790
 msgid "Packages"
 msgstr ""
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:650
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:652
+#: ../html/src/manager/images/image-view.tsx:789
 msgid "Patches"
 msgstr ""
 
@@ -2754,7 +2756,7 @@ msgid "Image version is required."
 msgstr ""
 
 #: ../html/src/manager/images/image-import.tsx:305
-#: ../html/src/manager/images/image-view.tsx:366
+#: ../html/src/manager/images/image-view.tsx:368
 msgid "Import"
 msgstr ""
 
@@ -2939,6 +2941,15 @@ msgstr ""
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr ""
 
+#: ../html/src/manager/images/image-view-buildlog.tsx:5
+#: ../html/src/manager/images/image-view.tsx:791
+msgid "Build Log"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-buildlog.tsx:10
+msgid "Build log is not available."
+msgstr ""
+
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
 #: ../html/src/manager/images/image-view-overview.tsx:93
@@ -2949,13 +2960,13 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:478
-#: ../html/src/manager/images/image-view.tsx:527
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr ""
 
@@ -2992,7 +3003,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:497
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr ""
 
@@ -3005,37 +3016,37 @@ msgid "Picked Up"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:553
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:554
-#: ../html/src/manager/images/image-view.tsx:606
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:515
-#: ../html/src/manager/images/image-view.tsx:564
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:581
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:523
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr ""
 
@@ -3048,31 +3059,31 @@ msgid "Edit store"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:747
+#: ../html/src/manager/images/image-view.tsx:749
 msgid "Instance Details for '{0}'"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
-#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:527
 #: ../html/src/manager/images/image-view-overview.tsx:528
-#: ../html/src/manager/images/image-view.tsx:483
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:534
 #: ../html/src/manager/images/image-view-overview.tsx:535
-#: ../html/src/manager/images/image-view.tsx:486
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:541
 #: ../html/src/manager/images/image-view-overview.tsx:542
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr ""
 
@@ -3110,13 +3121,13 @@ msgid "Custom Image Information"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:678
-#: ../html/src/manager/images/image-view.tsx:358
-#: ../html/src/manager/images/image-view.tsx:716
+#: ../html/src/manager/images/image-view.tsx:360
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Delete Image"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:681
-#: ../html/src/manager/images/image-view.tsx:719
+#: ../html/src/manager/images/image-view.tsx:721
 msgid "Are you sure you want to delete image"
 msgstr ""
 
@@ -3217,72 +3228,72 @@ msgstr ""
 msgid "Namespace"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:305
+#: ../html/src/manager/images/image-view.tsx:307
 msgid "Deleted successfully."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:317
+#: ../html/src/manager/images/image-view.tsx:319
 msgid "Image inspect has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:333
+#: ../html/src/manager/images/image-view.tsx:335
 msgid "Image build has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:381
+#: ../html/src/manager/images/image-view.tsx:383
 msgid "Images"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:601
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:792
 msgid "Runtime"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:621
+#: ../html/src/manager/images/image-view.tsx:623
 msgid "Show obsolete"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:645
+#: ../html/src/manager/images/image-view.tsx:647
 msgid "(obsolete)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:647
+#: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:671
+#: ../html/src/manager/images/image-view.tsx:673
 msgid "Last Modified"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:732
+#: ../html/src/manager/images/image-view.tsx:734
 msgid "Delete Selected Image(s)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:736
+#: ../html/src/manager/images/image-view.tsx:738
 msgid "Are you sure you want to delete the selected image?"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:738
+#: ../html/src/manager/images/image-view.tsx:740
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr ""
@@ -4650,6 +4661,47 @@ msgstr ""
 
 #: ../html/src/manager/systems/delete-system.tsx:91
 msgid "An error occurred during cleanup"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:30
+msgid "Not a system id"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:31
+msgid "Unknown System"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:32
+msgid "System is not a peripheral server"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:50
+msgid "New password generated and action for peripheral server scheduled"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+msgid "Report Database Name"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+msgid "Report Database Host"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+msgid "Report Database User"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+msgid "Report Database Last Synced"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:112
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:113
+msgid "Regenerate Reporting Database Password"
 msgstr ""
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
