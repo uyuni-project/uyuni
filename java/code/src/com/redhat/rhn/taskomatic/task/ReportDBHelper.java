@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -48,15 +49,36 @@ public class ReportDBHelper {
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
+    private static String getOrderColumns(Session session, String table, Logger log) {
+        String pkqstr = "SELECT string_agg(a.attname, ', ') AS pk " +
+                "FROM pg_constraint AS c " +
+                "    CROSS JOIN LATERAL UNNEST(c.conkey) AS cols(colnum) " +
+                "    INNER JOIN pg_attribute AS a ON a.attrelid = c.conrelid AND cols.colnum = a.attnum " +
+                "WHERE c.contype = 'p' " +
+                " AND c.conrelid = '" + table + "'::REGCLASS";
+
+        GeneratedSelectMode pkquery = new GeneratedSelectMode("pkquery." + table, session,
+                pkqstr , List.of());
+
+        DataResult<Map<String, String>> pkr = pkquery.execute();
+        String pk = pkr.stream().findFirst().map(pko -> pko.getOrDefault("pk", "ctid")).orElse("ctid");
+
+        log.debug("Order Columns of " + table + " by: " + pk);
+        return pk;
+    }
+
     /**
      * Generated a query for all local entries of a report db table
      * @param session session the query should use
      * @param table table name
+     * @param log the logger
      * @return select mode query
      */
-    public static SelectMode generateQuery(Session session, String table) {
+    public static SelectMode generateQuery(Session session, String table, Logger log) {
+        String orderColumns = getOrderColumns(session, table, log);
+
         final String sqlStatement = "SELECT * FROM " + table +
-                " WHERE mgm_id = 1 ORDER BY ctid OFFSET :offset LIMIT :limit";
+                " WHERE mgm_id = 1 ORDER BY " + orderColumns + " OFFSET :offset LIMIT :limit";
         return new GeneratedSelectMode("select." + table, session, sqlStatement, List.of("offset", "limit"));
     }
 
