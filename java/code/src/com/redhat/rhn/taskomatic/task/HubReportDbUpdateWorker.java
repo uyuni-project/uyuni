@@ -78,7 +78,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
 
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {
         TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
-            SelectMode query = generateQuery(remoteSession, tableName);
+            SelectMode query = generateQuery(remoteSession, tableName, log);
 
             // Remove all the existing data
             log.debug("Deleting existing data in table {}", tableName);

@@ -53,6 +53,10 @@ public final class NamedPreparedStatement {
             if (inQuotes) {
                 continue;
             }
+            if (c == ':' && (query.charAt(i + 1) == ':')) {
+                i++;
+                continue;
+            }
             // The Oracle PL/SQL syntax uses := to indicate that a function
             // should return a value.  Since, we do not want to replace := with
             // a ?, just skip this : if the next char is a =.
