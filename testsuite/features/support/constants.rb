@@ -385,10 +385,3 @@ OS_REPOS_BY_OS_VERSION = {
     SLE-Module-Desktop-Applications15-SP3-Updates
   ]
 }.freeze
-
-SEARCH_VALUE = { 'ceos_minion' => '*centos*',
-                 'ubuntu_minion' => '*ubuntu*',
-                 'sle_client' => '*cli-sles*',
-                 'sle_minion' => '*min-sles*',
-                 'ssh_minion' => '*ssh-sles*',
-                 'build_host' => '*build*' }.freeze
