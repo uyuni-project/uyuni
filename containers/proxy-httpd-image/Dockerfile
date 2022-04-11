@@ -40,6 +40,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
 
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
