@@ -262,10 +262,10 @@ while read PKG_NAME; do
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
 
-          PRODUCT_VERSION=$(sed -n 's/.*web.version = \(.*\)/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+          PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
       else
           # Uyuni settings
-          PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni = \(.*\)/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+          PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
       fi
       # to lowercase with ",," and replace spaces " " with "-"
       PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
