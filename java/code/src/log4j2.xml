@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" name="UyuniConfig">
+    <Appenders>
+        <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_web_ui.log" filePattern="rhn_web_ui-%i.log">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="xmlRpcFileAppender" fileName="/var/log/rhn/rhn_web_api.log" filePattern="rhn_web_api-%i.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="frontendLogControllerAppender" fileName="/var/log/rhn/rhn_web_frontend.log"
+                     filePattern="rhn_web_frontend-%i.log">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+        <RollingFile name="remoteCommandsAppender" fileName="/var/log/rhn/rhn_salt_remote_commands.log"
+                     filePattern="rhn_salt_remote_commands-%i.log">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+        <!-- Uncomment for hibernate logging -->
+        <!--
+        <File name="hibernateAppender" fileName="/var/log/rhn/rhn_web_hibernate.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+        </File>
+        -->
+        <FailOver name="xmlRpcFailOverAppender" primary="xmlRpcFileAppender">
+            <FailOvers>
+                <AppenderRef ref="rootAppender" />
+            </FailOvers>
+        </FailOver>
+    </Appenders>
+    <Loggers>
+        <!-- Turn this up to DEBUG to get detailed logging info -->
+        <Logger name="com.redhat.rhn.taskomatic.SchedulerKernel" level="info" />
+
+        <!-- HTTP debugging -->
+        <!--
+        <Logger name="org.apache.http" level="debug" />
+        <Logger name="org.apache.http.wire" level="error" />
+        -->
+
+        <!-- General debug for everything. Very noisy -->
+        <!--
+        <Logger name="com.redhat.rhn" level="debug" />
+        <Logger name="com.suse" level="debug" />
+        -->
+
+        <!-- Logging for login-attempts -->
+        <Logger name="com.redhat.rhn.frontend.action.LoginAction" level="info" />
+        <Logger name="com.redhat.rhn.frontend.action.LogoutAction" level="info" />
+        <Logger name="com.redhat.rhn.manager.content.ContentSyncManager" level="info" />
+        <Logger name="com.suse.manager.webui.controllers.DownloadController" level="info" />
+
+        <!-- these are here to avoid spewing the logs when DEBUG is
+             turned on.  There are times DEBUG is useful to have without
+             seeing all of the acl and l10n stuff. -->
+        <Logger name="com.redhat.rhn.common.localization.LocalizationService" level="warn" />
+        <Logger name="com.redhat.rhn.common.security.acl" level="warn" />
+
+        <!-- XML-RPC logging -->
+        <Logger name="com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor" level="info" additivity="false">
+            <AppenderRef ref="xmlRpcFailOverAppender" />
+        </Logger>
+
+        <!-- Frontend logs -->
+        <Logger name="com.suse.manager.webui.controllers.FrontendLogController" level="trace" additivity="false">
+            <AppenderRef ref="frontendLogControllerAppender" />
+        </Logger>
+
+        <!-- Salt remote commands logs -->
+        <Logger name="com.suse.manager.webui.websocket.RemoteMinionCommands" level="info" additivity="false">
+            <AppenderRef ref="remoteCommandsAppender" />
+        </Logger>
+
+        <!-- Hibernate logging -->
+        <!--
+        <Logger name="org.hibernate" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+
+        <Logger name="org.hibernate.type" level="trace" />
+        -->
+
+        <!-- log SQL statements -->
+        <!--
+        <Logger name="org.hibernate.SQL" level="debug" />
+        -->
+
+        <!--
+        <Logger name="net.rkbloom.logdriver" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+        -->
+
+        <!-- this silences ehcache on Fedoras complaining about using default values -->
+        <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
+
+        <Root level="warn"><AppenderRef ref="rootAppender" /></Root>
+    </Loggers>
+</Configuration>
