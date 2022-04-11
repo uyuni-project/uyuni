@@ -593,7 +593,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadi
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datadir}/rhn/unit-tests/
 %endif
-install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
+install -m 644 conf/log4j2.xml.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j2.xml
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
 install -d -m 755 $RPM_BUILD_ROOT%{spacewalksnippetsdir}
@@ -824,7 +824,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
-%{_datadir}/rhn/classes/log4j.properties
+%{_datadir}/rhn/classes/log4j2.xml
 %{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 

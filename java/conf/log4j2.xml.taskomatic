@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" name="TaskomaticConfig">
+    <Appenders>
+        <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_taskomatic_daemon.log"
+                     filePattern="rhn_taskomatic_daemon-%i.log">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <!-- Uncomment for hibernate logging -->
+        <!--
+        <File name="hibernateAppender" fileName="/var/log/rhn/rhn_taskomatic_hibernate.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+        </File>
+        -->
+    </Appenders>
+    <Loggers>
+        <!-- Turn this up to DEBUG to get detailed logging info -->
+        <Logger name="com.redhat.rhn.taskomatic.SchedulerKernel" level="info" />
+        <Logger name="com.redhat.rhn.taskomatic.task" level="info" />
+
+        <!-- these are here to avoid spewing the logs when DEBUG is
+             turned on.  There are times DEBUG is useful to have without
+             seeing all of the acl and l10n stuff. -->
+        <Logger name="com.redhat.rhn.common.localization.LocalizationService" level="warn" />
+        <Logger name="com.redhat.rhn.common.security.acl" level="warn" />
+
+        <!-- HTTP debugging -->
+        <!--
+        <Logger name="org.apache.http" level="debug" />
+        <Logger name="org.apache.http.wire" level="error" />
+        -->
+
+        <!-- General debug for everything. Very noisy -->
+        <!--
+        <Logger name="com.redhat.rhn" level="debug" />
+        <Logger name="com.suse" level="debug" />
+        -->
+
+        <!-- Hibernate logging -->
+        <!--
+        <Logger name="org.hibernate" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+
+        <Logger name="org.hibernate.type" level="trace" />
+        -->
+
+        <!-- log SQL statements -->
+        <!--
+        <Logger name="org.hibernate.SQL" level="debug" />
+        -->
+
+        <!--
+        <Logger name="net.rkbloom.logdriver" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+        -->
+
+        <!-- this silences ehcache on Fedoras complaining about using default values -->
+        <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
+        <Root level="warn"><AppenderRef ref="rootAppender" /></Root>
+    </Loggers>
+</Configuration>
