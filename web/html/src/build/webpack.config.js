@@ -50,7 +50,6 @@ module.exports = (env, argv) => {
     ];
   }
 
-  // TODO: Move and declare all new files in the specfile
   return [
     {
       entry: {
@@ -109,7 +108,6 @@ module.exports = (env, argv) => {
           },
           {
             // Stylesheets of dependencies
-            // TODO: Can we merge this with the above and/or use `MiniCssExtractPlugin.loader` here?
             test: /\.css$/,
             include: /node_modules/,
             use: [{ loader: "style-loader" }, { loader: "css-loader" }],
