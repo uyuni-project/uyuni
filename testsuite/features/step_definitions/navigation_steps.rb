@@ -1105,3 +1105,11 @@ Then(/^I should see minion hostname as first search result$/) do
     end
   end
 end
+
+When(/^I enter "([^"]*)" as the left menu search field$/) do |search_text|
+  step %(I enter "#{search_text}" as "nav-search")
+end
+
+Then(/^I should see left menu empty$/) do
+  raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
+end
