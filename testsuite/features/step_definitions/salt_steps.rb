@@ -192,7 +192,7 @@ When(/^I enter command "([^"]*)"$/) do |cmd|
 end
 
 When(/^I enter target "([^"]*)"$/) do |host|
-  value = $is_cloud_provider ? get_system_name(host) : SEARCH_VALUE[host]
+  value = get_system_name(host)
   fill_in('target', with: value, fill_options: { clear: :backspace })
 end
 
