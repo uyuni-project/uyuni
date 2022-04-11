@@ -62,7 +62,8 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
             // type is string (VARCHAR) and state is empty string
             if ((types[i] instanceof StringType) && "".equals(state[i])) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Object {} is setting empty string {}", entity.getClass().getCanonicalName(), propertyNames[i]);
+                    LOG.debug("Object {} is setting empty string {}", entity.getClass().getCanonicalName(),
+                            propertyNames[i]);
                 }
                 if (autoConvert) {
                     state[i] = null;

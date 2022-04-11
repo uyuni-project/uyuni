@@ -143,7 +143,8 @@ public class MethodUtil {
                 for (int j = 0; j < types.length; j++) {
                     Object curr = params[j];
                     if (log.isDebugEnabled()) {
-                        log.debug("Trying to translate from: {} to: {} isInstance: {}", (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
+                        log.debug("Trying to translate from: {} to: {} isInstance: {}",
+                                (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
                     }
                     if (curr != null && curr.getClass().isPrimitive() &&
                             types[j].isPrimitive()) {

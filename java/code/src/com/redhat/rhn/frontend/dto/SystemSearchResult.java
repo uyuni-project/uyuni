@@ -85,7 +85,8 @@ public class SystemSearchResult extends SystemOverview {
             // ignore
         }
         catch (NoSuchMethodException e) {
-            log.info("SystemSearchResult.lookupMatchingField() NoSuchMethodException caught looking up: {}, for system id = {}>", field, getId());
+            log.info("SystemSearchResult.lookupMatchingField() NoSuchMethodException caught looking up: {}, " +
+                    "for system id = {}>", field, getId());
         }
         return value;
     }

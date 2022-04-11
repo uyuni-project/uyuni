@@ -499,10 +499,12 @@ public class SystemSearchHelper {
                     // Create the serverInfo which we will be returning back
                     Package pkg = PackageFactory.lookupByIdAndUser(pkgId, user);
                     if (pkg == null) {
-                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex()  problem when looking up package id <{} PackageFactory.lookupByIdAndUser returned null.", pkgId);
+                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex()  problem when looking up package" +
+                                " id <{} PackageFactory.lookupByIdAndUser returned null.", pkgId);
                         continue;
                     }
-                    log.info("Package {}, id = {}, score = {}, serverIds associated with package = {}", pkg.getNameEvra(), pkgId, currentScore, serverIds.size());
+                    log.info("Package {}, id = {}, score = {}, serverIds associated with package = {}",
+                            pkg.getNameEvra(), pkgId, currentScore, serverIds.size());
                     Map serverInfo = new HashMap();
                     serverInfo.put("score", result.get("score"));
                     serverInfo.put("matchingField", "packageName");
@@ -510,7 +512,8 @@ public class SystemSearchHelper {
                     serverInfo.put("packageName", pkg.getNameEvra());
                     serverMaps.put(s, serverInfo);
                     if (log.isDebugEnabled()) {
-                        log.debug("created new map for server id: {}, searched with packageName: {} score = {}", s, pkg.getNameEvra(), serverInfo.get("score"));
+                        log.debug("created new map for server id: {}, searched with packageName: {} score = {}",
+                                s, pkg.getNameEvra(), serverInfo.get("score"));
                     }
                 }
             } // end for looping over servers per packageId
@@ -578,7 +581,8 @@ public class SystemSearchHelper {
             serverItem.put("matchingField", matchingField);
             serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = {}, hwdevice id: {} new map = {}", result.get("serverId"), result.get("id"), serverItem);
+                log.debug("creating new map for serverId = {}, hwdevice id: {} new map = {}",
+                        result.get("serverId"), result.get("id"), serverItem);
             }
             serverIds.put(sysId, serverItem);
         }
@@ -604,7 +608,8 @@ public class SystemSearchHelper {
             serverItem.put("matchingField", matchingField);
             serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = {}, snapshotID: {} new map = {}", result.get("serverId"), result.get("snapshotId"), serverItem);
+                log.debug("creating new map for serverId = {}, snapshotID: {} new map = {}",
+                        result.get("serverId"), result.get("snapshotId"), serverItem);
             }
             serverIds.put(Long.valueOf((String)result.get("serverId")), serverItem);
         }
@@ -634,7 +639,8 @@ public class SystemSearchHelper {
             }
             serverItem.put("matchingFieldValue", matchingFieldValue);
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = {}, customValueID: {} new map = {}", result.get("serverId"), result.get("id"), serverItem);
+                log.debug("creating new map for serverId = {}, customValueID: {} new map = {}",
+                        result.get("serverId"), result.get("id"), serverItem);
             }
             serverIds.put(Long.valueOf((String)result.get("serverId")), serverItem);
         }
@@ -742,7 +748,8 @@ public class SystemSearchHelper {
         Object[] keys = ids.keySet().toArray();
         for (Object key : keys) {
             if (!systems.contains((Long)key)) {
-                log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id {}, because it is not in the SystemSetManager list of ids", key);
+                log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id {}, because it is not" +
+                        " in the SystemSetManager list of ids", key);
                 ids.remove(key);
             }
         }

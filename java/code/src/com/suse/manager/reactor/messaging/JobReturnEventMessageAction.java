@@ -106,7 +106,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Job return event for minion: {}/{} ({})", jobReturnEvent.getMinionId(), jobReturnEvent.getJobId(), function);
+            LOG.debug("Job return event for minion: {}/{} ({})", jobReturnEvent.getMinionId(),
+                    jobReturnEvent.getJobId(), function);
         }
 
         // Prepare the job result as a json element
@@ -248,7 +249,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (minion.isPresent()) {
             MinionServer m = minion.get();
             if (jobResult.isEmpty()) {
-                LOG.warn("Do not update server info since job={} in minion={} is empty", jobReturnEvent.getJobId(), jobReturnEvent.getMinionId());
+                LOG.warn("Do not update server info since job={} in minion={} is empty", jobReturnEvent.getJobId(),
+                        jobReturnEvent.getMinionId());
                 return;
             }
             m.updateServerInfo();
@@ -288,7 +290,8 @@ public class JobReturnEventMessageAction implements MessageAction {
                         }
                     }
                      catch (JsonParseException e) {
-                         LOG.warn("Could not determine if packages changed in call to {} because of a parse error", function);
+                        LOG.warn("Could not determine if packages changed in call to {} because of a parse error",
+                                 function);
                         LOG.warn(e);
                     }
                     return fullPackageRefreshNeeded;

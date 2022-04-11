@@ -248,7 +248,8 @@ public class SaltService implements SystemQuery, SaltApi {
             Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
 
             return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
-                LOG.warn("Got no result for {} on minion {} (minion did not respond in time)", call.getPayload().get("fun"), minionId);
+                LOG.warn("Got no result for {} on minion {} (minion did not respond in time)",
+                        call.getPayload().get("fun"), minionId);
                         return Optional.empty();
                     }, Optional::of);
         }
@@ -300,7 +301,8 @@ public class SaltService implements SystemQuery, SaltApi {
                             return Optional.empty();
                         },
                         e -> {
-                            LOG.error("Error parsing json response from runner call {}: {}", runnerCallToString(call), e.getJson());
+                            LOG.error("Error parsing json response from runner call {}: {}",
+                                    runnerCallToString(call), e.getJson());
                             return Optional.empty();
                         },
                         e -> {
@@ -376,7 +378,8 @@ public class SaltService implements SystemQuery, SaltApi {
                         return Optional.empty();
                     },
                     e -> {
-                        LOG.error("Error parsing json response from wheel call {}: {}", wheelCallToString(call), e.getJson());
+                        LOG.error("Error parsing json response from wheel call {}: {}",
+                                wheelCallToString(call), e.getJson());
                         return Optional.empty();
                     },
                     e -> {

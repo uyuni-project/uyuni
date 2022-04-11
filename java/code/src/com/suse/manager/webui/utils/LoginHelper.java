@@ -168,7 +168,8 @@ public class LoginHelper {
                         createCmd.validate();
                         createCmd.storeNewUser();
                         remoteUser = createCmd.getUser();
-                        log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString, firstname, lastname, newUserOrg.getName());
+                        log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString,
+                                firstname, lastname, newUserOrg.getName());
                     }
                     catch (WrappedSQLException wse) {
                         log.error("Creation of user failed with: {}", wse.getMessage());
@@ -409,7 +410,8 @@ public class LoginHelper {
 
         if (log.isDebugEnabled()) {
             log.debug("RPM version of schema: {}", rpmSchemaVersion == null ? "null" : rpmSchemaVersion);
-            log.debug("Version of installed database schema: {}", installedSchemaVersion == null ? "null" : installedSchemaVersion);
+            log.debug("Version of installed database schema: {}",
+                    installedSchemaVersion == null ? "null" : installedSchemaVersion);
         }
 
         return rpmSchemaVersion != null && installedSchemaVersion != null &&

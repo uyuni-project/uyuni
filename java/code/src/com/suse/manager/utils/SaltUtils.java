@@ -1860,7 +1860,8 @@ public class SaltUtils {
             }
             catch (TaskomaticApiException e) {
                 LOG.error("Could not schedule channels state application");
-                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion {}", minion.getMinionId());
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion {}",
+                        minion.getMinionId());
             }
 
         }
@@ -1941,7 +1942,9 @@ public class SaltUtils {
                 }
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {} Result: {}", sa.getServer().getId(), sa.getParentAction().getId(), bootTime, sa.getPickupTime(), action.getEarliestAction(), result);
+                LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {}" +
+                        " Result: {}", sa.getServer().getId(), sa.getParentAction().getId(), bootTime,
+                        sa.getPickupTime(), action.getEarliestAction(), result);
             }
         }
         return result;

@@ -780,7 +780,8 @@ public class SystemManager extends BaseManager {
                 saltApi.removeSaltSSHKnownHost(server.getHostname());
         boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
         if (!removed) {
-            log.warn("Hostname {} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", server.getHostname(), result.map(MgrUtilRunner.RemoveKnowHostResult::getComment).orElse(""));
+            log.warn("Hostname {} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", server.getHostname(),
+                    result.map(MgrUtilRunner.RemoveKnowHostResult::getComment).orElse(""));
         }
     }
 

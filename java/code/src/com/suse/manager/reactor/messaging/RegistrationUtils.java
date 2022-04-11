@@ -225,7 +225,8 @@ public class RegistrationUtils {
         String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
-            LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key {} is not valid for minionId {}", activationKeyLabel.get(), minionId);
+            LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key {} is not valid " +
+                    "for minionId {}", activationKeyLabel.get(), minionId);
             SystemManager.addHistoryEvent(server, "Invalid Activation Key",
                     "Specified Activation Key " + activationKeyLabel.get() +
                             " is not valid. Default channel(s) NOT subscribed to.");
@@ -324,7 +325,8 @@ public class RegistrationUtils {
         return Opt.fold(
                 baseProductOpt,
                 () -> {
-                    LOG.warn("Server {} has no identifiable base product and will register without base channel assignment", minionId);
+                    LOG.warn("Server {} has no identifiable base product and will register without base channel " +
+                            "assignment", minionId);
                     return emptySet();
                 },
                 baseProduct -> Stream.concat(
@@ -374,7 +376,8 @@ public class RegistrationUtils {
                     return Opt.stream(rhel.getSuseProduct());
                 }
                 else {
-                    LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(), rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
+                    LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
+                            rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
             }).collect(toSet());
@@ -393,7 +396,8 @@ public class RegistrationUtils {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS), grains.getValueAsString(OS_ARCH));
+        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS),
+                grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 

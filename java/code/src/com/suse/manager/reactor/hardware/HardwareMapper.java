@@ -195,7 +195,8 @@ public class HardwareMapper {
         else {
             // should not happen but cpu.arch is not nullable so if we don't have
             // the arch we cannot persist the cpu
-            LOG.warn("Did not set server CPU. Could not find CPUArch in db for value '{}' for minion '{}", cpuarch, server.getMinionId());
+            LOG.warn("Did not set server CPU. Could not find CPUArch in db for value '{}' for minion '{}",
+                    cpuarch, server.getMinionId());
         }
     }
 
@@ -647,7 +648,8 @@ public class HardwareMapper {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);
                 // Fix the "uuid" for already wrong created virtual instances
                 for (VirtualInstance virtualInstance : virtualInstances) {
-                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [{}] -> [{}]", virtualInstance.getUuid(), virtUuid);
+                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [{}] -> [{}]",
+                            virtualInstance.getUuid(), virtUuid);
                     VirtualInstanceFactory.getInstance()
                             .deleteVirtualInstanceOnly(virtualInstance);
                     VirtualInstanceManager.addGuestVirtualInstance(
@@ -698,7 +700,8 @@ public class HardwareMapper {
             name = server.getName();
         }
         if (virtType != virtualInstance.getType()) {
-            LOG.info("Changing the type from -> {} to -> {}", virtualInstance.getType().getLabel(), virtType.getLabel());
+            LOG.info("Changing the type from -> {} to -> {}", virtualInstance.getType().getLabel(),
+                    virtType.getLabel());
             // Set rereg manual as DB trigger fire on update only, but we delete/insert.
             Optional.ofNullable(virtualInstance.getGuestSystem()).ifPresent(
                     gSrv -> SCCCachingFactory.setReregRequired(gSrv, true));
@@ -722,7 +725,8 @@ public class HardwareMapper {
         // Fix the wrong "uuid" reported by the minion
         // and remove buggy VirtualInstances with such wrong "uuid" from the DB.
         String virtUuidSwapped = SaltUtils.uuidToLittleEndian(virtUuid);
-        LOG.warn("Virtual machine doesn't report correct virtual UUID: {}. Coercing to : {}.", virtUuid, virtUuidSwapped);
+        LOG.warn("Virtual machine doesn't report correct virtual UUID: {}. Coercing to : {}.", virtUuid,
+                virtUuidSwapped);
         List<VirtualInstance> wrongVirtualInstances = VirtualInstanceFactory
                 .getInstance().lookupVirtualInstanceByUuid(virtUuid);
         wrongVirtualInstances.forEach(virtInstance ->

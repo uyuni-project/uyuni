@@ -95,7 +95,8 @@ public class SSHPushDriver implements QueueDriver {
         // Randomly select a modulo remainder
         moduloRemainder = SystemCheckinUtils.nextRandom(0, checkInterval - 1);
         if (log.isDebugEnabled()) {
-            log.debug("We will look for checkin candidates every {} minutes (remainder = {})", checkInterval, moduloRemainder);
+            log.debug("We will look for checkin candidates every {} minutes (remainder = {})", checkInterval,
+                    moduloRemainder);
         }
 
         // Skip all running or ready jobs if any

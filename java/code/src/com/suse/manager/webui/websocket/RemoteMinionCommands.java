@@ -264,7 +264,8 @@ public class RemoteMinionCommands {
                     res = saltApi
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
-                    LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(), msg.getCommand(), String.join(", ", previewedMinions));
+                    LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(),
+                            msg.getCommand(), String.join(", ", previewedMinions));
 
                 }
                 catch (NullPointerException e) {
@@ -287,7 +288,8 @@ public class RemoteMinionCommands {
                                         "ERR_CMD_SALT_ERROR", errMsg);
                                 },
                                 result -> {
-                                    LOG.info("User '{}' received command result from minion {}. Output is logged at DEBUG level.", webSession.getUser().getLogin(), minionId);
+                                    LOG.info("User '{}' received command result from minion {}. Output is logged at" +
+                                            "DEBUG level.", webSession.getUser().getLogin(), minionId);
                                     addHistoryEvent(webSession.getUser().getLogin(), minionId,
                                             msg.getCommand(), result);
                                     if (LOG.isDebugEnabled()) {

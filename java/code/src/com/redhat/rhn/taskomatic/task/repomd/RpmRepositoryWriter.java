@@ -250,7 +250,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             checksumLabel = "sha";
         }
 
-        log.info("Generating new repository metadata for channel '{}'({}) {} packages, {} errata", channel.getLabel(), checksumType, channel.getPackageCount(), channel.getErrataCount());
+        log.info("Generating new repository metadata for channel '{}'({}) {} packages, {} errata", channel.getLabel(),
+                checksumType, channel.getPackageCount(), channel.getErrataCount());
 
         CompressingDigestOutputWriter primaryFile, filelistsFile, otherFile, susedataFile;
 
@@ -422,7 +423,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             createdFiles.add(new File(prefix, "repomd.xml.asc"));
             createdFiles.add(new File(prefix, "repomd.xml.key"));
         }
-        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(), (int) (new Date().getTime() - start.getTime()) / 1000);
+        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(),
+                (int) (new Date().getTime() - start.getTime()) / 1000);
 
         generateSolv(channel);
         createdFiles.add(organizer.move(SOLV_FILE, "solv"));

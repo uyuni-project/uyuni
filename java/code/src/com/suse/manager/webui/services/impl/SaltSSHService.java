@@ -999,7 +999,8 @@ public class SaltSSHService {
                         });
                     }
                     else if (err != null) {
-                        LOG.error("Error cleaning up pending action chain execution on minion {}. Remove directory /var/tmp/.root_XXXX_salt/minion.d manually. ", minion.getMinionId(), err);
+                        LOG.error("Error cleaning up pending action chain execution on minion {}. Remove directory " +
+                                "/var/tmp/.root_XXXX_salt/minion.d manually. ", minion.getMinionId(), err);
                     }
                 }));
     }

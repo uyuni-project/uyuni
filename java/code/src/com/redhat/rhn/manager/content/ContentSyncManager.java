@@ -184,7 +184,8 @@ public class ContentSyncManager {
             log.error(e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Read {} channel families from {}", channelFamilies.size(), channelFamiliesJson.getAbsolutePath());
+            log.debug("Read {} channel families from {}", channelFamilies.size(),
+                    channelFamiliesJson.getAbsolutePath());
         }
         return channelFamilies;
     }
@@ -257,7 +258,9 @@ public class ContentSyncManager {
                     // Check for missing attributes
                     String missing = verifySCCProduct(product);
                     if (!StringUtils.isBlank(missing)) {
-                        log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} ### Missing attributes: {}", product.getName(), product.getVersion(), product.getIdentifier(), product.getId(), missing);
+                        log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
+                                "### Missing attributes: {}", product.getName(), product.getVersion(),
+                                product.getIdentifier(), product.getId(), missing);
                     }
 
                     // Add product in any case
@@ -1212,7 +1215,8 @@ public class ContentSyncManager {
                 .filter(sub -> "oem".equals(sub.getType()))
                 .forEach(sub -> {
                     if (sub.getSkus().size() == 1) {
-                        log.debug("Generating order item for OEM subscription {}, SCC ID: {}", sub.getName(), sub.getId());
+                        log.debug("Generating order item for OEM subscription {}, SCC ID: {}",
+                                sub.getName(), sub.getId());
                         long subscriptionSccId = sub.getId();
                         SCCOrderItem oemOrder = SCCCachingFactory.lookupOrderItemBySccId(-subscriptionSccId)
                                 .orElse(new SCCOrderItem());
@@ -1228,7 +1232,8 @@ public class ContentSyncManager {
                         existingOI.remove(oemOrder);
                     }
                     else {
-                        log.warn("Subscription {}, SCC ID: {} does not have a single SKU. Not generating Order Item for it.", sub.getName(), sub.getId());
+                        log.warn("Subscription {}, SCC ID: {} does not have a single SKU. " +
+                                "Not generating Order Item for it.", sub.getName(), sub.getId());
                     }
                 });
         existingOI.stream()
@@ -1652,16 +1657,20 @@ public class ContentSyncManager {
                             else {
                                 if (!entry.getParentChannelLabel()
                                         .equals(Optional.ofNullable(prodRepoLink.getParentChannelLabel()))) {
-                                    log.error("parent_channel_label changed from '{}' to '{}' but its not allowed to change.", prodRepoLink.getParentChannelLabel(), entry.getParentChannelLabel());
+                                    log.error("parent_channel_label changed from '{}' to '{}' but its not allowed " +
+                                            "to change.", prodRepoLink.getParentChannelLabel(),
+                                            entry.getParentChannelLabel());
                                 }
 
                                 if (!entry.getUpdateTag()
                                         .equals(Optional.ofNullable(prodRepoLink.getUpdateTag()))) {
-                                    log.debug("updatetag changed from '{}' to '{}' but its not allowed to change.", prodRepoLink.getUpdateTag(), entry.getUpdateTag());
+                                    log.debug("updatetag changed from '{}' to '{}' but its not allowed to change.",
+                                            prodRepoLink.getUpdateTag(), entry.getUpdateTag());
                                 }
 
                                 if (!entry.getChannelLabel().equals(prodRepoLink.getChannelLabel())) {
-                                    log.error("channel_label changed from '{}' to '{}' but its not allowed to change.", prodRepoLink.getChannelLabel(), entry.getChannelLabel());
+                                    log.error("channel_label changed from '{}' to '{}' but its not allowed to change.",
+                                            prodRepoLink.getChannelLabel(), entry.getChannelLabel());
                                 }
                             }
                             prodRepoLink.setChannelName(entry.getChannelName());
@@ -1805,7 +1814,8 @@ public class ContentSyncManager {
                     if (!isISSSlave) {
                         isMirrorable = entry.getRepository().isAccessible();
                     }
-                    log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", product.getFriendlyName(), entry.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
+                    log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", product.getFriendlyName(),
+                            entry.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
                     return  isPublic && (isMirrorable || isISSSlave);
                 }
              );
@@ -1846,7 +1856,8 @@ public class ContentSyncManager {
                     .allMatch(entry -> {
                         boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
                         boolean hasAuth = repoIdsWithAuth.contains(entry.getRepository().getId());
-                        log.debug("{} - {} isPublic: {} hasAuth: {}", product.getFriendlyName(), entry.getChannelLabel(), isPublic, hasAuth);
+                        log.debug("{} - {} isPublic: {} hasAuth: {}", product.getFriendlyName(),
+                                entry.getChannelLabel(), isPublic, hasAuth);
                         return  isPublic &&
                                 // isMirrorable
                                 hasAuth;

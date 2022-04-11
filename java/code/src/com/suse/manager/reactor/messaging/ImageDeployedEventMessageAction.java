@@ -56,18 +56,21 @@ public class ImageDeployedEventMessageAction implements MessageAction {
         LOG.info("Finishing minion registration for machine id {}", imageDeployedEvent.getMachineId());
 
         if (!imageDeployedEvent.getMachineId().isPresent()) {
-            LOG.warn("Machine id grain is not present in event data: {} . Skipping post image-deploy actions.", imageDeployedEvent);
+            LOG.warn("Machine id grain is not present in event data: {} . Skipping post image-deploy actions.",
+                    imageDeployedEvent);
             return;
         }
 
         Optional<MinionServer> minion = imageDeployedEvent.getMachineId().flatMap(MinionServerFactory::findByMachineId);
         if (!minion.isPresent()) {
-            LOG.warn("Minion id '{}' not found. Skipping post-image deploy actions.", imageDeployedEvent.getMachineId());
+            LOG.warn("Minion id '{}' not found. Skipping post-image deploy actions.",
+                    imageDeployedEvent.getMachineId());
             return;
         }
 
         minion.ifPresent(m -> {
-            LOG.info("System image of minion id '{}' has changed. Re-applying activation key, subscribing to channels and executing post-registration tasks.", m.getId());
+            LOG.info("System image of minion id '{}' has changed. Re-applying activation key, subscribing to channels" +
+                    " and executing post-registration tasks.", m.getId());
             ValueMap grains = imageDeployedEvent.getGrains();
 
             grains.getOptionalAsString("osarch").ifPresent(

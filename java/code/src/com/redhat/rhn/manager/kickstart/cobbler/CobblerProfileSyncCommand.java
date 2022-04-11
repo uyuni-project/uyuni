@@ -86,7 +86,8 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
 
             if (!profileNames.containsKey(profile.getCobblerId())) {
                   if (profile.getKickstartDefaults().getKstree().getCobblerId() == null) {
-                      log.warn("Kickstart profile {} could not be synced to cobbler, due to it's tree being unsynced.  Please edit the tree url to correct this.", profile.getLabel());
+                      log.warn("Kickstart profile {} could not be synced to cobbler, due to it's tree " +
+                              "being unsynced. Please edit the tree url to correct this.", profile.getLabel());
                   }
                   else {
                       createProfile(profile);

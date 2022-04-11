@@ -36,7 +36,8 @@ public class RunnableEventMessageAction implements MessageAction {
             event.getAction().run();
        }
        else {
-           LOG.warn("RunnableEventMessageAction got {} as message but requires {}", msg.getClass().getName(), RunnableEventMessage.class.getName());
+           LOG.warn("RunnableEventMessageAction got {} as message but requires {}", msg.getClass().getName(),
+                   RunnableEventMessage.class.getName());
        }
     }
 

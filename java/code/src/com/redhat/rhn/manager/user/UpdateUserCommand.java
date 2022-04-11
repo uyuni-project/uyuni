@@ -153,9 +153,7 @@ public class UpdateUserCommand {
 
     private void validatePrefix() {
         if (prefixChanged && !validPrefixes.contains(prefix)) {
-            throw new IllegalArgumentException(
-                    "Invalid prefix [" + prefix + "]. Must be one of " +
-                            validPrefixes);
+            throw new IllegalArgumentException("Invalid prefix [" + prefix + "]. Must be one of " + validPrefixes);
         }
     }
 
@@ -183,8 +181,7 @@ public class UpdateUserCommand {
             new InternetAddress(email).validate();
         }
         catch (AddressException e) {
-            throw new IllegalArgumentException(
-                    "Email address invalid. Cause: " + e);
+            throw new IllegalArgumentException("Email address invalid. Cause: " + e);
         }
     }
 

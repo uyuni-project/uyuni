@@ -337,7 +337,8 @@ public class CVEAuditManager {
             // We assume that there is always only one source!
             if (sources.size() > 1) {
                 SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
-                log.warn("More than one migration source product found for {} ({}):", product.getFriendlyName(), product.getProductId());
+                log.warn("More than one migration source product found for {} ({}):",
+                        product.getFriendlyName(), product.getProductId());
                 for (SUSEProductDto source : sources) {
                     SUSEProduct p = SUSEProductFactory.getProductById(source.getId());
                     log.warn("- {} ({})", p.getFriendlyName(), p.getProductId());
@@ -407,7 +408,8 @@ public class CVEAuditManager {
                         relevantChannelProductIDs, parentChannelID);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Found {} vendor channels -> channel products: {}", vendorChannelIDs.size(), relevantChannelProductIDs);
+                    log.debug("Found {} vendor channels -> channel products: {}",
+                            vendorChannelIDs.size(), relevantChannelProductIDs);
                 }
 
                 // Increase ranking index for unassigned product channels, but revert the

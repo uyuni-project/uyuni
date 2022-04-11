@@ -81,7 +81,8 @@ public class VirtualHostManagerProcessor {
     public void processMapping() {
         log.debug("Processing Virtual Host Manager: {}", virtualHostManager);
         if (virtualHosts == null) {
-            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.", virtualHostManager.getLabel());
+            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
+                    virtualHostManager.getLabel());
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());

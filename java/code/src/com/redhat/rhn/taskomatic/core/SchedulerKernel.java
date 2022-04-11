@@ -205,7 +205,8 @@ public class SchedulerKernel {
                     if (!runList.isEmpty()) {
                         // there're runs in the future
                         // reinit the schedule
-                        log.warn("Reinitializing {}, found {} runs in the future.", schedule.getJobLabel(), runList.size());
+                        log.warn("Reinitializing {}, found {} runs in the future.",
+                                schedule.getJobLabel(), runList.size());
                         TaskoFactory.reinitializeScheduleFromNow(schedule, now);
                         for (TaskoRun run : runList) {
                             TaskoFactory.deleteRun(run);
@@ -218,7 +219,8 @@ public class SchedulerKernel {
             for (Org org : OrgFactory.lookupAllOrgs()) {
                 int removed = tasko.unscheduleInvalidRepoSyncSchedules(org);
                 if (removed > 0) {
-                    log.warn("{} outdated repo-sync schedules detected and removed within org {}", removed, org.getId());
+                    log.warn("{} outdated repo-sync schedules detected and removed within org {}",
+                            removed, org.getId());
                 }
             }
             // close unfinished runs

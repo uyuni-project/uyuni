@@ -65,7 +65,8 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         boolean anythingChanged = false;
 
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommandArguments(String configFilePath={}, Iterator keyIterator={}) - start", configFilePath, optionMap);
+            logger.debug("getCommandArguments(String configFilePath={}, Iterator keyIterator={}) - start",
+                    configFilePath, optionMap);
         }
 
         List<String> argList = new LinkedList<>();

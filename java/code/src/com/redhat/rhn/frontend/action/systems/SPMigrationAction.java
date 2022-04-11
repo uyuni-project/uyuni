@@ -228,7 +228,8 @@ public class SPMigrationAction extends RhnAction {
             installedProducts.ifPresent(pset -> {
                 logger.debug(pset.toString());
                 if (pset.getBaseProduct() == null) {
-                    logger.error("Server: {} has no base product installed. Check your servers installed products.", server.getId());
+                    logger.error("Server: {} has no base product installed. Check your servers installed products.",
+                            server.getId());
                 }
             });
             List<SUSEProductSet> migrationTargets = getMigrationTargets(

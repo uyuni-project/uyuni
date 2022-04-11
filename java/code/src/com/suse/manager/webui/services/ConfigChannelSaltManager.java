@@ -113,11 +113,13 @@ public class ConfigChannelSaltManager {
     public synchronized void generateConfigChannelFiles(ConfigChannel channel,
             Optional<String> oldChannelLabel) {
         try {
-            LOG.debug("Generating file structure for configuration channel: {} (old channel label: {}).", channel.getLabel(), oldChannelLabel.orElse("<empty>"));
+            LOG.debug("Generating file structure for configuration channel: {} (old channel label: {}).",
+                    channel.getLabel(), oldChannelLabel.orElse("<empty>"));
             doGenerateConfigChannelFiles(channel);
         }
         catch (IOException e) {
-            LOG.error("Error when handling salt file structure for channel: {} (old channel label: {}). Removing files from disk.", channel, oldChannelLabel.orElse("<empty>"), e);
+            LOG.error("Error when handling salt file structure for channel: {} (old channel label: {}). " +
+                    "Removing files from disk.", channel, oldChannelLabel.orElse("<empty>"), e);
             removeConfigChannelFiles(channel.getOrgId(), channel.getLabel());
         }
         finally {
@@ -149,7 +151,8 @@ public class ConfigChannelSaltManager {
     private void doGenerateConfigChannelFiles(ConfigChannel channel) throws IOException {
         // TODO synchronize at file level not on the class instance
         if (!(channel.isNormalChannel() || channel.isStateChannel())) {
-            LOG.debug("Trying to generate salt files for incompatible channel type (channel: {}). Skipping. (Only 'normal' and 'state' configuration channels are supported.)", channel);
+            LOG.debug("Trying to generate salt files for incompatible channel type (channel: {}). Skipping. " +
+                    "(Only 'normal' and 'state' configuration channels are supported.)", channel);
             return;
         }
         File channelDir = getChannelDir(channel);
