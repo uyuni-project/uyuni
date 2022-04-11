@@ -502,7 +502,8 @@ public class SaltServerActionService {
                     taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
                 }
                 catch (TaskomaticApiException e) {
-                    LOG.error("Couldn't schedule SSH action id={} minion={}", actionIn.getId(), sshMinion.getMinionId(), e);
+                    LOG.error("Couldn't schedule SSH action id={} minion={}",
+                            actionIn.getId(), sshMinion.getMinionId(), e);
                 }
             }
         }
@@ -752,7 +753,8 @@ public class SaltServerActionService {
                                                 rebootServerAction.get().setPickupTime(new Date());
                                             }
                                         },
-                                        () -> LOG.error("Action of type " + SYSTEM_REBOOT + " found in action chain result but not in actions for minion {}", minionId));
+                                        () -> LOG.error("Action of type {} found in action chain result but not " +
+                                                "in actions for minion {}", SYSTEM_REBOOT, minionId));
                             }
                         }
 
@@ -2453,12 +2455,14 @@ public class SaltServerActionService {
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
-                LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.", action.getName());
+                LOG.info("Prerequisite of action '{}' is still queued. Skipping executing of the action.",
+                        action.getName());
                 return;
             }
 
             if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
-                LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(), action.getPrerequisite().getName());
+                LOG.info("Failing action '{}' as its prerequisite '{}' failed.", action.getName(),
+                        action.getPrerequisite().getName());
                 sa.fail(-100L, "Prerequisite failed.");
                 return;
             }
@@ -2475,7 +2479,8 @@ public class SaltServerActionService {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
-                    LOG.error("Error executing Salt call for action: {}on minion {}", action.getName(), minion.getMinionId(), e);
+                    LOG.error("Error executing Salt call for action: {}on minion {}",
+                            action.getName(), minion.getMinionId(), e);
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
@@ -2483,7 +2488,8 @@ public class SaltServerActionService {
                 }
 
                 if (!result.isPresent()) {
-                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or could not be contacted.", action.getName());
+                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
+                            "ould not be contacted.", action.getName());
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());

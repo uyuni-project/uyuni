@@ -312,7 +312,8 @@ public class SsmManager {
         }
 
         if (!newBaseIsCompatible) {
-            LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(), Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none"), srv.getId());
+            LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(),
+                    Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none"), srv.getId());
             return new ChannelSelectionResult(srv, "incompatible_base");
         }
         else {
@@ -388,7 +389,8 @@ public class SsmManager {
                     result.add(childToSubscribe.get());
                 }
                 else {
-                    LOG.warn("Child channel id={} not found in accessible children of {} for user={}", childId, newBaseChannel.getName(), user.getLogin());
+                    LOG.warn("Child channel id={} not found in accessible children of {} for user={}",
+                            childId, newBaseChannel.getName(), user.getLogin());
                 }
             }
             else if (action == ChannelChangeDto.ChannelAction.NO_CHANGE) {

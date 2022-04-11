@@ -200,7 +200,8 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
                 if (log.isDebugEnabled()) {
-                    log.debug("  findPerfectMethod: compare: {} isAssignableFrom {}", types[i].getCanonicalName(), params.get(i).getClass().getCanonicalName());
+                    log.debug("  findPerfectMethod: compare: {} isAssignableFrom {}", types[i].getCanonicalName(),
+                            params.get(i).getClass().getCanonicalName());
                 }
                 //if we find a param that doesn't match, go to the next method
                 if (!types[i].isAssignableFrom(params.get(i).getClass())) {

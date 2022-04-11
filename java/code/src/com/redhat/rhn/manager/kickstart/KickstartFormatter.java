@@ -741,7 +741,8 @@ public class KickstartFormatter {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("kickstart_host: [{}] kshost: [{}] indexof: {}", XMLRPC_HOST, this.ksHost, this.ksHost.indexOf(XMLRPC_HOST));
+            log.debug("kickstart_host: [{}] kshost: [{}] indexof: {}", XMLRPC_HOST, this.ksHost,
+                    this.ksHost.indexOf(XMLRPC_HOST));
         }
 
         String up2datehost = REDHAT_MGMT_SERVER;

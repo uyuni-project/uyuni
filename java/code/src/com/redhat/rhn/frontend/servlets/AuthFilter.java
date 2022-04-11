@@ -67,7 +67,8 @@ public class AuthFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         if (log.isDebugEnabled()) {
-            log.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(), ((HttpServletRequest) (request)).getRequestURI());
+            log.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
+                    ((HttpServletRequest) (request)).getRequestURI());
         }
 
         if (authenticationService.validate((HttpServletRequest)request,

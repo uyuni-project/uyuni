@@ -350,7 +350,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             Long selectedTargetServerId,
             User userIn) {
 
-        log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId, selectedTargetServerId);
+        log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId,
+                selectedTargetServerId);
         this.setPackagesToInstall(new LinkedList());
 
         // There must always be a host server present.
@@ -1020,9 +1021,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
                 if (!state.equals(KickstartFactory.SESSION_STATE_FAILED) ||
                         !state.equals(KickstartFactory.SESSION_STATE_COMPLETE)) {
-                    log.debug("    need to cancel this Session this.s: {} sess.hostServer: {}", hostServer.getId(), sess.getHostServer() == null ?
-                            "null" :
-                            "" + sess.getHostServer().getId());
+                    log.debug("    need to cancel this Session this.s: {} sess.hostServer: {}", hostServer.getId(),
+                            sess.getHostServer() == null ? "null" : "" + sess.getHostServer().getId());
                     if (sess.getHostServer() != null &&
                             sess.getHostServer().getId().equals(hostServer.getId())) {
                         log.debug("    Marking session failed.");

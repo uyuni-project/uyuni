@@ -123,13 +123,15 @@ public class ErrataMailer extends RhnJavaJob {
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
         if (orgServers == null || orgServers.size() == 0) {
-            log.debug("No relevant servers found for patch {} in channel {} for org {} ... skipping.", errata.getId(), channelId, orgId);
+            log.debug("No relevant servers found for patch {} in channel {} for org {} ... skipping.",
+                    errata.getId(), channelId, orgId);
             return;
         }
 
         Map<Long, List> userMap = createUserEmailMap(orgServers);
 
-        log.info("Found {} user(s) to notify about erratum {} in channel {} for org {}.", userMap.keySet().size(), errata.getId(), channelId, orgId);
+        log.info("Found {} user(s) to notify about erratum {} in channel {} for org {}.", userMap.keySet().size(),
+                errata.getId(), channelId, orgId);
 
         for (Long userId : userMap.keySet()) {
             Map userInfo = getUserInfo(userId);

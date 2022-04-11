@@ -349,7 +349,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         String oldMinionId = registeredMinion.getMinionId();
         String oldMachineId = registeredMinion.getMachineId();
         if (!minionId.equals(oldMinionId)) {
-            LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId, registeredMinion.getMachineId());
+            LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId,
+                    registeredMinion.getMachineId());
             MinionPillarManager.INSTANCE.removePillar(registeredMinion);
             registeredMinion.setName(minionId);
             registeredMinion.setMinionId(minionId);
@@ -444,7 +445,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             else if (!minion.getOrg().equals(org)) {
                 // only log activation key ignore message when the activation key is not empty
                 String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
-                LOG.error("The existing server organization ({}) does not match the organization selected for registration ({}). Keeping the existing server organization. {}", minion.getOrg(), org, ignoreAKMessage);
+                LOG.error("The existing server organization ({}) does not match the organization selected for " +
+                        "registration ({}). Keeping the existing server organization. {}", minion.getOrg(), org,
+                        ignoreAKMessage);
                 activationKey = empty();
                 org = minion.getOrg();
                 SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
@@ -514,7 +517,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
-                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion {}", minionId);
+                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion {}",
+                        minionId);
                 prepareRetailMinionForSaltboot(minion, org, grains);
                 applySaltboot(minion);
                 return;
@@ -626,7 +630,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (hwGroup != null) {
             // if the system is already assigned to some HWTYPE group, skip assignment and log this only
             if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
-                LOG.info("Skipping assignment of the minion {} to HW group {}. The minion is already in a HW group.", minion, hwGroup);
+                LOG.info("Skipping assignment of the minion {} to HW group {}. The minion is already in a HW group.",
+                        minion, hwGroup);
             }
             else {
                 systemManager.addServerToServerGroup(minion, hwGroup);
@@ -763,7 +768,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         ServerFactory.findContactMethodByLabel("default"),
                 ak -> {
                     if (!isSshPush && isSSHPushContactMethod(ak.getContactMethod())) {
-                        LOG.warn("Contact method changed from ssh-push to default for minion id {}. Please use webui for salt-ssh minions.", minionId);
+                        LOG.warn("Contact method changed from ssh-push to default for minion id {}. Please use webui " +
+                                "for salt-ssh minions.", minionId);
                         return ServerFactory.findContactMethodByLabel("default");
                     }
                     return ak.getContactMethod();
@@ -776,7 +782,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
         Optional<Channel> baseChannel = productBaseChannelDto
                 .flatMap(base -> ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
-                    LOG.info("Base channel {} found for OS: {}, version: {}, arch: {}", c.getName(), sp.getName(), sp.getVersion(), arch.getName());
+                    LOG.info("Base channel {} found for OS: {}, version: {}, arch: {}", c.getName(), sp.getName(),
+                            sp.getVersion(), arch.getName());
             return c;
         }));
         if (!baseChannel.isPresent()) {

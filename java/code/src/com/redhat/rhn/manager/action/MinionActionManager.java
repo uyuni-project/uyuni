@@ -155,7 +155,9 @@ public class MinionActionManager {
                                 return stagingTime;
                             }));
                         if (log.isDebugEnabled()) {
-                            scheduleActionData.forEach((id, stagingTime)-> log.info("Detected install/update action (id={}): scheduling staging job for minion server id: {} at {}", action.getId(), id, stagingTime));
+                            scheduleActionData.forEach((id, stagingTime) -> log.info(
+                                    "Detected install/update action (id={}): scheduling staging job for minion " +
+                                            "server id: {} at {}", action.getId(), id, stagingTime));
                         }
                     return scheduleActionData;
                 }

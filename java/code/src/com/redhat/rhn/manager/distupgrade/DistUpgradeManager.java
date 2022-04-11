@@ -183,7 +183,8 @@ public class DistUpgradeManager extends BaseManager {
         if (channelDto != null) {
             ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
             if (ret == null) {
-                logger.error("Channel lookup failure. No permissions for user {} on channel {}", user.getLogin(), channelDto.getLabel());
+                logger.error("Channel lookup failure. No permissions for user {} on channel {}",
+                        user.getLogin(), channelDto.getLabel());
             }
         }
         else {
@@ -336,7 +337,8 @@ public class DistUpgradeManager extends BaseManager {
                             logger.debug("No extension successors for base successor {}", baseSucc.getFriendlyName());
                         }
                         else {
-                            logger.debug("Found extension successors for base successor {}:", baseSucc.getFriendlyName());
+                            logger.debug("Found extension successors for base successor {}:",
+                                    baseSucc.getFriendlyName());
                             // let's print out list of list with friendly names
                             compatibleExtensionSuccessors.stream()
                                     .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
@@ -372,7 +374,8 @@ public class DistUpgradeManager extends BaseManager {
                             if (logger.isDebugEnabled()) {
                                 addonProducts.stream()
                                         .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                        .forEach(ap -> logger.debug("No SUSE Product Channels for {}. Skipping {}", ap.getFriendlyName(), base.getFriendlyName()));
+                                        .forEach(ap -> logger.debug("No SUSE Product Channels for {}. Skipping {}",
+                                                ap.getFriendlyName(), base.getFriendlyName()));
                             }
                             continue;
                         }
@@ -471,7 +474,10 @@ public class DistUpgradeManager extends BaseManager {
                     }
                 }
                 if (!foundChild) {
-                    logger.debug("Discarding cloned channel '{}' of base channel '{}' as a migration alternative. The cloned channel doesn't have required child channels. Required child channels: '{}', accessible child channels of the clone: '{}'.", clone, suseBaseChannel, requiredChildChannels, children);
+                    logger.debug("Discarding cloned channel '{}' of base channel '{}' as a migration alternative. " +
+                            "The cloned channel doesn't have required child channels. Required child channels: '{}', " +
+                            "accessible child channels of the clone: '{}'.", clone, suseBaseChannel,
+                            requiredChildChannels, children);
                     isValidAlternative = false;
                     break;
                 }

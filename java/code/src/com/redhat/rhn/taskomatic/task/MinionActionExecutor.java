@@ -119,7 +119,8 @@ public class MinionActionExecutor extends RhnJavaJob {
                         ZoneId.systemDefault()), ZonedDateTime.now())
                 .toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
-            log.warn("Scheduled action {} was scheduled to be executed more than " + MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.", action.getId());
+            log.warn("Scheduled action {} was scheduled to be executed more than {} hours ago. Skipping it.",
+                    action.getId(), MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
             return;
         }
 

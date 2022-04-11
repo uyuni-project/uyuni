@@ -1286,7 +1286,8 @@ public class ActionManager extends BaseManager {
             else if (pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_ONLY) {
 
                 if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}", pm.getName(), pm.getOtherEvr());
+                    log.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}",
+                            pm.getName(), pm.getOtherEvr());
                 }
 
                 params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
@@ -1304,7 +1305,9 @@ public class ActionManager extends BaseManager {
                     pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_NEWER) {
 
                 if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] from system installing package [{}-{}] to system", pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
+                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] " +
+                            "from system installing package [{}-{}] to system",
+                            pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
                 }
 
                 String epoch;
@@ -1608,7 +1611,9 @@ public class ActionManager extends BaseManager {
             KickstartData ksdata, User scheduler, Server srvr,
             Date earliestAction, String appendString, String kickstartHost) {
         if (log.isDebugEnabled()) {
-            log.debug("scheduleKickstartAction(KickstartData ksdata={}, User scheduler={}, Server srvr={}, Date earliestAction={}, String appendString={}, String kickstartHost={}) - start", ksdata, scheduler, srvr, earliestAction, appendString, kickstartHost);
+            log.debug("scheduleKickstartAction(KickstartData ksdata={}, User scheduler={}, Server srvr={}, " +
+                    "Date earliestAction={}, String appendString={}, String kickstartHost={}) - start",
+                    ksdata, scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
         return scheduleKickstartAction(ksdata.getPreserveFileLists(), scheduler, srvr,
@@ -1630,7 +1635,9 @@ public class ActionManager extends BaseManager {
             Set<FileList> fileList, User scheduler, Server srvr,
             Date earliestAction, String appendString, String kickstartHost) {
         if (log.isDebugEnabled()) {
-            log.debug("scheduleKickstartAction(, User scheduler={}, Server srvr={}, Date earliestAction={}, String appendString={}, String kickstartHost={}) - start", scheduler, srvr, earliestAction, appendString, kickstartHost);
+            log.debug("scheduleKickstartAction(, User scheduler={}, Server srvr={}, Date earliestAction={}, " +
+                    "String appendString={}, String kickstartHost={}) - start",
+                    scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
         KickstartAction ksaction = (KickstartAction) scheduleAction(scheduler, srvr,

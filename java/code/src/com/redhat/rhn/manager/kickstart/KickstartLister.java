@@ -260,7 +260,8 @@ public class KickstartLister extends BaseManager {
                                                     Collections.EMPTY_MAP, pc, m);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
+            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }
@@ -283,7 +284,8 @@ public class KickstartLister extends BaseManager {
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
+            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }
@@ -327,7 +329,8 @@ public class KickstartLister extends BaseManager {
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("getSystemsScheduledToBeKickstarted(Org, PageControl) - end - return value={}", returnDataResult);
+            logger.debug("getSystemsScheduledToBeKickstarted(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }

@@ -214,7 +214,8 @@ public class FormulaFactory {
         return Optional.ofNullable(formulasFolder.listFiles())
                 .map(Arrays::asList)
                 .orElseGet(() -> {
-                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the correct permissions (755).", formulasFolder.getAbsolutePath());
+                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
+                            "correct permissions (755).", formulasFolder.getAbsolutePath());
                     return Collections.EMPTY_LIST;
                 });
     }

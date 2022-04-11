@@ -123,7 +123,8 @@ public class ChildChannelAction extends RhnAction {
         }
 
         if (debugFound != children.size()) {
-            LOG.error("Did not process an equal number of children originally found. Children: {}, Found: {}", children.size(), debugFound);
+            LOG.error("Did not process an equal number of children originally found. Children: {}, Found: {}",
+                    children.size(), debugFound);
         }
     }
 

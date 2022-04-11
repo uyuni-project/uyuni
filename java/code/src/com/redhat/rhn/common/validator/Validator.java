@@ -129,8 +129,7 @@ public class Validator {
                                     constraint.getIdentifier());
         }
         catch (Exception e) {
-            String errorMessage = "Exception trying to get bean property: " +
-                    e;
+            String errorMessage = "Exception trying to get bean property: " + e;
             log.error(errorMessage, e);
             throw new ValidatorException(errorMessage, e);
         }

@@ -77,7 +77,8 @@ public class ChannelRepodataWorker implements QueueWorker {
         else {
             repoWriter = new RpmRepositoryWriter(prefixPath, mountPoint);
         }
-        logger.debug("Creating ChannelRepodataWorker with prefixPath({}), mountPoint({}) for channel_label ({})", prefixPath, mountPoint, channelLabelToProcess);
+        logger.debug("Creating ChannelRepodataWorker with prefixPath({}), mountPoint({}) for channel_label ({})",
+                prefixPath, mountPoint, channelLabelToProcess);
     }
 
     /**
@@ -113,7 +114,8 @@ public class ChannelRepodataWorker implements QueueWorker {
                         }
                     }
                     else {
-                        logger.debug("Not processing channel({}) because the request isn't forced AND the channel repodata isn't stale", channelLabelToProcess);
+                        logger.debug("Not processing channel({}) because the request isn't forced AND the channel " +
+                                "repodata isn't stale", channelLabelToProcess);
                     }
                 }
                 else {
@@ -126,7 +128,8 @@ public class ChannelRepodataWorker implements QueueWorker {
             }
             else {
                 HibernateFactory.commitTransaction();
-                logger.warn("NOT processing channel({}) because another thread is already working on run", channelLabelToProcess);
+                logger.warn("NOT processing channel({}) because another thread is already working on run",
+                        channelLabelToProcess);
             }
         }
         catch (Exception e) {
@@ -214,10 +217,12 @@ public class ChannelRepodataWorker implements QueueWorker {
             int channelLabels = inProgressChannel.executeUpdate(dqeParams);
             if (logger.isDebugEnabled()) {
                 if (inProgress) {
-                    logger.debug("Marked {} rows from the rhnRepoRegenQueue table in progress by setting next_action to null", channelLabels);
+                    logger.debug("Marked {} rows from the rhnRepoRegenQueue table in progress by setting " +
+                            "next_action to null", channelLabels);
                 }
                 else {
-                    logger.debug("Cleared {} in progress rows from the rhnRepoRegenQueue table by setting next_action", channelLabels);
+                    logger.debug("Cleared {} in progress rows from the rhnRepoRegenQueue table by " +
+                            "setting next_action", channelLabels);
                 }
             }
             HibernateFactory.commitTransaction();

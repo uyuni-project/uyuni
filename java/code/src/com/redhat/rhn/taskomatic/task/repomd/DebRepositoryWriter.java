@@ -145,14 +145,18 @@ public class DebRepositoryWriter extends RepositoryWriter {
                     new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg",
                             prefix + "InRelease"});
             if (exitCode != 0) {
-                log.error("Could not sign file {}Release. This will prevent the repository {} from working correctly. Make sure a valid key exists in the /root/.gnupg keyring and that its KEYID was set in /etc/rhn/signing.conf ", prefix, channel.getLabel());
+                log.error("Could not sign file {}Release. This will prevent the repository {} from working " +
+                        "correctly. Make sure a valid key exists in the /root/.gnupg keyring and that its KEYID " +
+                        "was set in /etc/rhn/signing.conf ", prefix, channel.getLabel());
             }
         }
         else {
-            log.warn("Channel metadata signing is disabled. APT repository {} is not secure.Refer to the Debian apt-secure manpage.", channel.getLabel());
+            log.warn("Channel metadata signing is disabled. APT repository {} is not secure.Refer to the " +
+                    "Debian apt-secure manpage.", channel.getLabel());
         }
 
-        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(), (int) (new Date().getTime() - start.getTime()) / 1000);
+        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(),
+                (int) (new Date().getTime() - start.getTime()) / 1000);
     }
 
     private void loadExtraTags(DataResult<PackageDto> packageBatch) {

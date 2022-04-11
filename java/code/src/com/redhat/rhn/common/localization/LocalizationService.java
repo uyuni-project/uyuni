@@ -125,8 +125,7 @@ public class LocalizationService {
             }
         }
         catch (ClassNotFoundException ce) {
-            String message = "Class not found when trying to initalize " +
-                    "the LocalizationService: " + ce;
+            String message = "Class not found when trying to initalize the LocalizationService: " + ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
@@ -280,7 +279,8 @@ public class LocalizationService {
         catch (MissingResourceException e) {
             // Try again with DEFAULT_LOCALE
             if (msgLogger.isDebugEnabled()) {
-                msgLogger.debug("Resolving message \"{}\" for locale {} failed -  trying again with default locale {}", messageId, userLocale, DEFAULT_LOCALE.toString());
+                msgLogger.debug("Resolving message \"{}\" for locale {} failed -  trying again with default locale {}",
+                        messageId, userLocale, DEFAULT_LOCALE.toString());
             }
             try {
                 mess = XmlMessages.getInstance().format(z, DEFAULT_LOCALE,
@@ -288,14 +288,14 @@ public class LocalizationService {
             }
             catch (MissingResourceException mre) {
                 if (msgLogger.isDebugEnabled()) {
-                    msgLogger.debug("Resolving message \"{}\" for default locale {} failed", messageId, DEFAULT_LOCALE.toString());
+                    msgLogger.debug("Resolving message \"{}\" for default locale {} failed", messageId,
+                            DEFAULT_LOCALE.toString());
                 }
                 return getMissingMessageString(messageId);
             }
         }
         catch (ClassNotFoundException ce) {
-            String message = "Class not found when trying to fetch a message: " +
-                    ce;
+            String message = "Class not found when trying to fetch a message: " + ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
