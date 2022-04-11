@@ -44,20 +44,16 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:  noarch
 BuildRequires:  java-devel >= 11
-BuildRequires:  nodejs
-BuildRequires:  nodejs-less
 Requires:       httpd
 %if 0%{?suse_version}
 Requires(pre): tomcat
 BuildRequires:  apache2
-BuildRequires:  susemanager-frontend-libs-devel
 Requires:       susemanager-advanced-topics_en-pdf
 Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
 %endif
-BuildRequires:  susemanager-frontend-libs-devel
 Requires:       susemanager-frontend-libs
 
 %description
@@ -81,39 +77,17 @@ javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
-# Compile less into css
-ln -s %{wwwdocroot}/css/bootstrap css/bootstrap
-lessc css/susemanager-light.less > css/susemanager-light.css
-lessc css/susemanager-dark.less > css/susemanager-dark.css
-lessc css/uyuni.less > css/uyuni.css
-lessc css/susemanager-fullscreen.less > css/susemanager-fullscreen.css
-rm -f css/bootstrap
-
 %install
 install -d -m 755 %{buildroot}%{wwwdocroot}
-install -d -m 755 %{buildroot}%{wwwdocroot}/css
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-cp -pR css/* %{buildroot}/%{wwwdocroot}/css
-cp -pR fonts %{buildroot}/%{wwwdocroot}/
-cp -pR img %{buildroot}/%{wwwdocroot}/
-# Appplication expects two favicon's for some reason, copy it so there's just
-# one in source:
-cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 
 %files
-%dir %{wwwdocroot}/css
-%{wwwdocroot}/css/*.css
-%dir %{wwwdocroot}/fonts
-%{wwwdocroot}/fonts/*
-%dir /%{wwwdocroot}/img
-%{wwwdocroot}/img/*
-%{wwwdocroot}/favicon.ico
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
@@ -125,9 +99,5 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %dir %{_prefix}/share/rhn
 %dir %{_prefix}/share/rhn/lib
 %endif
-
-%files devel
-%defattr(-,root,root)
-%{wwwdocroot}/css/*.less
 
 %changelog

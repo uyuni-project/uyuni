@@ -1,3 +1,4 @@
+- Stylesheets and relevant assets are now provided by spacewalk-web
 - Add UI for peripheral server with report database password
   regeneration
 - Show image build log in UI
