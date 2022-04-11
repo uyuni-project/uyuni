@@ -16,16 +16,14 @@ var options = {
   storeScreenshots: true,
   noInlineScreenshots: true,
   ignoreBadJsonFile: true,
-  name: 'Uyuni Testsuite',
+  name: 'Uyuni/Head Testsuite',
   brandTitle: ' ',
-  // metadata: {
-  //   "App Version":"",
-  //   "Test Environment": "",
-  //   "Browser": "",
-  //   "Platform": "",
-  //   "Parallel": "",
-  //   "Executed": ""
-  // }
+  metadata: {
+    "App Version":"Uyuni/Head",
+    "Browser": "Chrome",
+    "Platform": "x86_64",
+    "Parallel": "Disabled"
+  }
 };
 
 reporter.generate(options);
