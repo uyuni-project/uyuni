@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-04-09 14:12+0000\n"
+"PO-Revision-Date: 2022-04-11 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4210,46 +4210,48 @@ msgstr "napr. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Proxy administrator email"
-msgstr ""
+msgstr "Email administrátora proxy"
 
 #: ../html/src/manager/proxy/container-config.tsx:229
-#, fuzzy
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "napr. host.domain.com"
+msgstr "napr. proxy.admin@mycompany.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:236
 #: ../html/src/manager/proxy/container-config.tsx:237
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL certifikát"
 
 #: ../html/src/manager/proxy/container-config.tsx:245
 msgid "Use existing"
-msgstr ""
+msgstr "Použiť existujúce"
 
 #: ../html/src/manager/proxy/container-config.tsx:252
 msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgstr ""
+"Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo formáte "
+"PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:260
 msgid "CA private key to use to sign the SSL certificate in PEM format"
 msgstr ""
+"Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
+"formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:268
-#, fuzzy
 msgid "The CA private key password"
-msgstr "Vygenerovať nové heslo"
+msgstr "Heslo súkromného kľúča CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:276
 msgid "SSL Certificate data"
-msgstr ""
+msgstr "Dáta certifikátu SSL"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "Alternatívne záznamy CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:291
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:297
 msgid "2-letter country code"
