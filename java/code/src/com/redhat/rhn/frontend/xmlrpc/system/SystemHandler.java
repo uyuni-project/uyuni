@@ -7250,7 +7250,8 @@ public class SystemHandler extends BaseHandler {
      * @param excludeTargetWhereMissingSuccessors exclude target if any extension has missing successor
      * @return Array of migration targets for given system
      *
-     * @xmlrpc.doc List possible migration targets for a system
+     * @xmlrpc.doc List possible migration targets for a system, if excludeTargetWhereMissingSuccessors is false then
+     * valid targets without some successors will also be listed.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("boolean", "excludeTargetWhereMissingSuccessors")
@@ -7411,8 +7412,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
-     * - User listMigrationTargets to list the identifiers ")
+     * @xmlrpc.param #param_desc("string", "targetIdent", " identifier for the selected migration target.
+     *  User listMigrationTargets to list the identifiers ")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7458,8 +7459,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
-     * - Use listMigrationTargets to list the identifiers ")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7576,8 +7577,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent", "identifier for the selected migration target
-     *  - Use listMigrationTargets to list the identifiers")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7616,8 +7617,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
-     * - Use listMigrationTargets to list the identifiers "))
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7659,13 +7660,13 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent", " identifier for the selected migration target
-     * - User listMigrationTargets to list the identifiers "))
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target - User listMigrationTargets to list the identifiers ")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
      * @xmlrpc.param #param("boolean", "allowVendorChange")
-     * @xmlrpc.param #param("boolean", "removeProductsWithNoSuccessorAfterMigration", "set to remove products which
+     * @xmlrpc.param #param_desc("boolean", "removeProductsWithNoSuccessorAfterMigration","set to remove products which
      * have no successors. This flag will only have effect if targetIdent will also be specified")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
