@@ -443,7 +443,7 @@
       <path refid="libjars" />
     </path>
 
-    <move file="${build.dir}/classes/log4j.properties" tofile="${build.dir}/classes/log4j.properties.bak" />
+    <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
 
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
@@ -460,7 +460,7 @@
       <excludepackage name="**/*" />
     </javadoc>
     
-    <move file="${build.dir}/classes/log4j.properties.bak" tofile="${build.dir}/classes/log4j.properties" />
+    <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml" />
 
   </target>
 
