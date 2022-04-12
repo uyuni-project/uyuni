@@ -234,12 +234,13 @@ public class SaltUtils {
      * @param callResult the result of the call
      * @return true if installed packages have changed or unparsable json, otherwise false
      */
-    public boolean shouldRefreshPackageList(String function,
+    public boolean shouldRefreshPackageList(Optional<Xor<String[], String>> function,
             Optional<JsonElement> callResult) {
-        if (PKG_EXECUTION_MODULES.contains(function)) {
+        List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(ArrayList::new);
+        if (functions.stream().anyMatch(PKG_EXECUTION_MODULES::contains)) {
             return true;
         }
-        if (function.equals("state.apply")) {
+        if (functions.contains("state.apply")) {
             return Opt.fold(
                 callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
                 () -> false,
@@ -265,15 +266,18 @@ public class SaltUtils {
      * @param server server to update
      * @return an outcome
      */
-    public PackageChangeOutcome handlePackageChanges(String function,
+    public PackageChangeOutcome handlePackageChanges(Optional<Xor<String[], String>> function,
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 
-        if (function == null) {
-            LOG.error("NULL function for: {}{}", server.getName(), callResult.toString());
+        List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(List::of);
+
+        if (functions.isEmpty()) {
+            LOG.error("NULL function for: " + server.getName() + callResult.toString());
             throw new BadParameterException("function must not be NULL");
         }
-        if (PKG_STATE_MODULES.contains(function)) {
+
+        if (functions.stream().anyMatch(PKG_STATE_MODULES::contains)) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
                 callResult,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
@@ -282,7 +286,7 @@ public class SaltUtils {
             ErrataManager.insertErrataCacheTask(server);
             outcome = applyChangesFromStateModule(delta, server);
         }
-        else if (function.equals("state.apply")) {
+        else if (functions.contains("state.apply")) {
             Map<String, JsonElement> apply = Json.GSON.fromJson(
                 callResult, new TypeToken<Map<String, JsonElement>>() { }.getType());
             ErrataManager.insertErrataCacheTask(server);
@@ -474,7 +478,7 @@ public class SaltUtils {
      * @param function salt function used for the action
      */
     public void updateServerAction(ServerAction serverAction, long retcode,
-            boolean success, String jid, JsonElement jsonResult, String function) {
+            boolean success, String jid, JsonElement jsonResult, Optional<Xor<String[], String>> function) {
         serverAction.setCompletionTime(new Date());
 
         // Set the result code defaulting to 0
@@ -482,7 +486,7 @@ public class SaltUtils {
 
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
-        if (jsonResult == null && function == null) {
+        if (jsonResult == null && function.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg("Prerequisite failed");
             return;
@@ -855,7 +859,12 @@ public class SaltUtils {
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
         Map<String, FilesDiffResult> diffResults = new HashMap<>();
         // We are only interested in results where files are different/new.
-        results.values().stream().filter(fdr -> !fdr.isResult()).forEach(fdr -> diffResults.put(fdr.getName(), fdr));
+        results.values().stream().filter(fdr -> !fdr.isResult())
+                .forEach(fdr -> diffResults.put(
+                        fdr.getName()
+                                .flatMap(x -> x.fold(arr -> Arrays.stream(arr).findFirst(), Optional::of))
+                                .orElse(null),
+                        fdr));
 
         ConfigVerifyAction configAction = (ConfigVerifyAction) action;
         configAction.getConfigRevisionActions().forEach(cra -> {
@@ -1136,10 +1145,10 @@ public class SaltUtils {
      *
      * @return true if the action has failed, false otherwise
      */
-    private static boolean actionFailed(String function, JsonElement rawResult,
+    private static boolean actionFailed(Optional<Xor<String[], String>> function, JsonElement rawResult,
             boolean success, long retcode) {
         // For state.apply based actions verify the result of each state
-        if (function.equals("state.apply")) {
+        if (function.map(x -> x.fold(Arrays::asList, List::of).contains("state.apply")).orElse(false)) {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
                 () -> true,
