@@ -1375,15 +1375,15 @@ When(/^I prepare Cobbler for the buildiso command$/) do
   $server.run("mkdir -p #{tmp_dir}")
   # we need bootloaders for the buildiso command
   _out, code = $server.run("cobbler mkloaders")
-  raise 'error in cobbler mkloaders, check the Cobbler logs' if code.nonzero?
+  raise 'error in cobbler mkloaders.\nLogs:\n#{_out}' if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distro|
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}")
-  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
-  profiles = ["orchid", "flame", "pearl"]
+  raise 'error in cobbler buildiso.\nLogs:\n#{_out}' if code.nonzero?
+  profiles = ['orchid', 'flame', 'pearl']
   isolinux_profiles = []
   cobbler_profiles = []
   profiles.each do |profile|
@@ -1403,15 +1403,14 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}")
-  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
+  raise 'error in cobbler buildiso.\nLogs:\n#{_out}' if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without dns entries$/) do |distro, profile|
   tmp_dir = "/var/cache/cobbler/buildiso"
   iso_dir = "/var/cache/cobbler"
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns")
-  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
-  # TODO Check for missing nameserver entry in isolinux.cfg
+  raise 'error in cobbler buildiso.\nLogs:\n#{_out}' if code.nonzero?
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver")
   # we have to fail here if the command suceeds
   raise 'error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found' if code.zero?
@@ -1427,7 +1426,7 @@ When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distr
   $server.run("mv #{tmp_dir} #{source_dir}")
   $server.run("mkdir -p #{tmp_dir}")
   _out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}")
-  raise 'error in cobbler buildiso, check the Cobbler logs' if code.nonzero?
+  raise 'error in cobbler buildiso.\nLogs:\n#{_out}' if code.nonzero?
 end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
@@ -1448,7 +1447,7 @@ end
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}")
   puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
-  raise 'error in adding parameter and value to Cobbler distro/profile/system' if code.nonzero?
+  raise 'error in adding parameter and value to Cobbler distro/profile/system.\nLogs:\n#{result}' if code.nonzero?
 end
 
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
