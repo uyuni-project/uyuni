@@ -93,7 +93,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             if (!firstBatch.isEmpty()) {
                 // Generate the insert using the column name retrieved from the select
                 WriteMode insert = generateInsert(localSession, tableName, mgmId, firstBatch.get(0).keySet());
-                insert.executeUpdates(firstBatch);
+                insert.executeBatchUpdates(firstBatch);
                 log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
@@ -101,7 +101,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                     ReportDBHelper.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
                             .forEach(batch -> {
                                 batch.forEach(e -> e.remove("mgm_id"));
-                                insert.executeUpdates(batch);
+                                insert.executeBatchUpdates(batch);
                                 log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
                             });
                 }

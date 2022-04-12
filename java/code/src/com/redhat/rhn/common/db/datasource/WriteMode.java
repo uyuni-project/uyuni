@@ -66,4 +66,14 @@ public class WriteMode extends BaseMode {
         }
         return getQuery().executeUpdate(parameters, inClause);
     }
+
+    /**
+     * Executes multiple updates with the given query parameters in batch mode.
+     *
+     * @param batch a list of parameter maps
+     * @return an array of update counts containing one element for each command in the batch
+     */
+    public int [] executeBatchUpdates(DataResult<Map<String, Object>> batch) {
+        return getQuery().executeBatchUpdates(batch);
+    }
 }
