@@ -611,11 +611,6 @@ install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_R
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
-# special links for taskomatic
-TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
-rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
-rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
-
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
