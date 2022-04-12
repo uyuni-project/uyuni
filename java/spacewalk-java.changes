@@ -1,9 +1,10 @@
+- improve performance of synchronizing peripheral report databases
 - Allow alternative location for byte-buddy jar.
 - Allow migration where target products have no successor
 - require new salt-netapi-client version
 - Fix PXEEvent string comparision
 - Make TERMINALS group optional for saltbooted machines
-Fix outdated documentation and release notes links
+- Fix outdated documentation and release notes links
 
 -------------------------------------------------------------------
 Wed Apr 27 12:40:30 CEST 2022 - jgonzalez@suse.com
