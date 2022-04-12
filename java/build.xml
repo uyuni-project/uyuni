@@ -215,7 +215,7 @@
       <pathelement location="build/classes" />
     </path>
 
-    <move file="${build.dir}/classes/log4j.properties" tofile="${build.dir}/classes/log4j.properties.bak" />
+    <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
 
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
@@ -232,7 +232,7 @@
       <excludepackage name="**/*" />
     </javadoc>
 
-    <move file="${build.dir}/classes/log4j.properties.bak" tofile="${build.dir}/classes/log4j.properties" />
+    <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml" />
 
   </target>
 
@@ -394,20 +394,20 @@
       <fileset dir="${src.dir}/src">
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
-         <exclude name="**/log4j.properties" />
+         <exclude name="**/log4j2.xml" />
       </fileset>
     </copy>
   </target>
 
   <target name ="setup-log4j" >
-    <property name="dest.log4j" location = "${build.dir}/classes/log4j.properties"/>
+    <property name="dest.log4j" location = "${build.dir}/classes/log4j2.xml"/>
     <if>
       <available file="${custom.log4j}"/>
       <then>
         <copy tofile="${dest.log4j}" file="${custom.log4j}"/>
       </then>
       <else>
-        <copy tofile="${dest.log4j}" file="${src.dir}/src/log4j.properties"/>
+        <copy tofile="${dest.log4j}" file="${src.dir}/src/log4j2.xml"/>
       </else>
     </if>
   </target>
@@ -517,7 +517,7 @@
         <exclude name="**/*.html" />
         <exclude name="**/test/" />
         <exclude name="**/*/testing/**" />
-        <exclude name="**/log4j.properties" />
+        <exclude name="**/log4j2.xml" />
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
       </fileset>
@@ -549,7 +549,7 @@
         <exclude name="help/**" unless="includehelp"/>
       </fileset>
       <classes dir="${build.dir}/classes">
-        <include name="log4j.properties" />
+        <include name="log4j2.xml" />
       </classes>
       <lib dir="${run.lib.dir}">
         <include name="rhn.jar"/>
