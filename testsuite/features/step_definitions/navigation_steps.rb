@@ -259,7 +259,7 @@ When(/^I click on "([^"]*)"$/) do |text|
   if text == 'Search' && has_text?('Could not connect to search server.', wait: 0)
     click_button(text, match: :first, wait: false)
     start = Time.new
-    timeout = 5
+    timeout = 10
     while (has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)) &&
           (Time.new - start <= timeout)
 
