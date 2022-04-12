@@ -1,3 +1,4 @@
+- sort pg_hba.conf file (bsc#1198154)
 - delopy local CA under different name in the truststore to avoid
   conflicts with CAs deployed during a registration
 - Add pg-migrate-12-to-14.sh script
