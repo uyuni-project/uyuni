@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.db;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 
 import java.sql.CallableStatement;
@@ -216,6 +217,30 @@ public final class NamedPreparedStatement {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
             }
+        }
+    }
+
+    /**
+     * Execute the PreparedStatement using the given values for bind
+     * parameters in batch mode.
+     * @param ps The PreparedStatement to execute
+     * @param parameterMap The Map returned setup by replaceBindParams
+     * @param batch The values to substitute for the named bind parameters
+     * @see java.sql.PreparedStatement#executeBatch()
+     * @return an array of update counts containing one element for each command in the batch
+     * @throws RuntimeException in case of SQLException
+     */
+    public static int[] executeBatch(PreparedStatement ps,
+            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch) {
+        try {
+            for (Map<String, ?> parameters : batch) {
+                setVars(ps, parameterMap, parameters);
+                ps.addBatch();
+            }
+            return ps.executeBatch();
+        }
+        catch (SQLException e) {
+            throw SqlExceptionTranslator.sqlException(e);
         }
     }
 }
