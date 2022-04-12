@@ -88,6 +88,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -1013,14 +1014,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
             @Override
-            public boolean shouldRefreshPackageList(String function,
+            public boolean shouldRefreshPackageList(Optional<Xor<String[], String>> function,
                                                     Optional<JsonElement> callResult) {
                 return false;
             }
 
             @Override
-            public void updateServerAction(ServerAction serverAction, long retcode,
-                                           boolean success, String jid, JsonElement jsonResult, String function) {
+            public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
+                                           JsonElement jsonResult, Optional<Xor<String[], String>> function) {
                 serverAction.setStatus(STATUS_COMPLETED);
             }
         };

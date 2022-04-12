@@ -40,6 +40,7 @@ import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import org.apache.log4j.Logger;
@@ -123,7 +124,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             jobReturnEvent.getData().isSuccess(),
                             jobReturnEvent.getJobId(),
                             jobResult.get(),
-                            jobReturnEvent.getData().getFun()));
+                            Optional.ofNullable(jobReturnEvent.getData().getFun()).map(Xor::right)));
         });
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
@@ -195,7 +196,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         });
 
         //For all jobs except when action chains are involved
-        if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent, function, jobResult)) {
+        if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent,
+                Optional.ofNullable(function).map(Xor::right), jobResult)) {
             Date earliest = new Date();
             if (actionId.isPresent()) {
                 Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
@@ -278,7 +280,7 @@ public class JobReturnEventMessageAction implements MessageAction {
      * @return return false If there is enough information to update database with new Package information(delta)
      *         return true If information is not enough and a full package refresh is needed
      */
-    private boolean handlePackageChanges(JobReturnEvent jobReturnEvent, String function,
+    private boolean handlePackageChanges(JobReturnEvent jobReturnEvent, Optional<Xor<String[], String>> function,
                                                 Optional<JsonElement> jobResult) {
 
         return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).flatMap(minionServer ->
