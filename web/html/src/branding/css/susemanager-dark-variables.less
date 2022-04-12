@@ -1,72 +1,82 @@
-/* EOS Colors guideline https://suse.eosdesignsystem.com/colors */
-@eos-white:          #FFFFFF;
-@eos-green-light:    #E4F6EE; // $eos-bc-green-100
-@eos-green:          #30BA78; // $eos-bc-green-500
-@eos-green-dark:     #139448; // $eos-bc-green-900
-@eos-pine:           #0C322C; // $eos-bc-pine-500
-@eos-blue-light:     #B3E8F6; // $eos-bc-cerulean-100
-@eos-blue:           #00B2E2; // $eos-bc-cerulean-500
-@eos-blue-dark:      #008ACF; // $eos-bc-cerulean-900
-@eos-yellow-light:   #FFECB5; // $eos-bc-yellow-100
-@eos-yellow:         #FFC107; // $eos-bc-yellow-500
-@eos-yellow-dark:    #FF9E02; // $eos-bc-yellow-900
-@eos-red-light:      #F5C2C7; // $eos-bc-red-100
-@eos-red:            #DC3545; // $eos-bc-red-500
-@eos-red-dark:       #C5161F; // $eos-bc-red-900
-@eos-gray-light-3:   #F2F2F2; // $eos-bc-gray-50
-@eos-gray-light-2:   #E0DFDF; // $eos-bc-gray-100
-@eos-gray-light-1:   #B6B4B4; // $eos-bc-gray-300
-@eos-gray:           #969494; // $eos-bc-gray-500
-@eos-gray-dark-1:    #797777; // $eos-bc-gray-700
-@eos-gray-dark-2:    #686565; // $eos-bc-gray-900
-@eos-gray-dark-3:    #141823; // $eos-bc-gray-1000
+/**
+ * EOS Colors guideline for products https://productbrand.suse.com/colors
+ *
+ * We can't use `eos-ds` as a dependency directly since they use Sass and we use Less
+ */
+/* EOS Colors guideline for products https://productbrand.suse.com/colors */
+@eos-bc-green-100:      #e4f6ee;
+@eos-bc-green-500:      #30ba78;
+@eos-bc-green-900:      #0e7e3c;
+@eos-bc-pine-500:       #0c322c;
+@eos-bc-cerulean-100:   #b3e8f6;
+@eos-bc-cerulean-500:   #00b2e2;
+@eos-bc-cerulean-900:   #008acf;
+@eos-bc-red-100:        #f5c2c7;
+@eos-bc-red-500:        #dc3545;
+@eos-bc-red-900:        #c5161f;
+@eos-bc-yellow-100:     #ffecb5;
+@eos-bc-yellow-500:     #ffc107;
+@eos-bc-yellow-900:     #ff9e02;
+@eos-bc-blue-500:       #2453ff;
+@eos-bc-persimmon-500:  #fe7c3f;
+@eos-bc-gray-50:        #f2f2f2;
+@eos-bc-gray-100:       #e0dfdf;
+@eos-bc-gray-300:       #b6b4b4;
+@eos-bc-gray-500:       #969494;
+@eos-bc-gray-700:       #757575;
+@eos-bc-gray-900:       #686565;
+@eos-bc-gray-1000:      #141823;
+@eos-bc-white:          #fff;
+@eos-bc-dt-gray-100:    #2b2e38;
+@eos-bc-dt-gray-200:    #1f222b;
+@eos-bc-waterhole-blue: #2453ff;
 
 /* Login page */
-@login-background:      @eos-gray-dark-3;
-@login-text:            @eos-gray-light-3;
-@login-footer-text:     @eos-gray-light-1;
+@login-background:      @eos-bc-gray-1000;
+@login-text:            @eos-bc-gray-50;
+@login-footer-text:     @eos-bc-gray-300;
 
 /* Special colours for SUSE Manager */
-@susemanager-link:            @eos-blue-dark;
+@susemanager-link:            @eos-bc-cerulean-900;
 
-/* Main tags colours */
-@green-dark:             @eos-green-dark;
-@green:                  @eos-green;
-@green-light:            @eos-green-light;
-@gray-dark:              @eos-gray-dark-3;
-@gray-dark-1:            @eos-gray-dark-1;
-@gray:                   @eos-gray;
-@gray-light:             @eos-gray-light-2;
-@gray-light-1:           @eos-gray-light-3;
-@orange:                 @eos-yellow-dark;
+/* Main tags colours for Bootstrap */
+@green-dark:             @eos-bc-green-900;
+@green:                  @eos-bc-green-500;
+@green-light:            @eos-bc-green-100;
+@gray-dark:              @eos-bc-gray-1000;
+@gray-dark-1:            @eos-bc-gray-700;
+@gray:                   @eos-bc-gray-500;
+@gray-light:             @eos-bc-gray-100;
+@gray-light-1:           @eos-bc-gray-50;
+@orange:                 @eos-bc-yellow-900;
 @orange-light:           #fd9a2b;
 @yellow-dark:            #c5b345;
-@yellow:                 @eos-yellow;
-@red:                    @eos-red;
-@white:                  @eos-white;
-@blue:                   @eos-blue-dark;
-@blue-light:             @eos-blue;
+@yellow:                 @eos-bc-yellow-500;
+@red:                    @eos-bc-red-500;
+@white:                  @eos-bc-white;
+@blue:                   @eos-bc-cerulean-900;
+@blue-light:             @eos-bc-cerulean-500;
 @violet:                 #841781;
-@black:                  #000000;
+@black:                  @eos-bc-gray-1000;
 
 /* Body */
-@body-background:     @eos-gray-light-3;
+@body-background:     @eos-bc-gray-50;
 
 /* Header */
-@header:          @eos-pine;
-@header-text:     @eos-gray-light-3;
+@header:          @eos-bc-pine-500;
+@header-text:     @eos-bc-gray-50;
 
 /* Colours for the menu in the first column on the left */
-@aside:                        @eos-gray-dark-3;
+@aside:                        @eos-bc-gray-1000;
 @aside-border:                 lighten(@aside, 8%);
-@aside-menu-text:              @eos-gray-light-3;
+@aside-menu-text:              @eos-bc-gray-50;
 @aside-menu-active:            @green;
-@aside-menu-active-text:       @eos-white;
+@aside-menu-active-text:       @eos-bc-white;
 
 /* aside menu search box */
-@aside-menu-search-border:         @eos-gray-dark-3;
-@aside-menu-search-clear:          fade(@eos-gray-light-1, 60%);
-@aside-menu-search-clear-hover:    @eos-gray-dark-1;
+@aside-menu-search-border:         @eos-bc-gray-1000;
+@aside-menu-search-clear:          fade(@eos-bc-gray-300, 60%);
+@aside-menu-search-clear-hover:    @eos-bc-gray-700;
 
 /* Icons legend */
 @icon-legend:       @header;
@@ -74,10 +84,10 @@
 
 /* Footer colours */
 @footer:            @aside;
-@footer-text:       @eos-gray-light-2;
-@footer-links:      @eos-gray-light-2;
-@footer-hover:      @eos-gray-light-2;
-@footer-border:     @eos-gray-dark-3;
+@footer-text:       @eos-bc-gray-100;
+@footer-links:      @eos-bc-gray-100;
+@footer-hover:      @eos-bc-gray-100;
+@footer-border:     @eos-bc-gray-1000;
 
 /* Buttons */
 @btn-primary-bg:     @green;
@@ -92,8 +102,8 @@
 /* Other elements */
 @notification-badge:     @orange-light;
 @box-shadow:             @gray-light;
-@inactive:               @eos-gray-light-2;
-@table-row-selected:     lighten(@eos-yellow-light, 5%);
+@inactive:               @eos-bc-gray-100;
+@table-row-selected:     lighten(@eos-bc-yellow-100, 5%);
 
 /**
 * FONTS
