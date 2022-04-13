@@ -186,7 +186,7 @@
   <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --delete --rsh '${rsync.arg.rsh}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+      <arg line="-a --delete --rsh '${rsync.arg.rsh}' --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
 
     <echo message="Linking the branding jar..." />
