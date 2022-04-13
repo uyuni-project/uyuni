@@ -1,0 +1,42 @@
+--
+-- Copyright (c) 2022 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON VIEW AccountsReport
+  IS 'List of all users for all organizations, with their details and roles.';
+
+COMMENT ON COLUMN AccountsReport.mgm_id
+  IS 'The id of the SUSE Manager instance that contains this data';
+COMMENT ON COLUMN AccountsReport.organization
+  IS 'The organization that owns this data';
+COMMENT ON COLUMN AccountsReport.account_id
+  IS 'The id of the user account';
+COMMENT ON COLUMN AccountsReport.username
+  IS 'The username used to login';
+COMMENT ON COLUMN AccountsReport.last_name
+  IS 'The person last name(s)';
+COMMENT ON COLUMN AccountsReport.first_name
+  IS 'The person first name(s)';
+COMMENT ON COLUMN AccountsReport.position
+  IS 'The descriptive role of this user within the organization';
+COMMENT ON COLUMN AccountsReport.email
+  IS 'The email address associated with this account';
+COMMENT ON COLUMN AccountsReport.roles
+  IS 'List of roles assigned to the user, separated by ;';
+COMMENT ON COLUMN AccountsReport.creation_time
+  IS 'When this user account was created';
+COMMENT ON COLUMN AccountsReport.last_login_time
+  IS 'When this user account logged in for the last time';
+COMMENT ON COLUMN AccountsReport.status
+  IS 'Current status of the user. Possible values: enabled, disabled';
+COMMENT ON COLUMN AccountsReport.md5_encryption
+  IS 'True if md5 encryption is used to encode the user password.';
+COMMENT ON COLUMN AccountsReport.synced_date
+  IS 'The timestamp of when this data was last refreshed.';

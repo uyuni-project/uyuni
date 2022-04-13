@@ -1,0 +1,33 @@
+--
+-- Copyright (c) 2022 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON TABLE SystemNetInterface
+  IS 'The list of network interfaces installed on a system';
+
+COMMENT ON COLUMN SystemNetInterface.mgm_id
+  IS 'The id of the SUSE Manager instance that contains this data';
+COMMENT ON COLUMN SystemNetInterface.system_id
+  IS 'The id of the system';
+COMMENT ON COLUMN SystemNetInterface.interface_id
+  IS 'The id of the network interface';
+COMMENT ON COLUMN SystemNetInterface.name
+  IS 'The unique name of the interface';
+COMMENT ON COLUMN SystemNetInterface.hardware_address
+  IS 'the MAC address of this network interface';
+COMMENT ON COLUMN SystemNetInterface.module
+  IS 'The module of this network interface';
+COMMENT ON COLUMN SystemNetInterface.primary_interface
+  IS 'True if the interface is marked as primary for this system';
+COMMENT ON COLUMN SystemNetInterface.synced_date
+  IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE SystemNetInterface
+    ADD CONSTRAINT SystemNetInterface_system_fkey FOREIGN KEY (mgm_id, system_id) REFERENCES System(mgm_id, system_id);
