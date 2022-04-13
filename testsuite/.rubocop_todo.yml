@@ -28,7 +28,7 @@ Bundler/OrderedGems:
 Layout/ArgumentAlignment:
   Exclude:
     - 'Rakefile'
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/step_definitions/api_common.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -40,6 +40,7 @@ Layout/ClosingHeredocIndentation:
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterGuardClause:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
@@ -48,13 +49,11 @@ Layout/EmptyLineAfterGuardClause:
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/client_stack.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/lavanda.rb'
     - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_channel.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -69,20 +68,19 @@ Layout/FirstArrayElementLineBreak:
 Layout/FirstHashElementLineBreak:
   Exclude:
     - 'features/step_definitions/retail_steps.rb'
+    - 'features/support/namespaces/configchannel.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_configchannel.rb'
 
 # Offense count: 14
 # Cop supports --auto-correct.
 Layout/FirstMethodArgumentLineBreak:
   Exclude:
     - 'Rakefile'
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/security_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
-    - 'features/support/xmlrpc_actionchain.rb'
-    - 'features/support/xmlrpc_configchannel.rb'
+    - 'features/support/namespaces/configchannel.rb'
 
 # Offense count: 244
 # Cop supports --auto-correct.
@@ -134,10 +132,10 @@ Layout/MultilineArrayLineBreaks:
 # SupportedStyles: same_line, new_line
 Layout/MultilineAssignmentLayout:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/twopence_init.rb'
 
 # Offense count: 11
@@ -145,7 +143,6 @@ Layout/MultilineAssignmentLayout:
 Layout/MultilineMethodArgumentLineBreaks:
   Exclude:
     - 'features/step_definitions/security_steps.rb'
-    - 'features/support/xmlrpc_actionchain.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -153,8 +150,8 @@ Layout/MultilineMethodArgumentLineBreaks:
 # SupportedStyles: symmetrical, new_line, same_line
 Layout/MultilineMethodCallBraceLayout:
   Exclude:
-    - 'features/step_definitions/xmlrpc_common.rb'
-    - 'features/support/xmlrpc_configchannel.rb'
+    - 'features/step_definitions/api_common.rb'
+    - 'features/support/namespaces/configchannel.rb'
 
 # Offense count: 5
 # Cop supports --auto-correct.
@@ -176,7 +173,7 @@ Layout/SpaceBeforeComma:
 # SupportedStylesForEmptyBrackets: space, no_space
 Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/step_definitions/api_common.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -206,16 +203,16 @@ Lint/Debugger:
 # Cop supports --auto-correct.
 Lint/NumberConversion:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/datepicker_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/support/namespaces/activationkey.rb'
     - 'features/support/env.rb'
     - 'features/support/time.rb'
-    - 'features/support/xmlrpc_activationkey.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -253,6 +250,8 @@ Lint/UselessAssignment:
 # Configuration parameters: IgnoredMethods.
 Metrics/AbcSize:
   Max: 18
+  Exclude:
+    - 'features/support/api_test.rb'
 
 # Offense count: 2
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -281,10 +280,9 @@ Metrics/PerceivedComplexity:
 # Offense count: 8
 Naming/AccessorMethodName:
   Exclude:
-    - 'features/support/xmlrpc_activationkey.rb'
-    - 'features/support/xmlrpc_api.rb'
-    - 'features/support/xmlrpc_channel.rb'
-    - 'features/support/xmlrpc_user.rb'
+    - 'features/support/namespaces/activationkey.rb'
+    - 'features/support/namespaces/api.rb'
+    - 'features/support/namespaces/channel.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyle.
@@ -302,14 +300,13 @@ Naming/HeredocDelimiterCase:
 Naming/PredicateName:
   Exclude:
     - 'spec/**/*'
-    - 'features/support/xmlrpc_channel.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredName.
 Naming/RescuedExceptionsVariableName:
   Exclude:
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/step_definitions/api_common.rb'
 
 # Offense count: 2
 Security/Open:
@@ -332,7 +329,7 @@ Style/AndOr:
 # Configuration parameters: PreferredMethods.
 Style/CollectionMethods:
   Exclude:
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/step_definitions/api_common.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -357,11 +354,11 @@ Style/Copyright:
 # Configuration parameters: AllowCoercion.
 Style/DateTime:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/datepicker_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -378,8 +375,8 @@ Style/DocumentationMethod:
 # SupportedStyles: annotated, template, unannotated
 Style/FormatStringToken:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 38
 # Cop supports --auto-correct.
@@ -392,6 +389,7 @@ Style/FrozenStringLiteralComment:
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
@@ -401,18 +399,16 @@ Style/GlobalVars:
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/support/namespaces/system.rb'
     - 'features/support/client_stack.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/env.rb'
     - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_system.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/HashEachMethods:
   Exclude:
-    - 'features/support/xmlrpc_channel.rb'
 
 # Offense count: 17
 # Cop supports --auto-correct.
@@ -430,6 +426,7 @@ Style/IfUnlessModifier:
 # Offense count: 254
 Style/ImplicitRuntimeError:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
@@ -437,6 +434,7 @@ Style/ImplicitRuntimeError:
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
+    - 'features/support/namespaces/system.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/env.rb'
@@ -459,9 +457,9 @@ Style/InlineComment:
 # AllowedAddresses: ::
 Style/IpAddresses:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 473
 # Cop supports --auto-correct.
@@ -529,14 +527,14 @@ Style/NumericLiterals:
 Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
-    - 'features/step_definitions/xmlrpc_common.rb'
+    - 'features/step_definitions/api_common.rb'
 
 # Offense count: 1
 # Configuration parameters: SuspiciousParamNames.
 # SuspiciousParamNames: options, opts, args, params, parameters
 Style/OptionHash:
   Exclude:
-    - 'features/support/xmlrpc_image.rb'
+    - 'features/support/namespaces/image.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -568,26 +566,25 @@ Style/RegexpLiteral:
 # SupportedStyles: implicit, explicit
 Style/RescueStandardError:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/support/cobbler_test.rb'
 
 # Offense count: 6
 # Cop supports --auto-correct.
 Style/StderrPuts:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 381
 # Cop supports --auto-correct.
 Style/StringHashKeys:
   Exclude:
+    - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_activationkey.rb'
-    - 'features/support/xmlrpc_configchannel.rb'
 
 # Offense count: 152
 # Cop supports --auto-correct.
@@ -600,7 +597,6 @@ Style/StringLiterals:
     - 'features/step_definitions/datepicker_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/support/env.rb'
-    - 'features/support/xmlrpc_configchannel.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.

@@ -1,6 +1,7 @@
 default: -f pretty -r features --publish-quiet
 action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
+api: --tags @scope_api
 building_container_images: --tags @scope_building_container_images
 centos: --tags @centos_minion
 changing_software_channels: --tags @scope_changing_software_channels
@@ -38,4 +39,3 @@ ubuntu: --tags @scope_ubuntu
 virtual_host_manager: --tags @scope_virtual_host_manager
 virtualization: --tags @scope_virtualization
 visualization: --tags @scope_visualization
-xmlrpc: --tags @scope_xmlrpc

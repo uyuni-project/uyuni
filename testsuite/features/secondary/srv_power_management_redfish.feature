@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_power_management
@@ -77,12 +77,13 @@ Feature: Redfish Power management
     And I should see a "Reboot" button
 
   Scenario: Cleanup: reset Redfish values
-    Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
+    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "sle_minion"
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
     And I set power management value "ipmitool" for "powerType"
+    And I logout from API
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"

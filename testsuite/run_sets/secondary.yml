@@ -13,11 +13,11 @@
 - features/secondary/srv_monitoring.feature
 - features/secondary/srv_virtual_host_manager.feature
 - features/secondary/srv_power_management.feature
-- features/secondary/srv_xmlrpc_power_management.feature
+- features/secondary/srv_power_management_api.feature
 - features/secondary/srv_power_management_redfish.feature
 - features/secondary/srv_delete_channel_from_ui.feature
 - features/secondary/srv_delete_channel_with_tool.feature
-- features/secondary/srv_test_maintenance_windows.feature
+- features/secondary/srv_maintenance_windows.feature
 - features/secondary/srv_user_configuration_salt_states.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
@@ -32,7 +32,7 @@
 - features/secondary/min_ubuntu_openscap_audit.feature
 - features/secondary/min_ubuntu_remote-command.feature
 - features/secondary/min_ubuntu_ssh.feature
-- features/secondary/minssh_bootstrap_xmlrpc.feature
+- features/secondary/minssh_bootstrap_api.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
 - features/secondary/min_ssh_tunnel.feature
@@ -55,7 +55,7 @@
 - features/secondary/allcli_action_chain.feature
 - features/secondary/buildhost_docker_build_image.feature
 - features/secondary/buildhost_docker_auth_registry.feature
-- features/secondary/min_docker_xmlrpc.feature
+- features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
