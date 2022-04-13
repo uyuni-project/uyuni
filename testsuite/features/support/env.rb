@@ -411,7 +411,7 @@ def debug_server_on_realtime_failure
 end
 
 # get the Cobbler log output when we test it
-After('@scope_cobbler') do |scenario|
+After('@scope_cobbler') do
   STDOUT.puts '=> /var/log/cobbler/cobbler.log'
   out, _code = $server.run("tail -n20 /var/log/cobbler/cobbler.log")
   out.each_line do |line|
