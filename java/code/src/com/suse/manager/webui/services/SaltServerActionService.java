@@ -2590,38 +2590,37 @@ public class SaltServerActionService {
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
 
-                        // reboot needs special handling in case of ssh push
-                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT) &&
-                            sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                        // if the status is already PICKED_UP, don't change it
-                        // if the status is FAILED or COMPLETED, don't change it
+                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to
+                        *  stay in picked up, in this way SSHPushDriver::getCandidates can schedule a reboot correctly
+                        */
+                        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult, function);
+                        }
+                        else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
-                        }
-                        else {
-                            saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                                    jsonResult, function);
                         }
 
                         // Perform a "check-in" after every executed action
                         minion.updateServerInfo();
 
-                    // Perform a package profile update in the end if necessary
-                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
-                        LOG.info("Scheduling a package profile update");
-                        Action pkgList;
-                        try {
-                            pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
-                        }
-                        catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
+                        // Perform a package profile update in the end if necessary
+                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
+                            LOG.info("Scheduling a package profile update");
+
+                            Action pkgList;
+                            try {
+                                pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                                executeSSHAction(pkgList, minion);
+                            }
+                            catch (TaskomaticApiException e) {
+                                LOG.error("Could not schedule package refresh for minion: " +
                                     minion.getMinionId());
-                            LOG.error(e);
+                                LOG.error(e);
+                            }
                         }
-                    }
-                 });
-              });
+                    });
+                });
             }
         }
         return;
