@@ -1,0 +1,51 @@
+--
+-- Copyright (c) 2022 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON TABLE XccdScan
+  IS 'The list of SCAP scan performed on a system';
+
+COMMENT ON COLUMN XccdScan.mgm_id
+  IS 'The id of the SUSE Manager instance that contains this data';
+COMMENT ON COLUMN XccdScan.scan_id
+  IS 'The id of the security scan';
+COMMENT ON COLUMN XccdScan.system_id
+  IS 'The id of the system';
+COMMENT ON COLUMN XccdScan.action_id
+  IS 'The id of the action that triggered the scan';
+COMMENT ON COLUMN XccdScan.name
+  IS 'The name of the scan';
+COMMENT ON COLUMN XccdScan.benchmark
+  IS 'The name of the performed benchmark';
+COMMENT ON COLUMN XccdScan.benchmark_version
+  IS 'The version of the benchmark';
+COMMENT ON COLUMN XccdScan.profile
+  IS 'The name of the profile used for the scan';
+COMMENT ON COLUMN XccdScan.profile_title
+  IS 'The descriptive title of the profile';
+COMMENT ON COLUMN XccdScan.end_time
+  IS 'When the scan has ended';
+COMMENT ON COLUMN XccdScan.pass
+  IS 'The number of passed rules';
+COMMENT ON COLUMN XccdScan.fail
+  IS 'The number of failed rules';
+COMMENT ON COLUMN XccdScan.error
+  IS 'The number of erroneous rules';
+COMMENT ON COLUMN XccdScan.not_selected
+  IS 'The number of rules not selected for this scan';
+COMMENT ON COLUMN XccdScan.informational
+  IS 'The number of informational rules';
+COMMENT ON COLUMN XccdScan.other
+  IS 'The number of rules with other outcomes';
+COMMENT ON COLUMN XccdScan.synced_date
+  IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE XccdScan
+    ADD CONSTRAINT XccdScan_system_action_fkey FOREIGN KEY (mgm_id, system_id, action_id) REFERENCES SystemAction(mgm_id, system_id, action_id);
