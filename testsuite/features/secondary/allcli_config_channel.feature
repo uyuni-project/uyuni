@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_configuration_channels
@@ -188,63 +188,59 @@ Feature: Management of configuration of all types of clients in a single channel
     And I should see a "-COLOR=red" text
 
 @sle_client
-  Scenario: Check configuration channel and files via XML-RPC for Traditional Client
-    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+  Scenario: Check configuration channel and files via API for traditional client
+    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_client" should be subscribed to channel "mixedchannel"
-    And I logout from XML-RPC configchannel namespace
+    When I logout from API
 
 @sle_minion
-  Scenario: Check configuration channel and files via XML-RPC for Salt Minion
-    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+  Scenario: Check configuration channel and files via API for Salt minion
+    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_minion" should be subscribed to channel "mixedchannel"
-    And I logout from XML-RPC configchannel namespace
+    When I logout from API
 
 @sle_minion
-  Scenario: Extend configuration channel and deploy files via XML-RPC for Salt Minion
-    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+  Scenario: Extend configuration channel and deploy files via API for Salt minion
+    Given I am logged in API as user "admin" and password "admin"
     When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle_minion"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I wait until file "/etc/s-mgr/other" exists on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_minion"
-    And I logout from XML-RPC configchannel namespace
+    When I logout from API
 
 @sle_client
-  Scenario: Extend configuration channel and deploy files via XML-RPC for Traditional Client
-    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
-    And I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle_client"
+  Scenario: Extend configuration channel and deploy files via API for traditional client
+    Given I am logged in API as user "admin" and password "admin"
+    When I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle_client"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I run "rhn_check -vvv" on "sle_client"
-    And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_client"
-    And I logout from XML-RPC configchannel namespace
+    When I logout from API
 
 @sle_client
-  Scenario: Unsubscribe systems via XML-RPC for Traditional Client
-    Given I am logged in via XML-RPC system as user "admin" and password "admin"
+  Scenario: Unsubscribe systems via API for traditional client
+    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_client" from configuration channel "mixedchannel"
-    And I logout from XML-RPC system namespace
-    And I am logged in via XML-RPC configchannel as user "admin" and password "admin"
     Then "sle_client" should not be subscribed to channel "mixedchannel"
-    And I logout from XML-RPC configchannel namespace
+    When I logout from API
 
 @sle_minion
-  Scenario: Unsubscribe systems via XML-RPC for Salt Minion
-    Given I am logged in via XML-RPC system as user "admin" and password "admin"
+  Scenario: Unsubscribe systems via API for Salt minion
+    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_minion" from configuration channel "mixedchannel"
-    And I logout from XML-RPC system namespace
-    And I am logged in via XML-RPC configchannel as user "admin" and password "admin"
-    And "sle_minion" should not be subscribed to channel "mixedchannel"
-    And I logout from XML-RPC configchannel namespace
+    Then "sle_minion" should not be subscribed to channel "mixedchannel"
+    When I logout from API
 
 @sle_client
-  Scenario: Re-add Salt Minion via SSM
+  Scenario: Re-add Salt minion via SSM
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
@@ -257,7 +253,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Configuration channel subscriptions changed for 1 system successfully." text
 
 @sle_minion
-  Scenario: Re-add Traditional Client via SSM
+  Scenario: Re-add traditional client via SSM
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
@@ -270,7 +266,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Configuration channel subscriptions changed for 1 system successfully." text
 
 @sle_client
-  Scenario: Cleanup: remove remaining Traditional Client from configuration channel
+  Scenario: Cleanup: remove remaining traditional client from configuration channel
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -279,7 +275,7 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
 @sle_minion
-  Scenario: Cleanup: remove remaining Salt Minion from configuration channel
+  Scenario: Cleanup: remove remaining Salt minion from configuration channel
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -295,11 +291,11 @@ Feature: Management of configuration of all types of clients in a single channel
     Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should not exist on server
 
 @sle_client
-  Scenario: Cleanup: delete configuration files on remaining Traditional Client
+  Scenario: Cleanup: delete configuration files on remaining traditional client
     When I destroy "/etc/s-mgr" directory on "sle_client"
 
 @sle_minion
-  Scenario: Cleanup: delete configuration files on remaining Salt Minion
+  Scenario: Cleanup: delete configuration files on remaining Salt minion
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients

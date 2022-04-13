@@ -29,12 +29,13 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 
 * ```date```, ```time``: date and time manipulation functions
 * ```base64```, ```json```, ```nokogiri```: support for various encodings and data formats: base64, json, XML
-* ```net```, ```openssl```, ```uri```, ```open-uri```, ```xmlrpc```: support for various network protocols
+* ```net```, ```openssl```, ```uri```: support for network access
 * ```securerandom```: UUIDs and other random generation
 * ```socket```, ```stringio```, ```tempfile```, ```tmpdir```: file manipulation
 
 ### Various
 
+* ```open-uri```, ```xmlrpc```: network and RPC helpers
 * ```english```: English language processing
 * ```jwt```: JSON Web Token (JWT) standard
 
