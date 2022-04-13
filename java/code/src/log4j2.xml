@@ -98,6 +98,9 @@
         </Logger>
         -->
 
+        <!-- this should shut up hibernate until this gets fixed upstream -->
+        <Logger name="org.hibernate.orm.deprecation" level="error" />
+
         <!-- this silences ehcache on Fedoras complaining about using default values -->
         <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
 
