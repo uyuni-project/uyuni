@@ -305,7 +305,7 @@ export function ProxyConfig() {
                 validators={[Validation.matches(/^[A-Z]{2}$/)]}
                 maxLength={2}
                 labelClass="col-md-3"
-                divClass="col-md-1"
+                divClass="col-md-2"
               />
               <Text name="state" label={t("State")} labelClass="col-md-3" divClass="col-md-6" />
               <Text name="city" label={t("City")} labelClass="col-md-3" divClass="col-md-6" />
