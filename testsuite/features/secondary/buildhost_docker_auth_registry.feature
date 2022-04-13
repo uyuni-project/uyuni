@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @buildhost
@@ -34,7 +34,9 @@ Feature: Build image with authenticated registry
     And I click on "submit-btn"
     Then I wait until I see "auth_registry_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until container "auth_registry_profile" with version "latest" is built successfully
+    When I am logged in API as user "admin" and password "admin"
+    And I wait at most 660 seconds until container "auth_registry_profile" with version "latest" is built successfully
+    And I logout from API
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
     And the list of packages of image "auth_registry_profile" with version "latest" is not empty
@@ -54,5 +56,6 @@ Feature: Build image with authenticated registry
     And I should see a "Image store has been deleted." text
 
   Scenario: Cleanup: delete registry image
-    Given I am authorized as "admin" with password "admin"
-    When I delete the image "auth_registry_profile" with version "latest" via XML-RPC calls
+    When I am logged in API as user "admin" and password "admin"
+    And I delete the image "auth_registry_profile" with version "latest" via API calls
+    And I logout from API

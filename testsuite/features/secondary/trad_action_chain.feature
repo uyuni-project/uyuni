@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -27,9 +27,10 @@ Feature: Action chain on traditional clients
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on traditional client
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
+    And I logout from API
 
   Scenario: Add a package installation to an action chain on traditional client
     Given I am on the Systems overview page of this "sle_client"
@@ -174,23 +175,24 @@ Feature: Action chain on traditional clients
     Then I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run "rhn_check -vvv" on "sle_client"
 
-  Scenario: Create an action chain via XML-RPC
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+  Scenario: Create an action chain via API
+    Given I am logged in API as user "admin" and password "admin"
+    When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.list_chains() if label "throwaway_chain" is there
     And I delete the action chain
     Then there should be no action chain with the label "throwaway_chain"
-    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.rename_chain() to rename it from "throwaway_chain" to "throwaway_chain_renamed"
     Then there should be a new action chain with the label "throwaway_chain_renamed"
     When I delete an action chain, labeled "throwaway_chain_renamed"
     Then there should be no action chain with the label "throwaway_chain_renamed"
     And no action chain with the label "throwaway_chain"
+    When I logout from API
 
-  Scenario: Add operations to the action chain via XML-RPC for traditional client
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+  Scenario: Add operations to the action chain via API for traditional client
+    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
-    And I call XML-RPC createChain with chainLabel "throwaway_chain"
+    And I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -198,14 +200,15 @@ Feature: Action chain on traditional clients
     And I call actionchain.add_script_run() with the script "exit 1;"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
-    When I call actionchain.remove_action on each action within the chain
+    When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
-    And I delete the action chain
+    When I delete the action chain
+    And I logout from API
 
-  Scenario: Run and cancel an action chain via XML-RPC
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+  Scenario: Run and cancel an action chain via API
+    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
-    And I call XML-RPC createChain with chainLabel "throwaway_chain"
+    And I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
@@ -214,12 +217,13 @@ Feature: Action chain on traditional clients
     When I cancel all scheduled actions
     And I wait until there are no more scheduled actions
     And I delete the action chain
+    And I logout from API
 
-  Scenario: Run an action chain via XML-RPC on traditional client
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+  Scenario: Run an action chain via API on traditional client
+    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
     And I run "rhn-actions-control --enable-all" on "sle_client"
-    And I call XML-RPC createChain with chainLabel "multiple_scripts"
+    And I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
@@ -228,7 +232,8 @@ Feature: Action chain on traditional clients
     Then I wait until there are no more action chains
     When I run "rhn_check -vvv" on "sle_client"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_client"
-    And I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions
+    And I logout from API
 
   Scenario: Cleanup: remove traditional client from configuration channel
     When I follow the left menu "Configuration > Channels"
