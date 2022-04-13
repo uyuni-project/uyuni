@@ -95,4 +95,10 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   def obtain_reactivation_key(server)
     @connection.call('system.obtainReactivationKey', @sid, server)
   end
+
+  # Namespace system.search
+  # Provides methods to perform system search requests using the search server
+  def system_search_by_hostname(hostname)
+    @connection.call('system.search.hostname', @sid, hostname)
+  end
 end

@@ -602,7 +602,24 @@ When(/^I clean the search index on the server$/) do
   output, _code = $server.run('/usr/sbin/rhn-search cleanindex', check_errors: false)
   log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
   raise 'The output includes an error log' if output.include?('ERROR')
+  step %(I wait until rhn-search is responding)
+end
+
+When(/^I wait until rhn-search is responding$/) do
   step %(I wait until "rhn-search" service is active on "server")
+  @system_api = XMLRPCSystemTest.new($server.full_hostname)
+  @system_api.login('admin', 'admin')
+  repeat_until_timeout(timeout: 60, message: "rhn-search is not responding properly.") do
+    begin
+      log "Search by hostname: #{$minion.hostname}"
+      result = @system_api.system_search_by_hostname($minion.hostname)
+      log result
+      break if $minion.full_hostname.include? result.first['hostname']
+    rescue StandardError => e
+      log "rhn-search still not responding.\nError message: #{e.message}"
+      sleep 3
+    end
+  end
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
