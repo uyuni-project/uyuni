@@ -17,8 +17,6 @@ package com.redhat.rhn.common.conf.sso;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
-import com.suse.manager.webui.controllers.SSOController;
-
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
 
@@ -36,7 +34,7 @@ import java.util.Optional;
  */
 public final class SSOConfig {
 
-    private static final Logger LOG = LogManager.getLogger(SSOController.class);
+    private static final Logger LOG = LogManager.getLogger(SSOConfig.class);
 
     private static Saml2Settings singletonConfig;
 

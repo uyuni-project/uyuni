@@ -4065,7 +4065,7 @@ public class SystemHandler extends BaseHandler {
 
             if (p == null) {
                 throw new InvalidPackageException("cannot find package with name " +
-                        pkgId.toString() + " in Satellite database");
+                        pkgId + " in Satellite database");
             }
 
             pkgMap.put("name_id", p.getPackageName().getId());

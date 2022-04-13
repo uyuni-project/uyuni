@@ -155,7 +155,7 @@ public class UpdateUserCommand {
         if (prefixChanged && !validPrefixes.contains(prefix)) {
             throw new IllegalArgumentException(
                     "Invalid prefix [" + prefix + "]. Must be one of " +
-                    validPrefixes.toString());
+                            validPrefixes);
         }
     }
 
@@ -184,7 +184,7 @@ public class UpdateUserCommand {
         }
         catch (AddressException e) {
             throw new IllegalArgumentException(
-                    "Email address invalid. Cause: " + e.toString());
+                    "Email address invalid. Cause: " + e);
         }
     }
 

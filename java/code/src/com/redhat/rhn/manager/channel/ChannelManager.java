@@ -428,7 +428,7 @@ public class ChannelManager extends BaseManager {
             LocalizationService ls = LocalizationService.getInstance();
 
             throw new LookupException(
-                    String.format(NO_ACCESS, userIn.getId(), cid.toString()),
+                    String.format(NO_ACCESS, userIn.getId(), cid),
                     ls.getMessage("lookup.jsp.title.channel"),
                     ls.getMessage("lookup.jsp.reason1.channel"),
                     ls.getMessage("lookup.jsp.reason2.channel"));

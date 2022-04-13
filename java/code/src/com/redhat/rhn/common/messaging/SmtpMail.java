@@ -87,7 +87,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                 me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -100,7 +100,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-            me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -119,7 +119,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                 me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -139,7 +139,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                 me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -190,7 +190,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -203,7 +203,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }
@@ -216,7 +216,7 @@ public class SmtpMail implements Mail {
         }
         catch (MessagingException me) {
             String msg = "MessagingException while trying to send email: " +
-                                me.toString();
+                    me;
             log.warn(msg);
             throw new JavaMailException(msg, me);
         }

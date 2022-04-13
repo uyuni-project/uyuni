@@ -105,7 +105,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
             }
             catch (Exception e) {
                 String errorMessage = "Exception trying to get bean property: " +
-                                        e.toString();
+                        e;
                 log.error(errorMessage, e);
                 throw new ValidatorException(errorMessage, e);
             }

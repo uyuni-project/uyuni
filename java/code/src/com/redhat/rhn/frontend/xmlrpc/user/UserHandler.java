@@ -343,7 +343,7 @@ public class UserHandler extends BaseHandler {
                          " Possible Roles assignable/revokable by this user %s";
 
             throw new NoSuchRoleException(String.format(msg, role,
-                                                    assignableRoles.toString()));
+                    assignableRoles));
         }
     }
 

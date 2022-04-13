@@ -300,7 +300,7 @@ public class ContentProjectFactory extends HibernateFactory {
                 .orElse(false);
 
         if (hasDistributions) {
-            throw new ContentManagementException("The target " + target.toString() +
+            throw new ContentManagementException("The target " + target +
                     " is being used in an autoinstallation profile. Cannot remove.");
         }
 
