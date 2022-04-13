@@ -1396,7 +1396,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
       isolinux_profiles.push(result_isolinux)
     end
   end
-  raise 'error during comparison of Cobbler profiles' unless cobbler_profiles == isolinux_profiles
+  raise 'error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}' unless cobbler_profiles == isolinux_profiles
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
@@ -1413,7 +1413,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without
   raise 'error in cobbler buildiso.\nLogs:\n#{_out}' if code.nonzero?
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver")
   # we have to fail here if the command suceeds
-  raise 'error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found' if code.zero?
+  raise 'error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}' if code.zero?
 end
 
 When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
@@ -1439,9 +1439,9 @@ EOF")
   iso_filter = "awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}'"
   iso_file = "#{tmp_dir}/xorriso_#{name}"
   _out, code = $server.run("#{xorriso} | #{iso_filter} >> #{iso_file}")
-  raise 'error while executing xorriso' if code.nonzero?
+  raise 'error while executing xorriso.\nLogs:\n#{_out}' if code.nonzero?
   _out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
-  raise 'error in verifying Cobbler buildiso image with xorriso' if code.nonzero?
+  raise 'error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{_out}' if code.nonzero?
 end
 
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
@@ -1453,10 +1453,10 @@ end
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise 'error during veryfying isolinux.cfg parameter for Cobbler buildiso' if code.nonzero?
+  raise 'error during veryfying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}' if code.nonzero?
 end
 
 When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
-  raise 'error during Cobbler buildiso cleanup' if code.nonzero?
+  raise 'error during Cobbler buildiso cleanup.\nLogs:\n#{result}' if code.nonzero?
 end
