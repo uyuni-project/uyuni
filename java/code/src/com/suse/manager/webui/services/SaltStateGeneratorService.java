@@ -176,7 +176,7 @@ public enum SaltStateGeneratorService {
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" + image.getFilename());
+        imagePillarDetails.put("url", "https://ftp/saltboot/" + localPath + "/" + image.getFilename());
 
         imagePillarBase.put(version + "-" + revision, imagePillarDetails);
         imagePillar.put(imageInfo.getName(), imagePillarBase);
@@ -204,11 +204,15 @@ public enum SaltStateGeneratorService {
         bootImagePillarInitrd.put("hash", bootImage.getInitrd().getChecksum().getChecksum());
         bootImagePillarInitrd.put("size", bootImage.getInitrd().getSize());
         bootImagePillarInitrd.put("version", bootImage.getInitrd().getVersion());
+        bootImagePillarInitrd.put("url", "https://ftp/saltboot/boot/" + bootLocalPath + "/" +
+                bootImage.getInitrd().getFilename());
 
         bootImagePillarKernel.put("filename", bootImage.getKernel().getFilename());
         bootImagePillarKernel.put("hash", bootImage.getKernel().getChecksum().getChecksum());
         bootImagePillarKernel.put("size", bootImage.getKernel().getSize());
         bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
+        bootImagePillarKernel.put("url", "https://ftp/saltboot/boot/" + bootLocalPath + "/" +
+                bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
         if (isBundle) {
