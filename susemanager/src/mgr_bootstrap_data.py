@@ -401,6 +401,8 @@ PKGLIST15_SALT = [
     "python3-simplejson",
     "python3-six",
     "python3-urllib3",
+    "python3-immutables*",
+    "python3-contextvars*",
     "timezone",
     "salt",
     "python3-salt",
