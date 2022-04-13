@@ -126,7 +126,7 @@ public class LocalizationService {
         }
         catch (ClassNotFoundException ce) {
             String message = "Class not found when trying to initalize " +
-                    "the LocalizationService: " + ce.toString();
+                    "the LocalizationService: " + ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
@@ -295,7 +295,7 @@ public class LocalizationService {
         }
         catch (ClassNotFoundException ce) {
             String message = "Class not found when trying to fetch a message: " +
-                    ce.toString();
+                    ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
