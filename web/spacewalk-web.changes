@@ -1,3 +1,4 @@
+- Rewording form fields hints
 - Upgrade moment to 2.29.2
 - Add UI for peripheral server with report database password
   regeneration
