@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateDelete;
+import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateExistingTables;
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateInsert;
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateQuery;
 
@@ -42,6 +43,8 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class HubReportDbUpdateWorker implements QueueWorker {
@@ -74,6 +77,23 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     @Override
     public void setParentQueue(TaskQueue queue) {
         this.parentQueue = queue;
+    }
+
+    private List<String> filterExistingTables(Session remoteSession, Long serverId) {
+        SelectMode query = generateExistingTables(remoteSession, TABLES);
+        DataResult<Map<String, Object>> result = query.execute();
+        Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
+        tableEntry.removeIf(t -> {
+            if (t.getValue() == null) {
+                log.warn("Table '" + t.getKey() + "' does not exist in server " + serverId + ": " +
+                        "this table will not be updated");
+                return true;
+            }
+            return false;
+        });
+        List<String> existingTables = tableEntry.stream().map(t ->
+                String.valueOf(t.getValue())).collect(Collectors.toList());
+        return existingTables;
     }
 
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {
@@ -128,8 +148,8 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                     );
             ReportDbHibernateFactory remoteDB = new ReportDbHibernateFactory(remoteDBCM);
             try {
-
-                TABLES.forEach(table -> {
+                List<String> existingTables = filterExistingTables(remoteDB.getSession(), mgrServerInfo.getId());
+                existingTables.forEach(table -> {
                     updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
                 });
                 ReportDBHelper.analyzeReportDb(localRh.getSession());
