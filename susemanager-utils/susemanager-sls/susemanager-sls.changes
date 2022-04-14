@@ -1,3 +1,4 @@
+- Flush uyuni roster cache if the config has changed
 - Remove kiwi_info annotations, salt doesn't suppor them (bsc#1198480)
 - implement grains module for mgr_server to expose report database
   settings and more
