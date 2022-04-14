@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.services.pillar.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -35,6 +39,8 @@ import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.Set;
@@ -45,12 +51,14 @@ import java.util.Set;
 public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+    @Test
     public void testGeneratePillarForServer() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -119,6 +127,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGeneratePillarForServerGPGCheckOn() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Channel channel1 = ChannelTestUtils.createBaseChannel(user);
@@ -140,6 +149,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertEquals("1", (String) values.get("pkg_gpgcheck"));
     }
 
+    @Test
     public void testGeneratePillarForServerGPGCheckOff() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Channel channel1 = ChannelTestUtils.createBaseChannel(user);
@@ -168,6 +178,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testGeneratePillarForProxyServer() throws Exception {
         // create a minion
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);

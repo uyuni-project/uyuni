@@ -16,26 +16,42 @@
 
 <mode name="System" class="">
   <query params="offset, limit">
-          SELECT rhnserver.id AS system_id
-                     , rhnserver.name AS profile_name
-                     , rhnserver.hostname
-                     , suseminioninfo.minion_id
-                     , suseminioninfo.os_family AS minion_os_family
-                     , suseminioninfo.kernel_live_version AS minion_kernel_live_version
-                     , rhnserver.machine_id
-                     , web_contact.login AS registered_by
-                     , rhnserver.created AS registration_time
-                     , rhnserverinfo.checkin AS last_checkin_time
-                     , rhnserver.running_kernel AS kernel_version
-                     , rhnserverarch.name AS architecture
-                     , web_customer.name AS organization
-                     , get_hw_info_as_clob(rhnserver.id, '; ') AS hardware
-            FROM rhnserver
-                     LEFT JOIN suseminioninfo ON rhnserver.id = suseminioninfo.server_id
-                     LEFT JOIN web_contact ON rhnserver.creator_id = web_contact.id
-                     LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
-                     INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
-                     INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
+        SELECT rhnserver.id AS system_id
+                    , rhnserver.name AS profile_name
+                    , rhnserver.hostname
+                    , suseminioninfo.minion_id
+                    , suseminioninfo.os_family AS minion_os_family
+                    , suseminioninfo.kernel_live_version AS minion_kernel_live_version
+                    , rhnserver.machine_id
+                    , web_contact.login AS registered_by
+                    , rhnserver.created AS registration_time
+                    , rhnserverinfo.checkin AS last_checkin_time
+                    , rhnserver.running_kernel AS kernel_version
+                    , rhnserverarch.name AS architecture
+                    , rhnproxyinfo.server_id IS NOT NULL AS is_proxy
+                    , rhnserverpath.proxy_server_id AS proxy_system_id
+                    , susemgrserverinfo.server_id IS NOT NULL AS is_mgr_server
+                    , web_customer.name AS organization
+                    , get_hw_info_as_clob(rhnserver.id, '; ') AS hardware
+                    , rhnserverlocation.machine
+                    , rhnserverlocation.rack
+                    , rhnserverlocation.room
+                    , rhnserverlocation.building
+                    , rhnserverlocation.address1
+                    , rhnserverlocation.address2
+                    , rhnserverlocation.city
+                    , rhnserverlocation.state
+                    , rhnserverlocation.country
+        FROM rhnserver
+                    LEFT JOIN suseminioninfo ON rhnserver.id = suseminioninfo.server_id
+                    LEFT JOIN web_contact ON rhnserver.creator_id = web_contact.id
+                    LEFT JOIN rhnserverinfo ON  rhnserver.id = rhnserverinfo.server_id
+                    LEFT JOIN rhnserverlocation ON rhnserver.id = rhnserverlocation.server_id
+                    LEFT JOIN rhnproxyinfo ON rhnserver.id = rhnproxyinfo.server_id
+                    LEFT JOIN susemgrserverinfo ON rhnserver.id = susemgrserverinfo.server_id
+                    LEFT JOIN rhnserverpath ON rhnserver.id = rhnserverpath.server_id
+                    INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
+                    INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
         ORDER BY system_id OFFSET :offset LIMIT :limit
   </query>
 </mode>
@@ -71,17 +87,15 @@
   </query>
 </mode>
 
-<mode name="SystemGroup" class="">
+<mode name="SystemGroupMember" class="">
     <query params="offset, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
-                    , rhnservergroup.name
-                    , rhnservergroup.description
-                    , rhnservergroup.current_members
-                    , web_customer.name AS organization
+                    , rhnservergroup.name AS group_name
+                    , rhnserver.name AS system_name
             FROM rhnservergroupmembers
+                    INNER JOIN rhnserver ON rhnservergroupmembers.server_id = rhnserver.id
                     INNER JOIN rhnservergroup ON rhnservergroupmembers.server_group_id = rhnservergroup.id
-                    INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
            WHERE rhnservergroup.group_type IS NULL
         ORDER BY server_id, server_group_id OFFSET :offset LIMIT :limit
   </query>
@@ -207,8 +221,12 @@
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
                       , rhnserver.hostname
+                      , web_contact.login AS scheduled_by
+                      , rhnaction.earliest_action
+                      , rhnaction.archived = 1 AS archived
                       , rhnserveraction.pickup_time
                       , rhnserveraction.completion_time
+                      , rhnaction.name AS action_name
                       , rhnactionstatus.name AS status
                       , case
                           when rhnactiontype.name = 'Package Install' and exists (SELECT 1 FROM rhnactionpackage WHERE rhnactionpackage.action_id = rhnserveraction.action_id AND rhnactionpackage.parameter = 'upgrade' ) then 'Package Upgrade'
@@ -240,6 +258,7 @@
             FROM rhnserveraction
                       LEFT JOIN rhnserver ON rhnserveraction.server_id = rhnserver.id
                       LEFT JOIN rhnaction ON rhnserveraction.action_id = rhnaction.id
+                      LEFT JOIN web_contact ON rhnaction.scheduler = web_contact.id
                       LEFT JOIN rhnactionstatus ON rhnserveraction.status = rhnactionstatus.id
                       LEFT JOIN rhnactiontype ON rhnaction.action_type = rhnactiontype.id
                       LEFT JOIN action_xccdtestresult ON action_xccdtestresult.server_id = rhnserveraction.server_id AND action_xccdtestresult.action_id = rhnserveraction.action_id
@@ -284,6 +303,69 @@
                       INNER JOIN rhnerrata ON rhnserverneedederratacache.errata_id = rhnerrata.id
         ORDER BY system_id, errata_id OFFSET :offset LIMIT :limit
   </query>
+</mode>
+
+<mode name="SystemPackageInstalled" class="">
+    <query params="offset, limit">
+          SELECT rhnServerPackage.server_id AS system_id
+                    , rhnPackageName.name
+                    , rhnPackageEvr.epoch
+                    , rhnPackageEvr.version
+                    , rhnPackageEvr.release
+                    , rhnPackageArch.label AS arch
+                    , rhnPackageEvr.type
+            FROM rhnServerPackage
+                    INNER JOIN rhnPackageName ON rhnServerPackage.name_id = rhnPackageName.id
+                    INNER JOIN rhnPackageEvr ON rhnServerPackage.evr_id = rhnPackageEvr.id
+                    INNER JOIN rhnPackageArch ON rhnServerPackage.package_arch_id = rhnPackageArch.id
+        ORDER BY system_id, name OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="SystemPackageUpdate" class="">
+    <query params="offset, limit">
+          WITH latest AS (
+            SELECT rhnserverneededcache.server_id
+                      , rhnPackage.name_id
+                      , MAX(rhnPackageEvr.evr) AS evr
+              FROM rhnserverneededcache
+                      INNER JOIN rhnPackage ON rhnserverneededcache.package_id = rhnPackage.id
+                      INNER JOIN rhnPackageEvr on rhnPackage.evr_id = rhnPackageEvr.id
+              GROUP BY rhnserverneededcache.server_id
+                      , rhnPackage.name_id
+          )
+          SELECT DISTINCT rhnserverneededcache.server_id AS system_id
+                    , rhnserverneededcache.package_id
+                    , rhnpackagename.name
+                    , rhnpackageevr.epoch
+                    , rhnpackageevr.version
+                    , rhnpackageevr.release
+                    , rhnpackagearch.label AS arch
+                    , rhnpackageevr.type
+                    , rhnpackageevr.evr = latest.evr AS is_latest
+            FROM rhnserverneededcache
+                    INNER JOIN rhnpackage ON rhnserverneededcache.package_id = rhnpackage.id
+                    INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+                    INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+                    INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+                    INNER JOIN latest ON (latest.server_id = rhnserverneededcache.server_id AND latest.name_id = rhnpackage.name_id)
+        ORDER BY system_id, name, package_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="SystemCustomInfo" class="">
+    <query params="offset, limit">
+          SELECT rhnserver.id AS system_id
+                    , web_customer.name AS organization
+                    , rhncustomdatakey.label AS key
+                    , rhncustomdatakey.description
+                    , rhnservercustomdatavalue.value
+            FROM rhnserver
+                    INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
+                    INNER JOIN rhnservercustomdatavalue ON rhnserver.id = rhnservercustomdatavalue.server_id
+                    INNER JOIN rhncustomdatakey ON rhnservercustomdatavalue.key_id = rhncustomdatakey.id
+        ORDER BY organization, system_id, key OFFSET :offset LIMIT :limit
+    </query>
 </mode>
 
 </datasource_modes>

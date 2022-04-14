@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -39,6 +44,8 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,9 +61,8 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private GuestBuilder builder;
     private SystemEntitlementManager systemEntitlementManager;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -94,13 +100,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         }
     }
 
-    /**
-     * @param name the name
-     */
-    public VirtualInstanceFactoryTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testSaveUnregisteredGuestAndLoadById() throws Exception {
         VirtualInstance guest = builder.createUnregisteredGuest()
                 .withVirtHost().build();
@@ -115,6 +115,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(guest, retrievedVirtualInstance);
     }
 
+    @Test
     public void testSaveRegisteredGuestAndLoadById() throws Exception {
         VirtualInstance guest = builder.createGuest().withVirtHost().build();
         Server guestSystem = guest.getGuestSystem();
@@ -130,6 +131,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(guestSystem, retrievedGuest.getGuestSystem());
     }
 
+    @Test
     public void testGetGuestsAndNotHost() throws Exception {
 
         VirtualInstance vi = builder.createUnregisteredGuest()
@@ -149,6 +151,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testSaveAndRetrieveInfo() throws Exception {
         VirtualInstance guest = builder.createUnregisteredGuest()
                 .withVirtHost().withName("the_virtual_one").asParaVirtGuest()
@@ -169,6 +172,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     /*
      * Commeting out test for satellite.
+    @Test
     public void testFindGuestsWithNonVirtHostByOrg() throws Exception {
         Set expectedViews = new HashSet();
 
@@ -192,6 +196,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }*/
 
 
+    @Test
     public void testFindGuestsWithoutAHostByOrg() throws Exception {
         Set expectedViews = new HashSet();
 
@@ -211,6 +216,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .isEqualCollection(expectedViews, actualViews));
     }
 
+    @Test
     public void testGetParaVirt() {
         assertEquals("Para-Virtualized", VirtualInstanceFactory.getInstance().
                 getParaVirtType().getName());
@@ -218,6 +224,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 getParaVirtType().getLabel());
     }
 
+    @Test
     public void testFullyVirt() {
         assertEquals("Fully Virtualized", VirtualInstanceFactory.getInstance().
                 getFullyVirtType().getName());
@@ -225,6 +232,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 getFullyVirtType().getLabel());
     }
 
+    @Test
     public void testGetRunning() {
         assertEquals("running", VirtualInstanceFactory.getInstance()
                 .getRunningState().getLabel());
@@ -232,6 +240,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .getRunningState().getName());
     }
 
+    @Test
     public void testGetStopped() {
         assertEquals("stopped", VirtualInstanceFactory.getInstance()
                 .getStoppedState().getLabel());
@@ -239,6 +248,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .getStoppedState().getName());
     }
 
+    @Test
     public void testGetCrashed() {
         assertEquals("crashed", VirtualInstanceFactory.getInstance()
                 .getCrashedState().getLabel());
@@ -246,6 +256,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .getCrashedState().getName());
     }
 
+    @Test
     public void testGetPaused() {
         assertEquals("paused", VirtualInstanceFactory.getInstance()
                 .getPausedState().getLabel());
@@ -253,6 +264,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .getPausedState().getName());
     }
 
+    @Test
     public void testGetUnknown() {
         assertEquals("unknown", VirtualInstanceFactory.getInstance()
                 .getUnknownState().getLabel());
@@ -260,6 +272,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .getUnknownState().getName());
     }
 
+    @Test
     public void testSetState() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance vi = host.getGuests().iterator().next();
@@ -268,6 +281,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertTrue(vi.getState() != null);
     }
 
+    @Test
     public void testLookupGuestByUuid() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance guest = host.getGuests().iterator().next();
@@ -280,6 +294,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(guest, fromDb);
     }
 
+    @Test
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
@@ -295,6 +310,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(fromDb, hostVirtInstance);
     }
 
+    @Test
     public void testLookupGuestByHostIdAndUuid() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance guest = host.getGuests().iterator().next();

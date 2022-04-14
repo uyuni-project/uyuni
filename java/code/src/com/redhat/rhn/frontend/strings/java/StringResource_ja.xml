@@ -11045,132 +11045,147 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">オプションのOVALファイル(カンマ区切り)</target>
       </trans-unit>
-    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
         <source>Credentials successfully updated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
+        <target state="final">資格情報が正常に更新されました</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
         <source>Waiting to be processed.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
+        <target state="final">処理を待機しています。</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
         <source>Error getting instance data: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
+        <target state="final">インスタンスデータの取得中にエラーが発生しました: {0}</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve">
+        <target state="final">認証データの抽出中に不明なエラーが発生しました。/var/log/rhn/のログを確認してください</target>
+      </trans-unit>
+      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
         <source>Description is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve">
+        <target state="final">説明が必要です。</target>
+      </trans-unit>
+      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
         <source>Description must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve">
+        <target state="final">説明は255文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
         <source>Host is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve">
+        <target state="final">ホストが必要です。</target>
+      </trans-unit>
+      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
         <source>Host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve">
+        <target state="final">ホストは255文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve">
+        <target state="final">ポートの値が無効です</target>
+      </trans-unit>
+      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve">
+        <target state="final">ユーザ名が必要です。</target>
+      </trans-unit>
+      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve">
+        <target state="final">ユーザ名は32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve">
+        <target state="final">パスワードは32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
+        <target state="final">SSH機密鍵パスフレーズは32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
         <source>Bastion host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve">
+        <target state="final">要塞ホストは255文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
         <source>Bastion host is required if any other bastion property is set.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
+        <target state="final">他の要塞プロパティが設定されている場合は、要塞ホストが必要です。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the bastion port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve">
+        <target state="final">要塞ポートの値が無効です</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
+        <target state="final">ユーザ名が必要です。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
+        <target state="final">ユーザ名は32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
+        <target state="final">パスワードは32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve">
+        <target state="final">要塞SSH機密鍵パスフレーズは32文字を超えてはなりません。</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve">
+        <target state="final">従量課金制の {0} が正常に作成されました</target>
+      </trans-unit>
+      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go host already exists</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
+        <target state="final">従量課金制のホストはすでに存在します</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} deleted successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
+        <target state="final">従量課金制の {0} が正常に削除されました</target>
+      </trans-unit>
+      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <target state="final">次の場所から認証データを更新するときにエラーが発生しました: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go authentication update</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <target state="final">従量課金制の認証の更新</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go update RMT hosts</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <target state="final">従量課金制のRMTホストの更新</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
         <source>Product data needs refresh.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <target state="final">製品データを更新する必要があります。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
         <source>Product cannot be found: missing identifier {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <target state="final">製品が見つかりません: 識別子 {0} がありません。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
         <source>There are conflicting channel labels {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <target state="final">競合するチャンネルラベル {0} があります。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
         <source>A parent product conflicts with existing channels.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <target state="final">親製品が既存のチャンネルと競合しています。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
         <source>Unexpected error while adding the product.</source>
+        <target state="final">製品の追加中に予期しないエラーが発生しました。</target>
+      </trans-unit>
+      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+        <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、次のリンクを参照してください。</target>
+      </trans-unit>
+    <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+        <source>Error during applying the bootstrap state. Check the server logs.</source>
       <target state="new"/>
   </trans-unit>
-    <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

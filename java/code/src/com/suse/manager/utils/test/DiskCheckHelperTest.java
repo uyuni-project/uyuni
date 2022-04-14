@@ -14,21 +14,24 @@
  */
 package com.suse.manager.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.suse.manager.utils.DiskCheckHelper;
 import com.suse.manager.utils.DiskCheckSeverity;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 /**
  * Test for {@link DiskCheckHelper}
  */
-public class DiskCheckHelperTest extends TestCase {
+public class DiskCheckHelperTest {
 
     /**
      * Enforces the handling of any exception inside the execution of the script.
      */
+    @Test
     public void testReturnsUndefinedWhenAnExceptionIsThrown() {
         final DiskCheckHelper diskCheckHelper = new DiskCheckHelper() {
             @Override
@@ -43,6 +46,7 @@ public class DiskCheckHelperTest extends TestCase {
     /**
      * Enforce behaviour for wrong exit value parsing
      */
+    @Test
     public void testThrowsIllegalArgumentWhenExitCodeIsNotValid() {
         assertEquals(DiskCheckSeverity.UNDEFINED, new FixedResultDiskCheckHelper(256).executeDiskCheck());
     }
@@ -50,6 +54,7 @@ public class DiskCheckHelperTest extends TestCase {
     /**
      * Ensures that the script return values are converted correctly.
      */
+    @Test
     public void testConvertExitValueToSeverity() {
         assertEquals(DiskCheckSeverity.OK, new FixedResultDiskCheckHelper(0).executeDiskCheck());
         assertEquals(DiskCheckSeverity.MISCONFIGURATION, new FixedResultDiskCheckHelper(1).executeDiskCheck());

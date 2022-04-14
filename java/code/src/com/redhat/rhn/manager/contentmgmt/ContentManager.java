@@ -72,7 +72,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -92,7 +93,7 @@ import java.util.stream.Stream;
 public class ContentManager {
 
     private static final String DELIMITER = "-";
-    private static final Logger LOG = Logger.getLogger(ContentManager.class);
+    private static final Logger LOG = LogManager.getLogger(ContentManager.class);
     private ModulemdApi modulemdApi;
 
     /**
@@ -110,7 +111,7 @@ public class ContentManager {
         this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
     }
 
-    private static Logger log = Logger.getLogger(ContentManager.class);
+    private static Logger log = LogManager.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -439,7 +440,7 @@ public class ContentManager {
                 .flatMap(src -> src.asSoftwareSource().stream())
                 .filter(src -> {
                     // we are interested in sources that have targets with patches needing resync
-                    Optional<SoftwareEnvironmentTarget> tgt = lookupTarget(src.getChannel(), firstEnv, user);
+                    Optional<SoftwareEnvironmentTarget> tgt = lookupTargetByChannel(src.getChannel(), firstEnv, user);
                     return tgt
                             .map(t -> !ChannelManager.listErrataNeedingResync(t.getChannel(), user).isEmpty())
                             .orElse(false);
@@ -789,13 +790,13 @@ public class ContentManager {
                 !extractFiltersOfType(env.getContentProject().getActiveFilters(), ModuleFilter.class).isEmpty();
 
         // first make sure the leader exists
-        SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
+        SoftwareEnvironmentTarget leaderTarget = lookupTargetByChannel(leader, env, user)
                 .map(tgt -> fixTargetProperties(tgt, leader, null, moduleFiltersPresent))
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user, moduleFiltersPresent));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
-                .map(src -> lookupTarget(src, env, user)
+                .map(src -> lookupTargetByChannel(src, env, user)
                         .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel(), moduleFiltersPresent))
                         .map(tgt -> Pair.of(src, tgt))
                         .orElseGet(() -> Pair.of(src, createSoftwareTarget(
@@ -849,7 +850,14 @@ public class ContentManager {
         return swTgt;
     }
 
-    private static Optional<SoftwareEnvironmentTarget> lookupTarget(Channel srcChannel, ContentEnvironment env,
+    /**
+     * Return a Software Target by given Channel in an environment.
+     * @param srcChannel the source channel
+     * @param env the CLM environment
+     * @param user the user
+     * @return found software target
+     */
+    public static Optional<SoftwareEnvironmentTarget> lookupTargetByChannel(Channel srcChannel, ContentEnvironment env,
             User user) {
         return ContentProjectFactory
                 .lookupEnvironmentTargetByChannelLabel(channelLabelInEnvironment(srcChannel.getLabel(), env), user);

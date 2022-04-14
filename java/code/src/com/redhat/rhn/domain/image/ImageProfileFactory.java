@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.image;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ import javax.persistence.criteria.Root;
 public class ImageProfileFactory extends HibernateFactory {
 
     private static ImageProfileFactory instance = new ImageProfileFactory();
-    private static Logger log = Logger.getLogger(ImageProfileFactory.class);
+    private static Logger log = LogManager.getLogger(ImageProfileFactory.class);
 
     /**
      * Default constructor.
@@ -48,7 +49,7 @@ public class ImageProfileFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(ImageProfileFactory.class);
+            log = LogManager.getLogger(ImageProfileFactory.class);
         }
         return log;
     }

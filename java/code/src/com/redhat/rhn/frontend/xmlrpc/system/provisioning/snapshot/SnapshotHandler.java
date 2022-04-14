@@ -34,6 +34,10 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
+import com.suse.manager.api.ReadOnly;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -59,6 +63,51 @@ public class SnapshotHandler extends BaseHandler {
     /**
      * List the snapshots for a given system that were created on or between
      * the dates specified.
+     *
+     * This version of the method is intended for HTTP only, because null {@link Date}s are not allowed in XMLRPC
+     * @param loggedInUser The current user
+     * @param sid system id
+     * @param startDate start date
+     * @param endDate end date
+     * @return list of server snapshots
+     * @since 10.1
+     *
+     * @xmlrpc.doc List snapshots for a given system.
+     * A user may optionally provide a start and end date to narrow the snapshots that
+     * will be listed.  For example,
+     * <ul>
+     * <li>If the user provides startDate only, all snapshots created either on or after
+     * the date provided will be returned.</li>
+     * <li>If user provides startDate and endDate, all snapshots created on or between the
+     * dates provided will be returned.</li>
+     * <li>If the user doesn't provide a startDate and endDate, all snapshots associated
+     * with the server will be returned.</li>
+     * </ul>
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param
+     *     #struct_begin("date details")
+     *         #prop_desc($date, "startDate", "Optional, unless endDate
+     *         is provided.")
+     *         #prop_desc($date, "endDate", "Optional.")
+     *     #struct_end()
+     * @xmlrpc.returntype
+     *  #array_begin()
+     *      $ServerSnapshotSerializer
+     *  #array_end()
+     */
+    @ReadOnly
+    @ApiIgnore(ApiType.XMLRPC)
+    public List<ServerSnapshot> listSnapshots(User loggedInUser, Integer sid, Date startDate, Date endDate) {
+        Server server = lookupServer(loggedInUser, sid);
+        return ServerFactory.listSnapshots(server.getOrg(), server, startDate, endDate);
+    }
+
+    /**
+     * List the snapshots for a given system that were created on or between
+     * the dates specified.
+     *
+     * This version of the method is intended for XMLRPC only, because {@link Map}s are not allowed in HTTP query params
      * @param loggedInUser The current user
      * @param sid system id
      * @param dateDetails map containing optional start/end date
@@ -89,24 +138,20 @@ public class SnapshotHandler extends BaseHandler {
      *      $ServerSnapshotSerializer
      *  #array_end()
      */
-    public List<ServerSnapshot> listSnapshots(User loggedInUser, Integer sid,
-        Map dateDetails) {
-
+    @ReadOnly
+    @ApiIgnore(ApiType.HTTP)
+    public List<ServerSnapshot> listSnapshots(User loggedInUser, Integer sid, Map<String, Date> dateDetails) {
         validateDateKeys(dateDetails);
-
-        Server server = lookupServer(loggedInUser, sid);
-
         Date startDate = null;
         Date endDate = null;
 
         if (dateDetails.containsKey("startDate")) {
-            startDate = (Date)dateDetails.get("startDate");
+            startDate = dateDetails.get("startDate");
         }
         if (dateDetails.containsKey("endDate")) {
-            endDate = (Date)dateDetails.get("endDate");
+            endDate = dateDetails.get("endDate");
         }
-
-        return ServerFactory.listSnapshots(server.getOrg(), server, startDate, endDate);
+        return listSnapshots(loggedInUser, sid, startDate, endDate);
     }
 
     /**
@@ -124,6 +169,7 @@ public class SnapshotHandler extends BaseHandler {
      *         $PackageNevraSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Set<PackageNevra> listSnapshotPackages(User loggedInUser, Integer snapId) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
         return snap.getPackages();
@@ -145,9 +191,82 @@ public class SnapshotHandler extends BaseHandler {
      *         $ConfigRevisionSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Set<ConfigRevision> listSnapshotConfigFiles(User loggedInUser, Integer snapId) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
         return snap.getConfigRevisions();
+    }
+
+    /**
+     * Deletes all snapshots across multiple systems.
+     * @param loggedInUser The current user
+     * @param startDate start date
+     * @param endDate end date
+     * @return 1 on success
+     * @since 10.1
+     *
+     * @xmlrpc.doc  Deletes all snapshots across multiple systems based on the given date
+     * criteria.  For example,
+     * <ul>
+     * <li>If the user provides startDate only, all snapshots created either on or after
+     * the date provided will be removed.</li>
+     * <li>If user provides startDate and endDate, all snapshots created on or between the
+     * dates provided will be removed.</li>
+     * <li>If the user doesn't provide a startDate and endDate, all snapshots will be
+     * removed.</li>
+     * </ul>
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param
+     *     #struct_begin("date details")
+     *         #prop_desc($date, "startDate", "Optional, unless endDate
+     *         is provided.")
+     *         #prop_desc($date, "endDate", "Optional.")
+     *     #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int deleteSnapshots(User loggedInUser, Date startDate, Date endDate) {
+        ServerFactory.deleteSnapshots(loggedInUser.getOrg(), startDate, endDate);
+        return 1;
+    }
+
+    /**
+     * Deletes all snapshots for a given system based on the given date criteria.
+     * @param loggedInUser The current user
+     * @param sid system id
+     * @param startDate start date
+     * @param endDate end date
+     * @return 1 on success
+     * @since 10.1
+     *
+     * @xmlrpc.doc  Deletes all snapshots for a given system based on the date
+     * criteria.  For example,
+     * <ul>
+     * <li>If the user provides startDate only, all snapshots created either on or after
+     * the date provided will be removed.</li>
+     * <li>If user provides startDate and endDate, all snapshots created on or between the
+     * dates provided will be removed.</li>
+     * <li>If the user doesn't provide a startDate and endDate, all snapshots associated
+     * with the server will be removed.</li>
+     * </ul>
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "sid", "system id of system to delete
+     *          snapshots for")
+     * @xmlrpc.param
+     *     #struct_begin("date details")
+     *         #prop_desc($date, "startDate", "Optional, unless endDate
+     *         is provided.")
+     *         #prop_desc($date, "endDate", "Optional.")
+     *     #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int deleteSnapshots(User loggedInUser, Integer sid, Date startDate, Date endDate) {
+        Server server = lookupServer(loggedInUser, sid);
+        ServerFactory.deleteSnapshots(loggedInUser.getOrg(), server, startDate, endDate);
+        return 1;
     }
 
     /**
@@ -177,9 +296,9 @@ public class SnapshotHandler extends BaseHandler {
      *     #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
+    @ApiIgnore(ApiType.HTTP)
     public int deleteSnapshots(User loggedInUser, Map dateDetails) {
         validateDateKeys(dateDetails);
-
         Date startDate = null;
         Date endDate = null;
 
@@ -189,9 +308,7 @@ public class SnapshotHandler extends BaseHandler {
         if (dateDetails.containsKey("endDate")) {
             endDate = (Date)dateDetails.get("endDate");
         }
-
-        ServerFactory.deleteSnapshots(loggedInUser.getOrg(), startDate, endDate);
-        return 1;
+        return deleteSnapshots(loggedInUser, startDate, endDate);
     }
 
     /**
@@ -224,11 +341,9 @@ public class SnapshotHandler extends BaseHandler {
      *     #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
+    @ApiIgnore(ApiType.HTTP)
     public int deleteSnapshots(User loggedInUser, Integer sid, Map dateDetails) {
         validateDateKeys(dateDetails);
-
-        Server server = lookupServer(loggedInUser, sid);
-
         Date startDate = null;
         Date endDate = null;
 
@@ -238,9 +353,7 @@ public class SnapshotHandler extends BaseHandler {
         if (dateDetails.containsKey("endDate")) {
             endDate = (Date)dateDetails.get("endDate");
         }
-
-        ServerFactory.deleteSnapshots(loggedInUser.getOrg(), server, startDate, endDate);
-        return 1;
+        return deleteSnapshots(loggedInUser, sid, startDate, endDate);
     }
 
     /**

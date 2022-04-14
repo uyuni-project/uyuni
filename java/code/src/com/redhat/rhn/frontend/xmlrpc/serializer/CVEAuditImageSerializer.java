@@ -14,19 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
-import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * CVEAuditImageSerializer
@@ -50,40 +48,31 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *         "Advisories of erratas that patch the specified vulnerability")
  * #struct_end()
  */
-public class CVEAuditImageSerializer extends RhnXmlRpcCustomSerializer {
+public class CVEAuditImageSerializer extends ApiResponseSerializer<CVEAuditImage> {
 
-    /**
-     * {@inheritDoc}
-     */
-    // FIXME: change to new class
+    @Override
     public Class<CVEAuditImage> getSupportedClass() {
         return CVEAuditImage.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException, IOException {
-
-        // FIXME: change to new class
-        CVEAuditImage image = (CVEAuditImage) value;
-        Collection<ChannelIdNameLabelTriple> channels = image.getChannels();
+    @Override
+    public SerializedApiResponse serialize(CVEAuditImage src) {
+        Collection<AuditChannelInfo> channels = src.getChannels();
         List<String> channelLabels = new ArrayList<>(channels.size());
-        for (ChannelIdNameLabelTriple channel : channels) {
+        for (AuditChannelInfo channel : channels) {
             channelLabels.add(channel.getLabel());
         }
-        Collection<ErrataIdAdvisoryPair> erratas = image.getErratas();
+        Collection<ErrataIdAdvisoryPair> erratas = src.getErratas();
         List<String> errataAdvisories = new ArrayList<>(erratas.size());
         for (ErrataIdAdvisoryPair errata : erratas) {
             errataAdvisories.add(errata.getAdvisory());
         }
 
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("image_id", image.getId());
-        helper.add("patch_status", image.getPatchStatus().toString());
-        helper.add("channel_labels", channelLabels);
-        helper.add("errata_advisories", errataAdvisories);
-        helper.writeTo(output);
+        return new SerializationBuilder()
+                .add("image_id", src.getId())
+                .add("patch_status", src.getPatchStatus().toString())
+                .add("channel_labels", channelLabels)
+                .add("errata_advisories", errataAdvisories)
+                .build();
     }
 }

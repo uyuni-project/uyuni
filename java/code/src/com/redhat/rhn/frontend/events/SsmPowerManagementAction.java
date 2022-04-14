@@ -26,7 +26,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.XmlRpcException;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import java.util.List;
 public class SsmPowerManagementAction implements MessageAction {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(SsmPowerManagementAction.class);
+    private static Logger log = LogManager.getLogger(SsmPowerManagementAction.class);
 
     /**
      * {@inheritDoc}

@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Mon Apr 11 10:46:36 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Add headers and http_proxy modules to be in sync with regular
+  proxy
+
+-------------------------------------------------------------------
+Mon Apr 11 08:49:52 UTC 2022 - Dario Leidi <dleidi@suse.com>
+
+- Align the image version to the product one
+- Drop stale TODOs
+
+-------------------------------------------------------------------
+Mon Mar 28 09:33:31 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Add susemanager-tftpsync-recv package and its configuration to
+  allow cobbler tftpsync functionality
+
+-------------------------------------------------------------------
+Fri Mar 18 09:17:29 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Add spacewalk-proxy-html package
+
+-------------------------------------------------------------------
 Tue Mar 15 14:39:46 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Initial version

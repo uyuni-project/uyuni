@@ -31,7 +31,6 @@ import com.redhat.rhn.frontend.html.HtmlTag;
  * <p>
 
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class PermissionException extends RhnRuntimeException  {
 

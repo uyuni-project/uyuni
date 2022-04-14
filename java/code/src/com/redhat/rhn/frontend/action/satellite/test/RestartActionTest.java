@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.satellite.RestartAction;
@@ -21,16 +24,18 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * RestartActionTest
- * @version $Rev: 1 $
  */
 public class RestartActionTest extends RhnPostMockStrutsTestCase {
 
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -42,6 +47,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testExecuteNoSubmit() throws Exception {
 
         actionPerform();
@@ -49,6 +55,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         assertFalse((Boolean) form.get(RestartAction.RESTART));
     }
 
+    @Test
     public void testExecuteSubmitTrue() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
@@ -59,6 +66,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
                     equals(Boolean.TRUE.toString())));
     }
 
+    @Test
     public void testExecuteSubmitFalse() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
@@ -69,6 +77,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
                     equals(Boolean.FALSE.toString())));
     }
 
+    @Test
     public void testExecuteRefresh() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());

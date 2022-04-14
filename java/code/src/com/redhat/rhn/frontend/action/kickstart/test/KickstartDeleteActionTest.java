@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
 
     private final String KICKSTART_ID = "ksid";
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDelete");
         addRequestParameter(KickstartDetailsEditAction.COMMENTS, "test comment");
@@ -34,6 +39,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDelete");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED,

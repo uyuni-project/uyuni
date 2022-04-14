@@ -1,3 +1,7 @@
+##
+##  java bootstrapping calls certs.sls before this state
+##
+
 # Make sure no SUSE Manager server aliasing left over from ssh-push via tunnel
 mgr_server_localhost_alias_absent:
   host.absent:

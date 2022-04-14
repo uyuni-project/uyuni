@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CreateUserSetupAction
- * @version $Rev: 1029 $
  */
 public class CreateUserSetupAction extends BaseUserSetupAction {
 

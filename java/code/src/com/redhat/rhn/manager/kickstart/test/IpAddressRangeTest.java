@@ -14,12 +14,19 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.IpAddressRange;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Set;
@@ -60,6 +67,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
     private static IpAddress max5 = new IpAddress(maxIp5);
 
 
+    @Test
     public void testRange() throws Exception {
 
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -88,6 +96,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
         assertEquals(1, s.size());
     }
 
+    @Test
     public void testSetTheory() throws Exception {
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
         IpAddressRange range1 = new IpAddressRange(min, max3, k.getId());

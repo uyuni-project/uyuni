@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.payg.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
@@ -37,6 +41,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -65,6 +72,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         paygData = createPaygSshData();
@@ -74,12 +82,14 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         populateProducts();
     }
 
+    @Test
     public void testFirstExecution() throws URISyntaxException {
         paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
         assertExpectedData();
 
     }
 
+    @Test
     public void testUpdateData() throws URISyntaxException {
         Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT, null);
         cred.setUrl("//my_url");
@@ -101,6 +111,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         assertExpectedData();
     }
 
+    @Test
     public void testUpdateRepos() throws URISyntaxException {
         Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT, null);
         cred.setUrl("//my_url");

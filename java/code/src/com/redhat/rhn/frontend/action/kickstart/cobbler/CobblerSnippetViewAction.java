@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CobblerSnippetViewAction extends RhnAction {
     private static final Logger LOG =
-            Logger.getLogger(CobblerSnippetViewAction.class);
+            LogManager.getLogger(CobblerSnippetViewAction.class);
     public static final String PATH = "path";
     public static final String DATA = "data";
     /** {@inheritDoc} */

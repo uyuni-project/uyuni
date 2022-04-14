@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -26,6 +30,8 @@ import com.redhat.rhn.manager.task.TaskScheduler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +41,7 @@ import java.util.List;
  */
 public class TaskSchedulerTest extends RhnBaseTestCase {
 
+    @Test
     public void testNull() throws Exception {
         // A null test until the one below is fixed.
     }

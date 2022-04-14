@@ -23,7 +23,8 @@ import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.taskomatic.task.RhnQueueJob;
 import com.redhat.rhn.taskomatic.task.TaskHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -42,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TaskoJob implements Job {
 
-    private static Logger log = Logger.getLogger(TaskoJob.class);
+    private static Logger log = LogManager.getLogger(TaskoJob.class);
     private static Map<String, Integer> tasks = new ConcurrentHashMap<>();
     private static Map<String, Object> lastStatus = new ConcurrentHashMap<>();
 

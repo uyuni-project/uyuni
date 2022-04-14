@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.preferences.locale.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.frontend.xmlrpc.InvalidLocaleCodeException;
@@ -21,18 +27,22 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidTimeZoneException;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
+import org.junit.jupiter.api.Test;
+
 
 public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
 
     private PreferencesLocaleHandler handler = new PreferencesLocaleHandler();
 
+    @Test
     public void testListTimeZone() {
         Object[] tzs = handler.listTimeZones();
         assertNotNull(tzs);
-        assertTrue("TimeZone list is empty", tzs.length != 0);
+        assertTrue(tzs.length != 0, "TimeZone list is empty");
         assertEquals(RhnTimeZone.class, tzs[0].getClass());
     }
 
+    @Test
     public void testSetTimeZoneInvalidId() {
         try {
             handler.setTimeZone(admin, admin.getLogin(), 0);
@@ -43,6 +53,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetTimeZone() {
         Object[] tzs = handler.listTimeZones();
         assertNotNull(tzs);
@@ -57,6 +68,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         assertEquals(tz.getTimeZoneId(), usersTz.getTimeZoneId());
     }
 
+    @Test
     public void testListLocales() {
         Object[] o = handler.listLocales();
         assertNotNull(o);
@@ -65,6 +77,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         assertEquals(locales.length, o.length);
     }
 
+    @Test
     public void testSetLocaleInvalidLocale() {
         try {
             handler.setLocale(admin, admin.getLogin(), "rd_NK");
@@ -83,6 +96,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetLocale() {
         String l = admin.getPreferredLocale();
         assertNull(l);

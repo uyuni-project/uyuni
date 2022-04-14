@@ -31,7 +31,6 @@ import java.util.Map;
  * Handles the tracking of SSM asynchronous operations, providing functionality for
  * the creation, update, and retrieval of the data.
  *
- * @version $Revision$
  */
 public class SsmOperationManager extends BaseManager {
 

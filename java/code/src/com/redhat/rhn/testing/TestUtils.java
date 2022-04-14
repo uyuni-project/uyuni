@@ -35,8 +35,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -426,8 +426,7 @@ public class TestUtils {
      * errors.   Some tests pass in non-translated strings which is OK.
      */
     public static void disableLocalizationLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(LocalizationService.class.getName(), Level.OFF);
     }
 
     /**
@@ -435,8 +434,7 @@ public class TestUtils {
      * errors.   Some tests pass in non-translated strings which is OK.
      */
     public static void enableLocalizationLogging() {
-        Logger log = Logger.getLogger(LocalizationService.class);
-        log.setLevel(Level.WARN);
+        Configurator.setLevel(LocalizationService.class.getName(), Level.WARN);
     }
 
 

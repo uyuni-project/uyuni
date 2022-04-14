@@ -15,13 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.HistoryEvent;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -37,34 +36,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *
  *
  */
-public class HistoryEventSerializer extends RhnXmlRpcCustomSerializer {
+public class HistoryEventSerializer extends ApiResponseSerializer<HistoryEvent> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<HistoryEvent> getSupportedClass() {
 
         return HistoryEvent.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        HistoryEvent event = (HistoryEvent) value;
-
-       helper.add("summary", event.getSummary());
-       helper.add("completed", event.getCompleted());
-       if (event.getDetails() != null) {
-           helper.add("details", event.getDetails());
-       }
-       else {
-           helper.add("details", new String(""));
-       }
-
-       helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(HistoryEvent src) {
+        return new SerializationBuilder()
+                .add("summary", src.getSummary())
+                .add("completed", src.getCompleted())
+                .add("details", StringUtils.defaultString(src.getDetails()))
+                .build();
     }
 }

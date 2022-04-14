@@ -47,7 +47,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** @version $Revision$ */
 public class AddPackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */

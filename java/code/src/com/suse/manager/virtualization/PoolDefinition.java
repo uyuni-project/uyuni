@@ -14,7 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -25,7 +26,7 @@ import java.io.StringReader;
  * Class representing the Virtual Storage Pool XML Definition.
  */
 public class PoolDefinition {
-    private static final Logger LOG = Logger.getLogger(PoolDefinition.class);
+    private static final Logger LOG = LogManager.getLogger(PoolDefinition.class);
 
     private String type;
     private String name;

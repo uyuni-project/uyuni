@@ -16,7 +16,8 @@ package com.redhat.rhn.common.util;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.io.LineIterator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jfree.io.IOUtils;
 
 import java.io.BufferedReader;
@@ -48,7 +49,7 @@ import java.util.Set;
  */
 public class FileUtils {
 
-    private static Logger log = Logger.getLogger(FileUtils.class);
+    private static Logger log = LogManager.getLogger(FileUtils.class);
 
     private FileUtils() {
     }

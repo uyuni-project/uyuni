@@ -14,12 +14,18 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.frontend.taglibs.RhnHiddenTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -34,7 +40,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     private RhnHiddenTag ht;
     private MockJspWriter out;
 
-    @Override
+    @BeforeEach
     public void setUp() {
         ht = new RhnHiddenTag();
         tth = new TagTestHelper(ht);
@@ -43,7 +49,9 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     }
 
     @Override
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         ht = null;
         tth = null;
         out = null;
@@ -55,6 +63,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         out.verify();
     }
 
+    @Test
     public void testBasicTag() {
         String expected = "<input type=\"hidden\"" +
                           " name=\"test\"" +
@@ -71,6 +80,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testScriptInValue() {
         String expected = "<input type=\"hidden\"" +
                      " name=\"test\"" +
@@ -85,6 +95,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
       }
     }
 
+    @Test
     public void testTagWithId() {
         String expected = "<input type=\"hidden\"" +
                           " id=\"tid\"" +

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ActionedSystem;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ScheduleSystemSerializer
@@ -37,28 +34,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   this will contain the failure text.")
  * #struct_end()
  */
-public class ScheduleSystemSerializer extends RhnXmlRpcCustomSerializer {
+public class ScheduleSystemSerializer extends ApiResponseSerializer<ActionedSystem> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ActionedSystem> getSupportedClass() {
         return ActionedSystem.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ActionedSystem action = (ActionedSystem)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("server_id", action.getId());
-        helper.add("server_name", action.getServerName());
-        helper.add("base_channel", action.getChannelLabels());
-        helper.add("timestamp", action.getDate());
-        helper.add("message", action.getMessage());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ActionedSystem src) {
+        return new SerializationBuilder()
+                .add("server_id", src.getId())
+                .add("server_name", src.getServerName())
+                .add("base_channel", src.getChannelLabels())
+                .add("timestamp", src.getDate())
+                .add("message", src.getMessage())
+                .build();
     }
-
 }

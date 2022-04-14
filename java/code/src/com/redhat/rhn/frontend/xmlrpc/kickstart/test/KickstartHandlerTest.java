@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -38,6 +43,8 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 /**
@@ -47,6 +54,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
 
     private KickstartHandler handler = new KickstartHandler();
 
+    @Test
     public void testListKickstartableChannels() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
@@ -56,6 +64,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(ksChannels.contains(baseChan));
     }
 
+    @Test
     public void testListAutoinstallableChannels() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
@@ -65,6 +74,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(ksChannels.contains(baseChan));
     }
 
+    @Test
     public void testListKickstartableTrees() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -83,6 +93,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testListKickstartableTreesByNonExistentChannelLabel() throws Exception {
         try {
             new KickstartTreeHandler().list(admin, "no such label");
@@ -93,6 +104,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testFullImport() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -100,6 +112,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         runImport(admin, testTree.getLabel());
     }
 
+    @Test
     public void testInvalidKickstartLabel() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -131,6 +144,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testImportRawFile() throws Exception {
 
         // Imports should require the same permissions as create, org or config admin.
@@ -160,6 +174,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertNotNull(newKsProfile);
     }
 
+    @Test
     public void testImportAsRegularUser() throws Exception {
         // Imports should require the same permissions as create, org or config admin.
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
@@ -174,6 +189,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testNoSuchKickstartTreeLabel() throws Exception {
         try {
             runImport(admin, "nosuchlabel");
@@ -184,6 +200,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreate() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -200,6 +217,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(newKsProfile.getCommand("url").getArguments().contains("/ks/dist/org/"));
     }
 
+    @Test
     public void testCreateWithInvalidRoles() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -217,6 +235,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateWithInvalidKickstartLabel() throws Exception {
         String profileLabel = "new-ks-profile";
         try {
@@ -229,6 +248,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateWithInvalidLabel() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -245,6 +265,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateWithInvalidVirtType() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -261,6 +282,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListKickstarts() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         String label = ks.getLabel();
@@ -278,6 +300,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundKs);
     }
 
+    @Test
     public void testRenameProfile() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         String label = ks.getLabel();
@@ -315,18 +338,21 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         return ks1;
     }
 
+    @Test
     public void testListAllIpRanges() throws Exception {
         KickstartData ks1 = setupIpRanges();
         List list = handler.listAllIpRanges(admin);
         assertContains(list, ks1.getIps().iterator().next());
     }
 
+    @Test
     public void testFindKickstartForIp() throws Exception {
         KickstartData ks1 = setupIpRanges();
         String label = handler.findKickstartForIp(admin, "192.168.0.5");
         assertEquals(label, ks1.getLabel());
     }
 
+    @Test
     public void testDeleteProfile() throws Exception {
         KickstartData ksdata =
             KickstartDataTest.createKickstartWithChannel(admin.getOrg());

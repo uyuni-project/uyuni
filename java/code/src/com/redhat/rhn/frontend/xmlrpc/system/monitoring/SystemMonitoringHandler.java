@@ -20,7 +20,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.formula.FormulaManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * SystemMonitoringHandler
@@ -56,7 +59,11 @@ public class SystemMonitoringHandler extends BaseHandler {
      *     $EndpointInfoSerializer
      *   #array_end()
      */
-    public List<EndpointInfo> listEndpoints(User loggedInUser, List<Long> systemIDs) {
-        return this.formulaManager.listEndpoints(systemIDs);
+    @ReadOnly
+    public List<EndpointInfo> listEndpoints(User loggedInUser, List<Integer> systemIDs) {
+        List<Long> ids = systemIDs.stream()
+                .map(Integer::longValue)
+                .collect(Collectors.toList());
+        return this.formulaManager.listEndpoints(ids);
     }
 }

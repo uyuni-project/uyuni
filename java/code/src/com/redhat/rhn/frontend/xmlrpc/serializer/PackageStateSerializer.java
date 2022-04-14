@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 
 import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  *
@@ -38,27 +35,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string",  "version_constraint_id", "LATEST or ANY")
  * #struct_end()
  */
-public class PackageStateSerializer extends RhnXmlRpcCustomSerializer {
+public class PackageStateSerializer extends ApiResponseSerializer<PackageState> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<PackageState> getSupportedClass() {
         return PackageState.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        PackageState packageState = (PackageState) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", packageState.getId());
-        helper.add("name", packageState.getName().getName());
-        helper.add("state_revision_id", packageState.getStateRevision().getId());
-        helper.add("package_state_type_id", packageState.getPackageState().name());
-        helper.add("version_constraint_id", packageState.getVersionConstraint().name());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(PackageState src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName().getName())
+                .add("state_revision_id", src.getStateRevision().getId())
+                .add("package_state_type_id", src.getPackageState().name())
+                .add("version_constraint_id", src.getVersionConstraint().name())
+                .build();
     }
 }

@@ -16,7 +16,8 @@
 package com.redhat.rhn.domain.scc;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,7 +39,7 @@ import javax.persistence.Transient;
 public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(SCCRepositoryCloudRmtAuth.class);
+    private static Logger log = LogManager.getLogger(SCCRepositoryCloudRmtAuth.class);
 
     private static final String MIRRCRED_QUERY = "credentials=mirrcred_";
 

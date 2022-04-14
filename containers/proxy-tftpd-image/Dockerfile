@@ -20,7 +20,7 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.opencontainers.image.version="%PKG_VERSION%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
@@ -28,10 +28,14 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:%PKG_VERSION%.%REL
 # tftp
 EXPOSE 69/udp
 
-VOLUME "/etc/uyuni"
+VOLUME [ "/etc/uyuni", "/srv/tftpboot" ]
 
-# TODO: check installation
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML python3-fbtftp python3-requests
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses tftp
+COPY uyuni-configure.py /usr/bin/uyuni-configure.py
+RUN chmod +x /usr/bin/uyuni-configure.py
 
-# TODO: add RUN directive
+COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
+RUN chmod +x /usr/bin/tftp_wrapper.py
+
+CMD uyuni-configure.py && /usr/bin/tftp_wrapper.py

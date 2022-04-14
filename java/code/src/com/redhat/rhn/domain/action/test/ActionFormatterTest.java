@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
@@ -24,6 +27,9 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * ActionFormatterTest  - test the formatters associated with the Actions.
  */
@@ -31,8 +37,8 @@ public class ActionFormatterTest extends RhnBaseTestCase {
 
     private User user;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
@@ -40,6 +46,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
      * Test formatting an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testActionFormatter() throws Exception {
         Action a = ActionFactoryTest.createAction(user,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
@@ -59,6 +66,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
      * Test formatting an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testActionLinks() throws Exception {
         // We know that TYPE_REBOOT has ServerActions associated with it
         Action areboot = ActionFactoryTest.createAction(user,
@@ -85,6 +93,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
      * Test formatting an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testErrataFormatter() throws Exception {
 
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
@@ -103,6 +112,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
      * Test formatting an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testScriptFormatter() throws Exception {
 
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);

@@ -148,10 +148,22 @@ artifacts:
     repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
-  - artifact: log4j
-    package: log4j12
+  - artifact: log4j-core
+    jar: log4j-core.jar
+    package: log4j
+    repository: Leap
+  - artifact: log4j-api
+    jar: log4j-api.jar
+    package: log4j
+    repository: Leap
+  - artifact: log4j-slf4j-impl
+    jar: log4j-slf4j-impl.jar
+    package: log4j-slf4j
     repository: Leap
   - artifact: jsch
+    repository: Uyuni_Other
+  - artifact: mchange-commons-java
+    package: mchange-commons
     repository: Uyuni_Other
   - artifact: netty-buffer
     package: netty
@@ -222,9 +234,6 @@ artifacts:
     package: slf4j
     jar: api
     repository: Leap
-  - artifact: slf4j-log4j12
-    jar: log4j12
-    repository: Leap
   - artifact: snakeyaml
     repository: Leap
   - artifact: spark-core
@@ -268,11 +277,8 @@ artifacts:
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
-  - artifact: commons-lang
-    package: apache-commons-lang
-    repository: Leap
-  - artifact: velocity
-    repository: Leap
+  - artifact: velocity-engine-core
+    repository: Uyuni_Other
 
   - artifact: jasper
     package: tomcat-lib

@@ -43,7 +43,6 @@ import javax.servlet.ServletResponse;
  * </ul>
  *
  * @author shughes, modified from tomcat examples
- * @version $Revision: 1.2 $ $Date: 2004/03/18 16:40:33 $
  */
 
 public class SetCharacterEncodingFilter implements Filter {

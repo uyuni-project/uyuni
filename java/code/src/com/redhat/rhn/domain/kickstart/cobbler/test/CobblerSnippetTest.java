@@ -14,12 +14,20 @@
  */
 package com.redhat.rhn.domain.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
@@ -29,6 +37,7 @@ import java.io.File;
  */
 public class CobblerSnippetTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testReadOnly() throws Exception {
        String contents = TestUtils.randomString();
        String path = CobblerSnippet.getCobblerSnippetsDir() +
@@ -57,6 +66,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
        }
    }
 
+    @Test
     public void testEditable() throws Exception {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString();
@@ -89,6 +99,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         assertFalse(snip.getPath().exists());
     }
 
+    @Test
     public void testIllegalCreates() throws Exception {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString() + "/HoHO";

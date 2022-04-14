@@ -241,6 +241,10 @@ When(/^I enter the URI of the registry as "([^"]*)"$/) do |field|
   fill_in(field, with: $no_auth_registry, fill_options: { clear: :backspace })
 end
 
+When(/^I enter "([^"]*)" on the search field$/) do |search_text|
+  step %(I enter "#{search_text}" as "search_string")
+end
+
 # Go back in the browser history
 When(/^I go back$/) do
   page.driver.go_back
@@ -251,6 +255,21 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
+
+  # In case of a search reindex not having finished yet, keeps retrying until successful search or timeout
+  if text == 'Search' && has_text?('Could not connect to search server.', wait: 0)
+    click_button(text, match: :first, wait: false)
+    start = Time.new
+    timeout = 10
+    while (has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)) &&
+          (Time.new - start <= timeout)
+
+      click_button(text, match: :first, wait: false)
+    end
+    if Time.new - start > timeout
+      raise 'Could not perform a successful search after reindexation'
+    end
+  end
 end
 
 #
@@ -1040,5 +1059,83 @@ When(/^I refresh the page$/) do
     end
   rescue Capybara::ModalNotFound
     # ignored
+  end
+end
+
+When(/^I make a list of the existing systems$/) do
+  system_elements_list = find_all(:xpath, "//td[contains(@class, 'sortedCol')]")
+  $systems_list = []
+  system_elements_list.each { |el| $systems_list << el.text }
+end
+
+Given(/^I have "([^"]*)" with "([^"]*)" as "([^"]*)" property$/) do |host, property_value, property_name|
+  steps %(
+    Given I am on the Systems overview page of this "#{host}"
+    When I follow "Properties" in the content area
+    And I enter "#{property_value}" as "#{property_name}"
+    And I click on "Update Properties"
+    Then I should see a "System properties changed" text
+  )
+end
+
+# Select first system listed
+When(/^I select the first system in the list$/) do
+  within(:xpath, '//section') do
+    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
+    # click first link in first row
+    within(row) do
+      first('a').click
+    end
+  end
+end
+
+# Change first system's property
+Given(/^I have a system with "([^"]*)" as "([^"]*)" property$/) do |property_value, property_name|
+  steps %(
+    When I follow the left menu "Systems > Overview"
+    And I select the first system in the list
+    And I follow "Properties" in the content area
+    And I enter "#{property_value}" as "#{property_name}"
+    And I click on "Update Properties"
+    Then I should see a "System properties changed" text
+    And I clean the search index on the server
+        )
+end
+
+# Change first system's property when it's a list
+Given(/^I have a system with "([^"]*)" as "([^"]*)" listed property$/) do |property_value, property_name|
+  steps %(
+    When I follow the left menu "Systems > Overview"
+    And I select the first system in the list
+    And I follow "Properties" in the content area
+    And I select "#{property_value}" from "#{property_name}"
+    And I click on "Update Properties"
+    Then I should see a "System properties changed" text
+    And I clean the search index on the server
+        )
+end
+
+# Confirm user has landed on a system's overview page
+Then(/^I should land on system's overview page$/) do
+  steps %(
+    Then I should see a "System Status" text
+    And I should see a "System Info" text
+    And I should see a "System Events" text
+    And I should see a "System Properties" text
+    And I should see a "Subscribed Channels" text
+        )
+end
+
+When(/^I enter minion hostname on the search field$/) do
+  step %(I enter "#{$minion.full_hostname}" on the search field)
+end
+
+Then(/^I should see minion hostname as first search result$/) do
+  hostname = $minion.full_hostname
+  within(:xpath, '//section') do
+    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
+    within(row) do
+      raise "Text '#{hostname}' not found" unless has_text?(hostname)
+    end
   end
 end

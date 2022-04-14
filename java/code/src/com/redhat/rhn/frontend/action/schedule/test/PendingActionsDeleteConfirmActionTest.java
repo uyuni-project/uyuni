@@ -26,9 +26,12 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 
 public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testConfirmDeleteActions() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);

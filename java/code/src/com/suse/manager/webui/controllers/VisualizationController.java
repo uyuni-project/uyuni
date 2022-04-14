@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
@@ -47,15 +48,15 @@ public class VisualizationController {
         get("/manager/visualization/virtualization-hierarchy",
                 withCsrfToken(withOrgAdmin(VisualizationController::showVirtualizationHierarchy)), jade);
         get("/manager/api/visualization/virtualization-hierarchy/data",
-                withOrgAdmin(VisualizationController::virtHierarchyData));
+                asJson(withOrgAdmin(VisualizationController::virtHierarchyData)));
         get("/manager/visualization/proxy-hierarchy",
                 withCsrfToken(withOrgAdmin(VisualizationController::showProxyHierarchy)), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
-                withOrgAdmin(VisualizationController::proxyHierarchyData));
+                asJson(withOrgAdmin(VisualizationController::proxyHierarchyData)));
         get("/manager/visualization/systems-with-managed-groups",
                 withCsrfToken(withOrgAdmin(VisualizationController::systemsWithManagedGroups)), jade);
         get("/manager/api/visualization/systems-with-managed-groups/data",
-                withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
+                asJson(withOrgAdmin(VisualizationController::systemsWithManagedGroupsData)));
     }
 
     /**
@@ -86,7 +87,6 @@ public class VisualizationController {
      * @return JSON result of the API call
      */
     public static String virtHierarchyData(Request request, Response response, User user) {
-        response.type("application/json");
         return json(response, VisualizationManager.virtualizationHierarchy(user));
     }
 
@@ -117,7 +117,6 @@ public class VisualizationController {
      * @return JSON result of the API call
      */
     public static String proxyHierarchyData(Request request, Response response, User user) {
-        response.type("application/json");
         return json(response, VisualizationManager.proxyHierarchy(user));
     }
 
@@ -150,7 +149,6 @@ public class VisualizationController {
      */
     public static String systemsWithManagedGroupsData(Request request, Response response,
             User user) {
-        response.type("application/json");
         return json(response, VisualizationManager.systemsWithManagedGroups(user));
     }
 }

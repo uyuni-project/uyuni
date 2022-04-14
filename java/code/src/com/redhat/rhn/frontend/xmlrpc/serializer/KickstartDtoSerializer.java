@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -38,36 +35,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("string", "update_type")
  *   #struct_end()
  */
-public class KickstartDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartDtoSerializer extends ApiResponseSerializer<KickstartDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartDto> getSupportedClass() {
         return KickstartDto.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        KickstartDto ks = (KickstartDto)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("label", ks.getLabel());
-        helper.add("active", ks.isActive());
-        helper.add("tree_label", ks.getTreeLabel());
-        helper.add("name", ks.getLabel());
-        helper.add("advanced_mode", ks.isAdvancedMode());
-        if (ks.isOrgDefault()) {
-            helper.add("org_default", true);
-        }
-        else {
-            helper.add("org_default", false);
-        }
-        helper.add("update_type", ks.getUpdateType());
-
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartDto src) {
+        return new SerializationBuilder()
+                .add("label", src.getLabel())
+                .add("active", src.isActive())
+                .add("tree_label", src.getTreeLabel())
+                .add("name", src.getLabel())
+                .add("advanced_mode", src.isAdvancedMode())
+                .add("org_default", src.isOrgDefault())
+                .add("update_type", src.getUpdateType())
+                .build();
     }
-
 }

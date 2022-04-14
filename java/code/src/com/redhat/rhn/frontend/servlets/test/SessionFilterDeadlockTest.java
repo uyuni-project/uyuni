@@ -14,13 +14,18 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
 
 import com.mockobjects.servlet.MockFilterChain;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -30,10 +35,10 @@ import javax.servlet.ServletResponse;
 
 /**
  * AuthFilterTest
- * @version $Rev: 50384 $
  */
 public class SessionFilterDeadlockTest extends BaseFilterTst {
 
+    @Test
     public void testDeadlockFilter() throws Exception {
         // Make sure the chain blows up.
         chain = new MockFilterChain() {
@@ -46,9 +51,9 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
         HibernateFactory.getSession();
         int caughtCount = 0;
 
-        Logger log = Logger.getLogger(SessionFilter.class);
+        Logger log = LogManager.getLogger(SessionFilter.class);
         Level orig = log.getLevel();
-        log.setLevel(Level.OFF);
+        Configurator.setLevel(this.getClass().getName(), Level.OFF);
         for (int i = 0; i < 5; i++) {
             try {
                 filter.doFilter(request, response, chain);
@@ -57,7 +62,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
                 caughtCount++;
             }
         }
-        log.setLevel(orig);
+        Configurator.setLevel(this.getClass().getName(), orig);
         assertTrue(caughtCount == 5);
         HibernateFactory.getSession();
         assertTrue(HibernateFactory.inTransaction());

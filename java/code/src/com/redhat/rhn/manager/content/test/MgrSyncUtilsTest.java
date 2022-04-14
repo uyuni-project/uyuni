@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URI;
@@ -30,26 +35,24 @@ import java.nio.file.Path;
 public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
     private static Path fromdir;
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         fromdir = Files.createTempDirectory("sumatest");
         Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         FileUtils.deleteDirectory(fromdir.toFile());
     }
 
+    @Test
     public void testurlToFSPathSLE() throws Exception {
 
         String url = "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update/";
@@ -61,6 +64,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathSLEWithToken() throws Exception {
 
         String url = "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update/?123456789abcde";
@@ -72,6 +76,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathUbuntu() throws Exception {
 
         String url = "http://archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/";
@@ -83,6 +88,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathMirrorlist() throws Exception {
 
         String url = "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock";
@@ -94,6 +100,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathMirrorlistNormalize() throws Exception {
 
         String url = "http://mirrorlist.centos.org/../?release=8&arch=x86_64&repo=AppStream&infra=stock&..=..&x=%2E%2E";
@@ -102,9 +109,10 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 
+    @Test
     public void testurlToFSPathLegacy() throws Exception {
         Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
@@ -116,6 +124,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathLegacyNormalize() throws Exception {
         Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
@@ -127,6 +136,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
     }
 
+    @Test
     public void testurlToFSPathLegacyQuoteNormalize() throws Exception {
         Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
@@ -136,9 +146,10 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 
+    @Test
     public void testurlToFSPathLegacyQuoteNormalize2() throws Exception {
         Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
@@ -150,6 +161,6 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 }

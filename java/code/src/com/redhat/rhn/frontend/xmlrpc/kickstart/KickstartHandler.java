@@ -38,6 +38,8 @@ import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 
 
@@ -57,6 +59,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_begin() $ChannelSerializer #array_end()
      */
+    @ReadOnly
     public List<Channel> listKickstartableChannels(User loggedInUser) {
         ensureConfigAdmin(loggedInUser);
         return  ChannelFactory
@@ -73,6 +76,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_begin() $ChannelSerializer #array_end()
      */
+    @ReadOnly
     public List<Channel> listAutoinstallableChannels(User loggedInUser) {
         ensureConfigAdmin(loggedInUser);
         return ChannelFactory.getKickstartableTreeChannels(loggedInUser.getOrg());
@@ -431,6 +435,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_begin() $KickstartDtoSerializer #array_end()
      */
+    @ReadOnly
     public List listKickstarts(User loggedInUser) {
         checkKickstartPerms(loggedInUser);
         return KickstartLister.getInstance().kickstartsInOrg(loggedInUser.getOrg(), null);
@@ -447,6 +452,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.returntype #array_begin() $KickstartIpRangeSerializer #array_end()
      *
      */
+    @ReadOnly
     public List listAllIpRanges(User loggedInUser) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
             throw new PermissionCheckFailureException();
@@ -467,6 +473,7 @@ public class KickstartHandler extends BaseHandler {
      * search for (i.e. 192.168.0.1)")
      * @xmlrpc.returntype #param_desc("string", "label", "label of the kickstart. Empty string if not found")
      */
+    @ReadOnly
     public String findKickstartForIp(User loggedInUser, String ipAddress) {
         List<KickstartIpRange> ranges = KickstartFactory.lookupRangeByOrg(loggedInUser
                 .getOrg());
@@ -547,6 +554,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "profileLabel" "kickstart profile label")
      * @xmlrpc.returntype #param_desc("boolean", "disabled", "true if profile is disabled")
      */
+    @ReadOnly
     public boolean isProfileDisabled(User loggedInUser, String profileLabel) {
 
         KickstartData ksData = lookupKsData(profileLabel, loggedInUser.getOrg());

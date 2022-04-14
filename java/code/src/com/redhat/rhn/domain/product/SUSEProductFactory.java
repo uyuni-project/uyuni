@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
@@ -53,7 +54,7 @@ import javax.persistence.criteria.Root;
  */
 public class SUSEProductFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(SUSEProductFactory.class);
+    private static Logger log = LogManager.getLogger(SUSEProductFactory.class);
     private static SUSEProductFactory singleton = new SUSEProductFactory();
 
     private SUSEProductFactory() {

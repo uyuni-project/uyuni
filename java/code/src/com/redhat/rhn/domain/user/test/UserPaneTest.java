@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.domain.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,6 +40,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      * Tests a new user
      *
      */
+    @Test
     public void testNewUser() {
         // There should be NO HIDDEN PANE attached  to the user.
         assertTrue(user.getHiddenPanes().isEmpty());
@@ -65,6 +72,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      * Tests the Add and Remove of Panes to the user.
      *
      */
+    @Test
     public void testAddRemovePane() {
         List hiddenPanes = addPanes();
 

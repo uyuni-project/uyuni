@@ -14,20 +14,22 @@
  */
 package com.suse.scc.client.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-
-import junit.framework.TestCase;
 
 /**
  * Tests {@link SCCRequestFactory}
  */
-public class SCCRequestFactoryTest extends TestCase {
+public class SCCRequestFactoryTest  {
 
     // Headers to be verified
     private static final String TEST_SCHEME = "https";
@@ -41,9 +43,10 @@ public class SCCRequestFactoryTest extends TestCase {
      * Tests initRequest(): Init a request to SCC and check it for correctness.
      * @throws Exception in case anything goes wrong
      */
+    @Test
     public void testInitRequest() throws Exception {
         SCCConfig config = new SCCConfig(new URI(TEST_SCHEME + "://" + TEST_HOST),
-                "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR);
+                "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR, true);
         SCCRequestFactory factory = SCCRequestFactory.getInstance();
         HttpRequestBase request = factory.initRequest("GET", TEST_PATH, config);
         assertTrue(request instanceof HttpGet);

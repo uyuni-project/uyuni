@@ -17,7 +17,8 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 /**
@@ -26,7 +27,7 @@ import org.cobbler.SystemRecord;
 public class CobblerUnregisteredPowerSettingsUpdateCommand extends CobblerPowerSettingsUpdateCommand {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerUnregisteredPowerSettingsUpdateCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerUnregisteredPowerSettingsUpdateCommand.class);
 
     /** The server to update. */
     private String label;

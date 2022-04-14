@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.errata.cache.test;
 
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -35,6 +36,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.PackageTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +58,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
     private Package newestPkg;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -74,6 +79,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRetractedPatchesInCache() throws Exception {
         // channel has all packages
         subscribedChannel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
@@ -110,6 +116,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRetractedPackagesInCache() throws Exception {
         // channel has all packages
         subscribedChannel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
@@ -143,6 +150,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
      * Tests updating the cache with a package that belongs to a retracted patch in one channel,
      * but belongs to a stable patch in another.
      */
+    @Test
     public void testRetractedPackagesCacheClonedChannel() throws Exception {
         // create a null-org patch with a newest package and add it to the channel
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);

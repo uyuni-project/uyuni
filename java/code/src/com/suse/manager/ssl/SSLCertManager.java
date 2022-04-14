@@ -19,7 +19,8 @@ import com.redhat.rhn.common.util.FileUtils;
 
 import com.suse.manager.utils.ExecHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,7 @@ import java.util.List;
  * Utility class helping to generate and check SSL certificates
  */
 public class SSLCertManager {
-    private static final Logger LOG = Logger.getLogger(SSLCertManager.class);
+    private static final Logger LOG = LogManager.getLogger(SSLCertManager.class);
 
     private final ExecHelper execHelper;
     private File sslBuildDir = null;
@@ -96,7 +97,12 @@ public class SSLCertManager {
                     FileUtils.readStringFromFile(serverKeyFile.getAbsolutePath()));
         }
         catch (RhnRuntimeException | IOException err) {
-            throw new SSLCertGenerationException(err.getMessage());
+            String msg = err.getMessage();
+            if (msg.startsWith(ExecHelper.TOOL_FAILED_MSG)) {
+                msg = msg.substring(ExecHelper.TOOL_FAILED_MSG.length()).replaceAll("^$", "")
+                        .replace("ERROR: ", "").strip();
+            }
+            throw new SSLCertGenerationException(msg);
         }
         finally {
             if (sslBuildDir != null) {

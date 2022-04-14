@@ -24,7 +24,6 @@ import java.util.Set;
 
 /**
  * PackageListItem
- * @version $Rev: 53092 $
  */
 public class UpgradablePackageListItem extends PackageListItem {
     private Long serverId;

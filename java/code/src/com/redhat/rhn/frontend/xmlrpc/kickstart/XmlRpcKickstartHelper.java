@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * @author paji
- * @version $Rev $
  */
 public class XmlRpcKickstartHelper {
     private static final XmlRpcKickstartHelper HELPER =

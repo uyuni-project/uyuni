@@ -14,12 +14,19 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.RequireTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -32,17 +39,20 @@ public class RequireTagTest extends RhnBaseTestCase {
     private RequireTag rt;
     private TagTestHelper tth;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }
 
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         rt = null;
         tth = null;
     }
 
+    @Test
     public void testInvalidAcl() {
 
         try {
@@ -56,6 +66,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNullAcl() {
         boolean flag = false;
 
@@ -76,6 +87,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testEmptyAcl() {
         boolean flag = false;
 
@@ -96,6 +108,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMixin() {
 
         boolean flag = false;
@@ -115,6 +128,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMultipleMixinsMultipleAcls() {
         try {
             rt.setMixins(MockOneAclHandler.class.getName() + "," +
@@ -128,6 +142,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMultipleAclsSingleMixin() {
         try {
             rt.setAcl("first_true_acl(); second_true_acl()");
@@ -140,6 +155,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testValidAclInvalidMixin() {
         boolean flag = false;
         try {

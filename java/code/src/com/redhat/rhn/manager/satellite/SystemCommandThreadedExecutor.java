@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -22,6 +22,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSnippetLister;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.List;
 
 
@@ -51,6 +53,7 @@ public class SnippetHandler extends BaseHandler {
      *            $SnippetSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<CobblerSnippet> listAll(User loggedInUser) {
         verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().list(loggedInUser);
@@ -69,6 +72,7 @@ public class SnippetHandler extends BaseHandler {
      *            $SnippetSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<CobblerSnippet> listCustom(User loggedInUser) {
         verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().listCustom(loggedInUser);
@@ -87,6 +91,7 @@ public class SnippetHandler extends BaseHandler {
      *            $SnippetSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<CobblerSnippet> listDefault(User loggedInUser) {
         verifyKSAdmin(loggedInUser);
         return CobblerSnippetLister.getInstance().listDefault(loggedInUser);

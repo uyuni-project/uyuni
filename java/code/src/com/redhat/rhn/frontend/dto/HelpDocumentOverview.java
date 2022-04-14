@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * Simple Package DTO
- * @version $Rev: $
  */
 public class HelpDocumentOverview {
     private String url;

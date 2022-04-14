@@ -45,7 +45,8 @@ import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -85,7 +86,7 @@ public class RepoDetailsAction extends RhnAction {
                 "/com/redhat/rhn/frontend/action/channel/" +
                         "manage/repo/validation/repoForm.xsd";
 
-    private static Logger logger = Logger.getLogger(RepoDetailsAction.class);
+    private static Logger logger = LogManager.getLogger(RepoDetailsAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,

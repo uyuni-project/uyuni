@@ -17,17 +17,15 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
 *
@@ -45,28 +43,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *   #prop_array_end()
 * #struct_end()
 */
-public class SystemGroupsDTOSerializer extends RhnXmlRpcCustomSerializer {
+public class SystemGroupsDTOSerializer extends ApiResponseSerializer<SystemGroupsDTO> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<SystemGroupsDTO> getSupportedClass() {
         return SystemGroupsDTO.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SystemGroupsDTO systemGroupsDTO = (SystemGroupsDTO) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", systemGroupsDTO.getSystemID());
-        helper.add("system_groups", serializeSystemGroups(systemGroupsDTO.getSystemGroups()));
-
-        helper.writeTo(output);
+    public SerializedApiResponse serialize(SystemGroupsDTO src) {
+        return new SerializationBuilder()
+                .add("id", src.getSystemID())
+                .add("system_groups", serializeSystemGroups(src.getSystemGroups()))
+                .build();
     }
 
     private List<Map<String, Object>> serializeSystemGroups(List<SystemGroupID> systemGroups) {

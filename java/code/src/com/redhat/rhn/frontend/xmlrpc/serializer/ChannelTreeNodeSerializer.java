@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ChannelTreeNodeSerializer: Converts a ChannelTreeNode object for
@@ -38,49 +35,42 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop("string", "arch_name")
  *   #struct_end()
  */
-public class ChannelTreeNodeSerializer extends RhnXmlRpcCustomSerializer {
+public class ChannelTreeNodeSerializer extends ApiResponseSerializer<ChannelTreeNode> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ChannelTreeNode> getSupportedClass() {
         return ChannelTreeNode.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
+    @Override
+    public SerializedApiResponse serialize(ChannelTreeNode src) {
+        SerializationBuilder builder = new SerializationBuilder();
 
-        ChannelTreeNode ctn = (ChannelTreeNode)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
+        builder.add("id", src.getId());
+        builder.add("label", src.getChannelLabel());
+        builder.add("name", src.getName());
 
-        helper.add("id", ctn.getId());
-        helper.add("label", ctn.getChannelLabel());
-        helper.add("name", ctn.getName());
-
-        if (ctn.getOrgId() != null) {
-            helper.add("provider_name", ctn.getOrgName());
+        if (src.getOrgId() != null) {
+            builder.add("provider_name", src.getOrgName());
         }
         else {
-            helper.add("provider_name", "SUSE");
+            builder.add("provider_name", "SUSE");
         }
 
-        helper.add("packages", ctn.getPackageCount());
+        builder.add("packages", src.getPackageCount());
 
-        if (ctn.getSystemCount() == null) {
+        if (src.getSystemCount() == null) {
             // it is possible for the current query to result in the count
             // being null; however, in this scenario, we still want to serialize the
             // result as 0.
-            helper.add("systems", 0);
+            builder.add("systems", 0);
         }
         else {
-            helper.add("systems", ctn.getSystemCount());
+            builder.add("systems", src.getSystemCount());
         }
 
-        helper.add("arch_name", ctn.getArchName());
+        builder.add("arch_name", src.getArchName());
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

@@ -23,7 +23,6 @@ package com.redhat.rhn.taskomatic.core;
  * <p>
 
  *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class TaskomaticException extends Exception  {
 

@@ -23,7 +23,6 @@ import java.util.Set;
 
 /**
  * IssMaster - Class representation of the table rhnissmaster.
- * @version $Rev: 1 $
  */
 public class IssMaster extends BaseDto {
 

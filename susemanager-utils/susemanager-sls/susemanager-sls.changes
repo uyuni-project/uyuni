@@ -1,3 +1,31 @@
+- implement grains module for mgr_server to expose report database
+  settings and more
+- Build bundle less images, adapt inspection of such images
+  Part of saltboot containerization workflow
+- Handle salt bundle in set_proxy.sls
+- Accept non standard proxy SSH port
+
+-------------------------------------------------------------------
+Mon Apr 04 11:02:56 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.13-1
+  * Fix the improper condition for checking if the Salt Bundle
+    was extracted with pre flight script
+
+-------------------------------------------------------------------
+Thu Mar 31 15:55:44 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Use _arch instead of _host_cpu macro to detect the arch
+    of the Salt Bundle to be deployed (bsc#1197759)
+
+-------------------------------------------------------------------
+Thu Mar 31 12:22:55 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Use dpkg-deb to extract deb files instead of ar
+    with salt ssh preflight on Debian based distros
+
 -------------------------------------------------------------------
 Fri Mar 11 16:49:07 CET 2022 - jgonzalez@suse.com
 

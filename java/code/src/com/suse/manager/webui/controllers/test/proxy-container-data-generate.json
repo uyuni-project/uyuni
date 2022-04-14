@@ -1,0 +1,17 @@
+{
+  "proxyFQDN": "pxy.acme.lab",
+  "serverFQDN": "srv.acme.lab",
+  "maxSquidCacheSize": 2048,
+  "proxyAdminEmail": "coyote@acme.lab",
+  "sslMode": "create-ssl",
+  "caCertificate": "CA CERT",
+  "caKey": "CA KEY",
+  "caPassword": "secret",
+  "cnames": ["cname1", "cname2"],
+  "country": "DE",
+  "state": "Bavaria",
+  "city": "Nurnberg",
+  "org": "SUSE",
+  "orgUnit": "SUSE Unit",
+  "sslEmail": "roadrunner@acme.lab"
+}

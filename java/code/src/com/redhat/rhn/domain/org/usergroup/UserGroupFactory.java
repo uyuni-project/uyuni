@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +33,11 @@ import java.util.Map;
  * UserGroupFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.org.usergroup.UserGroup objects from the
  * database.
- * @version $Rev: 803 $
  */
 public class UserGroupFactory extends HibernateFactory {
 
     private static UserGroupFactory singleton = new UserGroupFactory();
-    private static Logger log = Logger.getLogger(UserGroupFactory.class);
+    private static Logger log = LogManager.getLogger(UserGroupFactory.class);
 
     private UserGroupFactory() {
         super();

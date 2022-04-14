@@ -14,11 +14,17 @@
  */
 package com.redhat.rhn.domain.rhnset.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -27,6 +33,7 @@ import java.util.Set;
  */
 public class RhnSetFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testConstructor() {
         Long id = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(id, null, SetCleanup.NOOP);
@@ -39,6 +46,7 @@ public class RhnSetFactoryTest extends RhnBaseTestCase {
         assertNull(set.getLabel());
     }
 
+    @Test
     public void testBeanProperties() {
         Long num = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(num, null, SetCleanup.NOOP);

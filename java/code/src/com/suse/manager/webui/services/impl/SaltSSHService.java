@@ -69,7 +69,8 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -114,9 +115,10 @@ public class SaltSSHService {
 
     private static final int SSL_PORT = 443;
 
-    public static final int SSH_PUSH_PORT = 22;
+    public static final int SSH_DEFAULT_PORT = 22;
+    public static final int SSH_PUSH_PORT = SSH_DEFAULT_PORT;
 
-    private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
     public static final List<String> ACTION_STATES_LIST = Arrays.asList(
@@ -253,7 +255,7 @@ public class SaltSSHService {
                                 minion.getSSHPushPort().orElse(SSH_PUSH_PORT)),
                             sshTimeout,
                             minionOpts(mid, contactMethodLabel),
-                            Optional.of(getSaltSSHPreflightScriptPath()),
+                            Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                             Optional.of(Arrays.asList(
                                     proxyPath.isEmpty() ?
                                             ConfigDefaults.get().getCobblerHost() :
@@ -364,7 +366,8 @@ public class SaltSSHService {
      * directly to the minion
      */
     public static List<String> proxyPathToHostnames(Server proxy) {
-        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname()));
+        String port = Optional.ofNullable(proxy.getProxyInfo().getSshPort()).map(p -> ":" + p).orElse("");
+        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname() + port));
     }
 
     /**
@@ -379,7 +382,11 @@ public class SaltSSHService {
         }
 
         List<ServerPath> proxyPath = sortServerPaths(serverPaths);
-        List<String> hostnamePath = proxyPath.stream().map(ServerPath::getHostname).collect(Collectors.toList());
+        List<String> hostnamePath = proxyPath.stream().map(path -> {
+            String port = Optional.ofNullable(path.getId().getProxyServer().getProxyInfo().getSshPort())
+                    .map(p -> ":" + p.toString()).orElse("");
+            return path.getHostname() + port;
+        }).collect(Collectors.toList());
 
         lastProxy.ifPresent(hostnamePath::add);
 
@@ -416,7 +423,10 @@ public class SaltSSHService {
         StringBuilder proxyCommand = new StringBuilder();
         proxyCommand.append("ProxyCommand='");
         for (int i = 0; i < proxyPath.size(); i++) {
-            String proxyHostname = proxyPath.get(i);
+            String[] proxyHostPort = proxyPath.get(i).split(":");
+            String proxyHostname = proxyHostPort[0];
+            String proxyPort = proxyHostPort.length > 1 ? proxyHostPort[1] : Integer.toString(SSH_DEFAULT_PORT);
+
             String key;
             String stdioFwd = "";
             if (i == 0) {
@@ -430,8 +440,8 @@ public class SaltSSHService {
             }
 
             proxyCommand.append(String.format(
-                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s%s %s ",
-                    key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
+                    "/usr/bin/ssh -p %s -i %s -o StrictHostKeyChecking=no -o User=%s%s %s ",
+                    proxyPort, key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
         }
         proxyCommand.append("'");
         return Optional.of(Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString()));
@@ -515,7 +525,7 @@ public class SaltSSHService {
                         parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
                     minionOpts(parameters.getHost(), contactMethod),
-                    Optional.of(getSaltSSHPreflightScriptPath()),
+                    Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
                             bootstrapProxyPath.isEmpty() ?
                                     ConfigDefaults.get().getCobblerHost() :
@@ -751,8 +761,7 @@ public class SaltSSHService {
     public static Optional<String> retrieveSSHPushProxyPubKey(long proxyId) {
         Server proxy = ServerFactory.lookupById(proxyId);
         String keyFile = proxy.getHostname() + ".pub";
-        List<String> proxyPath = proxyPathToHostnames(proxy.getServerPaths(),
-                Optional.of(proxy.getHostname()));
+        List<String> proxyPath = proxyPathToHostnames(proxy);
 
         Map<String, String> options = new HashMap<>();
         options.put("StrictHostKeyChecking", "no");

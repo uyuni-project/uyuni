@@ -18,13 +18,12 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageKey;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -46,45 +45,35 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class PackageSerializer extends RhnXmlRpcCustomSerializer {
+public class PackageSerializer extends ApiResponseSerializer<Package> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Package> getSupportedClass() {
         return Package.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        Package pack = (Package) value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", pack.getPackageName().getName());
-        helper.add("version", pack.getPackageEvr().getVersion());
-        helper.add("release", pack.getPackageEvr().getRelease());
-        String epoch = pack.getPackageEvr().getEpoch();
-        helper.add("epoch", epoch == null ? "" : epoch);
-        helper.add("id", pack.getId());
-        helper.add("arch_label", pack.getPackageArch().getLabel());
-        helper.add("last_modified", pack.getLastModified());
-        helper.add("path", pack.getPath());
-        helper.add("part_of_retracted_patch", pack.isPartOfRetractedPatch());
-
-        String provider = LocalizationService.getInstance().getMessage(
-                "channel.jsp.gpgunknown");
-        if (pack.getPackageKeys() != null) {
-            for (PackageKey key : pack.getPackageKeys()) {
-                if (key.getType().equals(PackageFactory.PACKAGE_KEY_TYPE_GPG) &&
-                    key.getProvider() != null) {
+    @Override
+    public SerializedApiResponse serialize(Package src) {
+        String provider = LocalizationService.getInstance().getMessage("channel.jsp.gpgunknown");
+        if (src.getPackageKeys() != null) {
+            for (PackageKey key : src.getPackageKeys()) {
+                if (key.getType().equals(PackageFactory.PACKAGE_KEY_TYPE_GPG) && key.getProvider() != null) {
                     provider = key.getProvider().getName();
                 }
             }
         }
-        helper.add("provider", provider);
-        helper.writeTo(output);
+
+        return new SerializationBuilder()
+                .add("name", src.getPackageName().getName())
+                .add("version", src.getPackageEvr().getVersion())
+                .add("release", src.getPackageEvr().getRelease())
+                .add("epoch", StringUtils.defaultString(src.getPackageEvr().getEpoch()))
+                .add("id", src.getId())
+                .add("arch_label", src.getPackageArch().getLabel())
+                .add("last_modified", src.getLastModified())
+                .add("path", src.getPath())
+                .add("part_of_retracted_patch", src.isPartOfRetractedPatch())
+                .add("provider", provider)
+                .build();
     }
 }

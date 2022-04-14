@@ -46,7 +46,8 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +68,7 @@ public class FilterApiController {
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
     private static final FilterTemplateManager TEMPLATE_MGR = ControllerApiUtils.TEMPLATE_MGR;
     private static final LocalizationService LOC = LocalizationService.getInstance();
-    private static final Logger LOG = Logger.getLogger(FilterApiController.class);
+    private static final Logger LOG = LogManager.getLogger(FilterApiController.class);
 
     private FilterApiController() {
     }

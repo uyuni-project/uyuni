@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Apr 11 08:51:09 UTC 2022 - Dario Leidi <dleidi@suse.com>
+
+- Align the image version to the product one
+- Drop stale TODOs
+
+-------------------------------------------------------------------
+Wed Mar 23 09:04:14 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Make /usr/sbin/mgr-proxy-ssh-force-cmd executable 
+
+-------------------------------------------------------------------
 Tue Mar 15 14:42:38 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
 - Initial version

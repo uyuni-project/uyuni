@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @version $Revision$
  */
 public class SelectUpgradePackagesAction extends RhnAction implements Listable {
 

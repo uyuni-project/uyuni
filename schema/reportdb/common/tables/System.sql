@@ -24,8 +24,20 @@ CREATE TABLE System
     last_checkin_time             TIMESTAMPTZ,
     kernel_version                VARCHAR(64),
     architecture                  VARCHAR(64),
+    is_proxy                      BOOLEAN NOT NULL DEFAULT FALSE,
+    proxy_system_id               NUMERIC,
+    is_mgr_server                 BOOLEAN NOT NULL DEFAULT FALSE,
     organization                  VARCHAR(128),
     hardware                      TEXT,
+    machine                       VARCHAR(64),
+    rack                          VARCHAR(64),
+    room                          VARCHAR(32),
+    building                      VARCHAR(128),
+    address1                      VARCHAR(128),
+    address2                      VARCHAR(128),
+    city                          VARCHAR(128),
+    state                         VARCHAR(60),
+    country                       VARCHAR(2),
     synced_date                   TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 

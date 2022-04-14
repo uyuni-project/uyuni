@@ -17,18 +17,18 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.manager.satellite.Executor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 /**
  *
- * @version $Rev $
  *
  */
 public abstract class RepositoryWriter {
 
-    protected Logger log = Logger.getLogger(RepositoryWriter.class);
+    protected Logger log = LogManager.getLogger(RepositoryWriter.class);
     protected final String pathPrefix;
     protected final String mountPoint;
     protected final Executor cmdExecutor;

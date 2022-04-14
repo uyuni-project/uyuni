@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.action.configuration.ssm.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -27,12 +29,15 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testRequests() {
         // Assert invalid request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
@@ -45,6 +50,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         verifyForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    @Test
     public void testExecuteLowestPosition() throws Exception {
         /*
          * Add servers and channels
@@ -132,6 +138,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
+    @Test
     public void testExecuteHighestPosition() throws Exception {
         /*
          * Add servers and channels
@@ -219,6 +226,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
+    @Test
     public void testExecuteReplacePosition() throws Exception {
         /*
          * Add servers and channels

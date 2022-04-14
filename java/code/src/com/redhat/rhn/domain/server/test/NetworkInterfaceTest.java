@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -24,6 +27,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +42,7 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * Test the equals method for NetworkInterface.
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         NetworkInterface netint1 = createTestNetworkInterface();
         NetworkInterface netint2 = new NetworkInterface();

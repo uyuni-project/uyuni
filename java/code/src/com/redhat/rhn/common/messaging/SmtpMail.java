@@ -20,7 +20,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -41,13 +42,12 @@ import javax.mail.internet.MimeMessage;
 /**
  * A simple wrapper around javamail to allow us to send e-mail quickly.
  *
- * @version $Rev: 694 $
  */
 public class SmtpMail implements Mail {
 
     private String smtpHost;
     private MimeMessage message;
-    private static Logger log = Logger.getLogger(SmtpMail.class);
+    private static Logger log = LogManager.getLogger(SmtpMail.class);
 
     private static String[] disallowedDomains;
     private static String[] restrictedDomains;

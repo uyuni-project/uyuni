@@ -14,26 +14,29 @@
  */
 package com.suse.manager.model.products.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 /**
  * Tests Product.
  */
-public class ProductTest extends TestCase {
+public class ProductTest  {
 
     /**
      * Tests the method isProvided().
      */
+    @Test
     public void testIsProvided() {
         SetupWizardProductDto nonSynchronizingProduct = new SetupWizardProductDto(
                 1L,
@@ -89,6 +92,7 @@ public class ProductTest extends TestCase {
     /**
      * Test compareTo().
      */
+    @Test
     public void testCompareTo() {
         List<SetupWizardProductDto> products = new LinkedList<>();
 

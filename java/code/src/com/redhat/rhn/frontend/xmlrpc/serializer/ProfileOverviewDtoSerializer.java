@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -34,25 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "channel")
  * #struct_end()
  */
-public class ProfileOverviewDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class ProfileOverviewDtoSerializer extends ApiResponseSerializer<ProfileOverviewDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ProfileOverviewDto> getSupportedClass() {
         return ProfileOverviewDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ProfileOverviewDto dto = (ProfileOverviewDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", dto.getId());
-        helper.add("name", dto.getName());
-        helper.add("channel", dto.getChannelName());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ProfileOverviewDto src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("channel", src.getChannelName())
+                .build();
     }
 }

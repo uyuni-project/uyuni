@@ -59,7 +59,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -88,7 +89,7 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
  */
 public class MaintenanceManager {
 
-    private static Logger log = Logger.getLogger(MaintenanceManager.class);
+    private static Logger log = LogManager.getLogger(MaintenanceManager.class);
 
     private ScheduleFactory scheduleFactory;
     private CalendarFactory calendarFactory;

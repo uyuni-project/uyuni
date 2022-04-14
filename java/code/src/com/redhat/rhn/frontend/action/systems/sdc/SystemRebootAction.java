@@ -33,7 +33,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,7 +52,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemRebootAction extends RhnAction implements MaintenanceWindowsAware {
     /** Logger instance */
-    private static Logger log = Logger.getLogger(SystemRebootAction.class);
+    private static Logger log = LogManager.getLogger(SystemRebootAction.class);
 
     /** Success forward name. */
     private static final String CONFIRM_FORWARD = "confirm";

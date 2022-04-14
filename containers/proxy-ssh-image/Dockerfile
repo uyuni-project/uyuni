@@ -20,7 +20,7 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.opencontainers.image.version="%PKG_VERSION%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
@@ -36,6 +36,7 @@ VOLUME "/etc/uyuni"
 
 # Additional material
 COPY mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
+RUN chmod a+x /usr/sbin/mgr-proxy-ssh-force-cmd
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py

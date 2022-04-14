@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * UserServerPreference - Class representation of the table rhnUserServerprefs.
- * @version $Rev: 1 $
  */
 public class UserServerPreference {
     private UserServerPreferenceId id;

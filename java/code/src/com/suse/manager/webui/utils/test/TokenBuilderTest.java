@@ -14,6 +14,12 @@
  */
 package com.suse.manager.webui.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -21,6 +27,7 @@ import com.suse.manager.webui.utils.TokenBuilder;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jose4j.jwt.NumericDate;
+import org.junit.jupiter.api.Test;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -30,6 +37,7 @@ import java.util.Arrays;
  */
 public class TokenBuilderTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testGetKey() {
         String secret = DigestUtils.sha256Hex(TestUtils.randomString());
         Key key = TokenBuilder.getKeyForSecret(secret);
@@ -37,6 +45,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         assertEquals(32, key.getEncoded().length);
     }
 
+    @Test
     public void testGetKeyConvert() {
         String secret = DigestUtils.sha256Hex("0123456789abcd");
         Key key = TokenBuilder.getKeyForSecret(secret);
@@ -46,6 +55,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
                 82, -84, -119, -99, 20, -82, 114, -21, 38, 65, 25, -50, 88, 44, -8}, key.getEncoded()));
     }
 
+    @Test
     public void testExpectsHexSecret() {
         try {
             // randomString() len is 13
@@ -57,6 +67,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDefaultExpiresInAYear() throws Exception {
         TokenBuilder tokenBuilder = new TokenBuilder();
         tokenBuilder.useServerSecret();
@@ -64,6 +75,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         assertNotNull(expDate);
     }
 
+    @Test
     public void testVerifyToken() throws Exception {
         TokenBuilder tokenBuilder = new TokenBuilder();
         tokenBuilder.useServerSecret();
@@ -71,6 +83,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         assertTrue(TokenBuilder.verifyToken(token));
     }
 
+    @Test
     public void testWrongOriginToken() {
         String wrongOriginToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpva" +
                 "G4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";

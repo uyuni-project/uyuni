@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
@@ -39,6 +41,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -50,6 +54,7 @@ import java.util.Optional;
 public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
@@ -58,6 +63,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
         MockConnection.clear();
     }
 
+    @Test
     public void testRemovingServerInvalidatesTokens() throws Exception {
         Config.get().setString(
             "server.secret_key",

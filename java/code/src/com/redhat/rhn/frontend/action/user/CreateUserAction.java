@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserEditSubmitAction, edit action submit handler for user detail page
- * @version $Rev: 1196 $
  */
 public class CreateUserAction extends RhnAction {
 

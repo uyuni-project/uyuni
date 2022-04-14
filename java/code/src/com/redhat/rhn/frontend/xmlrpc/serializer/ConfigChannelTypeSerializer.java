@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.config.ConfigChannelType;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -35,28 +32,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("int", "priority")
  * #struct_end()
  */
-public class ConfigChannelTypeSerializer extends RhnXmlRpcCustomSerializer {
+public class ConfigChannelTypeSerializer extends ApiResponseSerializer<ConfigChannelType> {
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-       throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        ConfigChannelType type = (ConfigChannelType) value;
-        helper.add("id", type.getId());
-        helper.add("label", type.getLabel());
-        helper.add("name", type.getName());
-        helper.add("priority", type.getPriority());
-        helper.writeTo(output);
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ConfigChannelType> getSupportedClass() {
         return ConfigChannelType.class;
     }
 
-
+    @Override
+    public SerializedApiResponse serialize(ConfigChannelType src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("priority", src.getPriority())
+                .build();
+    }
 }

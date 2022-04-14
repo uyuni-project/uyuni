@@ -38,7 +38,8 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -64,7 +65,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
-    private static Logger log = Logger.getLogger(BaseSubscribeAction.class);
+    private static Logger log = LogManager.getLogger(BaseSubscribeAction.class);
     private static LocalizationService localizationInstance =
             LocalizationService.getInstance();
 

@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -57,7 +58,7 @@ public class TaskoTop {
         get("/manager/admin/runtime-status",
                 withUserPreferences(withCsrfToken(withOrgAdmin(TaskoTop::show))), jade);
         get("/manager/api/admin/runtime-status/data",
-                withOrgAdmin(TaskoTop::data));
+                asJson(withOrgAdmin(TaskoTop::data)));
     }
 
     /**
@@ -82,8 +83,6 @@ public class TaskoTop {
      */
     public static String data(Request request, Response response, User user) {
         Object data = new TaskoTopCollector().getData(user);
-
-        response.type("application/json");
         return GSON.toJson(data);
     }
 }

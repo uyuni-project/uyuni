@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +43,7 @@ public class SessionManager extends BaseManager {
      * Logger for this class
      */
     private static Logger logger =
-        Logger.getLogger(SessionManager.class);
+        LogManager.getLogger(SessionManager.class);
 
     public static final String SEC_PARM_TOKENIZER_CHAR = ":";
     // Timeout value 900,000 = 15 min

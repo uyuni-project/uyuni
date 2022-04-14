@@ -18,7 +18,8 @@ import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class ServerNoteFactory extends HibernateFactory {
 
     private static ServerNoteFactory singleton = new ServerNoteFactory();
-    private static Logger log = Logger.getLogger(ServerFactory.class);
+    private static Logger log = LogManager.getLogger(ServerFactory.class);
 
     private ServerNoteFactory() {
         super();

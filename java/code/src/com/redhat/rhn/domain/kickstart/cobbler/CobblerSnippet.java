@@ -29,7 +29,6 @@ import java.io.File;
 
 /**
  * CobblerSnippet - Class representation of a Cobbler snippet
- * @version $Rev: 1 $
  */
 public class CobblerSnippet implements Comparable {
     private File path;

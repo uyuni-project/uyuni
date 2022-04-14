@@ -16,7 +16,8 @@ package com.redhat.rhn.taskomatic.core;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
@@ -32,7 +33,7 @@ public class TaskEnvironmentListener implements TriggerListener {
 
     public static final String LISTENER_NAME = "TaskEnvironmentListener";
 
-    private static Logger logger = Logger.getLogger(SchedulerKernel.class);
+    private static Logger logger = LogManager.getLogger(SchedulerKernel.class);
 
     private Map vetoedJobs = new HashMap();
     /**

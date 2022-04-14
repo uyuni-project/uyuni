@@ -42,6 +42,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -85,6 +87,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      $UserSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List listAdministrators(User loggedInUser, String systemGroupName) {
         ManagedServerGroup sg = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return serverGroupManager.listAdministrators(sg, loggedInUser);
@@ -160,6 +163,7 @@ public class ServerGroupHandler extends BaseHandler {
      *          $ServerSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List listSystems(User loggedInUser, String systemGroupName) {
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return group.getServers();
@@ -304,6 +308,7 @@ public class ServerGroupHandler extends BaseHandler {
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List listGroupsWithNoAssociatedAdmins(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return serverGroupManager.listNoAdminGroups(loggedInUser);
@@ -323,6 +328,7 @@ public class ServerGroupHandler extends BaseHandler {
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ManagedServerGroup> listAllGroups(User loggedInUser) {
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(
                 loggedInUser.getOrg());
@@ -348,6 +354,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "systemGroupId")
      * @xmlrpc.returntype $ManagedServerGroupSerializer
      */
+    @ReadOnly
     public ServerGroup getDetails(User loggedInUser, Integer systemGroupId)
         throws FaultException {
 
@@ -368,6 +375,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype $ManagedServerGroupSerializer
      */
+    @ReadOnly
     public ServerGroup getDetails(User loggedInUser, String systemGroupName)
         throws FaultException {
         return lookup(systemGroupName, loggedInUser);
@@ -416,6 +424,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype #array_single("int", "server_id")
      */
+    @ReadOnly
     public List<Long> listActiveSystemsInGroup(User loggedInUser, String systemGroupName) {
         return activeSystemsInGroup(loggedInUser, systemGroupName);
     }
@@ -442,6 +451,7 @@ public class ServerGroupHandler extends BaseHandler {
      *           must not check in to be considered inactive.")
      * @xmlrpc.returntype #array_single("int", "server_id")
      */
+    @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName, Integer daysInactive) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
@@ -462,6 +472,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype #array_single("int", "server_id")
      */
+    @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName) {
         Long threshold = (long) Config.get().getInt(
@@ -563,6 +574,7 @@ public class ServerGroupHandler extends BaseHandler {
      * $ConfigChannelSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigChannel> listAssignedConfigChannels(User loggedInUser, String systemGroupName) {
         ServerGroup group = Optional.ofNullable(
                 ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())
@@ -646,6 +658,7 @@ public class ServerGroupHandler extends BaseHandler {
      * $FormulaSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<Formula> listAssignedFormuals(User loggedInUser, String systemGroupName) {
         ServerGroup group = Optional.ofNullable(
                 ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())

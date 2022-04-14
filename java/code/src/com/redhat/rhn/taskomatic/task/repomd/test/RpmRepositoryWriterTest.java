@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -39,6 +43,9 @@ import org.hamcrest.Description;
 import org.jmock.Expectations;
 import org.jmock.api.Action;
 import org.jmock.api.Invocation;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +64,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     private Channel channel;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         mountPointDir = Files.createTempDirectory("rpmrepotest");
@@ -67,6 +75,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         metadataPath = mountPointDir.resolve(Path.of("rhn", "repodata", channel.getLabel()));
     }
 
+    @Test
     public void testPagination() throws Exception {
         PackageManager.createRepoEntrys(channel.getId());
 
@@ -84,6 +93,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         assertEquals(25, pkgs.size());
     }
 
+    @Test
     public void testMetadataKeyFiles() throws Exception {
         // Mock an Executor instance to stub system calls to 'mgr-sign-metadata'
         Executor cmdExecutor = mock(Executor.class);
@@ -110,6 +120,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, Boolean.toString(cfgDefaultSignMetadata));
     }
 
+    @Test
     public void testWriteRepomdFiles() throws Exception {
         RpmRepositoryWriter writer = new RpmRepositoryWriter("rhn/repodata", mountPointDir.toAbsolutePath().toString());
 
@@ -272,6 +283,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(mountPointDir.toFile());

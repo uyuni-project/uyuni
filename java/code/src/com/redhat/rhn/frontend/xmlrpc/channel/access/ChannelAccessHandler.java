@@ -26,6 +26,8 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.manager.api.ReadOnly;
+
 /**
  * ChannelAccessHandler
  * @xmlrpc.namespace channel.access
@@ -152,6 +154,7 @@ public class ChannelAccessHandler extends BaseHandler {
      * @xmlrpc.returntype
      *  #param_desc("string", "access", "The access value (one of the following: 'public', 'private', or 'protected'")
      */
+    @ReadOnly
     public String getOrgSharing(User loggedInUser, String channelLabel)
         throws FaultException {
 

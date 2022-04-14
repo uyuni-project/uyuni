@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -22,10 +24,13 @@ import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
 import com.redhat.rhn.manager.satellite.RestartCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
 
     private TestRestartCommand command;
 
+    @Test
     public void testAction() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         command = new TestRestartCommand(user);

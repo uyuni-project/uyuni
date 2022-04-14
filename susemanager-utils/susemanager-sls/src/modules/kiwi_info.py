@@ -2,7 +2,6 @@ import salt.exceptions
 import logging
 import os
 import re
-import hashlib
 import pickle
 
 log = logging.getLogger(__name__)
@@ -117,7 +116,7 @@ def get_md5(path):
     if not __salt__['file.file_exists'](path):
         return res
 
-    res['hash'] = __salt__['file.get_hash'](path, form='md5')
+    res['hash'] = "md5:" + __salt__['file.get_hash'](path, form='md5')
     res['size'] = __salt__['file.stats'](path).get('size')
     return res
 
@@ -135,7 +134,7 @@ def parse_kiwi_md5(path, compressed = False):
             pattern = re.compile(r"^(?P<md5>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s*$")
         match = pattern.match(md5_str)
         if match:
-            res['hash'] = match.group('md5')
+            res['hash'] = "md5:" + match.group('md5')
             res['size'] = int(match.group('size1')) * int(match.group('size2'))
             if compressed:
                 res['compressed_size'] = int(match.group('csize1')) * int(match.group('csize2'))
@@ -151,7 +150,7 @@ _compression_types = [
     { 'suffix': '',    'compression': None }
     ]
 
-def image_details(dest, bundle_dest = None):
+def image_details(dest: str, bundle_dest: str = None) -> dict:
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -203,10 +202,12 @@ def image_details(dest, bundle_dest = None):
 
     return res
 
-def inspect_image(dest, bundle_dest = None):
+def inspect_image(dest: str, build_id: str, bundle_dest: str = None) -> dict:
     res = image_details(dest, bundle_dest)
     if not res:
       return None
+
+    res['image']['build_id'] = build_id
 
     basename = res['image']['basename']
     image_type = res['image']['type']
@@ -225,7 +226,7 @@ def inspect_image(dest, bundle_dest = None):
     return res
 
 
-def inspect_boot_image(dest):
+def inspect_boot_image(dest: str) -> dict:
     res = None
     files = __salt__['file.readdir'](dest)
 
@@ -270,32 +271,38 @@ def inspect_boot_image(dest):
 
     for c in _compression_types:
         if res['kiwi_ng']:
-            path = basename + '.initrd' + c['suffix']
+            file = basename + '.initrd' + c['suffix']
         else:
-            path = basename + c['suffix']
-        if __salt__['file.file_exists'](os.path.join(dest, path)):
-            res['initrd']['filename'] = path
-
+            file = basename + c['suffix']
+        filepath = os.path.join(dest, file)
+        if __salt__['file.file_exists'](filepath):
+            res['initrd']['filename'] = file
+            res['initrd']['filepath'] = filepath
             if res['kiwi_ng']:
-                res['initrd'].update(get_md5(os.path.join(dest, path)))
+                res['initrd'].update(get_md5(filepath))
             else:
                 res['initrd'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5')))
             break
 
     if res['kiwi_ng']:
-        path = os.path.join(dest, basename + '-' + res['kernel']['version'] + '.kernel')
-        if __salt__['file.file_exists'](path):
-            res['kernel']['filename'] = basename + '-' + res['kernel']['version'] + '.kernel'
-            res['kernel'].update(get_md5(path))
+        file = basename + '-' + res['kernel']['version'] + '.kernel'
+        filepath = os.path.join(dest, file)
+        if __salt__['file.file_exists'](filepath):
+            res['kernel']['filename'] = file
+            res['kernel']['filepath'] = filepath
+            res['kernel'].update(get_md5(filepath))
     else:
-        path = os.path.join(dest, basename + '.kernel.' + res['kernel']['version'])
-        if __salt__['file.file_exists'](path):
-            res['kernel']['filename'] = basename + '.kernel.' + res['kernel']['version']
-            res['kernel'].update(parse_kiwi_md5(path + '.md5'))
+        file = basename + '.kernel.' + res['kernel']['version']
+        filepath = os.path.join(dest, file)
+        if __salt__['file.file_exists'](filepath):
+            res['kernel']['filename'] = file
+            res['kernel']['filepath'] = filepath
+            res['kernel'].update(parse_kiwi_md5(filepath + '.md5'))
 
     return res
 
-def inspect_bundles(dest, basename):
+
+def inspect_bundles(dest: str, basename: str) -> dict:
     res = []
     files = __salt__['file.readdir'](dest)
 
@@ -305,7 +312,6 @@ def inspect_bundles(dest, basename):
         if match:
             res1 = match.groupdict()
             sha256_file = f
-
             sha256_str = __salt__['cp.get_file_str'](os.path.join(dest, sha256_file))
             pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
             match = pattern2.match(sha256_str)
@@ -314,7 +320,6 @@ def inspect_bundles(dest, basename):
                 d['hash'] = 'sha256:{0}'.format(d['hash'])
                 res1.update(d)
                 res1['filepath'] = os.path.join(dest, res1['filename'])
-
             else:
                 # only hash without file name
                 pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
@@ -324,5 +329,61 @@ def inspect_bundles(dest, basename):
                     res1['filename'] = sha256_file[0:-len('.sha256')]
                     res1['filepath'] = os.path.join(dest, res1['filename'])
             res.append(res1)
+    return res
+
+# TODO consider adding checksum to validate upload
+def build_info(dest: str, build_id: str, bundle_dest: str = None) -> dict:
+    res = {}
+    buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
+    kiwiresult = parse_kiwi_result(dest)
+    basename = buildinfo.get('main', {}).get('image.basename', '')
+    image_type = kiwiresult.get('type') or buildinfo.get('main', {}).get('image.type', 'unknown')
+
+    pattern = re.compile(r"^(?P<name>.*)\.(?P<arch>.*)-(?P<version>.*)$")
+    match = pattern.match(basename)
+    if not match:
+        return None
+    name = match.group('name')
+    arch = match.group('arch')
+    version = match.group('version')
+
+    image_filepath = None
+    image_filename = None
+    for c in _compression_types:
+        test_name = basename + c['suffix']
+        filepath = os.path.join(dest, test_name)
+        if __salt__['file.file_exists'](filepath):
+            image_filename = test_name
+            image_filepath = filepath
+            break
+
+    res['image'] = {
+        'name': name,
+        'arch': arch,
+        'version': version,
+        'filepath': image_filepath,
+        'filename': image_filename,
+        'build_id': build_id
+    }
+
+    res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5')))
+
+    if image_type == 'pxe':
+        r = inspect_boot_image(dest)
+        res['boot_image'] = {
+            'initrd': {
+                'filepath': r['initrd']['filepath'],
+                'filename': r['initrd']['filename'],
+                'hash': r['initrd']['hash']
+            },
+            'kernel': {
+                'filepath': r['kernel']['filepath'],
+                'filename': r['kernel']['filename'],
+                'hash': r['kernel']['hash']
+            }
+        }
+
+    if bundle_dest is not None:
+        res['bundles'] = inspect_bundles(bundle_dest, basename)
 
     return res

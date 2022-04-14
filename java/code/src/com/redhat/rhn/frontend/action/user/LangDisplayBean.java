@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.action.user;
  * Stores information about available languages
  * Used in the Locale Preferences page
  *
- * @version $Rev $
  */
 public class LangDisplayBean {
 

@@ -19,7 +19,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * @author Jason Dobies
- * @version $Revision$
  */
 public class KickstartKeyDeleteException extends FaultException {
 

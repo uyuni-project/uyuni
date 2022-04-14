@@ -43,7 +43,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -90,7 +91,7 @@ public class JobReturnEventMessageAction implements MessageAction {
     }
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(JobReturnEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {
@@ -248,6 +249,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
             MinionServer m = minion.get();
+            if (jobResult.isEmpty()) {
+                LOG.warn("Do not update server info since job=" +  jobReturnEvent.getJobId() + " in minion=" +
+                        jobReturnEvent.getMinionId() + " is empty");
+                return;
+            }
             m.updateServerInfo();
             // for s390 update the host as well
             if (m.getCpu() != null &&

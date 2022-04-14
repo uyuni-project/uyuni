@@ -28,7 +28,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.utils.MailHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import java.util.Map;
  */
 public class TaskHelper {
 
-    private static final Logger LOG = Logger.getLogger(TaskHelper.class);
+    private static final Logger LOG = LogManager.getLogger(TaskHelper.class);
 
     /**
      * private constructor

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -30,11 +33,14 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ActionSystemsSetupActionTest
  */
 public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPeformExecute() throws Exception {
         ActionSystemsSetupAction action = new InProgressSystemsSetupAction();
         ActionHelper sah = new ActionHelper();

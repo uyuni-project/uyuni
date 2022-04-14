@@ -18,6 +18,12 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.MULTI;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
@@ -48,6 +54,8 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.StringReader;
@@ -80,12 +88,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     private static final String EXCHANGE_MULTI3_ICS = "maintenance-windows-multi-exchange-3.ics";
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
     }
 
+    @Test
     public void testCreateSchedule() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
@@ -105,6 +115,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateCalendar() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
@@ -126,6 +137,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertNull(dbCal.getUrlOpt().orElse(null));
     }
 
+    @Test
     public void testCreateScheduleWithCalendar() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
@@ -155,6 +167,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertNull(dbCal.getUrlOpt().orElse(null));
     }
 
+    @Test
     public void testUpdateScheduleWithCalendarURL() throws Exception {
         File icalKde = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
@@ -215,6 +228,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testListSystemsWithSchedule() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
@@ -237,6 +251,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testRetractScheduleFromSystems() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
@@ -264,6 +279,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testAssignScheduleToSystemWithPendingActions() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
@@ -301,6 +317,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testAssignScheduleCrossOrg() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
         user.addPermanentRole(ORG_ADMIN);
@@ -337,6 +354,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 PermissionException.class);
     }
 
+    @Test
     public void testActionInMaintenanceWindow() throws Exception {
         File icalKde = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
@@ -385,6 +403,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
     }
 
+    @Test
     public void testScheduleChangeMultiWithCancel() throws Exception {
         File icalExM1 = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());
@@ -457,6 +476,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals("Core Server Window", results.get(0).getScheduleName());
     }
 
+    @Test
     public void testScheduleChangeMultiWithActionChain() throws Exception {
         File icalExM1 = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());
@@ -569,6 +589,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testListSystemsSchedules() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
@@ -586,6 +607,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         );
     }
 
+    @Test
     public void testPreprocessCalendarData() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
@@ -613,6 +635,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         ), events);
     }
 
+    @Test
     public void testPreprocessScheduleData() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
@@ -666,6 +689,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         ), multiEvents);
     }
 
+    @Test
     public void testGetCalendarEvents() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI3_ICS).getAbsolutePath()).getPath());
@@ -695,6 +719,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals("2020-09-13T06:00:00Z", Instant.ofEpochMilli(lastEvent.get().getFromMilliseconds()).toString());
     }
 
+    @Test
     public void testGetActiveRange() {
         MaintenanceManager mm = new MaintenanceManager();
         ZonedDateTime date = ZonedDateTime.parse("2020-01-20T00:00:00+02:00");
@@ -752,7 +777,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             fail("An exceptions should have been thrown.");
         }
         catch (Exception e) {
-            assertEquals("The exception should be of class: " + exceptionClass, exceptionClass, e.getClass());
+            assertEquals(exceptionClass, e.getClass(), "The exception should be of class: " + exceptionClass);
         }
     }
 }

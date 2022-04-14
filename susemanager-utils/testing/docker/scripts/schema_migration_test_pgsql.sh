@@ -6,6 +6,24 @@ echo "============================================================"
 echo "                      Migration test                        "
 echo "============================================================"
 
+SCRIPT=$(basename ${0})
+usage_and_exit() {
+    echo "Usage: ${1} schema_rpms"
+    exit 2
+}
+
+if [ ${#} -ne 1 ];then
+    echo "Missing parameters"
+    usage_and_exit ${SCRIPT}
+fi
+
+schema_rpm=${1}
+
+if [ ! -f /root/${schema_rpm} ];then
+    echo "RPM /root/${schema_rpm} does not exists"
+    usage_and_exit ${SCRIPT}
+fi
+
 cd /manager/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
@@ -16,7 +34,9 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm
+pushd /root/
+rpm -ivh ${schema_rpm}
+popd
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH

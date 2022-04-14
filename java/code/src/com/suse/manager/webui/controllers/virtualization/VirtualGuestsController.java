@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.virtualization;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -73,7 +74,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
@@ -99,7 +101,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualGuestsController extends AbstractVirtualizationController {
 
-    private static final Logger LOG = Logger.getLogger(VirtualGuestsController.class);
+    private static final Logger LOG = LogManager.getLogger(VirtualGuestsController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -130,7 +132,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         get("/manager/systems/details/virtualization/guests/console/:guestuuid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUserAndServer(this::data));
+                asJson(withUserAndServer(this::data)));
         post("/manager/api/systems/details/virtualization/guests/consoleToken/:guestuuid",
                 withUser(this::refreshConsoleToken));
         post("/manager/api/systems/details/virtualization/guests/:sid/refresh",
@@ -201,7 +203,6 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             }
         }
 
-        response.type("application/json");
         String json = GSON.toJson(data);
         List<Map<String, JsonElement>> mergeData = GSON.fromJson(json,
                 new TypeToken<List<Map<String, JsonElement>>>() { }.getType());

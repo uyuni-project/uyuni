@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.taskomatic.task.payg.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -33,10 +36,14 @@ import com.google.gson.GsonBuilder;
 import com.jcraft.jsch.JSchException;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.Instant;
 import java.util.Date;
@@ -45,6 +52,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@ExtendWith(JUnit5Mockery.class)
 public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     private static PaygAuthDataExtractor paygAuthDataExtractorMock;
@@ -54,7 +62,8 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
             .serializeNulls()
             .create();
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    protected static final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
@@ -68,6 +77,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     private PaygInstanceInfo paygInstanceInfo;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         clearDb();
@@ -80,7 +90,8 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
         clearDb();
     }
@@ -92,6 +103,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         HibernateFactory.commitTransaction();
     }
 
+    @Test
     public void testJschException() throws Exception {
         CONTEXT.checking(new Expectations() {
             {
@@ -107,6 +119,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 UserNotificationFactory.listAllNotificationMessages().get(0).getType());
     }
 
+    @Test
     public void testPaygDataExtractException() throws Exception {
         CONTEXT.checking(new Expectations() {
             {
@@ -122,6 +135,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 UserNotificationFactory.listAllNotificationMessages().get(0).getType());
     }
 
+    @Test
     public void testGenericException() throws Exception {
         CONTEXT.checking(new Expectations() {
             {
@@ -138,6 +152,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 UserNotificationFactory.listAllNotificationMessages().get(0).getType());
     }
 
+    @Test
     public void testSuccessClearStatus() throws Exception {
         CONTEXT.checking(new Expectations() {
             {

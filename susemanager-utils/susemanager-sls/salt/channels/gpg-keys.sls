@@ -44,7 +44,7 @@ trust_suse_manager_tools_rhel_gpg_key:
 
 {%- elif grains['os_family'] == 'Debian' %}
 install_gnupg_debian:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - gnupg
 

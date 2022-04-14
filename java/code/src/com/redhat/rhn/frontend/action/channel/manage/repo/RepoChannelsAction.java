@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RepoChannelsAction : class to list channels associated to repos
- * @version $Rev: 1 $
  */
 public class RepoChannelsAction extends RhnAction {
 

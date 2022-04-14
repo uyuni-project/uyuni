@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -83,7 +84,8 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.utils.MinionServerUtils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -113,7 +115,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class ErrataManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(ErrataManager.class);
+    private static Logger log = LogManager.getLogger(ErrataManager.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     public static final String DATE_FORMAT_PARSE_STRING = "yyyy-MM-dd";
     public static final long MAX_ADVISORY_RELEASE = 9999;
@@ -1454,7 +1456,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void cloneErrataApiAsync(Channel chan, List<Long> errata,
             User user, boolean inheritPackages) {
-        Logger.getLogger(ErrataManager.class).debug("Cloning");
+        LogManager.getLogger(ErrataManager.class).debug("Cloning");
         ChannelFactory.lock(chan);
         for (long eid : errata) {
             NewCloneErrataEvent neve = new NewCloneErrataEvent(chan, eid, user,
@@ -1479,7 +1481,7 @@ public class ErrataManager extends BaseManager {
      * @param errataId the errata ID to send notifications about
      * @param channelId the channel ID with which to decide which systems
      *       and users to send errata for
-     * @param date  the date
+     * @param date the date
      */
     public static void addErrataNotification(long errataId, long channelId, Date date) {
         Map<String, Object> params = new HashMap<>();
@@ -1504,6 +1506,33 @@ public class ErrataManager extends BaseManager {
         m.executeUpdate(params);
     }
 
+    /**
+     * Send errata notifications for all errataids and channel
+     * @param errataToChannels map with errataids to list of channel ids
+     * @param date the date
+     */
+    public static void bulkErrataNotification(Map<Long, List<Long>> errataToChannels, Date date) {
+        List<Map<String, Object>> eidList = errataToChannels.entrySet().stream()
+                .map(entry -> Collections.singletonMap("eid", (Object)entry.getKey()))
+                .collect(Collectors.toList());
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries",  "clear_errata_notification");
+        m.executeUpdates(eidList);
+
+        java.sql.Date newDate = new java.sql.Date(date.getTime());
+        List<Map<String, Object>> notifyList = errataToChannels.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream().map(cid -> new Tuple2<>(cid, entry.getKey())))
+                .map(entry -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("cid", entry.getA());
+                    params.put("eid", entry.getB());
+                    params.put("datetime", newDate);
+                    return params;
+                })
+                .collect(Collectors.toList());
+
+        WriteMode w = ModeFactory.getWriteMode("Errata_queries",  "insert_errata_notification");
+        w.executeUpdates(notifyList);
+    }
     /**
      * delete any present and then enqueue a channel notification for the
      * given channel and erratum. This will trigger the taskomatic ErrataQueue

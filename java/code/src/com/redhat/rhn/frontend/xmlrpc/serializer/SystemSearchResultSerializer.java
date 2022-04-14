@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.SystemSearchResult;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 /**
  *
  * SystemSearchResultSerializer
@@ -42,35 +39,28 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * #struct_end()
  *
  */
-public class SystemSearchResultSerializer extends RhnXmlRpcCustomSerializer {
+public class SystemSearchResultSerializer extends ApiResponseSerializer<SystemSearchResult> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<SystemSearchResult> getSupportedClass() {
         return SystemSearchResult.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException,
-            IOException {
-        SystemSearchResult result = (SystemSearchResult) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", result.getId());
-        helper.add("name", result.getName());
-        helper.add("last_checkin", result.getLastCheckinDate());
-        helper.add("hostname", result.getHostname());
-        helper.add("ip", result.getIpaddr());
-        if (result.getHw() != null) {
-            helper.add("hw_description", result.getHw().getDescription());
-            helper.add("hw_device_id", result.getHw().getDeviceId());
-            helper.add("hw_vendor_id", result.getHw().getVendorId());
-            helper.add("hw_driver", result.getHw().getDriver());
-        }
-        helper.writeTo(output);
-    }
+    @Override
+    public SerializedApiResponse serialize(SystemSearchResult src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("last_checkin", src.getLastCheckinDate())
+                .add("hostname", src.getHostname())
+                .add("ip", src.getIpaddr());
 
+        if (src.getHw() != null) {
+            builder.add("hw_description", src.getHw().getDescription())
+                    .add("hw_device_id", src.getHw().getDeviceId())
+                    .add("hw_vendor_id", src.getHw().getVendorId())
+                    .add("hw_driver", src.getHw().getDriver());
+        }
+        return builder.build();
+    }
 }

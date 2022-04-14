@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * KickstartIpRange - Class representation of the table rhnkickstartiprange.
- * @version $Rev: 1 $
  */
 public class KickstartIpRange implements Serializable {
 

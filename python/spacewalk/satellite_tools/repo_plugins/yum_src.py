@@ -719,12 +719,14 @@ type=rpm-md
         path = None
         with open(repomd_path, 'rb') as repomd:
             for _, elem in etree.iterparse(repomd):
-                if elem.tag.endswith("data") and elem.attrib.get("type") == tag:
-                    path = get_location_from_xml_element(elem)
-                    break
-        if not path:
+                if elem.tag.endswith("data") and elem.attrib.get("type").startswith(tag):
+                    path = os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame,
+                            get_location_from_xml_element(elem))
+                    if os.path.exists(path):
+                        break
+        if not path or not os.path.exists(path):
             return None
-        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, path)
+        return path
 
     def _get_repodata_path(self):
         """
@@ -954,8 +956,6 @@ type=rpm-md
         if self._md_exists('updateinfo'):
             notices = {}
             updates_path = self._retrieve_md_path('updateinfo')
-            if not os.path.exists(updates_path) and self._md_exists('updateinfo_zck'):
-                updates_path = self._retrieve_md_path('updateinfo_zck')
             infile = fileutils.decompress_open(updates_path)
             for _event, elem in etree.iterparse(infile):
                 if elem.tag == 'update':
@@ -997,10 +997,6 @@ type=rpm-md
         groups = None
         if self._md_exists('group'):
             groups = self._retrieve_md_path('group')
-            if not os.path.exists(groups) and self._md_exists('group_xz'):
-                groups = self._retrieve_md_path('group_xz')
-            if not os.path.exists(groups) and self._md_exists('group_gz'):
-                groups = self._retrieve_md_path('group_gz')
         return groups
 
     def get_modules(self):

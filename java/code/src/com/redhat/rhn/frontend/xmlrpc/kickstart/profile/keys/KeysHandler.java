@@ -29,6 +29,8 @@ import com.redhat.rhn.frontend.xmlrpc.activationkey.XmlRpcActivationKeysHelper;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.manager.kickstart.KickstartActivationKeysCommand;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class KeysHandler extends BaseHandler {
      *     $ActivationKeySerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<ActivationKey> getActivationKeys(User loggedInUser, String ksLabel) {
 
         checkKickstartPerms(loggedInUser);

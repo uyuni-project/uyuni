@@ -21,7 +21,6 @@ import java.util.Date;
 
 /**
  * KickstartSessionState - Class representation of the table rhnkickstartsessionstate.
- * @version $Rev: 1 $
  */
 public class KickstartSessionState {
 

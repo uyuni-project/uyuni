@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
  * VisibleSystemsListAction
  * This is the main action class for ssm. LookupDispatchAction class
  * looks for "dispatch" in the request.
- * @version $Rev: 1790 $
  */
 public class VisibleSystemsListAction extends RhnSetAction {
 

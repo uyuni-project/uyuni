@@ -35,7 +35,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
+import com.suse.manager.api.ReadOnly;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.xml.sax.SAXException;
 
@@ -43,9 +48,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,9 +69,8 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
 public class BaseHandler implements XmlRpcInvocationHandler {
     public static final int VALID = 1;
 
-    private static Logger log = Logger.getLogger(BaseHandler.class);
+    private static Logger log = LogManager.getLogger(BaseHandler.class);
 
-    private static final String RO_REGEX = "^(list|get|is|find).*$";
     private static final String KEY_REGEX = "^[1-9][0-9]*x[a-f0-9]{64}$";
 
     protected boolean providesAuthentication() {
@@ -84,34 +89,24 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      */
     @Override
     public Object invoke(String methodCalled, List params) throws XmlRpcFault {
-        Class myClass = this.getClass();
-        Method[] methods;
-        try {
-            methods = myClass.getMethods();
-        }
-        catch (SecurityException e) {
-            // This should _never_ happen, because the Handler classes must
-            // have public classes if they're expected to work.
-            throw new XmlRpcFault(-1, "no public methods in class " + myClass);
-        }
+        Class<? extends BaseHandler> myClass = this.getClass();
+        Method[] methods = Arrays.stream(myClass.getDeclaredMethods())
+                .filter(m -> Modifier.isPublic(m.getModifiers()))
+                .filter(BaseHandler::isMethodAvailable)
+                .toArray(Method[]::new);
 
         String[] byNamespace = methodCalled.split("\\.");
         String beanifiedMethod = StringUtil.beanify(byNamespace[byNamespace.length - 1]);
         WebSession session = null;
+        User user = null;
 
         if (params.size() > 0 && params.get(0) instanceof String &&
                 isSessionKey((String)params.get(0))) {
             if (!myClass.getName().endsWith("AuthHandler") &&
                 !myClass.getName().endsWith("SearchHandler")) {
                 session = SessionManager.loadSession((String)params.get(0));
-                params.set(0, getLoggedInUser((String)params.get(0)));
-                if (((User)params.get(0)).isReadOnly()) {
-                    if (!beanifiedMethod.matches(RO_REGEX) && !getReadonlyMethodNames()
-                            .stream().anyMatch(m -> m.equals(beanifiedMethod))) {
-                        throw new SecurityException("The " + beanifiedMethod +
-                                " API is not available to read-only API users");
-                    }
-                }
+                user = getLoggedInUser((String) params.get(0));
+                params.set(0, user);
             }
         }
 
@@ -138,6 +133,12 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 if (!types[i].equals(curr.getClass())) {
                     converted[i] = Translator.convert(curr, types[i]);
                 }
+            }
+        }
+
+        if (user != null && user.isReadOnly()) {
+            if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {
+                throw new SecurityException("The " + beanifiedMethod + " API is not available to read-only API users");
             }
         }
 
@@ -478,19 +479,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         return server;
     }
 
-    /**
-     * Get the list of API method names available for read-only users.
-     * The method names which start with 'get', 'list', 'is', 'find' are available by
-     * default, even if they are not included in the returning list.
-     *
-     * @return A list of API method names available for read-only users.
-     */
-    protected List<String> getReadonlyMethodNames() {
-        return Collections.emptyList();
-    }
-
     private boolean isSessionKey(String string) {
         return string.matches(KEY_REGEX);
     }
 
+    /**
+     * Returns true if the method is available to be exposed in the XMLRPC interface
+     * @param method the method
+     * @return true if the method is available
+     */
+    private static boolean isMethodAvailable(Method method) {
+        return !(method.isAnnotationPresent(ApiIgnore.class) &&
+                Arrays.asList(method.getAnnotation(ApiIgnore.class).value()).contains(ApiType.XMLRPC));
+    }
 }

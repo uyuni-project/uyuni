@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -30,6 +34,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.action.Action;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -38,11 +44,12 @@ import org.apache.struts.action.Action;
 public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         action = new PreservationListConfirmDeleteAction();
     }
 
+    @Test
     public void testExecute() throws Exception {
         String rhnsetLabel = "file_lists";
         ActionHelper ah = new ActionHelper();

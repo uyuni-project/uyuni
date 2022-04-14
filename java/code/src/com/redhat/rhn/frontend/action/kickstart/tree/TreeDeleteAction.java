@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * TreeDeleteAction  class for deleting Kickstart Trees
- * @version $Rev: 1 $
  */
 public class TreeDeleteAction extends BaseTreeAction {
 

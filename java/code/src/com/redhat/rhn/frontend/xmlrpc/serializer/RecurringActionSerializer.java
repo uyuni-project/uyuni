@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.recurringactions.RecurringAction} class and subclasses
@@ -40,32 +37,25 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("boolean", "active")
  * #struct_end()
  */
-public class RecurringActionSerializer extends RhnXmlRpcCustomSerializer {
+public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAction> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Class getSupportedClass() {
+    public Class<RecurringAction> getSupportedClass() {
         return RecurringAction.class;
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        RecurringAction action = (RecurringAction) obj;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", action.getId());
-        helper.add("name", action.getName());
-        helper.add("entity_id", action.getEntityId());
-        helper.add("entity_type", action.getType().toString());
-        helper.add("cron_expr", action.getCronExpr());
-        helper.add("created", action.getCreated());
-        helper.add("creator", action.getCreator().getLogin());
-        helper.add("test", action.isTestMode());
-        helper.add("active", action.isActive());
-
-        helper.writeTo(writer);
+    public SerializedApiResponse serialize(RecurringAction src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName())
+                .add("entity_id", src.getEntityId())
+                .add("entity_type", src.getType().toString())
+                .add("cron_expr", src.getCronExpr())
+                .add("created", src.getCreated())
+                .add("creator", src.getCreator().getLogin())
+                .add("test", src.isTestMode())
+                .add("active", src.isActive())
+                .build();
     }
 }

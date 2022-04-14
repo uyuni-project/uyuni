@@ -16,12 +16,14 @@ package com.redhat.rhn.frontend.action.kickstart.cobbler.test;
 
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CobblerSnippetListSetupTest
- * @version $Rev: 1 $
  */
 public class CobblerSnippetListSetupTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetList");
         actionPerform();

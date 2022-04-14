@@ -15,12 +15,19 @@
 
 package org.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Image;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +57,7 @@ public class ImageTest extends BaseTestCaseWithUser {
      * Sets up a connection and image.
      * @throws Exception in case anything goes wrong
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         MockConnection.clear();
@@ -62,6 +70,7 @@ public class ImageTest extends BaseTestCaseWithUser {
      * Removes the image created by setUp().
      * @throws Exception in case anything goes wrong
      */
+    @AfterEach
     public void tearDown() throws Exception {
         assertTrue(image.remove());
         super.tearDown();
@@ -70,6 +79,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test image creation.
      */
+    @Test
     public void testCreate() {
         assertEquals(EXPECTED_NAME, image.getName());
         assertEquals(EXPECTED_TYPE, image.getType());
@@ -79,6 +89,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test lookup by name.
      */
+    @Test
     public void testLookupByName() {
         assertEquals(image, Image.lookupByName(connection, EXPECTED_NAME));
     }
@@ -86,6 +97,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test lookup by id.
      */
+    @Test
     public void testLookupById() {
         assertEquals(image, Image.lookupById(connection, image.getId()));
     }
@@ -93,6 +105,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test image list.
      */
+    @Test
     public void testList() {
         List<Image> result = Image.list(connection);
         assertEquals(1, result.size());
@@ -102,6 +115,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for image type.
      */
+    @Test
     public void testSetGetType() {
         String expected = Image.TYPE_DIRECT;
         image.setType(expected);
@@ -112,6 +126,7 @@ public class ImageTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for image file.
      */
+    @Test
     public void testSetGetFile() {
         String expected = TestUtils.randomString();
         image.setFile(expected);

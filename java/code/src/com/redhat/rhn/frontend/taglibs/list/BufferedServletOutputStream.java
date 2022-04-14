@@ -24,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 /**
  * Buffers servlet output rather than streaming it to the client
  *
- * @version $Rev $
  */
 class BufferedServletOutputStream extends LegacyServletOutputStream {
 

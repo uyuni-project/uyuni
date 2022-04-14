@@ -36,6 +36,9 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -53,11 +56,11 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
-import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.RankedChannel;
@@ -66,6 +69,8 @@ import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,6 +95,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#insertRelevantServerChannels(Map)}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testInsertRelevantChannels() throws Exception {
         // Delete all relevant channel entries first
         CVEAuditManager.deleteRelevantChannels();
@@ -130,6 +136,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#listAllServers()}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListAllServers() throws Exception {
         Set<SystemOverview> expected = new HashSet<>();
         User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
@@ -165,10 +172,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     /**
      * Test product channel relationships, tested methods are:
      * {@link CVEAuditManager#convertProductId(long)}
-     * {@link CVEAuditManager#findSUSEProductChannels(long)}
+     * {@link CVEAuditManager#findSUSEProductChannels(long, long)}
      * {@link CVEAuditManager#findChannelProducts(List)}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFindSUSEProductChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -218,6 +226,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Do not throw exceptions if a product channel is not synced
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUnsyncedProductChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -240,6 +249,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#findAllSourceProducts(Long)}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFindAllSourceProducts() throws Exception {
         // Create test products
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -280,6 +290,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#findAllTargetProducts(Long)}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFindAllTargetProducts() throws Exception {
         // Create test products
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -318,6 +329,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     /**
      * Test if the patch status is set correctly for given parameters:
      */
+    @Test
     public void testSetPatchStatus() {
         assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, true, true, false));
         assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, false, true, false));
@@ -335,6 +347,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#populateCVEChannels()}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPopulateCVEServerChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -401,6 +414,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * {@link CVEAuditManager#findProductChannels(List, Long)}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFindProductChannels() throws Exception {
         // Create channels belonging to a channel product
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -422,6 +436,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Runs listSystemsByPatchStatus with an unknown CVE identifier.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusUnknown() throws Exception {
         String cveName = TestUtils.randomString().substring(0, 13);
 
@@ -444,6 +459,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusNotAffected() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -483,6 +499,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusPatched() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -525,6 +542,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * AFFECTED_PATCH_APPLICABLE and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusAffectedPatchApplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -567,6 +585,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * AFFECTED_PATCH_INAPPLICABLE and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusAffectedPatchInapplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -622,6 +641,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * channels or, at least, one.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListSystemsByPatchStatusNotAffectedWithNonRelevantPatches()
             throws Exception {
         // Create a CVE number
@@ -656,6 +676,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Verify that channels containing patches are returned in the right order.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testChannelOrderWithClonedChannels() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -692,7 +713,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Verify the order of returned channels
         CVEAuditSystem result = findSystemRecord(server, results);
         assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, result.getPatchStatus());
-        Iterator<ChannelIdNameLabelTriple> it = result.getChannels().iterator();
+        Iterator<AuditChannelInfo> it = result.getChannels().iterator();
         assertEquals((Long) channelClone.getId(), (Long) it.next().getId());
     }
 
@@ -701,6 +722,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Test the ON DELETE CASCADE of FK constraint to rhnServer.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFKConstraintServers() throws Exception {
         // Create just a server and a channel
         User user = createTestUser();
@@ -719,6 +741,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Test the ON DELETE CASCADE of FK constraint to rhnChannel.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFKConstraintChannels() throws Exception {
         // Create just a server and a channel
         User user = createTestUser();
@@ -738,6 +761,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Test that irrelevant packages do not alter a system's PATCHED status
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPatchedSystemWithIrrelevantErrata() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -773,6 +797,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Runs testPatchPartlyApplied on a server bnc#899266
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPatchPartlyApplied() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -809,6 +834,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * applied in a cloned channel (see bsc#1137229).
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testMultipleErratasSnapshotClones() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -873,6 +899,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * assigned channels (see bsc#1111963).
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testMultipleChannelsMultipleErratas() throws Exception {
 
         // Situation: The CVE has 2 different patches assigned to it. First of these patches are already installed
@@ -945,6 +972,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Runs testMultiVersionPackage on a server bsc#903723
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testMultiVersionPackage() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -980,6 +1008,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLTSS() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1055,6 +1084,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCoveredByUnassigned() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1118,6 +1148,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
+    @Test
     public void testAssignedChannelPreferredOverMigration() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1171,7 +1202,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
         List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
-        List<ChannelIdNameLabelTriple> channels = new ArrayList<>(results.get(0).getChannels());
+        List<AuditChannelInfo> channels = new ArrayList<>(results.get(0).getChannels());
         assertEquals(1, channels.size());
         assertEquals(updateChannelSP2.getId().longValue(), channels.get(0).getId());
     }
@@ -1186,6 +1217,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIgnoreOldProductsWhenCurrentPatchAvailable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1247,10 +1279,83 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Test that successor products and service packs are considered *only* if there is no patch
+     * available in a current product. Even if the current products patch does not contain all the
+     * packages available in a patch for a successor product, since packages might be to old to be affected.
+     *
+     * See also here: http://bugzilla.suse.com/show_bug.cgi?id=1196455
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testIgnoreSuccessorProductsWhenCurrentPatchAvailable() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel updateChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(updateChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
+
+        // Create two errata: one in the SP2 updates and one in SP3 updates
+        User user = createTestUser();
+        Errata errataSP2 = createTestErrata(user, cves);
+        updateChannelSP2.addErrata(errataSP2);
+        TestUtils.saveAndFlush(updateChannelSP2);
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+
+        // Create packages for SP2 and SP3, but SP3 has an update not available in SP2 patch
+        Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
+        Package basePackage2 = createTestPackage(user, null, baseChannelSP2, "noarch");
+        Package updatePackage1SP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, basePackage1);
+        Package updatePackage1SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1);
+        Package updatePackage2SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2);
+
+        // Create server: no patch is installed
+        Set<Channel> channelsSP2 = new HashSet<>();
+        channelsSP2.add(baseChannelSP2);
+        channelsSP2.add(updateChannelSP2);
+        Server server = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(basePackage1, server);
+        createTestInstalledPackage(basePackage2, server);
+        installSUSEProductOnServer(productSP2, server);
+
+        // Show the patch as available in the currently installed product version
+        CVEAuditManager.populateCVEChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+        // Make sure the errata and channel for the successor product is filtered out
+        assertEquals(1, results.stream().findFirst().get().getErratas().size());
+        assertEquals(1, results.stream().findFirst().get().getChannels().size());
+    }
+
+    /**
      * Test the SDK scenario: one errata with two packages in different channels.
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSDK() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1305,6 +1410,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLivePatchingAffectedPatched() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1375,6 +1481,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLivePatchingAffectedPatchApplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1447,6 +1554,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLivePatchingAffectedPatchApplicableSles15() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1517,6 +1625,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLivePatchingAffectedPatchInapplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1588,6 +1697,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLivePatchingAffectedOnlyKernelPatchApplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1654,7 +1764,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveNameKernelExclusive, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
 
-        Iterator<ChannelIdNameLabelTriple> it = results.get(0).getChannels().iterator();
+        Iterator<AuditChannelInfo> it = results.get(0).getChannels().iterator();
         assertEquals((Long) baseChannelClone.getId(), (Long) it.next().getId());
 
         Iterator<ErrataIdAdvisoryPair> eit = results.get(0).getErratas().iterator();
@@ -1666,6 +1776,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListImagesByPatchStatusNotAffected() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1706,6 +1817,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * AFFECTED_PATCH_APPLICABLE and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListImagesByPatchStatusAffectedPatchApplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1745,6 +1857,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertImageNotFound(image, results);
     }
 
+    @Test
     public void testListImagesByPatchStatusEpochNullBsc1180893() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1782,6 +1895,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * AFFECTED_PATCH_INAPPLICABLE and tests result filtering.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListImagesByPatchStatusAffectedPatchInapplicable() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1840,6 +1954,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testResultContainsDistinctResults() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1878,6 +1993,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertEquals(true, checkSystemRecordIsUnique(server2, results));
     }
 
+    @Test
     public void testListSystemsByPatchStatusContainsNullEpochPackagesBsc1180893() throws Exception {
         // Create a CVE number
         String cveName = TestUtils.randomString().substring(0, 13);
@@ -1992,7 +2108,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Looks for a server in a list of results from listSystemsByPatchStatus(),
      * asserts it cannot be found.
      * @param expectedServer the expected Server in the results
-     * @param expectedPatchStatus the expected patch status
+     * @param actualResults the actual results
      */
     private void assertSystemNotFound(Server expectedServer,
             List<CVEAuditServer> actualResults) {
@@ -2005,7 +2121,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * Looks for a image in a list of results from listImagesByPatchStatus(),
      * asserts it cannot be found.
      * @param expectedImage the expected Image in the results
-     * @param expectedPatchStatus the expected patch status
+     * @param actualResults the actual results
      */
     private void assertImageNotFound(ImageInfo expectedImage,
             List<CVEAuditImage> actualResults) {
@@ -2017,8 +2133,6 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     /**
      * This is needed because equals() on {@link ServerChannelIdPair} does not
      * consider the channel ranking, but only sid and cid.
-     * @param relevantChannels
-     * @param expected
      */
     private void assertContains(List<ServerChannelIdPair> relevantChannels,
             ServerChannelIdPair expected) {

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.SystemMigrationFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -22,6 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -32,6 +37,7 @@ import java.util.List;
  */
 public class SystemMigrationFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testSystemMigrationFactory() throws Exception {
 
         // Setup

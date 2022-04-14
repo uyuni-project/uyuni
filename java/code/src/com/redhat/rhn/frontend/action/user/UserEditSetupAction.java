@@ -28,7 +28,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -43,11 +44,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserEditAction, edit action for user detail page
- * @version $Rev: 1196 $
  */
 public class UserEditSetupAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(UserEditSetupAction.class);
+    private static Logger log = LogManager.getLogger(UserEditSetupAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,

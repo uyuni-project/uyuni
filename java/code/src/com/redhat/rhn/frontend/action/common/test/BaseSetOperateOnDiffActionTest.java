@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -27,6 +29,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * BaseSetOperateOnDiffActionTest
  */
@@ -36,6 +40,7 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
     // I wanted to make sure we had a specific test class that was tied
     // to this baseclass since its complex and needs tests geared towards
     // it.
+    @Test
     public void testSelectAll() throws Exception {
 
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());

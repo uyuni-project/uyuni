@@ -16,16 +16,14 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -38,32 +36,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class OrgUserExtGroupSerializer extends RhnXmlRpcCustomSerializer {
+public class OrgUserExtGroupSerializer extends ApiResponseSerializer<OrgUserExtGroup> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<OrgUserExtGroup> getSupportedClass() {
         return OrgUserExtGroup.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        OrgUserExtGroup g = (OrgUserExtGroup) value;
-
-        helper.add("name", g.getLabel());
-
+    @Override
+    public SerializedApiResponse serialize(OrgUserExtGroup src) {
         List<String> groupList = new ArrayList<>();
-        Set<ServerGroup> groups = g.getServerGroups();
+        Set<ServerGroup> groups = src.getServerGroups();
         for (ServerGroup group : groups) {
             groupList.add(group.getName());
         }
-        helper.add("groups", groupList);
-
-        helper.writeTo(output);
+        return new SerializationBuilder()
+                .add("name", src.getLabel())
+                .add("groups", groupList)
+                .build();
     }
 }

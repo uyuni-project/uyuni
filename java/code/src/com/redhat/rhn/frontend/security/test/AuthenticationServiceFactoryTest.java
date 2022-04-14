@@ -14,45 +14,50 @@
  */
 package com.redhat.rhn.frontend.security.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  * AuthenticationServiceFactoryTest
  */
-public class AuthenticationServiceFactoryTest extends TestCase {
+public class AuthenticationServiceFactoryTest  {
 
     private class AuthenticationServiceFactoryStub extends AuthenticationServiceFactory {
 
-        private boolean satellite = true;
+        private boolean mgrServer = true;
 
-        public boolean isSatellite() {
-            return satellite;
+        public boolean isMgrServer() {
+            return mgrServer;
         }
 
-        public void setSatellite(boolean isSatellite) {
-            satellite = isSatellite;
+        public void setMgrServer(boolean isMgrServer) {
+            mgrServer = isMgrServer;
         }
-
-
     }
 
     private AuthenticationServiceFactoryStub factory;
 
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         factory = new AuthenticationServiceFactoryStub();
     }
 
+    @Test
     public final void testGetInstance() {
         assertNotNull(AuthenticationServiceFactory.getInstance());
     }
 
+    @Test
     public final void testGetAuthenticationServiceWhenInSatelliteMode() {
-        factory.setSatellite(true);
+        factory.setMgrServer(true);
 
         AuthenticationService service = factory.getAuthenticationService();
 

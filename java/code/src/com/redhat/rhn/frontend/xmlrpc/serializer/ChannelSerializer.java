@@ -17,17 +17,15 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -66,85 +64,76 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct_end()
  *
  */
-public class ChannelSerializer extends RhnXmlRpcCustomSerializer {
+public class ChannelSerializer extends ApiResponseSerializer<Channel> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Channel> getSupportedClass() {
         return Channel.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        Channel c = (Channel) value;
+    @Override
+    public SerializedApiResponse serialize(Channel src) {
+        SerializationBuilder builder = new SerializationBuilder();
 
+        builder.add("id", src.getId());
+        builder.add("label", src.getLabel());
+        builder.add("name", src.getName());
+        builder.add("arch_name",
+                StringUtils.defaultString(src.getChannelArch().getName()));
+        builder.add("arch_label",
+                StringUtils.defaultString(src.getChannelArch().getLabel()));
+        builder.add("summary", StringUtils.defaultString(src.getSummary()));
+        builder.add("description",
+                StringUtils.defaultString(src.getDescription()));
+        builder.add("checksum_label", src.getChecksumTypeLabel());
+        builder.add("last_modified", src.getLastModified());
+        builder.add("maintainer_name",
+                StringUtils.defaultString(src.getMaintainerName()));
+        builder.add("maintainer_email",
+                StringUtils.defaultString(src.getMaintainerEmail()));
+        builder.add("maintainer_phone",
+                StringUtils.defaultString(src.getMaintainerPhone()));
+        builder.add("support_policy",
+                StringUtils.defaultString(src.getSupportPolicy()));
 
-        helper.add("id", c.getId());
-        helper.add("label", c.getLabel());
-        helper.add("name", c.getName());
-        helper.add("arch_name",
-                StringUtils.defaultString(c.getChannelArch().getName()));
-        helper.add("arch_label",
-                StringUtils.defaultString(c.getChannelArch().getLabel()));
-        helper.add("summary", StringUtils.defaultString(c.getSummary()));
-        helper.add("description",
-                StringUtils.defaultString(c.getDescription()));
-        helper.add("checksum_label", c.getChecksumTypeLabel());
-        helper.add("last_modified", c.getLastModified());
-        helper.add("maintainer_name",
-                StringUtils.defaultString(c.getMaintainerName()));
-        helper.add("maintainer_email",
-                StringUtils.defaultString(c.getMaintainerEmail()));
-        helper.add("maintainer_phone",
-                StringUtils.defaultString(c.getMaintainerPhone()));
-        helper.add("support_policy",
-                StringUtils.defaultString(c.getSupportPolicy()));
+        builder.add("gpg_key_url",
+                StringUtils.defaultString(src.getGPGKeyUrl()));
+        builder.add("gpg_key_id",
+                StringUtils.defaultString(src.getGPGKeyId()));
+        builder.add("gpg_key_fp",
+                StringUtils.defaultString(src.getGPGKeyFp()));
+        builder.add("gpg_check", src.isGPGCheck());
 
-        helper.add("gpg_key_url",
-                StringUtils.defaultString(c.getGPGKeyUrl()));
-        helper.add("gpg_key_id",
-                StringUtils.defaultString(c.getGPGKeyId()));
-        helper.add("gpg_key_fp",
-                StringUtils.defaultString(c.getGPGKeyFp()));
-        helper.add("gpg_check", c.isGPGCheck());
-
-        List<ContentSource> csList = new ArrayList<>(c.getSources().size());
-        if (!c.getSources().isEmpty()) {
-            for (ContentSource cs : c.getSources()) {
-                csList.add(cs);
-            }
-            helper.add("yumrepo_last_sync", c.getLastSynced());
+        List<ContentSource> csList = new ArrayList<>(src.getSources().size());
+        if (!src.getSources().isEmpty()) {
+            csList.addAll(src.getSources());
+            builder.add("yumrepo_last_sync", src.getLastSynced());
         }
-        helper.add("contentSources", csList);
+        builder.add("contentSources", csList);
 
-        if (c.getEndOfLife() != null) {
-            helper.add("end_of_life", c.getEndOfLife().toString());
+        if (src.getEndOfLife() != null) {
+            builder.add("end_of_life", src.getEndOfLife().toString());
         }
         else {
-            helper.add("end_of_life", "");
+            builder.add("end_of_life", "");
         }
 
-        Channel parent = c.getParentChannel();
+        Channel parent = src.getParentChannel();
         if (parent != null) {
-            helper.add("parent_channel_label", parent.getLabel());
+            builder.add("parent_channel_label", parent.getLabel());
         }
         else {
-            helper.add("parent_channel_label", "");
+            builder.add("parent_channel_label", "");
         }
 
-        Channel orig = ChannelFactory.lookupOriginalChannel(c);
+        Channel orig = ChannelFactory.lookupOriginalChannel(src);
         if (orig != null) {
-            helper.add("clone_original", orig.getLabel());
+            builder.add("clone_original", orig.getLabel());
         }
         else {
-            helper.add("clone_original", "");
+            builder.add("clone_original", "");
         }
 
-        helper.writeTo(output);
+        return builder.build();
     }
 }

@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CPUArchTest
@@ -29,6 +35,7 @@ public class CPUArchTest extends RhnBaseTestCase {
      * is only going to the db once.
      * @throws Exception HibernateException
      */
+    @Test
     public void testCPUArch() throws Exception {
 
         String testname = "sun4u";

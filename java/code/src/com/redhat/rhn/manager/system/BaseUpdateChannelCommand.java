@@ -20,7 +20,8 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.BasePersistOperation;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -34,8 +35,7 @@ public class BaseUpdateChannelCommand extends BasePersistOperation {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger
-            .getLogger(BaseUpdateChannelCommand.class);
+    private static Logger log = LogManager.getLogger(BaseUpdateChannelCommand.class);
 
     /**
      * {@inheritDoc}

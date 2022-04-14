@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -31,6 +35,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -41,6 +48,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     private KickstartSession ksession;
     private Server s;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -54,6 +62,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(ksession);
     }
 
+    @Test
     public void testIdsForSS() throws Exception {
         assertNotNull(KickstartFactory.SESSION_STATE_CREATED.getId());
         assertNotNull(KickstartFactory.SESSION_STATE_COMPLETE.getId());
@@ -62,6 +71,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testKickstartDataTest() throws Exception {
 
         KickstartSession ks2 = KickstartFactory.
@@ -71,6 +81,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertNotNull(ks2.getServerProfile());
     }
 
+    @Test
     public void testLookupByServer() throws Exception {
 
         KickstartSession lookedUp = KickstartFactory.
@@ -79,6 +90,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testLookupAllForServerAndFail() throws Exception {
 
         KickstartSession session2 = createKickstartSession(s, k, user);
@@ -90,11 +102,12 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         session2.markFailed("some failed message");
         KickstartFactory.saveKickstartSession(session2);
         session2 = (KickstartSession) reload(session2);
-        assertEquals("Got wrong status: " + session2.getState().getLabel(),
-                KickstartFactory.SESSION_STATE_FAILED, session2.getState());
+        assertEquals(KickstartFactory.SESSION_STATE_FAILED,
+                session2.getState(), "Got wrong status: " + session2.getState().getLabel());
     }
 
 
+    @Test
     public void testHistory() throws Exception {
         ksession = addHistory(ksession);
         Thread.sleep(2000);
@@ -110,6 +123,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertTrue(ksession.getMostRecentHistory().startsWith("FAILED"));
     }
 
+    @Test
     public void testGetUrl() {
         String url = ksession.getUrl("xmlrpc.rhn.webdev.redhat.com", new Date());
         assertNotNull(url);

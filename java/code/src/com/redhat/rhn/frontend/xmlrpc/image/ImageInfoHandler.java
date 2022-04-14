@@ -15,9 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.image;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -28,6 +29,7 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -35,6 +37,8 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
@@ -42,6 +46,9 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
+
+import com.suse.manager.api.ReadOnly;
+import com.suse.manager.webui.services.iface.SaltApi;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -60,6 +67,19 @@ import java.util.stream.Collectors;
  */
 public class ImageInfoHandler extends BaseHandler {
 
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor
+     *
+     * @param saltApiIn the salt API
+     */
+    public ImageInfoHandler(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
+
+
+
     /**
      * List all images visible for the logged in user
      * @param loggedInUser The current User
@@ -69,6 +89,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $ImageInfoSerializer #array_end()
      */
+    @ReadOnly
     public List<ImageInfo> listImages(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listImageInfos(loggedInUser.getOrg());
@@ -85,6 +106,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype $ImageOverviewSerializer
      */
+    @ReadOnly
     public ImageOverview getDetails(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -106,6 +128,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype struct
      */
+    @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
@@ -113,11 +136,42 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        return opt.get().getPillar().getPillar();
+        return Optional.ofNullable(opt.get().getPillar()).map(p -> p.getPillar())
+                       .orElseGet(() -> new HashMap<String, Object>());
     }
 
     /**
-     * Schedule an image import
+     * Set Image Pillar
+     * @param loggedInUser The Current User
+     * @param imageId the Image id
+     * @param pillar the new pillar
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Get pillar of an Image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.param #param("struct", "pillar")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setPillar(User loggedInUser, Integer imageId, Map<String, Object> pillar) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageInfo> imageOpt = ImageInfoFactory.lookupByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!imageOpt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        Optional.ofNullable(imageOpt.get().getPillar()).ifPresentOrElse(
+            p -> p.setPillar(pillar),
+            () -> {
+                Pillar newPillar = new Pillar("Image" + imageId, pillar, loggedInUser.getOrg());
+                HibernateFactory.getSession().save(newPillar);
+                imageOpt.get().setPillar(newPillar);
+            });
+        return 1;
+    }
+
+    /**
+     * @deprecated Schedule a Container image import
      * @param loggedInUser The current user
      * @param name The name
      * @param version The version
@@ -141,9 +195,44 @@ public class ImageInfoHandler extends BaseHandler {
      * the following inspect can run")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the inspect action created")
      */
+    @Deprecated
     public Long importImage(User loggedInUser, String name, String version,
             Integer buildHostId, String storeLabel, String activationKey,
             Date earliestOccurrence) {
+        return  importContainerImage(loggedInUser, name, version,
+            buildHostId, storeLabel, activationKey, earliestOccurrence);
+    }
+
+
+    /**
+     * Schedule a Container image import
+     * @param loggedInUser The current user
+     * @param name The name
+     * @param version The version
+     * @param buildHostId The system ID of the build host
+     * @param storeLabel The store label
+     * @param activationKey The activation key
+     * @param earliestOccurrence Earliest occurrence of the following image inspect
+     * @return the image inspect action id
+     *
+     * @xmlrpc.doc Import an image and schedule an inspect afterwards
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the
+     * store")
+     * @xmlrpc.param #param_desc("string", "version", "version to import or empty")
+     * @xmlrpc.param #param_desc("int", "buildHostId", "system ID of the build
+     * host")
+     * @xmlrpc.param #param("string", "storeLabel")
+     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to get
+     * the channel data from")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence", "earliest
+     * the following inspect can run")
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the inspect action created")
+     */
+    public Long importContainerImage(User loggedInUser, String name, String version,
+            Integer buildHostId, String storeLabel, String activationKey,
+            Date earliestOccurrence) {
+        ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(name)) {
             throw new InvalidParameterException("Image name cannot be empty.");
         }
@@ -174,6 +263,132 @@ public class ImageInfoHandler extends BaseHandler {
             throw new TaskomaticApiException(e.getMessage());
         }
     }
+
+    /**
+     * Import an OS image
+     * @param loggedInUser The current user
+     * @param name The name
+     * @param version The version
+     * @param arch The architecture
+     * @return the image id
+     *
+     * @xmlrpc.doc Import an image and schedule an inspect afterwards
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the
+     * store")
+     * @xmlrpc.param #param_desc("string", "version", "version to import")
+     * @xmlrpc.param #param_desc("string", "arch", "image architecture")
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the image")
+     */
+    public Long importOSImage(User loggedInUser, String name, String version, String arch) {
+        ensureImageAdmin(loggedInUser);
+        if (StringUtils.isEmpty(name)) {
+            throw new InvalidParameterException("Image name cannot be empty.");
+        }
+        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", loggedInUser.getOrg())
+                        .orElseThrow(NoSuchImageStoreException::new);
+
+        // Create an image info entry
+        ImageInfo info = new ImageInfo();
+
+        info.setName(name);
+        info.setVersion(version);
+        info.setStore(store);
+        info.setOrg(loggedInUser.getOrg());
+        info.setImageType(ImageProfile.TYPE_KIWI);
+        info.setBuilt(true);
+
+        // Image arch should be the same as the build host
+        // If this is not the case, we can set the correct value in the inspect action
+        // return event
+        info.setImageArch(ServerFactory.lookupServerArchByLabel(arch));
+        ImageInfoFactory.save(info);
+
+
+        ImageInfoFactory.updateRevision(info);
+
+        ImageInfoFactory.save(info);
+
+        return info.getId();
+
+    }
+
+    /**
+     * Delete image file
+     * @param loggedInUser The Current User
+     * @param imageId the Image id
+     * @param file the file name
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Delete image file
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "imageId", "ID of the image")
+     * @xmlrpc.param #param_desc("string", "file", "the file name")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteImageFile(User loggedInUser, Integer imageId, String file) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageFile> opt = ImageInfoFactory.lookupImageFile(loggedInUser.getOrg(), file);
+
+        if (!opt.isPresent()) {
+            throw new EntityNotExistsFaultException(file);
+        }
+
+        if (opt.get().getImageInfo().getId() != imageId.longValue()) {
+            // the found file belongs to different image
+            // there is no file attached to this image
+            throw new EntityNotExistsFaultException(file);
+        }
+
+        ImageInfoFactory.deleteImageFile(opt.get(), saltApi);
+
+        return 1;
+    }
+
+    /**
+     * Add image file to an OS image
+     * @param loggedInUser The Current User
+     * @param imageId the Image id
+     * @param file the file name, it must exist in the store
+     * @param type the image type
+     * @param external the file is external
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Delete image file
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "imageId", "ID of the image")
+     * @xmlrpc.param #param_desc("string", "file", "the file name, it must exist in the store")
+     * @xmlrpc.param #param_desc("string", "type", "the image type")
+     * @xmlrpc.param #param_desc("boolean", "external", "the file is external")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Long addImageFile(User loggedInUser, Integer imageId, String file, String type, Boolean external) {
+        ensureImageAdmin(loggedInUser);
+
+        Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+
+        if (ImageInfoFactory.lookupImageFile(loggedInUser.getOrg(), file).isPresent()) {
+            throw new EntityExistsFaultException(file);
+        }
+
+        if (ImageInfoFactory.lookupDeltaImageFile(loggedInUser.getOrg(), file).isPresent()) {
+            throw new EntityExistsFaultException(file);
+        }
+
+        ImageFile imageFile = new ImageFile();
+        imageFile.setFile(file);
+        imageFile.setType(type);
+        imageFile.setExternal(external);
+        imageFile.setImageInfo(opt.get());
+        opt.get().getImageFiles().add(imageFile);
+        return 1L;
+    }
+
+
 
     /**
      * Schedule an image build
@@ -231,6 +446,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -267,6 +483,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listPackages(User loggedInUser, Integer imageId)
             throws FaultException {
         ensureImageAdmin(loggedInUser);
@@ -304,6 +521,7 @@ public class ImageInfoHandler extends BaseHandler {
      *      #prop("string", "value")
      *    #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -333,7 +551,7 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        ImageInfoFactory.deleteWithObsoletes(opt.get(), GlobalInstanceHolder.SALT_API);
+        ImageInfoFactory.deleteWithObsoletes(opt.get(), saltApi);
         return 1;
     }
 

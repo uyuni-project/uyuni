@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -36,6 +40,7 @@ public class PushClientTest extends RhnBaseTestCase {
      * Simple test to exercise codepaths in PushClient class
      * @throws Exception something bad happened
      */
+    @Test
     public void testPushClient() throws Exception {
         PushClient pc1 = createTestPushClient();
         PushClient pc2 = new PushClient();

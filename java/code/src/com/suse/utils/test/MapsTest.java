@@ -15,17 +15,20 @@
 
 package com.suse.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.suse.utils.Maps;
 
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.util.Map;
 import java.util.Optional;
 
-import junit.framework.TestCase;
+public class MapsTest  {
 
-public class MapsTest extends TestCase {
-
+    @Test
     public void testGetValueByPath() {
         Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
@@ -34,6 +37,7 @@ public class MapsTest extends TestCase {
         assertEquals("I@caasp:management_node:true", val.get());
     }
 
+    @Test
     public void testGetValueByPathWrongPath() {
         Map<String, Object> map = new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 

@@ -19,14 +19,13 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.jsp.JspException;
 
 /**
  *
  * Decorator used to add an extra button to the right of 'select all'
- * @version $Revision$
  */
 public class ExtraButtonDecorator extends BaseListDecorator {
 
@@ -43,7 +42,7 @@ public class ExtraButtonDecorator extends BaseListDecorator {
         String msg = (String) pageContext.getRequest().getAttribute(
                 ListTagUtil.makeExtraButtonName(listName));
         if (StringUtils.isEmpty(msg)) {
-            Logger.getLogger(this.getClass()).error("Please add the Extra Button" +
+            LogManager.getLogger(this.getClass()).error("Please add the Extra Button" +
                 " attribute to the request");
             msg = "Missing extra button attribute";
         }

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
 import org.stringtree.json.JSONReader;
 
 import java.util.LinkedList;
@@ -44,6 +47,7 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
      * @throws Exception if something bad happens
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSave() throws Exception {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         user = new RequestContext(request).getCurrentUser();

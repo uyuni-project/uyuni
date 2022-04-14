@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.opencontainers.image.version="%PKG_VERSION%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
@@ -32,16 +32,16 @@ EXPOSE 443/tcp
 
 VOLUME ["/etc/uyuni", "/srv/tftpboot", "/var/cache/rhn"]
 
-# TODO: remove, devel
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses vim less
-
-# TODO: check and adjust
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
  python3-rhnlib spacewalk-proxy-broker \
  spacewalk-proxy-common spacewalk-proxy-package-manager \
- spacewalk-proxy-redirect spacewalk-ssl-cert-check
+ spacewalk-proxy-redirect spacewalk-ssl-cert-check spacewalk-proxy-html \
+ susemanager-tftpsync-recv
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
+
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py

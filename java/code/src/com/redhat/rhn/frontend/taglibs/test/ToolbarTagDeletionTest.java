@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 
 /**
@@ -33,6 +38,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         tt.setAclMixins(BooleanAclHandler.class.getName());
     }
 
+    @Test
     public void testDeletionNoAcl() {
         try {
             // setup mock objects
@@ -50,6 +56,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testDeletionWithMissingType() {
         try {
             // setup mock objects
@@ -65,6 +72,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclMultipleMixinsMultipleAcls() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -86,6 +94,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclMultipleAclsSingleMixin() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -105,6 +114,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclValidAclInvalidMixin() {
         boolean flag = false;
         try {
@@ -127,6 +137,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testDeletionAcl() {
 
         try {
@@ -145,6 +156,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testDeletionWithMissingUrl() {
         try {
             // setup mock objects

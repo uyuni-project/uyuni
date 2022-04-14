@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.maintenance;
 
 import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -24,6 +25,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityNotExistsException;
 
@@ -40,7 +42,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -53,6 +56,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.Request;
@@ -65,7 +69,7 @@ import spark.Spark;
 public class MaintenanceController {
 
     private static final MaintenanceManager MM = new MaintenanceManager();
-    private static Logger log = Logger.getLogger(MaintenanceScheduleController.class);
+    private static Logger log = LogManager.getLogger(MaintenanceScheduleController.class);
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -81,9 +85,9 @@ public class MaintenanceController {
     public static void initRoutes() {
         // upcoming maintenance windows for systems
         post("/manager/api/maintenance/upcoming-windows",
-                withUser(MaintenanceController::getUpcomingMaintenanceWindows));
+                asJson(withUser(MaintenanceController::getUpcomingMaintenanceWindows)));
         get("/manager/api/maintenance/events/:operation/:type/:startOfWeek/:date/:id",
-                withUser(MaintenanceController::getEvents));
+                asJson(withUser(MaintenanceController::getEvents)));
     }
 
     /**
@@ -114,7 +118,6 @@ public class MaintenanceController {
             }
         }
 
-        res.type("application/json");
         return json(res, ResultJson.success(data));
     }
 
@@ -151,7 +154,6 @@ public class MaintenanceController {
             log.error(e.getMessage());
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
-        response.type("application/json");
         return json(response, eventsToJson(user, events));
     }
 
@@ -176,7 +178,15 @@ public class MaintenanceController {
      * @return the date string in the user configured timezone
      */
     private static String applyTimezoneShift(User user, Long date) {
-        ZoneId zoneId = ZoneId.of(user.getTimeZone().getOlsonName());
+        RhnTimeZone timezone = user.getTimeZone();
+        ZoneId zoneId;
+        if (timezone == null) {
+            // Fallback to server timezone if no user timezone is configured
+            zoneId = TimeZone.getDefault().toZoneId();
+        }
+        else {
+            zoneId = ZoneId.of(timezone.getOlsonName());
+        }
        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), zoneId)
                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm z"));
     }

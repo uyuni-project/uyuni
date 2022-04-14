@@ -52,6 +52,9 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
+import com.suse.manager.saltboot.PXEEvent;
+import com.suse.manager.saltboot.PXEEventMessage;
+import com.suse.manager.saltboot.PXEEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -70,7 +73,8 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -81,7 +85,7 @@ import java.util.stream.Stream;
 public class SaltReactor {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(SaltReactor.class);
+    private static final Logger LOG = LogManager.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
     private final SaltApi saltApi;
@@ -149,6 +153,8 @@ public class SaltReactor {
                 BatchStartedEventMessage.class);
         MessageQueue.registerAction(new ImageSyncedEventMessageAction(),
                 ImageSyncedEventMessage.class);
+        MessageQueue.registerAction(new PXEEventMessageAction(),
+                PXEEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -193,10 +199,11 @@ public class SaltReactor {
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageSyncedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               PXEEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        ))))))));
+        )))))))));
     }
 
     /**
@@ -319,6 +326,10 @@ public class SaltReactor {
             );
         }
         return empty();
+    }
+
+    private Stream<EventMessage> eventToMessages(PXEEvent pxeEvent) {
+        return of(new PXEEventMessage(pxeEvent));
     }
 
 }

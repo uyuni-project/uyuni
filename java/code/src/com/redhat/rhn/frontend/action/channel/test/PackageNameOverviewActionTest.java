@@ -14,7 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -22,6 +27,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testInChannels() {
         String[] arches = {"channel-ia32", "channel-ia64"};
         setRequestPathInfo("/software/packages/NameOverview");
@@ -34,6 +40,7 @@ public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
                 "/WEB-INF/pages/software/packages/packagenameoverview.jsp"));
     }
 
+    @Test
     public void testSubscribedChannels() {
 
     }

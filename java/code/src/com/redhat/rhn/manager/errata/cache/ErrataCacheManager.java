@@ -29,7 +29,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -45,7 +46,7 @@ import java.util.Set;
 public class ErrataCacheManager extends HibernateFactory {
 
     private static ErrataCacheManager singleton = new ErrataCacheManager();
-    private static Logger log = Logger.getLogger(ErrataCacheManager.class);
+    private static Logger log = LogManager.getLogger(ErrataCacheManager.class);
 
     private ErrataCacheManager() {
         super();

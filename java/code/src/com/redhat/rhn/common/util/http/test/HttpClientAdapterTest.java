@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.common.util.http.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
@@ -23,6 +27,8 @@ import com.redhat.rhn.testing.httpservermock.Responder;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -31,14 +37,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import junit.framework.TestCase;
 import simple.http.Request;
 import simple.http.Response;
 
 /**
  * Integrational unit tests for {@link HttpClientAdapter}.
  */
-public class HttpClientAdapterTest extends TestCase {
+public class HttpClientAdapterTest  {
 
     // Mock server for reuse
     private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
@@ -58,6 +63,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test for executeRequest(): an authenticated GET request.
      * @throws Exception in case there is a problem
      */
+    @Test
     public void testGetRequestAuthenticated() throws Exception {
         Callable<Integer> requester = () -> {
             HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
@@ -77,6 +83,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test for executeRequest(): an authenticated GET request via a proxy.
      * @throws Exception in case there is a problem
      */
+    @Test
     public void testGetRequestViaProxy() throws Exception {
         // Configure proxy
         ProxySettingsDto proxySettings = new ProxySettingsDto();
@@ -152,6 +159,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor().
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyFor() throws Exception {
         // Configure "no_proxy"
         setNoProxy("example.com, false.com");
@@ -187,6 +195,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" contains "*".
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyForAsterisk() throws Exception {
         // Configure "no_proxy" cotaining an asterisk
         setNoProxy("example.com, *");
@@ -203,6 +212,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" is empty.
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyForEmpty() throws Exception {
         // Configure "no_proxy" cotaining an asterisk
         setNoProxy("");
@@ -218,13 +228,11 @@ public class HttpClientAdapterTest extends TestCase {
         assertFalse(result);
     }
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
+    /**
+     * Tear down after each test.
      */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-
+    @AfterEach
+    public void tearDown() throws Exception {
         // Clear proxy settings
         ProxySettingsDto proxySettings = new ProxySettingsDto();
         proxySettings.setHostname("");

@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * RemoveSlavesAction extends RhnAction
  *
- * @version $Rev: 1 $
  */
 public class RemoveSlavesAction extends RhnAction {
 

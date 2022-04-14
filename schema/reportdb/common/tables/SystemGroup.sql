@@ -12,7 +12,6 @@
 CREATE TABLE SystemGroup
 (
     mgm_id                    NUMERIC NOT NULL,
-    system_id                 NUMERIC NOT NULL,
     system_group_id           NUMERIC NOT NULL,
     name                      VARCHAR(64),
     description               VARCHAR(1024),
@@ -22,4 +21,4 @@ CREATE TABLE SystemGroup
 );
 
 ALTER TABLE SystemGroup
-  ADD CONSTRAINT SystemGroup_pk PRIMARY KEY (mgm_id, system_id, system_group_id);
+  ADD CONSTRAINT SystemGroup_pk PRIMARY KEY (mgm_id, system_group_id);

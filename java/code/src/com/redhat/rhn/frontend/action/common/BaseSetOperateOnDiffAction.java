@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -47,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
 
-    private static Logger log = Logger.getLogger(BaseSetOperateOnDiffAction.class);
+    private static Logger log = LogManager.getLogger(BaseSetOperateOnDiffAction.class);
 
     /**
      * Execute some operation on the items that have removed or added

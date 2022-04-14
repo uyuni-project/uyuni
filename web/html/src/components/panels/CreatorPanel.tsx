@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Button } from "../buttons";
-import { closeDialog, Dialog } from "../dialog/LegacyDialog";
-import { ModalLink } from "../dialog/ModalLink";
+import { Button } from "components/buttons";
+import { Dialog } from "components/dialog/Dialog";
+import { ModalLink } from "components/dialog/ModalLink";
+
 import { Panel } from "./Panel";
 
 type Props = {
@@ -76,8 +77,8 @@ const CreatorPanel = (props: Props) => {
       {!props.disableEditing && (
         <Dialog
           id={modalNameId}
+          isOpen={open}
           title={props.title}
-          closableModal={false}
           className="modal-lg"
           content={props.renderCreationContent({
             open,
@@ -85,8 +86,8 @@ const CreatorPanel = (props: Props) => {
             setItem: setStateItem,
             errors,
           })}
-          onClosePopUp={() => setOpen(false)}
-          buttons={
+          onClose={() => setOpen(false)}
+          footer={
             <React.Fragment>
               <div className="btn-group col-lg-6">
                 {props.onDelete && (
@@ -99,7 +100,7 @@ const CreatorPanel = (props: Props) => {
                       props.onDelete &&
                       props.onDelete({
                         item,
-                        closeDialog: () => closeDialog(modalNameId),
+                        closeDialog: () => setOpen(false),
                       })
                     }
                   />
@@ -115,7 +116,7 @@ const CreatorPanel = (props: Props) => {
                       if (props.onCancel) {
                         props.onCancel();
                       }
-                      closeDialog(modalNameId);
+                      setOpen(false);
                     }}
                   />
                   <Button
@@ -126,7 +127,7 @@ const CreatorPanel = (props: Props) => {
                     handler={() =>
                       props.onSave({
                         item,
-                        closeDialog: () => closeDialog(modalNameId),
+                        closeDialog: () => setOpen(false),
                         setErrors: setStateErrors,
                       })
                     }

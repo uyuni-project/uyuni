@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -33,12 +35,14 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * CreateActionTest
  */
 public class CreateActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testCreateErrata() throws Exception {
         CreateAction action = new CreateAction();
 

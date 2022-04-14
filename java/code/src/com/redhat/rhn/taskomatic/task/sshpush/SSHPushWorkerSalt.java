@@ -35,7 +35,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -156,7 +156,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
 
         Optional<Map<String, String>> confValues = pendingResume.get(minion.getMinionId()).fold(err -> {
-                    log.error("mgractionchains.get_pending_resume failed: " + err.fold(
+                    log.error("mgractionchains.get_pending_resume failed for ssh minion: " + err.fold(
                             Object::toString,
                             Object::toString,
                             Object::toString,

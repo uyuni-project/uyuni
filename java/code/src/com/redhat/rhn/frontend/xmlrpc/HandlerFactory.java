@@ -167,7 +167,7 @@ public class HandlerFactory {
         factory.addHandler("image.delta", new DeltaImageInfoHandler());
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
-        factory.addHandler("image", new ImageInfoHandler());
+        factory.addHandler("image", new ImageInfoHandler(saltApi));
         factory.addHandler("kickstart", new KickstartHandler());
         factory.addHandler("kickstart.filepreservation", new FilePreservationListHandler());
         factory.addHandler("kickstart.keys", new CryptoKeysHandler());

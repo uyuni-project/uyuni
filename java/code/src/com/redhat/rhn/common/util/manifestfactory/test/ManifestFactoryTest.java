@@ -14,8 +14,16 @@
  */
 
 package com.redhat.rhn.common.util.manifestfactory.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +38,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
 
     private boolean threadsFail = false;
 
+    @Test
     public void testFactory() throws Exception {
         String s = (String)PrimitiveFactory.getObject("string-object-foo");
         assertEquals("Foo", s);
@@ -42,12 +51,14 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
         assertTrue(l.get(0) instanceof java.lang.String);
     }
 
+    @Test
     public void testFactorySingleton() throws Exception {
         String foo1 = (String)PrimitiveFactory.getObject("string-object-foo");
         String foo2 = (String)PrimitiveFactory.getObject("string-object-foo");
         assertSame(foo1, foo2);
     }
 
+    @Test
     public void testMultiThreadedStartup() throws Exception {
         PrimitiveFactory.initFactory();
         for (int i = 0; i < 100; i++) {

@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.session;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -29,7 +30,7 @@ import org.hibernate.query.Query;
 public class WebSessionFactory extends HibernateFactory {
 
     private static WebSessionFactory singleton = new WebSessionFactory();
-    private static Logger log = Logger.getLogger(WebSessionFactory.class);
+    private static Logger log = LogManager.getLogger(WebSessionFactory.class);
 
 
     private WebSessionFactory() {

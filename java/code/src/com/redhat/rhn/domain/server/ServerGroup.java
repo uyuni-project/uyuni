@@ -34,7 +34,6 @@ import java.util.Set;
 /**
  * Server - Class representation of the table rhnServer.
  *
- * @version $Rev: 2143 $
  */
 public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
 

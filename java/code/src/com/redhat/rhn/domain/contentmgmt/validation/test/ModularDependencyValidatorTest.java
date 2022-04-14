@@ -17,9 +17,13 @@ package com.redhat.rhn.domain.contentmgmt.validation.test;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 
@@ -28,11 +32,13 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
     private static final String ENTITY_FILTERS = "filters";
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularDependencyValidator(new MockModulemdApi());
     }
 
+    @Test
     public void testNonModularSources() throws Exception {
         attachSource();
         assertTrue(validator.validate(getProject()).isEmpty());
@@ -40,6 +46,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).isEmpty());
     }
 
+    @Test
     public void testNoModuleFilters() throws Exception {
         attachModularSource();
         assertTrue(validator.validate(getProject()).isEmpty());
@@ -47,6 +54,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).isEmpty());
     }
 
+    @Test
     public void testMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter();
@@ -54,6 +62,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(getProject()).stream().allMatch(m -> TYPE_INFO.equals(m.getType())));
     }
 
+    @Test
     public void testNonMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter("nonexistent:stream");
@@ -61,6 +70,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
                 TYPE_ERROR, ENTITY_FILTERS, validator.validate(getProject()));
     }
 
+    @Test
     public void testConflictingFilters() throws Exception {
         attachModularSource();
         attachModularFilter("postgresql:10");

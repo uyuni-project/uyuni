@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -33,6 +40,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 
 public class KickstartHelperTest extends BaseTestCaseWithUser {
@@ -45,6 +55,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -57,6 +68,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         helper = new KickstartHelper(request);
     }
 
+    @Test
     public void testKsPathparse() {
         // URL:
         String url = "http://rhn.redhat.com/ks/cfg/org/" +
@@ -71,6 +83,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         assertNotNull(options.get("host"));
     }
 
+    @Test
     public void testKsViewLabel() {
         // URL:
         String url = "http://rhn.redhat.com/ks/cfg/org/" +
@@ -83,6 +96,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         assertNull(options.get("session"));
     }
 
+    @Test
     public void testIpRangeLabel() throws Exception {
 
 
@@ -104,6 +118,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         assertEquals(ksdata, options.get("ksdata"));
     }
 
+    @Test
     public void testValidateKickstartChannel() throws Exception {
         Channel base = ChannelTestUtils.createBaseChannel(user);
         Channel tools = ChannelTestUtils.createChildChannel(user, base);
@@ -121,6 +136,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testKsSessionPathparse() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartSession session =
@@ -143,6 +159,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testKsNoOrg() {
         String url = "http://somesat.redhat.com/ks/cfg/label/" +
             ksdata.getLabel();
@@ -151,6 +168,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         assertNotNull(options);
     }
 
+    @Test
     public void testProxyFetch() throws Exception {
 
         String proxyheader = "1006681409::1151513167.96:21600.0:VV/xFNEmCYOuHx" +

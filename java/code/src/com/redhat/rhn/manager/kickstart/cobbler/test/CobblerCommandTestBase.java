@@ -22,11 +22,13 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+
 /**
  * Base for Cobbler command tests.
  * Contains pre-filled KickstartData instance to be used by tests.
  */
-public class CobblerCommandTestBase extends BaseTestCaseWithUser {
+public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
 
     protected KickstartData ksdata;
 
@@ -36,6 +38,7 @@ public class CobblerCommandTestBase extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

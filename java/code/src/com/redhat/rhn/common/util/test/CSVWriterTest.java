@@ -15,10 +15,16 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.ExportWriter;
 import com.redhat.rhn.frontend.dto.BaseDto;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -29,19 +35,21 @@ import java.util.Map;
 /**
  * CSVWriterTest
  */
-public class CSVWriterTest extends RhnBaseTestCase {
+public class CSVWriterTest {
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
-        disableLocalizationServiceLogging();
+        TestUtils.disableLocalizationLogging();
     }
 
 
+    @Test
     public void testMimeType() {
         ExportWriter writer = new CSVWriter(new StringWriter());
         assertEquals("text/csv", writer.getMimeType());
     }
 
+    @Test
     public void testListOutput() throws Exception {
         ExportWriter writer = new CSVWriter(new StringWriter());
         List values = new LinkedList();
@@ -54,6 +62,7 @@ public class CSVWriterTest extends RhnBaseTestCase {
         assertEquals("val1,val2,val3,val4\n", writer.getContents());
     }
 
+    @Test
     public void testListofMaps() throws Exception {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
@@ -81,6 +90,7 @@ public class CSVWriterTest extends RhnBaseTestCase {
                 endsWith("cval1-9,cval2-9,cval3-9,\n"));
     }
 
+    @Test
     public void testListofDtos() throws Exception {
 
         ExportWriter writer = new CSVWriter(new StringWriter());

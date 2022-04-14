@@ -77,6 +77,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<Boolean> copyFile(Path src, Path dst) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
         throw new UnsupportedOperationException();
     }

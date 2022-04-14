@@ -28,15 +28,18 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA512Checksum;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -57,7 +60,7 @@ import javax.persistence.criteria.Root;
 public class ImageInfoFactory extends HibernateFactory {
 
     private static ImageInfoFactory instance = new ImageInfoFactory();
-    private static Logger log = Logger.getLogger(ImageInfoFactory.class);
+    private static Logger log = LogManager.getLogger(ImageInfoFactory.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
@@ -82,7 +85,7 @@ public class ImageInfoFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(ImageInfoFactory.class);
+            log = LogManager.getLogger(ImageInfoFactory.class);
         }
         return log;
     }
@@ -273,8 +276,9 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     private static void removeImageFile(String path, SaltApi saltApi) {
-        saltApi.removeFile(Paths.get(path))
-                .orElseThrow(() -> new IllegalStateException("Can't remove image file " + path));
+        if (saltApi.removeFile(Paths.get(path)).isEmpty()) {
+            throw new IllegalStateException("Can't remove image file " + path);
+        }
     }
 
     /**
@@ -289,6 +293,20 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Delete a {@link ImageFile}.
+     *
+     * @param file the file to delete
+     * @param saltApi the SaltApi used to delete the related file
+     */
+    public static void deleteImageFile(ImageFile file, SaltApi saltApi) {
+        file.getImageInfo().getImageFiles().remove(file);
+        if (!file.isExternal()) {
+            removeImageFile(OSImageStoreUtils.getOSImageFilePath(file), saltApi);
+        }
+        instance.removeObject(file);
+    }
+
+    /**
      * Delete a {@link ImageInfo}.
      *
      * @param imageInfo the image info to delete
@@ -297,6 +315,9 @@ public class ImageInfoFactory extends HibernateFactory {
     public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
         imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
         imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+
+        // delete saltboot image profile and distro
+        SaltbootUtils.deleteSaltbootDistro(imageInfo);
 
         // delete files
         imageInfo.getImageFiles().stream().forEach(f -> {
@@ -497,7 +518,11 @@ public class ImageInfoFactory extends HibernateFactory {
     public static com.redhat.rhn.domain.common.Checksum convertChecksum(
             Checksum dockerChecksum) {
         String checksumType = "sha256";
-        if (dockerChecksum instanceof SHA1Checksum) {
+
+        if (dockerChecksum instanceof MD5Checksum) {
+            checksumType = "md5";
+        }
+        else if (dockerChecksum instanceof SHA1Checksum) {
             checksumType = "sha1";
         }
         else  if (dockerChecksum instanceof SHA256Checksum) {
@@ -520,6 +545,8 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
+        case "md5":
+            return new MD5Checksum(checksum.getChecksum());
         case "sha1":
             return new SHA1Checksum(checksum.getChecksum());
         case "sha256":
@@ -650,4 +677,39 @@ public class ImageInfoFactory extends HibernateFactory {
         instance.saveObject(info);
         return info;
     }
+
+    /**
+     * Lookup an ImageFile by file name
+     * @param org the the organization
+     * @param file the file name
+     * @return the image file
+     */
+    public static Optional<ImageFile> lookupImageFile(Org org, String file) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageFile> query = builder.createQuery(ImageFile.class);
+
+        Root<ImageFile> root = query.from(ImageFile.class);
+        query.where(builder.and(
+                builder.equal(root.get("file"), file),
+                builder.equal(root.join("imageInfo").get("org"), org)));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup an DeltaImageInfo by file name
+     * @param org the the organization
+     * @param file the file name
+     * @return the delta image info
+     */
+    public static Optional<DeltaImageInfo> lookupDeltaImageFile(Org org, String file) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<DeltaImageInfo> query = builder.createQuery(DeltaImageInfo.class);
+
+        Root<DeltaImageInfo> root = query.from(DeltaImageInfo.class);
+        query.where(builder.and(
+                builder.equal(root.get("file"), file),
+                builder.equal(root.join("sourceImageInfo").get("org"), org)));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
 }

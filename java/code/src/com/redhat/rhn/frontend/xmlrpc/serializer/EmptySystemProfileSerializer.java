@@ -15,14 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
+
 import java.util.Date;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -38,29 +36,23 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *         #array_single("string", "HW address")
  * #struct_end()
  */
-public class EmptySystemProfileSerializer extends RhnXmlRpcCustomSerializer {
+public class EmptySystemProfileSerializer extends ApiResponseSerializer<EmptySystemProfileOverview> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<EmptySystemProfileOverview> getSupportedClass() {
         return EmptySystemProfileOverview.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        EmptySystemProfileOverview system = (EmptySystemProfileOverview) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", system.getId());
-        helper.add("name", system.getName());
-        Date regDate = system.getCreated();
+    @Override
+    public SerializedApiResponse serialize(EmptySystemProfileOverview src) {
+        SerializationBuilder builder = new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getName());
+        Date regDate = src.getCreated();
         if (regDate != null) {
-            helper.add("created", regDate);
+            builder.add("created", regDate);
         }
-        helper.add("hw_addresses", system.getMacs());
-        helper.writeTo(output);
+        builder.add("hw_addresses", src.getMacs());
+        return builder.build();
     }
 }

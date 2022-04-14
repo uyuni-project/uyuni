@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -26,6 +30,8 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Map;
@@ -39,6 +45,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
     private KickstartableTree tree;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
@@ -55,6 +62,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         setRequestPathInfo("/common/DownloadFile");
     }
 
+    @Test
     public void testKsDownload() throws Exception {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/boot.iso");
@@ -68,6 +76,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         assertNotNull(filename);
     }
 
+    @Test
     public void testKSPackageDownload() throws Exception {
         //  /ks/dist/rhel5-i386-u2/Server/iproute-2.6.18-7.el5.i386.rpm
         Package p = PackageManagerTest.addPackageToChannel("some-package",
@@ -88,6 +97,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         // 1236742778254/1/3709/alsa-utils-1.0.6-6.i386.rpm
 
     }
+    @Test
     public void testKsSessionDownload() throws Exception {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         KickstartSession ksession =
@@ -113,6 +123,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         assertNotNull(filename);
     }
 
+    @Test
     public void testKSSessionAndPackageCount() throws Exception {
         Package p = PackageManagerTest.addPackageToChannel("some-package",
                 tree.getChannel());
@@ -146,6 +157,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testDirHit() throws Exception {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         KickstartSession ksession =

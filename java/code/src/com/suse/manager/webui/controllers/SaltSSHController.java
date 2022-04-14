@@ -20,7 +20,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Optional;
@@ -34,7 +35,7 @@ import spark.Response;
 public class SaltSSHController {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(SaltSSHController.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHController.class);
 
     private final SaltApi saltApi;
 
@@ -71,7 +72,7 @@ public class SaltSSHController {
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
 
-        String key = res.get().getPublicKey();
+        String key = res.orElseThrow().getPublicKey();
         if (key != null) {
             return key.getBytes();
         }

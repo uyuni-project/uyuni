@@ -85,12 +85,15 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -110,7 +113,7 @@ import java.util.stream.Collectors;
  */
 public class ChannelSoftwareHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(ChannelSoftwareHandler.class);
+    private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemHandler systemHandler;
@@ -135,6 +138,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      * @xmlrpc.ignore
      */
+    @ApiIgnore
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
     }
@@ -164,6 +168,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> listErrataNeedingSync(User loggedInUser,
                 String channelLabel) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -260,6 +265,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listLatestPackages(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
 
@@ -291,6 +297,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              $PackageDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
             Date startDate, Date endDate) throws NoSuchChannelException {
 
@@ -318,6 +325,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              $PackageDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
             Date startDate) throws NoSuchChannelException {
         return listAllPackages(loggedInUser, channelLabel, startDate, null);
@@ -338,6 +346,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              $PackageDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
 
@@ -359,6 +368,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              $ChannelArchSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<ChannelArch> listArches(User loggedInUser)
             throws PermissionCheckFailureException {
         if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
@@ -419,6 +429,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype #param_desc("int", "subscribable", "1 if true, 0 otherwise")
      */
+    @ReadOnly
     public int isGloballySubscribable(User loggedInUser, String channelLabel) {
         // TODO: this should return a boolean NOT an int
 
@@ -442,6 +453,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     $ChannelSerializer
      */
+    @ReadOnly
     public Channel getDetails(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
         return lookupChannelByLabel(loggedInUser, channelLabel);
@@ -460,6 +472,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     $ChannelSerializer
      */
+    @ReadOnly
     public Channel getDetails(User loggedInUser, Integer id)
         throws NoSuchChannelException {
         return lookupChannelById(loggedInUser, id.longValue());
@@ -936,6 +949,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              #struct_end()
      *           #array_end()
      */
+    @ReadOnly
     public Object[] listSubscribedSystems(User loggedInUser, String label)
         throws FaultException {
 
@@ -979,6 +993,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              #struct_end()
      *           #array_end()
      */
+    @ReadOnly
     public Object[] listSystemChannels(User loggedInUser, Integer sid)
         throws FaultException {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
@@ -1099,6 +1114,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "login of the target user")
      * @xmlrpc.returntype #param_desc("int", "status", "1 if subscribable, 0 if not")
      */
+    @ReadOnly
     public int isUserSubscribable(User loggedInUser, String channelLabel,
             String login) throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
@@ -1126,6 +1142,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
      * @xmlrpc.returntype #param_desc("boolean", "result", "True if the channel exists")
      */
+    @ReadOnly
     public boolean isExisting(User loggedInUser, String channelLabel) {
         return ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser) == null ? false : true;
     }
@@ -1146,6 +1163,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "login of the target user")
      * @xmlrpc.returntype #param_desc("int", "status", "1 if manageable, 0 if not")
      */
+    @ReadOnly
     public int isUserManageable(User loggedInUser, String channelLabel,
             String login) throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
@@ -1423,6 +1441,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel,
             Date startDate) throws NoSuchChannelException {
         return listErrata(loggedInUser, channelLabel, startDate, null);
@@ -1449,6 +1468,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #array_end()
      */
 
+    @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel,
             Date startDate, Date endDate) throws NoSuchChannelException {
         return listErrata(loggedInUser, channelLabel, startDate, endDate, false);
@@ -1479,7 +1499,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-
+    @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser,
             String channelLabel, Date startDate, Date endDate,
             boolean lastModified) throws NoSuchChannelException {
@@ -1508,6 +1528,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *    #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
         return listErrata(loggedInUser, channelLabel, (Date) null);
@@ -1545,6 +1566,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listErrataByType(User loggedInUser, String channelLabel,
             String advisoryType) throws NoSuchChannelException {
 
@@ -1638,6 +1660,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      $PackageSerializer
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listPackagesWithoutChannel(User loggedInUser) {
         ensureUserRole(loggedInUser, RoleFactory.CHANNEL_ADMIN);
         return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg()).toArray();
@@ -2070,7 +2093,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              $ChannelSerializer
      *      #array_end()
      */
-
+    @ReadOnly
     public Object[] listChildren(User loggedInUser, String channelLabel) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
 
@@ -2091,7 +2114,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.returntype
     *   #param_desc("date", "date", "the last build date of the repomd.xml file as a localised string")
     */
-
+    @ReadOnly
     public String getChannelLastBuildById(User loggedInUser, Integer id)
                                             throws NoSuchChannelException {
         String repoLastBuild =
@@ -2103,7 +2126,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return repoLastBuild;
     }
 
-   /** Returns a list of ContentSource (repos) that the user can see
+    /** Returns a list of ContentSource (repos) that the user can see
      * @param loggedInUser The current user
      * @return Lists the repos visible to the user
      * @xmlrpc.doc Returns a list of ContentSource (repos) that the user can see
@@ -2117,6 +2140,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      **/
+    @ReadOnly
     public List<Map<String, Object>> listUserRepos(User loggedInUser) {
         List<ContentSource> result = ChannelFactory
                 .lookupContentSources(loggedInUser.getOrg());
@@ -2296,7 +2320,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
    /**
     * Associates a repository with a channel
     * @param loggedInUser The current user
-    * @param chanLabel of the channel to use
+    * @param channelLabel of the channel to use
     * @param repoLabel of the repo to associate
     * @return the channel with the newly associated repo
     *
@@ -2306,8 +2330,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
     * @xmlrpc.returntype $ChannelSerializer
    **/
-    public Channel associateRepo(User loggedInUser, String chanLabel, String repoLabel) {
-        Channel channel = lookupChannelByLabel(loggedInUser, chanLabel);
+    public Channel associateRepo(User loggedInUser, String channelLabel, String repoLabel) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         ContentSource repo = lookupContentSourceByLabel(repoLabel, loggedInUser.getOrg());
 
         Set<ContentSource> set = channel.getSources();
@@ -2320,7 +2344,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
    /**
     * Disassociates a repository from a channel
     * @param loggedInUser The current user
-    * @param chanLabel of the channel to use
+    * @param channelLabel of the channel to use
     * @param repoLabel of the repo to disassociate
     * @return the channel minus the disassociated repo
     *
@@ -2330,8 +2354,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
     * @xmlrpc.returntype $ChannelSerializer
    **/
-    public Channel disassociateRepo(User loggedInUser, String chanLabel, String repoLabel) {
-        Channel channel = lookupChannelByLabel(loggedInUser, chanLabel);
+    public Channel disassociateRepo(User loggedInUser, String channelLabel, String repoLabel) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         ContentSource repo = lookupContentSourceByLabel(repoLabel, loggedInUser.getOrg());
 
         Set<ContentSource> set = channel.getSources();
@@ -2543,6 +2567,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     $ContentSourceSerializer
      */
+    @ReadOnly
     public ContentSource getRepoDetails(User loggedInUser, String repoLabel) {
         return lookupContentSourceByLabel(repoLabel, loggedInUser.getOrg());
     }
@@ -2559,6 +2584,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     $ContentSourceSerializer
      */
+    @ReadOnly
     public ContentSource getRepoDetails(User loggedInUser, Integer id) {
         return lookupContentSourceById(id.longValue(), loggedInUser.getOrg());
     }
@@ -2577,6 +2603,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          $ContentSourceSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ContentSource> listChannelRepos(User loggedInUser, String channelLabel) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         return ChannelFactory.lookupContentSources(loggedInUser.getOrg(), channel);
@@ -2748,6 +2775,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
      * @xmlrpc.returntype #param_desc("string", "expression", "quartz expression")
      */
+    @ReadOnly
     public String getRepoSyncCronExpression(User loggedInUser, String channelLabel) {
         try {
             Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -2777,7 +2805,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     *      #array_end()
     *
    **/
-    public List<ContentSourceFilter> listRepoFilters(User loggedInUser, String label) {
+   @ReadOnly
+   public List<ContentSourceFilter> listRepoFilters(User loggedInUser, String label) {
 
         ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
 

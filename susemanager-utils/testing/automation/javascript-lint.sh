@@ -9,7 +9,7 @@ fi
 
 while getopts 'P:h' options
 do
-    case ${option} in
+    case ${options} in
         P) VPRODUCT="VERSION.${OPTARG}" ;;
         h) echo "Usage ${SCRIPT} [-P PRODUCT]";exit 2;;
     esac

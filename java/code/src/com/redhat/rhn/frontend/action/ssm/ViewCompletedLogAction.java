@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 
 import java.util.List;
 
-/** @version $Revision$ */
 public class ViewCompletedLogAction extends BaseViewLogAction {
 
     /** {@inheritDoc} */

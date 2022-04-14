@@ -18,7 +18,8 @@ package org.cobbler;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class Profile extends CobblerObject {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(Profile.class);
+    private static Logger log = LogManager.getLogger(Profile.class);
 
     private static final String DHCP_TAG = "dhcp_tag";
     private static final String KICKSTART = "autoinstall";

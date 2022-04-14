@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
-    private static Logger log = Logger.getLogger(SystemEntitlementsSetupAction.class);
+    private static Logger log = LogManager.getLogger(SystemEntitlementsSetupAction.class);
 
     public static final String SHOW_COMMANDS = "showCommands";
 

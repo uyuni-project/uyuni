@@ -29,6 +29,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,6 +57,7 @@ public class SystemScapHandler extends BaseHandler {
      *   $XccdfTestResultDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<XccdfTestResultDto> listXccdfScans(User loggedInUser, Integer serverId) {
         /* Make sure the system is available to user and throw a nice exception.
          * If it was not done, an empty list would be returned. */
@@ -73,6 +76,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "Id of XCCDF scan (xid).")
      * @xmlrpc.returntype $XccdfTestResultSerializer
      */
+    @ReadOnly
     public XccdfTestResult getXccdfScanDetails(User loggedInUser, Integer xid) {
         ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
         return ScapFactory.lookupTestResultById(Long.valueOf(xid));
@@ -92,6 +96,7 @@ public class SystemScapHandler extends BaseHandler {
      *   $XccdfRuleResultDtoSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<XccdfRuleResultDto> getXccdfScanRuleResults(User loggedInUser,
             Integer xid) {
         ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));

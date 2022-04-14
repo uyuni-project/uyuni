@@ -17,7 +17,8 @@ package com.redhat.rhn.common.localization;
 import com.redhat.rhn.common.conf.Config;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -58,7 +59,7 @@ public final class XmlMessages {
     public static final String ENTERPRISE_LINUX_NAME_MACRO = "@@ENTERPRISE_LINUX_NAME@@";
     public static final String VENDOR_SERVICE_NAME_MACRO = "@@VENDOR_SERVICE_NAME@@";
 
-    private static final Logger LOG = Logger.getLogger(XmlMessages.class);
+    private static final Logger LOG = LogManager.getLogger(XmlMessages.class);
 
     private static XmlMessages instance = new XmlMessages();
 

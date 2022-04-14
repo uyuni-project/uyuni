@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -27,6 +32,7 @@ import java.util.Date;
  */
 public class KickstartIpTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testKickstartDataTest() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         assertNotNull(k);

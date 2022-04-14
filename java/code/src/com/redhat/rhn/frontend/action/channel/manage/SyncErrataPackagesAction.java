@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -54,7 +55,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
         Listable<PackageOverview> {
 
 
-    private Logger log = Logger.getLogger(SyncErrataPackagesAction.class);
+    private static final Logger LOG = LogManager.getLogger(SyncErrataPackagesAction.class);
 
     /**
      *
@@ -142,7 +143,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
                 ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
+                LOG.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
             }
         }
 

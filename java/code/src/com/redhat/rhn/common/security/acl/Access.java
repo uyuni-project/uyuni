@@ -37,7 +37,8 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ import java.util.Map;
  */
 public class Access extends BaseHandler {
 
-    protected static final Logger LOG = Logger.getLogger(Access.class);
+    protected static final Logger LOG = LogManager.getLogger(Access.class);
 
     /**
      * Returns true if the User whose uid matches the given uid, is
@@ -345,6 +346,21 @@ public class Access extends BaseHandler {
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
 
         return lookedUp.isVirtualGuest();
+    }
+
+    /**
+     * Uses the sid param to decide if a system is a proxy
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use (unused)
+     * @return true if a system is a proxy, false otherwise
+     */
+    public boolean aclSystemIsProxy(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+
+        return lookedUp.isProxy();
     }
 
     /**

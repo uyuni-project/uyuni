@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.kickstart.crypto.DeleteCryptoKeyCommand;
 
 /**
  * CryptoKeyDeleteAction
- * @version $Rev: 1 $
  */
 public class CryptoKeyDeleteAction extends BaseCryptoKeyEditAction {
 

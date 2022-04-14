@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.kickstart.KickstartableTreeDetail;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -37,32 +34,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   $KickstartInstallTypeSerializer
  * #struct_end()
  */
-public class KickstartTreeDetailSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartTreeDetailSerializer extends ApiResponseSerializer<KickstartableTreeDetail> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartableTreeDetail> getSupportedClass() {
         return KickstartableTreeDetail.class;
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output,
-                          XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-
-        KickstartableTreeDetail treeDetail = (KickstartableTreeDetail) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", treeDetail.getId());
-        helper.add("label", treeDetail.getLabel());
-        helper.add("abs_path", treeDetail.getAbsolutePath());
-        helper.add("channel_id", treeDetail.getChannel().getId());
-        helper.add("install_type", treeDetail.getInstallType());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartableTreeDetail src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("abs_path", src.getAbsolutePath())
+                .add("channel_id", src.getChannel().getId())
+                .add("install_type", src.getInstallType())
+                .build();
     }
-
 }

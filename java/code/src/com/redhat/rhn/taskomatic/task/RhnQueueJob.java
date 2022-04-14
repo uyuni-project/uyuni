@@ -20,13 +20,12 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
-import java.io.IOException;
 
 /**
  * Custom Quartz Job implementation which only allows one thread to
@@ -34,7 +33,6 @@ import java.io.IOException;
  * This policy was chosen instead of blocking so as to reduce threading
  * problems inside Quartz itself.
  *
- * @version $Rev $
  *
  */
 public abstract class RhnQueueJob implements RhnJob {
@@ -50,17 +48,22 @@ public abstract class RhnQueueJob implements RhnJob {
     }
 
     private void logToNewFile() {
-        PatternLayout pattern =
-            new PatternLayout(DEFAULT_LOGGING_LAYOUT);
-        try {
-            getLogger().removeAllAppenders();
-            FileAppender appender = new FileAppender(pattern,
-                    jobRun.buildStdOutputLogPath());
-            getLogger().addAppender(appender);
-        }
-        catch (IOException e) {
-            getLogger().warn("Logging to file disabled");
-        }
+
+        var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+
+        var layoutBuilder = builder
+                .newLayout("PatternLayout")
+                .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
+        var appenderName = this.getClass().getName() + "fileAppender";
+        var appenderBuilder = builder
+                .newAppender(appenderName, "File")
+                .addAttribute("fileName", jobRun.buildStdOutputLogPath())
+                .add(layoutBuilder);
+        builder.add(appenderBuilder);
+
+        var logger = builder.newLogger(this.getClass().getName(), Level.INFO);
+        builder.add(logger.add(builder.newAppenderRef(appenderName)));
+        Configurator.initialize(builder.build());
     }
 
     /**

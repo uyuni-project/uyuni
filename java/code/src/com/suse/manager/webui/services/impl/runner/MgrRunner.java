@@ -76,5 +76,25 @@ public class MgrRunner {
                 "path", absolutePath)),
                 new TypeToken<Boolean>() { });
     }
+
+    /**
+     * {@link RunnerCall} for copying a file
+     * The result of the call is the boolean, which is true, if the path was successfully copied.
+     *
+     * @param src the source path of the file
+     * @param dst the destination path of the file
+     * @param recurse recurse into subdirectories
+     * @param removeExisting remove all files in the target directory, and then copy files from the source
+     * @return the runner call
+     */
+    public static RunnerCall<Boolean> copyFile(String src, String dst, boolean recurse, boolean removeExisting) {
+        return new RunnerCall("salt.cmd", Optional.of(Map.of(
+                "fun", "file.copy",
+                "src", src,
+                "dst", dst,
+                "recurse", recurse,
+                "remove_existing", removeExisting)),
+                new TypeToken<Boolean>() { });
+    }
 }
 

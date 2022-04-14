@@ -19,7 +19,6 @@ import java.util.Objects;
 
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickstartOptionValue
- * @version $Rev: 50942 $
  */
 public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
 

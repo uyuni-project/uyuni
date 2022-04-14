@@ -23,8 +23,15 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -141,6 +148,9 @@ import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -180,6 +190,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     private SystemManager systemManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
@@ -213,6 +224,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         try {
@@ -244,6 +256,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testSnapshotServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -270,6 +283,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                                          .uniqueResult();
     }
 
+    @Test
     public void testDeleteServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -296,6 +310,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws java.lang.Exception if anything goes wrong
      */
+    @Test
     public void testFormulaDataCleanUp() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String minionId = minion.getMinionId();
@@ -325,6 +340,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
+    @Test
     public void testEmptyFormulaDataCleanUp() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String minionId = minion.getMinionId();
@@ -347,6 +363,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
+    @Test
     public void testDeleteVirtualServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -370,9 +387,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         DataResult<VirtualSystemOverview> data = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
-        assertEquals("Guest not found", 1, data.getTotalSize());
+        assertEquals(1, data.getTotalSize(), "Guest not found");
     }
 
+    @Test
     public void testDeleteVirtualServerHostDeleted() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -402,6 +420,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testSystemsNotInSg() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -432,6 +451,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return false;
     }
 
+    @Test
     public void testSystemList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -446,6 +466,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(systems.size() > 0);
     }
 
+    @Test
     public void testSystemWithFeature() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -473,6 +494,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testSystemsInGroup() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -503,6 +525,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testCountActions() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -525,6 +548,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, SystemManager.countActions(server.getId()));
     }
 
+    @Test
     public void testCountPackageActions() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -548,6 +572,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testUnscheduledErrata() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -578,6 +603,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testGetServerEntitlement() throws Exception {
         // create a new server
         User user = UserTestUtils.findNewUser("testUser",
@@ -589,6 +615,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(entitlements.contains(EntitlementManager.MANAGEMENT));
     }
 
+    @Test
     public void testClientCapability() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -622,6 +649,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         m.executeUpdate(params);
     }
 
+    @Test
     public void testCompatibleWithServer() throws Exception {
 
         /*
@@ -649,18 +677,19 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // Ok let's finally test what we came here for.
         List<Map<String, Object>> list = SystemManager.compatibleWithServer(user, srvr);
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
         for (Map<String, Object> o : list) {
             if (srvr1.getName().equals(o.get("name"))) {
                 found = true;
             }
         }
-        assertTrue("Didn't get back the expected values", found);
+        assertTrue(found, "Didn't get back the expected values");
 
     }
 
+    @Test
     public void testGetSsmSystemsSubscribedToChannel() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -683,6 +712,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(s.getId(), result1.get("id"));
     }
 
+    @Test
     public void testNoBaseChannelInSet() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -725,6 +755,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(dr.size(), 2);
     }
 
+    @Test
     public void testRegisteredList() throws Exception {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -739,6 +770,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testDeactivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -762,6 +794,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(s);
     }
 
+    @Test
     public void testVcpuSettingExceeds32() throws Exception {
         Server host = setupHostWithGuests(1);
         VirtualInstance vi = host.getGuests().iterator().next();
@@ -774,6 +807,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("systems.details.virt.vcpu.limit.msg", errors.get(0).getKey());
     }
 
+    @Test
     public void testVcpuSettingExceedsPhysicalCpus() throws Exception {
         Server host = setupHostWithGuests(1);
         VirtualInstance vi = host.getGuests().iterator().next();
@@ -791,6 +825,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     // Increasing the vCPUs should create a warning that if the new setting exceeds
     // what the guest was booted with, it will require a reboot to take effect.
+    @Test
     public void testVcpuIncreaseWarning() throws Exception {
         Server host = setupHostWithGuests(1);
         VirtualInstance vi = host.getGuests().iterator().next();
@@ -804,6 +839,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 warnings.get(0).getKey());
     }
 
+    @Test
     public void testMemoryChangeWarnings() throws Exception {
         Server host = setupHostWithGuests(1);
 
@@ -834,6 +870,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return host;
     }
 
+    @Test
     public void testListCustomKeys() throws Exception {
         User admin = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -860,6 +897,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testErrataCountsForSystem() throws Exception {
 
         // Setup
@@ -893,6 +931,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, nonCriticalCount);
     }
 
+    @Test
     public void testSsmSystemPackagesToRemove() throws Exception {
 
         // Setup
@@ -991,6 +1030,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDeleteNote() throws Exception {
         // Setup
         User admin = UserTestUtils.findNewUser("testUser",
@@ -1016,6 +1056,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(sizeBefore, sizeAfterDelete);
     }
 
+    @Test
     public void testDeleteNotes() throws Exception {
         // Setup
         User admin = UserTestUtils.findNewUser("testUser",
@@ -1044,6 +1085,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testHasPackageAvailable() throws Exception {
         User admin = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1068,6 +1110,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageEvr().getId()));
 
     }
+    @Test
     public void testListSystemsWithNeededPackage() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1102,6 +1145,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.hasUnscheduledErrata(user, server.getId()));
     }
 
+    @Test
     public void testListInstalledPackage() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1127,6 +1171,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testInSet() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1148,6 +1193,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(m.getName());
     }
 
+    @Test
     public void testFindByName() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1158,6 +1204,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListDuplicatesByHostname() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1176,6 +1223,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testFindCompatibleChannelArch() {
         // x86_64
         ServerArch serverArch = ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux");
@@ -1204,6 +1252,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("s390", channelArch.getName());
     }
 
+    @Test
     public void testGetActivationKeys() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
@@ -1215,6 +1264,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testGetBootstrapActivationKeys() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
@@ -1227,6 +1277,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, result.size());
     }
 
+    @Test
     public void testCountSystemsInSetWithoutEntitlement() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
@@ -1263,6 +1314,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, actual);
     }
 
+    @Test
     public void testCountSystemsInSetWithoutFeature() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
@@ -1299,6 +1351,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, actual);
     }
 
+    @Test
     public void testUpdateServerChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
@@ -1328,6 +1381,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch22.getId())));
     }
 
+    @Test
     public void testUpdateServerChannelsNoChildren() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
@@ -1355,6 +1409,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, server.getChildChannels().size());
     }
 
+    @Test
     public void testUpdateServerChannelsNoBase() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
@@ -1385,6 +1440,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests creating an empty system profile.
      */
+    @Test
     public void testCreateSystemProfile() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
@@ -1419,6 +1475,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws java.lang.Exception if anything goes wrong
      */
+    @Test
     public void testListSystemProfile() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
@@ -1447,6 +1504,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests that listing empty system profile doesn't contain traditional system.
      */
+    @Test
     public void testListSystemProfileTradSystem() {
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
@@ -1463,6 +1521,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests listing empty system profile for users from various organizations.
      */
+    @Test
     public void testListSystemProfileCrossOrg() {
         User foreignUser = UserTestUtils.findNewUser("testUser", "anotherTestOrg" + this.getClass().getSimpleName());
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
@@ -1478,6 +1537,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * Tests creating an empty system profile when there is already another profile with a NIC
      * that has given HW address.
      */
+    @Test
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
@@ -1494,6 +1554,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests finding an empty profile by hostname and HW addresses with "empty" arguments.
      */
+    @Test
     public void testFindByHostnameAndHwAddrsEmptyArgs() {
         assertTrue(SystemManager.findMatchingEmptyProfiles(empty(), emptySet()).isEmpty());
     }
@@ -1501,6 +1562,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests finding an empty profile with no NICS.
      */
+    @Test
     public void testFindByHostnameNoHwAddrs() throws Exception {
         MinionServer minion = createEmptyProfile(of("myhost"), empty());
 
@@ -1518,6 +1580,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests finding an empty profile with no hostname.
      */
+    @Test
     public void testFindByHostnameNoHostname() throws Exception {
         String hwAddr = "11:22:33:44:55:66";
         MinionServer minion = createEmptyProfile(empty(), of(hwAddr));
@@ -1535,6 +1598,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests finding an empty profile by hostname and HW addresses.
      */
+    @Test
     public void testFindByHostnameAndHwAddrs() throws Exception {
         String hwAddr = "11:22:AA:bb:55:66";
         MinionServer minion = createEmptyProfile(of("myhost"), of(hwAddr));
@@ -1567,6 +1631,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests finding system (with multiple NICs) by hostname and HW addresses.
      */
+    @Test
     public void testFindByHostnameAndHwAddrsMoreNics() throws Exception {
         String hwAddr = "11:22:33:44:55:66";
         String hwAddr2 = "11:22:33:44:55:77";
@@ -1601,6 +1666,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests lookup of (non-matching) system by hostname and HW address.
      */
+    @Test
     public void testFindByHostnameAndHwAddrsNoMatch() throws Exception {
         createEmptyProfile(of("myhost"), empty());
         List<MinionServer> fromDb = SystemManager.findMatchingEmptyProfiles(empty(), singleton("00:11:22:33:44:55"));
@@ -1620,6 +1686,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * Test for handling the monitoring entitlement via addServerToGroup() and removeServerFromGroup().
      * @throws Exception in case of an error
      */
+    @Test
     public void testAddServerToServerGroupWithMonitoring() throws Exception {
         // A new test server, no monitoring entitlement
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
@@ -1647,6 +1714,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 
+    @Test
     public void testRetrieveSystemGroupsForSystemsWithEntitlementAndUser() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -1682,6 +1750,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testInstalledPackages() throws Exception {
         doTestInstalledPackages(true);
         doTestInstalledPackages(false);
@@ -1730,6 +1799,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 unknown.get("arch"));
     }
 
+    @Test
     public void testListDupesByIp() throws Exception {
         Server server1 = ServerTestUtils.createTestSystem(user);
         Server server2 = ServerTestUtils.createTestSystem(user);
@@ -1741,6 +1811,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
     }
 
+    @Test
     public void testListNoDupesByIp() throws Exception {
         Server server1 = ServerTestUtils.createTestSystem(user);
         Server server2 = ServerTestUtils.createTestSystem(user);
@@ -1751,6 +1822,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
     }
 
+    @Test
     public void testListDupesByIpOtherIface() throws Exception {
         Server server1 = ServerTestUtils.createTestSystem(user);
         Server server2 = ServerTestUtils.createTestSystem(user);
@@ -1762,6 +1834,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
     }
 
+    @Test
     public void testListNoDupesForDocker() throws Exception {
         Server server1 = ServerTestUtils.createTestSystem(user);
         Server server2 = ServerTestUtils.createTestSystem(user);
@@ -1772,6 +1845,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
     }
 
+    @Test
     public void testListNoDupesForVirbr() throws Exception {
         Server server1 = ServerTestUtils.createTestSystem(user);
         Server server2 = ServerTestUtils.createTestSystem(user);
@@ -1782,6 +1856,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
     }
 
+    @Test
     public void testSystemEventHistory() throws Exception {
         final Server server = ServerTestUtils.createTestSystem(user);
 
@@ -1826,6 +1901,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Event 3", allEvents.get(8).getSummary());
     }
 
+    @Test
     public void testSystemEventDetails() throws Exception {
         final Server server = ServerTestUtils.createTestSystem(user);
 
@@ -1861,6 +1937,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateProxyContainerConfig() throws InstantiationException, IOException {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -1888,8 +1965,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(apacheCert));
         }});
 
-        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, serverName, maxCache, email, rootCA,
-                otherCAs, new SSLCertPair(cert, key), null, null, null);
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
         Map<String, String> content = readZipData(actual);
         assertEquals(sshPushKey, content.get("server_ssh_push"));
         assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
@@ -1904,14 +1981,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(serverName, yaml.get("server"));
         assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
         assertEquals(email, yaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
+        assertEquals(proxyName, yaml.get("proxy_fqdn"));
     }
 
+    @Test
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
         // For some reason duplicating the ORG_ADMIN role setting is required
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
-        systemManager.createSystemProfile(user, proxyName, Map.of("hostname", proxyName));
+        createTestProxy(proxyName);
         testCreateProxyContainerConfig();
+    }
+
+    private void createTestProxy(String fqdn) {
+        Server proxy = ServerFactoryTest.createUnentitledTestServer(
+                user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
+        proxy.setName(fqdn);
+        proxy.setHostname(fqdn);
+        proxy.getProxyInfo().setVersion(null);
+
+        systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
     }
 
     private Map<String, String> readZipData(byte[] data) throws IOException {

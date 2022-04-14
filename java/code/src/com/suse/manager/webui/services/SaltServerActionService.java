@@ -167,7 +167,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
@@ -215,7 +216,7 @@ import java.util.stream.Stream;
 public class SaltServerActionService {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltServerActionService.class);
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
@@ -2498,7 +2499,7 @@ public class SaltServerActionService {
 
                 if (!result.isPresent()) {
                     LOG.error("Action '" + action.getName() + "' failed. Got not result from Salt," +
-                            " probablly minion is down or could not be contacted.");
+                            " probably minion is down or could not be contacted.");
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
@@ -2523,38 +2524,37 @@ public class SaltServerActionService {
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
 
-                        // reboot needs special handling in case of ssh push
-                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT) &&
-                            sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                        // if the status is already PICKED_UP, don't change it
-                        // if the status is FAILED or COMPLETED, don't change it
+                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to
+                        *  stay in picked up, in this way SSHPushDriver::getCandidates can schedule a reboot correctly
+                        */
+                        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult, function);
+                        }
+                        else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
                             sa.setPickupTime(new Date());
-                        }
-                        else {
-                            saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                                    jsonResult, function);
                         }
 
                         // Perform a "check-in" after every executed action
                         minion.updateServerInfo();
 
-                    // Perform a package profile update in the end if necessary
-                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
-                        LOG.info("Scheduling a package profile update");
-                        Action pkgList;
-                        try {
-                            pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
-                        }
-                        catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
+                        // Perform a package profile update in the end if necessary
+                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
+                            LOG.info("Scheduling a package profile update");
+
+                            Action pkgList;
+                            try {
+                                pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                                executeSSHAction(pkgList, minion);
+                            }
+                            catch (TaskomaticApiException e) {
+                                LOG.error("Could not schedule package refresh for minion: " +
                                     minion.getMinionId());
-                            LOG.error(e);
+                                LOG.error(e);
+                            }
                         }
-                    }
-                 });
-              });
+                    });
+                });
             }
         }
     }

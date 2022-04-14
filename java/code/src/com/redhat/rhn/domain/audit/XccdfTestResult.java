@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.audit;
 
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;

@@ -614,6 +614,9 @@ def parse_str(s, type_to=None):
         if re.match(r'[1-9]\d*', s):
             return int(s)
 
+        if s in ("False", "True"):
+            return eval(s)
+
         if re.match(r'{.*}', s):
             return json.loads(s)  # retry with json module
 

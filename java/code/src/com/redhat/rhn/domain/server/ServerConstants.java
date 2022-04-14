@@ -29,6 +29,7 @@ public class ServerConstants {
     public static final String SLEMICRO = "SLE Micro";
     public static final String LEAP = "Leap";
     public static final String UBUNTU = "Ubuntu";
+    public static final String DEBIAN = "Debian";
     public static final String REDHAT = "RedHat";
     public static final String ALIBABA = "Alibaba Cloud Linux (Aliyun Linux)";
     public static final String ALMA = "AlmaLinux";

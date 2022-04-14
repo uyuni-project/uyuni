@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CobblerSnippetListSetupAction : class to list cobbler snippets
- * @version $Rev: 1 $
  */
 public class CobblerSnippetListSetupAction extends RhnAction {
     private static final String CUSTOM = "custom";

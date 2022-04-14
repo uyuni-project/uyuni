@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Exception thrown if there is already a file list with the given label.
  *
- * @version $Revision$
  */
 public class FileListAlreadyExistsException extends FaultException {
 

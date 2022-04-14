@@ -18,7 +18,8 @@ import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * KickstartTroubleshootingCommand - for editing the pre and post steps
@@ -29,8 +30,7 @@ public class KickstartTroubleshootingCommand extends BaseKickstartCommand {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger
-            .getLogger(KickstartTroubleshootingCommand.class);
+    private static Logger logger = LogManager.getLogger(KickstartTroubleshootingCommand.class);
 
     /**
      * Constructor

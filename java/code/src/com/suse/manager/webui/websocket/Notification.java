@@ -26,7 +26,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -37,7 +38,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -58,11 +58,13 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/websocket/notifications", configurator = WebsocketSessionConfigurator.class)
 public class Notification {
 
+    private static final String WEB_USER_ID = "webUserID";
+
     public static final String USER_NOTIFICATIONS = "user-notifications";
     public static final String SSM_COUNT = "ssm-count";
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(Notification.class);
+    private static final Logger LOG = LogManager.getLogger(Notification.class);
 
     private static final Object LOCK = new Object();
     private static final Gson GSON = new GsonBuilder().create();
@@ -77,11 +79,11 @@ public class Notification {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         if (session != null) {
-            Optional.ofNullable(session.getUserProperties().get("webUserID"))
+            Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
                     .map(webUserID -> (Long) webUserID)
                     .ifPresentOrElse(userId -> {
                         LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
-                        handshakeSession(userId, session);
+                        handshakeSession(session);
 
                     },
                     ()-> LOG.debug("no authenticated user."));
@@ -111,7 +113,7 @@ public class Notification {
         // Each session sends messages to tell us what action ID they need to monitor
         Set<String> watched = wsSessions.get(session);
         if (watched != null) {
-            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get("webUserID"))
+            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
                     .map(webUserID -> UserFactory.lookupById((Long) webUserID));
             userOpt.ifPresentOrElse(user -> {
                         try {
@@ -141,7 +143,7 @@ public class Notification {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        Boolean didClientAbortedConnection = err instanceof EOFException ||
+        boolean didClientAbortedConnection = err instanceof EOFException ||
                 !session.isOpen() ||
                 err.getMessage().startsWith("Unexpected error [32]");
 
@@ -162,7 +164,7 @@ public class Notification {
      * @param message the message to be sent
      */
     public static void sendMessage(Session session, String message) {
-        synchronized (session) {
+        synchronized (LOCK) {
             try {
                 if (session.isOpen()) {
                     session.getBasicRemote().sendText(message);
@@ -196,7 +198,7 @@ public class Notification {
             // if there are unread messages, notify it to all attached WebSocket sessions
             wsSessions.forEach((session, watched) -> {
                 if (watched.contains(property)) {
-                    Optional.ofNullable(session.getUserProperties().get("webUserID"))
+                    Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
                             .map(webUserID -> UserFactory.lookupById((Long) webUserID))
                             .ifPresent(user -> sendData(session, user, Set.of(property)));
                 }
@@ -263,10 +265,9 @@ public class Notification {
 
     /**
      * Add a new WebSocket Session to the collection
-     * @param userId authenticated user ID
      * @param session the session to add
      */
-    private static void handshakeSession(long userId, Session session) {
+    private static void handshakeSession(Session session) {
         synchronized (LOCK) {
             wsSessions.put(session, new HashSet<>());
         }
@@ -285,7 +286,7 @@ public class Notification {
     private static ScheduledExecutorService scheduledExecutorService;
     static {
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
+        scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
                 clearBrokenSessions();
                 spreadUpdate(USER_NOTIFICATIONS);

@@ -15,6 +15,8 @@
 package com.redhat.rhn.manager.system.entitling.test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -46,6 +48,8 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
@@ -53,6 +57,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -73,6 +78,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      * Tests adding and removing entitlement on a server
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testEntitleServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -128,6 +134,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
     }
 
+    @Test
     public void testEntitleVirtForGuest() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         User user = host.getCreator();
@@ -143,6 +150,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(guest.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
+    @Test
     public void testVirtualEntitleServer() throws Exception {
         // User and server
         User user = UserTestUtils.findNewUser("testUser",
@@ -170,7 +178,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         if (retval.getErrors().size() > 0) {
             key = retval.getErrors().get(0).getKey();
         }
-        assertFalse("Got back: " + key, retval.hasErrors());
+        assertFalse(retval.hasErrors(), "Got back: " + key);
 
         // Test stuff!
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
@@ -193,6 +201,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      * Test entitling a traditional client with Ansible Control Node
      * @throws Exception
      */
+    @Test
     public void testEntitleAnsibleControlNodeToTradClient() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -211,6 +220,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      * Test entitling a salt minion with Ansible Control Node
      * @throws Exception
      */
+    @Test
     public void testEntitleAnsibleControlNodeToSaltClient() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,12 +34,14 @@ import java.util.List;
  * PageSizeDecoratorTest
  */
 public class PageSizeDecoratorTest extends RhnBaseTestCase {
+    @Test
     public void testDefaultPageSizes() {
         assertFalse(PageSizeDecorator.getPageSizes().isEmpty());
         assertTrue(PageSizeDecorator.getPageSizes().
                 contains(PageSizeDecorator.getDefaultPageSize()));
     }
 
+    @Test
     public void testConfigPageSizes() {
         List<Integer> custom = new LinkedList<>();
         custom.add(4);

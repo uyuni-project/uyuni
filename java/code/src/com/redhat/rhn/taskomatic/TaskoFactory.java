@@ -22,7 +22,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -41,7 +42,7 @@ import java.util.Map;
  */
 public class TaskoFactory extends HibernateFactory {
     private static TaskoFactory singleton = new TaskoFactory();
-    private static Logger log = Logger.getLogger(TaskoFactory.class);
+    private static Logger log = LogManager.getLogger(TaskoFactory.class);
 
     /**
      * default constructor

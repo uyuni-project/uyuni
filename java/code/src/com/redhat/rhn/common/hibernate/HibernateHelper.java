@@ -23,7 +23,6 @@ import java.sql.Statement;
 /**
  * A Database helper class to let us easily get connections
  *
- * @version $Rev: 1076 $
  */
 public class HibernateHelper {
 

@@ -1,3 +1,13 @@
+- sort pg_hba.conf file (bsc#1198154)
+- delopy local CA under different name in the truststore to avoid
+  conflicts with CAs deployed during a registration
+
+-------------------------------------------------------------------
+Wed Mar 23 14:37:06 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * auto generate better password and prevent hanging process
+
 -------------------------------------------------------------------
 Fri Mar 11 15:43:47 CET 2022 - jgonzalez@suse.com
 

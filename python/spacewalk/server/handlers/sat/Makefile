@@ -4,6 +4,6 @@
 TOP	= ../../..
 SUBDIR	= server/handlers/sat
 
-FILES	= __init__ auth cert
+FILES	= __init__ auth
 
 include $(TOP)/Makefile.defs

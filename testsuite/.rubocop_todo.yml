@@ -270,7 +270,7 @@ Metrics/MethodLength:
 # Offense count: 1
 # Configuration parameters: CountKeywordArgs.
 Metrics/ParameterLists:
-  Max: 7
+  Max: 8
 
 Metrics/CyclomaticComplexity:
   Max: 10

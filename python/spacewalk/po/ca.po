@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:03+0000\n"
-"PO-Revision-Date: 2022-02-24 18:12+0000\n"
+"POT-Creation-Date: 2022-04-01 18:13+0000\n"
+"PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
 ">\n"
@@ -103,6 +103,8 @@ msgstr "S'esperava un paquet, no: %s"
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
+"El servei d'intermediari de SUSE Manager no està habilitat per al perfil del "
+"servidor: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -110,12 +112,12 @@ msgstr "la clau de sessió no és vàlida"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr "Aquest id. de servidor ja no existeix"
+msgstr "Aquest ID de servidor ja no existeix"
 
 #: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
@@ -124,47 +126,48 @@ msgstr "L'acció %s no pertany al servidor %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Falten les dades necessàries"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
-msgstr ""
+msgstr "Membres obligatoris desapareguts"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
 
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
+"ipaddr ni ip6addr."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Declaració de privacitat de la Red Hat Network"
+msgstr "Declaració de privacitat"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "S'esperava un diccionari com a argument de producte."
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "El valor %s no és vàlid per a %s (%s)"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr ""
+msgstr "Parell system_id / action_id no vàlid."
 
 #: ../server/handlers/xmlrpc/up2date.py:249
 #, python-format
@@ -198,6 +201,10 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               El compte %s s'ha desactivat en aquest servidor.\n"
+"               Poseu-vos en contacte amb l'administrador de l'organització "
+"per obtenir més ajuda."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -205,11 +212,13 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"El compte no té accés a cap canal que coincideixi (release=%(release)s, arch="
+"%(arch)s)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Permisos de subscripció insuficients per al llançament (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -217,7 +226,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Sistema registrat però inactiu"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -228,6 +237,12 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Combinació d'arquitectura i versió del sistema operatiu no vàlida (%s, %s).\n"
+"El vostre sistema s'ha registrat, però no rebrà actualitzacions\n"
+"perquè no es podia subscriure a un canal de base.\n"
+"Poseu-vos en contacte amb l'administrador de la vostra organització per "
+"obtenir ajuda.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -238,6 +253,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Aquest sistema s'ha registrat correctament, però encara no té dret al\n"
+"  servei. Perquè aquest sistema tingui dret al servei, inicieu sessió al "
+"lloc web a\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -249,6 +270,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Aquest sistema s'ha registrat correctament, però no hi ha drets de servei\n"
+"  disponibles. Perquè aquest sistema tingui dret al servei, inicieu sessió "
+"al lloc web a\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
@@ -257,13 +284,13 @@ msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
@@ -272,7 +299,7 @@ msgstr "Paquet no trobat"
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "L'arquitectura %s no és compatible."
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -281,23 +308,25 @@ msgstr "El testimoni `%s' té més d'un canal base assignat"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Canals bàsics conflictius"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "No s'ha pogut afegir el servidor al grup %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "S'ha assolit el recompte màxim d'ús de %s"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
+"base."
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
@@ -307,89 +336,89 @@ msgstr "No es va poder tovar el testimoni '%s'"
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Testimonis d'organitzacions que no coincideixen"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "La sessió de Kickstart no coincideix"
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "No s'admet l'apilament de testimonis de reregistre."
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Combinació de nom d'usuari i contrasenya no vàlida"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "El nom d'usuari %s no s'ha reservat."
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:473
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Adreça de correu electrònic no especificada"
 
 #: ../server/rhnUser.py:509
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
 #: ../server/rhnUser.py:512
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir menys de %d caràcters."
 
 #: ../server/rhnUser.py:523
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "nom d'usuari = %s, caràcter no vàlid: %s"
 
 #: ../server/rhnUser.py:542
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "Limiteu l'adreça de correu electrònic a %s caràcters."
 
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "la contrasenya ha de tenir com a mínim %d caràcters"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "La contrasenya ha de tenir menys de %d caràcters."
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "la contrasenya conté el caràcter %s"
 
 #: ../server/rhnUser.py:651
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "No es poden registrar els noms d'usuari que acaben en %s."
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Aquest no sembla un nom d'usuari vàlid."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Combinació de nom d'usuari i contrasenya no vàlida."
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Aquest inici de sessió ja s'ha fet o la contrasenya és incorrecta."
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
@@ -401,15 +430,15 @@ msgstr "Objecte no trobat."
 
 #: ../common/rhnException.py:58
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "ID digital del sistema no vàlid."
 
 #: ../common/rhnException.py:59
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Credencials del sistema no vàlides."
 
 #: ../common/rhnException.py:60
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "No s'han pogut recuperar les dades d'usuari de la base de dades."
 
 #: ../common/rhnException.py:61
 msgid "Valid username required."
@@ -421,11 +450,11 @@ msgstr "Es requereix una contrasenya vàlida."
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Incompliment de la longitud mínima del nom d'usuari."
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Incompliment de la longitud mínima de la contrasenya."
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
@@ -438,18 +467,19 @@ msgstr "Fitxer no trobat."
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
 msgstr ""
+"La combinació d'arquitectura i versió del sistema operatiu no és compatible."
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "No s'han pogut recuperar les dades del sistema de la base de dades."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "S'han passat arguments no vàlids a la funció."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "No es pot recuperar l'entrada sol·licitada."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
@@ -472,10 +502,21 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     La funcionalitat del servidor anònim ja no està disponible.\n"
+"\n"
+"     Si us plau, torneu a registrar aquest sistema executant mgr_register "
+"com a root.\n"
+"     Visiteu https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     o inicieu sessió a https://%(hostname)s i des de la pestanya Visió "
+"general,\n"
+"     seleccioneu Gestió de subscripcions, per habilitar el servei per a "
+"aquest sistema.\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
-msgstr ""
+msgstr "Registre no disponible a la base de dades."
 
 #: ../common/rhnException.py:82
 msgid "Invalid value for entry."
@@ -492,6 +533,14 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     Aquest sistema no té un dret vàlid per a SUSE Manager.\n"
+"     Visiteu https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     o inicieu sessió a https://%(hostname)s i des de la pestanya Visió "
+"general,\n"
+"     seleccioneu Gestió de subscripcions, per habilitar el servei per a "
+"aquest sistema.\n"
+"     "
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
@@ -507,7 +556,7 @@ msgstr "El testimoni de la sessió del client ha vençut."
 
 #: ../common/rhnException.py:92
 msgid "You are not authorized to retrieve the requested object."
-msgstr ""
+msgstr "No esteu autoritzat per recuperar l'objecte sol·licitat."
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
@@ -548,6 +597,16 @@ msgid ""
 "     to be changed.\n"
 "     "
 msgstr ""
+"\n"
+"     S'han superat els límits de pertinença a grups d'usuaris.\n"
+"\n"
+"     La configuració actual del compte no us permet afegir-hi un altre\n"
+"     compte d'usuari. Si us plau, consulteu amb l'administrador de "
+"l'organització\n"
+"     compte si el nombre màxim d'usuaris autoritzats a subscriure's al "
+"servidor necessita\n"
+"     canvis.\n"
+"     "
 
 #: ../common/rhnException.py:108
 msgid ""
@@ -562,9 +621,18 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     S'han superat els límits de pertinença al grup del sistema.\n"
+"\n"
+"     La configuració actual del compte no us permet afegir-hi un altre\n"
+"     perfil del sistema. Si us plau, consulteu amb l'administrador de "
+"l'organització\n"
+"     la modificació del nombre màxim de perfils de sistema que hi poden "
+"haver\n"
+"     subscrits al compte.\n"
+"     "
 
 #: ../common/rhnException.py:116
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -575,7 +643,7 @@ msgstr ""
 "\n"
 "     Arquitectura no vàlida.\n"
 "\n"
-"     L'arquitectura del paquet no està admesa per la Red Hat Network\n"
+"     L'arquitectura del paquet no és compatible amb\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -591,6 +659,12 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Aquest sistema ja està registrat com a Salt Minion. Si el voleu "
+"registrar com a client tradicional\n"
+"    si us plau, suprimiu-lo primer mitjançant la interfície d'usuari web o "
+"l'API i després registreu-lo amb les eines tradicionals.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:127
@@ -610,6 +684,12 @@ msgid ""
 "     does not already exists on the server\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha pogut carregar el paquet a causa d'una infracció de la "
+"restricció d'unicitat.\n"
+"     Assegureu-vos que el paquet no tingui cap dependència duplicada o\n"
+"    si ja no existeix al servidor.\n"
+"     "
 
 #: ../common/rhnException.py:134
 msgid ""
@@ -618,6 +698,11 @@ msgid ""
 "     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
+"\n"
+"     L'opció --force mgrpush està desactivada en aquest servidor.\n"
+"     Poseu-vos en contacte amb l'administrador de SUSE Manager per obtenir "
+"més ajuda.\n"
+"     "
 
 #. 60-70: token errors
 #: ../common/rhnException.py:140
@@ -627,6 +712,10 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha pogut trobar el testimoni d'activació especificat al servidor.\n"
+"     Torneu-ho a provar amb una clau vàlida.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
@@ -649,6 +738,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     No s'ha trobat cap canal de base coincident per al vostre sistema.\n"
+"     "
 
 #: ../common/rhnException.py:152
 msgid ""
@@ -658,6 +750,11 @@ msgid ""
 "     administrators for further details.\n"
 "     "
 msgstr ""
+"\n"
+"     No teniu permís de subscripció al canal designat.\n"
+"     Consulteu el canal de l'organització o els administradors\n"
+"     per a més detalls.\n"
+"     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
@@ -665,12 +762,12 @@ msgstr "No us podeu de-subscriure del canal base."
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "No es pot subscriure al canal SUSE Manager o Proxy."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
+msgstr "S'ha produït un error en intentar afegir el sistema als seus grups."
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:164
@@ -680,11 +777,11 @@ msgstr "No es pot donar el dret al sistema"
 #. 100-109: e-mail and uuid related faults
 #: ../common/rhnException.py:167
 msgid "Maximum e-mail length violation."
-msgstr ""
+msgstr "Incompliment de la longitud màxima del correu electrònic."
 
 #: ../common/rhnException.py:168
 msgid "This system has been previously registered."
-msgstr ""
+msgstr "Aquest sistema s'ha registrat prèviament."
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
@@ -693,49 +790,48 @@ msgstr "El nom d'usuari no és vàlid"
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
 msgid "Unable to look up server"
-msgstr ""
+msgstr "No es pot cercar el servidor."
 
 #. 160-179: OSAD errors
 #: ../common/rhnException.py:175
 msgid "Required argument is missing"
-msgstr ""
+msgstr "Falta l'argument obligatori"
 
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:178
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "No hi ha informació de drets vinculada al maquinari."
 
 #: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "El número d'instal·lació no hi dona dret."
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:182
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima del nom d'usuari"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "Incompliment de la longitud màxima de la contrasenya"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Aquest usuari només té accés a l'API de lectura. Acció denegada."
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
-msgstr ""
+msgstr "El nom del sistema no pot tenir menys d'1 caràcter."
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr ""
+msgstr "Error del servidor intermediari de SUSE Manager."
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy va ser incapaç d'iniciar la sessió."
+msgstr "L'intermediari de SUSE Manager no pot iniciar la sessió."
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -745,20 +841,22 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     L'identificador del sistema de l'intermediari de SUSE Manager no "
+"coincideix\n"
+"     amb un servidor intermediari Spacewalk a la base de dades.\n"
+"     "
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "El testimoni de la sessió del RHN Proxy no és vàlid."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager no és vàlid."
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "El testimoni de la sessió del RHN Proxy ha vençut."
+msgstr "El testimoni de sessió de l'intermediari de SUSE Manager ha caducat."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -766,14 +864,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     La creació de l'usuari del RHN Satellite no està permesa a través de "
-"rhn_register;\n"
-"     poseu-vos en contacte amb l'administrador del sistema perquè creï el "
-"vostre compte.\n"
+"      no es permet la creació d'usuaris mitjançant mgr_register;\n"
+"     poseu-vos en contacte amb l'administrador del sistema per crear el "
+"compte.\n"
 "     "
 
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -781,20 +877,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Aquest servidor de satellite no pot utilitzar la sincronització interna "
-"entre els satellite en aquest satellite\n"
+"     Aquest servidor de SUSE Manager no pot usar Inter Server Sync en aquest "
+"servidor.\n"
 "     "
 
 #: ../common/rhnException.py:209
-#, fuzzy
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     La sincronització interna entre els satellite està inhabilitada en "
-"aquest satellite.\n"
+"     La sincronització entre servidors està desactivada en aquest servidor "
+"de SUSE Manager.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -877,7 +972,7 @@ msgstr "Falta contingut per al fitxer de configuració"
 
 #: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Delimitadors de plantilla no especificats"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
@@ -889,23 +984,23 @@ msgstr "El canal de configuració ja existeix"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Falta el fitxer al canal de configuració."
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Es penja una revisió diferent d'aquest fitxer"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "El fitxer ja s'ha penjat al canal de configuració."
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "La mida del fitxer supera l'espai de quota restant."
 
 #: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Cal especificar el camí complet del fitxer."
 
 #: ../common/rhnException.py:243
 msgid "Invalid revision number"
@@ -919,19 +1014,21 @@ msgstr "No es poden comparar els fitxers de diferent tipus de fitxer"
 #: ../common/rhnException.py:247
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
+"La transferència de fitxers de resultats SCAP no és vàlida o és incompleta."
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del directori per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
+"Error en redactar la ruta del fitxer per obtenir resultats SCAP detallats"
 
 #: ../common/rhnException.py:250
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "El codi de l'element no és vàlid"
+msgstr "La codificació de contingut no és vàlida."
 
 #: ../common/rhnException.py:297
 msgid ""
@@ -942,6 +1039,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     S'ha produït un error en processar la sol·licitud. Si aquest problema\n"
+"     persisteix, introduïu un informe d'error a scc.suse.com.\n"
+"     Si trieu enviar l'informe d'error, assegureu-vos d'incloure-hi\n"
+"     detalls del que s'estava intentant fer quan es va produir l'error i\n"
+"     detalls sobre com reproduir el problema.\n"
 
 #: ../common/rhnException.py:349
 #, python-format
@@ -975,13 +1078,13 @@ msgstr "ERROR: %s %s: %s"
 #: ../common/rhnTB.py:203
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRAÇABILITAT: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "El format de %s hauria de ser com a mínim AAAAMMDD.\n"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -990,6 +1093,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ERROR: s'executa el pas %s. L'error és aquest:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:31
 #, python-format
@@ -1001,6 +1107,14 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"ERROR: s'ha produït un problema en accedir a les dades del canal des del\n"
+"       repositori temporal. Heu migrat totes les dades de les ISO del canal\n"
+"       a aquest directori? Si és així, torneu a comprovar les ISO dels "
+"canals, assegureu-vos\n"
+"       que les tingueu totes i després torneu a muntar i repoblar "
+"iterativament\n"
+"       el dipòsit temporal (%s).\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1009,6 +1123,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: hi ha hagut un problema en sincronitzar la informació.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:44
 #, python-format
@@ -1020,6 +1137,13 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ERROR: S'ha produït un problema en comunicar-se amb l'ISS mestre.\n"
+"       En funció dels detalls específics de l'error, reviseu la "
+"configuració,\n"
+"       la connectivitat bàsica de xarxa i / o la resolució de noms i torneu-"
+"ho a provar.\n"
+"       Missatge d'error: %s\n"
 
 #: ../satellite_tools/messages.py:51
 #, python-format
@@ -1032,6 +1156,13 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"ERROR: no es pot sincronitzar un canal secundari sense que el pare també\n"
+"        se sincronitzi . Un pare ha d'estar (a) sincronitzat prèviament o "
+"(b) sincronitzat\n"
+"       conjuntament amb el canal fill desitjat. Falten pares per a aquesta\n"
+"       transacció:\n"
+"       %s\n"
 
 #: ../satellite_tools/messages.py:59
 #, python-format
@@ -1041,121 +1172,127 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"ERROR: no teniu dret a sincronitzar un canal en aquest conjunt de canals.\n"
+"Poseu-vos en contacte amb el gestor de SUSE.\n"
+"%s"
 
 #: ../satellite_tools/messages.py:64
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  ERROR: no hi ha prou espai lliure (%s KB) al dispositiu."
 
 #: ../satellite_tools/messages.py:66
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s Obtenció correcta: %s (%s bytes)"
 
 #: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "S'esperava un paquet, no: %s"
+msgstr "    Paquet extingit: %s"
 
 #: ../satellite_tools/messages.py:68
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Mida total: %s"
 
 #: ../satellite_tools/messages.py:69
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      S'ha baixat %s de %s. Temps restant estimat: %s"
 
 #: ../satellite_tools/messages.py:70
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    L'obtenció no s'ha fet correctament: %s"
 
 #: ../satellite_tools/messages.py:71
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   Resum de l'obtenció d'RPM: %s"
 
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       correcte: %d"
 
 #: ../satellite_tools/messages.py:73
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       ha fallat:  %d"
 
 #: ../satellite_tools/messages.py:74
 #, python-format
 msgid "       extinct: %d"
-msgstr ""
+msgstr "       extingit: %d"
 
 #: ../satellite_tools/messages.py:76
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr ""
+"   Recuperant / analitzant les metadades del paquet *rellevant*: %s (%s)"
 
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   Recuperant / analitzant dades d'errates: %s (%s)"
 
 #: ../satellite_tools/messages.py:78
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   Recuperant / analitzant les dades de Kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr ""
+"   Recuperant / analitzant els fitxers de l'arbre de Kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Importació de metadades del paquet *rellevant*: %s (%s)"
 
 #: ../satellite_tools/messages.py:81
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * ADVERTÈNCIA: aquest pot ser un procés lent."
 
 #: ../satellite_tools/messages.py:82
 msgid "Linking packages to channels"
-msgstr ""
+msgstr "Enllaç de paquets a canals"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Important errates *rellevants*: %s (%s)"
 
 #: ../satellite_tools/messages.py:84
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   No hi ha cap arbre de taula d'inici nou per importar."
 
 #: ../satellite_tools/messages.py:85
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importació d'arbres de taules d'inici (%d)"
 
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "Arbres de taules d'inici importats (%d)"
 
 #: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ enviament de registre com a correu electrònic +++"
 
 #: ../satellite_tools/reposync.py:118
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "Informe de sincronització de %s de %s"
 
 #: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1164,6 +1301,9 @@ msgid ""
 "could not be opened and read:\n"
 "%s"
 msgstr ""
+"%s (especificat a la línia d'ordres)\n"
+"no s'ha pogut obrir ni llegir:\n"
+"%s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:205
 #, python-format
@@ -1172,25 +1312,28 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+"%s no s'ha pogut obrir\n"
+"ni escriure-hi:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
-msgstr ""
+msgstr "No hi ha controlador per al pas %s"
 
 #. Try one more time - this time it should be faster since
 #. everything should be cached
 #: ../satellite_tools/satsync.py:270
 msgid "Environment changed, trying again..."
-msgstr ""
+msgstr "L'entorn ha canviat, es torna a provar..."
 
 #: ../satellite_tools/satsync.py:277
 msgid "ERROR: Encountered IntegrityError: \n"
-msgstr ""
+msgstr "ERROR: s'ha trobat un error d'integritat: \n"
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Fallades repetides"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format
@@ -1201,47 +1344,56 @@ msgid ""
 "        Elapsed:    %s\n"
 "          "
 msgstr ""
+"    Importació completada:\n"
+"        Hora d'inici: %s\n"
+"        Hora d'acabament: %s\n"
+"        Transcorregut: %s\n"
+"          "
 
 #: ../satellite_tools/satsync.py:311
 msgid "hours"
-msgstr ""
+msgstr "hores"
 
 #: ../satellite_tools/satsync.py:311
 msgid "minutes"
-msgstr ""
+msgstr "minuts"
 
 #: ../satellite_tools/satsync.py:311
 msgid "seconds"
-msgstr ""
+msgstr "segons"
 
 #: ../satellite_tools/satsync.py:357
 msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
 msgstr ""
+"ERROR: falten dades del paquet a l'abocament, useu --no-rpms per ometre "
+"aquest pas o corregiu el contingut per incloure dades del paquet."
 
 #. the orgs() method doesn't exist; that's fine we just
 #. won't sync the orgs
 #: ../satellite_tools/satsync.py:404
 msgid "The SUSE Manager master does not support syncing orgs data."
 msgstr ""
+"El mestre de SUSE Manager no admet la sincronització de dades de "
+"l'organització."
 
 #: ../satellite_tools/satsync.py:404
 msgid "Skipping..."
-msgstr ""
+msgstr "S'omet..."
 
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
-msgstr ""
+msgstr "Informe de sincronització entre servidors de SUSE Manager de %s"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
-msgstr ""
+msgstr " - sincronització del sistema de fitxers"
 
 #: ../satellite_tools/satsync.py:532 ../satellite_tools/satsync.py:540
 msgid " - live synchronization"
-msgstr ""
+msgstr " - sincronització en directe"
 
 #: ../satellite_tools/satsync.py:533
 #, python-brace-format
@@ -1252,238 +1404,246 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
+"ERROR: la sincronització de contingut en directe amb RHN Classic Hosted ja "
+"no és compatible.\n"
+"Si us plau, useu l'ordre cdn-sync tret que intenteu sincronitzar des d'un "
+"altre {PRODUCT_NAME} mitjançant Inter-Server-Sync (ISS) o des del contingut "
+"local del disc mitjançant les ISO d'abocament de canals."
 
 #: ../satellite_tools/satsync.py:541
 #, python-format
 msgid "   url: %s"
-msgstr ""
+msgstr "   url: %s"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
 msgid "   debug/output level: %s"
-msgstr ""
+msgstr "   nivell de depuració / sortida: %s"
 
 #: ../satellite_tools/satsync.py:552
 msgid "ERROR: this server must be registered with SUSE Manager."
-msgstr ""
+msgstr "ERROR: aquest servidor ha d'estar registrat amb SUSE Manager."
 
 #: ../satellite_tools/satsync.py:574
 #, python-format
 msgid "Retrieving / parsing %s data"
-msgstr ""
+msgstr "Recuperant / analitzant les dades de %s"
 
 #: ../satellite_tools/satsync.py:584 ../satellite_tools/satsync.py:599
 msgid "*** SYSTEM INTERRUPT CALLED ***"
-msgstr ""
+msgstr "*** S'ha cridat una interrupció del sistema ***"
 
 #: ../satellite_tools/satsync.py:592
 msgid "ERROR: fatal parser exception occurred "
-msgstr ""
+msgstr "ERROR: s'ha produït una excepció fatal de l'analitzador "
 
 #: ../satellite_tools/satsync.py:593
 #, python-format
 msgid "(line: %s, col: %s msg: %s)"
-msgstr ""
+msgstr "(línia: %s, col.: %s missatge: %s)"
 
 #: ../satellite_tools/satsync.py:597
 #, python-format
 msgid "ERROR: parser exception occurred: %s"
-msgstr ""
+msgstr "ERROR: s'ha produït una excepció de l'analitzador: %s"
 
 #: ../satellite_tools/satsync.py:602
 msgid "ERROR: exception (during parse) occurred: "
-msgstr ""
+msgstr "ERROR: s'ha produït una excepció (durant l'anàlisi): "
 
 #: ../satellite_tools/satsync.py:603
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
 msgstr ""
+"   S'han trobat alguns errors amb les dades de %s (vegeu els registres (%s) "
+"per obtenir més informació)"
 
 #: ../satellite_tools/satsync.py:605
 #, python-format
 msgid "   Encountered some errors with %s data:"
-msgstr ""
+msgstr "   S'han trobat alguns errors amb les dades de %s:"
 
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- %s ERROR D'ANÀLISI / IMPORTACIÓ -------"
 
 #: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
-msgstr ""
+msgstr "   ---------------------------------------"
 
 #: ../satellite_tools/satsync.py:611
 #, python-format
 msgid "%s data complete"
-msgstr ""
+msgstr "Dades completades: %s"
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Recuperació / anàlisi de dades del canal"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr ""
+msgstr "Dades del canal completades"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s importa des de %s"
 
 #: ../satellite_tools/satsync.py:738
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s importa des de %s - %s"
 
 #: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:749
 msgid "p"
-msgstr ""
+msgstr "p"
 
 #: ../satellite_tools/satsync.py:751
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = canal importat / sincronitzat prèviament"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = canal encara no importat / sincronitzat"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = el canal ja no és compatible (fi del servei)"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr ""
+msgstr "   ? = l'etiqueta del canal no és vàlida --- error ortogràfic?"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
 msgid "base-channels"
-msgstr ""
+msgstr "canals base"
 
 #: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
-msgstr ""
+msgstr "CAP DE RELLEVANT"
 
 #: ../satellite_tools/satsync.py:807
 msgid "end-of-service"
-msgstr ""
+msgstr "fi del servei"
 
 #: ../satellite_tools/satsync.py:808
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../satellite_tools/satsync.py:814
 msgid "   typos:"
-msgstr ""
+msgstr "   errors tipogràfics:"
 
 #: ../satellite_tools/satsync.py:815
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../satellite_tools/satsync.py:830
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr ""
+msgstr "XXX: canals importats: %s"
 
 #: ../satellite_tools/satsync.py:831
 #, python-format
 msgid "XXX:   cached channels: %s"
-msgstr ""
+msgstr "XXX: canals en memòria cau: %s"
 
 #: ../satellite_tools/satsync.py:836
 msgid "XXX: list channels called"
-msgstr ""
+msgstr "XXX: llista els canals trucats"
 
 #: ../satellite_tools/satsync.py:854
 msgid "ERROR: these channels either do not exist or are not available:"
-msgstr ""
+msgstr "ERROR: aquests canals no existeixen o no estan disponibles:"
 
 #: ../satellite_tools/satsync.py:858
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
 msgstr ""
+"       (per veure una llista d'etiquetes de canals: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:903
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
-msgstr ""
+msgstr "   Recuperant / analitzant les metadades breus del paquet: %s (%s)"
 
 #: ../satellite_tools/satsync.py:981
 #, python-format
 msgid "Diffing package metadata (what's missing locally?): %s"
-msgstr ""
+msgstr "Metadades de paquets diferents (què falta localment?): %s"
 
 #: ../satellite_tools/satsync.py:987 ../satellite_tools/satsync.py:1270
 msgid "Diffing:    "
-msgstr ""
+msgstr "Diferències:    "
 
 #: ../satellite_tools/satsync.py:1004
 msgid "ERROR: incremental dump skipped"
-msgstr ""
+msgstr "ERROR: s'ha omès l'abocament incremental"
 
 #: ../satellite_tools/satsync.py:1095
 msgid "Downloading rpm packages"
-msgstr ""
+msgstr "Baixada de paquets rpm"
 
 #: ../satellite_tools/satsync.py:1100
 #, python-format
 msgid "   Fetching any missing RPMs: %s (%s)"
-msgstr ""
+msgstr "   Obtenint els RPM que manquen: %s (%s)"
 
 #: ../satellite_tools/satsync.py:1101 ../satellite_tools/satsync.py:1169
 msgid "NONE MISSING"
-msgstr ""
+msgstr "NO EN MANCA CAP"
 
 #: ../satellite_tools/satsync.py:1110
 msgid "Processing rpm packages complete"
-msgstr ""
+msgstr "S'ha completat el processament dels paquets rpm."
 
 #: ../satellite_tools/satsync.py:1137
 msgid "Downloading package metadata"
-msgstr ""
+msgstr "Baixada de metadades de paquets"
 
 #: ../satellite_tools/satsync.py:1162
 msgid "Downloading srpm packages"
-msgstr ""
+msgstr "Baixada de paquets srpm"
 
 #: ../satellite_tools/satsync.py:1168
 #, python-format
 msgid "   Fetching any missing SRPMs: %s (%s)"
-msgstr ""
+msgstr "   Obtenint els SRPM que manquen: %s (%s)"
 
 #: ../satellite_tools/satsync.py:1265
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
-msgstr ""
+msgstr "Diferents metadades del paquet font (què manca localment?): %s"
 
 #: ../satellite_tools/satsync.py:1276
 msgid "Downloading source package metadata"
-msgstr ""
+msgstr "Baixada de metadades del paquet font"
 
 #: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2043
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to save file %s: %s"
-msgstr "No es pot donar el dret al sistema"
+msgstr "No es pot desar el fitxer %s: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1491,52 +1651,53 @@ msgstr "No es pot donar el dret al sistema"
 #: ../satellite_tools/satsync.py:1361
 #, python-format
 msgid "Failed to fetch file %s"
-msgstr ""
+msgstr "No s'ha pogut obtenir el fitxer %s"
 
 #: ../satellite_tools/satsync.py:1366
 msgid "Downloading kickstartable trees metadata"
-msgstr ""
+msgstr "Baixada de metadades d'arbres de la taula d'inici"
 
 #: ../satellite_tools/satsync.py:1381
 msgid "Downloading kickstartable trees files"
-msgstr ""
+msgstr "Baixada de fitxers d'arbres de la taula d'inici"
 
 #: ../satellite_tools/satsync.py:1520
 #, python-format
 msgid "Grabbing all patches for channel %s"
-msgstr ""
+msgstr "Agafant tots els pedaços per al canal %s"
 
 #: ../satellite_tools/satsync.py:1570
 msgid "Downloading patch data"
-msgstr ""
+msgstr "Baixada de dades del pedaç"
 
 #: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
 msgstr ""
+"Es força la baixada de totes les dades del pedaç dels canals sol·licitats."
 
 #: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
-msgstr ""
+msgstr "S'ha completat la baixada de les dades del pedaç."
 
 #: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"
-msgstr ""
+msgstr "Baixada:"
 
 #: ../satellite_tools/satsync.py:1595
 msgid " - complete"
-msgstr ""
+msgstr " - completa"
 
 #: ../satellite_tools/satsync.py:1640
 msgid "Importing source package metadata"
-msgstr ""
+msgstr "Importació de metadades del paquet font"
 
 #: ../satellite_tools/satsync.py:1643
 msgid "Importing package metadata"
-msgstr ""
+msgstr "Importació de metadades del paquet"
 
 #: ../satellite_tools/satsync.py:1651
 msgid "Importing:  "
-msgstr ""
+msgstr "Importació:  "
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1719
@@ -1544,35 +1705,37 @@ msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
 msgstr ""
+"No s'ha trobat el paquet a la memòria cau. Esborreu la memòria cau per "
+"regenerar-la."
 
 #: ../satellite_tools/satsync.py:1725
 msgid "Importing channel patches"
-msgstr ""
+msgstr "Importació de pedaços de canal"
 
 #: ../satellite_tools/satsync.py:1730
 #, python-format
 msgid "Importing %s patches for channel %s."
-msgstr ""
+msgstr "Important %s pedaços per al canal %s."
 
 #. Incomplete configuration
 #: ../satellite_tools/satsync.py:2129
 msgid "ERROR: server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "ERROR: server.mount_point no establert al fitxer de configuració."
 
 #: ../satellite_tools/satsync.py:2133
 #, python-format
 msgid "ERROR: server.mount_point %s do not exist"
-msgstr ""
+msgstr "ERROR: server.mount_point %s no existeix."
 
 #: ../satellite_tools/satsync.py:2138
 #, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
-msgstr ""
+msgstr "ERROR: la ruta a server.mount_point (%s) no existeix."
 
 #: ../satellite_tools/satsync.py:2215
 #, python-format
 msgid "Commandline: %s"
-msgstr ""
+msgstr "Línia d'ordres: %s"
 
 #: ../satellite_tools/satsync.py:2218
 #, python-format
@@ -1580,335 +1743,365 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
+"NOMÉS DEPURACIÓ: mida màxima del lot per al processament d'importació XML/"
+"base de dades (1..%s). Vegeu \"man mgr-inter-sync\" per a més informació."
 
 #: ../satellite_tools/satsync.py:2221
 msgid "alternative SSL CA Cert (fullpath to cert file)"
-msgstr ""
+msgstr "Certificat CA SSL alternatiu (camí complet al fitxer de certificat)"
 
 #: ../satellite_tools/satsync.py:2223
 msgid "process data for this channel only"
-msgstr ""
+msgstr "processa dades només per a aquest canal"
 
 #: ../satellite_tools/satsync.py:2225
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
+"l'abocament de disc es considerarà una exportació completa; vegeu \"man mgr-"
+"inter-sync\" per a més informació."
 
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
+"els canals personalitzats existents també se sincronitzaran (tret que s'usi -"
+"c)"
 
 #: ../satellite_tools/satsync.py:2230
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
+"omet el nivell de depuració establert a /etc/rhn/rhn.conf (que actualment "
+"està establert a %s)."
 
 #: ../satellite_tools/satsync.py:2232
 #, python-format
 msgid "requested version of XML dump (default: %s)"
-msgstr ""
+msgstr "versió sol·licitada de l'abocament XML (per defecte: %s)"
 
 #: ../satellite_tools/satsync.py:2234
 msgid "e-mail a report of what was synced/imported"
 msgstr ""
+"envia per correu electrònic un informe del que s'ha sincronitzat / importat"
 
 #: ../satellite_tools/satsync.py:2236
 msgid "forcibly process all (not a diff of) patch metadata"
-msgstr ""
+msgstr "processa a la força totes les metadades del pedaç (no una diferència)"
 
 #: ../satellite_tools/satsync.py:2238
 msgid "Do not use an http proxy under any circumstances."
-msgstr ""
+msgstr "No useu un servidor intermediari http en cap circumstància."
 
 #: ../satellite_tools/satsync.py:2240
 msgid "alternative http proxy (hostname:port)"
-msgstr ""
+msgstr "intermediari http alternatiu (nom d'amfitrió:port)"
 
 #: ../satellite_tools/satsync.py:2242
 msgid "alternative http proxy username"
-msgstr ""
+msgstr "nom d'usuari alternatiu de l'intermediari http"
 
 #: ../satellite_tools/satsync.py:2244
 msgid "alternative http proxy password"
-msgstr ""
+msgstr "contrasenya alternativa de l'intermediari http"
 
 #: ../satellite_tools/satsync.py:2246
 msgid "parent SUSE Manager to import content from"
-msgstr ""
+msgstr "SUSE Manager principal per importar-ne contingut"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "list all available channels and exit"
-msgstr ""
+msgstr "llista tots els canals disponibles i surt"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "help on all error codes mgr-inter-sync returns"
-msgstr ""
+msgstr "ajuda sobre tots els codis d'error que retorna mgr-inter-sync"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "source mount point for import - disk update only"
 msgstr ""
+"punt de muntatge d'origen per a la importació - només actualització del disc"
 
 #: ../satellite_tools/satsync.py:2254
 msgid "do not process patch data"
-msgstr ""
+msgstr "no processis les dades del pedaç"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "do not process kickstart data (provisioning only)"
-msgstr ""
+msgstr "no processis les dades de Kickstart (només aprovisionament)"
 
 #: ../satellite_tools/satsync.py:2258
 msgid "do not process full package metadata"
-msgstr ""
+msgstr "no processis les metadades del paquet complet"
 
 #: ../satellite_tools/satsync.py:2260
 msgid "do not download, or process any RPMs"
-msgstr ""
+msgstr "no baixis ni processis cap RPM"
 
 #: ../satellite_tools/satsync.py:2262
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
+"org a la qual la sincronització importa les dades - per defecte al compte "
+"d'administrador"
 
 #: ../satellite_tools/satsync.py:2264
-#, fuzzy
 msgid "print the configuration and exit"
-msgstr "El canal de configuració no existeix"
+msgstr "imprimeix la configuració i surt"
 
 #: ../satellite_tools/satsync.py:2266
 msgid "alternative server with which to connect (hostname)"
-msgstr ""
+msgstr "servidor alternatiu amb el qual connectar-se (nom d'amfitrió)"
 
 #: ../satellite_tools/satsync.py:2268
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr ""
+msgstr "sincronitza amb aquest pas (man mgr-inter-sync per a més informació)"
 
 #: ../satellite_tools/satsync.py:2270
 msgid "write complete data to tempfile before streaming to remainder of app"
 msgstr ""
+"escriu dades completes al fitxer temporal abans de transmetre a la resta de "
+"l'aplicació"
 
 #: ../satellite_tools/satsync.py:2272
 msgid "DEBUG ONLY: alternative path to digital system id"
-msgstr ""
+msgstr "NOMÉS DEPURACIÓ: camí alternatiu a l'identificador del sistema digital"
 
 #: ../satellite_tools/satsync.py:2274
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr ""
+"adreces de correu electrònic alternatives per a la sortida de sincronització "
+"(opció --email)"
 
 #: ../satellite_tools/satsync.py:2276
 msgid "do not remove rpms when importing from local dump"
-msgstr ""
+msgstr "no suprimeixis els rpm en importar des de l'abocament local"
 
 #: ../satellite_tools/satsync.py:2278
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
+"el nom de domini totalment qualificat del Satèl·lit principal. Vàlid només "
+"amb --mount-point. Necessari si voleu importar dades de l'organització i "
+"permisos de canal."
 
 #: ../satellite_tools/satsync.py:2288
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
+"ERROR: aquests arguments no tenen sentit en aquest context (proveu --help): "
+"%s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2300
 #, python-format
 msgid "ERROR: Can't connect to the database: %s"
-msgstr ""
+msgstr "ERROR! No es pot connectar a la base de dades: %s"
 
 #: ../satellite_tools/satsync.py:2301
 msgid "ERROR: Check if your database is running."
-msgstr ""
+msgstr "ERROR: comproveu si la vostra base de dades s'executa."
 
 #: ../satellite_tools/satsync.py:2334
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
-msgstr ""
+msgstr "ERROR: --debug-level pren un valor enter dins l'interval %s."
 
 #: ../satellite_tools/satsync.py:2336
 msgid "  0  - little logging/messaging."
-msgstr ""
+msgstr "  0 - poc registre / missatgeria."
 
 #: ../satellite_tools/satsync.py:2337
 msgid "  1  - minimal logging/messaging."
-msgstr ""
+msgstr "  1 - registre / missatge mínim."
 
 #: ../satellite_tools/satsync.py:2338
 msgid "  2  - normal level of logging/messaging."
-msgstr ""
+msgstr "  2 - nivell normal de registre / missatge."
 
 #: ../satellite_tools/satsync.py:2339
 msgid "  3  - lots of logging/messaging."
-msgstr ""
+msgstr "  3 - molts registres / missatges."
 
 #: ../satellite_tools/satsync.py:2340
 msgid "  4+ - excessive logging/messaging."
-msgstr ""
+msgstr "  4+ - registres / missatges excessius."
 
 #: ../satellite_tools/satsync.py:2353
 msgid "ERROR: The --master option is only valid with the --mount-point option"
-msgstr ""
+msgstr "ERROR: l'opció --master només és vàlida amb l'opció --mount-point"
 
 #: ../satellite_tools/satsync.py:2363
 #, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
-msgstr ""
+msgstr "ERROR: no es pot cercar l'identificador d'organització %s"
 
 #: ../satellite_tools/satsync.py:2372
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
+"ADVERTIMENT: l'opció --list-channels anul·la qualsevol opció --step. --pas "
+"ignorat."
 
 #: ../satellite_tools/satsync.py:2387
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
+"ERROR: %s no és un pas vàlid. Vegeu \"man mgr-inter-sync\" per obtenir-ne "
+"més detalls."
 
 #: ../satellite_tools/satsync.py:2419
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
+"ERROR: no s'ha importat cap canal actualment; proveu mgr-inter-sync --list-"
+"channels; llavors mgr-inter-sync -c chn0 -c chn1..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
 #: ../satellite_tools/satsync.py:2468 ../satellite_tools/satsync.py:2472
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
-msgstr ""
+msgstr "ERROR: --batch-size ha de tenir un valor dins de l'interval: 1-50"
 
 #: ../satellite_tools/satsync.py:2480
 #, python-format
 msgid "ERROR: no such directory %s"
-msgstr ""
+msgstr "ERROR: no hi ha el directori %s"
 
 #: ../satellite_tools/satsync.py:2485
 msgid "Error Codes: Returned codes means:"
-msgstr ""
+msgstr "Codis d'error: els codis retornats signifiquen el següent:"
 
 #: ../satellite_tools/satsync.py:2486
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr ""
+" -1 - No s'ha pogut bloquejar el fitxer o la interrupció del teclat o la "
+"sortida del sistema"
 
 #: ../satellite_tools/satsync.py:2487
 msgid "  0  - User interrupted or intentional exit"
-msgstr ""
+msgstr "  0 - Interrupció de l'usuari o sortida intencionada"
 
 #: ../satellite_tools/satsync.py:2488
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
-msgstr ""
+msgstr "  1 - Intent d'executar més d'una instància de mgr-inter-sync."
 
 #: ../satellite_tools/satsync.py:2489
 msgid "  2  - Unable to find synchronization tools."
-msgstr ""
+msgstr "  2 - No es poden trobar eines de sincronització."
 
 #: ../satellite_tools/satsync.py:2490
 msgid "  3  - a general socket exception occurred"
-msgstr ""
+msgstr "  3  - S'ha produït una excepció de sòcol general"
 
 #: ../satellite_tools/satsync.py:2491
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr ""
+"  4 - S'ha produït un error d'SSL. Torneu a comprovar la configuració d'SSL."
 
 #: ../satellite_tools/satsync.py:2492
 msgid "  5  - ISS error"
-msgstr ""
+msgstr "  5 - Error d'ISS"
 
 #: ../satellite_tools/satsync.py:2493
 msgid "  6  - unhandled exception occurred"
-msgstr ""
+msgstr "  6 - S'ha produït una excepció no gestionada"
 
 #: ../satellite_tools/satsync.py:2494
 msgid "  7  - unknown sync error"
-msgstr ""
+msgstr "  7 - error de sincronització desconegut"
 
 #: ../satellite_tools/satsync.py:2495
 msgid "  8  - ERROR: must be root to execute"
-msgstr ""
+msgstr "  8 - ERROR: ha de ser root per executar-se"
 
 #: ../satellite_tools/satsync.py:2496
 msgid "  9  - rpclib fault during synchronization init"
-msgstr ""
+msgstr "  9 - Error de rpclib durant l'inici de la sincronització"
 
 #: ../satellite_tools/satsync.py:2497
 msgid "  10 - synchronization init error"
-msgstr ""
+msgstr "  10 - Error d'inici de sincronització"
 
 #: ../satellite_tools/satsync.py:2498
 msgid "  11 - Error parsing XML stream"
-msgstr ""
+msgstr "  11 - Error en analitzar el flux XML"
 
 #: ../satellite_tools/satsync.py:2499
-#, fuzzy
 msgid "  12 - Channel do not exist"
-msgstr "El canal especificat no existeix."
+msgstr "  12 - El canal no existeix"
 
 #: ../satellite_tools/satsync.py:2500
 msgid "  13 - SQL error during importing package metadata"
-msgstr ""
+msgstr "  13 - Error SQL durant la importació de metadades del paquet"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  14 - SQL error during linking channel packages"
-msgstr ""
+msgstr "  14 - Error SQL durant l'enllaç de paquets de canal"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  15 - SQL error during xml processing"
-msgstr ""
+msgstr "  15 - Error SQL durant el processament d'xml"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  16 - server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "  16 - server.mount_point no establert al fitxer de configuració"
 
 #: ../satellite_tools/satsync.py:2504
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
 msgstr ""
+"  17 - Error SQL durant la recuperació dels canals ja importats a la base de "
+"dades de SUSE Manager"
 
 #: ../satellite_tools/satsync.py:2505
 msgid "  18 - Wrong db connection string in rhn.conf"
-msgstr ""
+msgstr "  18 - Cadena de connexió de base de dades incorrecta a rhn.conf"
 
 #: ../satellite_tools/satsync.py:2506
 msgid "  19 - Bad arguments"
-msgstr ""
+msgstr "  19 - Arguments incorrectes"
 
 #: ../satellite_tools/satsync.py:2507
 msgid "  20 - Could not connect to db."
-msgstr ""
+msgstr "  20 - No s'ha pogut connectar a la base de dades."
 
 #: ../satellite_tools/satsync.py:2508
 msgid "  21 - Bad debug level"
-msgstr ""
+msgstr "  21 - Nivell de depuració incorrecte"
 
 #: ../satellite_tools/satsync.py:2509
 msgid "  22 - Not valid step"
-msgstr ""
+msgstr "  22 - Pas no vàlid"
 
 #: ../satellite_tools/satsync.py:2510
 msgid "  24 - no such file"
-msgstr ""
+msgstr "  24 - No hi ha aquest fitxer"
 
 #: ../satellite_tools/satsync.py:2511
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - No hi ha aquest directori"
 
 #: ../satellite_tools/satsync.py:2512
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - El punt de muntatge no existeix"
 
 #: ../satellite_tools/satsync.py:2513
 msgid "  27 - No such org"
-msgstr ""
+msgstr "  27 - No hi ha tal org"
 
 #: ../satellite_tools/satsync.py:2514
 msgid "  28 - error: --master is only valid with --mount-point"
-msgstr ""
+msgstr "  28 - error: --master només és vàlid amb --mount-point"
 
 #: ../satellite_tools/satsync.py:2521
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
-msgstr ""
+msgstr "ERROR: versió d'abocament desconeguda, proveu-ne una de %s"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
@@ -23,6 +26,7 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 /**
  * BaseErrataActionTestCase
@@ -34,6 +38,7 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
      * place.  No DB action occurs.
      * @throws Exception if test fails
      */
+    @Test
     public void testDeleteErrataConfirmPage() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(getAction(), "delete");
@@ -47,6 +52,7 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
         assertEquals("path?lower=10", testforward.getPath());
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(getAction());

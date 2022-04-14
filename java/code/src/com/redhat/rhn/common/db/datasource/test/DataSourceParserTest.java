@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.common.db.datasource.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -28,6 +33,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.sql.PreparedStatement;
 import java.util.Collection;
@@ -46,11 +53,13 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
 
+    @Test
     public void testGetModes() throws Exception {
         SelectMode m = ModeFactory.getMode("System_queries", "ssm_remote_commandable");
         assertNotNull(m);
     }
 
+    @Test
     public void testGetModesNoFile() throws Exception {
         try {
             ModeFactory.getMode("Garbage", "ssm_remote_commandable");
@@ -61,6 +70,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testGetModesNoMode() throws Exception {
         try {
             ModeFactory.getMode("test_queries", "Garbage");
@@ -71,6 +81,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testExternalElaborator() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries",
             "user_tables_external_elaborator" + db_sufix);
@@ -104,6 +115,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testRunQuery() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "user_tables" + db_sufix);
         assertNotNull(m);
@@ -145,6 +157,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
                  m.getParsedQuery().getSqlStatement().trim().startsWith("--")));
     }
 
+    @Test
     public void testPrepareAll() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             PreparedStatement ps = null;
@@ -212,10 +225,12 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testPercentS() throws Exception {
         runTestQuery("all_tables" + db_sufix, "elaborator0");
     }
 
+    @Test
     public void testBrokenDriving() throws Exception {
         try {
             runTestQuery("broken_driving" + db_sufix, "elaborator0");
@@ -227,6 +242,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testBrokenElaborator() throws Exception {
         try {
             runTestQuery("broken_elaborator" + db_sufix, "elaborator0");
@@ -238,10 +254,12 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testAlias() throws Exception {
         runTestQuery("all_tables_with_alias" + db_sufix, "details" + db_sufix);
     }
 
+    @Test
     public void testExtraParams() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "all_tables" + db_sufix);
         assertNotNull(m);
@@ -252,6 +270,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertNotNull(dr);
     }
 
+    @Test
     public void testDrivingParams() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user" +
                 db_sufix);
@@ -264,6 +283,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertTrue(dr.size() > 0);
     }
 
+    @Test
     public void testNullParam() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user" +
                 db_sufix);
@@ -279,6 +299,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testExternalQuery() throws Exception {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
         Map<String, Object> params = new HashMap<>();
@@ -287,12 +308,14 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertEquals(m, dr.getMode());
     }
 
+    @Test
     public void testSpecifiedClass() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
         String clazz = m.getClassString();
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
     }
 
+    @Test
     public void testSpecifiedClassExecute() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
         String clazz = m.getClassString();
@@ -305,6 +328,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertTrue(first.getTableName().toLowerCase().startsWith("rhn"));
     }
 
+    @Test
     public void testClassElaborateList() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
         String clazz = m.getClassString();
@@ -322,6 +346,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertTrue(first.getColumnId().size() > 0);
     }
 
+    @Test
     public void testSpecifiedClassElaborate() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "user_class" + db_sufix);
         String clazz = m.getClassString();

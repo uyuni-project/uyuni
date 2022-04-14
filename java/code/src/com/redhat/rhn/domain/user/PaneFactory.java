@@ -16,7 +16,8 @@ package com.redhat.rhn.domain.user;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -32,7 +33,7 @@ import java.util.Map;
  */
 public class PaneFactory {
 
-    private static Logger log = Logger.getLogger(PaneFactory.class);
+    private static Logger log = LogManager.getLogger(PaneFactory.class);
 
     private PaneFactory() {
         super();

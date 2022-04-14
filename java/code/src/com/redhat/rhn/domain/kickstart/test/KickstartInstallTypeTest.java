@@ -14,15 +14,21 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartInstallTypeTest
  */
 public class KickstartInstallTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testKsInstallType() throws Exception {
         Long testid = 1L;
         String query = "KickstartInstallType.findById";

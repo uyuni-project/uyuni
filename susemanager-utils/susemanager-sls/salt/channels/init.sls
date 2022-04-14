@@ -1,5 +1,6 @@
 include:
   - util.syncstates
+  - certs
 
 {%- if grains['os_family'] == 'RedHat' %}
 
@@ -82,8 +83,9 @@ mgrchannels_repo:
     - user: root
     - group: root
     - mode: 644
-{%- if grains['os_family'] == 'RedHat' %}
     - require:
+       - file: mgr_ca_cert
+{%- if grains['os_family'] == 'RedHat' %}
 {%- if is_dnf %}
        - file: mgrchannels_susemanagerplugin_dnf
        - file: mgrchannels_susemanagerplugin_conf_dnf

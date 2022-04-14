@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.server.Server" table="rhnServer">
         <id name="id" type="long" column="id">
@@ -139,6 +139,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <one-to-one name="proxyInfo" class="com.redhat.rhn.domain.server.ProxyInfo"
                     cascade="all" lazy="proxy"/>
 
+        <one-to-one name="mgrServerInfo" class="com.redhat.rhn.domain.server.MgrServerInfo"
+                    cascade="all" lazy="proxy"/>
+
         <one-to-one name="pushClient" class="com.redhat.rhn.domain.server.PushClient"
                     property-ref="server" lazy="proxy" />
 
@@ -175,17 +178,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="rhn_server_id"/>
             <many-to-many column="suse_installed_product_id" class="com.redhat.rhn.domain.server.InstalledProduct"/>
         </set>
-
-        <joined-subclass name="com.redhat.rhn.domain.server.SatelliteServer"
-            table="rhnSatelliteInfo">
-            <key column="server_id"/>
-            <property name="product" />
-            <property name="owner" />
-            <property name="issued" column="issued_string" />
-            <property name="expiration" column="expiration_string" />
-                <many-to-one name="version" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"
-                column="evr_id" cascade="none" access="field"/>
-        </joined-subclass>
 
         <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
                          table="suseMinionInfo">
@@ -473,7 +465,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 when proxy.server_id is not null then 3
                 when S.id is not null then 0 end as clazz_
              from rhnServer S
-                     left outer join  rhnSatelliteInfo SS on S.id = SS.server_id
+                     left outer join  suseMgrServerInfo SS on S.id = SS.server_id
                      left outer join  rhnProxyInfo proxy on S.id = proxy.server_id
                      inner join rhnSet ST on S.id = st.element
              where

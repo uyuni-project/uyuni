@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.action.Action;
  * VirtualizationSchedulePollerAction - Class representing
  * TYPE_VIRTUALIZATION_HOST_PACKAGE_INSTALL
  *
- * @version $Rev: 99909 $
  */
 public class VirtualizationGuestPackageInstall extends Action {
 

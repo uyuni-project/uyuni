@@ -145,7 +145,6 @@ rhnRegTokenEntitlement         :: rhnRegToken rhnServerGroupType
 rhnRegTokenGroups              :: rhnRegToken rhnServerGroup
 rhnRegTokenPackages            :: rhnRegToken rhnPackageName
 
-rhnSatelliteInfo               :: rhnServer
 rhnServer                      :: rhnServerArch web_contact web_customer \
                                   rhnProvisionState suseServerContactMethod \
                                   suseMaintenanceSchedule
@@ -243,6 +242,7 @@ suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStor
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
 suseMaintenanceCalendar        :: web_customer
 suseMaintenanceSchedule        :: web_customer suseMaintenanceCalendar
+suseMgrServerInfo              :: rhnServer rhnPackageEVR suseCredentials
 suseMinionInfo                 :: rhnServer
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword

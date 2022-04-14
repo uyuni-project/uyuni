@@ -14,17 +14,21 @@
  */
 package com.redhat.rhn.frontend.action.multiorg.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * OrgCreateActionTest - test org create
- * @version $Rev: 119601 $
  */
 public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testExecuteSubmit() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -43,6 +47,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessage("org.create.success");
     }
 
+    @Test
     public void testEmptyFields() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -55,6 +60,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
         verifyActionErrors(errors);
     }
 
+    @Test
     public void testCreateDupeUser() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -74,6 +80,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     // This had better fail if there are any organizations already!
+    @Test
     public void testCreateFirstSatUser() {
         setRequestPathInfo("/newlogin/CreateFirstUser");
         RhnMockDynaActionForm f = new RhnMockDynaActionForm("orgCreateForm");

@@ -61,6 +61,8 @@ import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Profile;
@@ -107,6 +109,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     #param_desc("string", "kstreeLabel", "Label of the kickstart tree.")
      */
+    @ReadOnly
     public String getKickstartTree(User loggedInUser, String kslabel) {
 
         KickstartData ksdata = KickstartFactory
@@ -134,6 +137,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     #param_desc("string", "update_type", "Update type for this Kickstart Profile.")
      */
+    @ReadOnly
     public String getUpdateType(User loggedInUser, String kslabel) {
 
         KickstartData ksdata = KickstartFactory
@@ -161,6 +165,7 @@ public class ProfileHandler extends BaseHandler {
      *   #param_desc("boolean", "preserve", "The value of the option.
      *      True means that ks.cfg will be copied to /root, false means that it will not")
      */
+    @ReadOnly
     public Boolean getCfgPreservation(User loggedInUser, String kslabel) {
         checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(kslabel, loggedInUser.getOrg());
@@ -353,6 +358,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     #array_single("string", "channelLabel")
      */
+    @ReadOnly
     public List<String> getChildChannels(User loggedInUser, String kslabel) {
 
         KickstartData ksdata = KickstartFactory.
@@ -427,6 +433,7 @@ public class ProfileHandler extends BaseHandler {
      * kickstart")
      * @xmlrpc.returntype #array_begin() $KickstartScriptSerializer #array_end()
      */
+    @ReadOnly
     public List<KickstartScript> listScripts(User loggedInUser, String label) {
         checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(label, loggedInUser.getOrg());
@@ -782,7 +789,7 @@ public class ProfileHandler extends BaseHandler {
      * $KickstartAdvancedOptionsSerializer
      * #array_end()
      */
-
+    @ReadOnly
     public Object[] getAdvancedOptions(User loggedInUser, String ksLabel)
     throws FaultException {
         KickstartData ksdata = KickstartFactory.
@@ -941,6 +948,7 @@ public class ProfileHandler extends BaseHandler {
      * $KickstartCommandSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] getCustomOptions(User loggedInUser, String ksLabel)
     throws FaultException {
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
@@ -1024,6 +1032,7 @@ public class ProfileHandler extends BaseHandler {
     * @xmlrpc.returntype #array_begin() $KickstartIpRangeSerializer #array_end()
     *
     */
+   @ReadOnly
    public Set listIpRanges(User loggedInUser, String ksLabel) {
        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
            throw new PermissionCheckFailureException();
@@ -1364,6 +1373,7 @@ public class ProfileHandler extends BaseHandler {
      *         #prop("string or int", "value")
      *     #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getVariables(User loggedInUser, String ksLabel) {
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -1416,6 +1426,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #array_single("string", "repositoryLabel")
      */
+    @ReadOnly
     public String[] getAvailableRepositories(User loggedInUser, String ksLabel) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
             throw new PermissionException(LocalizationService.getInstance()
@@ -1442,6 +1453,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #array_single("string", "repositoryLabel")
      */
+    @ReadOnly
     public String[] getRepositories(User loggedInUser, String ksLabel) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
             throw new PermissionException(LocalizationService.getInstance()
@@ -1512,6 +1524,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("string", "virtLabel",
      * "Label of virtualization type.")
      */
+    @ReadOnly
     public String getVirtualizationType(User loggedInUser, String ksLabel) {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         KickstartEditCommand cmd = new KickstartEditCommand(ksData.getId(), loggedInUser);

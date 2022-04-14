@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.auth.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
@@ -26,8 +30,11 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 public class AuthHandlerTest extends RhnBaseTestCase {
 
+    @Test
     public void testLogoutWithInvalidKey() {
         AuthHandler handler = new AuthHandler();
         try {
@@ -39,6 +46,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLoginLogout() throws Exception {
         AuthHandler handler = new AuthHandler();
         User user = UserTestUtils.findNewUser("testUser",
@@ -107,6 +115,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testSessionKeyValidity() throws Exception {
         AuthHandler handler = new AuthHandler();
         User user = UserTestUtils.findNewUser("testUser",
@@ -129,6 +138,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCheckAuthToken() {
         AuthHandler handler = new AuthHandler();
         assertTrue(handler.checkAuthToken(TestUtils.randomString(),

@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseSystemsAction
- * @version $Rev: 107809 $
  */
 public abstract class BaseSystemsAction extends RhnListAction {
     public static final String SHOW_NO_SYSTEMS = "showNoSystems";

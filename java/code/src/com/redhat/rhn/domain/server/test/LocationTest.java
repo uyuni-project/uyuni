@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.Server;
@@ -23,6 +28,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -41,6 +47,7 @@ public class LocationTest extends RhnBaseTestCase {
     public static final String STATE = "NC";
     public static final String COUNTRY = "USA";
 
+    @Test
     public void testLocation() throws Exception {
         Location loc1 = createTestLocation();
         Location loc2 = new Location();

@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
  * KickstartCloneAction - action for cloning a KS. Can't use BaseKickstartEdit
  * action because we have to forward to a different Kickstart vs the one we
  * started with.
- * @version $Rev: 1 $
  */
 public class ActivationKeyCloneAction extends RhnAction {
 

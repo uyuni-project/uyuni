@@ -20,7 +20,8 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -58,7 +59,7 @@ public class BadParameterExceptionHandler extends ExceptionHandler {
      * {@inheritDoc}
      */
     protected void logException(Exception ex) {
-        Logger log = Logger.getLogger(BadParameterExceptionHandler.class);
+        Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         log.error("Missing Parameter Error", ex);
     }
 

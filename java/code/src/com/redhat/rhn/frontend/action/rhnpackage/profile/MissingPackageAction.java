@@ -24,7 +24,8 @@ import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -46,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MissingPackageAction extends BaseProfilesAction {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(MissingPackageAction.class);
+    private static Logger log = LogManager.getLogger(MissingPackageAction.class);
 
     private static final CompareProfileSetupAction DECL_PROFILE_ACTION =
         new CompareProfileSetupAction();

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ChannelArchSerializer serializes ChannelArch object to XMLRPC.
@@ -31,24 +28,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("string", "label")
  *      #struct_end()
  */
-public class ChannelArchSerializer extends RhnXmlRpcCustomSerializer {
+public class ChannelArchSerializer extends ApiResponseSerializer<ChannelArch> {
 
-    /** {@inheritDoc} */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ChannelArch> getSupportedClass() {
         return ChannelArch.class;
     }
 
-    /** {@inheritDoc}
-     * @throws IOException IO exception
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ChannelArch arch = (ChannelArch) value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("name", arch.getName());
-        helper.add("label", arch.getLabel());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ChannelArch src) {
+        return new SerializationBuilder()
+                .add("name", src.getName())
+                .add("label", src.getLabel())
+                .build();
     }
-
 }

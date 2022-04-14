@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ProfileDetailsAction
- * @version $Rev: 1 $
  */
 public class ProfileDetailsAction extends RhnAction {
 

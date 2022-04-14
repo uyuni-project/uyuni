@@ -11052,132 +11052,147 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">可选 OVAL 文件（逗号分隔）</target>
       </trans-unit>
-    <trans-unit id="taskomatic.payg.success" xml:space="preserve">
+      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
         <source>Credentials successfully updated</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
+        <target state="final">已成功更新身份凭证</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
         <source>Waiting to be processed.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
+        <target state="final">正在等待处理。</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
         <source>Error getting instance data: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
+        <target state="final">获取实例数据时出错：{0}</target>
+      </trans-unit>
+      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve">
+        <target state="final">提取身份验证数据时发生未知错误。请校验 /var/log/rhn/ 中的日志</target>
+      </trans-unit>
+      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
         <source>Description is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve">
+        <target state="final">必须提供说明。</target>
+      </trans-unit>
+      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
         <source>Description must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve">
+        <target state="final">说明不能超过 255 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
         <source>Host is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve">
+        <target state="final">必须指定主机。</target>
+      </trans-unit>
+      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
         <source>Host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve">
+        <target state="final">主机不能超过 255 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve">
+        <target state="final">端口值无效</target>
+      </trans-unit>
+      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve">
+        <target state="final">必须指定用户名。</target>
+      </trans-unit>
+      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve">
+        <target state="final">用户名不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve">
+        <target state="final">口令不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
+        <target state="final">SSH 私用密钥通行口令不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
         <source>Bastion host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve">
+        <target state="final">堡垒主机不能超过 255 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
         <source>Bastion host is required if any other bastion property is set.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
+        <target state="final">如果设置了其他堡垒属性，则必须指定堡垒主机。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
         <source>Invalid value for the bastion port</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve">
+        <target state="final">堡垒端口值无效</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
+        <target state="final">必须指定用户名。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
+        <target state="final">用户名不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
+        <target state="final">口令不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve">
+        <target state="final">堡垒 SSH 私用密钥通行口令不能超过 32 个字符。</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve">
+        <target state="final">已成功创建 Pay-as-you-go {0}</target>
+      </trans-unit>
+      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go host already exists</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
+        <target state="final">Pay-as-you-go 主机已存在</target>
+      </trans-unit>
+      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go {0} deleted successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
+        <target state="final">已成功删除 Pay-as-you-go {0}</target>
+      </trans-unit>
+      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
+        <target state="final">更新以下位置的身份验证数据时出错： &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go authentication update</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
+        <target state="final">Pay-as-you-go 身份验证更新</target>
+      </trans-unit>
+      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go update RMT hosts</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
+        <target state="final">Pay-as-you-go 更新 RMT 主机</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
         <source>Product data needs refresh.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve">
+        <target state="final">产品数据需要刷新。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
         <source>Product cannot be found: missing identifier {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
+        <target state="final">找不到产品：缺少标识符 {0}。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
         <source>There are conflicting channel labels {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
+        <target state="final">存在冲突的频道标签 {0}。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
         <source>A parent product conflicts with existing channels.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve">
+        <target state="final">父产品与现有频道冲突。</target>
+      </trans-unit>
+      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
         <source>Unexpected error while adding the product.</source>
+        <target state="final">添加产品时发生意外错误。</target>
+      </trans-unit>
+      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
+        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+        <target state="final">在我们的数据库中找不到指定的 CVE 编号。您可以从下面提供的链接获取有关此 CVE 的详细信息。</target>
+      </trans-unit>
+    <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+        <source>Error during applying the bootstrap state. Check the server logs.</source>
       <target state="new"/>
   </trans-unit>
-    <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <source>Proxy Configuration</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

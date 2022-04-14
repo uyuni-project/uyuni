@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-09 09:04+0000\n"
-"PO-Revision-Date: 2021-11-10 09:12+0000\n"
+"POT-Creation-Date: 2022-04-09 09:35+0000\n"
+"PO-Revision-Date: 2022-03-24 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2243,7 +2243,7 @@ msgstr "%s 個のグループが見つかりませんでした。中止してい
 #. assume old backup, not in json format. Read complete file as string
 #: ../src/spacecmd/group.py:383
 msgid "Assuming group to be in old plain text format"
-msgstr ""
+msgstr "グループが古いプレーンテキスト形式であると仮定しています"
 
 #: ../src/spacecmd/group.py:395
 #, python-format
@@ -2265,12 +2265,12 @@ msgstr "グループに対する説明を更新しています: %s"
 
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
-msgstr ""
+msgstr "バックアップから数式データを更新しますか? [y/N]:"
 
 #: ../src/spacecmd/group.py:416
-#, fuzzy, python-format
+#, python-format
 msgid "Updating data for group: %s"
-msgstr "グループに対する説明を更新しています: %s"
+msgstr "グループのデータを更新しています: %s"
 
 #: ../src/spacecmd/group.py:424
 #, python-format
@@ -3747,12 +3747,10 @@ msgid "Miss"
 msgstr "Miss"
 
 #: ../src/spacecmd/org.py:128
-#, fuzzy
 msgid "org_createfirst: Create first organization and user after server setup"
-msgstr "org_create: 組織を作成"
+msgstr "org_createfirst: サーバのセットアップ後に最初の組織とユーザを作成"
 
 #: ../src/spacecmd/org.py:129
-#, fuzzy
 msgid ""
 "usage: org_createfirst [options])\n"
 "\n"
@@ -3769,12 +3767,10 @@ msgstr ""
 "オプション:\n"
 "  -n (組織名)\n"
 "  -u (ユーザ名)\n"
-"  -P (プレフィクス) (%s)\n"
 "  -f (名)\n"
 "  -l (姓)\n"
 "  -e (電子メールアドレス)\n"
-"  -p (パスワード)\n"
-"  --pam PAM 認証を有効にする"
+"  -p (パスワード)"
 
 #: ../src/spacecmd/org.py:154
 msgid "org_create: Create an organization"
@@ -4170,6 +4166,94 @@ msgstr "パッケージ名: %s"
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "依存関係: %s タイプ: %s 修飾子: %s"
+
+#: ../src/spacecmd/proxy.py:32
+msgid ""
+"proxy_container_config: create a proxy system and return its configuration "
+"file"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:33
+#, python-format
+msgid ""
+"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
+"EMAIL ROOT_CA CRT KEY\n"
+"\n"
+"parameters:\n"
+"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to "
+"proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
+"value.\n"
+"  EMAIL       the email of the proxy administrator\n"
+"  CA          path to the root CA used to sign the proxy certificate in PEM "
+"format\n"
+"  CRT         path to the proxy certificate in PEM format\n"
+"  KEY         path to the proxy certificate private key in PEM format\n"
+"\n"
+"options:\n"
+"  -o, --output Path where to create the generated configuration. Default: "
+"'config.zip'\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
+"            certicate in PEM format. May be provided multiple times.\n"
+"\n"
+"examples:\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
+"org root_ca.crt proxy.crt proxy.key\n"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:88
+msgid ""
+"proxy_container_config_generate_cert: create a proxy system and return its "
+"configuration file"
+msgstr ""
+
+#: ../src/spacecmd/proxy.py:89
+#, python-format
+msgid ""
+"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
+"EMAIL\n"
+"\n"
+"parameters:\n"
+"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to "
+"proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
+"value.\n"
+"  EMAIL       the email of the proxy administrator\n"
+"\n"
+"options:\n"
+"  -o, --output Path where to create the generated configuration. Default: "
+"'config.zip'\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  --ca-crt path to the certificate of the CA to use to generate a new proxy "
+"certificate.\n"
+"           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
+"  --ca-key path to the private key of the CA to use to generate a new proxy "
+"certificate.\n"
+"           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
+"  --ca-pass path to a file containing the password of the CA private key, "
+"will be prompted if not passed.\n"
+"  --ssl-cname alternate name of the proxy to set in the certificate. Can be "
+"provided multiple times\n"
+"  --ssl-country country code to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-state state name to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-city the city name to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"  --ssl-org the organization name to set in the certificate. If omitted, "
+"default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org-unit the organization unit name to set in the certificate. If "
+"omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-email the email to set in the certificate. If omitted, default "
+"values from mgr-ssl-tool will be used.\n"
+"\n"
+"examples:\n"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass "
+"password-file\n"
+msgstr ""
 
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
@@ -8268,6 +8352,8 @@ msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
+"system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートスト"
+"ラップ。"
 
 #: ../src/spacecmd/system.py:4645
 msgid ""
@@ -8286,75 +8372,87 @@ msgid ""
 "        --saltssh\n"
 "        "
 msgstr ""
+"使用方法: ブートストラップ[オプション]\n"
+"\n"
+"    オプション:\n"
+"        -H (ホスト名)\n"
+"        -p (SSHポート)\n"
+"        -u (SSHユーザ名)\n"
+"        -P (SSHパスワード)\n"
+"        -k (SSH機密鍵パス)\n"
+"        -S (SSH機密鍵パスワード)\n"
+"        -a (アクティベーションキー)\n"
+"        -r (再アクティベーションキー)\n"
+"        --proxyidプロキシSYSID\n"
+"        --saltssh\n"
+"        "
 
 #: ../src/spacecmd/system.py:4679
-#, fuzzy
 msgid "Hostname:"
-msgstr "ホスト名:      %s"
+msgstr "ホスト名:"
 
 #: ../src/spacecmd/system.py:4680
 msgid "Port [22]:"
-msgstr ""
+msgstr "ポート[22]:"
 
 #: ../src/spacecmd/system.py:4683
-#, fuzzy
 msgid "SSH User [root]:"
-msgstr "ユーザ [root]:"
+msgstr "SSHユーザ[root]:"
 
 #: ../src/spacecmd/system.py:4686
-#, fuzzy
 msgid "SSH Password:"
-msgstr "パスワード: "
+msgstr "SSHパスワード:"
 
 #: ../src/spacecmd/system.py:4688
 msgid "SSH Private Key File:"
-msgstr ""
+msgstr "SSH機密鍵ファイル:"
 
 #: ../src/spacecmd/system.py:4689
 msgid "SSH Private Key Password:"
-msgstr ""
+msgstr "SSH機密鍵パスワード:"
 
 #: ../src/spacecmd/system.py:4692
-#, fuzzy
 msgid "Activation Key:"
-msgstr "アクティベーションキー"
+msgstr "アクティベーションキー:"
 
 #: ../src/spacecmd/system.py:4695
-#, fuzzy
 msgid "Reactivation Key:"
-msgstr "アクティベーションキー"
+msgstr "再アクティベーションキー:"
 
 #: ../src/spacecmd/system.py:4696
-#, fuzzy
 msgid "Proxy System ID:"
-msgstr "%s  システム ID"
+msgstr "プロキシシステムID:"
 
 #: ../src/spacecmd/system.py:4698
 msgid "Manage with Salt SSH"
-msgstr ""
+msgstr "Salt SSHで管理"
 
 #: ../src/spacecmd/system.py:4703
-#, fuzzy
 msgid "Hostname must be provided"
-msgstr "# システム ID を指定しなければなりません。"
+msgstr "ホスト名を指定する必要があります"
 
 #: ../src/spacecmd/system.py:4706
 msgid "Either a SSH Password or a private key must be provided"
-msgstr ""
+msgstr "SSHパスワードまたは機密鍵のいずれかを指定する必要があります"
 
 #: ../src/spacecmd/system.py:4714
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
+"サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
 
 #: ../src/spacecmd/system.py:4721
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
+"「{}」をブートストラップしています。 これにはしばらく時間がかかる場合がありま"
+"す。"
 
 #: ../src/spacecmd/system.py:4735
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
 msgstr ""
+"初期段階は正常に終了しました。まだ実行中のアクションのイベント履歴を確認しま"
+"す"
 
 #: ../src/spacecmd/user.py:50
 msgid "user_create: Create an user"
@@ -8676,43 +8774,43 @@ msgstr "順位が正しくありません"
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:694
+#: ../src/spacecmd/utils.py:697
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:701
+#: ../src/spacecmd/utils.py:704
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:717
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:719
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:744
+#: ../src/spacecmd/utils.py:747
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:760
+#: ../src/spacecmd/utils.py:763
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:846
+#: ../src/spacecmd/utils.py:849
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 
