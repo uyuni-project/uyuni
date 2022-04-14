@@ -1,3 +1,4 @@
+- Flush uyuni roster cache if the config has changed
 - Implement uyuni roster module for Salt
 
 -------------------------------------------------------------------
