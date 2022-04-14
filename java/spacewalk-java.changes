@@ -1,3 +1,4 @@
+- Fix handling of empty image version
 - Add url pillar info to built boot-images
 - Fix reboot time on salt-ssh client(bsc#1197591)
 - detect free products in Alpha and Beta stage and prevent checks
