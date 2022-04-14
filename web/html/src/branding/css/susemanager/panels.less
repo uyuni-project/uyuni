@@ -1,0 +1,37 @@
+.panel {
+  margin-bottom: 14px;
+  background: @eos-bc-gray-50;
+
+  .panel {
+    background: @eos-bc-white;
+  }
+
+  &-default {
+    border: none;
+
+    > .panel-heading {
+      background: transparent;
+      border-color: @eos-bc-gray-100;
+      padding: .75rem 1.25rem;
+      font-size: 14px;
+
+      h1, h2, h3, h4, h5, h6 {
+        font-size: @font-size-h4;
+        font-weight: 500;
+      }
+    }
+
+    .panel-body {
+      padding: 1.25rem;
+    }
+
+    .list-group-item {
+      background: transparent;
+      border: @eos-bc-gray-100;
+    }
+  }
+}
+
+dl:last-child {
+  margin-bottom: 0;
+}

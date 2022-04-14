@@ -115,29 +115,6 @@ h6 { font-size: 1em; }
   margin-top: 10px;
 }
 
-/* basic layout */
-.row-0 {
-  .make-row();
-  &:first-child {
-    padding-left:0;
-  }
-  &:last-child {
-    padding-right: 0
-  }
-}
-.header-container {
-  .make-row(0);
-  .spacewalk-logo {
-    .make-xs-column(5);
-    padding-left: 0;
-  }
-  .header-links {
-    .make-xs-column(7);
-    .text-right;
-    padding-right: 0;
-  }
-}
-
 /* override spacewalk rules */
 section {
   transition: none!important;
@@ -1359,4 +1336,21 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
+}
+
+// Button fixes
+.btn-default {
+  .default-button-colour;
+  color: @gray-dark;
+}
+.btn-primary,
+.btn-success {
+  .call-to-action-button-colour;
+  color: #fff;
+  border-color: @green;
+}
+
+/* wrap on normal line break in modal dialog bodies */
+.modal-body {
+  white-space: pre-line;
 }

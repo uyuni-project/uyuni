@@ -1,0 +1,102 @@
+.btn, .btn-default, .btn-primary, .btn-success {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  position: relative;
+  border-style: solid !important;
+  border-width: 2px;
+  // Remove Bootstrap's default gradient behavior
+  background-image: none !important;
+  filter: none !important;
+
+  // Branding hover effect
+  &:not(:disabled):not(.disabled):hover::after {
+    // background: #686565;
+    border: 2px solid transparent;
+    bottom: -2px;
+    box-sizing: content-box;
+    content: '';
+    display: block;
+    height: 1px;
+    left: -2px;
+    position: absolute;
+    width: 100%;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: auto;
+    cursor: not-allowed;
+  }
+}
+
+// TODO: This whole class needs to become obsolete
+.btn-link {
+  color: @link-color;
+}
+
+// NB! These are not nested because they're not used consistently along with .btn
+.btn-default {
+  &, &:hover, &:disabled {
+    background-color: transparent !important;
+    border-color: @eos-bc-pine-500 !important;
+    color: @eos-bc-pine-500 !important;
+
+    &:not(:disabled):not(.disabled):hover::after {
+      background: @eos-bc-pine-500 !important;
+    }
+  }
+}
+
+.btn-primary {
+  &, &:hover, &:disabled {
+    background-color: @eos-bc-persimmon-500 !important;
+    border-color: @eos-bc-persimmon-500 !important;
+    color: @eos-bc-gray-1000 !important;
+
+    &:not(:disabled):not(.disabled):hover::after {
+      background: @eos-bc-gray-900 !important;
+    }
+  }
+}
+
+.btn-success {
+  &, &:hover, &:disabled {
+    background-color: transparent !important;
+    border-color: @eos-bc-persimmon-500 !important;
+    color: @eos-bc-gray-1000 !important;
+
+    &:not(:disabled):not(.disabled):hover::after {
+      background: @eos-bc-persimmon-500 !important;
+    }
+  }
+}
+
+.btn-danger {
+  &, &:hover, &:disabled {
+    background-color: @eos-bc-red-500 !important;
+    border-color: @eos-bc-red-500 !important;
+    color: @eos-bc-white !important;
+
+    &:not(:disabled):not(.disabled):hover {
+      background: @eos-bc-red-900 !important;
+    }
+
+    &:not(:disabled):not(.disabled):hover::after {
+      background: @eos-bc-gray-900 !important;
+    }
+  }
+}
+
+// TODO: Warn error etc as well?
+
+.input-group-btn .btn {
+  border-width: 1px;
+  padding: 6px 12px;
+
+  &:not(:disabled):not(.disabled):hover::after {
+    border-width: 1px;
+    bottom: -1px;
+    left: -1px;
+  }
+}

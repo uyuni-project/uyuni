@@ -35,10 +35,6 @@
 @login-text:            @eos-bc-gray-900;
 @login-footer-text:     @eos-bc-gray-900;
 
-// TODO: See https://productbrand.suse.com/links#link-colors
-/* Special colours for SUSE Manager */
-@susemanager-link:            @eos-bc-cerulean-900;
-
 /* Main tags colours for Bootstrap */
 @green-dark:             @eos-bc-green-900;
 @green:                  @eos-bc-green-500;
@@ -61,6 +57,29 @@
 
 /* Body */
 @body-background:     @white;
+
+// TODO: Move to separate file
+@font-size-base:          14px;
+@font-size-large:         18.2px;
+@font-size-small:         12px;
+
+// TODO: Test and revert
+// @font-size-h1:            28px;
+// @font-size-h2:            24.5px;
+// @font-size-h3:            21px;
+// @font-size-h4:            18.2px;
+// @font-size-h5:            16.1px;
+// @font-size-h6:            14px;
+@font-size-h1:            24.5px;
+@font-size-h2:            21px;
+@font-size-h3:            18.2px;
+@font-size-h4:            16.1px;
+@font-size-h5:            14px;
+@font-size-h6:            14px;
+
+@line-height-base: 1.5;
+@headings-line-height: 1.5;
+
 
 /* Header */
 @header:          @eos-bc-pine-500;
@@ -90,6 +109,7 @@
 @footer-border:     @eos-bc-gray-100;
 
 /* Buttons */
+// TODO: Check all of these
 @btn-primary-bg:     @green;
 
 /* Input */
@@ -100,9 +120,13 @@
 @modal-backdrop-color:  fade(@eos-bc-gray-1000, 50%);
 
 /* Other elements */
+@border-radius-base:  0;
+@border-radius-large: 0;
+@border-radius-small: 0;
 @notification-badge:     @orange-light;
 @box-shadow:             @gray-light;
 @inactive:               @eos-bc-gray-100;
+@link-color: @eos-bc-blue-500;
 // TODO: This should be selection green instead
 @table-row-selected:     lighten(@eos-bc-yellow-100, 5%);
 
