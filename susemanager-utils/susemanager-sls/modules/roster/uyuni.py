@@ -263,8 +263,8 @@ class UyuniRoster:
         h = self._execute_query(query)
         if h is not None:
             row = h.fetchone()
-            log.trace("db cache fingerprint: %s", row)
             if row and row.fp:
+                log.trace("db cache fingerprint: %s", row.fp)
                 new_fp = row.fp
                 log.trace("cache check: old:%s new:%s", cache_fp, new_fp)
                 if (
