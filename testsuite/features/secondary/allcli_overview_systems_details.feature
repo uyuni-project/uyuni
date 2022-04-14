@@ -13,6 +13,7 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    And I force picking pending events on "sle_client" if necessary
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
 @sle_client
