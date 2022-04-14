@@ -189,6 +189,7 @@ export function ProxyConfig() {
         <Text
           name="proxyFQDN"
           label={t("Proxy FQDN")}
+          hint={t("The FQDN of the machine where the containers are hosted")}
           required
           placeholder={t("e.g., proxy.domain.com")}
           labelClass="col-md-3"
@@ -196,10 +197,10 @@ export function ProxyConfig() {
         />
         <Text
           name="serverFQDN"
-          label={t("Server FQDN")}
+          label={t("Parent FQDN")}
           required
           placeholder={t("e.g., server.domain.com")}
-          hint={t("FQDN of the server of proxy to connect to.")}
+          hint={t("The FQDN of the parent (server or proxy) to connect to.")}
           labelClass="col-md-3"
           divClass="col-md-6"
         />
@@ -215,7 +216,8 @@ export function ProxyConfig() {
         />
         <Text
           name="maxSquidCacheSize"
-          label={t("Max Squid cache size (MB)")}
+          label={t("Max Squid cache size")}
+          hint={t("The maximum value of the Squid cache in Megabytes")}
           required
           validators={[Validation.isInt({ gt: 0 })]}
           placeholder={t("e.g., 2048")}
@@ -225,7 +227,8 @@ export function ProxyConfig() {
         />
         <Text
           name="proxyAdminEmail"
-          label={t("Proxy administrator email")}
+          label={t("Proxy admin email")}
+          hint={t("The container-based proxy administrator email address")}
           placeholder={t("e.g., proxy.admin@mycompany.com")}
           required
           labelClass="col-md-3"
@@ -235,6 +238,7 @@ export function ProxyConfig() {
           name="sslMode"
           label={t("SSL certificate")}
           title={t("SSL certificate")}
+          hint={"Whether to create an SSL certificate or reuse an existing one"}
           inline={true}
           required
           labelClass="col-md-3"
@@ -249,7 +253,8 @@ export function ProxyConfig() {
           <>
             <Text
               name="caCertificate"
-              label={t("CA certificate to use to sign the SSL certificate in PEM format")}
+              label={t("CA certificate")}
+              hint={t("To sign the SSL certificate in PEM format")}
               required
               type="file"
               labelClass="col-md-3"
@@ -257,7 +262,8 @@ export function ProxyConfig() {
             />
             <Text
               name="caKey"
-              label={t("CA private key to use to sign the SSL certificate in PEM format")}
+              label={t("CA private key")}
+              hint={t("To sign the SSL certificate in PEM format")}
               required
               type="file"
               labelClass="col-md-3"
@@ -265,7 +271,8 @@ export function ProxyConfig() {
             />
             <Text
               name="caPassword"
-              label={t("The CA private key password")}
+              label={t("CA password")}
+              hint={t("The CA private key password")}
               required
               type="password"
               labelClass="col-md-3"
@@ -298,7 +305,7 @@ export function ProxyConfig() {
                 validators={[Validation.matches(/^[A-Z]{2}$/)]}
                 maxLength={2}
                 labelClass="col-md-3"
-                divClass="col-md-1"
+                divClass="col-md-2"
               />
               <Text name="state" label={t("State")} labelClass="col-md-3" divClass="col-md-6" />
               <Text name="city" label={t("City")} labelClass="col-md-3" divClass="col-md-6" />
@@ -312,7 +319,8 @@ export function ProxyConfig() {
           <>
             <Text
               name="rootCA"
-              label={t("The root CA used to sign the SSL certificate in PEM format")}
+              label={t("The root CA")}
+              hint={t("To sign the SSL certificate in PEM format")}
               required
               type="file"
               labelClass="col-md-3"
@@ -342,7 +350,8 @@ export function ProxyConfig() {
             </div>
             <Text
               name="proxyCertificate"
-              label={t("Proxy CRT content in PEM format")}
+              label={t("Proxy certificate")}
+              hint={t("In PEM format")}
               required
               type="file"
               labelClass="col-md-3"
@@ -350,7 +359,8 @@ export function ProxyConfig() {
             />
             <Text
               name="proxyKey"
-              label={t("Proxy SSL private key in PEM format")}
+              label={t("Proxy SSL private key")}
+              hint={t("In PEM format")}
               required
               type="file"
               labelClass="col-md-3"

@@ -21,3 +21,6 @@ zypper rr sles12sp4
 zypper --non-interactive --gpg-auto-import-keys ref
 zypper --non-interactive in hoag-dummy orion-dummy
 zypper --non-interactive up milkyway-dummy
+
+# kill avahi
+/usr/sbin/avahi-daemon -k

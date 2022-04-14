@@ -150,7 +150,7 @@ _compression_types = [
     { 'suffix': '',    'compression': None }
     ]
 
-def image_details(dest: str, bundle_dest: str = None) -> dict:
+def image_details(dest, bundle_dest = None):
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -202,7 +202,7 @@ def image_details(dest: str, bundle_dest: str = None) -> dict:
 
     return res
 
-def inspect_image(dest: str, build_id: str, bundle_dest: str = None) -> dict:
+def inspect_image(dest, build_id, bundle_dest = None):
     res = image_details(dest, bundle_dest)
     if not res:
       return None
@@ -226,7 +226,7 @@ def inspect_image(dest: str, build_id: str, bundle_dest: str = None) -> dict:
     return res
 
 
-def inspect_boot_image(dest: str) -> dict:
+def inspect_boot_image(dest):
     res = None
     files = __salt__['file.readdir'](dest)
 
@@ -302,7 +302,7 @@ def inspect_boot_image(dest: str) -> dict:
     return res
 
 
-def inspect_bundles(dest: str, basename: str) -> dict:
+def inspect_bundles(dest, basename):
     res = []
     files = __salt__['file.readdir'](dest)
 
@@ -331,8 +331,7 @@ def inspect_bundles(dest: str, basename: str) -> dict:
             res.append(res1)
     return res
 
-# TODO consider adding checksum to validate upload
-def build_info(dest: str, build_id: str, bundle_dest: str = None) -> dict:
+def build_info(dest, build_id, bundle_dest = None):
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)

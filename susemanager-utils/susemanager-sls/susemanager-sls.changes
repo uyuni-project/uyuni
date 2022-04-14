@@ -1,3 +1,4 @@
+- Remove kiwi_info annotations, salt doesn't suppor them (bsc#1198480)
 - implement grains module for mgr_server to expose report database
   settings and more
 - Build bundle less images, adapt inspection of such images
