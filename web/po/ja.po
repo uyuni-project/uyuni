@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-03-26 09:12+0000\n"
-"Last-Translator: oota toshiya <ribbon@users.sourceforge.jp>\n"
+"PO-Revision-Date: 2022-04-15 05:12+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -2419,9 +2419,8 @@ msgid "Cloning channels"
 msgstr "チャンネルを複製しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "リポジトリデータを生成しています"
+msgstr "リポジトリデータが生成されるのを待っています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
@@ -3050,14 +3049,12 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:791
-#, fuzzy
 msgid "Build Log"
-msgstr "構築ホスト"
+msgstr "構築ログ"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
-#, fuzzy
 msgid "Build log is not available."
-msgstr "利用可能な子チャンネルがありません。"
+msgstr "構築ログは利用できません。"
 
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
@@ -4155,24 +4152,21 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "プロキシ設定の生成が進行中です: 応答を待機しています..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-"要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。やり"
-"直してください。"
+msgstr "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "コンテナベースのプロキシ設定"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4180,34 +4174,32 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明書を生成できます。次のフォームに入力して送信すると、ダウンロードする."
+"zipアーカイブが取得されます。"
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "プロキシ"
+msgstr "プロキシFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
 msgid "e.g., proxy.domain.com"
-msgstr "例: host.domain.com"
+msgstr "例: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Server FQDN"
-msgstr ""
+msgstr "サーバFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:201
-#, fuzzy
 msgid "e.g., server.domain.com"
-msgstr "例: host.domain.com"
+msgstr "例: server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgstr "接続するプロキシのサーバのFQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:208
-#, fuzzy
 msgid "Proxy SSH port"
-msgstr "SSHポート"
+msgstr "プロキシSSHポート"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
@@ -4216,63 +4208,60 @@ msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:218
 msgid "Max Squid cache size (MB)"
-msgstr ""
+msgstr "Squidの最大キャッシュサイズ(MB)"
 
 #: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
 msgid "e.g., 2048"
-msgstr "例: SLE12"
+msgstr "例: 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Proxy administrator email"
-msgstr ""
+msgstr "プロキシ管理者の電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:229
-#, fuzzy
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "例: host.domain.com"
+msgstr "例: proxy.admin@mycompany.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:236
 #: ../html/src/manager/proxy/container-config.tsx:237
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:245
 msgid "Use existing"
-msgstr ""
+msgstr "既存の使用"
 
 #: ../html/src/manager/proxy/container-config.tsx:252
 msgid "CA certificate to use to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:260
 msgid "CA private key to use to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM形式でSSL証明書に署名するために使用するCA機密鍵"
 
 #: ../html/src/manager/proxy/container-config.tsx:268
-#, fuzzy
 msgid "The CA private key password"
-msgstr "新しいパスワードの生成"
+msgstr "CA機密鍵のパスワード"
 
 #: ../html/src/manager/proxy/container-config.tsx:276
 msgid "SSL Certificate data"
-msgstr ""
+msgstr "SSL証明書データ"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "代替CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:291
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:297
 msgid "2-letter country code"
-msgstr ""
+msgstr "2文字の国コード"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
 msgid "City"
-msgstr ""
+msgstr "市区町村"
 
 #: ../html/src/manager/proxy/container-config.tsx:305
 #: ../html/src/manager/state/highstate-summary.tsx:170
@@ -4283,39 +4272,36 @@ msgid "Organization"
 msgstr "組織"
 
 #: ../html/src/manager/proxy/container-config.tsx:306
-#, fuzzy
 msgid "Organization Unit"
-msgstr "組織"
+msgstr "組織単位"
 
 #: ../html/src/manager/proxy/container-config.tsx:307
 msgid "Email"
-msgstr ""
+msgstr "電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:315
 msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
 
 #: ../html/src/manager/proxy/container-config.tsx:324
-#, fuzzy
 msgid "Intermediate CAs"
-msgstr "インターフェイス"
+msgstr "中間CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "CA file in PEM format"
-msgstr ""
+msgstr "PEM形式のCAファイル"
 
 #: ../html/src/manager/proxy/container-config.tsx:345
 msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "PEM形式のプロキシCRTコンテンツ"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
 msgid "Proxy SSL private key in PEM format"
-msgstr ""
+msgstr "PEM形式のプロキシSSL機密鍵"
 
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "Generate"
-msgstr "全般"
+msgstr "生成"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4625,7 +4611,7 @@ msgstr "繰り返し動作が作成されました。"
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
-msgstr ""
+msgstr "新しい定期的なアクションを作成するには、アクションを作成するシステム、グループ、または組織に移動します。"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4840,48 +4826,45 @@ msgid "An error occurred during cleanup"
 msgstr "クリーンアップ処理中にエラーが発生しました"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "ターゲットのシステムが見つかりませんでした"
+msgstr "システムIDではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "不明ゲスト"
+msgstr "不明なシステム"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "システムは周辺機器サーバではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされました"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "周辺機器サーバ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "レポートデータベース名"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "レポートデータベースホスト"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "レポートデータベースユーザ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "レポートデータベースの最終同期日"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "新しいパスワードの生成"
+msgstr "レポーティングデータベースパスワードの生成"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
