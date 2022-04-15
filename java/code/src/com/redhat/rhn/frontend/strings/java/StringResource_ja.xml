@@ -11173,21 +11173,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、次のリンクを参照してください。</target>
       </trans-unit>
-    <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve" approved="yes">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="container.based.proxy.config" xml:space="preserve">
+        <target state="final">ブートストラップ状態の適用中にエラーが発生しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="container.based.proxy.config" xml:space="preserve" approved="yes">
         <source>Proxy Configuration</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <target state="final">プロキシの設定</target>
+      </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">周辺機器サーバ</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
