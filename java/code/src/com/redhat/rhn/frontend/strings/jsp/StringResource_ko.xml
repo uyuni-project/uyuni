@@ -29687,13 +29687,13 @@ given channel.</source>
         <source>Update Reporting Database</source>
         <target state="final">보고 데이터베이스 업데이트</target>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">SSH 포트:</target>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
@@ -29704,19 +29704,19 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">주변기기 서버</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">허브 보고 데이터베이스 업데이트</target>
+      </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">허브 보고 데이터베이스 업데이트</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
