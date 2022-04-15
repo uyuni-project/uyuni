@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-09 09:35+0000\n"
+"POT-Creation-Date: 2022-04-15 05:14+0000\n"
 "PO-Revision-Date: 2022-04-15 05:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -4161,7 +4161,8 @@ msgstr "プロキシ設定の生成が進行中です: 応答を待機してい�
 
 #: ../html/src/manager/proxy/container-config.tsx:134
 msgid "Request interrupted or invalid response received from the server."
-msgstr "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
+msgstr ""
+"要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
@@ -4174,8 +4175,9 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
-"コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明書を生成できます。次のフォームに入力して送信すると、ダウンロードする."
-"zipアーカイブが取得されます。"
+"コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明書"
+"を生成できます。次のフォームに入力して送信すると、ダウンロードする.zipアーカ"
+"イブが取得されます。"
 
 #: ../html/src/manager/proxy/container-config.tsx:191
 msgid "Proxy FQDN"
@@ -4611,7 +4613,9 @@ msgstr "繰り返し動作が作成されました。"
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
-msgstr "新しい定期的なアクションを作成するには、アクションを作成するシステム、グループ、または組織に移動します。"
+msgstr ""
+"新しい定期的なアクションを作成するには、アクションを作成するシステム、グルー"
+"プ、または組織に移動します。"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4839,7 +4843,9 @@ msgstr "システムは周辺機器サーバではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr "新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされました"
+msgstr ""
+"新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされまし"
+"た"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
