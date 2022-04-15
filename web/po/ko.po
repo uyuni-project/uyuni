@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-03-23 05:12+0000\n"
+"PO-Revision-Date: 2022-04-15 05:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -3332,16 +3332,18 @@ msgid "Runtime"
 msgstr "런타임"
 
 #: ../html/src/manager/images/image-view.tsx:623
+#, fuzzy
 msgid "Show obsolete"
-msgstr ""
+msgstr "더 이상 사용되지 않는 항목 표시"
 
 #: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
 msgstr "리비전"
 
 #: ../html/src/manager/images/image-view.tsx:647
+#, fuzzy
 msgid "(obsolete)"
-msgstr ""
+msgstr "(사용되지 않음)"
 
 #: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
@@ -3664,12 +3666,14 @@ msgid "Calendars"
 msgstr "달력"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
+#, fuzzy
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
+msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 일정 목록입니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
+#, fuzzy
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
+msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 달력 목록입니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -4104,13 +4108,15 @@ msgid ""
 msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
+#, fuzzy
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
+#, fuzzy
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
 #, fuzzy
@@ -4121,15 +4127,19 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
+#, fuzzy
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "컨테이너 기반 프록시 구성"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
+#, fuzzy
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생성할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 "
+".zip 아카이브가 제공됩니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:191
 #, fuzzy
@@ -4142,8 +4152,9 @@ msgid "e.g., proxy.domain.com"
 msgstr "예: host.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
+#, fuzzy
 msgid "Server FQDN"
-msgstr ""
+msgstr "서버 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:201
 #, fuzzy
@@ -4151,8 +4162,9 @@ msgid "e.g., server.domain.com"
 msgstr "예: host.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
+#, fuzzy
 msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgstr "연결한 프록시의 서버 FQDN입니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:208
 #, fuzzy
@@ -4165,8 +4177,9 @@ msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:218
+#, fuzzy
 msgid "Max Squid cache size (MB)"
-msgstr ""
+msgstr "최대 Squid 캐시 크기(MB)"
 
 #: ../html/src/manager/proxy/container-config.tsx:221
 #, fuzzy
@@ -4174,8 +4187,9 @@ msgid "e.g., 2048"
 msgstr "예: SLE12"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
+#, fuzzy
 msgid "Proxy administrator email"
-msgstr ""
+msgstr "프록시 관리자 전자 메일"
 
 #: ../html/src/manager/proxy/container-config.tsx:229
 #, fuzzy
@@ -4184,20 +4198,24 @@ msgstr "예: host.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:236
 #: ../html/src/manager/proxy/container-config.tsx:237
+#, fuzzy
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL 인증서"
 
 #: ../html/src/manager/proxy/container-config.tsx:245
+#, fuzzy
 msgid "Use existing"
-msgstr ""
+msgstr "기존 항목 사용"
 
 #: ../html/src/manager/proxy/container-config.tsx:252
+#, fuzzy
 msgid "CA certificate to use to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
 
 #: ../html/src/manager/proxy/container-config.tsx:260
+#, fuzzy
 msgid "CA private key to use to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 개인 키"
 
 #: ../html/src/manager/proxy/container-config.tsx:268
 #, fuzzy
@@ -4205,24 +4223,29 @@ msgid "The CA private key password"
 msgstr "새 비밀번호 생성"
 
 #: ../html/src/manager/proxy/container-config.tsx:276
+#, fuzzy
 msgid "SSL Certificate data"
-msgstr ""
+msgstr "SSL 인증서 데이터"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
+#, fuzzy
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "대체 CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:291
+#, fuzzy
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:297
+#, fuzzy
 msgid "2-letter country code"
-msgstr ""
+msgstr "2자 국가 코드"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
+#, fuzzy
 msgid "City"
-msgstr ""
+msgstr "시/도"
 
 #: ../html/src/manager/proxy/container-config.tsx:305
 #: ../html/src/manager/state/highstate-summary.tsx:170
@@ -4238,12 +4261,14 @@ msgid "Organization Unit"
 msgstr "조직"
 
 #: ../html/src/manager/proxy/container-config.tsx:307
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "전자 메일"
 
 #: ../html/src/manager/proxy/container-config.tsx:315
+#, fuzzy
 msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:324
 #, fuzzy
@@ -4251,16 +4276,19 @@ msgid "Intermediate CAs"
 msgstr "인터페이스"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
+#, fuzzy
 msgid "CA file in PEM format"
-msgstr ""
+msgstr "PEM 형식의 CA 파일"
 
 #: ../html/src/manager/proxy/container-config.tsx:345
+#, fuzzy
 msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "PEM 형식의 프록시 CRT 컨텐트"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
+#, fuzzy
 msgid "Proxy SSL private key in PEM format"
-msgstr ""
+msgstr "PEM 형식의 프록시 SSL 개인 키"
 
 #: ../html/src/manager/proxy/container-config.tsx:363
 #, fuzzy
@@ -4568,14 +4596,16 @@ msgid "Recurring States"
 msgstr "반복 상태"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
+#, fuzzy
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "다음 반복 작업이 생성되었습니다."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
+#, fuzzy
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
-msgstr ""
+msgstr "새 반복 작업을 생성하려면 작업을 생성할 시스템, 그룹 또는 조직으로 이동하십시오."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4794,32 +4824,39 @@ msgid "Unknown System"
 msgstr "알 수 없는 게스트"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
+#, fuzzy
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "시스템이 주변기기 서버가 아닙니다."
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
+#, fuzzy
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "새 비밀번호가 생성되고 주변기기 서버에 대한 작업이 예약됨"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+#, fuzzy
 msgid "Peripheral Server"
-msgstr ""
+msgstr "주변기기 서버"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+#, fuzzy
 msgid "Report Database Name"
-msgstr ""
+msgstr "데이터베이스 이름 보고"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+#, fuzzy
 msgid "Report Database Host"
-msgstr ""
+msgstr "데이터베이스 호스트 보고"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+#, fuzzy
 msgid "Report Database User"
-msgstr ""
+msgstr "데이터베이스 사용자 보고"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+#, fuzzy
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "데이터베이스 마지막 동기화 시간 보고"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
