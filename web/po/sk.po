@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-15 11:14+0000\n"
-"PO-Revision-Date: 2022-04-11 17:12+0000\n"
+"PO-Revision-Date: 2022-04-16 16:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4255,11 +4255,11 @@ msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:297
 msgid "2-letter country code"
-msgstr ""
+msgstr "Dvojpísmenový kód krajiny"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
 msgid "City"
-msgstr ""
+msgstr "Mesto"
 
 #: ../html/src/manager/proxy/container-config.tsx:305
 #: ../html/src/manager/state/highstate-summary.tsx:170
@@ -4270,39 +4270,36 @@ msgid "Organization"
 msgstr "Organizácia"
 
 #: ../html/src/manager/proxy/container-config.tsx:306
-#, fuzzy
 msgid "Organization Unit"
-msgstr "Organizácia"
+msgstr "Organizačná jednotka"
 
 #: ../html/src/manager/proxy/container-config.tsx:307
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: ../html/src/manager/proxy/container-config.tsx:315
 msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "Koreňová CA použitá na podpísanie certifikátu SSL vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:324
-#, fuzzy
 msgid "Intermediate CAs"
-msgstr "Rozhrania"
+msgstr "Sprostredkujúce CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "CA file in PEM format"
-msgstr ""
+msgstr "Súbor CA vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:345
 msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "Obsah proxy CRT vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
 msgid "Proxy SSL private key in PEM format"
-msgstr ""
+msgstr "Súkromný kľúč proxy SSL vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "Generate"
-msgstr "Všeobecné"
+msgstr "Generovať"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
