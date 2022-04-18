@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-15 11:14+0000\n"
-"PO-Revision-Date: 2022-04-15 05:12+0000\n"
+"PO-Revision-Date: 2022-04-18 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2420,7 +2420,7 @@ msgstr "チャンネルを複製しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
 msgid "Waiting for repositories data to be generated"
-msgstr "リポジトリデータが生成されるのを待っています"
+msgstr "リポジトリデータが生成されるのを待機しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
