@@ -1,4 +1,5 @@
-* Add missing dependencies for Salt 3004 into bootstrap repository
+- Enable bootstrapping for Debian11 for SUSE Manager 
+- Add missing dependencies for Salt 3004 into bootstrap repository
   for SLE15 family (bsc#1198221)
 - sort pg_hba.conf file (bsc#1198154)
 - delopy local CA under different name in the truststore to avoid
