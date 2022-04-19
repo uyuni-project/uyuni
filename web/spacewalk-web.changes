@@ -1,16 +1,20 @@
-- Rewording form fields hints
-- Upgrade moment to 2.29.2
-- Add UI for peripheral server with report database password
-  regeneration
-- Show image build log in UI
-- Upgrade minimist to fix CVE-2021-44906
-- Container proxy configuration new webUI page
-- Resolve race conditions in CLM (bsc#1195710)
-- Fix unselectable table header and row rendering
-- Provide link to Sync page when unsynced patches message show up
-  (bsc#1196094)
-- susemanager-nodejs-sdk-devel is now provided by spacewalk-web
-- Clearify CLM environment status message
+-------------------------------------------------------------------
+Tue Apr 19 12:10:52 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Rewording form fields hints
+  * Upgrade moment to 2.29.2
+  * Add UI for peripheral server with report database password
+    regeneration
+  * Show image build log in UI
+  * Upgrade minimist to fix CVE-2021-44906
+  * Container proxy configuration new webUI page
+  * Resolve race conditions in CLM (bsc#1195710)
+  * Fix unselectable table header and row rendering
+  * Provide link to Sync page when unsynced patches message show up
+    (bsc#1196094)
+  * susemanager-nodejs-sdk-devel is now provided by spacewalk-web
+  * Clearify CLM environment status message
 
 -------------------------------------------------------------------
 Mon Apr 04 11:02:39 CEST 2022 - jgonzalez@suse.com
