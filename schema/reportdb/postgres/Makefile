@@ -40,6 +40,9 @@ devel : main
 	$(BLEND) $(DIRS)
 	$(REPLTBS) main.sql > devel.sql
 
+documentation :
+	$(BLEND) -o ../documentation.sql -d docs $(DIRS)
+
 tables :
 	$(MAKE) -C $@
 
@@ -56,4 +59,8 @@ clean :
 	@rm -f main.sql
 	@$(foreach m,$(MKFILES),$(MAKE) -C $(dir $(m)) $@;)
 
-.PHONY: clean tables data views
+clean-all : clean
+	@rm -f documentation.sql
+	@rm -f devel.sql
+
+.PHONY: clean clean-all tables data views
