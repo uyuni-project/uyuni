@@ -37,6 +37,8 @@ BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
+BuildRequires:  perl(File::Find)
+BuildRequires:  perl-macros
 Requires:       %{sbinpath}/restorecon
 Requires:       %{name}-utility
 
