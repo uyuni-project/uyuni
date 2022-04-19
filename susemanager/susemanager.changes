@@ -1,7 +1,8 @@
+- Enable bootstrapping for Debian 11
 - fix SLE15 bootstrap repo definition (bsc#1197438)
 - Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
   repo definitions (bsc#1196702)
-* Add missing dependencies for Salt 3004 into bootstrap repository
+- Add missing dependencies for Salt 3004 into bootstrap repository
   for SLE15 family (bsc#1198221)
 
 -------------------------------------------------------------------

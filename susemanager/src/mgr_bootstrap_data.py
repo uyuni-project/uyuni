@@ -745,6 +745,32 @@ PKGLISTDEBIAN10 = [
     "gnupg",
 ]
 
+PKGLISTDEBIAN11 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.4-2",
+    "libldap-common",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    # end of gnupg dependencies
+    "venv-salt-minion"
+]
+
 PKGLISTASTRALINUXOREL = [
     "dctrl-tools",
     "dirmngr",
@@ -1469,6 +1495,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
         'TYPE' : 'deb'
     },
+    'debian11-amd64' : {
+        'PDID' : [-32, 2410], 'BETAPDID' : [2411], 'PKGLIST' : PKGLISTDEBIAN11,
+        'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
+        'TYPE' : 'deb'
+    },
     'debian9-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-9-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN9,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
@@ -1477,6 +1508,11 @@ DATA = {
      'debian10-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-10-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN10,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'debian11-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-11-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN11,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/11/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {
