@@ -1,3 +1,4 @@
+- improve taskomatic queue parallelism
 - improve performance of synchronizing peripheral report databases
 
 -------------------------------------------------------------------
