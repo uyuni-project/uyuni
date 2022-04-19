@@ -1,13 +1,18 @@
 .btn, .btn-default, .btn-primary, .btn-success {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 8px 16px;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  padding: 8px 16px !important;
   position: relative;
   border-style: solid !important;
-  border-width: 2px;
+  border-width: 2px !important;
   // Remove Bootstrap's default gradient behavior
   background-image: none !important;
   filter: none !important;
+  transition: none !important;
+
+  .input-group-btn & {
+    padding: 5px 10px !important;
+  }
 
   // Branding hover effect
   &:not(:disabled):not(.disabled):hover::after {
@@ -23,6 +28,7 @@
     width: 100%;
   }
 
+  &.disabled,
   &:disabled {
     opacity: 0.6;
     pointer-events: auto;
@@ -37,8 +43,8 @@
 
 // NB! These are not nested because they're not used consistently along with .btn
 .btn-default {
-  &, &:hover, &:disabled {
-    background-color: transparent !important;
+  &, &:hover, &:disabled, &.disabled {
+    background: transparent !important;
     border-color: @eos-bc-pine-500 !important;
     color: @eos-bc-pine-500 !important;
 
@@ -49,8 +55,8 @@
 }
 
 .btn-primary {
-  &, &:hover, &:disabled {
-    background-color: @eos-bc-persimmon-500 !important;
+  &, &:hover, &:disabled, &.disabled {
+    background: @eos-bc-persimmon-500 !important;
     border-color: @eos-bc-persimmon-500 !important;
     color: @eos-bc-gray-1000 !important;
 
@@ -61,8 +67,8 @@
 }
 
 .btn-success {
-  &, &:hover, &:disabled {
-    background-color: transparent !important;
+  &, &:hover, &:disabled, &.disabled {
+    background: transparent !important;
     border-color: @eos-bc-persimmon-500 !important;
     color: @eos-bc-gray-1000 !important;
 
@@ -73,13 +79,14 @@
 }
 
 .btn-danger {
-  &, &:hover, &:disabled {
-    background-color: @eos-bc-red-500 !important;
+  &, &:hover, &:disabled, &.disabled {
+    background: @eos-bc-red-500 !important;
     border-color: @eos-bc-red-500 !important;
     color: @eos-bc-white !important;
 
     &:not(:disabled):not(.disabled):hover {
       background: @eos-bc-red-900 !important;
+      border-color: @eos-bc-red-900 !important;
     }
 
     &:not(:disabled):not(.disabled):hover::after {
@@ -93,10 +100,26 @@
 .input-group-btn .btn {
   border-width: 1px;
   padding: 6px 12px;
+  z-index: 100;
 
   &:not(:disabled):not(.disabled):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
+  }
+}
+
+.btn-group .btn {
+  margin: 0 0 0 -1px !important;
+
+  &:last-child {
+    margin-left: 0 !important;
+  }
+}
+
+.panel-heading {
+  .btn, .btn-link {
+    border: none !important;
+    color: @eos-bc-gray-1000 !important;
   }
 }

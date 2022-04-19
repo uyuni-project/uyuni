@@ -1,9 +1,18 @@
 .panel {
   margin-bottom: 14px;
   background: @eos-bc-gray-50;
+  box-shadow: none !important;
 
   .panel {
     background: @eos-bc-white;
+  }
+
+  .panel-footer {
+    background: transparent !important;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &-default {
@@ -27,7 +36,11 @@
 
     .list-group-item {
       background: transparent;
-      border: @eos-bc-gray-100;
+      border-color: @eos-bc-gray-100;
+
+      &:last-child {
+        border: none;
+      }
     }
   }
 }
