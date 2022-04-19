@@ -20,6 +20,9 @@ upgrade:
 postgres :
 	$(MAKE) -C $@ -f Makefile
 
+docs :
+	$(MAKE) -C postgres -f Makefile documentation
+
 clean :
 	rm -f $(POST_FILES)
 	rm -rf postgres/tables/common/
@@ -30,4 +33,4 @@ clean :
 sanity-check :
 	perl $(shell type -a -P schema-source-sanity-check.pl $(SANITY_CHECK_SCRIPT)) $(PWD)
 
-.PHONY: postgres clean sanity-check upgrade
+.PHONY: postgres clean sanity-check upgrade docs
