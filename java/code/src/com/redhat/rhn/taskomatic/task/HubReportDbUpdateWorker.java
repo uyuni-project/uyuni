@@ -115,6 +115,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     @Override
     public void run() {
         try {
+            HubReportDbUpdateDriver.getCurrentMgrServerInfos().add(mgrServerInfo);
             parentQueue.workerStarting();
             ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
             ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
@@ -158,10 +159,14 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             }
         }
         catch (Exception e) {
+            parentQueue.getQueueRun().failed();
+            parentQueue.changeRun(null);
             log.error(e);
         }
         finally {
             parentQueue.workerDone();
+            HibernateFactory.closeSession();
+            HubReportDbUpdateDriver.getCurrentMgrServerInfos().remove(mgrServerInfo);
         }
     }
 }

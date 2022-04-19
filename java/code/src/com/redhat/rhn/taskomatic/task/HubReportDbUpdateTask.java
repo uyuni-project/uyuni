@@ -22,21 +22,33 @@ public class HubReportDbUpdateTask extends RhnQueueJob {
 
     private Logger log = LogManager.getLogger(getClass());
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Logger getLogger() {
         return log;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Class getDriverClass() {
         return HubReportDbUpdateDriver.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getQueueName() {
         return "report_db_hub_update";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getConfigNamespace() {
         return "report_db_hub_update";

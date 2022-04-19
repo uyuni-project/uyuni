@@ -67,4 +67,10 @@ public interface QueueDriver<T> {
      * Actions that has to be executed, when queue is created
      */
     void initialize();
+
+    /**
+     * Specify if this is a blocking worker thread
+     * @return true if the task queue should wait end of the workers before continue
+     */
+    boolean isBlockingTaskQueue();
 }
