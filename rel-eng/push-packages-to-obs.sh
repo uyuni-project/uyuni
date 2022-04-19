@@ -252,7 +252,7 @@ while read PKG_NAME; do
 
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       # check which endpoint we are using to match the product
-      if [ "${OSCAPI}" == "https://api.suse.de"]; then
+      if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
