@@ -1,11 +1,15 @@
-- Flush uyuni roster cache if the config has changed
-- Remove kiwi_info annotations, salt doesn't suppor them (bsc#1198480)
-- implement grains module for mgr_server to expose report database
-  settings and more
-- Build bundle less images, adapt inspection of such images
-  Part of saltboot containerization workflow
-- Handle salt bundle in set_proxy.sls
-- Accept non standard proxy SSH port
+-------------------------------------------------------------------
+Tue Apr 19 12:13:41 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * Flush uyuni roster cache if the config has changed
+  * Remove kiwi_info annotations, salt doesn't suppor them (bsc#1198480)
+  * implement grains module for mgr_server to expose report database
+    settings and more
+  * Build bundle less images, adapt inspection of such images
+    Part of saltboot containerization workflow
+  * Handle salt bundle in set_proxy.sls
+  * Accept non standard proxy SSH port
 
 -------------------------------------------------------------------
 Mon Apr 04 11:02:56 CEST 2022 - jgonzalez@suse.com
