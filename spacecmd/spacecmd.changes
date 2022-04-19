@@ -1,5 +1,9 @@
-- parse boolean paramaters correctly (bsc#1197689)
-- Add parameter to set containerized proxy SSH port
+-------------------------------------------------------------------
+Tue Apr 19 11:56:27 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * parse boolean paramaters correctly (bsc#1197689)
+  * Add parameter to set containerized proxy SSH port
 
 -------------------------------------------------------------------
 Fri Mar 11 16:47:59 CET 2022 - jgonzalez@suse.com
