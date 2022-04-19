@@ -1,4 +1,8 @@
-- Use the official URL for Debian11 security updates
+-------------------------------------------------------------------
+Tue Apr 19 12:42:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Use the official URL for Debian11 security updates
 
 -------------------------------------------------------------------
 Fri Mar 11 15:22:33 CET 2022 - jgonzalez@suse.com
