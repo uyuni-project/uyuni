@@ -17,12 +17,14 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.GeneratedSelectMode;
 import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -145,4 +147,12 @@ public class ReportDBHelper {
         return new GeneratedWriteMode("insert." + table, session, sqlStatement, params);
     }
 
+    /**
+     * Analyzes the report database tables after massive inserts
+     * @param session session the query should use
+     */
+    public static void analyzeReportDb(Session session) {
+        var m = ModeFactory.getCallableMode(session, "GeneralReport_queries", "analyze_reportdb");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
 }
