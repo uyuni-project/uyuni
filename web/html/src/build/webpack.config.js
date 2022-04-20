@@ -54,14 +54,10 @@ module.exports = (env, argv) => {
     {
       entry: {
         "javascript/manager/main": "./manager/index.ts",
-        // TODO: Revert
-        // "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
+        "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
         "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-        // "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
+        "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
         "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
-        // TODO: Remove
-        "css/susemanager-light": path.resolve(__dirname, "../branding/css/uyuni.less"),
-        "css/uyuni": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
       },
       output: {
         filename: `[name].bundle.js`,
