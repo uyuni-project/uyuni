@@ -132,6 +132,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                 TABLES.forEach(table -> {
                     updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
                 });
+                ReportDBHelper.analyzeReportDb(localRh.getSession());
                 Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
                 mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
                 ServerFactory.save(mgrServer);
