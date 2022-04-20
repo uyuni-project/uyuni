@@ -115,6 +115,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
 
+            ReportDBHelper.analyzeReportDb(rh.getSession());
+
             rh.commitTransaction();
             log.info("Reporting db updated successfully.");
         }
