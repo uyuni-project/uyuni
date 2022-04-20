@@ -1,3 +1,4 @@
+- Handle missing tables gracefully during hub synchronisation
 - improve performance of synchronizing peripheral report databases
 - Allow alternative location for byte-buddy jar.
 - Allow migration where target products have no successor
