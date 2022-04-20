@@ -1,3 +1,4 @@
+- Handle missing tables gracefully during hub synchronisation
 - improve performance of synchronizing peripheral report databases
 - Prefer parsing numbers as ints in HTTP API for compatibility
 
