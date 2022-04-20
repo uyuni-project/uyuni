@@ -1,3 +1,4 @@
+- Handle missing tables gracefully during hub synchronisation
 - improve performance of synchronizing peripheral report databases
 - add menu item for report database schema documentation
 - Improve TaskQueue for mgr-update-reporting-hub task
