@@ -34,7 +34,7 @@ Feature: Build image with authenticated registry
     And I click on "submit-btn"
     Then I wait until I see "auth_registry_profile" text
     # Verify the status of images in the authenticated image store
-    When I wait at most 660 seconds until container "auth_registry_profile" is built successfully
+    When I wait at most 660 seconds until container "auth_registry_profile" with version "latest" is built successfully
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
 
