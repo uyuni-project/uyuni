@@ -6,6 +6,7 @@
 #
 # Alternative: Bootstrap the proxy as a traditional client from script
 
+@skip_if_server_build_image
 @scope_proxy
 @proxy
 Feature: Setup Uyuni proxy
