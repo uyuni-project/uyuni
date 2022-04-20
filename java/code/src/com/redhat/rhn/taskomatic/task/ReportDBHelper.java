@@ -50,21 +50,31 @@ public class ReportDBHelper {
     }
 
     private static String getOrderColumns(Session session, String table, Logger log) {
-        String pkqstr = "SELECT string_agg(a.attname, ', ') AS pk " +
-                "FROM pg_constraint AS c " +
+        String orderqstr =
+                "SELECT string_agg(a.attname, ', ') AS order " +
+                "  FROM pg_constraint AS c " +
                 "    CROSS JOIN LATERAL UNNEST(c.conkey) AS cols(colnum) " +
                 "    INNER JOIN pg_attribute AS a ON a.attrelid = c.conrelid AND cols.colnum = a.attnum " +
-                "WHERE c.contype = 'p' " +
-                " AND c.conrelid = '" + table + "'::REGCLASS";
+                " WHERE c.contype = 'p' " +
+                "   AND c.conrelid = '" + table + "'::REGCLASS " +
+                "UNION " +
+                "SELECT string_agg(a.attname, ', ') AS order " +
+                "  FROM pg_index ix " +
+                "  JOIN pg_class t on t.oid = ix.indrelid " +
+                "  JOIN pg_class i on i.oid = ix.indexrelid " +
+                "  JOIN pg_attribute a on a.attrelid = t.oid and a.attnum = ANY(ix.indkey) " +
+                " WHERE t.relkind = 'r' " +
+                "   AND t.relname = '" + table.toLowerCase() + "' " +
+                "   AND i.relname = '" + table.toLowerCase() + "_order_idx'";
 
-        GeneratedSelectMode pkquery = new GeneratedSelectMode("pkquery." + table, session,
-                pkqstr , List.of());
+        GeneratedSelectMode orderquery = new GeneratedSelectMode("orderquery." + table, session,
+                orderqstr , List.of());
 
-        DataResult<Map<String, String>> pkr = pkquery.execute();
-        String pk = pkr.stream().findFirst().map(pko -> pko.getOrDefault("pk", "ctid")).orElse("ctid");
+        DataResult<Map<String, String>> order = orderquery.execute();
+        String ordercolumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
 
-        log.debug("Order Columns of " + table + " by: " + pk);
-        return pk;
+        log.debug("Order Columns of " + table + " by: " + ordercolumns);
+        return ordercolumns;
     }
 
     /**
