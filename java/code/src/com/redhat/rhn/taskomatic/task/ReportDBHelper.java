@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,19 @@ public class ReportDBHelper {
 
         log.debug("Order Columns of " + table + " by: " + ordercolumns);
         return ordercolumns;
+    }
+
+    /**
+     * Generated a query for checking if a table exists
+     * @param session session the query should use
+     * @param tables tables list name
+     * @return select mode query
+     */
+    public static SelectMode generateExistingTables(Session session, List<String> tables) {
+        List<String> selectContent =
+                tables.stream().map(t -> "to_regclass('" + t + "') AS " + t).collect(Collectors.toList());
+        final String sqlStatement = "SELECT " + String.join(",", selectContent);
+        return new GeneratedSelectMode("exists.reportdbtables" , session, sqlStatement, Collections.emptyList());
     }
 
     /**
