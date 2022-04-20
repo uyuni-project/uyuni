@@ -14,6 +14,20 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+
+usage_and_exit() {
+    echo "Usage: ${1} brand_name"
+    exit 2
+}
+
+if [ ${#} -ne 1 ];then
+    echo "Missing parameters"
+    usage_and_exit ${SCRIPT}
+fi
+
+BRAND_NAME=$1
+echo Using branding $BRAND_NAME
+
 set -e
 
 cd /manager/susemanager-utils/testing/docker/scripts/
@@ -49,7 +63,7 @@ fi
 
 # Create the schema files
 echo Creating schema creation file
-make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RELEASE=testing
+make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RELEASE=testing BRAND_NAME=$BRAND_NAME
 # Create the documentation addons
 echo Creating schema documentation
 make -s -f Makefile.schema docs
@@ -81,7 +95,7 @@ if [ -d $OUTPUT_DIR ]; then
     rm -rf $OUTPUT_DIR
 fi
 
-java -cp $(build-classpath ongres-scram) -jar /root/schemaspy.jar -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc)
+java -cp $(build-classpath ongres-scram) -jar /root/schemaspy.jar -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc) -label "$BRAND_NAME Reporting"
 
 CSS_FILE=$(cat $CONFIG_FILE | grep schemaspy.css | cut -c 15-)
 if [ -n $CSS_FILE ] && [ -f $CSS_FILE ]; then
