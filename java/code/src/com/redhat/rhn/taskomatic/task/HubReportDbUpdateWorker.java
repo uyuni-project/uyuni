@@ -47,7 +47,7 @@ import java.util.Map;
 public class HubReportDbUpdateWorker implements QueueWorker {
 
     private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 500);
+            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
     private TaskQueue parentQueue;
     private final MgrServerInfo mgrServerInfo;
     private Logger log;
