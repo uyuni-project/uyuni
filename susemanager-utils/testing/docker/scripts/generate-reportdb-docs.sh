@@ -15,6 +15,15 @@
 # in this software or its documentation.
 #
 set -e
+SCRIPT=$(basename $0)
+
+if [ -z $1 ];then
+    echo "Missing parameters"
+    echo "Usage: $SCRIPT brand_name"
+fi
+
+BRAND_NAME="$1"
+echo Using branding $BRAND_NAME
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 
@@ -49,7 +58,7 @@ fi
 
 # Create the schema files
 echo Creating schema creation file
-make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RELEASE=testing
+make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RELEASE=testing BRAND_NAME="$BRAND_NAME"
 # Create the documentation addons
 echo Creating schema documentation
 make -s -f Makefile.schema docs
@@ -81,7 +90,7 @@ if [ -d $OUTPUT_DIR ]; then
     rm -rf $OUTPUT_DIR
 fi
 
-java -cp $(build-classpath ongres-scram) -jar /root/schemaspy.jar -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc)
+java -cp $(build-classpath ongres-scram) -jar /root/schemaspy.jar -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc) -label "$BRAND_NAME Reporting"
 
 CSS_FILE=$(cat $CONFIG_FILE | grep schemaspy.css | cut -c 15-)
 if [ -n $CSS_FILE ] && [ -f $CSS_FILE ]; then

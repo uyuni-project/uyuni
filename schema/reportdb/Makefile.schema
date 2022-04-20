@@ -17,7 +17,7 @@ upgrade:
 	echo Upgrade
 	for i in $@/*/. ; do $(MAKE) -C $$i -f ../Makefile ; done
 
-postgres :
+postgres : $(POST_FILES)
 	$(MAKE) -C $@ -f Makefile
 
 docs :
@@ -28,7 +28,7 @@ clean :
 	rm -rf postgres/tables/common/
 
 %.sql : %.pre
-	sed -e "s!SCHEMA_NAME!'$(SCHEMA)'!g" -e "s!SCHEMA_VERSION!'$(VERSION)'!g" -e "s!SCHEMA_RELEASE!'$(RELEASE)'!" $< > $@
+	sed -e "s!SCHEMA_NAME!'$(SCHEMA)'!g" -e "s!SCHEMA_VERSION!'$(VERSION)'!g" -e "s!SCHEMA_RELEASE!'$(RELEASE)'!" -e "s!BRAND_NAME!$(BRAND_NAME)!g" $< > $@
 
 sanity-check :
 	perl $(shell type -a -P schema-source-sanity-check.pl $(SANITY_CHECK_SCRIPT)) $(PWD)

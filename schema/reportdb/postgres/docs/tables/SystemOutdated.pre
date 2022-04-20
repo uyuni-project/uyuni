@@ -1,0 +1,27 @@
+--
+-- Copyright (c) 2022 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON TABLE SystemOutdated
+  IS 'The summary of the packages and the patches out-of-date for a system';
+
+COMMENT ON COLUMN SystemOutdated.mgm_id
+  IS 'The id of the BRAND_NAME instance that contains this data';
+COMMENT ON COLUMN SystemOutdated.system_id
+  IS 'The id of the system';
+COMMENT ON COLUMN SystemOutdated.packages_out_of_date
+  IS 'The number of outdated packages installed on this system';
+COMMENT ON COLUMN SystemOutdated.errata_out_of_date
+  IS 'The number of outdated patches associated to this system';
+COMMENT ON COLUMN SystemOutdated.synced_date
+  IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE SystemOutdated
+    ADD CONSTRAINT SystemOutdated_system_fkey FOREIGN KEY (mgm_id, system_id) REFERENCES System(mgm_id, system_id);
