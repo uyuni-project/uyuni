@@ -19,9 +19,7 @@ COMMENT ON COLUMN SystemHistoryAutoinstallationReport.system_id
 COMMENT ON COLUMN SystemHistoryAutoinstallationReport.action_id
   IS 'The id of the action';
 COMMENT ON COLUMN SystemHistoryAutoinstallationReport.earliest_action
-  IS 'The earliest time this action was scheduled for execution';
-COMMENT ON COLUMN SystemHistoryAutoinstallationReport.pickup_time
-  IS 'When this action was selected for execution';
+  IS 'The earliest time this action was schedule for execution';
 COMMENT ON COLUMN SystemHistoryAutoinstallationReport.completion_time
   IS 'When this action was completed';
 COMMENT ON COLUMN SystemHistoryAutoinstallationReport.status

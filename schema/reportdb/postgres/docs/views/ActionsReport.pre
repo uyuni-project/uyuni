@@ -22,10 +22,8 @@ COMMENT ON COLUMN ActionsReport.event
   IS 'The type of event triggered by the action';
 COMMENT ON COLUMN ActionsReport.action_name
   IS 'The name of the action';
-COMMENT ON COLUMN ActionsReport.scheduler_id
-  IS 'The id of the account who scheduled the action';
-COMMENT ON COLUMN ActionsReport.scheduler_username
-  IS 'The username of the account who scheduled the action';
+COMMENT ON COLUMN ActionsReport.scheduled_by
+  IS 'The user account who scheduled the action';
 COMMENT ON COLUMN ActionsReport.in_progress_systems
   IS 'Number of system where the action is still in progress';
 COMMENT ON COLUMN ActionsReport.completed_systems
