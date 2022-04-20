@@ -17,11 +17,14 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.GeneratedSelectMode;
 import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,15 +51,46 @@ public class ReportDBHelper {
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
+    private static String getOrderColumns(Session session, String table, Logger log) {
+        String orderqstr =
+                "SELECT string_agg(a.attname, ', ') AS order " +
+                "  FROM pg_constraint AS c " +
+                "    CROSS JOIN LATERAL UNNEST(c.conkey) AS cols(colnum) " +
+                "    INNER JOIN pg_attribute AS a ON a.attrelid = c.conrelid AND cols.colnum = a.attnum " +
+                " WHERE c.contype = 'p' " +
+                "   AND c.conrelid = '" + table + "'::REGCLASS " +
+                "UNION " +
+                "SELECT string_agg(a.attname, ', ') AS order " +
+                "  FROM pg_index ix " +
+                "  JOIN pg_class t on t.oid = ix.indrelid " +
+                "  JOIN pg_class i on i.oid = ix.indexrelid " +
+                "  JOIN pg_attribute a on a.attrelid = t.oid and a.attnum = ANY(ix.indkey) " +
+                " WHERE t.relkind = 'r' " +
+                "   AND t.relname = '" + table.toLowerCase() + "' " +
+                "   AND i.relname = '" + table.toLowerCase() + "_order_idx'";
+
+        GeneratedSelectMode orderquery = new GeneratedSelectMode("orderquery." + table, session,
+                orderqstr , List.of());
+
+        DataResult<Map<String, String>> order = orderquery.execute();
+        String ordercolumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
+
+        log.debug("Order Columns of " + table + " by: " + ordercolumns);
+        return ordercolumns;
+    }
+
     /**
      * Generated a query for all local entries of a report db table
      * @param session session the query should use
      * @param table table name
+     * @param log the logger
      * @return select mode query
      */
-    public static SelectMode generateQuery(Session session, String table) {
+    public static SelectMode generateQuery(Session session, String table, Logger log) {
+        String orderColumns = getOrderColumns(session, table, log);
+
         final String sqlStatement = "SELECT * FROM " + table +
-                " WHERE mgm_id = 1 ORDER BY ctid OFFSET :offset LIMIT :limit";
+                " WHERE mgm_id = 1 ORDER BY " + orderColumns + " OFFSET :offset LIMIT :limit";
         return new GeneratedSelectMode("select." + table, session, sqlStatement, List.of("offset", "limit"));
     }
 
@@ -113,4 +147,12 @@ public class ReportDBHelper {
         return new GeneratedWriteMode("insert." + table, session, sqlStatement, params);
     }
 
+    /**
+     * Analyzes the report database tables after massive inserts
+     * @param session session the query should use
+     */
+    public static void analyzeReportDb(Session session) {
+        var m = ModeFactory.getCallableMode(session, "GeneralReport_queries", "analyze_reportdb");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
 }
