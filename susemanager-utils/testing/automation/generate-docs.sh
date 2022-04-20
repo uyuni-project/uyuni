@@ -27,4 +27,4 @@ echo "Loading ${VPRODUCT}"
 . ${HERE}/${VPRODUCT}
 GITROOT=`readlink -f ${HERE}/../../../`
 
-docker run --interactive --tty --rm -v "$GITROOT:/manager" $REGISTRY/$REPORTDB_DOC_CONTAINER /manager/susemanager-utils/testing/docker/scripts/generate-reportdb-docs.sh
+docker run --interactive --tty --rm -v "$GITROOT:/manager" $REGISTRY/$REPORTDB_DOC_CONTAINER /manager/susemanager-utils/testing/docker/scripts/generate-reportdb-docs.sh "$BRAND_NAME"
