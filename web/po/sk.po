@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-15 11:14+0000\n"
-"PO-Revision-Date: 2022-04-16 16:12+0000\n"
+"PO-Revision-Date: 2022-04-21 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4823,48 +4823,45 @@ msgid "An error occurred during cleanup"
 msgstr "Počas čistenia sa vyskytla chyba"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "Nenašli sa žiadne cieľové systémy"
+msgstr "Nie je to systémové id"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "Neznámy hosť"
+msgstr "Neznámy systém"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "Systém nie je periférny server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "Nové heslo vygenerované a naplánovaná akcia pre periférny server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "Periférny server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "Názov databázy správ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "Hostiteľ databázy správ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "Používateľ databázy správ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "Naposledy synchronizovaná databáza správ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "Vygenerovať nové heslo"
+msgstr "Znovu vygenerovať heslo databázy správ"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
