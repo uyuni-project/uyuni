@@ -15,7 +15,6 @@
         <dependency org="redhat" name="log4j" rev="1.2.8" />
         <dependency org="redhat" name="logdriver" rev="0.1" />
         <dependency org="redhat" name="commons-cli" rev="1.0" />
-        <!-- dependency org="redhat" name="commons-httpclient" rev="3.0" / -->
         <!-- dependency org="redhat" name="oro" rev="2.0.8" / -->
         <!-- dependency org="redhat" name="commons-codec" rev="1.2" / -->
         <!-- dependency org="redhat" name="tika" rev="0.1-incubating" / -->
