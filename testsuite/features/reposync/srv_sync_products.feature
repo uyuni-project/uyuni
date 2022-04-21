@@ -64,9 +64,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
     And I should see the "Basesystem Module 15 SP2 x86_64" selected
     # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
-    And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
-    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
-    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
+#    And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
+#    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
+#    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
     Then the SLE15 SP2 product should be added
@@ -84,9 +84,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64" selected
     And I should see the "Basesystem Module 15 SP3 x86_64" selected
     # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
-    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
-    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
-    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
+#    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+#    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
+#    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" product has been added
     Then the SLE15 SP3 product should be added
