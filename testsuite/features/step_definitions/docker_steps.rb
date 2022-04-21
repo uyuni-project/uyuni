@@ -36,13 +36,13 @@ When(/^I enter URI, username and password for registry$/) do
   )
 end
 
-When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
+When(/^I wait at most (\d+) seconds until container "([^"]*)" with version "([^"]*)" is built successfully$/) do |timeout, name, version|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
   log "List of images: #{images_list}"
   image_id = 0
   images_list.each do |element|
-    if element['name'] == name
+    if element['name'] == name && element['version'] == version
       image_id = element['id']
       break
     end
@@ -59,6 +59,8 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
   end
 end
 
+# Warning: this can be confused by failures in previous scenarios
+# so it should be used only in the first image building scenario
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
   os_version, os_family = get_os_version($build_host)
   # don't run this for sles11 (docker feature is not there)
@@ -112,6 +114,24 @@ When(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) 
   else
     cont_op.delete_image(image_id)
   end
+end
+
+Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not empty$/) do |name, version|
+  cont_op.login('admin', 'admin')
+  images_list = cont_op.list_images
+  log "List of images: #{images_list}"
+  image_id = 0
+  images_list.each do |element|
+    if element['name'] == name && element['version'] == version
+      image_id = element['id']
+      break
+    end
+  end
+  raise 'unable to find the image id' if image_id.zero?
+
+  idetails = cont_op.get_image_details(image_id)
+  log "Image Details: #{idetails}"
+  raise 'the list of image packages is empty' if (idetails['installedPackages']).zero?
 end
 
 Then(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
