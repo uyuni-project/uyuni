@@ -44,9 +44,6 @@ import com.suse.manager.webui.utils.ViewHelper;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -237,19 +234,7 @@ public class ResponseMappers {
                     contentFilterResponse.setEntityType(filter.getEntityType().getLabel());
                     contentFilterResponse.setMatcher(filter.getCriteria().getMatcher().getLabel());
                     contentFilterResponse.setCriteriaKey(filter.getCriteria().getField());
-                    // If we have a date as a criteria value we need to format it with the current user timezone
-                    if (filter.getCriteria().getField().equals("issue_date")) {
-                        DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-                        OffsetDateTime offsetDateTime = OffsetDateTime.parse(
-                                filter.getCriteria().getValue(), timeFormatter
-                        );
-                        Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
-
-                        contentFilterResponse.setCriteriaValue(ViewHelper.getInstance().renderDate(criteriaValueDate));
-                    }
-                    else {
-                        contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
-                    }
+                    contentFilterResponse.setCriteriaValue(filter.getCriteria().getValue());
                     contentFilterResponse.setRule(filter.getRule().getLabel());
                     contentFilterResponse.setProjects(
                             projects.stream()
