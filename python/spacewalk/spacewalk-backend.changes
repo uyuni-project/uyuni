@@ -1,3 +1,4 @@
+- hide reportdb password in spacewalk-debug
 - Fix wrong unicode characters issued by rpm (#4614).
 
 -------------------------------------------------------------------
