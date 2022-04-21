@@ -131,7 +131,7 @@ Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not emp
 
   idetails = cont_op.get_image_details(image_id)
   log "Image Details: #{idetails}"
-  raise 'the list of image packages is empty' if idetails['installedPackages'] == 0
+  raise 'the list of image packages is empty' if (idetails['installedPackages']).zero?
 end
 
 Then(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
