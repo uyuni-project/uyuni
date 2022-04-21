@@ -48,11 +48,17 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
+  Scenario: Enable tools update repository
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion" without error control
+
   Scenario: Apply highstate for Prometheus exporters
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+  Scenario: Disable tools update repository again
+    When I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion" without error control
 
   Scenario: Visit monitoring endpoints on the minion
     When I wait until "prometheus" service is active on "sle_minion"
