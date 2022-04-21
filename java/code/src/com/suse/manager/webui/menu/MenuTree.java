@@ -483,6 +483,9 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
+            )
+            .addChild(new MenuItem("Report Database Schema").withTarget("_blank")
+                    .withPrimaryUrl("/docs/reportdb-schema/index.html")
             );
     }
 
