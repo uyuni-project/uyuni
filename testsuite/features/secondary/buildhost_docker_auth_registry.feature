@@ -37,6 +37,7 @@ Feature: Build image with authenticated registry
     When I wait at most 660 seconds until container "auth_registry_profile" with version "latest" is built successfully
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
+    And the list of packages of image "auth_registry_profile" with version "latest" is not empty
 
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     When I follow the left menu "Images > Profiles"
