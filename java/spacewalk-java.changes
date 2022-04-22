@@ -1,3 +1,4 @@
+- add schedulePackageUpdate() XMLRPC function (bsc#1197507)
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
 - Allow to add failed and completed servers to SSM
 - drop specialized SSL truststore for db connections in favor
