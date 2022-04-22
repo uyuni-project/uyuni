@@ -13,7 +13,8 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
     FROM SystemPackageInstalled
               INNER JOIN SystemChannel ON ( SystemPackageInstalled.mgm_id = SystemChannel.mgm_id AND SystemPackageInstalled.system_id = SystemChannel.system_id )
               INNER JOIN ChannelPackage ON ( SystemChannel.mgm_id = ChannelPackage.mgm_id AND ChannelPackage.channel_id = SystemChannel.channel_id)
-              INNER JOIN Package ON ( ChannelPackage.package_id  = Package.package_id 
+              INNER JOIN Package ON (  SystemPackageInstalled.mgm_id = Package.mgm_id
+                                                AND ChannelPackage.package_id  = Package.package_id 
                                                 AND Package.name = SystemPackageInstalled.name
                                                 AND COALESCE(Package.epoch, '') = COALESCE(SystemPackageInstalled.epoch, '')
                                                 AND Package.version = SystemPackageInstalled.version

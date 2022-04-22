@@ -22,6 +22,6 @@ CREATE OR REPLACE VIEW ChannelPackagesReport AS
             , Package.synced_date
     FROM Channel
             INNER JOIN ChannelPackage ON ( Channel.mgm_id = ChannelPackage.mgm_id AND Channel.channel_id = ChannelPackage.channel_id )
-            INNER JOIN Package ON ( ChannelPackage.package_id = Package.package_id )
+            INNER JOIN Package ON ( Channel.mgm_id = Package.mgm_id AND ChannelPackage.package_id = Package.package_id )
 ORDER BY Channel.mgm_id, Channel.label, Package.name, Package.version, Package.release, Package.epoch, Package.arch
 ;
