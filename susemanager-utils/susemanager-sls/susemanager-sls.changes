@@ -1,3 +1,4 @@
+- add packages.pkgupdate state (bsc#1197507)
 - Uninstall the products with no successors after migration
 
 -------------------------------------------------------------------
