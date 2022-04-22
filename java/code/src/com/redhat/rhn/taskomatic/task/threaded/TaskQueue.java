@@ -131,6 +131,20 @@ public class TaskQueue {
             }
         }
         setupQueue(workers);
+
+        if (queueDriver.isBlockingTaskQueue()) {
+            try {
+                waitForEmptyQueue();
+            }
+            catch (InterruptedException e) {
+                queueDriver.getLogger().error(e);
+                HibernateFactory.commitTransaction();
+                HibernateFactory.closeSession();
+                HibernateFactory.getSession();
+                return;
+            }
+        }
+
         if (isTaskQueueDone()) {
             // everything done
             queueDriver.getLogger().debug("Finishing run {}", queueRun.getId());
