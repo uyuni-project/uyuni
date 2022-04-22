@@ -91,4 +91,12 @@ public class ErrataQueueDriver implements QueueDriver {
     public void initialize() {
         // empty
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isBlockingTaskQueue() {
+        return false;
+    }
 }
