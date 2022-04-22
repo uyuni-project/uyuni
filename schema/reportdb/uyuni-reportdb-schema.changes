@@ -1,3 +1,4 @@
+- Remove packages info fomr channel package table
 - add order index for SystemPackageInstalled
 
 -------------------------------------------------------------------
