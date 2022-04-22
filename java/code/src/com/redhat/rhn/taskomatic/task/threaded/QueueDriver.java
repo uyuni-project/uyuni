@@ -72,5 +72,7 @@ public interface QueueDriver<T> {
      * Specify if this is a blocking worker thread
      * @return true if the task queue should wait end of the workers before continue
      */
-    boolean isBlockingTaskQueue();
+    default boolean isBlockingTaskQueue() {
+        return false;
+    }
 }
