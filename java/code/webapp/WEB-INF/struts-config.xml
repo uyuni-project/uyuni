@@ -1871,20 +1871,9 @@
     <action path="/schedule/FailedSystems"
             scope="request"
             input="/WEB-INF/pages/schedule/failedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsSetupAction">
+            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsAction">
             <forward name="default"
                      path="/WEB-INF/pages/schedule/failedsystems.jsp" />
-    </action>
-
-    <action path="/schedule/FailedSystemsSubmit"
-            scope="request"
-            input="/WEB-INF/pages/schedule/failedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsAction"
-            parameter="dispatch"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="postRequired" value="true" />
-            <forward name="default"
-                     path="/schedule/FailedSystems.do" redirect="true" />
             <forward name="scheduled"
                      path="/schedule/ActionDetails.do" redirect="true" />
     </action>

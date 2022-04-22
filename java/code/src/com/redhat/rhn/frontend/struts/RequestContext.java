@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.struts;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -33,6 +34,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -61,6 +63,7 @@ public class RequestContext {
     public static final String USER_ID = "uid";
     public static final String ORG_ID = "oid";
     public static final String ERRATA_ID = "eid";
+    public static final String AID = "aid";
     public static final String SID = "sid";
     public static final String SID1 = "sid_1";
     public static final String CID = "cid";
@@ -90,6 +93,7 @@ public class RequestContext {
     public static final String KICKSTART = "ksdata";
     public static final String ORG = "org";
     public static final String SYSTEM = "system";
+    public static final String ACTION = "action";
     public static final String SERVER_GROUP = "systemgroup";
     public static final String KICKSTART_SESSION = "ksession";
     public static final String REQUESTED_URI = "requestedUri";
@@ -360,6 +364,27 @@ public class RequestContext {
             request.setAttribute(SERVER_GROUP, sg);
         }
         return (ManagedServerGroup) request.getAttribute(SERVER_GROUP);
+    }
+
+    /**
+     * Return the Action with the ID given by the request's {@link #ACTION}
+     * parameter. Puts the Action in the request attributes.
+     * @return the  Action with the ID given by the request's {@link #ACTION}
+     * @throws IllegalArgumentException if no Action with the ID given in the
+     * request can be found
+     */
+    public Action lookupAndBindAction() {
+        if (request.getAttribute(AID) == null) {
+            Long aid = getRequiredParam(AID);
+            User user = getCurrentUser();
+            Action action = ActionManager.lookupAction(user, aid);
+            if (action == null) {
+                String msg = "No action with id = [%s] found.";
+                throw new IllegalArgumentException(String.format(msg, aid));
+            }
+            request.setAttribute(ACTION, action);
+        }
+        return (Action) request.getAttribute(ACTION);
     }
 
     private void assertObjectFound(Object obj, Long id, String paramName, String objName) {
