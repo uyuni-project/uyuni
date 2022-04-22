@@ -68,7 +68,7 @@ end
 
 When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, channel|
   system_name1 = get_system_name(host1)
-  node_id1 = $api_test.system_retrieve_server_id(system_name1)
+  node_id1 = $api_test.system.retrieve_server_id(system_name1)
   $api_test.system.config.remove_channels([ node_id1 ], [ channel ])
 end
 
