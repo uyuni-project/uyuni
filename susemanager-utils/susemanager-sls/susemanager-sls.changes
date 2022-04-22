@@ -1,3 +1,4 @@
+- Fix bootstrap repository path resolution for Oracle Linux
 - Handle salt bundle in set_proxy.sls
 
 -------------------------------------------------------------------
