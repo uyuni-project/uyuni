@@ -50,7 +50,7 @@ class NamespaceChannelSoftware
   end
 
   def remove_repo(label)
-    @test.call('channel.software.removeRepo', sessionKey: @test.token, id: label)
+    @test.call('channel.software.removeRepo', sessionKey: @test.token, label: label)
   end
 
   def parent_channel?(child, parent)
