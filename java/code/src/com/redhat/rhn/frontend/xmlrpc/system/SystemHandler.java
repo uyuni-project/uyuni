@@ -4047,6 +4047,42 @@ public class SystemHandler extends BaseHandler {
 
 
     /**
+     * Private helper method is called by other methods to perform package action.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @return package action id
+     */
+    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids,
+            Date earliestOccurrence, ActionType acT) {
+        HashSet<Long> lsids = new HashSet<>();
+        for (Integer sid : sids) {
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
+                    loggedInUser);
+
+            // Would be nice to do this check at the Manager layer but upset many tests,
+            // some of which were not cooperative when being fixed. Placing here for now.
+            if (!SystemManager.hasEntitlement(server.getId(), EntitlementManager.SALT)) {
+                throw new MissingEntitlementException(
+                        EntitlementManager.SALT.getHumanReadableLabel());
+            }
+            lsids.add(server.getId());
+        }
+
+        try {
+            return ActionManager.schedulePackageAction(loggedInUser, null, acT,
+                    earliestOccurrence, lsids).getId();
+        }
+        catch (MissingEntitlementException e) {
+            throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
      * Private helper method to build a list of maps in the format the ActionManager wants.
      *
      * @param user The current user
@@ -4200,6 +4236,29 @@ public class SystemHandler extends BaseHandler {
         else {
             throw new RetractedPackageFault(retractedPids);
         }
+    }
+
+    /**
+     * Schedule full package update for several systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @return package action id
+     * @since 25
+     *
+     * @xmlrpc.doc Schedule full package update for several systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.returntype #param("int", "actionId")
+     */
+    public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
+                                        Date earliestOccurrence) {
+
+        return schedulePackagesUpdateAction(loggedInUser, sids,
+                earliestOccurrence,
+                ActionFactory.TYPE_PACKAGES_UPDATE);
     }
 
     /**
