@@ -106,4 +106,12 @@ public class ErrataCacheDriver implements QueueDriver {
         }
         return consolidated;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isBlockingTaskQueue() {
+        return false;
+    }
 }

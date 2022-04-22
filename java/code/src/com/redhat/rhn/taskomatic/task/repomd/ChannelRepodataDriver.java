@@ -114,4 +114,12 @@ public class ChannelRepodataDriver implements QueueDriver {
     public QueueWorker makeWorker(Object workItem) {
         return new ChannelRepodataWorker((Map) workItem, getLogger());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isBlockingTaskQueue() {
+        return false;
+    }
 }
