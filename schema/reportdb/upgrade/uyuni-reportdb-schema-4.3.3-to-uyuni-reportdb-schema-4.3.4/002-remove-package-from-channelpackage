@@ -69,5 +69,6 @@ ALTER TABLE channelpackage
     DROP COLUMN IF EXISTS package_version,
     DROP COLUMN IF EXISTS package_release,
     DROP COLUMN IF EXISTS package_type,
-    DROP COLUMN IF EXISTS package_arch
+    DROP COLUMN IF EXISTS package_arch,
+    DROP COLUMN IF EXISTS channel_label
 ;
