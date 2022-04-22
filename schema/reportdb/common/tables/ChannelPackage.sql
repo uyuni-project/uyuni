@@ -14,7 +14,6 @@ CREATE TABLE ChannelPackage
     mgm_id                    NUMERIC NOT NULL,
     channel_id                NUMERIC NOT NULL,
     package_id                NUMERIC NOT NULL,
-    channel_label             VARCHAR(128),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 
