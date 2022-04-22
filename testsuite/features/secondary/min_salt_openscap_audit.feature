@@ -9,9 +9,10 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "sle_minion"
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Install the OpenSCAP packages on the SLE minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I enable repository "os_pool_repo os_update_repo os_ltss_repo" on this "sle_minion"
     And I enable client tools repositories on "sle_minion"
     And I refresh the metadata for "sle_minion"
@@ -90,3 +91,4 @@ Feature: OpenSCAP audit of Salt minion
     When I remove OpenSCAP dependencies from "sle_minion"
     And I disable repository "os_pool_repo os_update_repo os_ltss_repo" on this "sle_minion"
     And I disable client tools repositories on "sle_minion"
+    And I logout from API
