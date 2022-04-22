@@ -1037,22 +1037,27 @@ def do_system_upgradepackage(self, args):
 
     # make a dictionary of each system and the package IDs to install
     jobs = {}
+    minions = {}
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
             continue
-
-        packages = \
-            self.client.system.listLatestUpgradablePackages(self.session,
-                                                            system_id)
-
-        if packages:
-            package_ids = [p.get('to_package_id') for p in packages]
-            jobs[system] = package_ids
+        details = self.client.system.getDetails(self.session, system_id)
+        if self.check_api_version('25.0') and \
+           details.get('base_entitlement', '') == 'salt_entitled':
+            minions[system] = system_id
         else:
-            logging.warning(_N('No upgrades available for %s') % system)
+            packages = \
+                self.client.system.listLatestUpgradablePackages(self.session,
+                                                                system_id)
 
-    if not jobs:
+            if packages:
+                package_ids = [p.get('to_package_id') for p in packages]
+                jobs[system] = package_ids
+            else:
+                logging.warning(_N('No upgrades available for %s') % system)
+
+    if not jobs and not minions:
         return 1
 
     add_separator = False
@@ -1077,10 +1082,21 @@ def do_system_upgradepackage(self, args):
 
         print('\n'.join(sorted(package_names)))
 
+    for system in minions:
+        if add_separator:
+            print(self.SEPARATOR)
+        add_separator = True
+
+        hdr = _('Full package update on systems:')
+        print(hdr)
+        print('-' * len(hdr))
+        print('- {}'.format(system))
+
+
     print('')
     print(_('Start Time: %s') % options.start_time)
 
-    if not self.user_confirm(_('Upgrade these packages [y/N]:')):
+    if not self.user_confirm(_('Upgrade these systems/packages [y/N]:')):
         return 1
 
     scheduled = 0
@@ -1096,6 +1112,17 @@ def do_system_upgradepackage(self, args):
             scheduled += 1
         except xmlrpclib.Fault:
             logging.error(_N('Failed to schedule %s') % system)
+
+    if minions:
+        try:
+            sids = list(minions.values())
+            self.client.system.schedulePackageUpdate(self.session,
+                                                     sids,
+                                                     options.start_time)
+            scheduled += len(sids)
+        except xmlrpclib.Fault:
+             logging.error(_N('Failed to schedule %s') % system)
+
 
     logging.info(_N('Scheduled %i system(s)') % scheduled)
 

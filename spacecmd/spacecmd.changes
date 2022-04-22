@@ -1,3 +1,5 @@
+- on full system update call schedulePackageUpdate API (bsc#1197507)
+
 -------------------------------------------------------------------
 Wed May 04 14:08:30 CEST 2022 - jmassaguerpla@suse.de
 
