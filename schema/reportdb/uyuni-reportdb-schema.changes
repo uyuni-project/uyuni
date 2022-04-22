@@ -1,4 +1,4 @@
-- Remove packages info from channel package table
+- Remove fields info from channel package table
 - add order index for SystemPackageInstalled
 
 -------------------------------------------------------------------
