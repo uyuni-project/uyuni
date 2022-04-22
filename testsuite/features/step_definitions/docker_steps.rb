@@ -43,11 +43,11 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" with version "([^"
   raise 'unable to find the image id' if image_id.zero?
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
-    idetails = $api_test.image.get_details(image_id)
-    log "Image Details: #{idetails}"
-    break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
-    raise 'image build failed.' if idetails['buildStatus'] == 'failed'
-    raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
+    image_details = $api_test.image.get_details(image_id)
+    log "Image Details: #{image_details}"
+    break if image_details['buildStatus'] == 'completed' && image_details['inspectStatus'] == 'completed'
+    raise 'image build failed.' if image_details['buildStatus'] == 'failed'
+    raise 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
     sleep 5
   end
 end
@@ -116,7 +116,7 @@ Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not emp
   end
   raise 'unable to find the image id' if image_id.zero?
 
-  image_details = $api_test.image.get_image_details(image_id)
+  image_details = $api_test.image.get_details(image_id)
   log "Image Details: #{image_details}"
   raise 'the list of image packages is empty' if (image_details['installedPackages']).zero?
 end
