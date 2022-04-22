@@ -174,7 +174,7 @@ class NamespaceSystemSearch
     @test = api_test
   end
 
-  def hostname(hostname)
-    @test.call('system.search.hostname', sessionKey: @test.token, searchTerm: hostname)
+  def hostname(server)
+    @test.call('system.search.hostname', sessionKey: @test.token, searchTerm: server)
   end
 end
