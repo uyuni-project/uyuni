@@ -1,4 +1,4 @@
-- improve taskomatic queue parallelism
+- Improve TaskQueue for mgr-update-reporting-hub task
 - improve performance of synchronizing peripheral report databases
 
 -------------------------------------------------------------------
