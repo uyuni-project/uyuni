@@ -14,13 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
+import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +34,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,30 +44,101 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * FailedSystemsAction
  */
-public class FailedSystemsAction extends RhnSetAction {
+public class FailedSystemsAction extends RhnAction implements Listable {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(FailedSystemsAction.class);
 
+    protected void setup(HttpServletRequest request) {
+        RequestContext context = new RequestContext(request);
+        context.lookupAndBindAction();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getDataSetName() {
+        return RequestContext.PAGE_LIST;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getListName() {
+        return "failedSystemsList";
+    }
+
+    protected Map getParamsMap(HttpServletRequest request) {
+        RequestContext context = new RequestContext(request);
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestContext.AID,
+                context.getRequiredParam(RequestContext.AID));
+        return params;
+    }
+
+    @Override
+    public ActionForward execute(ActionMapping mapping,
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
+
+        setup(request);
+        ListSessionSetHelper helper = new ListSessionSetHelper(this,
+                request, getParamsMap(request));
+        processHelper(helper);
+        helper.execute();
+
+        Action action = (Action) request.getAttribute(RequestContext.ACTION);
+        ActionFormatter af = action.getFormatter();
+        request.setAttribute("actionname", af.getName());
+        request.setAttribute("canEdit",
+                String.valueOf(action.getPrerequisite() == null));
+
+        if (Boolean.parseBoolean(request.getParameter("reschedule"))) {
+            ActionForward forward =
+                    handleDispatch(helper, mapping, formIn, request, response);
+            processPostSubmit(helper);
+            return forward;
+        }
+
+        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
+
+    protected void processHelper(ListSessionSetHelper helper) {
+        helper.setDataSetName(getDataSetName());
+        helper.setListName(getListName());
+    }
+
+    protected void processPostSubmit(ListSessionSetHelper helper) {
+        helper.destroy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List getResult(RequestContext context) {
+        Action action = context.lookupAndBindAction();
+        PageControl pc = new PageControl();
+        pc.setFilterColumn("earliest");
+        return ActionManager.failedSystems(context.getCurrentUser(), action, pc);
+    }
+
     /**
      * Resechedules the action whose id is found in the aid formvar.
+     * @param helper list session set helper
      * @param mapping actionmapping
      * @param formIn form containing input
      * @param request HTTP request
      * @param response HTTP response
      * @return the confirmation page.
      */
-    public ActionForward rescheduleActions(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ActionForward handleDispatch(ListSessionSetHelper helper,
+                                        ActionMapping mapping,
+                                        ActionForm formIn, HttpServletRequest request,
+                                        HttpServletResponse response) {
 
-        RequestContext requestContext = new RequestContext(request);
-
-        Long aid = requestContext.getParamAsLong("aid");
-        Action action = ActionManager.lookupAction(requestContext.getCurrentUser(),
-                                                   aid);
-        updateSet(request);
+        Action action = (Action) request.getAttribute(RequestContext.ACTION);
         try {
             ActionManager.rescheduleAction(action, true);
 
@@ -82,41 +157,6 @@ public class FailedSystemsAction extends RhnSetAction {
         }
 
         return getStrutsDelegate().forwardParam(
-                mapping.findForward("scheduled"), "aid", String.valueOf(aid));
-    }
-
-    /** {@inheritDoc} */
-    protected DataResult getDataResult(User user, ActionForm form,
-            HttpServletRequest request) {
-        RequestContext requestContext = new RequestContext(request);
-        Long aid = requestContext.getParamAsLong("aid");
-        Action action = ActionManager.lookupAction(user, aid);
-        //Get an "unelaborated" DataResult containing all of the
-        //user's visible systems
-        return ActionManager.failedSystems(user, action, null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processMethodKeys(Map<String, String> map) {
-        map.put("failedsystems.jsp.rescheduleactions", "rescheduleActions");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processParamMap(ActionForm formIn,
-                                   HttpServletRequest request,
-                                   Map<String, Object> params) {
-        RequestContext requestContext = new RequestContext(request);
-        params.put("aid", requestContext.getParamAsLong("aid"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected RhnSetDecl getSetDecl() {
-        return RhnSetDecl.SYSTEMS_FAILED;
+                mapping.findForward("scheduled"), "aid", String.valueOf(action.getId()));
     }
 }
