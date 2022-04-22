@@ -1,3 +1,4 @@
+- Allow to add failed and completed servers to SSM
 - drop specialized SSL truststore for db connections in favor
   of the java default
 - add menu item for report database schema documentation
