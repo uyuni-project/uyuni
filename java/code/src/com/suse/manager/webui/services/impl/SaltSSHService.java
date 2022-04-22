@@ -122,7 +122,7 @@ public class SaltSSHService {
             "certs", "channels", "cleanup_ssh_minion", "configuration",
             "distupgrade", "hardware", "images", "packages/init.sls",
             "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
-            "packages/pkginstall.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
+            "packages/pkginstall.sls", "packages/pkgupdate.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
             "packages/redhatproductinfo.sls", "remotecommands", "scap", "services",
             "custom", "custom_groups", "custom_org", "util", "bootstrap", "formulas.sls");
 

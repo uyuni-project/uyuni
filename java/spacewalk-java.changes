@@ -1,3 +1,4 @@
+- add schedulePackageUpdate() XMLRPC function (bsc#1197507)
 - update server needed cache after adding Ubuntu Errata (bsc#1196977)
 - check if file exists before sending it to xsendfile (bsc#1198191)
 - Display usertime instead of server time for clm issue date filter (bsc#1198429)

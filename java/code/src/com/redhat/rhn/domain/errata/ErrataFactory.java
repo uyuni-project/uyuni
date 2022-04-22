@@ -819,6 +819,9 @@ public class ErrataFactory extends HibernateFactory {
      * @return pairs of package and server ids of packages that are retracted for a given server.
      */
     public static List<Tuple2<Long, Long>> retractedPackagesByNevra(List<String> nevras, List<Long> sids) {
+        if (nevras.isEmpty()) {
+            return new LinkedList<Tuple2<Long, Long>>();
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("nevras", nevras);
         params.put("sids", sids);
@@ -1050,7 +1053,7 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", orgId);
-        return (List<Errata>) singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
+        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
                 params, ids, "eids");
     }
 

@@ -223,6 +223,7 @@ public class SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    public static final String PACKAGES_PKGUPDATE = "packages.pkgupdate";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
@@ -1173,8 +1174,14 @@ public class SaltServerActionService {
                 .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .collect(Collectors.toList());
-        ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
+        if (pkgs.isEmpty()) {
+            // Full system package update using update state
+            ret.put(State.apply(Arrays.asList(PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
+        }
+        else {
+            ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
+                    Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
+        }
         return ret;
     }
 
