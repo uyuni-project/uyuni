@@ -48,6 +48,16 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
+  @susemanager
+  Scenario: Apply highstate for Prometheus exporters
+    When I enable the repositories "tools_additional_repo tools_additional_repo" on this "sle_minion" without error control
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    Then I should see a "Applying the highstate has been scheduled." text
+    And I wait until event "Apply highstate scheduled by admin" is completed
+    Then I disable the repositories "tools_additional_repo tools_additional_repo" on this "sle_minion" without error control
+
+  @uyuni
   Scenario: Apply highstate for Prometheus exporters
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion" without error control
     When I follow "States" in the content area
