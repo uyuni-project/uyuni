@@ -60,6 +60,8 @@ mgr_server_localhost_alias_absent:
     {%- set os_base = 'amzn' %}
   {%- elif 'alibaba' in grains['osfullname']|lower %}
     {%- set os_base = 'alibaba' %}
+  {%- elif 'oracle' in grains['osfullname']|lower %}
+    {%- set os_base = 'oracle' %}
   {%- endif %}
   #end of expections
 {%- endif %}
