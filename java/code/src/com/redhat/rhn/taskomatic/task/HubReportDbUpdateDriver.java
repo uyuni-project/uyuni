@@ -72,7 +72,7 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
         criteria.from(MgrServerInfo.class);
         Query<MgrServerInfo> query = HibernateFactory.getSession().createQuery(criteria);
         List<MgrServerInfo> mgrServerInfos = query.list();
-        return mgrServerInfos.stream().collect(Collectors.toSet());
+        return new HashSet<>(mgrServerInfos);
     }
 
     /**
