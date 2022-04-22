@@ -1,4 +1,8 @@
-- Fix bootstrap repository path resolution for Oracle Linux
+-------------------------------------------------------------------
+Fri Apr 22 22:11:02 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * Fix bootstrap repository path resolution for Oracle Linux
 
 -------------------------------------------------------------------
 Tue Apr 19 12:13:41 CEST 2022 - jgonzalez@suse.com
