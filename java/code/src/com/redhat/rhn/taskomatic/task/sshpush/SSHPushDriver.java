@@ -284,4 +284,12 @@ public class SSHPushDriver implements QueueDriver {
         params.put("job_label", JOB_LABEL);
         return delete.executeUpdate(params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isBlockingTaskQueue() {
+        return false;
+    }
 }
