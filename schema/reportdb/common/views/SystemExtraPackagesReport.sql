@@ -3,7 +3,7 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
   WITH packages_from_channels AS (
     SELECT SystemPackageInstalled.mgm_id
               , SystemPackageInstalled.system_id
-              , ChannelPackage.package_id
+              , Package.package_id
               , SystemPackageInstalled.name
               , SystemPackageInstalled.epoch
               , SystemPackageInstalled.version
@@ -12,12 +12,13 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
               , SystemPackageInstalled.type
     FROM SystemPackageInstalled
               INNER JOIN SystemChannel ON ( SystemPackageInstalled.mgm_id = SystemChannel.mgm_id AND SystemPackageInstalled.system_id = SystemChannel.system_id )
-              INNER JOIN ChannelPackage ON ( SystemChannel.mgm_id = ChannelPackage.mgm_id AND ChannelPackage.channel_id = SystemChannel.channel_id
-                                                AND ChannelPackage.package_name = SystemPackageInstalled.name
-                                                AND COALESCE(ChannelPackage.package_epoch, '') = COALESCE(SystemPackageInstalled.epoch, '')
-                                                AND ChannelPackage.package_version = SystemPackageInstalled.version
-                                                AND ChannelPackage.package_release = SystemPackageInstalled.release
-                                                AND ChannelPackage.package_arch = SystemPackageInstalled.arch
+              INNER JOIN ChannelPackage ON ( SystemChannel.mgm_id = ChannelPackage.mgm_id AND ChannelPackage.channel_id = SystemChannel.channel_id)
+              INNER JOIN Package ON ( ChannelPackage.package_id  = Package.package_id 
+                                                AND Package.name = SystemPackageInstalled.name
+                                                AND COALESCE(Package.epoch, '') = COALESCE(SystemPackageInstalled.epoch, '')
+                                                AND Package.version = SystemPackageInstalled.version
+                                                AND Package.release = SystemPackageInstalled.release
+                                                AND Package.arch = SystemPackageInstalled.arch
                                            )
   )
   SELECT System.mgm_id
