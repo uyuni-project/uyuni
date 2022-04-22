@@ -11181,7 +11181,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">在我们的数据库中找不到指定的 CVE 编号。您可以从下面提供的链接获取有关此 CVE 的详细信息。</target>
       </trans-unit>
-    <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       <target state="new"/>
   </trans-unit>

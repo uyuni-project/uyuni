@@ -5817,6 +5817,10 @@ msgstr "Kód chyby HTTP "
 #~ "distribuci{1}."
 
 #, fuzzy
+#~ msgid "Waiting for repositories data to be generated"
+#~ msgstr "Generování dat úložiště"
+
+#, fuzzy
 #~ msgid "New base channel"
 #~ msgstr "Nový základní kanál"
 
@@ -5848,6 +5852,14 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Kiwi options"
 #~ msgstr "Volby kiwi"
+
+#, fuzzy
+#~ msgid "Build Log"
+#~ msgstr "Sestavení hostitele"
+
+#, fuzzy
+#~ msgid "Build log is not available."
+#~ msgstr "Nejsou dostupné žádné podřízené kanály."
 
 #~ msgid ""
 #~ "Unable to validate the disk space availability. Please contact your "
@@ -5896,6 +5908,52 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Clear the fact cache for every host in inventory"
 #~ msgstr "Vymazání mezipaměti faktů pro každého hostitele v inventáři"
 
+#, fuzzy
+#~ msgid "Request interrupted or invalid response received from the server."
+#~ msgstr ""
+#~ "Žádost přerušena nebo ze serveru přijata neplatná odpověď. Prosím "
+#~ "opakujte."
+
+#, fuzzy
+#~ msgid "Proxy FQDN"
+#~ msgstr "Proxy"
+
+#, fuzzy
+#~ msgid "e.g., proxy.domain.com"
+#~ msgstr "např. host.doman.com"
+
+#, fuzzy
+#~ msgid "e.g., server.domain.com"
+#~ msgstr "např. host.doman.com"
+
+#, fuzzy
+#~ msgid "Proxy SSH port"
+#~ msgstr "Port"
+
+#, fuzzy
+#~ msgid "e.g., 2048"
+#~ msgstr "např. SLE12"
+
+#, fuzzy
+#~ msgid "e.g., proxy.admin@mycompany.com"
+#~ msgstr "např. host.doman.com"
+
+#, fuzzy
+#~ msgid "The CA private key password"
+#~ msgstr "Vygenerovat nové heslo"
+
+#, fuzzy
+#~ msgid "Organization Unit"
+#~ msgstr "Organizace"
+
+#, fuzzy
+#~ msgid "Intermediate CAs"
+#~ msgstr "Rozhraní"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Všeobecné"
+
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
 #~ "time will be the server time."
@@ -5918,6 +5976,18 @@ msgstr "Kód chyby HTTP "
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+
+#, fuzzy
+#~ msgid "Not a system id"
+#~ msgstr "Nenalezeny žádné cílové systémy"
+
+#, fuzzy
+#~ msgid "Unknown System"
+#~ msgstr "Neznámý host"
+
+#, fuzzy
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "Vygenerovat nové heslo"
 
 #, fuzzy
 #~ msgid "Change Proxy"

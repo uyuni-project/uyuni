@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-03-23 09:12+0000\n"
+"PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -5738,6 +5738,9 @@ msgstr "HTTP 错误代码 "
 #~ "autoinstallation distribution{1}."
 #~ msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
 
+#~ msgid "Waiting for repositories data to be generated"
+#~ msgstr "正在等待生成储存库数据"
+
 #~ msgid "New base channel"
 #~ msgstr "新基础频道"
 
@@ -5764,6 +5767,18 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 选项"
 
+#~ msgid "Build Log"
+#~ msgstr "构建日志"
+
+#~ msgid "Build log is not available."
+#~ msgstr "无可用构建日志。"
+
+#~ msgid "Show obsolete"
+#~ msgstr "显示过时项"
+
+#~ msgid "(obsolete)"
+#~ msgstr "（过时）"
+
 #~ msgid ""
 #~ "Unable to validate the disk space availability. Please contact your "
 #~ "system admistrator if this problem persists."
@@ -5785,6 +5800,14 @@ msgstr "HTTP 错误代码 "
 #~ msgstr ""
 #~ "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
 
+#~ msgid ""
+#~ "Below is a list of Maintenance Schedules available to the current user."
+#~ msgstr "以下是当前用户可使用的维护日程安排列表。"
+
+#~ msgid ""
+#~ "Below is a list of Maintenance Calendars available to the current user."
+#~ msgstr "以下是当前用户可使用的维护日历列表。"
+
 #~ msgid "Playbook File Name"
 #~ msgstr "剧本文件名"
 
@@ -5805,6 +5828,121 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "Pay-as-you-go 刷新身份验证数据失败"
+
+#~ msgid ""
+#~ "The container based proxy configuration has been generated correctly."
+#~ msgstr "已正确生成基于容器的代理配置。"
+
+#~ msgid ""
+#~ "Generation of the proxy configuration in progress: waiting for a "
+#~ "response..."
+#~ msgstr "正在生成代理配置：正在等待响应..."
+
+#~ msgid "Request interrupted or invalid response received from the server."
+#~ msgstr "请求已中断，或者从服务器收到了无效响应。"
+
+#~ msgid "Container Based Proxy Configuration"
+#~ msgstr "基于容器的代理配置"
+
+#~ msgid ""
+#~ "You can generate a set of configuration files and certificates in order "
+#~ "to register and run a container-based proxy. Once the following form is "
+#~ "filled out and submitted you will get a .zip archive to download."
+#~ msgstr ""
+#~ "您可以生成一组配置文件和证书以注册并运行基于容器的代理。填写并提交下面的表"
+#~ "单后，系统将提供一个 .zip 存档供您下载。"
+
+#~ msgid "Proxy FQDN"
+#~ msgstr "代理 FQDN"
+
+#~ msgid "e.g., proxy.domain.com"
+#~ msgstr "例如 proxy.domain.com"
+
+#~ msgid "Server FQDN"
+#~ msgstr "服务器 FQDN"
+
+#~ msgid "e.g., server.domain.com"
+#~ msgstr "例如 server.domain.com"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "代理要连接到的服务器的 FQDN。"
+
+#~ msgid "Proxy SSH port"
+#~ msgstr "代理 SSH 端口"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "最大 Squid 缓存大小 (MB)"
+
+#~ msgid "e.g., 2048"
+#~ msgstr "例如 2048"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "代理管理员电子邮件"
+
+#~ msgid "e.g., proxy.admin@mycompany.com"
+#~ msgstr "例如 proxy.admin@mycompany.com"
+
+#~ msgid "SSL certificate"
+#~ msgstr "SSL 证书"
+
+#~ msgid "Use existing"
+#~ msgstr "使用现有的"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 证书"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 私用密钥"
+
+#~ msgid "The CA private key password"
+#~ msgstr "CA 私用密钥口令"
+
+#~ msgid "SSL Certificate data"
+#~ msgstr "SSL 证书数据"
+
+#~ msgid "Alternate CNAMEs"
+#~ msgstr "备用 CNAME"
+
+#~ msgid "CNAME"
+#~ msgstr "CNAME"
+
+#~ msgid "2-letter country code"
+#~ msgstr "2 位字母国家/地区代码"
+
+#~ msgid "City"
+#~ msgstr "城市"
+
+#~ msgid "Organization Unit"
+#~ msgstr "组织单位"
+
+#~ msgid "Email"
+#~ msgstr "电子邮件"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的根 CA"
+
+#~ msgid "Intermediate CAs"
+#~ msgstr "中间 CA"
+
+#~ msgid "CA file in PEM format"
+#~ msgstr "PEM 格式的 CA 文件"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 格式的代理 CRT 内容"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM 格式的代理 SSL 私用密钥"
+
+#~ msgid "Generate"
+#~ msgstr "生成"
+
+#~ msgid "The following recurring actions have been created."
+#~ msgstr "已创建以下重复操作。"
+
+#~ msgid ""
+#~ "To create new recurring actions head to the system, group or organization "
+#~ "you want to create the action for."
+#~ msgstr "要创建新的重复操作，请转到您要为其创建操作的系统、组或组织。"
 
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
@@ -5839,6 +5977,36 @@ msgstr "HTTP 错误代码 "
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "正在进行引导，您确定要关闭此页面吗？"
+
+#~ msgid "Not a system id"
+#~ msgstr "不是系统 ID"
+
+#~ msgid "Unknown System"
+#~ msgstr "未知系统"
+
+#~ msgid "System is not a peripheral server"
+#~ msgstr "系统不是外设服务器"
+
+#~ msgid "New password generated and action for peripheral server scheduled"
+#~ msgstr "已生成新口令并为外设服务器安排了操作"
+
+#~ msgid "Peripheral Server"
+#~ msgstr "外设服务器"
+
+#~ msgid "Report Database Name"
+#~ msgstr "报告数据库名称"
+
+#~ msgid "Report Database Host"
+#~ msgstr "报告数据库主机"
+
+#~ msgid "Report Database User"
+#~ msgstr "报告数据库用户"
+
+#~ msgid "Report Database Last Synced"
+#~ msgstr "报告数据库上次同步"
+
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "重新生成报告数据库口令"
 
 #~ msgid ""
 #~ "Please select a list of minions (not proxies or traditional clients)."

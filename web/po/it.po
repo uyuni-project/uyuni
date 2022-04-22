@@ -5534,6 +5534,22 @@ msgstr ""
 #~ msgstr "Crea"
 
 #, fuzzy
+#~ msgid "Build Log"
+#~ msgstr "Crea"
+
+#, fuzzy
+#~ msgid "Proxy FQDN"
+#~ msgstr "Proxy"
+
+#, fuzzy
+#~ msgid "Organization Unit"
+#~ msgstr "Organizzazione"
+
+#, fuzzy
+#~ msgid "Unknown System"
+#~ msgstr "Sistema"
+
+#, fuzzy
 #~ msgid "New Proxy"
 #~ msgstr "Proxy"
 

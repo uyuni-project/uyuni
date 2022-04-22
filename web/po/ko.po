@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-03-23 05:12+0000\n"
+"PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -5831,6 +5831,9 @@ msgstr "HTTP 오류 코드 "
 #~ msgstr ""
 #~ "이 환경은 {0}자동 설치 배포{1}에서 사용 중이므로 삭제할 수 없습니다."
 
+#~ msgid "Waiting for repositories data to be generated"
+#~ msgstr "리포지토리 데이터 생성을 기다리는 중"
+
 #~ msgid "New base channel"
 #~ msgstr "새 기본 채널"
 
@@ -5857,6 +5860,18 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwi 옵션"
+
+#~ msgid "Build Log"
+#~ msgstr "로그 빌드"
+
+#~ msgid "Build log is not available."
+#~ msgstr "로그 빌드를 사용할 수 없습니다."
+
+#~ msgid "Show obsolete"
+#~ msgstr "더 이상 사용되지 않는 항목 표시"
+
+#~ msgid "(obsolete)"
+#~ msgstr "(사용되지 않음)"
 
 #~ msgid ""
 #~ "Unable to validate the disk space availability. Please contact your "
@@ -5886,6 +5901,14 @@ msgstr "HTTP 오류 코드 "
 #~ "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려"
 #~ "면 시스템 관리자에게 문의하십시오."
 
+#~ msgid ""
+#~ "Below is a list of Maintenance Schedules available to the current user."
+#~ msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 일정 목록입니다."
+
+#~ msgid ""
+#~ "Below is a list of Maintenance Calendars available to the current user."
+#~ msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 달력 목록입니다."
+
 #~ msgid "Playbook File Name"
 #~ msgstr "플레이북 파일 이름"
 
@@ -5906,6 +5929,124 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "용량제 새로 고침 인증 데이터 실패"
+
+#~ msgid ""
+#~ "The container based proxy configuration has been generated correctly."
+#~ msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
+
+#~ msgid ""
+#~ "Generation of the proxy configuration in progress: waiting for a "
+#~ "response..."
+#~ msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
+
+#~ msgid "Request interrupted or invalid response received from the server."
+#~ msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다."
+
+#~ msgid "Container Based Proxy Configuration"
+#~ msgstr "컨테이너 기반 프록시 구성"
+
+#~ msgid ""
+#~ "You can generate a set of configuration files and certificates in order "
+#~ "to register and run a container-based proxy. Once the following form is "
+#~ "filled out and submitted you will get a .zip archive to download."
+#~ msgstr ""
+#~ "컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생"
+#~ "성할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 .zip 아카이브"
+#~ "가 제공됩니다."
+
+#~ msgid "Proxy FQDN"
+#~ msgstr "프록시 FQDN"
+
+#~ msgid "e.g., proxy.domain.com"
+#~ msgstr "예: proxy.domain.com"
+
+#~ msgid "Server FQDN"
+#~ msgstr "서버 FQDN"
+
+#~ msgid "e.g., server.domain.com"
+#~ msgstr "예: server.domain.com"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "연결한 프록시의 서버 FQDN입니다."
+
+#~ msgid "Proxy SSH port"
+#~ msgstr "프록시 SSH 포트"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "최대 Squid 캐시 크기(MB)"
+
+#~ msgid "e.g., 2048"
+#~ msgstr "예: 2048"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "프록시 관리자 전자 메일"
+
+#~ msgid "e.g., proxy.admin@mycompany.com"
+#~ msgstr "예: proxy.admin@mycompany.com"
+
+#~ msgid "SSL certificate"
+#~ msgstr "SSL 인증서"
+
+#~ msgid "Use existing"
+#~ msgstr "기존 항목 사용"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 개인 키"
+
+#~ msgid "The CA private key password"
+#~ msgstr "CA 개인 키 비밀번호"
+
+#~ msgid "SSL Certificate data"
+#~ msgstr "SSL 인증서 데이터"
+
+#~ msgid "Alternate CNAMEs"
+#~ msgstr "대체 CNAME"
+
+#~ msgid "CNAME"
+#~ msgstr "CNAME"
+
+#~ msgid "2-letter country code"
+#~ msgstr "2자 국가 코드"
+
+#~ msgid "City"
+#~ msgstr "시/도"
+
+#~ msgid "Organization Unit"
+#~ msgstr "조직 단위"
+
+#~ msgid "Email"
+#~ msgstr "전자 메일"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
+
+#~ msgid "Intermediate CAs"
+#~ msgstr "중간 CA"
+
+#~ msgid "CA file in PEM format"
+#~ msgstr "PEM 형식의 CA 파일"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 형식의 프록시 CRT 컨텐트"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM 형식의 프록시 SSL 개인 키"
+
+#~ msgid "Generate"
+#~ msgstr "생성"
+
+#~ msgid "The following recurring actions have been created."
+#~ msgstr "다음 반복 작업이 생성되었습니다."
+
+#~ msgid ""
+#~ "To create new recurring actions head to the system, group or organization "
+#~ "you want to create the action for."
+#~ msgstr ""
+#~ "새 반복 작업을 생성하려면 작업을 생성할 시스템, 그룹 또는 조직으로 이동하"
+#~ "십시오."
 
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
@@ -5942,6 +6083,36 @@ msgstr "HTTP 오류 코드 "
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습니까?"
+
+#~ msgid "Not a system id"
+#~ msgstr "시스템 ID가 아닙니다."
+
+#~ msgid "Unknown System"
+#~ msgstr "알 수 없는 시스템"
+
+#~ msgid "System is not a peripheral server"
+#~ msgstr "시스템이 주변기기 서버가 아닙니다."
+
+#~ msgid "New password generated and action for peripheral server scheduled"
+#~ msgstr "새 비밀번호가 생성되고 주변기기 서버에 대한 작업이 예약됨"
+
+#~ msgid "Peripheral Server"
+#~ msgstr "주변기기 서버"
+
+#~ msgid "Report Database Name"
+#~ msgstr "데이터베이스 이름 보고"
+
+#~ msgid "Report Database Host"
+#~ msgstr "데이터베이스 호스트 보고"
+
+#~ msgid "Report Database User"
+#~ msgstr "데이터베이스 사용자 보고"
+
+#~ msgid "Report Database Last Synced"
+#~ msgstr "데이터베이스 마지막 동기화 시간 보고"
+
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "데이터베이스 비밀번호 보고 생성"
 
 #~ msgid ""
 #~ "Please select a list of minions (not proxies or traditional clients)."

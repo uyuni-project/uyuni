@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-03-24 04:12+0000\n"
+"PO-Revision-Date: 2022-04-18 03:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -5908,6 +5908,9 @@ msgstr "HTTP エラーコード "
 #~ "この環境は {0}自動インストールディストリビューション{1} で使用されているた"
 #~ "め、削除できません。"
 
+#~ msgid "Waiting for repositories data to be generated"
+#~ msgstr "リポジトリデータが生成されるのを待機しています"
+
 #~ msgid "New base channel"
 #~ msgstr "新しいベースチャンネル"
 
@@ -5935,6 +5938,18 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Kiwi options"
 #~ msgstr "Kiwiオプション"
+
+#~ msgid "Build Log"
+#~ msgstr "構築ログ"
+
+#~ msgid "Build log is not available."
+#~ msgstr "構築ログは利用できません。"
+
+#~ msgid "Show obsolete"
+#~ msgstr "非推奨の表示"
+
+#~ msgid "(obsolete)"
+#~ msgstr "(非推奨)"
 
 #~ msgid ""
 #~ "Unable to validate the disk space availability. Please contact your "
@@ -5964,6 +5979,15 @@ msgstr "HTTP エラーコード "
 #~ "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追"
 #~ "加するには、システム管理者に連絡してください。"
 
+#~ msgid ""
+#~ "Below is a list of Maintenance Schedules available to the current user."
+#~ msgstr ""
+#~ "以下は、現在のユーザに対する有効なメンテナンススケジュール一覧です。"
+
+#~ msgid ""
+#~ "Below is a list of Maintenance Calendars available to the current user."
+#~ msgstr "以下は現在のユーザに対する、有効なメンテナンスカレンダの一覧です。"
+
 #~ msgid "Playbook File Name"
 #~ msgstr "playbookファイル名"
 
@@ -5984,6 +6008,125 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "従量課金制の認証データの更新が失敗しました"
+
+#~ msgid ""
+#~ "The container based proxy configuration has been generated correctly."
+#~ msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
+
+#~ msgid ""
+#~ "Generation of the proxy configuration in progress: waiting for a "
+#~ "response..."
+#~ msgstr "プロキシ設定の生成が進行中です: 応答を待機しています..."
+
+#~ msgid "Request interrupted or invalid response received from the server."
+#~ msgstr ""
+#~ "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
+
+#~ msgid "Container Based Proxy Configuration"
+#~ msgstr "コンテナベースのプロキシ設定"
+
+#~ msgid ""
+#~ "You can generate a set of configuration files and certificates in order "
+#~ "to register and run a container-based proxy. Once the following form is "
+#~ "filled out and submitted you will get a .zip archive to download."
+#~ msgstr ""
+#~ "コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明"
+#~ "書を生成できます。次のフォームに入力して送信すると、ダウンロードする.zip"
+#~ "アーカイブが取得されます。"
+
+#~ msgid "Proxy FQDN"
+#~ msgstr "プロキシFQDN"
+
+#~ msgid "e.g., proxy.domain.com"
+#~ msgstr "例: proxy.domain.com"
+
+#~ msgid "Server FQDN"
+#~ msgstr "サーバFQDN"
+
+#~ msgid "e.g., server.domain.com"
+#~ msgstr "例: server.domain.com"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "接続するプロキシのサーバのFQDN。"
+
+#~ msgid "Proxy SSH port"
+#~ msgstr "プロキシSSHポート"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "Squidの最大キャッシュサイズ(MB)"
+
+#~ msgid "e.g., 2048"
+#~ msgstr "例: 2048"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "プロキシ管理者の電子メール"
+
+#~ msgid "e.g., proxy.admin@mycompany.com"
+#~ msgstr "例: proxy.admin@mycompany.com"
+
+#~ msgid "SSL certificate"
+#~ msgstr "SSL証明書"
+
+#~ msgid "Use existing"
+#~ msgstr "既存の使用"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA機密鍵"
+
+#~ msgid "The CA private key password"
+#~ msgstr "CA機密鍵のパスワード"
+
+#~ msgid "SSL Certificate data"
+#~ msgstr "SSL証明書データ"
+
+#~ msgid "Alternate CNAMEs"
+#~ msgstr "代替CNAME"
+
+#~ msgid "CNAME"
+#~ msgstr "CNAME"
+
+#~ msgid "2-letter country code"
+#~ msgstr "2文字の国コード"
+
+#~ msgid "City"
+#~ msgstr "市区町村"
+
+#~ msgid "Organization Unit"
+#~ msgstr "組織単位"
+
+#~ msgid "Email"
+#~ msgstr "電子メール"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+
+#~ msgid "Intermediate CAs"
+#~ msgstr "中間CA"
+
+#~ msgid "CA file in PEM format"
+#~ msgstr "PEM形式のCAファイル"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM形式のプロキシCRTコンテンツ"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM形式のプロキシSSL機密鍵"
+
+#~ msgid "Generate"
+#~ msgstr "生成"
+
+#~ msgid "The following recurring actions have been created."
+#~ msgstr "繰り返し動作が作成されました。"
+
+#~ msgid ""
+#~ "To create new recurring actions head to the system, group or organization "
+#~ "you want to create the action for."
+#~ msgstr ""
+#~ "新しい定期的なアクションを作成するには、アクションを作成するシステム、グ"
+#~ "ループ、または組織に移動します。"
 
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
@@ -6021,6 +6164,38 @@ msgstr "HTTP エラーコード "
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "ブートストラップ中にこのページを閉じてもよろしいですか?"
+
+#~ msgid "Not a system id"
+#~ msgstr "システムIDではありません"
+
+#~ msgid "Unknown System"
+#~ msgstr "不明なシステム"
+
+#~ msgid "System is not a peripheral server"
+#~ msgstr "システムは周辺機器サーバではありません"
+
+#~ msgid "New password generated and action for peripheral server scheduled"
+#~ msgstr ""
+#~ "新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされま"
+#~ "した"
+
+#~ msgid "Peripheral Server"
+#~ msgstr "周辺機器サーバ"
+
+#~ msgid "Report Database Name"
+#~ msgstr "レポートデータベース名"
+
+#~ msgid "Report Database Host"
+#~ msgstr "レポートデータベースホスト"
+
+#~ msgid "Report Database User"
+#~ msgstr "レポートデータベースユーザ"
+
+#~ msgid "Report Database Last Synced"
+#~ msgstr "レポートデータベースの最終同期日"
+
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "レポーティングデータベースパスワードの生成"
 
 #~ msgid ""
 #~ "Please select a list of minions (not proxies or traditional clients)."

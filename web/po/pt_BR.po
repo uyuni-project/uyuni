@@ -5583,8 +5583,24 @@ msgstr ""
 #~ msgstr "Canal de configuração de estado"
 
 #, fuzzy
+#~ msgid "The CA private key password"
+#~ msgstr "Gerar nova senha"
+
+#, fuzzy
+#~ msgid "Organization Unit"
+#~ msgstr "Organização"
+
+#, fuzzy
 #~ msgid "${defaultChannelName}"
 #~ msgstr "Nome do Canal"
+
+#, fuzzy
+#~ msgid "Unknown System"
+#~ msgstr "Sistemas"
+
+#, fuzzy
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "Gerar nova senha"
 
 #, fuzzy
 #~ msgid "Change Proxy"

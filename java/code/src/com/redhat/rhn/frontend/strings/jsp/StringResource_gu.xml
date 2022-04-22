@@ -24592,97 +24592,6 @@ given channel.</source>
 કે જે આપેલ ચેનલ માટે પેકેજોને બે વાર યાદી કરવાનું
 કારણ બની શકે.</target>
       </trans-unit>
-      <trans-unit id="docsearch.content" xml:space="preserve">
-        <source>Content</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>સમાવિષ્ટ</target>
-      </trans-unit>
-      <trans-unit id="docsearch.free_form" xml:space="preserve">
-        <source>Free Form</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>મફત ફોર્મ</target>
-      </trans-unit>
-      <trans-unit id="docsearch.content_title" xml:space="preserve">
-        <source>Content &amp; Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>સમાવિષ્ટ અને શિર્ષક</target>
-      </trans-unit>
-      <trans-unit id="docsearch.title" xml:space="preserve">
-        <source>Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>શિર્ષક</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
-        <source>Summary</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>સાર</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
-        <source>search</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>શોધ</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
-        <source>Document Search</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>દસ્તાવેજ શોધ</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
-        <source>Document Search will return links to pages matching your search term. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search.do</context>
-        </context-group>
-        <target>દસ્તાવેજ શોધ એ તમારી શોધ મર્યાદાને બંધબેસતા પાનાંઓની કડીઓને પાછી લાવશે. </target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
-        <source>Specify your search criteria below.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>નીચે તમારી શોધ વિચારધારા સ્પષ્ટ કરો.</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
-        <source>Search For:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>આના માટે શોધો:</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
-        <source>What to search:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>શું શોધવાનું છે:</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
-        <source>No pages found.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>પાનાંઓ શોધાયા નથા.</target>
-      </trans-unit>
-      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
-        <source>Page Title</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/Search</context>
-        </context-group>
-        <target>પાનાનું શિર્ષક</target>
-      </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault" xml:space="preserve">
         <source>This is your organizations default autoinstallation profile.</source>
         <context-group name="ctx">
@@ -27962,6 +27871,97 @@ given channel.</source>
         <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.content" xml:space="preserve">
+        <source>Content</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.free_form" xml:space="preserve">
+        <source>Free Form</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.content_title" xml:space="preserve">
+        <source>Content &amp; Title</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.title" xml:space="preserve">
+        <source>Title</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
+        <source>search</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
+        <source>Document Search</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
+        <source>Document Search will return links to pages matching your search term. </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
+        <source>Specify your search criteria below.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
+        <source>Search For:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
+        <source>What to search:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
+        <source>No pages found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
+        <source>Page Title</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
       <target state="new"/>
   </trans-unit>

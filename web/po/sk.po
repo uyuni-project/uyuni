@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-03-04 18:12+0000\n"
+"PO-Revision-Date: 2022-04-21 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5883,6 +5883,9 @@ msgstr "Kód chyby HTTP "
 #~ "Toto prostredie nemožno odstrániť, pretože sa používa v {0}distribúcii s "
 #~ "automatickou inštaláciou{1}."
 
+#~ msgid "Waiting for repositories data to be generated"
+#~ msgstr "Čakanie na vygenerovanie dát repozitárov"
+
 #~ msgid "New base channel"
 #~ msgstr "Nový základný kanál"
 
@@ -5910,6 +5913,18 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Kiwi options"
 #~ msgstr "Voľby kiwi"
+
+#~ msgid "Build Log"
+#~ msgstr "Záznam o zostavení"
+
+#~ msgid "Build log is not available."
+#~ msgstr "Nie je k dispozícii záznam o zostavení."
+
+#~ msgid "Show obsolete"
+#~ msgstr "Zobraziť zastarané"
+
+#~ msgid "(obsolete)"
+#~ msgstr "(zastarané)"
 
 #~ msgid ""
 #~ "Unable to validate the disk space availability. Please contact your "
@@ -5940,6 +5955,18 @@ msgstr "Kód chyby HTTP "
 #~ "kontaktuje svojho systémového administrátora, aby pridal viac miesta na "
 #~ "disku."
 
+#~ msgid ""
+#~ "Below is a list of Maintenance Schedules available to the current user."
+#~ msgstr ""
+#~ "Nižšie je uvedený zoznam plánov údržby, ktoré sú k dispozícii aktuálnemu "
+#~ "používateľovi."
+
+#~ msgid ""
+#~ "Below is a list of Maintenance Calendars available to the current user."
+#~ msgstr ""
+#~ "Nižšie je uvedený zoznam kalendárov údržby, ktoré sú k dispozícii "
+#~ "aktuálnemu používateľovi."
+
 #~ msgid "Playbook File Name"
 #~ msgstr "Názov súboru scenára"
 
@@ -5960,6 +5987,131 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
+
+#~ msgid ""
+#~ "The container based proxy configuration has been generated correctly."
+#~ msgstr ""
+#~ "Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
+
+#~ msgid ""
+#~ "Generation of the proxy configuration in progress: waiting for a "
+#~ "response..."
+#~ msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
+
+#~ msgid "Request interrupted or invalid response received from the server."
+#~ msgstr ""
+#~ "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď."
+
+#~ msgid "Container Based Proxy Configuration"
+#~ msgstr "Konfigurácia proxy založeného na kontajneroch"
+
+#~ msgid ""
+#~ "You can generate a set of configuration files and certificates in order "
+#~ "to register and run a container-based proxy. Once the following form is "
+#~ "filled out and submitted you will get a .zip archive to download."
+#~ msgstr ""
+#~ "Môžete vygenerovať sadu konfiguračných súborov a certifikátov na "
+#~ "registráciu a spustenie proxy servera založeného na kontajneroch. Po "
+#~ "vyplnení a odoslaní nasledujúceho formulára dostanete na stiahnutie "
+#~ "archív .zip."
+
+#~ msgid "Proxy FQDN"
+#~ msgstr "Proxy FQDN"
+
+#~ msgid "e.g., proxy.domain.com"
+#~ msgstr "napr. proxy.domain.com"
+
+#~ msgid "Server FQDN"
+#~ msgstr "Server FQDN"
+
+#~ msgid "e.g., server.domain.com"
+#~ msgstr "napr. server.domain.com"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
+
+#~ msgid "Proxy SSH port"
+#~ msgstr "Port Proxy SSH"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
+
+#~ msgid "e.g., 2048"
+#~ msgstr "napr. 2048"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "Email administrátora proxy"
+
+#~ msgid "e.g., proxy.admin@mycompany.com"
+#~ msgstr "napr. proxy.admin@mycompany.com"
+
+#~ msgid "SSL certificate"
+#~ msgstr "SSL certifikát"
+
+#~ msgid "Use existing"
+#~ msgstr "Použiť existujúce"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr ""
+#~ "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
+#~ "formáte PEM"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr ""
+#~ "Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
+#~ "formáte PEM"
+
+#~ msgid "The CA private key password"
+#~ msgstr "Heslo súkromného kľúča CA"
+
+#~ msgid "SSL Certificate data"
+#~ msgstr "Dáta certifikátu SSL"
+
+#~ msgid "Alternate CNAMEs"
+#~ msgstr "Alternatívne záznamy CNAME"
+
+#~ msgid "CNAME"
+#~ msgstr "CNAME"
+
+#~ msgid "2-letter country code"
+#~ msgstr "Dvojpísmenový kód krajiny"
+
+#~ msgid "City"
+#~ msgstr "Mesto"
+
+#~ msgid "Organization Unit"
+#~ msgstr "Organizačná jednotka"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "Koreňová CA použitá na podpísanie certifikátu SSL vo formáte PEM"
+
+#~ msgid "Intermediate CAs"
+#~ msgstr "Sprostredkujúce CA"
+
+#~ msgid "CA file in PEM format"
+#~ msgstr "Súbor CA vo formáte PEM"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "Obsah proxy CRT vo formáte PEM"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "Súkromný kľúč proxy SSL vo formáte PEM"
+
+#~ msgid "Generate"
+#~ msgstr "Generovať"
+
+#~ msgid "The following recurring actions have been created."
+#~ msgstr "Boli vytvorené nasledujúce opakujúce sa akcie."
+
+#~ msgid ""
+#~ "To create new recurring actions head to the system, group or organization "
+#~ "you want to create the action for."
+#~ msgstr ""
+#~ "Ak chcete vytvoriť nové opakujúce sa akcie, prejdite do systému, skupiny "
+#~ "alebo organizácie, pre ktorú chcete akciu vytvoriť."
 
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
@@ -5997,6 +6149,36 @@ msgstr "Kód chyby HTTP "
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
+
+#~ msgid "Not a system id"
+#~ msgstr "Nie je to systémové id"
+
+#~ msgid "Unknown System"
+#~ msgstr "Neznámy systém"
+
+#~ msgid "System is not a peripheral server"
+#~ msgstr "Systém nie je periférny server"
+
+#~ msgid "New password generated and action for peripheral server scheduled"
+#~ msgstr "Nové heslo vygenerované a naplánovaná akcia pre periférny server"
+
+#~ msgid "Peripheral Server"
+#~ msgstr "Periférny server"
+
+#~ msgid "Report Database Name"
+#~ msgstr "Názov databázy správ"
+
+#~ msgid "Report Database Host"
+#~ msgstr "Hostiteľ databázy správ"
+
+#~ msgid "Report Database User"
+#~ msgstr "Používateľ databázy správ"
+
+#~ msgid "Report Database Last Synced"
+#~ msgstr "Naposledy synchronizovaná databáza správ"
+
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "Znovu vygenerovať heslo databázy správ"
 
 #~ msgid ""
 #~ "Please select a list of minions (not proxies or traditional clients)."

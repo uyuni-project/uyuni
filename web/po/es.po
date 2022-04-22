@@ -5759,12 +5759,32 @@ msgstr ""
 #~ msgstr "documentación"
 
 #, fuzzy
+#~ msgid "Build Log"
+#~ msgstr "Anfitrión de compilación"
+
+#, fuzzy
 #~ msgid "Playbook File Name"
 #~ msgstr "Nombre del filtro"
 
 #, fuzzy
 #~ msgid "Full Path"
 #~ msgstr "Ruta"
+
+#, fuzzy
+#~ msgid "e.g., 2048"
+#~ msgstr "p. ej., SLE12"
+
+#, fuzzy
+#~ msgid "The CA private key password"
+#~ msgstr "Generar contraseña nueva"
+
+#, fuzzy
+#~ msgid "Organization Unit"
+#~ msgstr "Organización"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Generales"
 
 #, fuzzy
 #~ msgid "${defaultChannelName}"
@@ -5779,6 +5799,18 @@ msgstr ""
 #~ "Are you sure you want to close this page while bootstrapping is in "
 #~ "progress ?"
 #~ msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
+
+#, fuzzy
+#~ msgid "Not a system id"
+#~ msgstr "Mostrar lista de sistemas"
+
+#, fuzzy
+#~ msgid "Unknown System"
+#~ msgstr "Nombre de anfitrión del nodo"
+
+#, fuzzy
+#~ msgid "Regenerate Reporting Database Password"
+#~ msgstr "Generar contraseña nueva"
 
 #, fuzzy
 #~ msgid "Change Proxy"
