@@ -58,7 +58,7 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
         return log;
     }
 
-    public static synchronized Set<MgrServerInfo> getCurrentMgrServerInfos() {
+    public synchronized Set<MgrServerInfo> getCurrentMgrServerInfos() {
         return currentMgrServerInfos;
     }
 
