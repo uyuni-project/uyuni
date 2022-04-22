@@ -15,7 +15,7 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Remove dhcp packages on the proxy
+  Scenario: Remove DHCP packages on the proxy
     # WORKAROUND
     When I remove package "dhcp dhcp-client" from this "proxy"
     # End of WORKAROUND
@@ -216,9 +216,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Let the server know about the new IP and FQDN of the proxy
-    # WORKAROUND: bsc#1196050 - Hardware list refresh is not sufficient to detect a change in interface's IP address
-    When I restart salt-minion on "proxy"
-    And I follow "Details" in the content area
+    When I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
