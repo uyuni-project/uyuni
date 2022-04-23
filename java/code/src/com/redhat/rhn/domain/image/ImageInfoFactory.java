@@ -166,7 +166,7 @@ public class ImageInfoFactory extends HibernateFactory {
 
         // Schedule the build
         ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-                Collections.singletonList(buildHostId), version, profile, earliest);
+                Collections.singletonList(buildHostId), info.getVersion(), profile, earliest);
         taskomaticApi.scheduleActionExecution(action);
 
         info.setBuildAction(action);

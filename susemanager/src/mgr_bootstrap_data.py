@@ -1513,6 +1513,11 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/10/bootstrap/',
         'TYPE' : 'deb'
     },
+    'debian11-amd64' : {
+        'PDID' : [-32, 2410], 'BETAPDID' : [2411], 'PKGLIST' : PKGLISTDEBIAN11,
+        'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
+        'TYPE' : 'deb'
+    },
     'debian9-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-9-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN9,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/9/bootstrap/',

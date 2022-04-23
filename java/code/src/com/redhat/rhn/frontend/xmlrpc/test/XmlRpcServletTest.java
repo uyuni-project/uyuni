@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
+import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -78,7 +79,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
         } });
 
         // ok run servlet
-        XmlRpcServlet xrs = new XmlRpcServlet(XmlRpcTestUtils.getTestHandlerFactory(), null);
+        XmlRpcServlet xrs = new XmlRpcServlet(XmlRpcTestUtils.getTestHandlerFactory(), new SerializerFactory());
         xrs.init();
         xrs.doPost(mockreq, mockresp);
 

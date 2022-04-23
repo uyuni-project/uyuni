@@ -1,5 +1,9 @@
-- Remove doc search functionality
-- adapt for new c3p0 and mchange-commons package
+-------------------------------------------------------------------
+Tue Apr 19 12:06:37 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Remove doc search functionality
+  * adapt for new c3p0 and mchange-commons package
 
 -------------------------------------------------------------------
 Tue Jan 18 13:59:26 CET 2022 - jgonzalez@suse.com

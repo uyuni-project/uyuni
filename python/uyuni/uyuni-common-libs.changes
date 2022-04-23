@@ -1,6 +1,11 @@
 - Allow default component for context manager.
 - fileutils.py uses context manager for apache users.
-- implement more decompression algorithms for reposync (bsc#1196704)
+
+-------------------------------------------------------------------
+Tue Apr 19 12:14:45 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
 Fri Mar 11 15:46:23 CET 2022 - jgonzalez@suse.com

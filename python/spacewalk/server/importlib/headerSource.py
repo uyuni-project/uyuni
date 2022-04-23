@@ -497,6 +497,8 @@ class rpmChangeLog(ChangeLog):
                     self[i] = self[i].encode("utf-8")
                 except:
                     self[i] = self[i].encode("iso-8859-1")
+            # Filter out invalid UTF-8 from string.
+            self[i] = self[i].encode('utf-8', errors='replace').decode('utf-8')
 
 
 def sanitizeList(l):

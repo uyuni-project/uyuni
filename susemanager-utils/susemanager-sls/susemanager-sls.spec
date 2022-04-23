@@ -31,7 +31,7 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.13
+Version:        4.3.15
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only

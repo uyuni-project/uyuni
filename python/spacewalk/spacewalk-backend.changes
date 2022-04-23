@@ -1,7 +1,13 @@
 - Moved static Apache Webserver users to config file.
-- drop unused cert handler
-- Less strict package-list parsing in debPackage importlib
-- implement more decompression algorithms for reposync (bsc#1196704)
+- Fix wrong unicode characters issued by rpm (#4614).
+
+-------------------------------------------------------------------
+Tue Apr 19 11:57:07 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * drop unused cert handler
+  * Less strict package-list parsing in debPackage importlib
+  * implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
 Fri Mar 11 15:44:57 CET 2022 - jgonzalez@suse.com
