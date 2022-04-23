@@ -4,7 +4,7 @@
 require 'json'
 require 'socket'
 
-$api_test = $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXMLRPC.new($server.full_hostname)
+$api_test = $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
 
 ## auth namespace
 
