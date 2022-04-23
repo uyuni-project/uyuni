@@ -15,14 +15,14 @@
 package com.suse.manager.api;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
+import com.redhat.rhn.manager.session.SessionManager;
 
-import com.suse.manager.webui.utils.RouteWithUser;
 import com.suse.manager.webui.utils.SparkApplicationHelper;
 
 import com.google.gson.Gson;
@@ -150,7 +150,7 @@ public class RouteFactory {
      * @return the {@link Route}
      */
     public Route createRoute(List<Method> methods, BaseHandler handler) {
-        RouteWithUser routeWithUser = (req, res, user) -> {
+        Route route = (req, res) -> {
             // Collect all the parameters from the query string and the body
             Map<String, JsonElement> requestParams;
             try {
@@ -162,9 +162,10 @@ public class RouteFactory {
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
             }
 
+            String sessionKey = new RequestContext(req.raw()).getWebSession().getKey();
             try {
                 // Find an overload matching the parameter names and types
-                MethodCall call = findMethod(methods, requestParams, user);
+                MethodCall call = findMethod(methods, requestParams, sessionKey);
                 HttpApiResponse response = HttpApiResponse.success(call.invoke(handler));
                 return SparkApplicationHelper.json(gson, res, response);
             }
@@ -187,7 +188,7 @@ public class RouteFactory {
                 throw new RuntimeException(exceptionInMethod);
             }
         };
-        return asJson(withUser(routeWithUser));
+        return asJson(route);
     }
 
     /**
@@ -197,18 +198,20 @@ public class RouteFactory {
      * The parsed arguments are packed together with the chosen method and returned as a {@link MethodCall} object.
      * @param methods list of methods
      * @param jsonArgs the JSON arguments
-     * @param user the logged-in user
+     * @param sessionKey the session key
      * @return the matched method, if exists
      * @throws NoSuchMethodException if no match is found
      */
-    private MethodCall findMethod(List<Method> methods, Map<String, JsonElement> jsonArgs, User user)
+    private MethodCall findMethod(List<Method> methods, Map<String, JsonElement> jsonArgs, String sessionKey)
             throws NoSuchMethodException {
+        User user = SessionManager.loadSession(sessionKey).getUser();
         // Filter methods with parameter names that match the request parameters, excluding the User parameter
         return methods.stream()
                 .filter(m -> jsonArgs.keySet().equals(
                         Arrays.stream(m.getParameters())
                                 .filter(p -> !User.class.equals(p.getType()))
                                 .map(Parameter::getName)
+                                .filter(p -> !"sessionKey".equals(p))
                                 .collect(Collectors.toSet())))
                 // Try to parse arguments according to method parameter types
                 .map(method -> {
@@ -217,17 +220,21 @@ public class RouteFactory {
                         // If the method contains a User parameter, add the current user to the argument list
                         if (User.class.equals(param.getType())) {
                             args.add(user);
-                            continue;
                         }
-                        try {
-                            // Parse each value and add to the argument list
-                            args.add(requestParser.parseValue(jsonArgs.get(param.getName()), param.getType()));
+                        else if ("sessionKey".equals(param.getName())) {
+                            args.add(sessionKey);
                         }
-                        catch (ParseException e) {
-                            // Type mismatch, skip the method
-                            LOG.debug(MessageFormat.format("Cannot parse {0} into {1}. Skipping current method.",
-                                    param.getName(), param.getType().getSimpleName()));
-                            return null;
+                        else {
+                            try {
+                                // Parse each value and add to the argument list
+                                args.add(requestParser.parseValue(jsonArgs.get(param.getName()), param.getType()));
+                            }
+                            catch (ParseException e) {
+                                // Type mismatch, skip the method
+                                LOG.debug(MessageFormat.format("Cannot parse {0} into {1}. Skipping current method.",
+                                        param.getName(), param.getType().getSimpleName()));
+                                return null;
+                            }
                         }
                     }
                     return new MethodCall(method, args.toArray());
