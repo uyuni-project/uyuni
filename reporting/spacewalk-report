@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -48,6 +48,18 @@ def getClause(clause, word):
     assert word.startswith(prefix), "%s is not prefix of %s" % (prefix, word)
     return clause, word[len(prefix):]
 
+def getDataDir(reportdb):
+    if reportdb:
+        return "data"
+    else:
+        return "legacy"
+
+def getDatabaseType(reportdb):
+    if reportdb:
+        return "reporting database"
+    else:
+        return "legacy"
+
 def processCommandline(argv):
     """ process the commandline """
     optionsTable = [
@@ -85,6 +97,8 @@ def processCommandline(argv):
         Option('--timezone', action='store', type='str',
             dest='timezone',
             help='set timezone for all dates reported to custom one instead of UTC'),
+        Option('--legacy-report', action='store_false', dest='use_reportdb', default=True,
+               help='use the legacy SQL statement instead of the reporting database'),
     ]
 
     optionParser = OptionParser(
@@ -155,6 +169,14 @@ if __name__ == '__main__':
     options, where = processCommandline(sys.argv[1:])
     initCFG('server.satellite')
 
+    reportdb_configured = not CFG.REPORT_DB_NAME is None
+
+    if not reportdb_configured and options.use_reportdb:
+        sys.stderr.write("Warning: Reporting database is not configured. Fallback to legacy reports\n")
+        options.use_reportdb = False
+
+    dataDir = getDataDir(options.use_reportdb)
+
     try:
         if len(sys.argv) > 2:
             systemExit(-5, 'Only one report name expected.')
@@ -162,9 +184,21 @@ if __name__ == '__main__':
             report_name = sys.argv[1]
 
             try:
-                report = reports.report(report_name)
+                report = reports.report(report_name, dataDir)
             except(reports.spacewalk_unknown_report):
-                systemExit(-4, 'Unknown report [%s].' % report_name)
+                if not reportdb_configured:
+                    # if reportdb is not configured, we have already looked for the legacy report and it's missing.
+                    # This means we do not have an alternative.
+                    systemExit(-4, 'Unknown report [%s].' % report_name)
+
+                # Check if the other type of report is available
+                options.use_reportdb = not options.use_reportdb
+                dataDir = getDataDir(options.use_reportdb)
+                try:
+                    report = reports.report(report_name, dataDir)
+                    sys.stderr.write("Warning: %s does not exists as a %s report. Using the %s one\n" % (report_name, getDatabaseType(not options.use_reportdb), getDatabaseType(options.use_reportdb)))
+                except(reports.spacewalk_unknown_report):
+                    systemExit(-4, 'Unknown report [%s].' % report_name)
 
             need_exit = None
             if options.info:
@@ -231,7 +265,7 @@ if __name__ == '__main__':
 
                     the_sql_where.append(conjunct)
 
-            rhnSQL.initDB()
+            rhnSQL.initDB(reportdb=options.use_reportdb)
 
             writer = csv.writer(sys.stdout, lineterminator="\n")
 
@@ -299,7 +333,7 @@ if __name__ == '__main__':
             if outrow is not None:
                 writer.writerow(outrow)
         else:
-            for report_name in sorted(reports.available_reports()):
+            for report_name in sorted(reports.available_reports(dataDir)):
                 if options.info:
                     synopsis = ''
                     try:
