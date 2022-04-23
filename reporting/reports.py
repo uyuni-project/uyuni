@@ -6,14 +6,14 @@ import sys
 from salt.ext import six
 from spacewalk.common.rhnConfig import RHNOptions
 
-REPORT_DEFINITIONS = "/usr/share/spacewalk/reports/data"
+BASE_REPORT_DEFINITIONS = "/usr/share/spacewalk/reports"
 
-def available_reports():
-        return os.listdir(REPORT_DEFINITIONS)
+def available_reports(type):
+        return os.listdir(os.path.join(BASE_REPORT_DEFINITIONS, type))
 
 class report:
-        def __init__(self, name):
-                full_path = os.path.join(REPORT_DEFINITIONS, name)
+        def __init__(self, name, type):
+                full_path = os.path.join(BASE_REPORT_DEFINITIONS, type, name)
                 self.sql = None
                 self.description = None
                 self.synopsis = None

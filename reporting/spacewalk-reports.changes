@@ -1,3 +1,6 @@
+- Executed the reports against the reporting database and added a
+  new command line parameter for spacewalk-report to execute the
+  legacy reports
 -------------------------------------------------------------------
 Tue Jan 18 13:58:54 CET 2022 - jgonzalez@suse.com
 
