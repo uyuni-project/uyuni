@@ -1,4 +1,8 @@
-- prevent configuration of invalid IPv6 addresses
+-------------------------------------------------------------------
+Tue Apr 19 12:14:26 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * prevent configuration of invalid IPv6 addresses
 
 -------------------------------------------------------------------
 Tue Jan 18 14:08:42 CET 2022 - jgonzalez@suse.com

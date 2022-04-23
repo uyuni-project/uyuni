@@ -41,16 +41,6 @@ def compute_list_to_leave_running
   do_not_kill.uniq
 end
 
-# get registration URL
-# the URL depends on whether we use a proxy or not
-def registration_url
-  if $proxy.nil?
-    "https://#{$server.full_hostname}/XMLRPC"
-  else
-    "https://#{$proxy.full_hostname}/XMLRPC"
-  end
-end
-
 def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
@@ -187,9 +177,9 @@ def get_client_type(name)
 end
 
 def repository_exist?(repo)
-  repo_xmlrpc = XMLRPCRepositoryTest.new(ENV['SERVER'])
-  repo_xmlrpc.login('admin', 'admin')
-  repo_list = repo_xmlrpc.repo_list
+  $api_test.login('admin', 'admin')
+  repo_list = $api_test.channel_software_repository_list_user_repos
+  $api_test.logout
   repo_list.include? repo
 end
 

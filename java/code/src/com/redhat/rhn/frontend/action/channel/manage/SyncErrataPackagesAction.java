@@ -55,7 +55,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
         Listable<PackageOverview> {
 
 
-    private Logger log = LogManager.getLogger(SyncErrataPackagesAction.class);
+    private static final Logger LOG = LogManager.getLogger(SyncErrataPackagesAction.class);
 
     /**
      *
@@ -143,7 +143,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
                 ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
+                LOG.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
             }
         }
 

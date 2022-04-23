@@ -102,7 +102,7 @@
     "jexl": "2.2.2",
     "lodash": "4.17.21",
     "moment-timezone": "^0.5.33",
-    "moment": "^2.29.1",
+    "moment": "2.29.2",
     "node-gettext": "^3.0.0",
     "prettier": "2.4.1",
     "prop-types": "^15.7.2",
@@ -119,10 +119,11 @@
     "validator": "13.7.0"
   },
   "resolutions": {
+    "@babel/runtime": "7.16.3",
     "immer": "9.0.6",
     "lodash": "4.17.21",
     "minimist": "1.2.6",
-    "@babel/runtime": "7.16.3"
+    "moment": "2.29.2"
   },
   "engines": {
     "yarn": ">=1.0.0"

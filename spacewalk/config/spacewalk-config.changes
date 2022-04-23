@@ -1,6 +1,10 @@
-- Made tftp root available through apache configuration
-- Enable HSTS for Apache to force traffic to be in HTTPS
-- Upgrade build tooling, and corresponding cache configuration
+-------------------------------------------------------------------
+Tue Apr 19 12:00:34 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Made tftp root available through apache configuration
+  * Enable HSTS for Apache to force traffic to be in HTTPS
+  * Upgrade build tooling, and corresponding cache configuration
 
 -------------------------------------------------------------------
 Mon Feb 21 12:07:41 CET 2022 - jgonzalez@suse.com

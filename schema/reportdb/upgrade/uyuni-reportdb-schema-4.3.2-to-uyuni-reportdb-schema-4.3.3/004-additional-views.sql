@@ -6,7 +6,8 @@ ALTER TABLE SystemAction
 ;
 
 CREATE OR REPLACE VIEW ActionsReport AS
-  SELECT DISTINCT SystemAction.action_id
+  SELECT DISTINCT SystemAction.mgm_id
+             , SystemAction.action_id
              , SystemAction.earliest_action
              , SystemAction.event
              , SystemAction.action_name
@@ -15,7 +16,9 @@ CREATE OR REPLACE VIEW ActionsReport AS
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Completed') OVER(PARTITION BY action_id) AS completed_systems
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Failed') OVER(PARTITION BY action_id) AS failed_systems
              , SystemAction.archived
+             , SystemAction.synced_date
     FROM SystemAction
+ORDER BY SystemAction.mgm_id, SystemAction.action_id
 ;
 
 ALTER TABLE Channel
@@ -37,8 +40,8 @@ CREATE TABLE IF NOT EXISTS Repository
     mgm_id                    NUMERIC NOT NULL,
     repository_id             NUMERIC NOT NULL,
     label                     VARCHAR(128),
-    url                       VARCHAR(100),
-    type                      VARCHAR(64),
+    url                       VARCHAR(2048),
+    type                      VARCHAR(32),
     metadata_signed           BOOLEAN,
     organization              VARCHAR(128),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp),
@@ -63,6 +66,7 @@ CREATE OR REPLACE VIEW CustomChannelsReport AS
              , Channel.arch
              , Channel.checksum_type
              , repositories.channel_repositories
+             , Channel.synced_date
     FROM Channel
              LEFT JOIN repositories ON ( Channel.mgm_id = repositories.mgm_id AND Channel.channel_id = repositories.channel_id )
    WHERE Channel.organization IS NOT NULL
@@ -93,7 +97,7 @@ GROUP BY Errata.mgm_id
             , Errata.issue_date
             , Errata.update_date
             , Errata.synced_date
-ORDER BY advisory_name
+ORDER BY Errata.mgm_id, Errata.advisory_name
 ;
 
 CREATE OR REPLACE VIEW ErrataSystemsReport AS

@@ -22,7 +22,8 @@ CREATE OR REPLACE VIEW ErrataListReport AS
             , Errata.synced_date
     FROM Errata
             LEFT JOIN SystemErrata ON ( Errata.mgm_id = SystemErrata.mgm_id AND Errata.errata_id = SystemErrata.errata_id )
-GROUP BY Errata.errata_id
+GROUP BY Errata.mgm_id
+            , Errata.errata_id
             , Errata.advisory_name
             , Errata.advisory_type
             , Errata.cve
@@ -30,5 +31,5 @@ GROUP BY Errata.errata_id
             , Errata.issue_date
             , Errata.update_date
             , Errata.synced_date
-ORDER BY advisory_name
+ORDER BY Errata.mgm_id, Errata.advisory_name
 ;

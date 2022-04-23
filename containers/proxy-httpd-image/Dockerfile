@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.opencontainers.image.version="%PKG_VERSION%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
@@ -39,6 +39,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
  susemanager-tftpsync-recv
 
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
+
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py

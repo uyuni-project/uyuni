@@ -30,3 +30,4 @@ CREATE OR REPLACE VIEW ErrataSystemsReport AS
             LEFT JOIN SystemNetAddressV4 ON ( System.mgm_id = SystemNetAddressV4.mgm_id AND System.system_id = SystemNetAddressV4.system_id AND SystemNetInterface.interface_id = SystemNetAddressV4.interface_id )
             LEFT JOIN V6Addresses ON ( System.mgm_id = V6Addresses.mgm_id AND System.system_id = V6Addresses.system_id AND SystemNetInterface.interface_id = V6Addresses.interface_id )
 ORDER BY SystemErrata.mgm_id, SystemErrata.errata_id, SystemErrata.system_id
+;

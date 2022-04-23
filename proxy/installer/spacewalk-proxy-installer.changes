@@ -1,5 +1,10 @@
-- Configure squid for big images and kernel/initrd files
-  Part of saltboot containerization workflow
+-------------------------------------------------------------------
+Tue Apr 19 12:06:05 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Configure squid for big images and kernel/initrd files
+    Part of saltboot containerization workflow
+
 -------------------------------------------------------------------
 Fri Mar 11 15:12:16 CET 2022 - jgonzalez@suse.com
 

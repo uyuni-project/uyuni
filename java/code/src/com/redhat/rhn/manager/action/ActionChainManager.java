@@ -734,7 +734,7 @@ public class ActionChainManager {
         action.setSchedulerUser(user);
 
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
-        actionDetails.setVersion(version);
+        actionDetails.setVersion(info.getVersion());
         actionDetails.setImageProfileId(profile.getProfileId());
         action.setDetails(actionDetails);
         ActionFactory.save(action);

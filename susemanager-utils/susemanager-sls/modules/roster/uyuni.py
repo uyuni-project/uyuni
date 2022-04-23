@@ -62,6 +62,9 @@ class UyuniRoster:
     """
 
     def __init__(self, db_config, uyuni_roster_config):
+        self.config_hash = hashlib.sha256(
+            str(uyuni_roster_config).encode(errors="backslashreplace")
+        ).hexdigest()
         self.ssh_pre_flight_script = uyuni_roster_config.get("ssh_pre_flight_script")
         self.ssh_push_port_https = uyuni_roster_config.get(
             "ssh_push_port_https", SSH_PUSH_PORT_HTTPS
@@ -87,7 +90,7 @@ class UyuniRoster:
             )
 
         log.trace("db_connect string: %s", self.db_connect_str)
-        log.debug("ssh_pre_fligt_script: %s", self.ssh_pre_flight_script)
+        log.debug("ssh_pre_flight_script: %s", self.ssh_pre_flight_script)
         log.debug("ssh_push_port_https: %d", self.ssh_push_port_https)
         log.debug("ssh_push_sudo_user: %s", self.ssh_push_sudo_user)
         log.debug("ssh_use_salt_thin: %s", self.ssh_use_salt_thin)
@@ -95,6 +98,12 @@ class UyuniRoster:
         log.debug("cobbler.host: %s", self.cobbler_host)
 
         self.cache = salt.cache.Cache(__opts__)
+        cache_data = self.cache.fetch("roster/uyuni", "minions")
+        if "minions" in cache_data and self.config_hash != cache_data.get(
+            "config_hash"
+        ):
+            log.debug("Flushing the cache as the config has been changed")
+            self.cache.flush("roster/uyuni")
 
         self._init_db()
 
@@ -254,8 +263,8 @@ class UyuniRoster:
         h = self._execute_query(query)
         if h is not None:
             row = h.fetchone()
-            log.trace("db cache fingerprint: %s", row)
             if row and row.fp:
+                log.trace("db cache fingerprint: %s", row.fp)
                 new_fp = row.fp
                 log.trace("cache check: old:%s new:%s", cache_fp, new_fp)
                 if (
@@ -318,7 +327,11 @@ class UyuniRoster:
             prow = row
             row = h.fetchone()
 
-        self.cache.store("roster/uyuni", "minions", {"fp": cache_fp, "minions": ret})
+        self.cache.store(
+            "roster/uyuni",
+            "minions",
+            {"fp": cache_fp, "minions": ret, "config_hash": self.config_hash},
+        )
 
         if log.isEnabledFor(logging.TRACE):
             log.trace("Uyuni DB roster:\n%s", dump(ret))

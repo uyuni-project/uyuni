@@ -26,6 +26,7 @@ CREATE OR REPLACE VIEW CustomChannelsReport AS
              , Channel.arch
              , Channel.checksum_type
              , repositories.channel_repositories
+             , Channel.synced_date
     FROM Channel
              LEFT JOIN repositories ON ( Channel.mgm_id = repositories.mgm_id AND Channel.channel_id = repositories.channel_id )
    WHERE Channel.organization IS NOT NULL

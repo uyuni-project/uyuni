@@ -15,6 +15,7 @@ CREATE OR REPLACE VIEW ErrataChannelsReport AS
             , errata_id
             , channel_label
             , channel_id
+            , synced_date
     FROM ChannelErrata
 ORDER BY mgm_id, advisory_name, errata_id, channel_label, channel_id
 ;
