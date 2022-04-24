@@ -8718,7 +8718,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
-        <target/>
+        <target>Nájdených viac kanálov potomkov s balíkom: {0}. Prosím, prihláste tento systém do príslušného kanála potomka ručne.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11147,13 +11147,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Proxy Configuration</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="Peripheral Server" xml:space="preserve">
+      <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
