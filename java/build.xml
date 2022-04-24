@@ -215,7 +215,7 @@
       <pathelement location="build/classes" />
     </path>
 
-    <move file="${build.dir}/classes/log4j.properties" tofile="${build.dir}/classes/log4j.properties.bak" />
+    <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
 
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
@@ -232,7 +232,7 @@
       <excludepackage name="**/*" />
     </javadoc>
 
-    <move file="${build.dir}/classes/log4j.properties.bak" tofile="${build.dir}/classes/log4j.properties" />
+    <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml" />
 
   </target>
 
@@ -280,7 +280,7 @@
   <!-- We may want to break this down so that we can specify directories or
        classes to operate on.  But, hopefully our checkstyle report will
        generally be clean, so we may be able to always check all classes. -->
-  <target name="checkstyle" depends="init,do-compile-main">
+  <target name="checkstyle" depends="init,compile-main">
     <mkdir dir="${report.dir}" />
     <checkstyle config="buildconf/checkstyle.xml" failOnViolation="true" >
       <property key="javadoc.method.scope" value="public" />
@@ -369,10 +369,9 @@
     </javac>
   </target>
 
-  <target name="compile-main" depends="do-compile-main, setup-log4j"/>
-
-  <target name="do-compile-main" depends="link-jars,prepare"
+  <target name="compile-main" depends="link-jars,prepare"
           description="Compile the main codebase" unless="installbuild">
+    <copy tofile="${build.dir}/classes/log4j2.xml" file="${src.dir}/src/log4j2.xml"/>
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
            optimize="off"
@@ -394,22 +393,9 @@
       <fileset dir="${src.dir}/src">
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
-         <exclude name="**/log4j.properties" />
+         <exclude name="**/log4j2.xml" />
       </fileset>
     </copy>
-  </target>
-
-  <target name ="setup-log4j" >
-    <property name="dest.log4j" location = "${build.dir}/classes/log4j.properties"/>
-    <if>
-      <available file="${custom.log4j}"/>
-      <then>
-        <copy tofile="${dest.log4j}" file="${custom.log4j}"/>
-      </then>
-      <else>
-        <copy tofile="${dest.log4j}" file="${src.dir}/src/log4j.properties"/>
-      </else>
-    </if>
   </target>
 
   <target name="compile-all" depends="link-jars,prepare"
@@ -517,7 +503,7 @@
         <exclude name="**/*.html" />
         <exclude name="**/test/" />
         <exclude name="**/*/testing/**" />
-        <exclude name="**/log4j.properties" />
+        <exclude name="**/log4j2.xml" />
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
       </fileset>
@@ -549,7 +535,7 @@
         <exclude name="help/**" unless="includehelp"/>
       </fileset>
       <classes dir="${build.dir}/classes">
-        <include name="log4j.properties" />
+        <include name="log4j2.xml" />
       </classes>
       <lib dir="${run.lib.dir}">
         <include name="rhn.jar"/>

@@ -1,7 +1,15 @@
-- delopy local CA under different name in the truststore to avoid
-  conflicts with CAs deployed during a registration
-- Add pg-migrate-12-to-14.sh script
-- Add pg-migrate-13-to-14.sh script
+-------------------------------------------------------------------
+Tue Apr 19 12:11:26 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Enable bootstrapping for Debian11 for SUSE Manager 
+  * Add missing dependencies for Salt 3004 into bootstrap repository
+    for SLE15 family (bsc#1198221)
+  * sort pg_hba.conf file (bsc#1198154)
+  * delopy local CA under different name in the truststore to avoid
+    conflicts with CAs deployed during a registration
+  * Add pg-migrate-12-to-14.sh script
+  * Add pg-migrate-13-to-14.sh script
 
 -------------------------------------------------------------------
 Thu Mar 31 12:26:36 CEST 2022 - jgonzalez@suse.com

@@ -49,7 +49,7 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.3.5
+Version:        4.3.6
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}

@@ -105,6 +105,18 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
+# get the Cobbler log output when it fails
+After('@scope_cobbler') do |scenario|
+  if scenario.failed?
+    STDOUT.puts '=> /var/log/cobbler/cobbler.log'
+    out, _code = $server.run("tail -n20 /var/log/cobbler/cobbler.log")
+    out.each_line do |line|
+      STDOUT.puts line.to_s
+    end
+    STDOUT.puts
+  end
+end
+
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
     log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'

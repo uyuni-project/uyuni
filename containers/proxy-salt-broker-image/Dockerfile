@@ -39,7 +39,7 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%%PKG_VERSION%%"
+LABEL org.opencontainers.image.version="%PKG_VERSION%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix

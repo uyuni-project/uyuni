@@ -1,14 +1,12 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_xmlrpc
-Feature: XML-RPC "channel" namespace and sub-namespaces
-
-  Background:
-    Given I am logged in via XML-RPC channel as user "admin" and password "admin"
+@scope_api
+Feature: API "channel" namespace and sub-namespaces
 
   Scenario: Create a custom software channel
-    When I create the following channels:
+    When I am logged in API as user "admin" and password "admin"
+    And I create the following channels:
       | LABEL  | NAME   | SUMMARY | ARCH           | PARENT |
       | foobar | foobar | foobar  | channel-x86_64 |        |
     Then "foobar" should get listed with a call of listSoftwareChannels
@@ -16,7 +14,7 @@ Feature: XML-RPC "channel" namespace and sub-namespaces
   Scenario: Create a repository
     When I create a repo with label "foobar" and url
     And I associate repo "foobar" with channel "foobar"
-    Then channel "foobar" should have attribute "last_modified" from type "XMLRPC::DateTime"
+    Then channel "foobar" should have attribute "last_modified" that is a date
     And channel "foobar" should not have attribute "yumrepo_last_sync"
 
   Scenario: Create a custom software channel as the child of another one
@@ -39,4 +37,7 @@ Feature: XML-RPC "channel" namespace and sub-namespaces
     Then "foobar" should not get listed with a call of listSoftwareChannels
 
   Scenario: Check last synchronization of a synced channel
-    Then channel "test-channel-i586" should have attribute "yumrepo_last_sync" from type "XMLRPC::DateTime"
+    Then channel "test-channel-i586" should have attribute "yumrepo_last_sync" that is a date
+
+  Scenario: Cleanup: log out API
+    When I logout from API

@@ -7,6 +7,7 @@ import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginat
 
 import { FormContext } from "./Form";
 import { InputBase, InputBaseProps } from "./InputBase";
+import withTestAttributes from "./select-test-attributes";
 
 type SingleMode = InputBaseProps<string> & {
   /** Set to true to allow multiple selected values */
@@ -48,6 +49,9 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
 
   /** name of the field to map in the form model */
   name?: string;
+
+  /** Id for testing purposes */
+  "data-testid"?: string;
 };
 
 type SelectProps = CommonSelectProps & {
@@ -144,7 +148,12 @@ export function Select(props: Props) {
       return;
     }
     const value = (formContext.model || {})[props.name || ""];
-    if (isAsync(props) && typeof defaultValueOption !== "undefined" && getOptionValue(defaultValueOption) !== value) {
+    if (
+      props.name &&
+      isAsync(props) &&
+      typeof defaultValueOption !== "undefined" &&
+      getOptionValue(defaultValueOption) !== value
+    ) {
       Loggerhead.error(
         `Mismatched defaultValueOption for async select for form field "${props.name}": expected ${getOptionValue(
           defaultValueOption
@@ -166,26 +175,28 @@ export function Select(props: Props) {
         const value = (formContext.model || {})[props.name || ""];
 
         // Common props to pass to both 'react-select' and 'react-select/async'
-        const commonProps = {
-          className: inputClass ? ` ${inputClass}` : "",
-          name: props.name,
-          inputId: props.name,
-          isDisabled: props.disabled,
-          onBlur: onBlur,
-          onChange: onChange,
-          getOptionLabel: (option) => (option != null ? getOptionLabel(option) : ""),
-          getOptionValue: (option) => (option != null ? getOptionValue(option) : ""),
-          formatOptionLabel: formatOptionLabel,
-          placeholder: placeholder,
-          isLoading: isLoading,
-          noOptionsMessage: () => emptyText,
-          isClearable: isClearable,
-          styles: bootstrapStyles,
-          isMulti: props.isMulti,
-          // TODO: Create a separate div in body so we don't invalidate the layout every time, see https://github.com/SUSE/spacewalk/issues/17076
-          menuPortalTarget: document.body,
-          classNamePrefix: `class-${props.name}`,
-        };
+        const commonProps = Object.assign(
+          {
+            className: inputClass ? ` ${inputClass}` : "",
+            name: props.name,
+            inputId: props.name,
+            isDisabled: props.disabled,
+            onBlur: onBlur,
+            onChange: onChange,
+            getOptionLabel: (option) => (option != null ? getOptionLabel(option) : ""),
+            getOptionValue: (option) => (option != null ? getOptionValue(option) : ""),
+            formatOptionLabel: formatOptionLabel,
+            placeholder: placeholder,
+            isLoading: isLoading,
+            noOptionsMessage: () => emptyText,
+            isClearable: isClearable,
+            styles: bootstrapStyles,
+            isMulti: props.isMulti,
+            // TODO: Create a separate div in body so we don't invalidate the layout every time, see https://github.com/SUSE/spacewalk/issues/17076
+            menuPortalTarget: document.body,
+          },
+          withTestAttributes(props["data-testid"], props.name)
+        );
 
         if (isAsync(props)) {
           if (props.paginate) {

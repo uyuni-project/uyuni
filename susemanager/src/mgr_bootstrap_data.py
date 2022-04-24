@@ -453,6 +453,8 @@ PKGLIST15_SALT = [
     "python3-simplejson",
     "python3-six",
     "python3-urllib3",
+    "python3-immutables*",
+    "python3-contextvars*",
     "timezone",
     "salt",
     "python3-salt",
@@ -1509,6 +1511,11 @@ DATA = {
     'debian10-amd64' : {
         'PDID' : [-20, 2210], 'BETAPDID' : [2211], 'PKGLIST' : PKGLISTDEBIAN10,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/10/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'debian11-amd64' : {
+        'PDID' : [-32, 2410], 'BETAPDID' : [2411], 'PKGLIST' : PKGLISTDEBIAN11,
+        'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64-uyuni' : {

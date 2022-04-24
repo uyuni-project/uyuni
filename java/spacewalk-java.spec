@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.18
+Version:        4.3.19
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -593,7 +593,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadi
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf $RPM_BUILD_ROOT%{_datadir}/rhn/unit-tests/
 %endif
-install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
+install -m 644 conf/log4j2.xml.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j2.xml
 install -m 644 code/src/ehcache.xml $RPM_BUILD_ROOT%{_datadir}/rhn/classes/ehcache.xml
 
 install -d -m 755 $RPM_BUILD_ROOT%{spacewalksnippetsdir}
@@ -610,11 +610,6 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{s
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
-
-# special links for taskomatic
-TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
-rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
-rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
@@ -824,7 +819,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
-%{_datadir}/rhn/classes/log4j.properties
+%{_datadir}/rhn/classes/log4j2.xml
 %{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 

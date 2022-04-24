@@ -186,7 +186,7 @@
   <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --delete --rsh '${rsync.arg.rsh}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+      <arg line="-a --delete --rsh '${rsync.arg.rsh}' --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
 
     <echo message="Linking the branding jar..." />
@@ -443,7 +443,7 @@
       <path refid="libjars" />
     </path>
 
-    <move file="${build.dir}/classes/log4j.properties" tofile="${build.dir}/classes/log4j.properties.bak" />
+    <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
 
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
@@ -460,7 +460,7 @@
       <excludepackage name="**/*" />
     </javadoc>
     
-    <move file="${build.dir}/classes/log4j.properties.bak" tofile="${build.dir}/classes/log4j.properties" />
+    <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml" />
 
   </target>
 

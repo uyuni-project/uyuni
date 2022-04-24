@@ -6,8 +6,10 @@
 Feature: Prepare prerequisities for SLE11 SP3 terminal deployment
 
   Scenario: Prepare activation keys for SLE11 retail systems
-    When I create an activation key including custom channels for "sle11sp4_buildhost" via XML-RPC
-    And I create an activation key including custom channels for "sle11sp3_terminal" via XML-RPC
+    When I am logged in API as user "admin" and password "admin"
+    And I create an activation key including custom channels for "sle11sp4_buildhost" via API
+    And I create an activation key including custom channels for "sle11sp3_terminal" via API
+    And I logout from API
 
   Scenario: Prepare Kiwi profile for SLE11 SP4 build host
     When I prepare Kiwi profile for SLE11 SP4 build host
