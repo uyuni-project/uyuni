@@ -175,8 +175,6 @@ public class ConfigDefaults {
     public static final String REPORT_DB_BATCH_SIZE = "report_db_batch_size";
     public static final String REPORT_DB_HUB_WORKERS = "report_db_hub_workers";
 
-    private static final String SSL_TRUSTSTORE = "java.ssl_truststore";
-
     public static final String LOOKUP_EXCEPT_SEND_EMAIL = "lookup_exception_email";
 
     public static final String KS_PARTITION_DEFAULT = "kickstart.partition.default";
@@ -746,16 +744,6 @@ public class ConfigDefaults {
         return DB_BACKEND_POSTGRESQL.equals(backend);
     }
 
-    private void setSslTrustStore() throws ConfigException {
-        String trustStore = Config.get().getString(SSL_TRUSTSTORE);
-        if (trustStore == null || !new File(trustStore).isFile()) {
-            throw new ConfigException("Can not find java truststore at " +
-                trustStore + ". Path can be changed with " +
-                SSL_TRUSTSTORE + " option.");
-        }
-        System.setProperty("javax.net.ssl.trustStore", trustStore);
-    }
-
     /**
      * Constructs the main JDBC connection string based on configuration, checks for
      * some basic sanity.
@@ -832,7 +820,6 @@ public class ConfigDefaults {
         connectionUrl.append(name);
 
         if (useSsl) {
-            setSslTrustStore();
             connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert + "&sslmode=" + sslmode);
         }
 
