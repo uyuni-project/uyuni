@@ -270,7 +270,6 @@ make test
 %{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/spacewalk-setup-ipa-authentication
-%{_bindir}/spacewalk-setup-db-ssl-certificates
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
