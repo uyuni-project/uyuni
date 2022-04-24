@@ -1,3 +1,5 @@
+- drop specialized SSL truststore for db connections in favor
+  of the java default
 - add menu item for report database schema documentation
 - Improve TaskQueue for mgr-update-reporting-hub task
 - Handle missing tables gracefully during hub synchronisation
