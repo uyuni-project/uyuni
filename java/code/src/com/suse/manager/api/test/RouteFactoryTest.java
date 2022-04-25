@@ -158,7 +158,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1, result.get("myInteger"));
+        assertEquals(1L, result.get("myInteger"));
         assertEquals("$tr:ng", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -176,7 +176,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("-empty-", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -195,7 +195,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("bar", result.get("myString")); // value in body should take precedence
         assertEquals(true, result.get("myBoolean"));
     }
@@ -229,7 +229,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("$tr:ng", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -312,7 +312,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         List<?> result = getResult((String) route.handle(req, res), List.class);
 
-        assertEquals(List.of(2, 3, 5), result);
+        assertEquals(List.of(2L, 3L, 5L), result);
     }
 
     /**
@@ -329,7 +329,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         List<Long> result = getResult((String) route.handle(req, res),
                 TypeToken.getParameterized(List.class, Long.class).getType());
 
-        assertEquals(List.of(2, 3, 5), result);
+        assertEquals(List.of(2L, 3L, 5L), result);
     }
 
     /**
@@ -423,7 +423,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
 
         List<Object> result = getResult((String) route.handle(req, res), List.class);
-        assertTrue(result.containsAll(List.of(1, "two", "3")));
+        assertTrue(result.containsAll(List.of(1L, "two", "3")));
     }
 
     /**
@@ -503,7 +503,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertFalse(result.containsKey("isCustomSerialized"));
-        assertEquals(1, result.get("myInteger"));
+        assertEquals(1L, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(2, result.size());
     }
@@ -522,7 +522,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
-        assertEquals(1, result.get("myInteger"));
+        assertEquals(1L, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(3, result.size());
     }
@@ -543,7 +543,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
-        assertEquals(1, result.get("myInteger"));
+        assertEquals(1L, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(3, result.size());
     }
@@ -577,7 +577,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> nested = (Map<String, Object>) result.get("myObject");
         assertEquals(true, nested.get("isCustomSerialized"));
         assertEquals("foo", nested.get("myString"));
-        assertEquals(3, nested.get("myInteger"));
+        assertEquals(3L, nested.get("myInteger"));
     }
 
     /**
@@ -595,9 +595,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         List<Map<String, Object>> result = getResult((String) route.handle(req, res), List.class);
 
         assertTrue(result.stream().allMatch(i -> (boolean) i.get("isCustomSerialized")));
-        assertEquals(1, result.get(0).get("myInteger"));
+        assertEquals(1L, result.get(0).get("myInteger"));
         assertEquals("foo", result.get(0).get("myString"));
-        assertEquals(2, result.get(1).get("myInteger"));
+        assertEquals(2L, result.get(1).get("myInteger"));
         assertEquals("bar", result.get(1).get("myString"));
     }
 
@@ -617,9 +617,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         assertEquals(2, result.size());
         assertTrue(result.values().stream().allMatch(i -> (boolean) i.get("isCustomSerialized")));
-        assertEquals(1, result.get("1").get("myInteger"));
+        assertEquals(1L, result.get("1").get("myInteger"));
         assertEquals("foo", result.get("1").get("myString"));
-        assertEquals(2, result.get("2").get("myInteger"));
+        assertEquals(2L, result.get("2").get("myInteger"));
         assertEquals("bar", result.get("2").get("myString"));
     }
 
@@ -637,7 +637,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         List<Long> result = getResult((String) route.handle(req, res), List.class);
 
-        assertEquals(List.of(2, 3, 5), result);
+        assertEquals(List.of(2L, 3L, 5L), result);
     }
 
     /**

@@ -184,7 +184,7 @@ public class TestHandler extends BaseHandler {
      */
     @ReadOnly
     public TestComplexResponse complexResponse(String myString, Map<String, Object> nestedObjProps) {
-        return new TestComplexResponse(myString, new TestResponse((Integer) nestedObjProps.get("myInteger"),
+        return new TestComplexResponse(myString, new TestResponse(((Long) nestedObjProps.get("myInteger")).intValue(),
                 (String) nestedObjProps.get("myString")));
     }
 
