@@ -57,7 +57,10 @@ class HttpClient
           request.body = params.to_json unless params.nil?
         end
       end
-    raise "Unexpected HTTP status code #{answer.status}" unless answer.status == 200
+    unless answer.status == 200
+      json_body = JSON.parse(answer.body)
+      raise "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
+    end
 
     # Return either new session cookie or HTTP body
     if name == 'login'
