@@ -28,7 +28,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * Serializer for {@link com.redhat.rhn.domain.recurringactions.RecurringAction} class and subclasses
  *
  * @xmlrpc.doc
- * #struct_begin("Recurring Action information")
+ * #struct_begin("recurring action information")
  *   #prop("int", "id")
  *   #prop("string", "name")
  *   #prop("int", "entity_id")

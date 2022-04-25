@@ -29,16 +29,16 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @xmlrpc.doc
  *
  * #struct_begin("action")
- *   #prop_desc("int", "id", "Action Id.")
- *   #prop_desc("string", "name", "Action name.")
- *   #prop_desc("string", "type", "Action type.")
- *   #prop_desc("string", "scheduler", "The user that scheduled the action. (optional)")
- *   #prop_desc($date, "earliest", "The earliest date and time the action
+ *   #prop_desc("int", "id", "action ID")
+ *   #prop_desc("string", "name", "action name")
+ *   #prop_desc("string", "type", "action type")
+ *   #prop_desc("string", "scheduler", "the user that scheduled the action (optional)")
+ *   #prop_desc($date, "earliest", "the earliest date and time the action
  *   will be performed")
- *   #prop_desc("int", "prerequisite", "ID of the prerequisite Action (optional)")
- *   #prop_desc("int", "completedSystems", "Number of systems that completed the action.")
- *   #prop_desc("int", "failedSystems", "Number of systems that failed the action.")
- *   #prop_desc("int", "inProgressSystems", "Number of systems that are in progress.")
+ *   #prop_desc("int", "prerequisite", "ID of the prerequisite action (optional)")
+ *   #prop_desc("int", "completedSystems", "number of systems that completed the action")
+ *   #prop_desc("int", "failedSystems", "number of systems that failed the action")
+ *   #prop_desc("int", "inProgressSystems", "number of systems that are in progress")
  * #struct_end()
  */
 public class ScheduleActionSerializer extends RhnXmlRpcCustomSerializer {

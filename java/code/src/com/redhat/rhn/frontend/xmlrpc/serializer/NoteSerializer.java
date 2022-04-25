@@ -31,11 +31,11 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @xmlrpc.doc
  * #struct_begin("note details")
  *   #prop("int", "id")
- *   #prop_desc("string", "subject", "Subject of the note")
- *   #prop_desc("string", "note", "Contents of the note")
- *   #prop_desc("int", "system_id", "The id of the system associated with the note")
- *   #prop_desc("string", "creator",  "Creator of the note if exists (optional)")
- *   #prop_desc("date", "updated",  "Date of the last note update")
+ *   #prop_desc("string", "subject", "subject of the note")
+ *   #prop_desc("string", "note", "contents of the note")
+ *   #prop_desc("int", "system_id", "the ID of the system associated with the note")
+ *   #prop_desc("string", "creator",  "creator of the note if exists (optional)")
+ *   #prop_desc("date", "updated",  "date of the last note update")
  * #struct_end()
  */
 public class NoteSerializer extends RhnXmlRpcCustomSerializer {

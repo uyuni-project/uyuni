@@ -77,15 +77,15 @@ public class SnapshotHandler extends BaseHandler {
      * with the server will be returned.</li>
      * </ul>
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param
-     *     #struct_begin("date details")
+     *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
      *     #struct_end()
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      $ServerSnapshotSerializer
      *  #array_end()
      */
@@ -113,14 +113,14 @@ public class SnapshotHandler extends BaseHandler {
      * list the packages for a given snapshot
      * @param loggedInUser The current user
      * @param snapId snapshot id
-     * @return Set of packageNEvra objects
+     * @return Set of packageNevra objects
      * @since 10.1
      *
      * @xmlrpc.doc List the packages associated with a snapshot.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "snapId")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *         $PackageNevraSerializer
      *     #array_end()
      */
@@ -141,7 +141,7 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "snapId")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *         $ConfigRevisionSerializer
      *     #array_end()
      */
@@ -170,7 +170,7 @@ public class SnapshotHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *     #struct_begin("date details")
+     *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
@@ -214,10 +214,10 @@ public class SnapshotHandler extends BaseHandler {
      * </ul>
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "system id of system to delete
+     * @xmlrpc.param #param_desc("int", "sid", "ID of system to delete
      *          snapshots for")
      * @xmlrpc.param
-     *     #struct_begin("date details")
+     *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
@@ -252,7 +252,7 @@ public class SnapshotHandler extends BaseHandler {
      *
      * @xmlrpc.doc  Deletes a snapshot with the given snapshot id
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "snapshotId", "Id of snapshot to delete")
+     * @xmlrpc.param #param_desc("int", "snapId", "ID of snapshot to delete")
      * @xmlrpc.returntype #return_int_success()
      */
     public int deleteSnapshot(User loggedInUser, Integer snapId) {
@@ -270,8 +270,8 @@ public class SnapshotHandler extends BaseHandler {
      *
      * @xmlrpc.doc Adds tag to snapshot
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "snapshotId", "Id of the snapshot")
-     * @xmlrpc.param #param_desc("string", "tag", "Name of the snapshot tag")
+     * @xmlrpc.param #param_desc("int", "snapId", "ID of the snapshot")
+     * @xmlrpc.param #param_desc("string", "tagName", "Name of the snapshot tag")
      * @xmlrpc.returntype #return_int_success()
      */
     public int addTagToSnapshot(User loggedInUser, Integer snapId, String tagName) {
@@ -315,28 +315,28 @@ public class SnapshotHandler extends BaseHandler {
 
     /**
      * @param loggedInUser The current user
-     * @param serverId server ID
-     * @param snapshotId snapshot ID
+     * @param sid server ID
+     * @param snapId snapshot ID
      * @return 1 in case of success, exception thrown otherwise
      * @xmlrpc.doc Rollbacks server to snapshot
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param_desc("int", "snapshotId", "Id of the snapshot")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #param_desc("int", "snapId", "ID of the snapshot")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int rollbackToSnapshot(User loggedInUser, Integer serverId,
-            Integer snapshotId) {
+    public int rollbackToSnapshot(User loggedInUser, Integer sid,
+            Integer snapId) {
         try {
-            Server server = lookupServer(loggedInUser, serverId);
+            Server server = lookupServer(loggedInUser, sid);
 
             if (server == null) {
                 throw new InvalidSystemException();
             }
 
             ServerSnapshot snapshot =
-                    ServerFactory.lookupSnapshotById(snapshotId.intValue());
+                    ServerFactory.lookupSnapshotById(snapId.intValue());
             if (snapshot == null) {
-                throw new SnapshotLookupException(snapshotId);
+                throw new SnapshotLookupException(snapId);
             }
             doRollback(loggedInUser, snapshot);
             return BaseHandler.VALID;
@@ -348,21 +348,20 @@ public class SnapshotHandler extends BaseHandler {
 
     /**
      * @param loggedInUser The current user
-     * @param serverId server ID
+     * @param sid server ID
      * @param tagName Snapshot tag name
      * @return 1 in case of success, exception thrown otherwise
      * @xmlrpc.doc Rollbacks server to snapshot
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "tagName", "Name of the snapshot tag")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int rollbackToTag(User loggedInUser, Integer serverId,
-            String tagName) {
+    public int rollbackToTag(User loggedInUser, Integer sid, String tagName) {
         try {
             SnapshotTag tag = ServerFactory.lookupSnapshotTagbyName(tagName);
             for (ServerSnapshot snapshot : tag.getSnapshots()) {
-                if (snapshot.getServer().getId() == serverId.longValue()) {
+                if (snapshot.getServer().getId() == sid.longValue()) {
                     doRollback(loggedInUser, snapshot);
                 }
             }

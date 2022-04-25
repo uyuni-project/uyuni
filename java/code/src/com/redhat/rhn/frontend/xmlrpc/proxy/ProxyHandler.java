@@ -68,7 +68,7 @@ public class ProxyHandler extends BaseHandler {
      * @since 10.7
      *
      * @xmlrpc.doc Create Monitoring Scout for proxy.
-     * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
+     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
      * @xmlrpc.returntype #param("string", "")
      */
     public String createMonitoringScout(String clientcert)
@@ -84,7 +84,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc Test, if the system identified by the given client
      * certificate i.e. systemid file, is proxy.
-     * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
+     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
      * @xmlrpc.returntype #return_int_success()
      */
     public int isProxy(String clientcert)
@@ -102,7 +102,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc Deactivates the proxy identified by the given client
      * certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
+     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
      * @xmlrpc.returntype #return_int_success()
      */
     public int deactivateProxy(String clientcert)
@@ -132,7 +132,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc Activates the proxy identified by the given client
      * certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
+     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
      * @xmlrpc.param #param_desc("string", "version", "Version of proxy to be
      * registered.")
      * @xmlrpc.returntype #return_int_success()
@@ -162,7 +162,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available version of proxy channel for system
      * identified by the given client certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
+     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
      * @xmlrpc.returntype  #array_single ("string", "version")
      */
     public List<String> listAvailableProxyChannels(String clientcert) {
@@ -200,7 +200,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.doc List the proxies within the user's organization.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $SystemOverviewSerializer
      * #array_end()
      */
@@ -222,7 +222,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the clients directly connected to a given Proxy.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","proxyId","the Proxy ID")
+     * @xmlrpc.param #param("int", "proxyId", "the Proxy ID")
      * @xmlrpc.returntype #array_single("int", "clientId")
      */
     public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {

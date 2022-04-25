@@ -31,9 +31,9 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *   #struct_begin("snippet")
  *     #prop("string", "name")
  *     #prop("string", "contents")
- *     #prop_desc("string", "fragment", "The string to include in a kickstart
- *                          file that will generate this snippet.")
- *     #prop_desc("string", "file", "The local path to the file containing this snippet.")
+ *     #prop_desc("string", "fragment", "the string to include in a kickstart
+ *                          file that will generate this snippet")
+ *     #prop_desc("string", "file", "the local path to the file containing this snippet")
  *   #struct_end()
  */
 public class SnippetSerializer extends RhnXmlRpcCustomSerializer {

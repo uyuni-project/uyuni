@@ -67,7 +67,7 @@ public class ClusterHandler extends BaseHandler {
      * @xmlrpc.doc List all clusters for the user's org
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          #struct_begin("cluster_id")
      *                 #prop("string", "cluster_name")
      *          #struct_end()

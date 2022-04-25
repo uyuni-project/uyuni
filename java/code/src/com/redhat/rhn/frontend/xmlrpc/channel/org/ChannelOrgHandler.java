@@ -49,19 +49,19 @@ public class ChannelOrgHandler extends BaseHandler {
     /**
      * List the organizations associated with the given channel that may be trusted.
      * @param loggedInUser The current user
-     * @param channelLabel The label for the channel
+     * @param label The label for the channel
      * @return List of map entries indicating the orgs available and if access is enabled.
      * @throws FaultException A FaultException is thrown if:
      *   - The sessionKey is invalid
-     *   - The channelLabel is invalid
+     *   - The label is invalid
      *   - The user doesn't have channel admin permissions
      *
      * @xmlrpc.doc List the organizations associated with the given channel
      * that may be trusted.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *      #struct_begin("org")
      *          #prop("int", "org_id")
      *          #prop("string", "org_name")
@@ -69,10 +69,10 @@ public class ChannelOrgHandler extends BaseHandler {
      *     #struct_end()
      *  #array_end()
      */
-    public List list(User loggedInUser, String channelLabel)
+    public List list(User loggedInUser, String label)
         throws FaultException {
 
-        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
+        Channel channel = lookupChannelByLabel(loggedInUser, label);
         verifyChannelAdmin(loggedInUser, channel);
 
         if (!loggedInUser.getOrg().equals(channel.getOrg())) {
@@ -114,49 +114,49 @@ public class ChannelOrgHandler extends BaseHandler {
     /**
      * Enable access to the channel for the given organization.
      * @param loggedInUser The current user
-     * @param channelLabel The label for the channel to change
+     * @param label The label for the channel to change
      * @param orgId The org id being granted access.
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if:
      *   - The sessionkey is invalid
-     *   - The channel label is invalid
+     *   - The label is invalid
      *   - The org id is invalid
      *   - The user doesn't have channel admin permissions
      *
      * @xmlrpc.doc Enable access to the channel for the given organization.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("int", "orgId", "id of org being granted access")
+     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
+     * @xmlrpc.param #param_desc("int", "orgId", "ID of org being granted access")
      * @xmlrpc.returntype  #return_int_success()
      */
-    public int enableAccess(User loggedInUser, String channelLabel, Integer orgId)
+    public int enableAccess(User loggedInUser, String label, Integer orgId)
         throws FaultException {
 
-        return enableAccess(loggedInUser, channelLabel, orgId, true);
+        return enableAccess(loggedInUser, label, orgId, true);
     }
 
     /**
      * Disable access to the channel for the given organization.
      * @param loggedInUser The current user
-     * @param channelLabel The label for the channel to change
+     * @param label The label for the channel to change
      * @param orgId The org id being removed access.
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if:
      *   - The sessionkey is invalid
-     *   - The channel label is invalid
+     *   - The label is invalid
      *   - The org id is invalid
      *   - The user doesn't have channel admin permissions
      *
      * @xmlrpc.doc Disable access to the channel for the given organization.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("int", "orgId", "id of org being removed access")
+     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
+     * @xmlrpc.param #param_desc("int", "orgId", "ID of org being removed access")
      * @xmlrpc.returntype  #return_int_success()
      */
-    public int disableAccess(User loggedInUser, String channelLabel, Integer orgId)
+    public int disableAccess(User loggedInUser, String label, Integer orgId)
         throws FaultException {
 
-        return enableAccess(loggedInUser, channelLabel, orgId, false);
+        return enableAccess(loggedInUser, label, orgId, false);
     }
 
     private int enableAccess(User loggedInUser, String channelLabel, Integer orgId,

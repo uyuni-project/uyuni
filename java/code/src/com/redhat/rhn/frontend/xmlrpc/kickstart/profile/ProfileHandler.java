@@ -98,24 +98,24 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Get the kickstart tree for a kickstart profile.
      * @param loggedInUser The current user
-     * @param kslabel label of the kickstart profile to be changed.
+     * @param ksLabel label of the kickstart profile to be changed.
      * @return kickstart tree label
      *
      * @xmlrpc.doc Get the kickstart tree for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.returntype
      *     #param_desc("string", "kstreeLabel", "Label of the kickstart tree.")
      */
-    public String getKickstartTree(User loggedInUser, String kslabel) {
+    public String getKickstartTree(User loggedInUser, String ksLabel) {
 
         KickstartData ksdata = KickstartFactory
-                .lookupKickstartDataByLabelAndOrgId(kslabel, loggedInUser
+                .lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser
                         .getOrg().getId());
         if (ksdata == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                    "No Kickstart Profile found with label: " + kslabel);
+                    "No Kickstart Profile found with label: " + ksLabel);
         }
 
         KickstartDefaults ksdefault = ksdata.getKickstartDefaults();
@@ -130,7 +130,7 @@ public class ProfileHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get the update type for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile.")
      * @xmlrpc.returntype
      *     #param_desc("string", "update_type", "Update type for this Kickstart Profile.")
@@ -151,23 +151,23 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Get the option to perserve ks.cfg.
      * @param loggedInUser The current user
-     * @param kslabel the kickstart label
+     * @param ksLabel the kickstart label
      * @return Boolean value of the option
      *
      * @xmlrpc.doc Get ks.cfg preservation option for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.returntype
      *   #param_desc("boolean", "preserve", "The value of the option.
      *      True means that ks.cfg will be copied to /root, false means that it will not")
      */
-    public Boolean getCfgPreservation(User loggedInUser, String kslabel) {
+    public Boolean getCfgPreservation(User loggedInUser, String ksLabel) {
         checkKickstartPerms(loggedInUser);
-        KickstartData data = lookupKsData(kslabel, loggedInUser.getOrg());
+        KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                "No Kickstart Profile found with label: " + kslabel);
+                "No Kickstart Profile found with label: " + ksLabel);
         }
         return data.getKsCfg();
     }
@@ -175,24 +175,24 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Set the option to perserve ks.cfg.
      * @param loggedInUser The current user
-     * @param kslabel the kickstart label
+     * @param ksLabel the kickstart label
      * @param preserve whether to perserve ks.cfg or not
      * @return int 1 for success
      *
      * @xmlrpc.doc Set ks.cfg preservation option for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.param #param_desc("boolean", "preserve", "whether or not
      *      ks.cfg and all %include fragments will be copied to /root.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setCfgPreservation(User loggedInUser, String kslabel, boolean preserve) {
+    public int setCfgPreservation(User loggedInUser, String ksLabel, boolean preserve) {
         checkKickstartPerms(loggedInUser);
-        KickstartData data = lookupKsData(kslabel, loggedInUser.getOrg());
+        KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                "No Kickstart Profile found with label: " + kslabel);
+                "No Kickstart Profile found with label: " + ksLabel);
         }
         data.setKsCfg(preserve);
         KickstartFactory.saveKickstartData(data);
@@ -202,14 +202,14 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Set the logging (Pre and post) for a kickstart file
      * @param loggedInUser The current user
-     * @param kslabel the kickstart label
+     * @param ksLabel the kickstart label
      * @param pre whether to log pre scripts or not
      * @param post whether to log post scripts or not
      * @return int 1 for success
      *
      * @xmlrpc.doc Set logging options for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.param #param_desc("boolean", "pre", "whether or not to log
      *      the pre section of a kickstart to /root/ks-pre.log")
@@ -217,9 +217,9 @@ public class ProfileHandler extends BaseHandler {
      *      the post section of a kickstart to /root/ks-post.log")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setLogging(User loggedInUser, String kslabel, boolean pre, boolean post) {
+    public int setLogging(User loggedInUser, String ksLabel, boolean pre, boolean post) {
         checkKickstartPerms(loggedInUser);
-        KickstartData data = lookupKsData(kslabel, loggedInUser.getOrg());
+        KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         data.setPreLog(pre);
         data.setPostLog(post);
         KickstartFactory.saveKickstartData(data);
@@ -247,27 +247,27 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Set the kickstart tree for a kickstart profile.
      * @param loggedInUser The current user
-     * @param kslabel label of the kickstart profile to be changed.
+     * @param ksLabel label of the kickstart profile to be changed.
      * @param kstreeLabel label of the new kickstart tree.
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Set the kickstart tree for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.param #param_desc("string", "kstreeLabel", "Label of new
      * kickstart tree.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setKickstartTree(User loggedInUser, String kslabel,
+    public int setKickstartTree(User loggedInUser, String ksLabel,
             String kstreeLabel) {
 
         KickstartData ksdata = KickstartFactory
-                .lookupKickstartDataByLabelAndOrgId(kslabel, loggedInUser
+                .lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser
                         .getOrg().getId());
         if (ksdata == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                    "No Kickstart Profile found with label: " + kslabel);
+                    "No Kickstart Profile found with label: " + ksLabel);
         }
 
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(
@@ -299,27 +299,27 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Set the update type for a kickstart profile.
      * @param loggedInUser The current user
-     * @param kslabel label of the kickstart profile to be changed.
+     * @param ksLabel label of the kickstart profile to be changed.
      * @param updateType the new update type.
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Set the update typefor a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.param #param_desc("string", "updateType", "The new update type
      * to set. Possible values are 'all' and 'none'.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setUpdateType(User loggedInUser, String kslabel,
+    public int setUpdateType(User loggedInUser, String ksLabel,
             String updateType) {
 
         KickstartData ksdata = KickstartFactory
-                .lookupKickstartDataByLabelAndOrgId(kslabel, loggedInUser
+                .lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser
                         .getOrg().getId());
         if (ksdata == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                    "No Kickstart Profile found with label: " + kslabel);
+                    "No Kickstart Profile found with label: " + ksLabel);
         }
 
         KickstartableTree tree = ksdata.getTree();
@@ -344,23 +344,23 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Get the child channels for a kickstart profile.
      * @param loggedInUser The current user
-     * @param kslabel label of the kickstart profile to be updated.
+     * @param ksLabel label of the kickstart profile to be updated.
      * @return list of child channels associated with the profile.
      *
      * @xmlrpc.doc Get the child channels for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile.")
      * @xmlrpc.returntype
      *     #array_single("string", "channelLabel")
      */
-    public List<String> getChildChannels(User loggedInUser, String kslabel) {
+    public List<String> getChildChannels(User loggedInUser, String ksLabel) {
 
         KickstartData ksdata = KickstartFactory.
-              lookupKickstartDataByLabelAndOrgId(kslabel, loggedInUser.getOrg().getId());
+              lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser.getOrg().getId());
         if (ksdata == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                "No Kickstart Profile found with label: " + kslabel);
+                "No Kickstart Profile found with label: " + ksLabel);
         }
 
         List<String> childChannels = new ArrayList<String>();
@@ -376,27 +376,27 @@ public class ProfileHandler extends BaseHandler {
     /**
      * Set the child channels for a kickstart profile.
      * @param loggedInUser The current user
-     * @param kslabel label of the kickstart profile to be updated.
+     * @param ksLabel label of the kickstart profile to be updated.
      * @param channelLabels labels of the child channels to be set in the
      * kickstart profile.
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Set the child channels for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #param_desc("string[]", "channelLabels",
+     * @xmlrpc.param #array_single_desc("string", "channelLabels",
      * "List of labels of child channels")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setChildChannels(User loggedInUser, String kslabel,
+    public int setChildChannels(User loggedInUser, String ksLabel,
             List<String> channelLabels) {
 
         KickstartData ksdata = KickstartFactory.
-              lookupKickstartDataByLabelAndOrgId(kslabel, loggedInUser.getOrg().getId());
+              lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser.getOrg().getId());
         if (ksdata == null) {
             throw new FaultException(-3, "kickstartProfileNotFound",
-                "No Kickstart Profile found with label: " + kslabel);
+                "No Kickstart Profile found with label: " + ksLabel);
         }
 
         if (ksdata.getChildChannels() != null) {
@@ -419,7 +419,7 @@ public class ProfileHandler extends BaseHandler {
      * List the pre and post scripts for a kickstart profile in the order
      * they will run during the kickstart.
      * @param loggedInUser The current user
-     * @param label the kickstart label
+     * @param ksLabel the kickstart label
      * @return list of kickstartScript objects
      *
      * @xmlrpc.doc List the pre and post scripts for a kickstart profile
@@ -427,11 +427,11 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart")
-     * @xmlrpc.returntype #array_begin() $KickstartScriptSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $KickstartScriptSerializer #array_end()
      */
-    public List<KickstartScript> listScripts(User loggedInUser, String label) {
+    public List<KickstartScript> listScripts(User loggedInUser, String ksLabel) {
         checkKickstartPerms(loggedInUser);
-        KickstartData data = lookupKsData(label, loggedInUser.getOrg());
+        KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         ArrayList<KickstartScript> scripts = new ArrayList<KickstartScript>(
                 data.getScripts());
@@ -468,12 +468,12 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart")
-     * @xmlrpc.param #array_single("int",
+     * @xmlrpc.param #array_single_desc("int", "preScripts",
      *              "IDs of the ordered pre scripts")
-     * @xmlrpc.param #array_single("int",
+     * @xmlrpc.param #array_single_desc("int", "postScriptsBeforeRegistration",
      *              "IDs of the ordered post scripts that will run
      *              before registration")
-     * @xmlrpc.param #array_single("int",
+     * @xmlrpc.param #array_single_desc("int", "postScriptsAfterRegistration",
      *              "IDs of the ordered post scripts that will run
      *              after registration")
      * @xmlrpc.returntype #return_int_success()
@@ -692,7 +692,7 @@ public class ProfileHandler extends BaseHandler {
      * Remove a script from a kickstart profile.
      * @param loggedInUser The current user
      * @param ksLabel the kickstart to remove a script from
-     * @param id the id of the kickstart
+     * @param scriptId the id of the kickstart
      * @return 1 on success
      *
      * @xmlrpc.doc Remove a script from a kickstart profile.
@@ -704,12 +704,12 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      *
      */
-    public int removeScript(User loggedInUser, String ksLabel, Integer id) {
+    public int removeScript(User loggedInUser, String ksLabel, Integer scriptId) {
         checkKickstartPerms(loggedInUser);
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         KickstartScript script = KickstartFactory.lookupKickstartScript(
-                loggedInUser.getOrg(), id);
+                loggedInUser.getOrg(), scriptId);
         if (script == null ||
                 !script.getKsdata().getLabel().equals(ksData.getLabel())) {
             throw new InvalidKickstartScriptException();
@@ -780,7 +780,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $KickstartAdvancedOptionsSerializer
      * #array_end()
      */
@@ -816,7 +816,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string","ksLabel")
      * @xmlrpc.param
-     *   #array_begin()
+     *   #array_begin("options")
      *      #struct_begin("advanced options")
      *          #prop_desc("string", "name", "Name of the advanced option.
      *              Valid Option names: autostep, interactive, install, upgrade, text,
@@ -939,7 +939,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string","ksLabel")
      *
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $KickstartCommandSerializer
      * #array_end()
      */
@@ -967,7 +967,7 @@ public class ProfileHandler extends BaseHandler {
     * @xmlrpc.doc Set custom options for a kickstart profile.
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param("string","ksLabel")
-    * @xmlrpc.param #param("string[]","options")
+    * @xmlrpc.param #array_single("string", "options")
     * @xmlrpc.returntype #return_int_success()
     */
    public int setCustomOptions(User loggedInUser, String ksLabel, List<String> options)
@@ -1021,9 +1021,9 @@ public class ProfileHandler extends BaseHandler {
     *
     * @xmlrpc.doc List all ip ranges for a kickstart profile.
     * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "The label of the
+    * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
     * kickstart")
-    * @xmlrpc.returntype #array_begin() $KickstartIpRangeSerializer #array_end()
+    * @xmlrpc.returntype #return_array_begin() $KickstartIpRangeSerializer #array_end()
     *
     */
    public Set listIpRanges(User loggedInUser, String ksLabel) {
@@ -1044,7 +1044,7 @@ public class ProfileHandler extends BaseHandler {
     *
     * @xmlrpc.doc Add an ip range to a kickstart profile.
     * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "The label of the
+    * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
     * kickstart")
     * @xmlrpc.param #param_desc("string", "min", "The ip address making up the
     * minimum of the range (i.e. 192.168.0.1)")
@@ -1084,7 +1084,7 @@ public class ProfileHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart label of
     * the ip range you want to remove")
-    * @xmlrpc.param #param_desc("string", "ip_address", "An Ip Address that
+    * @xmlrpc.param #param_desc("string", "ipAddress", "An Ip Address that
     * falls within the range that you are wanting to remove. The min or max of
     * the range will work.")
     * @xmlrpc.returntype #param_desc("int", "status", "1 on successful removal, 0 if range wasn't found
@@ -1128,12 +1128,12 @@ public class ProfileHandler extends BaseHandler {
      *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
-     *          #array_begin()
+     *          #return_array_begin()
      *              $ActivationKeySerializer
      *          #array_end()
      *      #prop_desc("array", "kickstartLabel2", "Actual label of the second kickstart
      *                 profile is the key into the struct")
-     *          #array_begin()
+     *          #return_array_begin()
      *              $ActivationKeySerializer
      *          #array_end()
      *  #struct_end()
@@ -1277,12 +1277,12 @@ public class ProfileHandler extends BaseHandler {
      *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
-     *          #array_begin()
+     *          #return_array_begin()
      *              $KickstartOptionValueSerializer
      *          #array_end()
      *      #prop_desc("array", "kickstartLabel2", "Actual label of the second kickstart
      *                 profile is the key into the struct")
-     *          #array_begin()
+     *          #return_array_begin()
      *              $KickstartOptionValueSerializer
      *          #array_end()
      *  #struct_end()
@@ -1390,7 +1390,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param
-     *     #struct_begin("kickstart variable")
+     *     #struct_begin("variables")
      *         #prop("string", "key")
      *         #prop("string or int", "value")
      *     #struct_end()
@@ -1467,15 +1467,15 @@ public class ProfileHandler extends BaseHandler {
     /**
      * @param loggedInUser The current user
      * @param ksLabel ksLabel identifies the kickstart profile
-     * @param reposIn OS repositories to set
+     * @param repoLabels OS repositories to set
      * @return int - 1 on success, exception thrown otherwise
      * @xmlrpc.doc Associates OS repository to a kickstart profile.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.param #array_single("string", "repositoryLabel")
+     * @xmlrpc.param #array_single("string", "repoLabels")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setRepositories(User loggedInUser, String ksLabel, List<String> reposIn) {
+    public int setRepositories(User loggedInUser, String ksLabel, List<String> repoLabels) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
             throw new PermissionException(LocalizationService.getInstance()
                     .getMessage("permission.configadmin.needed"));
@@ -1491,8 +1491,8 @@ public class ProfileHandler extends BaseHandler {
                 repoSet.put(rInfo.getName(), rInfo);
             }
             Set<RepoInfo> selected = new HashSet<RepoInfo>();
-            for (int i = 0; i < reposIn.size(); i++) {
-                RepoInfo repoInfo = repoSet.get(reposIn.get(i));
+            for (int i = 0; i < repoLabels.size(); i++) {
+                RepoInfo repoInfo = repoSet.get(repoLabels.get(i));
                 if (repoInfo != null) {
                     selected.add(repoInfo);
                 }

@@ -81,9 +81,9 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.doc Returns the list of users who can administer the given group.
      * Caller must be a system group admin or an organization administrator.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param  string systemGroupName
+     * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      $UserSerializer
      *   #array_end()
      */
@@ -110,7 +110,7 @@ public class ServerGroupHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("string", "loginName - User's loginName")
+     * @xmlrpc.param #array_single_desc("string", "loginName", "User's loginName")
      * @xmlrpc.param #param_desc("int", "add", "1 to add administrators, 0 to remove.")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -158,7 +158,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $ServerSerializer
      *      #array_end()
      */
@@ -179,7 +179,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -200,7 +200,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.doc Add/remove the given servers to a system group.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #array_single("int", "serverIds")
      * @xmlrpc.param #param_desc("boolean", "add", "True to add to the group,
      *              False to remove.")
      * @xmlrpc.returntype #return_int_success()
@@ -308,7 +308,7 @@ public class ServerGroupHandler extends BaseHandler {
      * system groups) Caller must be an organization administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */
@@ -327,7 +327,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      in user.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */
@@ -490,7 +490,7 @@ public class ServerGroupHandler extends BaseHandler {
      * from a group.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param  #array_single("int", "errataId")
+     * @xmlrpc.param  #array_single("int", "errataIds")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
@@ -503,7 +503,7 @@ public class ServerGroupHandler extends BaseHandler {
      * at a specified time.
      * @param loggedInUser The current user
      * @param systemGroupName the system group
-     * @param errataIdsIn List of errata IDs to apply (as Integers)
+     * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
@@ -512,13 +512,13 @@ public class ServerGroupHandler extends BaseHandler {
      * from a group at a given date/time.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "errataId")
+     * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
-                                List<Integer> errataIdsIn, Date earliestOccurrence) {
-        return scheduleApplyErrataToActive(loggedInUser, systemGroupName, errataIdsIn, null, false);
+                                List<Integer> errataIds, Date earliestOccurrence) {
+        return scheduleApplyErrataToActive(loggedInUser, systemGroupName, errataIds, null, false);
     }
 
     /**
@@ -526,7 +526,7 @@ public class ServerGroupHandler extends BaseHandler {
      * at a specified time.
      * @param loggedInUser The current user
      * @param systemGroupName the system group
-     * @param errataIdsIn List of errata IDs to apply (as Integers)
+     * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @param onlyRelevant If true not all erratas are applied to all systems.
      *        Systems get only the erratas relevant for them.
@@ -537,18 +537,18 @@ public class ServerGroupHandler extends BaseHandler {
      * from a group at a given date/time.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "errataId")
+     * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
-                                            List<Integer> errataIdsIn, Date earliestOccurrence, Boolean onlyRelevant) {
+                                            List<Integer> errataIds, Date earliestOccurrence, Boolean onlyRelevant) {
         try {
             List<Long> systemIds = activeSystemsInGroup(loggedInUser, systemGroupName);
-            List<Long> errataIds = errataIdsIn.stream()
+            List<Long> ids = errataIds.stream()
                 .map(Integer::longValue)
                 .collect(toList());
-            return ErrataManager.applyErrataHelper(loggedInUser, systemIds, errataIds,
+            return ErrataManager.applyErrataHelper(loggedInUser, systemIds, ids,
                     earliestOccurrence, onlyRelevant);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
@@ -567,7 +567,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ConfigChannelSerializer
      * #array_end()
      */
@@ -650,7 +650,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $FormulaSerializer
      * #array_end()
      */

@@ -61,7 +61,7 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Create a new ssh connection data to extract data from
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * already in use.")
@@ -98,7 +98,7 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Create a new ssh connection data to extract data from
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * already in use.")
@@ -136,11 +136,11 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Updates the details of a ssh connection data
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * host doesn't exist.")
      * @xmlrpc.param
-     *   #struct_begin("user details")
+     *   #struct_desc("details", "user details")
      *     #prop("string", "description")
      *     #prop("int", "port")
      *     #prop("string", "username")
@@ -168,9 +168,9 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns a list of PaygSshData
      *
      * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *     $PaygSshDataSerializer
      * #array_end()
      */
@@ -186,7 +186,7 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns a list of PaygSshData
      *
      * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "host", "hostname or IP address of the instance, will fail if
      * host doesn't exist.")
      * @xmlrpc.returntype $PaygSshDataSerializer
@@ -204,7 +204,7 @@ public class AdminPaygHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "host", "hostname or IP address of the instance")
      * @xmlrpc.returntype #return_int_success()
      */

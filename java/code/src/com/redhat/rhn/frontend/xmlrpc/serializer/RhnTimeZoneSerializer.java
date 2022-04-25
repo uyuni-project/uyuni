@@ -30,8 +30,8 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @xmlrpc.doc
  *
  * #struct_begin("timezone")
- *   #prop_desc("int", "time_zone_id", "Unique identifier for timezone.")
- *   #prop_desc("string", "olson_name", "Name as identified by the Olson database.")
+ *   #prop_desc("int", "time_zone_id", "unique identifier for timezone")
+ *   #prop_desc("string", "olson_name", "name as identified by the Olson database")
  * #struct_end()
  */
 public class RhnTimeZoneSerializer extends RhnXmlRpcCustomSerializer {

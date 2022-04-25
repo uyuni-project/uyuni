@@ -28,10 +28,10 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * KickstartIpRangeSerializer
  *
  * @xmlrpc.doc
- *   #struct_begin("Kickstart Ip Range")
- *     #prop_desc("string", "ksLabel", "The kickstart label associated with the ip range")
- *     #prop_desc("string", "max", "The max ip of the range")
- *     #prop_desc("string", "min", "The min ip of the range")
+ *   #struct_begin("kickstart IP range")
+ *     #prop_desc("string", "ksLabel", "the kickstart label associated with the IP range")
+ *     #prop_desc("string", "max", "the max IP of the range")
+ *     #prop_desc("string", "min", "the min IP of the range")
  *   #struct_end()
  */
 public class KickstartIpRangeSerializer extends RhnXmlRpcCustomSerializer {
