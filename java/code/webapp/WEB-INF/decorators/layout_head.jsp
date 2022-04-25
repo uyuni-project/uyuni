@@ -21,7 +21,7 @@
 
     <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
 
-    <!-- import default fonts/icons styles -->
+<!-- import default fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
     <!-- import custom fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
@@ -32,9 +32,16 @@
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
-    <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    <!-- import styles -->
+    <rhn:require acl="is(development_environment)">
+        <link rel="stylesheet/less" type="text/css" href="/css/${webTheme}.less" />
+        <script>less = { env: 'development environment' };</script>
+        <script src="/javascript/less.js"></script>
+    </rhn:require>
+    <rhn:require acl="not is(development_environment)">
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    </rhn:require>
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
