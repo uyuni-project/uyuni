@@ -108,7 +108,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of users in your organization.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *     $UserSerializer
      * #array_end()
      */
@@ -252,7 +252,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.param
-     *   #struct_begin("user details")
+     *   #struct_begin("details")
      *     #prop_desc("string", "first_names", "deprecated, use first_name")
      *     #prop("string", "first_name")
      *     #prop("string", "last_name")
@@ -431,8 +431,8 @@ public class UserHandler extends BaseHandler {
     /**
      * Creates a new user
      * @param loggedInUser The current user
-     * @param desiredLogin The login for the new user
-     * @param desiredPassword The password for the new user
+     * @param login The login for the new user
+     * @param password The password for the new user
      * @param firstName The first name of the new user
      * @param lastName The last name of the new user
      * @param email The email address for the new user
@@ -442,27 +442,27 @@ public class UserHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create a new user.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "desiredLogin", "Desired login name, will fail if
+     * @xmlrpc.param #param_desc("string", "login", "desired login name, will fail if
      * already in use.")
-     * @xmlrpc.param #param("string", "desiredPassword")
+     * @xmlrpc.param #param("string", "password")
      * @xmlrpc.param #param("string", "firstName")
      * @xmlrpc.param #param("string", "lastName")
      * @xmlrpc.param #param_desc("string", "email", "User's e-mail address.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int create(User loggedInUser, String desiredLogin, String desiredPassword,
+    public int create(User loggedInUser, String login, String password,
                    String firstName, String lastName, String email) throws FaultException {
 
         // If we didn't get a value for pamAuth, default to no
-        return create(loggedInUser, desiredLogin, desiredPassword, firstName, lastName,
+        return create(loggedInUser, login, password, firstName, lastName,
                       email, 0);
     }
 
     /**
      * Creates a new user
      * @param loggedInUser The current user
-     * @param desiredLogin The login for the new user
-     * @param desiredPassword The password for the new user
+     * @param login The login for the new user
+     * @param password The password for the new user
      * @param firstName The first name of the new user
      * @param lastName The last name of the new user
      * @param email The email address for the new user
@@ -473,9 +473,9 @@ public class UserHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create a new user.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "desiredLogin", "Desired login name,
+     * @xmlrpc.param #param_desc("string", "login", "desired login name,
      * will fail if already in use.")
-     * @xmlrpc.param #param("string", "desiredPassword")
+     * @xmlrpc.param #param("string", "password")
      * @xmlrpc.param #param("string", "firstName")
      * @xmlrpc.param #param("string", "lastName")
      * @xmlrpc.param #param_desc("string", "email", "User's e-mail address.")
@@ -483,24 +483,24 @@ public class UserHandler extends BaseHandler {
      * authentication for this user, 0 otherwise.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int create(User loggedInUser, String desiredLogin, String desiredPassword,
+    public int create(User loggedInUser, String login, String password,
                       String firstName, String lastName, String email, Integer usePamAuth)
                       throws FaultException {
         //Logged in user must be an org admin and we must be on a sat to do this.
         ensureOrgAdmin(loggedInUser);
-        ensurePasswordOrPamAuth(usePamAuth, desiredPassword);
+        ensurePasswordOrPamAuth(usePamAuth, password);
 
         boolean pamAuth = BooleanUtils.toBoolean(
                 usePamAuth, Integer.valueOf(1), Integer.valueOf(0));
 
         if (pamAuth) {
-            desiredPassword = getDefaultPasswordForPamAuth();
+            password = getDefaultPasswordForPamAuth();
         }
 
         CreateUserCommand command = new CreateUserCommand();
         command.setUsePamAuthentication(pamAuth);
-        command.setLogin(desiredLogin);
-        command.setPassword(desiredPassword);
+        command.setLogin(login);
+        command.setPassword(password);
         command.setFirstNames(firstName);
         command.setLastName(lastName);
         command.setEmail(email);
@@ -612,7 +612,7 @@ public class UserHandler extends BaseHandler {
      * basic #product() authentication.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("int", "pam_value")
+     * @xmlrpc.param #param("int", "val")
      *   #options()
      *     #item("1 to enable PAM authentication")
      *     #item("0 to disable.")
@@ -678,7 +678,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Add system group to user's list of default system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("string", "serverGroupName")
+     * @xmlrpc.param #param_desc("string", "name", "server group name")
      * @xmlrpc.returntype #return_int_success()
      */
     public int addDefaultSystemGroup(User loggedInUser, String login, String name) {
@@ -701,10 +701,10 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Add system groups to user's list of default system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single("string", "serverGroupName")
+     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int addDefaultSystemGroups(User loggedInUser, String login, List sgNames) {
+    public int addDefaultSystemGroups(User loggedInUser, String login, List<String> sgNames) {
 
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
@@ -767,7 +767,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Remove a system group from user's list of default system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("string", "serverGroupName")
+     * @xmlrpc.param #param_desc("string", "sgName", "server group name")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeDefaultSystemGroup(User loggedInUser, String login, String sgName) {
@@ -790,10 +790,10 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Remove system groups from a user's list of default system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single("string", "serverGroupName")
+     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int removeDefaultSystemGroups(User loggedInUser, String login, List sgNames) {
+    public int removeDefaultSystemGroups(User loggedInUser, String login, List<String> sgNames) {
 
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
@@ -853,7 +853,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     #struct_begin("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")
@@ -891,7 +891,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     #struct_begin("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")
@@ -914,7 +914,7 @@ public class UserHandler extends BaseHandler {
      * remove system group association from a user
      * @param loggedInUser The current user
      * @param login the user's login that we want to remove the association from
-     * @param systemGroupNames list of system group names to remove
+     * @param sgNames list of system group names to remove
      * @param setDefault if true the default group will be removed from the users's
      *      group defaults
      * @return 1 on success
@@ -922,17 +922,17 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Remove system groups from a user's list of assigned system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single("string", "serverGroupName")
+     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
      * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system groups also be
      * removed from the user's list of default system groups.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeAssignedSystemGroups(User loggedInUser,
-            String login, List<String> systemGroupNames, Boolean setDefault) {
+            String login, List<String> sgNames, Boolean setDefault) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
         if (setDefault) {
-            removeDefaultSystemGroups(loggedInUser, login, systemGroupNames);
+            removeDefaultSystemGroups(loggedInUser, login, sgNames);
          }
 
         User user = UserManager.lookupUser(loggedInUser, login);
@@ -940,7 +940,7 @@ public class UserHandler extends BaseHandler {
         // Iterate once to lookup the server groups and avoid removing some when
         // an exception will only be thrown later:
         List<ManagedServerGroup> groups = new LinkedList<>();
-        for (String name : systemGroupNames) {
+        for (String name : sgNames) {
             ManagedServerGroup sg = null;
             try {
                 sg = serverGroupManager.lookup(name, user);
@@ -962,7 +962,7 @@ public class UserHandler extends BaseHandler {
      * remove system group association from a user
      * @param loggedInUser The current user
      * @param login the user's login that we want to remove the association from
-     * @param systemGroupName  system group name to remove
+     * @param sgName  system group name to remove
      * @param setDefault if true the default group will be removed from the users's
      *      group defaults
      * @return 1 on success
@@ -970,15 +970,15 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Remove system group from the user's list of assigned system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("string", "serverGroupName")
+     * @xmlrpc.param #param_desc("string", "sgName", "server group name")
      * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system group also
      * be removed from the user's list of default system groups.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeAssignedSystemGroup(User loggedInUser,
-            String login, String systemGroupName, Boolean setDefault) {
+            String login, String sgName, Boolean setDefault) {
             List groups = new ArrayList();
-            groups.add(systemGroupName);
+            groups.add(sgName);
             return removeAssignedSystemGroups(loggedInUser, login, groups, setDefault);
     }
 
@@ -996,7 +996,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Add system group to user's list of assigned system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("string", "serverGroupName")
+     * @xmlrpc.param #param("string", "sgName", "server group name")
      * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system group also be
      * added to user's list of default system groups.")
      * @xmlrpc.returntype #return_int_success()
@@ -1020,12 +1020,12 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Add system groups to user's list of assigned system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single("string", "serverGroupName")
+     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
      * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system groups also be
      * added to user's list of default system groups.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int addAssignedSystemGroups(User loggedInUser, String login, List sgNames,
+    public int addAssignedSystemGroups(User loggedInUser, String login, List<String> sgNames,
             Boolean setDefault) {
 
         User targetUser = XmlRpcUserHelper.getInstance().lookupTargetUser(
@@ -1097,7 +1097,7 @@ public class UserHandler extends BaseHandler {
      * @param createDefaultSystemGroup The value to set
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Sets the value of the CreateDefaultSystemGroup setting.
+     * @xmlrpc.doc Sets the value of the createDefaultSystemGroup setting.
      * If True this will cause there to be a system group created (with the same name
      * as the user) every time a new user is created, with the user automatically given
      * permission to that system group and the system group being set as the default
@@ -1106,8 +1106,8 @@ public class UserHandler extends BaseHandler {
      * users will administer different groups of servers in the same organization.
      * Can only be called by an org_admin.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("boolean", "createDefaultSystemGruop",
-     * "True if we should automatically create system groups, false otherwise.")
+     * @xmlrpc.param #param_desc("boolean", "createDefaultSystemGroup",
+     * "true if we should automatically create system groups, false otherwise.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setCreateDefaultSystemGroup(User loggedInUser,

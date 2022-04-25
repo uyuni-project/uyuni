@@ -76,7 +76,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
      * search.")
-     * @xmlrpc.returntype #array_begin() $KickstartTreeSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $KickstartTreeSerializer #array_end()
      */
     public List list(User loggedInUser,
             String channelLabel) {
@@ -94,7 +94,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * @xmlrpc.doc List the available kickstartable install types (rhel2,3,4,5 and
      * fedora9+).
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $KickstartInstallTypeSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $KickstartInstallTypeSerializer #array_end()
      */
     @ReadOnly
     public List listInstallTypes(User loggedInUser) {

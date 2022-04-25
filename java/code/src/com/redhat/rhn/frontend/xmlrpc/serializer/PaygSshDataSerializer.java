@@ -27,7 +27,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * PaygSshDataSerializer a serializer for the PaygSshData class
  *
  * @xmlrpc.doc
- *      #struct_begin(" sshData ")
+ *      #struct_begin("SSH data")
  *              #prop("string", "description")
  *              #prop("string", "hostname")
  *              #prop("int", "port")

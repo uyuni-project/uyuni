@@ -27,12 +27,12 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * @xmlrpc.doc
  *
- * #struct_begin("packagestate")
+ * #struct_begin("package state")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("int",  "state_revision_id", "State revision Id")
- *     #prop_desc("string",  "package_state_type_id", "INSTALLED or REMOVED")
- *     #prop_desc("string",  "version_constraint_id", "LATEST or ANY")
+ *     #prop_desc("int",  "state_revision_id", "state revision ID")
+ *     #prop_desc("string",  "package_state_type_id", "'INSTALLED' or 'REMOVED'")
+ *     #prop_desc("string",  "version_constraint_id", "'LATEST' or 'ANY'")
  * #struct_end()
  */
 public class PackageStateSerializer extends ApiResponseSerializer<PackageState> {

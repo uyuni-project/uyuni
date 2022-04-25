@@ -232,7 +232,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Returns the list of organizations.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $OrgDtoSerializer
      *   #array_end()
      */
@@ -287,7 +287,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $MultiOrgUserOverviewSerializer
      *   #array_end()
      */
@@ -415,7 +415,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
-     * @xmlrpc.param #array_single("int", "systemId")
+     * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype
      * #array_single("int", "serverIdTransferred")
      */
@@ -457,7 +457,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
-     * @xmlrpc.param #array_single("int", "systemId")
+     * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype
      * #array_single("int", "serverIdTransferred")
      */
@@ -565,7 +565,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param
-     *     #struct_begin("scap_upload_info")
+     *     #struct_begin("newSettings")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
      *         #prop_desc("int", "size_limit",
@@ -640,7 +640,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param
-     *     #struct_begin("scap_deletion_info")
+     *     #struct_begin("newSettings")
      *         #prop_desc("boolean", "enabled",
      *             "Deletion of SCAP results is enabled")
      *         #prop_desc("int", "retention_period",

@@ -28,14 +28,14 @@ import com.suse.manager.api.SerializedApiResponse;
  * #struct_begin("system")
  *      #prop("int", "id")
  *      #prop("string", "name")
- *      #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
+ *      #prop_desc("$date",  "last_checkin", "last time server
  *              successfully checked in")
  *      #prop("string", "hostname")
  *      #prop("string", "ip")
- *      #prop_desc("string",  "hw_description", "hw description if not null")
- *      #prop_desc("string",  "hw_device_id", "hw device id if not null")
- *      #prop_desc("string",  "hw_vendor_id", "hw vendor id if not null")
- *      #prop_desc("string",  "hw_driver", "hw driver if not null")
+ *      #prop_desc("string",  "hw_description", "HW description if not null")
+ *      #prop_desc("string",  "hw_device_id", "HW device id if not null")
+ *      #prop_desc("string",  "hw_vendor_id", "HW vendor id if not null")
+ *      #prop_desc("string",  "hw_driver", "HW driver if not null")
  * #struct_end()
  *
  */

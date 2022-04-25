@@ -36,18 +36,18 @@ import java.util.List;
  *
  * @xmlrpc.doc
  *  #struct_begin("server details")
- *         #prop_desc("int", "id", "System id")
+ *         #prop_desc("int", "id", "system ID")
  *         #prop("string", "profile_name")
  *         #prop("string", "machine_id")
  *         #prop("string", "minion_id")
- *         #prop_desc("string", "base_entitlement", "System's base entitlement label")
+ *         #prop_desc("string", "base_entitlement", "system's base entitlement label")
  *
- *         #prop_array("string", "addon_entitlements","System's addon entitlements labels,
+ *         #prop_array("addon_entitlements", "string", "system's addon entitlements labels,
  *                       currently only 'virtualization_host'")
- *          #prop_desc("boolean", "auto_update", "True if system has auto errata updates
- *                                          enabled.")
- *          #prop_desc("string", "release", "The Operating System release (i.e. 4AS,
- *                      5Server")
+ *          #prop_desc("boolean", "auto_update", "true if system has auto errata updates
+ *                                          enabled")
+ *          #prop_desc("string", "release", "the operating system release (i.e. 4AS,
+ *                      5Server)")
  *          #prop("string", "address1")
  *          #prop("string", "address2")
  *          #prop("string", "city")
@@ -59,12 +59,12 @@ import java.util.List;
  *          #prop("string", "description")
  *          #prop("string", "hostname")
  *          #prop($date, "last_boot")
- *          #prop_desc("string", "osa_status", "Either 'unknown', 'offline', or 'online'.")
+ *          #prop_desc("string", "osa_status", "either 'unknown', 'offline', or 'online'")
  *          #prop_desc("boolean", "lock_status", "True indicates that the system is locked.
  *           False indicates that the system is unlocked.")
- *          #prop_desc("string", "virtualization", "Virtualization type -
+ *          #prop_desc("string", "virtualization", "virtualization type -
  *           for virtual guests only (optional)")
- *          #prop_desc("string", "contact_method", "One of the following:")
+ *          #prop_desc("string", "contact_method", "one of the following:")
  *            #options()
  *              #item("default")
  *              #item("ssh-push")

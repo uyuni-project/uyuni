@@ -32,13 +32,13 @@ import java.util.Date;
  * #struct_begin("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
+ *     #prop_desc("$date", "last_checkin", "last time server
  *             successfully checked in")
- *     #prop_desc("dateTime.iso8601",  "created", "Server registration time")
- *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
- *     #prop_desc("int",  "extra_pkg_count", "Number of packages not belonging
+ *     #prop_desc("$date", "created", "server registration time")
+ *     #prop_desc("$date", "last_boot", "last server boot time")
+ *     #prop_desc("int", "extra_pkg_count", "number of packages not belonging
  *             to any assigned channel")
- *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
+ *     #prop_desc("int", "outdated_pkg_count", "number of out-of-date packages")
  * #struct_end()
  */
 public class SystemOverviewSerializer extends ApiResponseSerializer<SystemOverview> {

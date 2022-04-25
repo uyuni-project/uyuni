@@ -31,8 +31,7 @@ import org.apache.commons.lang3.StringUtils;
  * #struct_begin("system")
  *      #prop("int", "systemId")
  *      #prop("string", "systemName")
- *      #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
- *              successfully checked in")
+ *      #prop_desc("$date", "last_checkin", "last time the server successfully checked in")
  * #struct_end()
  */
 public class NetworkDtoSerializer extends ApiResponseSerializer<NetworkDto> {

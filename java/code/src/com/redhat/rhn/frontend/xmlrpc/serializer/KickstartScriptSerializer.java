@@ -31,17 +31,17 @@ import org.apache.commons.lang3.StringUtils;
  *          #prop("int", "id")
  *          #prop("string", "name")
  *          #prop("string", "contents")
- *          #prop_desc("string", "script_type", "Which type of script ('pre' or 'post').")
- *          #prop_desc("string", "interpreter", "The scripting language interpreter to use
+ *          #prop_desc("string", "script_type", "the type of script ('pre' or 'post')")
+ *          #prop_desc("string", "interpreter", "the scripting language interpreter to use
  *                      for this script.  An empty string indicates the default kickstart
  *                      shell.")
- *          #prop_desc("boolean", "chroot", "True if the script will be executed within the
- *                  chroot environment.")
- *          #prop_desc("boolean", "erroronfail", "True if the script will throw an error if
- *                  it fails.")
- *          #prop_desc("boolean", "template", "True if templating using cobbler is enabled")
- *          #prop_desc("boolean", "beforeRegistration", "True if script will run before the
- *                  server registers and performs server actions.")
+ *          #prop_desc("boolean", "chroot", "true if the script will be executed within the
+ *                  chroot environment")
+ *          #prop_desc("boolean", "erroronfail", "true if the script will throw an error if
+ *                  it fails")
+ *          #prop_desc("boolean", "template", "true if templating using cobbler is enabled")
+ *          #prop_desc("boolean", "beforeRegistration", "true if script will run before the
+ *                  server registers and performs server actions")
  *     #struct_end()
  */
 public class KickstartScriptSerializer extends ApiResponseSerializer<KickstartScript> {

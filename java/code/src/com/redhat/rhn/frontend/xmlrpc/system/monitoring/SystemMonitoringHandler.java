@@ -48,20 +48,20 @@ public class SystemMonitoringHandler extends BaseHandler {
      * with the passed systems IDs and all of the groups those systems are member of.
      *
      * @param loggedInUser The current user
-     * @param systemIDs The system IDs
+     * @param sids The system IDs
      * @return a list containing endpoint details for all Prometheus exporters on the passed system IDs.
      *
      * @xmlrpc.doc Get the list of monitoring endpoint details.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "systemID")
+     * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $EndpointInfoSerializer
      *   #array_end()
      */
     @ReadOnly
-    public List<EndpointInfo> listEndpoints(User loggedInUser, List<Integer> systemIDs) {
-        List<Long> ids = systemIDs.stream()
+    public List<EndpointInfo> listEndpoints(User loggedInUser, List<Integer> sids) {
+        List<Long> ids = sids.stream()
                 .map(Integer::longValue)
                 .collect(Collectors.toList());
         return this.formulaManager.listEndpoints(ids);

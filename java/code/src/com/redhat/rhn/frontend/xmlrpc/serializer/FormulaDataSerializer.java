@@ -27,10 +27,10 @@ import com.suse.manager.api.SerializedApiResponse;
 *
 * @xmlrpc.doc
 *
-* #struct_begin("formula_data")
+* #struct_begin("formula data")
 *     #prop("int", "system_id")
 *     #prop("string", "minion_id")
-*     #prop("struct with saved formula values", "formula_values")
+*     #prop_desc("struct", "formula_values", "saved formula values")
 * #struct_end()
 */
 public class FormulaDataSerializer extends ApiResponseSerializer<FormulaData> {

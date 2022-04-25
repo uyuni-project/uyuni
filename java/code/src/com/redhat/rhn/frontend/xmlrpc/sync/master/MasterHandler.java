@@ -89,18 +89,18 @@ public class MasterHandler extends BaseHandler {
      * Updates the label of the specified Master
      * @param loggedInUser The current user
      * @param masterId Id of the Master to update
-     * @param newLabel new label
+     * @param label new label
      * @return updated IssMaster
      *
      * @xmlrpc.doc Updates the label of the specified Master
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Master to update")
+     * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to update")
      * @xmlrpc.param #param_desc("string", "label", "Desired new label")
      * @xmlrpc.returntype $IssMasterSerializer
      */
-    public IssMaster update(User loggedInUser, Integer masterId, String newLabel) {
+    public IssMaster update(User loggedInUser, Integer masterId, String label) {
         IssMaster master = getMaster(loggedInUser, masterId);
-        master.setLabel(newLabel);
+        master.setLabel(label);
         IssFactory.save(master);
         return master;
     }
@@ -114,7 +114,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove the specified Master
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Master to remove")
+     * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to remove")
      * @xmlrpc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer masterId) {
@@ -131,7 +131,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Make the specified Master the default for this Slave's inter-server-sync
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Master to make the default")
+     * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to make the default")
      * @xmlrpc.returntype #return_int_success()
      */
     public int makeDefault(User loggedInUser, Integer masterId) {
@@ -193,7 +193,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Set the CA-CERT filename for specified Master on this Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Master to affect")
+     * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to affect")
      * @xmlrpc.param #param_desc("string", "caCertFilename",
      *  "path to specified Master's CA cert")
      * @xmlrpc.returntype #return_int_success()
@@ -212,7 +212,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Find a Master by specifying its ID
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
      * @xmlrpc.returntype $IssMasterSerializer
      */
     @ReadOnly
@@ -226,7 +226,7 @@ public class MasterHandler extends BaseHandler {
     /**
      * Find a Master by specifying its label
      * @param loggedInUser The current user
-     * @param masterLabel Label of the Master to look for
+     * @param label Label of the Master to look for
      * @return the specified Master if found, exception otherwise
      *
      * @xmlrpc.doc Find a Master by specifying its label
@@ -235,10 +235,10 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.returntype $IssMasterSerializer
      */
     @ReadOnly
-    public IssMaster getMasterByLabel(User loggedInUser, String masterLabel) {
+    public IssMaster getMasterByLabel(User loggedInUser, String label) {
         ensureSatAdmin(loggedInUser);
-        IssMaster master = IssFactory.lookupMasterByLabel(masterLabel);
-        validateExists(master, masterLabel);
+        IssMaster master = IssFactory.lookupMasterByLabel(label);
+        validateExists(master, label);
         return master;
     }
 
@@ -250,7 +250,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.doc Get all the Masters this Slave knows about
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $IssMasterSerializer
      *      #array_end()
      */
@@ -269,9 +269,9 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc List all organizations the specified Master has exported to this Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $IssMasterOrgSerializer
      *   #array_end()
      */
@@ -293,9 +293,9 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Reset all organizations the specified Master has exported to this Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
      * @xmlrpc.param
-     *   #array_begin()
+     *   #array_begin("orgMaps")
      *      #struct_begin("master-org details")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")
@@ -323,15 +323,15 @@ public class MasterHandler extends BaseHandler {
      *
      * @param loggedInUser The current user
      * @param masterId Id of the Master to look for
-     * @param newOrg new master-organization to add
+     * @param orgMap new master-organization to add
      * @return 1 if success, exception otherwise
      *
      * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
      * @xmlrpc.param
-     *      #struct_begin("master-org details")
+     *      #struct_begin("orgMap")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")
      *          #prop("int", "localOrgId")
@@ -341,9 +341,9 @@ public class MasterHandler extends BaseHandler {
      */
     public int addToMaster(User loggedInUser,
                            Integer masterId,
-                           Map<String, Object> newOrg) {
+                           Map<String, Object> orgMap) {
         IssMaster master = getMaster(loggedInUser, masterId);
-        IssMasterOrg org = validateOrg(newOrg);
+        IssMasterOrg org = validateOrg(orgMap);
         master.addToMaster(org);
         return 1;
     }
@@ -360,9 +360,9 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
-     * @xmlrpc.param #param_desc("int", "masterOrgId", "Id of the desired Master")
-     * @xmlrpc.param #param_desc("int", "localOrgId", "Id of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
+     * @xmlrpc.param #param_desc("int", "masterOrgId", "ID of the desired Master")
+     * @xmlrpc.param #param_desc("int", "localOrgId", "ID of the desired Master")
      * @xmlrpc.returntype #return_int_success()
      *
      */

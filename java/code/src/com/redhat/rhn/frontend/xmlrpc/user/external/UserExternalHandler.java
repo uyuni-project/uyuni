@@ -123,7 +123,7 @@ public class UserExternalHandler extends BaseHandler {
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * #product() organization name. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "True if we should use the IPA
+     * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "tue if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -165,26 +165,26 @@ public class UserExternalHandler extends BaseHandler {
     /**
      * Set the value of EXT_AUTH_DEFAULT_ORGID
      * @param loggedInUser The current user
-     * @param defaultOrg the orgId that we want to use as the default org
+     * @param orgId the orgId that we want to use as the default org
      * @return 1 on success
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Set the default org that users should be added in if orgunit from
      * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "defaultOrg", "Id of the organization to set
+     * @xmlrpc.param #param_desc("int", "orgId", "ID of the organization to set
      * as the default org. 0 if there should not be a default organization.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setDefaultOrg(User loggedInUser, Integer defaultOrg)
+    public int setDefaultOrg(User loggedInUser, Integer orgId)
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
 
-        if (defaultOrg != 0) {
-            verifyOrgExists(defaultOrg);
+        if (orgId != 0) {
+            verifyOrgExists(orgId);
             SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID,
-                    defaultOrg.toString());
+                    orgId.toString());
         }
         else {
             SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, "");
@@ -202,7 +202,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.doc Get the default org that users should be added in if orgunit from
      * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #param_desc("int", "id", "Id of the default organization. 0 if there is no default")
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the default organization. 0 if there is no default")
      */
     @ReadOnly
     public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
@@ -232,7 +232,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group. Must be
      * unique.")
-     * @xmlrpc.param #array_single("string", "role - Can be any of:
+     * @xmlrpc.param #array_single_desc("string", "roles", "role - Can be any of:
      * satellite_admin, org_admin (implies all other roles except for satellite_admin),
      * channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
@@ -303,7 +303,7 @@ public class UserExternalHandler extends BaseHandler {
      * with the ones passed in here. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.param #array_single("string", "role - Can be any of:
+     * @xmlrpc.param #array_single_desc("string", "roles", "role - Can be any of:
      * satellite_admin, org_admin (implies all other roles except for satellite_admin),
      * channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
@@ -370,7 +370,7 @@ public class UserExternalHandler extends BaseHandler {
      * by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *     $UserExtGroupSerializer
      * #array_end()
      */
@@ -416,7 +416,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group. Must be
      * unique.")
-     * @xmlrpc.param #array_single("string", "groupName - The names of the server
+     * @xmlrpc.param #array_single_desc("string", "groupNames", "the names of the server
      * groups to grant access to.")
      * @xmlrpc.returntype $OrgUserExtGroupSerializer
      */
@@ -477,7 +477,7 @@ public class UserExternalHandler extends BaseHandler {
      * server groups with the ones passed in here. Can only be called by an org_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.param #array_single("string", "groupName - The names of the
+     * @xmlrpc.param #array_single_desc("string", "groupNames", "the names of the
      * server groups to grant access to.")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -540,7 +540,7 @@ public class UserExternalHandler extends BaseHandler {
      * called by an org_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *     $OrgUserExtGroupSerializer
      * #array_end()
      */

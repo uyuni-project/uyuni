@@ -93,7 +93,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -113,7 +113,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -133,7 +133,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -153,7 +153,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -173,7 +173,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -193,7 +193,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -213,7 +213,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
@@ -233,7 +233,7 @@ public class SystemSearchHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "searchTerm")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
      */

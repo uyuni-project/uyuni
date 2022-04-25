@@ -25,14 +25,14 @@ import com.suse.manager.api.SerializedApiResponse;
  * ErrataOverviewSerializer
  * @xmlrpc.doc
  *     #struct_begin("errata")
- *          #prop_desc("int", "id", "Errata ID.")
- *          #prop_desc("string", "issue_date", "Date erratum was updated. (Deprecated)")
- *          #prop_desc("string", "date", "Date erratum was created. (Deprecated)")
- *          #prop_desc("string", "update_date", "Date erratum was updated. (Deprecated)")
- *          #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
- *          #prop_desc("string", "advisory_type", "Type label such as Security, Bug Fix")
- *          #prop_desc("string", "advisory_status", "Status label such as final, testing, retracted")
- *          #prop_desc("string", "advisory_name", "Name such as RHSA, etc")
+ *          #prop_desc("int", "id", "errata ID")
+ *          #prop_desc("string", "issue_date", "the date erratum was updated (deprecated)")
+ *          #prop_desc("string", "date", "the date erratum was created (deprecated)")
+ *          #prop_desc("string", "update_date", "the date erratum was updated (deprecated)")
+ *          #prop_desc("string", "advisory_synopsis", "summary of the erratum")
+ *          #prop_desc("string", "advisory_type", "type label such as 'Security', 'Bug Fix'")
+ *          #prop_desc("string", "advisory_status", "status label such as 'final', 'testing', 'retracted'")
+ *          #prop_desc("string", "advisory_name", "name such as 'RHSA', etc.")
  *      #struct_end()
  */
 public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOverview> {

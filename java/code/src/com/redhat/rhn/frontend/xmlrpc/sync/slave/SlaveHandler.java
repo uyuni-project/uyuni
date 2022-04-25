@@ -44,33 +44,33 @@ public class SlaveHandler extends BaseHandler {
     /**
      * Create a new Slave, known to this Master.
      * @param loggedInUser The current user
-     * @param inSlave Slave's fully-qualified domain name
-     * @param inEnabled Is this Slave allowed to talk to us?
-     * @param inAllowAllOrgs Should we export all orgs to this Slave?
+     * @param slaveFqdn Slave's fully-qualified domain name
+     * @param isEnabled Is this Slave allowed to talk to us?
+     * @param allowAllOrgs Should we export all orgs to this Slave?
      * @return Newly created ISSSlave object.
      *
      * @xmlrpc.doc Create a new Slave, known to this Master.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "slave", "Slave's fully-qualified domain name")
+     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
      * @xmlrpc.param #param_desc("boolean",
-     *    "enabled", "Let this slave talk to us?")
+     *    "isEnabled", "Let this slave talk to us?")
      * @xmlrpc.param #param_desc("boolean",
      *    "allowAllOrgs", "Export all our orgs to this slave?")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
     public IssSlave create(User loggedInUser,
-                           String inSlave,
-                           Boolean inEnabled,
-                           Boolean inAllowAllOrgs) {
+                           String slaveFqdn,
+                           Boolean isEnabled,
+                           Boolean allowAllOrgs) {
         ensureSatAdmin(loggedInUser);
-        if (IssFactory.lookupSlaveByName(inSlave) != null) {
-            throw new IssDuplicateSlaveException(inSlave);
+        if (IssFactory.lookupSlaveByName(slaveFqdn) != null) {
+            throw new IssDuplicateSlaveException(slaveFqdn);
         }
 
         IssSlave slave = new IssSlave();
-        slave.setSlave(inSlave);
-        slave.setEnabled(inEnabled ? "Y" : "N");
-        slave.setAllowAllOrgs(inAllowAllOrgs ? "Y" : "N");
+        slave.setSlave(slaveFqdn);
+        slave.setEnabled(isEnabled ? "Y" : "N");
+        slave.setAllowAllOrgs(allowAllOrgs ? "Y" : "N");
         IssFactory.save(slave);
         slave = (IssSlave) IssFactory.reload(slave);
         return slave;
@@ -79,31 +79,31 @@ public class SlaveHandler extends BaseHandler {
     /**
      * Updates attributes of the specified Slave
      * @param loggedInUser The current user
-     * @param inSlaveId id of Slave to update
-     * @param inSlave Slave's fully-qualified domain name
-     * @param inEnabled Is this Slave allowed to talk to us?
-     * @param inAllowAllOrgs Should we export all orgs to this Slave?
+     * @param slaveId id of Slave to update
+     * @param slaveFqdn Slave's fully-qualified domain name
+     * @param isEnabled Is this Slave allowed to talk to us?
+     * @param allowAllOrgs Should we export all orgs to this Slave?
      * @return updated IssSlave
      *
      * @xmlrpc.doc Updates attributes of the specified Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Slave to update")
-     * @xmlrpc.param #param_desc("string", "slave", "Slave's fully-qualified domain name")
+     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to update")
+     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
      * @xmlrpc.param #param_desc("boolean",
-     *    "enabled", "Let this slave talk to us?")
+     *    "isEnabled", "Let this slave talk to us?")
      * @xmlrpc.param #param_desc("boolean",
      *    "allowAllOrgs", "Export all our orgs to this Slave?")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
     public IssSlave update(User loggedInUser,
-                           Integer inSlaveId,
-                           String inSlave,
-                           Boolean inEnabled,
-                           Boolean inAllowAllOrgs) {
-        IssSlave slave = getSlave(loggedInUser, inSlaveId);
-        slave.setSlave(inSlave);
-        slave.setEnabled(inEnabled ? "Y" : "N");
-        slave.setAllowAllOrgs(inAllowAllOrgs ? "Y" : "N");
+                           Integer slaveId,
+                           String slaveFqdn,
+                           Boolean isEnabled,
+                           Boolean allowAllOrgs) {
+        IssSlave slave = getSlave(loggedInUser, slaveId);
+        slave.setSlave(slaveFqdn);
+        slave.setEnabled(isEnabled ? "Y" : "N");
+        slave.setAllowAllOrgs(allowAllOrgs ? "Y" : "N");
         IssFactory.save(slave);
         slave = (IssSlave) IssFactory.reload(slave);
         return slave;
@@ -113,16 +113,16 @@ public class SlaveHandler extends BaseHandler {
      * Removes a specified Slave
      *
      * @param loggedInUser The current user
-     * @param inSlaveId Id of the Slave to remove
+     * @param slaveId Id of the Slave to remove
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Remove the specified Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the Slave to remove")
+     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to remove")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int delete(User loggedInUser, Integer inSlaveId) {
-        IssSlave slave = getSlave(loggedInUser, inSlaveId);
+    public int delete(User loggedInUser, Integer slaveId) {
+        IssSlave slave = getSlave(loggedInUser, slaveId);
         IssFactory.delete(slave);
         return 1;
     }
@@ -135,7 +135,7 @@ public class SlaveHandler extends BaseHandler {
      *
      * @xmlrpc.doc Find a Slave by specifying its ID
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Slave")
+     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
     @ReadOnly
@@ -154,7 +154,7 @@ public class SlaveHandler extends BaseHandler {
      *
      * @xmlrpc.doc Find a Slave by specifying its Fully-Qualified Domain Name
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "fqdn", "Domain-name of the desired Slave")
+     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Domain-name of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
     @ReadOnly
@@ -173,7 +173,7 @@ public class SlaveHandler extends BaseHandler {
      * @xmlrpc.doc Get all the Slaves this Master knows about
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $IssSlaveSerializer
      *      #array_end()
      */
@@ -191,7 +191,7 @@ public class SlaveHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get all orgs this Master is willing to export to the specified Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Slave")
+     * @xmlrpc.param #param_desc("int", "slaveId", "Id of the desired Slave")
      * @xmlrpc.returntype #array_single("int", "ids of allowed organizations")
      */
     @ReadOnly
@@ -213,8 +213,8 @@ public class SlaveHandler extends BaseHandler {
      *
      * @xmlrpc.doc Set the orgs this Master is willing to export to the specified Slave
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "id", "Id of the desired Slave")
-     * @xmlrpc.param #array_single("int", "List of org-ids we're willing to export")
+     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
+     * @xmlrpc.param #array_single_desc("int", "orgIds", "List of org-ids we're willing to export")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setAllowedOrgs(User loggedInUser, Integer slaveId, List<Integer> orgIds) {

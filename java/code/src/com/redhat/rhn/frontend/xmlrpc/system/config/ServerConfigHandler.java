@@ -95,8 +95,8 @@ public class ServerConfigHandler extends BaseHandler {
      *
      * @xmlrpc.doc Return the list of files in a given channel.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
-     * @xmlrpc.param #param("int","listLocal")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #param("int", "listLocal")
      *      #options()
      *          #item_desc ("1", "to return configuration files
      *              in the system's local override configuration channel")
@@ -105,7 +105,7 @@ public class ServerConfigHandler extends BaseHandler {
      *      #options_end()
      *
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ConfigFileNameDtoSerializer
      * #array_end()
      */
@@ -147,38 +147,37 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.doc Create a new file (text or binary) or directory with the given path, or
      * update an existing path on a server.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
-     * @xmlrpc.param #param_desc("string","path",
-     *                          "the configuration file/directory path")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #param_desc("string", "path", "the configuration file/directory path")
      * @xmlrpc.param #param( "boolean", "isDir")
      *      #options()
      *          #item_desc ("True", "if the path is a directory")
      *          #item_desc ("False", "if the path is a file")
      *      #options_end()
      * @xmlrpc.param
-     *   #struct_begin("path info")
-     *      #prop_desc("string","contents",
+     *   #struct_begin("data")
+     *      #prop_desc("string", "contents",
      *              "Contents of the file (text or base64 encoded if binary)
      *                   ((only for non-directories)")
-     *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content
+     *      #prop_desc("boolean", "contents_enc64", "Identifies base64 encoded content
      *                  (default: disabled, only for non-directories).")
-     *      #prop_desc("string","owner", "Owner of the file/directory.")
-     *      #prop_desc("string","group", "Group name of the file/directory.")
-     *      #prop_desc("string","permissions",
+     *      #prop_desc("string", "owner", "Owner of the file/directory.")
+     *      #prop_desc("string", "group", "Group name of the file/directory.")
+     *      #prop_desc("string", "permissions",
      *                          "Octal file/directory permissions (eg: 644)")
-     *      #prop_desc("string","macro-start-delimiter",
+     *      #prop_desc("string", "macro-start-delimiter",
      *                  "Config file macro end delimiter. Use null or empty string
      *              to accept the default. (only for non-directories)")
-     *      #prop_desc("string","macro-end-delimiter",
+     *      #prop_desc("string", "macro-end-delimiter",
      *                   "Config file macro end delimiter. Use null or empty string
      *              to accept the default. (only for non-directories)")
-     *      #prop_desc("string","selinux_ctx",
+     *      #prop_desc("string", "selinux_ctx",
      *                   "SeLinux context (optional)")
      *      #prop_desc("int", "revision", "next revision number, auto increment for null")
      *      #prop_desc("boolean", "binary", "mark the binary content, if True,
      *      base64 encoded content is expected (only for non-directories)")
      *  #struct_end()
-     * @xmlrpc.param #param("int","commitToLocal")
+     * @xmlrpc.param #param("boolean", "commitToLocal")
      *      #options()
      *          #item_desc ("1", "to commit configuration files
      *              to the system's local override configuration channel")
@@ -243,17 +242,16 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.doc Create a new symbolic link with the given path, or
      * update an existing path.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
-     * @xmlrpc.param #param_desc("string","path",
-     *                          "the configuration file/directory path")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #param_desc("string", "path", "the configuration file/directory path")
      * @xmlrpc.param
-     *  #struct_begin("path info")
-     *      #prop_desc("string","target_path",
+     *  #struct_begin("data")
+     *      #prop_desc("string", "target_path",
      *              "The target path for the symbolic link")
      *      #prop_desc("string", "selinux_ctx", "SELinux Security context (optional)")
      *      #prop_desc("int", "revision", "next revision number, auto increment for null")
      *  #struct_end()
-     * @xmlrpc.param #param("int","commitToLocal")
+     * @xmlrpc.param #param("boolean", "commitToLocal")
      *      #options()
      *          #item_desc ("1", "to commit configuration files
      *              to the system's local override configuration channel")
@@ -304,9 +302,9 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.doc Given a list of paths and a server, returns details about
      * the latest revisions of the paths.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
-     * @xmlrpc.param #array_single("string","paths to lookup on.")
-     * @xmlrpc.param #param("boolean","searchLocal")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #array_single_desc("string" "paths", "paths to lookup on.")
+     * @xmlrpc.param #param("boolean", "searchLocal")
      *      #options()
      *          #item_desc ("1", "to search configuration file paths
      *              in the system's local override configuration or
@@ -315,7 +313,7 @@ public class ServerConfigHandler extends BaseHandler {
      *              in the system's sandbox configuration channel")
      *      #options_end()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $ConfigRevisionSerializer
      *      #array_end()
      */
@@ -360,9 +358,9 @@ public class ServerConfigHandler extends BaseHandler {
      *
      * @xmlrpc.doc Removes file paths from a local or sandbox channel of a server.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
-     * @xmlrpc.param #array_single("string","paths to remove.")
-     * @xmlrpc.param #param("boolean","deleteFromLocal")
+     * @xmlrpc.param #param("int", "sid")
+     * @xmlrpc.param #array_single("string", "paths", "paths to remove.")
+     * @xmlrpc.param #param("boolean", "deleteFromLocal")
      *      #options()
      *          #item_desc ("True", "to delete configuration file paths
      *              from the system's local override configuration channel")
@@ -406,22 +404,22 @@ public class ServerConfigHandler extends BaseHandler {
      * of a given list of servers.
      *
      * @param loggedInUser The current user
-     * @param serverIds  list of IDs of the server to schedule the deploy action
+     * @param sids  list of IDs of the server to schedule the deploy action
      * @param date date of the deploy action..
      * @return 1 on success, raises exceptions otherwise.
      *
      * @xmlrpc.doc Schedules a deploy action for all the configuration files
      * on the given list of systems.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int",
-     *              "id of the systems to schedule configuration files deployment")
+     * @xmlrpc.param #array_single_desc("int", "sids",
+     *              "IDs of the systems to schedule configuration files deployment")
      * @xmlrpc.param #param_desc($date, "date",
      *                               "Earliest date for the deploy action.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int deployAll(User loggedInUser, List<Number> serverIds, Date date) {
-        List<Server> servers = new ArrayList<>(serverIds.size());
-        for (Number sid : serverIds) {
+    public int deployAll(User loggedInUser, List<Number> sids, Date date) {
+        List<Server> servers = new ArrayList<>(sids.size());
+        for (Number sid : sids) {
             servers.add(xmlRpcSystemHelper.lookupServer(loggedInUser, sid));
         }
         ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -449,9 +447,9 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.doc List all global('Normal', 'State') configuration channels associated to a
      *              system in the order of their ranking.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","serverId")
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *  $ConfigChannelSerializer
      *  #array_end()
      */
@@ -471,7 +469,7 @@ public class ServerConfigHandler extends BaseHandler {
      * has been previously subscribed by a server, the
      * subscribed channel will be re-ranked to the appropriate place.
      * @param loggedInUser The current user
-     * @param serverIds a list of ids of servers to add the configuration channels to.
+     * @param sids a list of ids of servers to add the configuration channels to.
      * @param configChannelLabels set of configuration channels labels
      * @param addToTop if true inserts the configuration channels list to
      *                  the top of the configuration channels list of a server
@@ -486,11 +484,11 @@ public class ServerConfigHandler extends BaseHandler {
      * has been previously subscribed by a server, the
      * subscribed channel will be re-ranked to the appropriate place.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int",
+     * @xmlrpc.param #array_single_desc("int", "sids",
      *              "IDs of the systems to add the channels to.")
-     * @xmlrpc.param #array_single("string",
+     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels in the ranked order.")
-     * @xmlrpc.param #param("boolean","addToTop")
+     * @xmlrpc.param #param("boolean", "addToTop")
      *      #options()
      *          #item_desc ("true", "to prepend the given channels
      *          list to the top of the configuration channels list of a server")
@@ -500,9 +498,9 @@ public class ServerConfigHandler extends BaseHandler {
      *
      * @xmlrpc.returntype #return_int_success()
      */
-    public int addChannels(User loggedInUser, List<Number> serverIds, List<String> configChannelLabels,
+    public int addChannels(User loggedInUser, List<Number> sids, List<String> configChannelLabels,
                            Boolean addToTop) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
 
@@ -539,7 +537,7 @@ public class ServerConfigHandler extends BaseHandler {
      * Note: it ranks these channels according to the array order of
      * configChannelLabels method parameter
      * @param loggedInUser The current user
-     * @param serverIds a list of ids of servers to change the config files for..
+     * @param sids a list of ids of servers to change the config files for..
      * @param configChannelLabels sets channels labels
      * @return 1 on success 0 on failure
      *
@@ -547,16 +545,16 @@ public class ServerConfigHandler extends BaseHandler {
      * Channels are ranked according to their order in the configChannelLabels
      * array.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int",
+     * @xmlrpc.param #array_single_desc("int", "sids",
      *              "IDs of the systems to set the channels on.")
-     * @xmlrpc.param #array_single("string",
+     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels in the ranked order.")
      *
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setChannels(User loggedInUser, List<Number> serverIds,
+    public int setChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -570,21 +568,21 @@ public class ServerConfigHandler extends BaseHandler {
      * removes selected channels from list of config channels provided
      * for a given list of servers.
      * @param loggedInUser The current user
-     * @param serverIds the list of server ids.
+     * @param sids the list of server ids.
      * @param configChannelLabels sets channels labels
      * @return 1 on success 0 on failure
      *
      * @xmlrpc.doc Remove config channels from the given servers.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "the IDs of the systems from which you
+     * @xmlrpc.param #array_single_desc("int", "sids", "the IDs of the systems from which you
      *              would like to remove configuration channels..")
-     * @xmlrpc.param #array_single("string",
+     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels to remove.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int removeChannels(User loggedInUser, List<Number> serverIds,
+    public int removeChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -604,30 +602,30 @@ public class ServerConfigHandler extends BaseHandler {
      * Schedule applying state configuration channels for a given system.
      *
      * @param user The current user
-     * @param serverIds The system id of the target system
+     * @param sids The system id of the target system
      * @param earliest Earliest occurrence
      * @param test Run states in test-only mode
      * @return action id or exception thrown otherwise
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #array_single("int", "sids")
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, Boolean test) {
+    public Long scheduleApplyConfigChannel(User user, List<Integer> sids, Date earliest, Boolean test) {
         try {
             // Validate the given system id
-            List<Server> servers = xmlRpcSystemHelper.lookupServers(user, serverIds);
+            List<Server> servers = xmlRpcSystemHelper.lookupServers(user, sids);
 
             servers.stream().filter(srv->!MinionServerUtils.isMinionServer(srv)).findFirst().ifPresent(srv-> {
                 throw new UnsupportedOperationException("Aborting. System not managed with Salt: " + srv.getId());
             });
 
             List<String> states = Collections.singletonList("custom");
-            List<Long> sids = serverIds.stream().map(Integer::longValue).collect(toList());
-            Action action = ActionManager.scheduleApplyStates(user, sids, states, earliest, Optional.of(test));
+            List<Long> serverIds = sids.stream().map(Integer::longValue).collect(toList());
+            Action action = ActionManager.scheduleApplyStates(user, serverIds, states, earliest, Optional.of(test));
             taskomaticApi.scheduleActionExecution(action);
             return action.getId();
         }

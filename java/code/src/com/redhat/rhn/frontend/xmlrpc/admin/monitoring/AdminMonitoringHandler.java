@@ -66,7 +66,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.doc Enable monitoring.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
@@ -93,7 +93,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.doc Disable monitoring.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
@@ -118,7 +118,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.doc Get the status of each Prometheus exporter.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
