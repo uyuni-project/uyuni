@@ -1656,9 +1656,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-<<<<<<< HEAD
-moment v2.29.2 - Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)
-=======
 mini-css-extract-plugin v2.6.0 - Tobias Koppers @sokra
 webpack-contrib/mini-css-extract-plugin
 --------------------------------------------------------------------------------
@@ -1687,7 +1684,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 moment v2.29.1 - Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)
->>>>>>> Move branding source assets to web, update build tooling
 https://github.com/moment/moment.git
 --------------------------------------------------------------------------------
 
