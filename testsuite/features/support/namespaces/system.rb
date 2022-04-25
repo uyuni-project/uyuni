@@ -96,7 +96,7 @@ class NamespaceSystemConfig
     @test = api_test
   end
 
-  def config_remove_channels(servers, channels)
+  def remove_channels(servers, channels)
     @test.call('system.config.removeChannels', sessionKey: @test.token, serverIds: servers, configChannelLabels: channels)
   end
 end
@@ -174,7 +174,7 @@ class NamespaceSystemSearch
     @test = api_test
   end
 
-  def hostname(hostname)
-    @test.call('system.search.hostname', sessionKey: @test.token, searchTerm: hostname)
+  def hostname(server)
+    @test.call('system.search.hostname', sessionKey: @test.token, searchTerm: server)
   end
 end
