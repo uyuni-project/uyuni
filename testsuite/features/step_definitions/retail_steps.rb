@@ -208,15 +208,16 @@ When(/^I reboot the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I create bootstrap script and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |key|
+When(/^I create bootstrap script for "([^"]+)" hostname and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |host, key|
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
   # force_bundle = $product == 'Uyuni' ? '--force-bundle' : ''
   # $proxy.run("mgr-bootstrap #{force_bundle}")
-  $proxy.run('mgr-bootstrap')
+  $proxy.run("mgr-bootstrap --hostname=#{host}")
 
   $proxy.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, _code = $proxy.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key
+  raise "Hostname: #{host} not included" unless output.include? host
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
