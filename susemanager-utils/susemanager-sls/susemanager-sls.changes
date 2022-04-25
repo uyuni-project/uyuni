@@ -1,3 +1,4 @@
+- Fix deprecated warning when getting pillar data (bsc#1192850)
 - remove unknown repository flags on EL
 - add packages.pkgupdate state (bsc#1197507)
 
