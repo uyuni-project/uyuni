@@ -1,5 +1,3 @@
-import "./monitoring-admin.css";
-
 import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
@@ -17,6 +15,7 @@ import { HelpLink } from "components/utils/HelpLink";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import styles from "./monitoring-admin.css";
 import useMonitoringApi from "./use-monitoring-api";
 
 const { capitalize } = Utils;
@@ -130,16 +129,16 @@ const ExportersList = (props: {
 
 const ListPlaceholderItem = (props) => {
   return (
-    <li className="placeholder-item">
+    <li className={styles.placeholder_item}>
       <Icon type="item-disabled" className="fa-1-5x" />
-      <div />
+      <div className={styles.placeholder_separator} />
     </li>
   );
 };
 
 const ListPlaceholder = (props) => {
   return (
-    <ul className="placeholder">
+    <ul className={styles.placeholder}>
       {Object.keys(exporterMap).map((e) => (
         <ListPlaceholderItem />
       ))}
@@ -243,7 +242,7 @@ const MonitoringAdmin = (props) => {
             <Button
               id="enable-monitoring-btn"
               disabled={true}
-              className="btn-default gap-right"
+              className={`btn-default ${styles.gap_right}`}
               icon="fa-play"
               text={t("Enable")}
             />
@@ -263,7 +262,7 @@ const MonitoringAdmin = (props) => {
             <Button
               id="enable-monitoring-btn"
               disabled={true}
-              className="btn-default gap-right"
+              className={`btn-default ${styles.gap_right}`}
               icon="fa-circle-o-notch fa-spin"
               text={t("Enable")}
             />
@@ -283,7 +282,7 @@ const MonitoringAdmin = (props) => {
             <Button
               id="enable-monitoring-btn"
               disabled={true}
-              className="btn-default gap-right"
+              className={`btn-default ${styles.gap_right}`}
               icon="fa-play"
               text={t("Enable")}
             />
@@ -308,7 +307,7 @@ const MonitoringAdmin = (props) => {
           defaultType="btn-success"
           icon="fa-play"
           text={t("Enable")}
-          className="gap-right"
+          className={styles.gap_right}
           action={() => changeMonitoringStatus(true)}
         />
         <AsyncButton

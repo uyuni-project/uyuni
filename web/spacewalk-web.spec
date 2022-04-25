@@ -198,8 +198,16 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
-%{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
-cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
+%{__mkdir_p} %{buildroot}/%{www_path}/css
+%{__mkdir_p} %{buildroot}/%{www_path}/fonts
+%{__mkdir_p} %{buildroot}/%{www_path}/img
+%{__mkdir_p} %{buildroot}/%{www_path}/javascript
+pushd html/src/dist
+cp -pR css %{buildroot}/%{www_path}
+cp -pR fonts %{buildroot}/%{www_path}
+cp -pR img %{buildroot}/%{www_path}
+cp -pR javascript %{buildroot}/%{www_path}
+popd
 
 %find_lang spacewalk-web
 
@@ -236,6 +244,12 @@ cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
+%dir %{www_path}/css
+%{wwwdocroot}/css/*
+%dir %{www_path}/fonts
+%{wwwdocroot}/fonts/*
+%dir %{www_path}/img
+%{wwwdocroot}/img/*
 %dir %{www_path}/javascript
 %dir %{www_path}/javascript/manager
 %{www_path}/robots.txt
