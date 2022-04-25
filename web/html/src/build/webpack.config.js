@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
@@ -14,23 +13,11 @@ module.exports = (env, argv) => {
     new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../") }),
     new CopyWebpackPlugin({
       patterns: [
-        // Legacy scripts
         { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
-        // Translations
-        { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
-        // Unimported branding assets
-        { from: path.resolve(__dirname, "../branding/fonts"), to: path.resolve(__dirname, "../dist/fonts") },
-        { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
-        // Any non-compiled CSS, Less files will be compiled by their entry points
-        {
-          from: path.resolve(__dirname, "../branding/css/*.css"),
-          context: path.resolve(__dirname, "../branding/css"),
-          to: path.resolve(__dirname, "../dist/css"),
-        },
       ],
     }),
-    new MiniCssExtractPlugin({
-      chunkFilename: "css/[name].css",
+    new CopyWebpackPlugin({
+      patterns: [{ from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") }],
     }),
   ];
 
@@ -48,16 +35,21 @@ module.exports = (env, argv) => {
         outputFilename: "../vendors/npm.licenses.txt",
       }),
     ];
+  } else {
+    pluginsInUse = [
+      ...pluginsInUse,
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") },
+        ],
+      }),
+    ];
   }
 
   return [
     {
       entry: {
         "javascript/manager/main": "./manager/index.ts",
-        "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
-        "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-        "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
-        "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
       },
       output: {
         filename: `[name].bundle.js`,
@@ -76,38 +68,19 @@ module.exports = (env, argv) => {
             },
           },
           {
-            // Stylesheets that are imported directly by components
             test: /\.css$/,
             exclude: /node_modules/,
             use: [
-              MiniCssExtractPlugin.loader,
+              { loader: "style-loader" },
               {
                 loader: "css-loader",
                 options: {
                   modules: true,
                 },
               },
-              { loader: "less-loader" },
             ],
           },
           {
-            // Global stylesheets
-            test: /\.less$/,
-            exclude: /node_modules/,
-            use: [
-              MiniCssExtractPlugin.loader,
-              {
-                loader: "css-loader",
-                options: {
-                  // NB! This is crucial, we don't consume Bootstrap etc as a module, but as a regular style
-                  modules: false,
-                },
-              },
-              { loader: "less-loader" },
-            ],
-          },
-          {
-            // Stylesheets of dependencies
             test: /\.css$/,
             include: /node_modules/,
             use: [{ loader: "style-loader" }, { loader: "css-loader" }],
@@ -117,21 +90,6 @@ module.exports = (env, argv) => {
             type: "json",
             use: {
               loader: path.resolve(__dirname, "loaders/po-loader.js"),
-            },
-          },
-          {
-            // Assets that are imported directly by components
-            test: /\.(png|jpe?g|gif|svg)$/i,
-            type: "asset/resource",
-            generator: {
-              filename: "img/[hash][ext][query]",
-            },
-          },
-          {
-            test: /\.(eot|ttf|woff|woff2)$/i,
-            type: "asset/resource",
-            generator: {
-              filename: "fonts/[hash][ext][query]",
             },
           },
         ],
@@ -183,9 +141,7 @@ module.exports = (env, argv) => {
         devMiddleware: {
           publicPath: "/",
           // Don't write changes to disk so we can do hard reloads only on static file changes in the future
-          // TODO: Revert
-          // writeToDisk: false,
-          writeToDisk: true,
+          writeToDisk: false,
           // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
           index: false,
         },
