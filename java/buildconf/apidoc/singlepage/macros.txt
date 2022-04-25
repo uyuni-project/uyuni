@@ -5,25 +5,22 @@
       <li>  $serializer </li>
 #end
 #macro( prop $type $value )
-	<li> $type "$value"</li>
+	<li><em>$type</em> "$value"</li>
 #end
 #macro( prop_desc $type $value $desc )
-    <li> $type "$value" - $desc </li>
+    <li><em>$type</em> "$value" - $desc</li>
 #end
 #macro(prop_array $key $type $desc)
-    <li>array "$key"
-        <ul>
-            <li>$type $desc</li>
-        </ul>
+    <li><em>array($type)</em> "$key" - $desc
     </li>
 #end
 #macro(prop_array_begin $key)
-    <li>array "$key"
+    <li><em>array</em> "$key"
         <ul>
             <li>
 #end
 #macro(prop_array_begin_desc $key $desc)
-    <li>array "$key" - $desc
+    <li><em>array</em> "$key" - $desc
         <ul>
             <li>
 #end
@@ -32,41 +29,46 @@
         </ul>
     </li>
 #end
-#macro(struct_begin $type)
-	     struct - $type
+#macro(struct_begin $value)
+	     <em>struct</em> $value
 	<ul>
 #end
 #macro( struct_end )
 	</ul>
 #end
-#macro( struct_desc $type $desc )
-	     struct - $type $desc
+#macro( struct_desc $value $desc )
+	     <em>struct</em> $value - $desc
 	<ul>
 #end
 #macro( struct_desc_end )
 	</ul>
 #end
-#macro(array_begin)
-array:
+#macro(return_array_begin)
+<em>array</em>
+  <ul>
+   <li>
+#end
+#macro(array_begin $value)
+<em>array</em> $value
   <ul>
    <li>
 #end
 #macro(array_end)
 </li></ul>
 #end
-#macro(array_desc $type $desc)
-array:
+#macro(array_desc $type $value $desc)
+<em>array($type)</em> $value - $desc
   <ul>
-   <li>$type - $desc
+   <li>
 #end
 #macro(array_desc_end)
 </li></ul>
 #end
-#macro(array_single $type $desc)
-array:
-<ul>
-    <li>$type - $desc</li>
-</ul>
+#macro(array_single $type $value)
+<em>array($type)</em> $value
+#end
+#macro(array_single_desc $type $value $desc)
+<em>array($type)</em> $value - $desc
 #end
 #macro(options)
 	<ul>
@@ -81,10 +83,10 @@ array:
 	</ul>
 #end
 #macro(param $type $value)
-    $type $value
+    <em>$type</em> $value
 #end
 #macro(param_desc $type $value $desc)
-    $type $value - $desc
+    <em>$type</em> $value - $desc
 #end
 #macro(session_key)
     #param("string", "sessionKey")
