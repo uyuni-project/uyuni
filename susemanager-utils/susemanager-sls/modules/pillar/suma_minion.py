@@ -370,7 +370,7 @@ def load_formula_metadata(formula_name):
         log.error('Error loading metadata for formula "{formula}": No metadata.yml found'.format(formula=formula_name))
         return {}
     try:
-        metadata = yaml.load(open(metadata_filename).read())
+        metadata = yaml.load(open(metadata_filename).read(), Loader=yaml.FullLoader)
     except Exception as error:
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
