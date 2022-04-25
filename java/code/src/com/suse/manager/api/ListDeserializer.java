@@ -49,20 +49,15 @@ public class ListDeserializer implements JsonDeserializer<List<Object>> {
                 if (prim.isNumber()) {
                     Number num = null;
                     try {
-                        num = Integer.parseInt(prim.getAsString());
+                        num = Long.parseLong(prim.getAsString());
                     }
-                    catch (NumberFormatException eInt) {
+                    catch (NumberFormatException eLong) {
                         try {
-                            num = Long.parseLong(prim.getAsString());
+                            num = Double.parseDouble(prim.getAsString());
                         }
-                        catch (NumberFormatException eLong) {
-                            try {
-                                num = Double.parseDouble(prim.getAsString());
-                            }
-                            catch (NumberFormatException eDouble) {
-                                // Not a valid number
-                                list.add(prim.getAsString());
-                            }
+                        catch (NumberFormatException eDouble) {
+                            // Not a valid number
+                            list.add(prim.getAsString());
                         }
                     }
                     if (num != null) {

@@ -48,20 +48,15 @@ public class MapDeserializer implements JsonDeserializer<Map<String, Object>> {
                 if (prim.isNumber()) {
                     Number num = null;
                     try {
-                        num = Integer.parseInt(prim.getAsString());
+                        num = Long.parseLong(prim.getAsString());
                     }
-                    catch (NumberFormatException eInt) {
+                    catch (NumberFormatException eLong) {
                         try {
-                            num = Long.parseLong(prim.getAsString());
+                            num = Double.parseDouble(prim.getAsString());
                         }
-                        catch (NumberFormatException eLong) {
-                            try {
-                                num = Double.parseDouble(prim.getAsString());
-                            }
-                            catch (NumberFormatException eDouble) {
-                                // Not a valid number
-                                map.put(key, prim.getAsString());
-                            }
+                        catch (NumberFormatException eDouble) {
+                            // Not a valid number
+                            map.put(key, prim.getAsString());
                         }
                     }
                     if (num != null) {
