@@ -3,6 +3,8 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import { useEffect } from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { IconTag as Icon } from "components/icontag";
@@ -158,7 +160,7 @@ const HelpPanel = (props) => {
       <p>
         {t("Refer to the ")}
         <a
-          href={"/docs/" + window.docsLocale + "/suse-manager/administration/monitoring.html"}
+          href={"/docs/" + docsLocale + "/suse-manager/administration/monitoring.html"}
           target="_blank"
           rel="noopener noreferrer"
         >

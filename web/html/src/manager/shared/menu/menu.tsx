@@ -6,10 +6,20 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { MessagesContainer } from "components/toastr/toastr";
 
+import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-const Link = (props) => (
-  <a href={props.url} className={props.cssClass + " js-spa"} target={props.target} title={props.title}>
+type LinkProps = {
+  url: string;
+  cssClass?: string;
+  target?: string;
+  title?: string;
+  responsiveLabel?: React.ReactNode;
+  label?: React.ReactNode;
+};
+
+const Link = (props: LinkProps) => (
+  <a href={props.url} className={flatten([props.cssClass, "js-spa"])} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>
@@ -20,7 +30,7 @@ type NodeProps = {
   isLeaf?: boolean;
   icon?: string;
   url: string;
-  target: React.ReactNode;
+  target: string;
   label: string;
   isSearchActive?: boolean;
   isOpen?: boolean;
@@ -36,14 +46,9 @@ class Node extends React.Component<NodeProps> {
 
   render() {
     return (
-      <div className={this.props.isLeaf ? " leafLink " : " nodeLink "} onClick={(event) => this.handleClick(event)}>
+      <div className={this.props.isLeaf ? "leafLink" : "nodeLink"} onClick={(event) => this.handleClick(event)}>
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
-        <Link
-          url={this.props.url}
-          target={this.props.target}
-          label={escapeHtml(this.props.label)}
-          onClick={(event) => this.handleClick(event)}
-        />
+        <Link url={this.props.url} target={this.props.target} label={escapeHtml(this.props.label)} />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
           <i className={"submenuIcon " + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
         ) : null}
@@ -107,14 +112,13 @@ class Element extends React.Component<ElementProps> {
 
   render() {
     const element = this.props.element;
+    const className = flatten([
+      element.active && "active",
+      (this.state.open || this.state.visiblityForcedByParent) && "open",
+      this.isLeaf(element) ? "leaf" : "node",
+    ]);
     return this.isVisible(element, this.props.searchString) || this.state.visiblityForcedByParent ? (
-      <li
-        className={
-          (element.active ? " active" : "") +
-          (this.state.open || this.state.visiblityForcedByParent ? " open " : "") +
-          (this.isLeaf(element) ? " leaf " : " node ")
-        }
-      >
+      <li className={className}>
         <Node
           isLeaf={this.isLeaf(element)}
           url={this.getUrl(element)}
