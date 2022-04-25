@@ -1,3 +1,4 @@
+- Fix deprecated warning when getting pillar data (bsc#1192850)
 - fixing how the return code is returned in mgrutil runner (bsc#1194909)
 
 -------------------------------------------------------------------
