@@ -1,6 +1,12 @@
 Fix outdated documentation and release notes links
 
 -------------------------------------------------------------------
+Mon Apr 25 15:04:59 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Prefer parsing numbers as ints in HTTP API for compatibility
+
+-------------------------------------------------------------------
 Tue Apr 19 12:01:05 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.19-1
