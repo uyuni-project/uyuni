@@ -1852,19 +1852,9 @@
     <action path="/schedule/CompletedSystems"
             scope="request"
             input="/WEB-INF/pages/schedule/completedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsSetupAction">
+            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsAction">
             <forward name="default"
                      path="/WEB-INF/pages/schedule/completedsystems.jsp" />
-    </action>
-
-    <action path="/schedule/CompletedSystemsSubmit"
-            scope="request"
-            input="/WEB-INF/pages/schedule/completedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="postRequired" value="true" />
-            <forward name="default"
-                     path="/schedule/CompletedSystems.do" redirect="true" />
     </action>
 
 

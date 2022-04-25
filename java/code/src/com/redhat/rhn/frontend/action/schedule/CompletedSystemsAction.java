@@ -14,14 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
+import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.manager.action.ActionManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +38,34 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * CompletedSystemsAction
  */
-public class CompletedSystemsAction extends RhnListAction {
+public class CompletedSystemsAction extends RhnAction implements Listable {
+
+    protected void setup(HttpServletRequest request) {
+        RequestContext context = new RequestContext(request);
+        context.lookupAndBindAction();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getDataSetName() {
+        return RequestContext.PAGE_LIST;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getListName() {
+        return "completedSystemsList";
+    }
+
+    protected Map getParamsMap(HttpServletRequest request) {
+        RequestContext context = new RequestContext(request);
+        Map<String, Object> params = new HashMap<>();
+        params.put(RequestContext.AID,
+                context.getRequiredParam(RequestContext.AID));
+        return params;
+    }
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -38,26 +73,28 @@ public class CompletedSystemsAction extends RhnListAction {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        Map params = getParamMap(request);
+        setup(request);
+        ListSessionSetHelper helper = new ListSessionSetHelper(this,
+                request, getParamsMap(request));
+        processHelper(helper);
+        helper.execute();
 
-        return getStrutsDelegate().forwardParams(
-                mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
+        Action action = (Action) request.getAttribute(RequestContext.ACTION);
+        ActionFormatter af = action.getFormatter();
+        request.setAttribute("actionname", af.getName());
+
+        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    /**
-     * Makes a parameter map containing request params that need to
-     * be forwarded on to the success mapping.
-     * @param request HttpServletRequest containing request vars
-     * @return Returns Map of parameters
-     */
-    private Map getParamMap(HttpServletRequest request) {
-        RequestContext requestContext = new RequestContext(request);
+    protected void processHelper(ListSessionSetHelper helper) {
+        helper.setDataSetName(getDataSetName());
+        helper.setListName(getListName());
+    }
 
-        Map params = requestContext.makeParamMapWithPagination();
-        //Add action id to the params
-        Long aid = requestContext.getParamAsLong("aid");
-        params.put("aid", aid);
-
-        return params;
+    @Override
+    public List getResult(RequestContext context) {
+        Action action = context.lookupAndBindAction();
+        PageControl pc = new PageControl();
+        return ActionManager.completedSystems(context.getCurrentUser(), action, pc);
     }
 }
