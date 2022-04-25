@@ -13,13 +13,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
         // import custom fonts/icons styles
         link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webBuildtimestamp}')
         // import styles
-        if isDevMode
-            link(rel='stylesheet/less', href='/css/#{webTheme}.less')
-            script(type='text/javascript').
-                less = {env: 'development environment'};
-            script(src='/javascript/less.js')
-        else
-            link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}')
+        link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/main.bundle.js?cb=#{webBuildtimestamp}')
@@ -49,6 +43,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
                     module.renderer(
                       'login',
                       {
+                          theme: '!{webTheme}',
                           isUyuni: JSON.parse("#{isUyuni}"),
                           urlBounce: document.getElementById('init_data_url_bounce').textContent,
                           validationErrors: JSON.parse('!{validationErrors}'),
