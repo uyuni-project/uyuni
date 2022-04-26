@@ -323,7 +323,7 @@ def client_public_ip(host)
               when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
                 'eth0'
               when /^debian11/, /^ubuntu/
-                 $is_cloud_provider ? 'eth0' : 'ens3'
+                $is_cloud_provider ? 'eth0' : 'ens3'
               when 'kvm_server', 'xen_server'
                 'br0'
               else
