@@ -48,7 +48,7 @@
     "babel-jest": "27.4.6",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.1",
-    "copy-webpack-plugin": "10.2.4",
+    "copy-webpack-plugin": "5.1.2",
     "core-js": "^3.8.1",
     "css-loader": "^2.1.0",
     "eslint-config-prettier": "^8.3.0",
