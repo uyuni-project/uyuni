@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: registry.opensuse.org/opensuse/httpd
   pullPolicy: IfNotPresent
   tag: ""
 

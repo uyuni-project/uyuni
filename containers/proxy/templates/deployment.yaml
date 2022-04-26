@@ -25,6 +25,18 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: server.key
+              valueFrom:
+                secretKeyRef:
+                  name: proxy-secrets
+                  key: server.key
+                  optional: true     
+            - name: config.yaml
+              valueFrom:
+                configMapKeyRef:
+                  name: proxy-configmap
+                  key: config.yaml                              
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

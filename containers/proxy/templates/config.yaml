@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy-configmap
+data:
+  config.yaml: {{ .Values.configYaml | indent 4 }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: proxy-secrets
+type: opaque
+data:
+  server.key: {{ .Values.serverKey | indent 4 }}
