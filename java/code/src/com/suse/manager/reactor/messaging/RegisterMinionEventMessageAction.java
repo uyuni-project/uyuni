@@ -616,14 +616,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
         ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwTypeGroup, org);
 
-        if (terminalsGroup == null || branchIdGroup == null) {
-            throw new IllegalStateException("Missing required server groups (\"" + TERMINALS_GROUP_NAME + "\" or \"" +
-                    branchIdGroupName + "\")! Aborting registration.");
+        if (branchIdGroup == null) {
+            throw new IllegalStateException("Missing required server group (\"" + branchIdGroupName + "\")!" +
+                    " Aborting registration.");
         }
 
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
-        systemManager.addServerToServerGroup(minion, terminalsGroup);
         systemManager.addServerToServerGroup(minion, branchIdGroup);
+        if (terminalsGroup != null) {
+            systemManager.addServerToServerGroup(minion, terminalsGroup);
+        }
         if (hwGroup != null) {
             // if the system is already assigned to some HWTYPE group, skip assignment and log this only
             if (minion.getManagedGroups().stream().anyMatch(g -> g.getName().startsWith(hwTypeGroupPrefix))) {
