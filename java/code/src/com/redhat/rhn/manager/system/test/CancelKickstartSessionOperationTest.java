@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -28,11 +30,14 @@ import com.redhat.rhn.manager.system.CancelKickstartSessionOperation;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CancelKickstartSessionOperationTest
  */
 public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testOperation() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());

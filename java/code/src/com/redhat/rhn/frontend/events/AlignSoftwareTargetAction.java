@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -41,7 +42,7 @@ import java.util.function.Consumer;
  */
 public class AlignSoftwareTargetAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(AlignSoftwareTargetAction.class);
+    private static final Logger LOG = LogManager.getLogger(AlignSoftwareTargetAction.class);
 
     @Override
     public void execute(EventMessage msgIn) {
@@ -61,11 +62,11 @@ public class AlignSoftwareTargetAction implements MessageAction {
                         targetChannel.getLabel());
             }
 
-            LOG.info("Asynchronously aligning: " + msg);
+            LOG.info("Asynchronously aligning: {}", msg);
             Instant start = Instant.now();
             contentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
-            LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
+            LOG.info("Finished aligning {} in {}", msg, Duration.between(start, Instant.now()));
         }
         catch (Throwable t) {
             throw new AlignSoftwareTargetException(target, t);
@@ -81,7 +82,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException) {
-                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget().getId(), e);
+                LOG.error("Error aligning target {}", ((AlignSoftwareTargetException) e).getTarget().getId(), e);
                 AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
                 exc.getTarget().setStatus(Status.FAILED);
                 ContentProjectFactory.save(exc.getTarget());

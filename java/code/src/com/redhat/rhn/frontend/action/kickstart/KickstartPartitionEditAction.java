@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartDetailsEdit extends RhnAction
- * @version $Rev: 1 $
  */
 public class KickstartPartitionEditAction extends BaseKickstartEditAction {
 

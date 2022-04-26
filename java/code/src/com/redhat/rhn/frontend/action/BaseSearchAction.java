@@ -22,7 +22,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -52,7 +53,7 @@ import redstone.xmlrpc.XmlRpcFault;
  *
  */
 public abstract class BaseSearchAction extends RhnAction {
-    protected static final Logger LOG = Logger.getLogger(BaseSearchAction.class);
+    protected static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
 
     /** Channel-arches a default package-search should look in */
     public static final String[] DEFAULT_ARCHES = { "channel-ia32", "channel-ia64",
@@ -139,7 +140,7 @@ public abstract class BaseSearchAction extends RhnAction {
                     new ActionMessage("packages.search.connection_error"));
         }
         catch (XmlRpcFault e) {
-            LOG.info("Caught Exception :" + e + ", code [" + e.getErrorCode() + "]");
+            LOG.info("Caught Exception :{}, code [{}]", e, e.getErrorCode());
             if (e.getErrorCode() == 100) {
                 LOG.error("Invalid search query", e);
                 errors.add(ActionMessages.GLOBAL_MESSAGE,

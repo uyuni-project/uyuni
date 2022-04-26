@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class TaskomaticHandler extends BaseHandler {
 
     private String TASKOMATIC_NAMESPACE = "tasko";
     private XmlRpcClient client;
-    private static Logger log = Logger.getLogger(TaskomaticHandler.class);
+    private static Logger log = LogManager.getLogger(TaskomaticHandler.class);
 
     /**
      * default constructor
@@ -70,7 +71,7 @@ public class TaskomaticHandler extends BaseHandler {
 
         addParameters(loggedInUser, params);
 
-        log.info("Translating " + methodCalled);
+        log.info("Translating {}", methodCalled);
 
         try {
             return client.invoke(TASKOMATIC_NAMESPACE + "." + methodCalled, params);

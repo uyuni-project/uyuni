@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Represents a single step in a multi-step wizard
  *
- * @version $Rev $
  */
 public class WizardStep {
 

@@ -46,7 +46,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Session;
 
@@ -63,7 +64,7 @@ import java.util.Set;
  * ActivationKeyManager
  */
 public class ActivationKeyManager {
-    private static Logger log = Logger.getLogger(ActivationKeyManager.class);
+    private static Logger log = LogManager.getLogger(ActivationKeyManager.class);
     private static ActivationKeyManager instance = new ActivationKeyManager();
     //private constructor
     private ActivationKeyManager() {
@@ -467,8 +468,7 @@ public class ActivationKeyManager {
     private boolean subscribeToChildChannelWithPackageName(
                             ActivationKey key, String packageName) {
 
-        log.debug("subscribeToChildChannelWithPackageName: " + key.getId() +
-                " name: " + packageName);
+        log.debug("subscribeToChildChannelWithPackageName: {} name: {}", key.getId(), packageName);
         /*
          * null base channel implies Red Hat default
          * so we have to subscribe all the child channels
@@ -484,7 +484,7 @@ public class ActivationKeyManager {
         }
         else {
             Long bcid = key.getBaseChannel().getId();
-            log.debug("found basechannel: " + bcid);
+            log.debug("found basechannel: {}", bcid);
             // check, whether the package is available in the base channel already
             // f.e. libvirt available in RHEL5VT (child channel),
             // but in RHEL6Server (base channel)
@@ -492,10 +492,10 @@ public class ActivationKeyManager {
                 List<Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
                         bcid, packageName, false);
                 Collections.sort(cids);
-                log.warn("sorted cids: " + cids.toString());
+                log.warn("sorted cids: {}", cids.toString());
                 if (cids.isEmpty()) {
                     // nothing to do
-                    log.warn("No child channel of " + bcid + " contains " + packageName);
+                    log.warn("No child channel of {} contains {}", bcid, packageName);
                 }
                 else if (cids.size() > 1) {
                     // if there're more channels, just do some harakiri to pick one

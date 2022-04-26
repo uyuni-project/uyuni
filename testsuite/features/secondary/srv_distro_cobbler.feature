@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
@@ -10,7 +10,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Copy cobbler profiles on the server
     When I copy autoinstall mocked files on server
 
-  Scenario: Ask cobbler to create a distribution via XML-RPC
+  Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"
 
@@ -142,13 +142,14 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Trigger the creation of a cobbler system record
     When I trigger cobbler system record
 
-  Scenario: Create a cobbler system record via XML-RPC
-    When I am logged in via XML-RPC system as user "admin" and password "admin"
-    And I create a System Record
-    Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
-    And the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
+  Scenario: Create a cobbler system record via API
+    When I am logged in API as user "admin" and password "admin"
+    And I create a system record
+    And I logout from API
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
+    Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
   Scenario: Cleanup: delete test distro and profiles
-    Then I remove kickstart profiles and distros
+    When I remove kickstart profiles and distros

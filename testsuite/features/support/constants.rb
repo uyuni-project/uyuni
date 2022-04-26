@@ -308,11 +308,13 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   %w[
     sle-product-sles15-sp2-pool-x86_64
     sle-manager-tools15-pool-x86_64-sp2
+    sle-manager-tools15-beta-pool-x86_64-sp2
     sle-module-containers15-sp2-pool-x86_64
     sle-module-basesystem15-sp2-pool-x86_64
     sle-module-server-applications15-sp2-pool-x86_64
     sle-product-sles15-sp2-updates-x86_64
     sle-manager-tools15-updates-x86_64-sp2
+    sle-manager-tools15-beta-updates-x86_64-sp2
     sle-module-containers15-sp2-updates-x86_64
     sle-module-basesystem15-sp2-updates-x86_64
     sle-module-server-applications15-sp2-updates-x86_64
@@ -321,11 +323,13 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   %w[
     sle-product-sles15-sp3-pool-x86_64
     sle-manager-tools15-pool-x86_64-sp3
+    sle-manager-tools15-beta-pool-x86_64-sp3
     sle-module-containers15-sp3-pool-x86_64
     sle-module-basesystem15-sp3-pool-x86_64
     sle-module-server-applications15-sp3-pool-x86_64
     sle-product-sles15-sp3-updates-x86_64
     sle-manager-tools15-updates-x86_64-sp3
+    sle-manager-tools15-beta-updates-x86_64-sp3
     sle-module-containers15-sp3-updates-x86_64
     sle-module-basesystem15-sp3-updates-x86_64
     sle-module-server-applications15-sp3-updates-x86_64
@@ -334,50 +338,3 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
 
 MIGRATE_SSH_MINION_FROM = '15-SP2'.freeze
 MIGRATE_SSH_MINION_TO = '15-SP3'.freeze
-
-OS_REPOS_BY_OS_VERSION = {
-  '11-SP4' =>
-  %w[
-    SLE-Module-Basesystem11-SP4-Pool
-    SLE-Module-Basesystem11-SP4-Updates
-    SLE-Module-Containers11-SP4-Pool
-    SLE-Module-Containers11-SP4-Updates
-  ],
-  '12-SP3' =>
-  %w[
-    SLE-Module-Basesystem12-SP3-Pool
-    SLE-Module-Basesystem12-SP3-Updates
-  ],
-  '12-SP4' =>
-  %w[
-    SLE-Module-Basesystem12-SP4-Pool
-    SLE-Module-Basesystem12-SP4-Updates
-  ],
-  '15-SP1' =>
-  %w[
-    SLE-Module-Basesystem15-SP1-Pool
-    SLE-Module-Basesystem15-SP1-Updates
-    SLE-Module-DevTools15-SP1-Pool
-    SLE-Module-DevTools15-SP1-Updates
-    SLE-Module-Desktop-Applications15-SP1-Pool
-    SLE-Module-Desktop-Applications15-SP1-Updates
-  ],
-  '15-SP2' =>
-  %w[
-    SLE-Module-Basesystem15-SP2-Pool
-    SLE-Module-Basesystem15-SP2-Updates
-    SLE-Module-DevTools15-SP2-Pool
-    SLE-Module-DevTools15-SP2-Updates
-    SLE-Module-Desktop-Applications15-SP2-Pool
-    SLE-Module-Desktop-Applications15-SP2-Updates
-  ],
-  '15-SP3' =>
-  %w[
-    SLE-Module-Basesystem15-SP3-Pool
-    SLE-Module-Basesystem15-SP3-Updates
-    SLE-Module-DevTools15-SP3-Pool
-    SLE-Module-DevTools15-SP3-Updates
-    SLE-Module-Desktop-Applications15-SP3-Pool
-    SLE-Module-Desktop-Applications15-SP3-Updates
-  ]
-}.freeze

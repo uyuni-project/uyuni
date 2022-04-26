@@ -18,17 +18,15 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.EncodedConfigRevision;
 import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -67,7 +65,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          "Macro end delimiter for a config file. Present for text files only.")
  * #struct_end()
  */
-public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
+public class ConfigRevisionSerializer extends ApiResponseSerializer<ConfigRevision> {
 
     public static final String CONTENTS = "contents";
     public static final String CONTENTS_ENC64 = "contents_enc64";
@@ -84,86 +82,72 @@ public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
     public static final String TYPE = "type";
     public static final String REVISION = "revision";
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ConfigRevision> getSupportedClass() {
         return ConfigRevision.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ConfigRevision rev = (ConfigRevision) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
+    @Override
+    public SerializedApiResponse serialize(ConfigRevision src) {
+        SerializationBuilder builder = new SerializationBuilder();
 
-        if (rev.getConfigFileType() != null) {
-            helper.add(TYPE, rev.getConfigFileType().getLabel());
+        if (src.getConfigFileType() != null) {
+            builder.add(TYPE, src.getConfigFileType().getLabel());
         }
 
-        helper.add(PATH, rev.getConfigFile().getConfigFileName().getPath());
-        helper.add(REVISION, rev.getRevision());
-        helper.add("creation", rev.getCreated());
-        helper.add("modified", rev.getModified());
-        helper.add(SELINUX_CTX, rev.getConfigInfo().getSelinuxCtx());
-        if (!rev.isSymlink()) {
-            helper.add(OWNER, rev.getConfigInfo().getUsername());
-            helper.add(GROUP, rev.getConfigInfo().getGroupname());
-            helper.add(PERMISSIONS, rev.getConfigInfo().getFilemode());
-            helper.add(PERMISSIONS_MODE, new DecimalFormat("000").format(
-                rev.getConfigInfo().getFilemode().longValue()));
+        builder.add(PATH, src.getConfigFile().getConfigFileName().getPath());
+        builder.add(REVISION, src.getRevision());
+        builder.add("creation", src.getCreated());
+        builder.add("modified", src.getModified());
+        builder.add(SELINUX_CTX, src.getConfigInfo().getSelinuxCtx());
+        if (!src.isSymlink()) {
+            builder.add(OWNER, src.getConfigInfo().getUsername());
+            builder.add(GROUP, src.getConfigInfo().getGroupname());
+            builder.add(PERMISSIONS, src.getConfigInfo().getFilemode());
+            builder.add(PERMISSIONS_MODE, new DecimalFormat("000").format(
+                src.getConfigInfo().getFilemode().longValue()));
         }
         else {
-            helper.add(TARGET_PATH, rev.getConfigInfo().getTargetFileName().getPath());
+            builder.add(TARGET_PATH, src.getConfigInfo().getTargetFileName().getPath());
         }
 
-        if (rev.isFile() || rev.isSls()) {
-            helper.add(BINARY, rev.getConfigContent().isBinary());
-            helper.add("sha256", rev.getConfigContent().getChecksum().getChecksum());
-            if (rev instanceof EncodedConfigRevision || rev.getConfigContent().isBinary()) {
-                addEncodedFileContent(rev, helper);
+        if (src.isFile() || src.isSls()) {
+            builder.add(BINARY, src.getConfigContent().isBinary());
+            builder.add("sha256", src.getConfigContent().getChecksum().getChecksum());
+            if (src instanceof EncodedConfigRevision || src.getConfigContent().isBinary()) {
+                addEncodedFileContent(src, builder);
             }
             else {
-                addFileContent(rev, helper);
+                addFileContent(src, builder);
             }
 
         }
-        helper.add("channel", rev.getConfigFile().getConfigChannel().getName());
-        helper.writeTo(output);
+        builder.add("channel", src.getConfigFile().getConfigChannel().getName());
+        return builder.build();
     }
 
-    protected void addFileContent(ConfigRevision rev, SerializerHelper helper) {
+    protected void addFileContent(ConfigRevision rev, SerializationBuilder builder) {
         if (!rev.getConfigContent().isBinary()) {
             String content = rev.getConfigContent().getContentsString();
             if (!StringUtil.containsInvalidXmlChars2(content)) {
-                helper.add(CONTENTS, content);
-                helper.add(CONTENTS_ENC64, Boolean.FALSE);
+                builder.add(CONTENTS, content);
+                builder.add(CONTENTS_ENC64, Boolean.FALSE);
             }
             else {
                 throw new ConfigFileErrorException("The binary file was marked as text.");
             }
-            helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
-            helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
+            builder.add(MACRO_START, rev.getConfigContent().getDelimStart());
+            builder.add(MACRO_END, rev.getConfigContent().getDelimEnd());
         }
     }
 
-    protected void addEncodedFileContent(ConfigRevision rev, SerializerHelper helper) {
-        try {
-            helper.add(CONTENTS, new String(Base64.encodeBase64(
-                    rev.getConfigContent().getContents()), "UTF-8"));
-        }
-         catch (UnsupportedEncodingException e) {
-             String msg = "Following errors were encountered " +
-                     "when creating the config file.\n" + e.getMessage();
-             throw new ConfigFileErrorException(msg);
-        }
-        helper.add(CONTENTS_ENC64, Boolean.TRUE);
+    protected void addEncodedFileContent(ConfigRevision rev, SerializationBuilder builder) {
+        builder.add(CONTENTS, new String(Base64.encodeBase64(
+                rev.getConfigContent().getContents()), StandardCharsets.UTF_8));
+        builder.add(CONTENTS_ENC64, Boolean.TRUE);
         if (!rev.getConfigContent().isBinary()) {
-            helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
-            helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
+            builder.add(MACRO_START, rev.getConfigContent().getDelimStart());
+            builder.add(MACRO_END, rev.getConfigContent().getDelimEnd());
         }
     }
 }

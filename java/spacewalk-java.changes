@@ -1,27 +1,58 @@
-- Improve XMLRPC API for image management
-- Allow image upload via HTTP
-- Remove doc search functionality
-- adapt for new c3p0 and mchange-commons package
-- Set default image download protocol to http
-- Container proxy configuration handler
-- Hibernate: set a non-singleton ehcache
-- change directory owner and permissions only when needed
-- Provide link to Sync page when unsynced patches message show up
-  (bsc#1196094)
-- Optimize adding new products function (bsc#1193707)
-- Allow monitoring entitlement for debian 11 and 10
-- warning log when hardware refresh result is not serializable
-- Hide private methods in XMLRPC handlers
-- update last checkin only if job is successful (bsc#1197007)
-- Fixed broken help link for system overview
-- send notifications for new or changed ubuntu errata (bsc#1196977)
-- Allow using a custom SSH port for proxies
-- Hide useless fields for containerized proxies in UI
-- Keep virtualization notifications websocket alive
-- Fix NPE when accessing cancelled action via system history (bsc#1195762)
-- CVE Audit: Show patch as available in the currently installed product even if successor
-  patch affects additional packages (bsc#1196455)
-- Added the server location information to reporting database
+- Make TERMINALS group optional for saltbooted machines
+Fix outdated documentation and release notes links
+
+-------------------------------------------------------------------
+Mon Apr 25 15:04:59 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Prefer parsing numbers as ints in HTTP API for compatibility
+
+-------------------------------------------------------------------
+Tue Apr 19 12:01:05 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.19-1
+  * Fix handling of empty image version
+  * Add url pillar info to built boot-images
+  * Fix reboot time on salt-ssh client(bsc#1197591)
+  * detect free products in Alpha and Beta stage and prevent checks
+    on openSUSE products (bsc#1197488)
+  * Implement JSON over HTTP API
+  * Preserve parameter names in bytecode
+  * Disable CSRF tokens for API routes
+  * Migrated from log4j1.x.x to log4j2.x.x
+  * Add UI for peripheral server with report database password
+    regeneration
+  * Added the server location information to reporting database
+  * detect MgrServer on bootstrap and store report database settings
+  * Correctly notify the failed status for the report db update task.
+  * Show image build log in UI
+  * Build bundle less images and create pxe profile for pxe images
+    Introduce saltboot-group handing and pxe management of them
+    Part of saltboot containerization workflow
+  * Improve XMLRPC API for image management
+  * Allow image upload via HTTP
+  * Remove doc search functionality
+  * adapt for new c3p0 and mchange-commons package
+  * Set default image download protocol to http
+  * Container proxy configuration handler
+  * Hibernate: set a non-singleton ehcache
+  * change directory owner and permissions only when needed
+  * Provide link to Sync page when unsynced patches message show up
+    (bsc#1196094)
+  * Optimize adding new products function (bsc#1193707)
+  * Allow monitoring entitlement for debian 11 and 10
+  * warning log when hardware refresh result is not serializable
+  * Hide private methods in XMLRPC handlers
+  * update last checkin only if job is successful (bsc#1197007)
+  * Fixed broken help link for system overview
+  * send notifications for new or changed ubuntu errata (bsc#1196977)
+  * Allow using a custom SSH port for proxies
+  * Hide useless fields for containerized proxies in UI
+  * Keep virtualization notifications websocket alive
+  * Fix NPE when accessing cancelled action via system history (bsc#1195762)
+  * CVE Audit: Show patch as available in the currently installed product even if successor
+    patch affects additional packages (bsc#1196455)
+  * Added the server location information to reporting database
 
 -------------------------------------------------------------------
 Mon Apr 04 11:02:21 CEST 2022 - jgonzalez@suse.com

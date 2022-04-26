@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CobblerSnippetDetailsAction extends RhnAction {
     private static final Logger LOG =
-                Logger.getLogger(CobblerSnippetDetailsAction.class);
+                LogManager.getLogger(CobblerSnippetDetailsAction.class);
     public static final String PREFIX = "prefix";
     public static final String NAME = "name";
     public static final String OLD_NAME = "oldName";

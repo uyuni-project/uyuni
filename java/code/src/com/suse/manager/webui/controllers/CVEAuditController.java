@@ -37,7 +37,8 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -61,7 +62,7 @@ public class CVEAuditController {
 
     private static final Gson GSON = new GsonBuilder().create();
 
-    private static Logger log = Logger.getLogger(CVEAuditController.class);
+    private static Logger log = LogManager.getLogger(CVEAuditController.class);
 
     private CVEAuditController() { }
 
@@ -206,7 +207,7 @@ public class CVEAuditController {
                 cveAuditSystems = handleRequest(cveAuditRequest, user);
             }
             catch (UnknownCVEIdentifierException e) {
-                log.warn("Unknown CVE Identifier '" + cveIdentifier + "'");
+                log.warn("Unknown CVE Identifier '{}'", cveIdentifier);
             }
         }
         String result = cveAuditSystems.stream().map(

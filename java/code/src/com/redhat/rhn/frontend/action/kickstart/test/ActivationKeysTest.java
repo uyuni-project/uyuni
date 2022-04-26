@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -26,11 +28,14 @@ import com.redhat.rhn.frontend.action.kickstart.ActivationKeysSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ActivationKeysTest - test for ActivationKeys lists
  */
 public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testSetupExecute() throws Exception {
         addKeysToKickstartData(user, ksdata);
         setRequestPathInfo("/kickstart/ActivationKeys");
@@ -39,6 +44,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
     }
 
+    @Test
     public void testSubmit() throws Exception {
         addDispatchCall(ActivationKeysSubmitAction.UPDATE_METHOD);
         addKeysToKickstartData(user, ksdata);

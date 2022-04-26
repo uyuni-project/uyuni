@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.Set;
 public class KickstartOptionsCommand  extends BaseKickstartCommand {
 
 
-    private static Logger log = Logger.getLogger(KickstartOptionsCommand.class);
+    private static Logger log = LogManager.getLogger(KickstartOptionsCommand.class);
 
     private List<KickstartCommandName> availableOptions;
     private List requiredOptions;
@@ -69,7 +70,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
 
         for (KickstartCommandName cn : availableOptions) {
 
-            log.debug("avail commandname: " + cn.getName());
+            log.debug("avail commandname: {}", cn.getName());
 
             String name = cn.getName();
             boolean added = false;
@@ -82,7 +83,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
                     v.setRequired(cn.getRequired());
 
                     String args = c.getArguments();
-                    log.debug("   args = " + args);
+                    log.debug("   args = {}", args);
 
                     // Default URL's are stored as a path, not a full URL. Because we store
                     // the value directly back in the db we still must render just /path

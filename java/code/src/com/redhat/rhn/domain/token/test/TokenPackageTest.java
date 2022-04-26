@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.token.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
@@ -25,16 +28,21 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * TokenPackageTest
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
     }
 
+    @Test
     public void testTokenPackage() throws Exception {
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);

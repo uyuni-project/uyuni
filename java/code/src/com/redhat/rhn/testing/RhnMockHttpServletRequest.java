@@ -25,8 +25,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import junit.framework.AssertionFailedError;
-
 /**
  * RhnMockHttpServletRequest is a mock implementation of the
  * HttpServletRequest which fixes deficiencies in the MockObjects'
@@ -137,7 +135,8 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         try {
             return super.getParameter(paramName);
         }
-        catch (AssertionFailedError afe) {
+        catch (junit.framework.AssertionFailedError afe) {
+            // todo verify if that works uff this is such a PITA with legacy libs!
             return null;
         }
     }

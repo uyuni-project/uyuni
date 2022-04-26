@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -30,12 +34,14 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testLookupConfigChannelType() throws Exception {
         assertNotNull(ConfigChannelType.normal());
         assertNotNull(ConfigChannelType.sandbox());
@@ -43,6 +49,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(ConfigChannelType.state());
     }
 
+    @Test
     public void testLookupConfigFileType() throws Exception {
         assertNotNull(ConfigFileType.dir());
         assertEquals(ConfigFileType.DIR,
@@ -52,11 +59,13 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
                 ConfigFileType.file().getLabel());
     }
 
+    @Test
     public void testLookupConfigFileState() throws Exception {
         assertNotNull(ConfigFileState.normal());
         assertNotNull(ConfigFileState.dead());
     }
 
+    @Test
     public void testSaveNewConfigChannel() {
         String label = "testlabel";
         ConfigChannel channel = ConfigurationFactory.saveNewConfigChannel(user.getOrg(),
@@ -84,6 +93,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testSaveNewConfigFile() {
         //Create a channel to put the file in
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -106,6 +116,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(file2);
     }
 
+    @Test
     public void testSaveNewConfigRevision() {
 
         //Create a file to put this revision in
@@ -132,6 +143,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(revision2);
     }
 
+    @Test
     public void testLookupOrInsertConfigInfo() {
 
         //one problem is that looking up the same thing must be done in such a way that
@@ -160,6 +172,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(rev2);
     }
 
+    @Test
     public void testLookupOrInsertConfigFileName() {
         //one problem is that looking up the same thing must be done in such a way that
         //hibernate doesn't yell about it.
@@ -187,6 +200,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(file2);
     }
 
+    @Test
     public void testRemoveConfigChannel() {
 
         //Let's create a channel/file/revision
@@ -219,6 +233,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNull(ConfigurationFactory.lookupConfigRevisionById(cr.getId()));
     }
 
+    @Test
     public void testCreateNewRevisionFromStream() throws Exception {
         String startData = "this is some original data";
         ByteArrayInputStream stream =

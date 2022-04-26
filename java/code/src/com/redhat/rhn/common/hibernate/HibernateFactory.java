@@ -23,7 +23,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
@@ -68,7 +69,7 @@ import javax.persistence.criteria.Root;
 public abstract class HibernateFactory {
 
     private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
-    private static final Logger LOG = Logger.getLogger(HibernateFactory.class);
+    private static final Logger LOG = LogManager.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 
     protected HibernateFactory() {
@@ -414,11 +415,11 @@ public abstract class HibernateFactory {
             retval = session.get(clazz, id);
         }
         catch (MappingException me) {
-            getLogger().error("Mapping not found for " + clazz.getName(), me);
+            getLogger().error("Mapping not found for {}", clazz.getName(), me);
 
         }
         catch (HibernateException he) {
-            getLogger().error("Hibernate exception: " + he.toString());
+            getLogger().error("Hibernate exception: {}", he.toString());
         }
 
         return retval;
@@ -443,11 +444,11 @@ public abstract class HibernateFactory {
             retval = session.get(clazz, id, LockMode.UPGRADE);
         }
         catch (MappingException me) {
-            getLogger().error("Mapping not found for " + clazz.getName(), me);
+            getLogger().error("Mapping not found for {}", clazz.getName(), me);
 
         }
         catch (HibernateException he) {
-            getLogger().error("Hibernate exception: " + he.toString());
+            getLogger().error("Hibernate exception: {}", he.toString());
         }
 
         return retval;

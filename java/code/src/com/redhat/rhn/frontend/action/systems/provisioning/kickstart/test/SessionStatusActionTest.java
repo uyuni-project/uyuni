@@ -14,14 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SessionStatusActionTest
- * @version $Rev: 1 $
  */
 public class SessionStatusActionTest extends BaseSessionTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/kickstart/SessionStatus");
         actionPerform();

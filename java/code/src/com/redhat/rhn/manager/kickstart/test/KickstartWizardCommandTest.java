@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -28,6 +32,8 @@ import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 /**
@@ -35,6 +41,7 @@ import java.util.List;
  */
 public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testWizTrees() throws Exception {
 
         Channel c = ChannelFactoryTest.createBaseChannel(user);
@@ -56,7 +63,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
                 foundBaseTree = true;
             }
         }
-        assertTrue("Didnt find any trees that are from a basechannel.", foundBaseTree);
+        assertTrue(foundBaseTree, "Didnt find any trees that are from a basechannel.");
 
 
         assertNotNull(cmd.getKickstartableTree(tree.getId()));
@@ -68,6 +75,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
     // create a default KickstartSession that is used for
     // bare metal/PXE installs and that there is a default key
     // associated with it.
+    @Test
     public void testStore() throws Exception {
 
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());

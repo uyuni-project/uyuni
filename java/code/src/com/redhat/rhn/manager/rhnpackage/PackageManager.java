@@ -56,7 +56,8 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -75,7 +76,7 @@ import java.util.Set;
  * PackageManager
  */
 public class PackageManager extends BaseManager {
-    private static final Logger LOG = Logger.getLogger(PackageManager.class);
+    private static final Logger LOG = LogManager.getLogger(PackageManager.class);
     public static final String RHNCFG = "mgr-cfg";
     public static final String RHNCFG_CLIENT = "mgr-cfg-client";
     public static final String RHNCFG_ACTIONS = "mgr-cfg-actions";
@@ -632,7 +633,7 @@ public class PackageManager extends BaseManager {
                                        .uniqueResult();
         }
         catch (HibernateException e) {
-            LOG.error("Hibernate exception: " + e.toString());
+            LOG.error("Hibernate exception: {}", e.toString());
         }
         return null;
     }
@@ -907,8 +908,7 @@ public class PackageManager extends BaseManager {
             for (Object possiblePackageIn : possiblePackages) {
                 PackageComparison pinner = (PackageComparison) possiblePackageIn;
                 if (pinner.getId().equals(po.getId())) {
-                    LOG.debug("possiblePackagesForPushingIntoChannel removing: " +
-                            pinner.getId());
+                    LOG.debug("possiblePackagesForPushingIntoChannel removing: {}", pinner.getId());
                     i.remove();
                 }
             }
@@ -917,7 +917,7 @@ public class PackageManager extends BaseManager {
         // Combine the 2
         possiblePackages.addAll(notInChannelPackages);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("All: " + possiblePackages);
+            LOG.debug("All: {}", possiblePackages);
         }
         possiblePackages.setTotalSize(possiblePackages.size());
         return processPageControl(possiblePackages, pc, null);
@@ -1358,8 +1358,7 @@ public class PackageManager extends BaseManager {
 
         mode.executeUpdate(params);
 
-        LOG.debug("Time to delete [" + ids.size() + "] packages [" +
-            (System.currentTimeMillis() - start) + "] ms");
+        LOG.debug("Time to delete [{}] packages [{}] ms", ids.size(), System.currentTimeMillis() - start);
 
         start = System.currentTimeMillis();
 
@@ -1372,8 +1371,7 @@ public class PackageManager extends BaseManager {
             ErrataCacheManager.deleteCacheEntriesForChannelPackages(channelId, pList);
         }
 
-        LOG.debug("Time to update [" + channelIds.size() + "] channels [" +
-            (System.currentTimeMillis() - start) + "] ms");
+        LOG.debug("Time to update [{}] channels [{}] ms", channelIds.size(), System.currentTimeMillis() - start);
     }
 
     /**
@@ -1416,8 +1414,7 @@ public class PackageManager extends BaseManager {
                 "delete_package_sources_from_set");
         mode.executeUpdate(params);
 
-        LOG.debug("Time to delete [" + ids.size() + "] packages [" +
-                (System.currentTimeMillis() - start) + "] ms");
+        LOG.debug("Time to delete [{}] packages [{}] ms", ids.size(), System.currentTimeMillis() - start);
     }
 
     /**

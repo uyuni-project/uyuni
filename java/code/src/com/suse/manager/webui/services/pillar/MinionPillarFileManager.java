@@ -18,7 +18,8 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PAT
 
 import com.redhat.rhn.domain.server.MinionServer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +32,7 @@ import java.nio.file.Paths;
  */
 public class MinionPillarFileManager {
 
-    private static final Logger LOG = Logger.getLogger(MinionPillarManager.class);
+    private static final Logger LOG = LogManager.getLogger(MinionPillarManager.class);
 
     private Path pillarDataPath = Paths.get(SUMA_PILLAR_DATA_PATH);
 
@@ -78,7 +79,7 @@ public class MinionPillarFileManager {
             Files.deleteIfExists(filePath);
         }
         catch (IOException e) {
-            LOG.error("Could not remove pillar file " + filePath);
+            LOG.error("Could not remove pillar file {}", filePath);
         }
     }
 

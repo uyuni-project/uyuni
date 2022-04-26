@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * BaseTag
- * @version $Rev: 60021 $
  */
 public abstract class BaseTag {
     private final String tag;

@@ -18,7 +18,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.satellite.SatelliteConfigurator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.sf.cglib.core.ReflectUtils;
 
@@ -31,7 +32,7 @@ public abstract class BaseConfigAction extends RhnAction {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(BaseConfigAction.class);
+    private static Logger logger = LogManager.getLogger(BaseConfigAction.class);
 
     /**
      * Get the command this Action will use.  This method uses the
@@ -48,7 +49,7 @@ public abstract class BaseConfigAction extends RhnAction {
      */
     protected SatelliteConfigurator getCommand(User currentUser) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommand(User currentUser=" + currentUser + ") - start");
+            logger.debug("getCommand(User currentUser={}) - start", currentUser);
         }
 
         String className = getCommandClassName();
@@ -64,7 +65,7 @@ public abstract class BaseConfigAction extends RhnAction {
                 ReflectUtils.newInstance(c, paramTypes, args);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("getCommand(User) - end - return value=" + sc);
+                logger.debug("getCommand(User) - end - return value={}", sc);
             }
             return sc;
         }

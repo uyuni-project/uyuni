@@ -24,7 +24,6 @@ import java.util.Set;
 
 /**
  * CPU
- * @version $Rev: 118113 $
  */
 public class SnapshotTag extends BaseDomainHelper {
 

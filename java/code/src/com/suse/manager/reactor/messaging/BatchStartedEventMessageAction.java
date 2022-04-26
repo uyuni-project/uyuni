@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.BatchStartedEvent.Data;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Set;
  */
 public class BatchStartedEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(BatchStartedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(BatchStartedEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {
@@ -60,7 +61,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Matched salt job with action (id=" + actionId + ")");
+                LOG.debug("Matched salt job with action (id={})", actionId);
             }
             Map<String, Long> minionServerIds = ServerFactory.findServerIdsByMinionIds(minionIds);
 
@@ -75,7 +76,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
             });
         }
         else {
-            LOG.warn("Action referenced from Salt job was not found: " + actionId);
+            LOG.warn("Action referenced from Salt job was not found: {}", actionId);
         }
     }
 
@@ -87,7 +88,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
      */
     private static void handleServerAction(ServerAction sa, String minionId) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Marking server action as failed for server: " + minionId);
+            LOG.debug("Marking server action as failed for server: {}", minionId);
         }
         sa.fail("Minion is down or could not be contacted.");
         ActionFactory.save(sa);

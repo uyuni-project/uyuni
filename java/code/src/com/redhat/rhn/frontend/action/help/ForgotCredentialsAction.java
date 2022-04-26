@@ -27,7 +27,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import com.suse.manager.utils.MailHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpSession;
  * ForgotCredentialsAction
  */
 public class ForgotCredentialsAction extends RhnAction {
-    private static Logger log = Logger.getLogger(ForgotCredentialsAction.class);
+    private static Logger log = LogManager.getLogger(ForgotCredentialsAction.class);
 
     private static final long PASSWORD_REQUEST_TIMEOUT = 60;
     private static final long LOGINS_REQUEST_TIMEOUT = 300;
@@ -203,7 +204,7 @@ public class ForgotCredentialsAction extends RhnAction {
         if (prevRequest != null &&
                 ((now - prevRequest) < timeout * 1000) &&
                 (user.toUpperCase().equals(prevRequestUser))) {
-            log.debug("Unsuccessful try to request email for " + user);
+            log.debug("Unsuccessful try to request email for {}", user);
             return false;
         }
 

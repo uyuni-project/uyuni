@@ -14,14 +14,21 @@
  */
 package com.redhat.rhn.manager.configuration.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ConfigurationValidationTest
  */
 public class ConfigurationValidationTest extends RhnBaseTestCase {
 
+    @Test
     public void testValidatePath() {
         assertEquals(0, ConfigurationValidation.
                             validatePath("/etc/foo").getErrors().size());
@@ -37,6 +44,7 @@ public class ConfigurationValidationTest extends RhnBaseTestCase {
                             validatePath("etc/../foo/").getErrors().size());
     }
 
+    @Test
     public void testValidateContent() {
         assertEquals(0, ConfigurationValidation.
                              validateContent("", "{@", "@}").getErrors().size());
@@ -78,6 +86,7 @@ public class ConfigurationValidationTest extends RhnBaseTestCase {
                             getErrors().size());
     }
 
+    @Test
     public void testValidUGID() {
         String id = "12345";
         assertTrue(ConfigurationValidation.validateUGID(id));
@@ -93,6 +102,7 @@ public class ConfigurationValidationTest extends RhnBaseTestCase {
         assertFalse(ConfigurationValidation.validateUGID(id));
     }
 
+    @Test
     public void testValidateUserOrGroup() {
         String name = "root";
         assertTrue(ConfigurationValidation.validateUserOrGroup(name));

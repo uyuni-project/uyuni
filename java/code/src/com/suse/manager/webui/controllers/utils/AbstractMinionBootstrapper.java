@@ -45,7 +45,8 @@ import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public abstract class AbstractMinionBootstrapper {
 
     private static final int KEY_LENGTH_LIMIT = 1_000_000;
 
-    private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractMinionBootstrapper.class);
     private static final LocalizationService LOC = LocalizationService.getInstance();
 
     /**
@@ -145,13 +146,13 @@ public abstract class AbstractMinionBootstrapper {
             sb.append((char) character);
         }
         String commandOutput = sb.toString();
-        LOG.debug("Salt SSH Dir test output: " + commandOutput);
+        LOG.debug("Salt SSH Dir test output: {}", commandOutput);
 
         try {
             boolean ownerCanReadWrite = ("rw").equals(commandOutput.substring(1, 3));
             boolean userAndGroupSet = commandOutput.contains("salt salt");
 
-            LOG.debug("User can read/write: " + ownerCanReadWrite + " user and group correct: " + userAndGroupSet);
+            LOG.debug("User can read/write: {} user and group correct: {}", ownerCanReadWrite, userAndGroupSet);
             return userAndGroupSet && ownerCanReadWrite;
         }
         catch (StringIndexOutOfBoundsException e) {
@@ -177,7 +178,7 @@ public abstract class AbstractMinionBootstrapper {
             if (!hasCorrectSSHFileOwnership()) {
                 String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                         "Please check permissions.";
-                LOG.error("Error during bootstrap: " + responseMessage);
+                LOG.error("Error during bootstrap: {}", responseMessage);
                 return new BootstrapResult(false, Optional.of(contactMethod),
                         LOC.getMessage("bootstrap.minion.error.noperm", SALT_SSH_DIR_PATH + "/known_hosts"));
             }
@@ -195,7 +196,7 @@ public abstract class AbstractMinionBootstrapper {
             return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
                         String responseMessage = SaltUtils.decodeSaltErr(error);
-                        LOG.error("Error during bootstrap: " + responseMessage);
+                                LOG.error("Error during bootstrap: {}", responseMessage);
                         return new BootstrapResult(false, Optional.of(contactMethod),
                                 responseMessage.split("\\r?\\n"));
                     },
@@ -207,14 +208,14 @@ public abstract class AbstractMinionBootstrapper {
                         // Clean up the generated key pair in case of failure
                         boolean success = !errMessage.isPresent() &&
                                 result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: " + msg));
+                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: {}", msg));
                         return new BootstrapResult(success, Optional.of(contactMethod),
                                 Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
                     }
             );
         }
         catch (Exception e) {
-            LOG.error("Exception during bootstrap: " + e.getMessage(), e);
+            LOG.error("Exception during bootstrap: {}", e.getMessage(), e);
             return new BootstrapResult(false, Optional.empty(),
                     e.getMessage() != null ? LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()) :
                             LOC.getMessage("bootstrap.minion.error.salt.unexpected"));
@@ -229,7 +230,7 @@ public abstract class AbstractMinionBootstrapper {
      * @throws RuntimeException in case the action was not successful
      */
     private void handleAnsiblePreAuthentication(BootstrapParameters params, User user) {
-        LOG.info("Pre-authenticating system using Ansible inventory ID: " + params.getAnsibleInventoryId());
+        LOG.info("Pre-authenticating system using Ansible inventory ID: {}", params.getAnsibleInventoryId());
         params.getAnsibleInventoryId()
                 .flatMap(pathId -> AnsibleManager.lookupAnsiblePathById(pathId, user))
                 .filter(path -> path instanceof InventoryPath)
@@ -252,13 +253,13 @@ public abstract class AbstractMinionBootstrapper {
                                         .collect(Collectors.toList());
 
                                 if (!failedStates.isEmpty()) {
-                                    LOG.error("Ansible pre-authentication failed: " + failedStates);
+                                    LOG.error("Ansible pre-authentication failed: {}", failedStates);
                                     throw new RuntimeException("Ansible pre-authentication state failed");
                                 }
                                 LOG.debug("Ansible pre-authentication successful");
                             },
                             () -> {
-                                LOG.error("Minion '" + minionId + "' did not respond");
+                                LOG.error("Minion '{}' did not respond", minionId);
                                 throw new RuntimeException("Minion '" + minionId + "' did not respond");
                             });
                 });

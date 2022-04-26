@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.iss.IssMaster;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * IssMasterSerializer
@@ -34,28 +31,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("boolean", "isCurrentMaster")
  * #struct_end()
  */
-public class IssMasterSerializer extends RhnXmlRpcCustomSerializer {
+public class IssMasterSerializer extends ApiResponseSerializer<IssMaster> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<IssMaster> getSupportedClass() {
         return IssMaster.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        IssMaster master = (IssMaster) obj;
-        helper.add("id", master.getId());
-        helper.add("label", master.getLabel());
-        helper.add("caCert", master.getCaCert());
-        helper.add("isCurrentMaster", master.isDefaultMaster());
-        helper.writeTo(writer);
+    @Override
+    public SerializedApiResponse serialize(IssMaster src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("caCert", src.getCaCert())
+                .add("isCurrentMaster", src.isDefaultMaster())
+                .build();
     }
-
 }

@@ -34,7 +34,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -60,17 +61,17 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     private static final String LIST_NAME = "packageList";
 
     /** Logger instance */
-    private static final Logger LOG = Logger.getLogger(LockPackageAction.class);
+    private static final Logger LOG = LogManager.getLogger(LockPackageAction.class);
 
     @Override
     protected DataResult getDataResult(Server server) {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
-        LOG.debug(server.getId() + "is a minion system? " + isMinion);
+        LOG.debug("{}is a minion system? {}", server.getId(), isMinion);
         // Check if this is a SUSE system (for minions only)
         boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
-        LOG.debug(server.getId() + "is a SUSE system? " + isSUSEMinion);
+        LOG.debug("{}is a SUSE system? {}", server.getId(), isSUSEMinion);
 
         if (isSUSEMinion || !isMinion) {
             return PackageManager.systemTotalPackages(server.getId(), null);

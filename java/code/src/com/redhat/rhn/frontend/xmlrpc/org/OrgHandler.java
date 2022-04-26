@@ -48,8 +48,11 @@ import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,7 +72,7 @@ public class OrgHandler extends BaseHandler {
     private static final String VALIDATION_XSD =
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
     private static final String USED_KEY = "used";
-    private static Logger log = Logger.getLogger(OrgHandler.class);
+    private static Logger log = LogManager.getLogger(OrgHandler.class);
 
     private final MigrationManager migrationManager;
 
@@ -208,7 +211,7 @@ public class OrgHandler extends BaseHandler {
         if (!result.isEmpty()) {
             log.error("Validation errors:");
             for (ValidatorError error : result.getErrors()) {
-                log.error("   " + error.getMessage());
+                log.error("   {}", error.getMessage());
             }
             // Multiple errors could return here, but we'll have to just throw an
             // exception for the first one and return that to the user.
@@ -233,6 +236,7 @@ public class OrgHandler extends BaseHandler {
      *     $OrgDtoSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<OrgDto> listOrgs(User loggedInUser) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         return OrgManager.activeOrgs(loggedInUser);
@@ -287,6 +291,7 @@ public class OrgHandler extends BaseHandler {
      *     $MultiOrgUserOverviewSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List listUsers(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         verifyOrgExists(orgId);
@@ -306,6 +311,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype $OrgDtoSerializer
      */
+    @ReadOnly
     public OrgDto getDetails(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         return OrgManager.toDetailsDto(verifyOrgExists(orgId));
@@ -324,6 +330,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype $OrgDtoSerializer
      */
+    @ReadOnly
     public OrgDto getDetails(User loggedInUser, String name) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         return OrgManager.toDetailsDto(verifyOrgExists(name));
@@ -532,6 +539,7 @@ public class OrgHandler extends BaseHandler {
      *             "Limit (in Bytes) for a single SCAP file upload.")
      *     #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getPolicyForScapFileUpload(User loggedInUser,
             Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -605,6 +613,7 @@ public class OrgHandler extends BaseHandler {
      *             "Period (in days) after which a scan can be deleted (if enabled).")
      *     #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getPolicyForScapResultDeletion(User loggedInUser,
             Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -681,6 +690,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status org admin management setting")
      */
+    @ReadOnly
     public boolean isOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId) {
         verifyManagesOrgConfig(loggedInUser, orgId);
         Org org = verifyOrgExists(orgId);
@@ -745,6 +755,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status of the errata e-mail notification
      * setting for the organization")
      */
+    @ReadOnly
     public boolean isErrataEmailNotifsForOrg(User loggedInUser, Integer orgId) {
         verifyManagesOrgConfig(loggedInUser, orgId);
         Org org = verifyOrgExists(orgId);
@@ -790,6 +801,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of content staging settings")
      */
+    @ReadOnly
     public boolean isContentStagingEnabled(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = verifyOrgExists(orgId);
@@ -837,6 +849,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Get the config option value")
      */
+    @ReadOnly
     public Boolean getClmSyncPatchesConfig(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
         try {

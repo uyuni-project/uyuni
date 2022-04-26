@@ -52,6 +52,9 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
+import com.suse.manager.saltboot.PXEEvent;
+import com.suse.manager.saltboot.PXEEventMessage;
+import com.suse.manager.saltboot.PXEEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -70,7 +73,8 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -81,7 +85,7 @@ import java.util.stream.Stream;
 public class SaltReactor {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(SaltReactor.class);
+    private static final Logger LOG = LogManager.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
     private final SaltApi saltApi;
@@ -149,6 +153,8 @@ public class SaltReactor {
                 BatchStartedEventMessage.class);
         MessageQueue.registerAction(new ImageSyncedEventMessageAction(),
                 ImageSyncedEventMessage.class);
+        MessageQueue.registerAction(new PXEEventMessageAction(),
+                PXEEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -193,10 +199,11 @@ public class SaltReactor {
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageSyncedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               PXEEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        ))))))));
+        )))))))));
     }
 
     /**
@@ -217,7 +224,7 @@ public class SaltReactor {
      */
     private Stream<EventMessage> eventToMessages(SystemIdGenerateEvent systemIdGenerateEvent) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Generate systemid file for minion: " + (String) systemIdGenerateEvent.getData().get("id"));
+            LOG.debug("Generate systemid file for minion: {}", (String) systemIdGenerateEvent.getData().get("id"));
         }
         return of(new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id")));
     }
@@ -252,7 +259,7 @@ public class SaltReactor {
         String minionId = (String) minionStartEvent.getData().get("id");
         Optional<MinionStartupGrains> startupGrains = minionStartEvent.getStartUpGrains(MinionStartupGrains.class);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Trigger start and registration for minion: " + minionId);
+            LOG.debug("Trigger start and registration for minion: {}", minionId);
         }
         return of(
             new MinionStartEventMessage(minionId),
@@ -274,12 +281,11 @@ public class SaltReactor {
                     return of(message);
                 }
                 else {
-                    LOG.debug("Unhandled libvirt engine event:" +
-                              engineEvent.getAdditional());
+                    LOG.debug("Unhandled libvirt engine event:{}", engineEvent.getAdditional());
                 }
             }
             catch (IllegalArgumentException e) {
-                LOG.warn("Invalid libvirt engine event: " + engineEvent.getAdditional());
+                LOG.warn("Invalid libvirt engine event: {}", engineEvent.getAdditional());
             }
         }
         return empty();
@@ -311,14 +317,17 @@ public class SaltReactor {
                             ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                    minionServer.getMinionId());
+                            LOG.error("Could not schedule package refresh for minion: {}", minionServer.getMinionId());
                             LOG.error(e);
                         }
                     }))
             );
         }
         return empty();
+    }
+
+    private Stream<EventMessage> eventToMessages(PXEEvent pxeEvent) {
+        return of(new PXEEventMessage(pxeEvent));
     }
 
 }

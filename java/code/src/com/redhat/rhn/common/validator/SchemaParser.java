@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.validator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -35,7 +36,7 @@ import java.util.Map;
  */
 public class SchemaParser {
 
-    private static Logger log = Logger.getLogger(SchemaParser.class);
+    private static Logger log = LogManager.getLogger(SchemaParser.class);
 
     /** The URL of the schema to parse */
     private URL schemaURL;
@@ -265,8 +266,7 @@ public class SchemaParser {
         constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
 
         // Store this constraint
-        log.debug("Adding: constraint name: " + name +
-                " datatype: " + constraint.getDataType());
+        log.debug("Adding: constraint name: {} datatype: {}", name, constraint.getDataType());
         constraints.put(name, constraint);
     }
 

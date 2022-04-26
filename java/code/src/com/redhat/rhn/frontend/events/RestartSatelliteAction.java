@@ -21,15 +21,15 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.RestartCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * RestartSatelliteAction
- * @version $Rev: 74533 $
  */
 public class RestartSatelliteAction implements MessageAction {
 
-    private static Logger log = Logger.getLogger(RestartSatelliteAction.class);
+    private static Logger log = LogManager.getLogger(RestartSatelliteAction.class);
 
     /**
      * {@inheritDoc}
@@ -44,9 +44,8 @@ public class RestartSatelliteAction implements MessageAction {
         ValidatorError[] errors = rc.storeConfiguration();
         if (errors != null) {
             for (ValidatorError error : errors) {
-                log.error("Error trying to restart the satellite: " +
-                        LocalizationService.getInstance()
-                                .getMessage(error.getKey(), evt.getUserLocale()));
+                log.error("Error trying to restart the satellite: {}", LocalizationService.getInstance()
+                        .getMessage(error.getKey(), evt.getUserLocale()));
             }
         }
 

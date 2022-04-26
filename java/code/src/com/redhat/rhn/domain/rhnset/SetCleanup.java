@@ -18,7 +18,8 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.user.UserFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class SetCleanup {
 
-    private static final Logger LOG = Logger.getLogger(SetCleanup.class);
+    private static final Logger LOG = LogManager.getLogger(SetCleanup.class);
 
     public static final SetCleanup NOOP = new NoopCleanup();
 
@@ -125,8 +126,7 @@ public class SetCleanup {
 
         protected int cleanup(RhnSet set) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Noop cleanup for set " + set.getLabel() +
-                    " and user " + set.getUserId(), new Throwable());
+                LOG.debug("Noop cleanup for set {} and user {}", set.getLabel(), set.getUserId(), new Throwable());
             }
             // this is a noop
             return 0;

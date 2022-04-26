@@ -20,6 +20,8 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * DeleteRevisionActionTest
  */
@@ -27,6 +29,7 @@ public class DeleteRevisionActionTest extends RhnMockStrutsTestCase {
 
     // Mostly an existence proof. I wish it was easier to construct more useful
     // struts cases...
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

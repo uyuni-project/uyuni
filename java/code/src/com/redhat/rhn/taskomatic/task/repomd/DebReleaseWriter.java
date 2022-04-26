@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
  */
 public class DebReleaseWriter {
 
-    private static Logger log = Logger.getLogger(DebReleaseWriter.class);
+    private static Logger log = LogManager.getLogger(DebReleaseWriter.class);
     private String filenameRelease = "";
     private String pathPrefix;
     private Channel channel;
@@ -93,7 +94,7 @@ public class DebReleaseWriter {
             metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, file));
         }
         catch (IOException e) {
-            log.error("Could not generate Release file for channel " + channel.getLabel(), e);
+            log.error("Could not generate Release file for channel {}", channel.getLabel(), e);
         }
     }
 
@@ -114,7 +115,7 @@ public class DebReleaseWriter {
             writer.println(" " + checksum.apply(pkgIn) + " " + file.length() + " " + file.getName());
         }
         catch (IOException e) {
-            log.error("Could not compute checksum for " + file.getName());
+            log.error("Could not compute checksum for {}", file.getName());
         }
     }
 }

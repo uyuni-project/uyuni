@@ -33,7 +33,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import com.suse.manager.metrics.PrometheusExporter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -54,7 +55,7 @@ public class SchedulerKernel {
 
     private static final String[] TASKOMATIC_PACKAGE_NAMES =
             {"com.redhat.rhn.taskomatic.domain"};
-    private static Logger log = Logger.getLogger(SchedulerKernel.class);
+    private static Logger log = LogManager.getLogger(SchedulerKernel.class);
     private byte[] shutdownLock = new byte[0];
     private static SchedulerFactory factory = null;
     private static Scheduler scheduler = null;
@@ -79,21 +80,11 @@ public class SchedulerKernel {
         props.setProperty(ds + ".password", dbPass);
         // props.setProperty(ds + ".maxConnections", 30);
 
-        if (ConfigDefaults.get().isPostgresql()) {
-            props.setProperty("org.quartz.jobStore.driverDelegateClass",
-                    "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
+        props.setProperty("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
 
-            String driver = Config.get().getString(ConfigDefaults.DB_CLASS,
-                    "org.postgresql.Driver");
-            props.setProperty(ds + ".driver", driver);
-            props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
-        }
-        else {
-            // This code should never get called as Exception would get
-            // thrown in getJdbcConnectionString.
-            throw new InstantiationException(
-                    "Unknown db backend set, expecting postgresql");
-        }
+        String driver = Config.get().getString(ConfigDefaults.DB_CLASS, "org.postgresql.Driver");
+        props.setProperty(ds + ".driver", driver);
+        props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
 
         try {
             SchedulerKernel.factory = new StdSchedulerFactory(props);
@@ -205,7 +196,7 @@ public class SchedulerKernel {
             for (TaskoSchedule schedule : TaskoFactory.listActiveSchedulesByOrg(null)) {
                 if (!jobNames.contains(schedule.getJobLabel())) {
                     schedule.sanityCheckForPredefinedSchedules();
-                    log.info("Initializing " + schedule.getJobLabel());
+                    log.info("Initializing {}", schedule.getJobLabel());
                     TaskoQuartzHelper.createJob(schedule);
                 }
                 else {
@@ -214,8 +205,8 @@ public class SchedulerKernel {
                     if (!runList.isEmpty()) {
                         // there're runs in the future
                         // reinit the schedule
-                        log.warn("Reinitializing " + schedule.getJobLabel() + ", found " +
-                        runList.size() + " runs in the future.");
+                        log.warn("Reinitializing {}, found {} runs in the future.",
+                                schedule.getJobLabel(), runList.size());
                         TaskoFactory.reinitializeScheduleFromNow(schedule, now);
                         for (TaskoRun run : runList) {
                             TaskoFactory.deleteRun(run);
@@ -228,8 +219,8 @@ public class SchedulerKernel {
             for (Org org : OrgFactory.lookupAllOrgs()) {
                 int removed = tasko.unscheduleInvalidRepoSyncSchedules(org);
                 if (removed > 0) {
-                    log.warn("" + removed + " outdated repo-sync schedules detected and " +
-                            "removed within org " + org.getId());
+                    log.warn("{} outdated repo-sync schedules detected and removed within org {}",
+                            removed, org.getId());
                 }
             }
             // close unfinished runs
@@ -241,7 +232,7 @@ public class SchedulerKernel {
                 interrupted++;
             }
             if (interrupted > 0) {
-                log.warn("Number of interrupted runs: " + interrupted);
+                log.warn("Number of interrupted runs: {}", interrupted);
             }
             TaskoFactory.closeSession();
         }

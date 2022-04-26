@@ -72,7 +72,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -92,7 +93,7 @@ import java.util.stream.Stream;
 public class ContentManager {
 
     private static final String DELIMITER = "-";
-    private static final Logger LOG = Logger.getLogger(ContentManager.class);
+    private static final Logger LOG = LogManager.getLogger(ContentManager.class);
     private ModulemdApi modulemdApi;
 
     /**
@@ -110,7 +111,7 @@ public class ContentManager {
         this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
     }
 
-    private static Logger log = Logger.getLogger(ContentManager.class);
+    private static Logger log = LogManager.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -833,7 +834,7 @@ public class ContentManager {
         tgt.asCloned().ifPresentOrElse(
                 t -> t.setOriginal(newSource),
                 () -> {
-                    log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
+                    log.info("Channel is not a clone: {}. Adding clone info.", tgt);
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
 

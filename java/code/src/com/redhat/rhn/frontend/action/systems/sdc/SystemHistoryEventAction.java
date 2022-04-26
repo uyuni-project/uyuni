@@ -29,7 +29,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -41,14 +42,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemHistoryEventAction - page for displaying details about system events
- * @version $Rev: 1226 $
  */
 public class SystemHistoryEventAction extends RhnAction {
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(SystemHistoryEventAction.class);
+    private static Logger log = LogManager.getLogger(SystemHistoryEventAction.class);
 
 
     /** {@inheritDoc} */
@@ -124,7 +124,7 @@ public class SystemHistoryEventAction extends RhnAction {
                 TASKOMATIC_API.scheduleActionExecution(action);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not reschedule action " + action.getId());
+                log.error("Could not reschedule action {}", action.getId());
                 log.error(e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError(errors, "taskscheduler.down");

@@ -15,15 +15,22 @@
 
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
+import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockServletInputStream;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -34,13 +41,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class XmlRpcServletTest extends MockObjectTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         HibernateFactory.closeSession();
-        super.tearDown();
     }
 
     public void doTest(String request, String expectedResponse)
@@ -72,13 +79,14 @@ public class XmlRpcServletTest extends MockObjectTestCase {
         } });
 
         // ok run servlet
-        XmlRpcServlet xrs = new XmlRpcServlet(XmlRpcTestUtils.getTestHandlerFactory(), null);
+        XmlRpcServlet xrs = new XmlRpcServlet(XmlRpcTestUtils.getTestHandlerFactory(), new SerializerFactory());
         xrs.init();
         xrs.doPost(mockreq, mockresp);
 
         assertEquals(expectedResponse, sw.toString());
     }
 
+    @Test
     public void testStringReturn() throws Exception {
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
                "<methodName>registration.privacyStatement</methodName>" +
@@ -89,6 +97,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testHashReturn() throws Exception {
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
                "<methodName>unittest.login</methodName> <params> " +
@@ -109,6 +118,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testWrongNumParams() throws Exception {
         Random rand = new Random();
         int param1 = rand.nextInt();
@@ -128,6 +138,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testWithParam() throws Exception {
         Random rand = new Random();
         int param1 = rand.nextInt();
@@ -146,6 +157,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testFault() throws Exception {
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
                "<methodName>unittest.throwFault</methodName> <params> " +
@@ -161,6 +173,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testTranslation() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
@@ -176,6 +189,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
                "</methodResponse>");
     }
 
+    @Test
     public void testCtor() {
         // this test makes sure we always have a default ctor
         XmlRpcServlet xrs = new XmlRpcServlet();

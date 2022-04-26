@@ -14,6 +14,9 @@
  */
 package com.suse.scc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -35,6 +38,8 @@ import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 
+import org.junit.jupiter.api.Test;
+
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,13 +47,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import junit.framework.TestCase;
-
 /**
  * Tests for {@link SCCClient} methods.
  */
-public class SCCSystemRegistrationManagerTest extends TestCase {
+public class SCCSystemRegistrationManagerTest {
 
+    @Test
     public void testSCCSystemRegistrationLifecycle() throws Exception {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
@@ -126,6 +130,7 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         assertEquals(0, itemsAfterDeregistration.size());
     }
 
+    @Test
     public void testUpdateSystems() throws Exception {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
@@ -179,6 +184,7 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         sccSystemRegistrationManager.updateLastSeen();
     }
 
+    @Test
     public void testMassUpdateSystems() throws Exception {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
@@ -219,7 +225,7 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
             public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
                     throws SCCClientException {
                 callCnt += 1;
-                assertTrue("more requests then expected", callCnt <= 4);
+                assertTrue(callCnt <= 4, "more requests then expected");
                 if (callCnt < 4) {
                     assertEquals(5, systems.size());
                 }

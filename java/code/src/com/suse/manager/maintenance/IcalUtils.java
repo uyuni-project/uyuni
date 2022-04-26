@@ -27,7 +27,8 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -68,7 +69,7 @@ import net.fortuna.ical4j.model.property.Summary;
  */
 public class IcalUtils {
 
-    private static Logger log = Logger.getLogger(IcalUtils.class);
+    private static Logger log = LogManager.getLogger(IcalUtils.class);
 
     /**
      * Given MaintenanceSchedule calculate upcoming maintenance windows
@@ -222,7 +223,7 @@ public class IcalUtils {
             calendar = builder.build(calendarReader);
         }
         catch (IOException | ParserException e) {
-            log.error("Unable to build the calendar from reader: " + calendarReader, e);
+            log.error("Unable to build the calendar from reader: {}", calendarReader, e);
         }
         return ofNullable(calendar);
     }
@@ -240,7 +241,7 @@ public class IcalUtils {
                                                          Long start, Long end) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-           log.error("Could not parse calendar: " + calendarIn.getLabel());
+            log.error("Could not parse calendar: {}", calendarIn.getLabel());
            return new ArrayList<>();
         }
         Period period = new Period(new DateTime(start), new DateTime(end));
@@ -304,7 +305,7 @@ public class IcalUtils {
     public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-            log.error("Could not parse calendar: " + calendarIn.getLabel());
+            log.error("Could not parse calendar: {}", calendarIn.getLabel());
             return new HashSet<>();
         }
         ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);

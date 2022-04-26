@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserListSetupAction
- * @version $Rev: 101893 $
  */
 public class UserListSetupAction extends RhnAction {
 

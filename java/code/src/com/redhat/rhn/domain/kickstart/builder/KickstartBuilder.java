@@ -43,7 +43,8 @@ import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCommand;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Distro;
 
 import java.util.Date;
@@ -62,7 +63,7 @@ import java.util.regex.Pattern;
  */
 public class KickstartBuilder {
 
-    private static Logger log = Logger.getLogger(KickstartBuilder.class);
+    private static Logger log = LogManager.getLogger(KickstartBuilder.class);
 
     private static final String IA64 = "IA-64";
     private static final String PPC = "PPC";
@@ -166,7 +167,7 @@ public class KickstartBuilder {
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
                 // TODO
-                log.warn("Unable to parse kickstart command: " + firstWord);
+                log.warn("Unable to parse kickstart command: {}", firstWord);
                 continue;
             }
 
@@ -177,8 +178,8 @@ public class KickstartBuilder {
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
                 log.warn("Using default kickstartable tree URL:");
-                log.warn("   Replaced: " + currentLine);
-                log.warn("   With: " + firstWord + " " + restOfLine);
+                log.warn("   Replaced: {}", currentLine);
+                log.warn("   With: {} {}", firstWord, restOfLine);
             }
 
             KickstartCommand kc = new KickstartCommand();

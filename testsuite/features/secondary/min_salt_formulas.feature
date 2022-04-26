@@ -59,7 +59,7 @@ Feature: Use salt formulas
      When I click on the "disabled" toggler
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I wait until event "Apply highstate in test-mode scheduled by admin" is completed
+     And I wait at most 300 seconds until event "Apply highstate in test-mode scheduled" is completed
 
   Scenario: Apply the parametrized formula via the highstate
      And I follow "States" in the content area

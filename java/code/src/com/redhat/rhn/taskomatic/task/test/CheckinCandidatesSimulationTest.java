@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 /**
  * This test implements a simulation considering n idle systems (specified below as
@@ -34,7 +37,7 @@ import junit.framework.TestCase;
  *    check in timestamps should rather cover all categories (hours).
  * 3. At maximum 22% of all systems will check in during one hour (see maxPercentage).
  */
-public class CheckinCandidatesSimulationTest extends TestCase {
+public class CheckinCandidatesSimulationTest  {
 
     // This is a value from rhn.conf
     private int thresholdDays = 1;
@@ -61,6 +64,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
     /**
      * Run a simulation and assert certain constraints.
      */
+    @Test
     public void testCheckinSimulation() {
         // Data structure to hold the results
         HashMap<Integer, List<Integer>> results = new HashMap<>();
@@ -105,7 +109,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
     }
 
     /**
-     * Reimplement {@link SystemCheckinUtils#getRandomThreshold()} here for counting
+     * Reimplement {@link SystemCheckinUtils#getRandomThreshold(double, double, long, long)} here for counting
      * the total number of randoms generated.
      */
     private int getRandomThreshold(double mean, double stddev, long min, long max) {

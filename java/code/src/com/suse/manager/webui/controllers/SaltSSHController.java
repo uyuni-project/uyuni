@@ -20,7 +20,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Optional;
@@ -34,7 +35,7 @@ import spark.Response;
 public class SaltSSHController {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(SaltSSHController.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHController.class);
 
     private final SaltApi saltApi;
 
@@ -60,7 +61,7 @@ public class SaltSSHController {
 
         res.ifPresentOrElse(result -> {
             if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
-                LOG.error("Generating salt-ssh public key failed: " + result.getStderr());
+                LOG.error("Generating salt-ssh public key failed: {}", result.getStderr());
                 halt(500, result.getStderr());
             }
         }, () -> {
@@ -75,7 +76,7 @@ public class SaltSSHController {
         if (key != null) {
             return key.getBytes();
         }
-        LOG.error("Could not read salt-ssh public key " + pubKey);
+        LOG.error("Could not read salt-ssh public key {}", pubKey);
         halt(500, "Could not read salt-ssh public key");
         return new byte[0];
     }

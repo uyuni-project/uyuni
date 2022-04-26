@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
@@ -38,7 +39,7 @@ import java.util.Map;
  */
 public abstract class CobblerProfileCommand extends CobblerCommand {
 
-    private static Logger log = Logger.getLogger(CobblerProfileCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerProfileCommand.class);
 
     private String kernelOptions;
     private String postKernelOptions;
@@ -94,12 +95,11 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
                     keystring.append(akey.getKey());
                 }
             }
-            log.debug("Setting setRedHatManagementKey to: " + keystring);
+            log.debug("Setting setRedHatManagementKey to: {}", keystring);
             profile.setRedHatManagementKey(keystring.toString());
         }
         else {
-            log.warn("We could not find a default kickstart session for this ksdata: " +
-                    ksData.getLabel());
+            log.warn("We could not find a default kickstart session for this ksdata: {}", ksData.getLabel());
         }
 
         Map meta = profile.getKsMeta();

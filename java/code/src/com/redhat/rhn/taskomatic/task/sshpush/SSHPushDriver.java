@@ -33,7 +33,7 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import com.suse.manager.utils.SaltUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -86,7 +86,7 @@ public class SSHPushDriver implements QueueDriver {
         // Read the remote port for SSH tunneling from config
         remotePort = Config.get().getInt(PORT_HTTPS_KEY);
         if (log.isDebugEnabled()) {
-            log.debug("SSHPushDriver will use port " + remotePort);
+            log.debug("SSHPushDriver will use port {}", remotePort);
         }
 
         this.checkinCandidatesResolver = new CheckinCandidatesResolver(
@@ -95,14 +95,14 @@ public class SSHPushDriver implements QueueDriver {
         // Randomly select a modulo remainder
         moduloRemainder = SystemCheckinUtils.nextRandom(0, checkInterval - 1);
         if (log.isDebugEnabled()) {
-            log.debug("We will look for checkin candidates every " + checkInterval +
-                    " minutes (remainder = " + moduloRemainder + ")");
+            log.debug("We will look for checkin candidates every {} minutes (remainder = {})", checkInterval,
+                    moduloRemainder);
         }
 
         // Skip all running or ready jobs if any
         int skipped = skipRunningJobs();
         if (log.isDebugEnabled()) {
-            log.debug("Found " + skipped + " jobs to be RUNNING/READY, skipping...");
+            log.debug("Found {} jobs to be RUNNING/READY, skipping...", skipped);
         }
     }
 
@@ -146,7 +146,7 @@ public class SSHPushDriver implements QueueDriver {
         Calendar cal = Calendar.getInstance();
         int currentMinutes = cal.get(Calendar.MINUTE);
         if (log.isDebugEnabled()) {
-            log.debug("Current minutes: " + currentMinutes);
+            log.debug("Current minutes: {}", currentMinutes);
         }
 
         if (!isDefaultSchedule() || currentMinutes % checkInterval == moduloRemainder) {
@@ -155,14 +155,14 @@ public class SSHPushDriver implements QueueDriver {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Found " + candidates.size() + " candidates");
+            log.debug("Found {} candidates", candidates.size());
         }
 
         // Do not return candidates we are talking to already
         synchronized (currentSystems) {
             for (SystemSummary s : currentSystems) {
                 if (candidates.contains(s)) {
-                    log.debug("Skipping system: " + s.getName());
+                    log.debug("Skipping system: {}", s.getName());
                     candidates.remove(s);
                 }
             }

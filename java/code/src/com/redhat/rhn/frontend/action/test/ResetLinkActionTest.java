@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.session.WebSession;
@@ -29,6 +32,8 @@ import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * ResetLinkActionTest
@@ -42,17 +47,19 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     private RhnMockHttpServletResponse response;
     private ResetLinkAction action;
 
+    @Test
     public void testPerformNoToken() {
         try {
             ActionForward rc = action.execute(mapping, form, request, response);
         }
         catch (BadParameterException bpe) {
-            assertTrue("Caught BPE", true);
+            assertTrue(true, "Caught BPE");
             return;
         }
-        assertTrue("Expected BadParameterException, didn't get one!", false);
+        assertTrue(false, "Expected BadParameterException, didn't get one!");
     }
 
+    @Test
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
@@ -66,6 +73,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         // so, no test here
     }
 
+    @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         request.setupAddParameter("token", rp.getToken());
@@ -74,6 +82,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         action = new ResetLinkAction();

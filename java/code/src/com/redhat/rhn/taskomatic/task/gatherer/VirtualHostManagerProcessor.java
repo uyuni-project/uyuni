@@ -31,8 +31,10 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class VirtualHostManagerProcessor {
      */
     public VirtualHostManagerProcessor(VirtualHostManager managerIn,
             Map<String, HostJson> virtualHostsIn) {
-        this.log = Logger.getLogger(VirtualHostManagerProcessor.class);
+        this.log = LogManager.getLogger(VirtualHostManagerProcessor.class);
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();
@@ -77,24 +79,24 @@ public class VirtualHostManagerProcessor {
      * mapping.
      */
     public void processMapping() {
-        log.debug("Processing Virtual Host Manager: " + virtualHostManager);
+        log.debug("Processing Virtual Host Manager: {}", virtualHostManager);
         if (virtualHosts == null) {
-            log.error("Virtual Host Manager " + virtualHostManager.getLabel() +
-                      ": Please check the virtual-host-gatherer logfile.");
+            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
+                    virtualHostManager.getLabel());
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());
         nodesToDelete.addAll(virtualHostManager.getNodes());
         virtualHosts.forEach((key, value) -> {
-            log.debug("Processing host: " + key);
+            log.debug("Processing host: {}", key);
             processVirtualHost(key, value);
         });
         serversToDelete.forEach(srv -> {
-            log.debug("Removing link to virtual host: " + srv.getName());
+            log.debug("Removing link to virtual host: {}", srv.getName());
             virtualHostManager.removeServer(srv);
         });
         nodesToDelete.forEach(node -> {
-            log.debug("Removing virtual host node: " + node.getName());
+            log.debug("Removing virtual host node: {}", node.getName());
             virtualHostManager.removeNode(node);
         });
     }
@@ -236,7 +238,7 @@ public class VirtualHostManagerProcessor {
         server.setOrg(virtualHostManager.getOrg());
         server.setCreated(new Date());
         server.setDigitalServerId(buildServerFullDigitalId(host.getHostIdentifier()));
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
 
         String serverDescription = "Initial Registration Parameters:\n";
         serverDescription += "OS: " + host.getOs() + "\n";

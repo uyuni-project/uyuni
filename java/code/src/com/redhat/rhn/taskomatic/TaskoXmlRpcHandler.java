@@ -21,7 +21,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
@@ -38,7 +39,7 @@ import java.util.Map;
  */
 public class TaskoXmlRpcHandler {
 
-    private static Logger log = Logger.getLogger(TaskoXmlRpcHandler.class);
+    private static Logger log = LogManager.getLogger(TaskoXmlRpcHandler.class);
 
     /**
      * dummy call
@@ -220,7 +221,7 @@ public class TaskoXmlRpcHandler {
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
         if ((scheduleList.isEmpty()) && (trigger == null)) {
-            log.error("Unscheduling of bunch " + jobLabel + "failed: no such job label");
+            log.error("Unscheduling of bunch {}failed: no such job label", jobLabel);
             return 0;
         }
         for (TaskoSchedule schedule : scheduleList) {

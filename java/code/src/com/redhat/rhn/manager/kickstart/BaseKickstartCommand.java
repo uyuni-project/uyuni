@@ -23,15 +23,15 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.PersistOperation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * BaseKickstartCommand - baseclass for editing a FileList class.
  */
 public abstract class BaseKickstartCommand implements PersistOperation {
 
-    private static Logger logger = Logger
-        .getLogger(BaseKickstartCommand.class);
+    private static Logger logger = LogManager.getLogger(BaseKickstartCommand.class);
 
     protected KickstartData ksdata;
     protected User user;
@@ -92,7 +92,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
 
         CobblerProfileEditCommand cmd = new CobblerProfileEditCommand(ksdata, user);
         ValidatorError err = cmd.store();
-        logger.debug("Did we get an error storing to cobbler: " + err);
+        logger.debug("Did we get an error storing to cobbler: {}", err);
         return err;
     }
 

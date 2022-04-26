@@ -1,5 +1,12 @@
-- Enable HSTS for Apache to force traffic to be in HTTPS
-- Expose release notes to www_path
+-------------------------------------------------------------------
+Tue Apr 19 12:03:58 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Forward images, kernel and initrd requests through squid to the
+    server
+    Part of saltboot containerization workflow
+  * Enable HSTS for Apache to force traffic to be in HTTPS
+  * Expose release notes to www_path
 
 -------------------------------------------------------------------
 Fri Mar 11 16:48:49 CET 2022 - jgonzalez@suse.com

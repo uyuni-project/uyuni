@@ -83,7 +83,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -108,7 +109,7 @@ import java.util.stream.Stream;
 public class ActionFactory extends HibernateFactory {
 
     private static ActionFactory singleton = new ActionFactory();
-    private static Logger log = Logger.getLogger(ActionFactory.class);
+    private static Logger log = LogManager.getLogger(ActionFactory.class);
     private static Set actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
@@ -940,8 +941,8 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
         if (log.isDebugEnabled()) {
-            log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
-                    " is going to b set for these servers: " + serverIds);
+            log.debug("Action status {} is going to b set for these servers: {}",
+                    ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
         }
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
@@ -958,7 +959,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
         if (log.isDebugEnabled()) {
-            log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
+            log.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
         }
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());

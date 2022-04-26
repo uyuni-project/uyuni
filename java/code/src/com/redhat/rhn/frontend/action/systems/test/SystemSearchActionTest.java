@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -25,6 +29,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * SystemSearchActionTest
@@ -33,6 +39,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/Search");
@@ -100,6 +107,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getMockResponse().getStatusCode() == 302);
     }
 
+    @Test
     public void testQueryWithoutResults() throws Exception {
     }
 
@@ -110,6 +118,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
      * beyond the SystemSearchAction.
      * @throws Exception something bad happened
      */
+    @Test
     public void testQueryWithBadParameter() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, s.getName());
@@ -119,6 +128,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         actionPerform();
     }
 
+    @Test
     public void testNoSubmit() throws Exception {
         actionPerform();
         DynaActionForm formIn = (DynaActionForm) getActionForm();
@@ -126,6 +136,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(BaseSearchAction.VIEW_MODE));
     }
 
+    @Test
     public void testAlphaSubmitForNumericField() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "abc");
@@ -137,6 +148,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
                 "packages.search.connection_error" });
     }
 
+    @Test
     public void testSmallAlphaSubmitForNumericField() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "a");

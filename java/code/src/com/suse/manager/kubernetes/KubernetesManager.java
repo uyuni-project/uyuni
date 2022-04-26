@@ -30,7 +30,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
 public class KubernetesManager {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
+    private static final Logger LOG = LogManager.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
     private final SaltApi saltApi;
@@ -128,15 +129,13 @@ public class KubernetesManager {
                                     (infoId) -> new ImageUsage(imageInfo)));
                         }
                         else {
-                            LOG.debug("Image build history not found for digest: " +
-                                    imgDigest + " (maybe the image was not built " +
-                                    "by SUSE Manager).");
+                            LOG.debug("Image build history not found for digest: {} (maybe the image was not " +
+                                    "built by SUSE Manager).", imgDigest);
                             String[] tokens =
                                     StringUtils.split(container.getImage(), "/", 2);
                             if (tokens.length < 2) {
-                                LOG.debug("No repository available in the image name '" +
-                                        container.getImage() +
-                                        "'. Ignoring the image.");
+                                LOG.debug("No repository available in the image name '{}'. Ignoring the image.",
+                                        container.getImage());
                                 return;
                             }
 
@@ -174,9 +173,8 @@ public class KubernetesManager {
                     });
                 }
                 else {
-                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel() +
-                            " lacks 'kubeconfig' and/or 'currentContext'" +
-                            " config parameters.");
+                    LOG.debug("VirtualHostManager {} lacks 'kubeconfig' and/or 'currentContext' config parameters.",
+                            virtHostMgr.getLabel());
                 }
             }
         };

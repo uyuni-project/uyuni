@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
 
@@ -36,7 +37,7 @@ import java.util.Locale;
 
 public class XmlMessageResources extends MessageResources  {
 
-    private static Logger log = Logger.getLogger(XmlMessageResources.class);
+    private static Logger log = LogManager.getLogger(XmlMessageResources.class);
 
     /**
      * Construct a new XmlMessageResources according to the specified parameters.
@@ -47,7 +48,7 @@ public class XmlMessageResources extends MessageResources  {
                                     String config) {
 
         super(factory, config);
-        log.info("Initializing, config='" + config + "'");
+        log.info("Initializing, config='{}'", config);
 
     }
 
@@ -61,15 +62,14 @@ public class XmlMessageResources extends MessageResources  {
                                     String config, boolean returnNull) {
 
         super(factory, config, returnNull);
-        log.info("Initializing, config='" + config +
-                 "', returnNull=" + returnNull);
+        log.info("Initializing, config='{}', returnNull={}", config, returnNull);
 
     }
 
     /** {@inheritDoc} */
     public String getMessage(Locale locale, String key) {
         if (log.isDebugEnabled()) {
-            log.debug("getMessage() : locale (ignored): " + locale + " key: " + key);
+            log.debug("getMessage() : locale (ignored): {} key: {}", locale, key);
         }
         // Force the LocalizationService to determine the Locale vs
         // letting what Struts thinks is the Locale be used.  Notice

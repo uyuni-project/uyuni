@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers.maintenance;
 
 import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -41,7 +42,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -67,7 +69,7 @@ import spark.Spark;
 public class MaintenanceController {
 
     private static final MaintenanceManager MM = new MaintenanceManager();
-    private static Logger log = Logger.getLogger(MaintenanceScheduleController.class);
+    private static Logger log = LogManager.getLogger(MaintenanceScheduleController.class);
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -83,9 +85,9 @@ public class MaintenanceController {
     public static void initRoutes() {
         // upcoming maintenance windows for systems
         post("/manager/api/maintenance/upcoming-windows",
-                withUser(MaintenanceController::getUpcomingMaintenanceWindows));
+                asJson(withUser(MaintenanceController::getUpcomingMaintenanceWindows)));
         get("/manager/api/maintenance/events/:operation/:type/:startOfWeek/:date/:id",
-                withUser(MaintenanceController::getEvents));
+                asJson(withUser(MaintenanceController::getEvents)));
     }
 
     /**
@@ -116,7 +118,6 @@ public class MaintenanceController {
             }
         }
 
-        res.type("application/json");
         return json(res, ResultJson.success(data));
     }
 
@@ -153,7 +154,6 @@ public class MaintenanceController {
             log.error(e.getMessage());
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
-        response.type("application/json");
         return json(response, eventsToJson(user, events));
     }
 

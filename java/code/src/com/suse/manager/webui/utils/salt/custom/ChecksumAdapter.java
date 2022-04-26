@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 
 import com.google.gson.JsonParseException;
@@ -51,6 +52,8 @@ public class ChecksumAdapter extends TypeAdapter<Checksum> {
             throw new JsonParseException("Unable to parse checksum");
         }
         switch (chk[0]) {
+        case "md5" :
+            return new MD5Checksum(chk[1]);
         case "sha256":
             return new SHA256Checksum(chk[1]);
         default:

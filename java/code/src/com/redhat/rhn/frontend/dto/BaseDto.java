@@ -24,7 +24,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * All dtos used for listviews should extend this class allowing us to treat
  * dtos as a common object. Currently used mainly by RhnSetAction to perform a
  * select all.
- * @version $Rev: 60953 $
  */
 public abstract class BaseDto extends SelectableAdapter implements Identifiable {
 

@@ -16,7 +16,8 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
@@ -26,7 +27,7 @@ import java.util.Optional;
  * Represents the virtual network virtualport configuration
  */
 public class VirtualPortDef {
-    private static final Logger LOG = Logger.getLogger(VirtualPortDef.class);
+    private static final Logger LOG = LogManager.getLogger(VirtualPortDef.class);
 
     private String type;
 
@@ -170,7 +171,8 @@ public class VirtualPortDef {
                     case "profileid":       def.setProfileId(Optional.of(attr.getValue())); break;
                     case "typeid":          def.setTypeId(Optional.of(attr.getValue())); break;
                     case "typeidversion":   def.setTypeIdVersion(Optional.of(attr.getValue())); break;
-                    default:                LOG.error("Unexpected virtual port attribute: " + attr.getName());
+                    default:
+                        LOG.error("Unexpected virtual port attribute: {}", attr.getName());
                 }
             }
         }

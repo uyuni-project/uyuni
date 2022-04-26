@@ -15,7 +15,6 @@
  */
 package com.suse.manager.webui.utils;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -47,7 +46,8 @@ import com.suse.manager.utils.DiskCheckSeverity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginHelper {
 
-    private static Logger log = Logger.getLogger(LoginHelper.class);
+    private static Logger log = LogManager.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
     private static final Long MIN_PG_DB_VERSION = 130001L;
     private static final Long MAX_PG_DB_VERSION = 149999L;
@@ -127,8 +127,7 @@ public class LoginHelper {
                     }
                     updateCmd.setTemporaryRoles(roles);
                     updateCmd.updateUser();
-                    log.warn("Externally authenticated login " + remoteUserString +
-                                 " (" + firstname + " " + lastname + ")");
+                    log.warn("Externally authenticated login {} ({} {})", remoteUserString, firstname, lastname);
                 }
             }
             catch (LookupException le) {
@@ -140,7 +139,7 @@ public class LoginHelper {
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
                     newUserOrg = OrgFactory.lookupByName(orgUnitString);
                     if (newUserOrg == null) {
-                        log.error("Cannot find organization with name: " + orgUnitString);
+                        log.error("Cannot find organization with name: {}", orgUnitString);
                     }
                 }
                 if (newUserOrg == null) {
@@ -149,7 +148,7 @@ public class LoginHelper {
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {
-                            log.error("Cannot find organization with id: " + defaultOrgId);
+                            log.error("Cannot find organization with id: {}", defaultOrgId);
                         }
                     }
                 }
@@ -169,12 +168,11 @@ public class LoginHelper {
                         createCmd.validate();
                         createCmd.storeNewUser();
                         remoteUser = createCmd.getUser();
-                        log.warn("Externally authenticated login " + remoteUserString +
-                                " (" + firstname + " " + lastname + ") created in " +
-                                newUserOrg.getName() + ".");
+                        log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString,
+                                firstname, lastname, newUserOrg.getName());
                     }
                     catch (WrappedSQLException wse) {
-                        log.error("Creation of user failed with: " + wse.getMessage());
+                        log.error("Creation of user failed with: {}", wse.getMessage());
                         HibernateFactory.rollbackTransaction();
                     }
                 }
@@ -196,7 +194,7 @@ public class LoginHelper {
             }
         }
         catch (UnsupportedEncodingException e) {
-            log.warn("Unable to decode: " + string);
+            log.warn("Unable to decode: {}", string);
         }
         return defaultString;
     }
@@ -206,8 +204,7 @@ public class LoginHelper {
         for (String extGroupName : groupNames) {
             UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
             if (extGroup == null) {
-                log.info("No role mapping defined for external group '" + extGroupName +
-                        "'.");
+                log.info("No role mapping defined for external group '{}'.", extGroupName);
                 continue;
             }
             roles.addAll(extGroup.getRoles());
@@ -221,8 +218,7 @@ public class LoginHelper {
             OrgUserExtGroup extGroup =
                     UserGroupFactory.lookupOrgExtGroupByLabelAndOrg(extGroupName, org);
             if (extGroup == null) {
-                log.info("No sg mapping defined for external group '" + extGroupName +
-                        "'.");
+                log.info("No sg mapping defined for external group '{}'.", extGroupName);
                 continue;
             }
             sgs.addAll(extGroup.getServerGroups());
@@ -249,14 +245,13 @@ public class LoginHelper {
         for (int i = 1; i <= nGroups; i++) {
             String extGroupName = (String) requestIn.getAttribute("REMOTE_USER_GROUP_" + i);
             if (extGroupName == null) {
-                log.warn("REMOTE_USER_GROUP_" + i + " not set!");
+                log.warn("REMOTE_USER_GROUP_{} not set!", i);
                 continue;
             }
             extGroups.add(extGroupName);
 
         }
-        log.warn("REMOTE_USER_GROUP_" + nGroupsStr + ": " +
-                StringUtils.join(extGroups.toArray(), ";"));
+        log.warn("REMOTE_USER_GROUP_{}: {}", nGroupsStr, StringUtils.join(extGroups.toArray(), ";"));
         return extGroups;
     }
 
@@ -321,8 +316,7 @@ public class LoginHelper {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [" +
-                    sw.getTime() + "]");
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
         }
     }
 
@@ -333,62 +327,61 @@ public class LoginHelper {
     public static List<String> validateDBVersion() {
         List<String> validationErrors = new ArrayList<>();
         LocalizationService ls = LocalizationService.getInstance();
-        if (ConfigDefaults.get().isPostgresql()) {
-            Long serverVersion = 0L;
-            String pgVersion = "";
-            Double osVersion = 0.0;
-            String osName = "";
+        Long serverVersion = 0L;
+        String pgVersion = "";
+        Double osVersion = 0.0;
+        String osName = "";
 
-            SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
-            DataResult<HashMap> dr = m.execute();
-            if (dr.size() > 0) {
-                serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
-            }
-            if (serverVersion == null) {
-                serverVersion = 0L;
-            }
-            m = ModeFactory.getMode("General_queries", "pg_version");
-            dr = m.execute();
-            if (dr.size() > 0) {
-                pgVersion = (String) dr.get(0).get("server_version");
-            }
+        SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
+        DataResult<HashMap> dr = m.execute();
+        if (dr.size() > 0) {
+            serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
+        }
+        if (serverVersion == null) {
+            serverVersion = 0L;
+        }
+        m = ModeFactory.getMode("General_queries", "pg_version");
+        dr = m.execute();
+        if (dr.size() > 0) {
+            pgVersion = (String) dr.get(0).get("server_version");
+        }
 
-            String osrelease = FileUtils.readStringFromFile("/etc/os-release");
-            for (String line : osrelease.split("\\r?\\n")) {
-                String[] resultKV = line.split("=", 2);
-                if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
-                    try {
-                        osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
-                    }
-                    catch (NumberFormatException e) {
-                        log.error("Unable to parse OS versionnumber " + resultKV[1]);
-                    }
+        String osrelease = FileUtils.readStringFromFile("/etc/os-release");
+        for (String line : osrelease.split("\\r?\\n")) {
+            String[] resultKV = line.split("=", 2);
+            if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
+                try {
+                    osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
                 }
-                else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
-                    osName = resultKV[1].replaceAll("\"", "'");
+                catch (NumberFormatException e) {
+                    log.error("Unable to parse OS versionnumber {}", resultKV[1]);
                 }
             }
-            if (log.isDebugEnabled()) {
-                log.debug("PG DB version is: " + serverVersion);
-                log.debug("OS Version is: " + osVersion + " " + osVersion);
-            }
-            if (serverVersion < MIN_PG_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-                log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-            }
-            else if (serverVersion > MAX_PG_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-                log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-            }
-            else if (osVersion >= OS_VERSION_CHECK && serverVersion < OS_VERSION_MIN_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
-                        OS_VERSION_WANTED_DB_VERSION));
-                log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
-                        OS_VERSION_WANTED_DB_VERSION));
+            else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
+                osName = resultKV[1].replaceAll("\"", "'");
             }
         }
-        SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
-        DataResult<HashMap> dr = m.execute();
+        if (log.isDebugEnabled()) {
+            log.debug("PG DB version is: {}", serverVersion);
+            log.debug("OS Version is: {} {}", osVersion, osVersion);
+        }
+        if (serverVersion < MIN_PG_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
+            log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
+        }
+        else if (serverVersion > MAX_PG_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+            log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+        }
+        else if (osVersion >= OS_VERSION_CHECK && serverVersion < OS_VERSION_MIN_DB_VERSION) {
+            validationErrors.add(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                    OS_VERSION_WANTED_DB_VERSION));
+            log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                    OS_VERSION_WANTED_DB_VERSION));
+        }
+
+        m = ModeFactory.getMode("General_queries", "installed_schema_version");
+        dr = m.execute();
         if (dr.size() == 0) {
             validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
             log.error(ls.getMessage("error.unfinished_schema_upgrade"));
@@ -416,10 +409,9 @@ public class LoginHelper {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("RPM version of schema: " +
-                (rpmSchemaVersion == null ? "null" : rpmSchemaVersion));
-            log.debug("Version of installed database schema: " +
-                (installedSchemaVersion == null ? "null" : installedSchemaVersion));
+            log.debug("RPM version of schema: {}", rpmSchemaVersion == null ? "null" : rpmSchemaVersion);
+            log.debug("Version of installed database schema: {}",
+                    installedSchemaVersion == null ? "null" : installedSchemaVersion);
         }
 
         return rpmSchemaVersion != null && installedSchemaVersion != null &&

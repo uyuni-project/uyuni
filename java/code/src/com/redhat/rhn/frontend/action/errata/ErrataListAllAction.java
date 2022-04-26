@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.errata;
 
 /**
- * @version $Revision$
  */
 public class ErrataListAllAction extends ErrataListBaseAction {
 

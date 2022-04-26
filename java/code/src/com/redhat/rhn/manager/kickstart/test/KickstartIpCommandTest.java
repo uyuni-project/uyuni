@@ -14,7 +14,11 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
@@ -22,6 +26,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class KickstartIpCommandTest extends RhnBaseTestCase {
 
     //place holder after refactoring
+    @Test
     public void testFoo() {
         assertTrue(true);
     }

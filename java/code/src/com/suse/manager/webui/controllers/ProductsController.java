@@ -50,8 +50,8 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -78,7 +78,7 @@ public class ProductsController {
     private static final String REFRESH_FILE_LOCKED = "refreshFileLocked";
     private static final String NO_TOOLS_CHANNEL_SUBSCRIPTION = "noToolsChannelSubscription";
 
-    private static Logger log = Logger.getLogger(ProductsController.class);
+    private static Logger log = LogManager.getLogger(ProductsController.class);
 
     private ProductsController() { }
 
@@ -246,7 +246,7 @@ public class ProductsController {
             )));
         }
 
-        LogMF.debug(log, "Add/Sync products: {}", identifiers);
+        log.debug("Add/Sync products: {}", identifiers);
 
         ProductSyncManager psm = new ProductSyncManager();
         Map<String, Optional<? extends Exception>> productStatusMap = psm.addProducts(identifiers, user);
@@ -254,7 +254,7 @@ public class ProductsController {
         // Convert to a map specifying operation result for each product while logging the errors that have happened
         Map<String, String> resultMap = new HashMap<>();
         productStatusMap.forEach((product, error) -> {
-            error.ifPresent(ex -> log.fatal("addProduct() failed for " + product, ex));
+            error.ifPresent(ex -> log.fatal("addProduct() failed for {}", product, ex));
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
@@ -379,7 +379,7 @@ public class ProductsController {
             data.put("baseProducts", jsonProducts);
         }
         catch (Exception e) {
-            log.error("Exception while rendering products: " + e.getMessage());
+            log.error("Exception while rendering products: {}", e.getMessage());
             data.put("error", "Exception while fetching products: " + e.getMessage());
         }
 

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.session.WebSession;
@@ -31,6 +33,8 @@ import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * ResetPasswordSubmitActionTest
@@ -45,28 +49,32 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     private ResetPasswordSubmitAction action;
     private User adminUser;
 
+    @Test
     public void testPerformNoToken() {
         form.set("token", null);
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("No token", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "No token");
     }
 
+    @Test
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("Invalid token", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "Invalid token");
     }
 
+    @Test
     public void testPerformDisabledUser() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         UserFactory.getInstance().disable(user, adminUser);
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("Disabled user", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "Disabled user");
     }
 
+    @Test
     public void testPerformPasswordMismatch() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         form.set("token", rp.getToken());
@@ -76,28 +84,30 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         assertEquals(mismatch.getName(), rc.getName());
     }
 
+    @Test
     public void testPerformBadPassword() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         form.set("token", rp.getToken());
         form.set("password", "a");
         form.set("passwordConfirm", "a");
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("too short", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "too short");
 
         form.set("password",
         "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
         form.set("passwordConfirm",
         "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
         rc = action.execute(mapping, form, request, response);
-        assertEquals("too long", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "too long");
 
         form.set("password", "123\t\n6");
         form.set("passwordConfirm", "123\t\n6");
         rc = action.execute(mapping, form, request, response);
-        assertEquals("whitespace", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "whitespace");
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         adminUser = UserTestUtils.findNewUser("testAdminUser", "testOrg" +

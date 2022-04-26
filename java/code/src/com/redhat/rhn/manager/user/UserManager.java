@@ -51,7 +51,8 @@ import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,11 +73,10 @@ import javax.security.auth.login.LoginException;
  * on Users where those operations interact with other top tier Business Objects.
  *
  * Operations that require the User make changes to
- * @version $Rev: 903 $
  */
 public class UserManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(UserManager.class);
+    private static Logger log = LogManager.getLogger(UserManager.class);
     private static final String ORG_ADMIN_LABEL = "org_admin";
 
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
@@ -414,13 +414,13 @@ public class UserManager extends BaseManager {
 
         for (String removeLabel : rolesToRemove) {
             Role removeMe = RoleFactory.lookupByLabel(removeLabel);
-            log.debug("Removing role: " + removeMe.getName());
+            log.debug("Removing role: {}", removeMe.getName());
             usr.removePermanentRole(removeMe);
         }
 
         for (String addLabel : rolesToAdd) {
             Role r = RoleFactory.lookupByLabel(addLabel);
-            log.debug("Adding role: " + r.getName());
+            log.debug("Adding role: {}", r.getName());
             usr.addPermanentRole(r);
         }
     }
@@ -557,7 +557,7 @@ public class UserManager extends BaseManager {
             Thread.sleep(2000);
         }
         catch (InterruptedException ie) {
-            log.warn("Failed to set timeout: " + ie.getMessage());
+            log.warn("Failed to set timeout: {}", ie.getMessage());
         }
         throw new LoginException(exceptionType);
     }

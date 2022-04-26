@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.domain.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.TimeZone;
 
@@ -25,6 +31,7 @@ import java.util.TimeZone;
 public class RhnTimeZoneTest extends RhnBaseTestCase {
    private RhnTimeZone tz;
 
+    @Test
    public void testBeanMethods() {
        tz = new RhnTimeZone();
        RhnTimeZone tz2 = new RhnTimeZone();

@@ -28,7 +28,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -56,7 +57,7 @@ import javax.persistence.criteria.Root;
  */
 public class ConfigurationFactory extends HibernateFactory {
     private static ConfigurationFactory singleton = new ConfigurationFactory();
-    private static Logger log = Logger.getLogger(ConfigurationFactory.class);
+    private static Logger log = LogManager.getLogger(ConfigurationFactory.class);
 
     private ConfigurationFactory() {
         super();

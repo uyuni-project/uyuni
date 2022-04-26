@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.action.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -28,6 +33,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 /**
@@ -35,6 +42,7 @@ import java.util.Date;
  */
 public class ServerActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testFail() {
         ServerAction sa1 = new ServerAction();
         sa1.fail(-1L, "Fail_message", new Date());
@@ -55,6 +63,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         assertEquals(sa3.getStatus(), ActionFactory.STATUS_FAILED);
     }
 
+    @Test
     public void testEquals() {
         ServerAction sa = new ServerAction();
         ServerAction sa2 = null;
@@ -90,6 +99,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         assertTrue(sa.equals(sa2));
     }
 
+    @Test
     public void testCreate() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -112,6 +122,7 @@ public class ServerActionTest extends RhnBaseTestCase {
      * Test fetching a ServerAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupServerAction() throws Exception {
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),

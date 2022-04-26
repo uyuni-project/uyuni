@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.dto.PackageDto;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.xml.sax.SAXException;
@@ -30,7 +31,6 @@ import java.io.Writer;
 
 /**
  *
- * @version $Rev $
  *
  */
 public abstract class RepomdWriter {
@@ -47,7 +47,7 @@ public abstract class RepomdWriter {
         CONTROL_CHARS_REPLACEMENT = StringUtils.repeat(" ", CONTROL_CHARS.length());
     }
 
-    private static Logger log = Logger.getLogger(RepomdWriter.class);
+    private static Logger log = LogManager.getLogger(RepomdWriter.class);
 
     /**
      * Constructor takes in a writer
@@ -152,8 +152,7 @@ public abstract class RepomdWriter {
             return input;
         }
         if (log.isDebugEnabled()) {
-            log.debug("Package " + pkgId +
-                    " metadata contains control chars, cleanup required: " + input);
+            log.debug("Package {} metadata contains control chars, cleanup required: {}", pkgId, input);
         }
         return StringUtils.replaceChars(input, CONTROL_CHARS, CONTROL_CHARS_REPLACEMENT);
     }

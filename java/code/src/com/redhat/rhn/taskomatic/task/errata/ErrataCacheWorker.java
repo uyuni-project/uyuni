@@ -22,14 +22,13 @@ import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Performs errata cache recalc for a given server or channel
- * @version $Rev $
  */
 public class ErrataCacheWorker implements QueueWorker {
 
@@ -62,31 +61,31 @@ public class ErrataCacheWorker implements QueueWorker {
             if (ErrataCacheWorker.FOR_SERVER.equals(task.getName())) {
                 Long sid = task.getData();
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Updating errata cache for sid [" + sid + "]");
+                    logger.debug("Updating errata cache for sid [{}]", sid);
                 }
                 uecc.updateErrataCacheForServer(sid, false);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Finished errata cache for sid [" + sid + "]");
+                    logger.debug("Finished errata cache for sid [{}]", sid);
                 }
             }
             else if (ErrataCacheWorker.FOR_IMAGE.equals(task.getName())) {
                 Long iid = task.getData();
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Updating errata cache for iid [" + iid + "]");
+                    logger.debug("Updating errata cache for iid [{}]", iid);
                 }
                 uecc.updateErrataCacheForImage(iid, false);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Finished errata cache for iid [" + iid + "]");
+                    logger.debug("Finished errata cache for iid [{}]", iid);
                 }
             }
             else if (ErrataCacheWorker.BY_CHANNEL.equals(task.getName())) {
                 Long cid = task.getData();
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Updating errata cache for cid [" + cid + "]");
+                    logger.debug("Updating errata cache for cid [{}]", cid);
                 }
                 uecc.updateErrataCacheForChannel(cid);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Finished errata cache for cid [" + cid + "]");
+                    logger.debug("Finished errata cache for cid [{}]", cid);
                 }
             }
             HibernateFactory.commitTransaction();

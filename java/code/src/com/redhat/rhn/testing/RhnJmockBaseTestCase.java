@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
 
 /**
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
@@ -23,21 +23,12 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
 
     /**
-     * Called once per test method.
-     *
-     * @throws Exception if an error occurs during test setup
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /**
      * Called once per test method to clean up.
      *
      * @throws Exception if an error occurs during tear down
      */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    public void tearDown() throws Exception {
         TestCaseHelper.tearDownHelper();
     }
 }

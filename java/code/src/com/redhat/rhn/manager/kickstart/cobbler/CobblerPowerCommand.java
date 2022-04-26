@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
@@ -36,7 +37,7 @@ import java.util.Date;
 public class CobblerPowerCommand extends CobblerCommand {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerPowerCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerPowerCommand.class);
 
     /** The server to power on or off. */
     private Server server;
@@ -127,8 +128,7 @@ public class CobblerPowerCommand extends CobblerCommand {
             }
             if (success) {
                 if (server != null) {
-                    log.debug("Power management operation " + operation.toString() +
-                            " on " + server.getId() + " succeded");
+                    log.debug("Power management operation {} on {} succeded", operation.toString(), server.getId());
                     LocalizationService localizationService = LocalizationService
                             .getInstance();
                     ServerHistoryEvent event = new ServerHistoryEvent();
@@ -144,17 +144,16 @@ public class CobblerPowerCommand extends CobblerCommand {
                     server.getHistory().add(event);
                 }
                 else {
-                    log.debug("Power management operation " + operation.toString() +
-                            " on " + name + " succeded");
+                    log.debug("Power management operation {} on {} succeded", operation.toString(), name);
                 }
 
                 return null;
             }
             if (server != null) {
-                log.error(operation.toString() + " on " + server.getId() + " failed");
+                log.error("{} on {} failed", operation.toString(), server.getId());
             }
             else {
-                log.error(operation.toString() + " on " + name + " failed");
+                log.error("{} on {} failed", operation.toString(), name);
             }
             return new ValidatorError("cobbler.powermanagement.command_failed");
         }

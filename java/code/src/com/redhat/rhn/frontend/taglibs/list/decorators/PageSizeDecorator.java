@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -35,7 +36,7 @@ import javax.servlet.jsp.JspException;
  */
 public class PageSizeDecorator extends BaseListDecorator {
 
-    private static Logger logger = Logger.getLogger(PageSizeDecorator.class);
+    private static Logger logger = LogManager.getLogger(PageSizeDecorator.class);
     private static final int DEFAULT_PAGE_SIZE = 25;
     private static final List<Integer> PAGE_SIZE = new LinkedList<>();
     /** static value for max results per page. */
@@ -158,8 +159,8 @@ public class PageSizeDecorator extends BaseListDecorator {
             }
         }
         catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing " +
-                    ConfigDefaults.DEFAULT_PAGE_SIZE + "=" + sizeStr);
+            logger.warn("Number format exception encountered while parsing {}={}",
+                    ConfigDefaults.DEFAULT_PAGE_SIZE, sizeStr);
             size = DEFAULT_PAGE_SIZE;
         }
 
@@ -203,8 +204,8 @@ public class PageSizeDecorator extends BaseListDecorator {
             return ret;
         }
         catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing " +
-                    ConfigDefaults.PAGE_SIZES + "=" + pageSizes);
+            logger.warn("Number format exception encountered while parsing {}={}",
+                    ConfigDefaults.PAGE_SIZES, pageSizes);
             return Collections.emptyList();
         }
     }

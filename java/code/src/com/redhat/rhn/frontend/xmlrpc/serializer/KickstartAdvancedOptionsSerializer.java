@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * KickstartAdvancedOptionsSerializer: Converts a KickstartCommand object for
@@ -35,26 +32,18 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *          #prop("string", "arguments")
  *      #struct_end()
  */
-public class KickstartAdvancedOptionsSerializer extends RhnXmlRpcCustomSerializer {
+public class KickstartAdvancedOptionsSerializer extends ApiResponseSerializer<KickstartCommand> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<KickstartCommand> getSupportedClass() {
         return KickstartCommand.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        KickstartCommand cmd = (KickstartCommand)value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("name", cmd.getCommandName().getName());
-        helper.add("arguments", cmd.getArguments());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(KickstartCommand src) {
+        return new SerializationBuilder()
+                .add("name", src.getCommandName().getName())
+                .add("arguments", src.getArguments())
+                .build();
     }
 }

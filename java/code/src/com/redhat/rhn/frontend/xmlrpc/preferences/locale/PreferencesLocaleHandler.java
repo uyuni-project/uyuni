@@ -23,6 +23,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidTimeZoneException;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 
@@ -108,6 +110,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      *   $RhnTimeZoneSerializer
      * #array_end()
      */
+    @ReadOnly
     public Object[] listTimeZones() {
         return UserManager.lookupAllTimeZones().toArray();
     }
@@ -123,6 +126,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @xmlrpc.returntype
      * #array_single("string", "Locale code.")
      */
+    @ReadOnly
     public Object[] listLocales() {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getConfiguredLocales().toArray();

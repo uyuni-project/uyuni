@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.api.ReadOnly;
+
 /**
  * CustomInfoHandler
  * @xmlrpc.namespace system.custominfo
@@ -147,6 +149,7 @@ public class CustomInfoHandler extends BaseHandler {
      *          $CustomDataKeySerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listAllKeys(User loggedInUser) throws FaultException {
 
         DataResult result = SystemManager.listDataKeys(loggedInUser);

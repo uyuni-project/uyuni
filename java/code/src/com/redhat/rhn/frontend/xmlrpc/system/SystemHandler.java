@@ -178,6 +178,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -187,7 +189,8 @@ import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 import java.io.BufferedReader;
@@ -226,7 +229,7 @@ import java.util.stream.Collectors;
  */
 public class SystemHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(SystemHandler.class);
+    private static Logger log = LogManager.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
@@ -681,6 +684,7 @@ public class SystemHandler extends BaseHandler {
      *  #array_end()
      *
      */
+    @ReadOnly
     public Object[] listSubscribableBaseChannels(User loggedInUser, Integer sid)
             throws FaultException {
 
@@ -715,6 +719,7 @@ public class SystemHandler extends BaseHandler {
      *          $ShortSystemInfoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listSystems(User loggedInUser) throws FaultException {
         DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(loggedInUser, null);
         dr.elaborate();
@@ -735,6 +740,7 @@ public class SystemHandler extends BaseHandler {
      *              $EmptySystemProfileSerializer
      *          #array_end()
      */
+    @ReadOnly
     public Object[] listEmptySystemProfiles(User loggedInUser) {
         return SystemManager.listEmptySystemProfiles(loggedInUser, null).toArray();
     }
@@ -754,6 +760,7 @@ public class SystemHandler extends BaseHandler {
      *          $ShortSystemInfoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ShortSystemInfo> listActiveSystems(User loggedInUser)
             throws FaultException {
         return SystemManager.systemListShortActive(loggedInUser, null);
@@ -820,6 +827,7 @@ public class SystemHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listActiveSystemsDetails(
             User loggedInUser, List<Integer> serverIds) throws FaultException {
         List<Server> servers = xmlRpcSystemHelper.lookupServers(
@@ -913,6 +921,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listSubscribableChildChannels(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
@@ -982,6 +991,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listOlderInstalledPackages(User loggedInUser, Integer sid,
             String name, String version, String release, String epoch)
                     throws FaultException {
@@ -1058,6 +1068,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listNewerInstalledPackages(User loggedInUser, Integer sid,
             String name, String version, String release, String epoch)
                     throws FaultException {
@@ -1166,6 +1177,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "status", "1 if package exists, 0 if not, exception is thrown
      * if an error occurs")
      */
+    @ReadOnly
     public int isNvreInstalled(User loggedInUser, Integer sid, String name,
             String version, String release) throws FaultException {
         //Set epoch to an empty string
@@ -1194,6 +1206,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "status", "1 if package exists, 0 if not, exception is thrown
      * if an error occurs")
      */
+    @ReadOnly
     public int isNvreInstalled(User loggedInUser, Integer sid, String name,
             String version, String release, String epoch) throws FaultException {
         // Get the logged in user and server
@@ -1266,6 +1279,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listLatestUpgradablePackages(User loggedInUser,
             Integer sid) throws FaultException {
         // Get the logged in user and server
@@ -1297,6 +1311,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listAllInstallablePackages(User loggedInUser,
             Integer sid) throws FaultException {
         Server server = lookupServer(loggedInUser, sid);
@@ -1326,6 +1341,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      * #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listLatestInstallablePackages(User loggedInUser,
             Integer sid) throws FaultException {
         // Get the logged in user and server
@@ -1364,6 +1380,7 @@ public class SystemHandler extends BaseHandler {
      *        #struct_end()
      *    #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listLatestAvailablePackage(User loggedInUser,
             List<Integer> systemIds, String name) throws FaultException {
 
@@ -1424,6 +1441,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #array_single("string", "entitlement_label")
      */
+    @ReadOnly
     public Object[] getEntitlements(User loggedInUser, Integer sid) throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
@@ -1498,6 +1516,7 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     @Deprecated
+    @ReadOnly
     public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
@@ -1533,6 +1552,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listInstalledPackages(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
@@ -1579,6 +1599,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listPackagesLockStatus(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
 
@@ -1701,8 +1722,7 @@ public class SystemHandler extends BaseHandler {
                 deletion.add(sysId.longValue());
             }
             else {
-                log.warn("system " + sysId +
-                        " is not available to user, hence will not be deleted");
+                log.warn("system {} is not available to user, hence will not be deleted", sysId);
                 skippedSids.add(sysId);
             }
         }
@@ -1816,6 +1836,7 @@ public class SystemHandler extends BaseHandler {
      *              #prop_desc("string", "hostname", "Hostname of server")
      *          #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getNetwork(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
@@ -1856,6 +1877,7 @@ public class SystemHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> getNetworkForSystems(User loggedInUser, List<Integer> systemIDs)
             throws FaultException {
         List<Map<String, Object>> result = new ArrayList<>();
@@ -1890,6 +1912,7 @@ public class SystemHandler extends BaseHandler {
      *          $NetworkInterfaceSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<NetworkInterface> getNetworkDevices(User loggedInUser,
             Integer sid)
                     throws FaultException {
@@ -1969,6 +1992,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public Object[] listGroups(User loggedInUser, Integer sid) throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
@@ -2009,6 +2033,7 @@ public class SystemHandler extends BaseHandler {
      *              $ShortSystemInfoSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<ShortSystemInfo> listUserSystems(User loggedInUser, String login)
             throws FaultException {
         // Get the logged in user
@@ -2028,6 +2053,7 @@ public class SystemHandler extends BaseHandler {
      *              $ShortSystemInfoSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<ShortSystemInfo> listUserSystems(User loggedInUser) {
         // Get the logged in user
         return SystemManager.systemListShort(loggedInUser, null);
@@ -2112,6 +2138,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop("string", "custom info label")
      *      #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, Integer sid)
         throws FaultException {
         // Get the logged in user and server
@@ -2393,6 +2420,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType,
                                                       Date earliestDate) {
 
@@ -2673,6 +2701,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
         return listSystemEvents(loggedInUser, sid, null, null);
     }
@@ -2749,6 +2778,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType) {
         return listSystemEvents(loggedInUser, sid, actionType, null);
     }
@@ -2825,6 +2855,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, Date earliestDate) {
         return listSystemEvents(loggedInUser, sid, null, earliestDate);
     }
@@ -3083,6 +3114,7 @@ public class SystemHandler extends BaseHandler {
      *              $SystemOverviewSerializer
      *          #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> getId(User loggedInUser, String name) {
 
         return SystemManager.listSystemsByName(loggedInUser, name);
@@ -3105,6 +3137,7 @@ public class SystemHandler extends BaseHandler {
      *              successfully checked in")
      *  #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getName(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
         Map<String, Object> name = new HashMap<>();
@@ -3126,6 +3159,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("dateTime.iso8601", "date", "The date the system was registered,
      * in local time")
      */
+    @ReadOnly
     public Date getRegistrationDate(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         return server.getCreated();
@@ -3149,6 +3183,7 @@ public class SystemHandler extends BaseHandler {
      *          $ChannelSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<Channel> listSubscribedChildChannels(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Set<Channel> childChannels = server.getChildChannels();
@@ -3218,6 +3253,7 @@ public class SystemHandler extends BaseHandler {
      *              $UserSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listAdministrators(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         return ServerFactory.listAdministrators(server).toArray();
@@ -3235,6 +3271,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #param("string", "kernel")
      */
+    @ReadOnly
     public String getRunningKernel(User loggedInUser, Integer sid) {
         try {
             Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
@@ -3275,6 +3312,7 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     @Deprecated
+    @ReadOnly
     public Object[] getEventHistory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         List<HistoryEvent> history = ServerFactory.getServerHistory(server);
@@ -3305,6 +3343,7 @@ public class SystemHandler extends BaseHandler {
      *           $SystemEventDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate, Integer offset,
                                                 Integer limit) {
 
@@ -3333,6 +3372,7 @@ public class SystemHandler extends BaseHandler {
      *           $SystemEventDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Integer offset, Integer limit) {
         return getEventHistory(loggedInUser, sid, null, offset, limit);
     }
@@ -3357,6 +3397,7 @@ public class SystemHandler extends BaseHandler {
      *           $SystemEventDtoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
         return getEventHistory(loggedInUser, sid, earliestDate, null, null);
     }
@@ -3381,6 +3422,7 @@ public class SystemHandler extends BaseHandler {
      *           $SystemEventDetailsDtoSerializer
      *      #array_end()
     */
+    @ReadOnly
     public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
 
         final Server server = lookupServer(loggedInUser, sid);
@@ -3423,6 +3465,7 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer sid) {
 
         Server server = lookupServer(loggedInUser, sid);
@@ -3456,6 +3499,7 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> getRelevantErrataByType(User loggedInUser, Integer serverId,
             String advisoryType) throws FaultException {
 
@@ -3484,6 +3528,7 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Errata[] getUnscheduledErrata(User loggedInUser, Integer sid) {
 
         Server server = lookupServer(loggedInUser, sid);
@@ -3830,6 +3875,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      $DmiSerializer
      */
+    @ReadOnly
     public Object getDmi(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Dmi dmi = server.getDmi();
@@ -3852,6 +3898,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      $CpuSerializer
      */
+    @ReadOnly
     public Object getCpu(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         CPU cpu = server.getCpu();
@@ -3877,6 +3924,7 @@ public class SystemHandler extends BaseHandler {
      *      #prop_desc("int", "swap", "The amount of swap space in MB.")
      *  #struct_end()
      */
+    @ReadOnly
     public Map<String, Long> getMemory(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Map<String, Long> memory = new HashMap<>();
@@ -3900,6 +3948,7 @@ public class SystemHandler extends BaseHandler {
      *              $DeviceSerializer
      *              #array_end()
      */
+    @ReadOnly
     public Object[] getDevices(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Set<Device> devices = server.getDevices();
@@ -4016,7 +4065,7 @@ public class SystemHandler extends BaseHandler {
 
             if (p == null) {
                 throw new InvalidPackageException("cannot find package with name " +
-                        pkgId.toString() + " in Satellite database");
+                        pkgId + " in Satellite database");
             }
 
             pkgMap.put("name_id", p.getPackageName().getId());
@@ -4674,6 +4723,7 @@ public class SystemHandler extends BaseHandler {
      *      $NoteSerializer
      *  #array_end()
      */
+    @ReadOnly
     public Set<Note> listNotes(User loggedInUser , Integer sid) {
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                 loggedInUser);
@@ -4692,6 +4742,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #array_single("string", "fqdn")
      */
+    @ReadOnly
     public List<String> listFqdns(User loggedInUser, Integer sid) {
         return ServerFactory.listFqdns(sid.longValue());
     }
@@ -4722,6 +4773,7 @@ public class SystemHandler extends BaseHandler {
      *      $PackageSerializer
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listPackagesFromChannel(User loggedInUser,
             Integer sid,
             String channelLabel) {
@@ -5031,6 +5083,7 @@ public class SystemHandler extends BaseHandler {
      *          #array_end()
      *      #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getScriptActionDetails(User loggedInUser, Integer actionId) {
         Map<String, Object> retDetails = new HashMap<>();
         ScriptRunAction action = lookupScriptRunAction(actionId, loggedInUser);
@@ -5111,6 +5164,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *          $ServerSerializer
      */
+    @ReadOnly
     public Object getDetails(User loggedInUser, Integer serverId) {
         Server server = null;
         try {
@@ -5395,8 +5449,7 @@ public class SystemHandler extends BaseHandler {
 
             // Ignore if the system already has this entitlement:
             if (server.hasEntitlement(ent)) {
-                log.debug("System " + server.getName() + " already has entitlement: " +
-                        ent.getLabel());
+                log.debug("System {} already has entitlement: {}", server.getName(), ent.getLabel());
                 continue;
             }
 
@@ -5543,7 +5596,7 @@ public class SystemHandler extends BaseHandler {
                 }
                 catch (NumberFormatException nfe) {
                     // not our file, skip it
-                    log.debug("Skipping " + file.getName());
+                    log.debug("Skipping {}", file.getName());
                     break;
                 }
 
@@ -5564,15 +5617,14 @@ public class SystemHandler extends BaseHandler {
                                 }
                             }
                             if (uuidPos == null || systemIdPos == null) {
-                                log.warn("Unexpected format of mapping file " +
-                                        file.getName());
+                                log.warn("Unexpected format of mapping file {}", file.getName());
                                 break;
                             }
                             continue;
                         }
                         String[] record = line.split(",");
                         if (record.length <= uuidPos || record.length <= systemIdPos) {
-                            log.warn("Unexpected format of mapping file " + file.getName());
+                            log.warn("Unexpected format of mapping file {}", file.getName());
                             break;
                         }
                         if (record[systemIdPos].equals(systemIdStr) &&
@@ -5598,7 +5650,7 @@ public class SystemHandler extends BaseHandler {
                     br.close();
                 }
                 catch (IOException e) {
-                    log.warn("Cannot read " + file.getName());
+                    log.warn("Cannot read {}", file.getName());
                 }
             }
         }
@@ -5622,6 +5674,7 @@ public class SystemHandler extends BaseHandler {
      *      $ProfileOverviewDtoSerializer
      *  #array_end()
      */
+    @ReadOnly
     public Object[] listPackageProfiles(User loggedInUser) {
         DataResult<ProfileOverviewDto> profiles = ProfileManager.listProfileOverviews(
                 loggedInUser.getOrg().getId());
@@ -5744,6 +5797,7 @@ public class SystemHandler extends BaseHandler {
      *          #array_end()
      *
      */
+    @ReadOnly
     public Object[] listOutOfDateSystems(User loggedInUser) {
         DataResult<SystemOverview> list = SystemManager.outOfDateList(
                 loggedInUser, null);
@@ -5865,6 +5919,7 @@ public class SystemHandler extends BaseHandler {
      *          $SystemOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
         return SystemManager.ungroupedList(loggedInUser, null);
     }
@@ -5882,6 +5937,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      $ChannelSerializer
      */
+    @ReadOnly
     public Object getSubscribedBaseChannel(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
         Channel base = server.getBaseChannel();
@@ -5905,6 +5961,7 @@ public class SystemHandler extends BaseHandler {
      *          $ShortSystemInfoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ShortSystemInfo> listInactiveSystems(User loggedInUser) {
         return SystemManager.systemListShortInactive(loggedInUser, null);
     }
@@ -5925,6 +5982,7 @@ public class SystemHandler extends BaseHandler {
      *          $ShortSystemInfoSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ShortSystemInfo> listInactiveSystems(User loggedInUser,
             Integer days) {
         return SystemManager.systemListShortInactive(loggedInUser, days, null);
@@ -5961,6 +6019,7 @@ public class SystemHandler extends BaseHandler {
      *              $SystemOverviewSerializer
      *           #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> listSystemsWithPackage(User loggedInUser,
             Integer pid) {
         Package pack = PackageFactory.lookupByIdAndOrg(
@@ -5990,6 +6049,7 @@ public class SystemHandler extends BaseHandler {
      *                  $SystemOverviewSerializer
      *              #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> listSystemsWithPackage(User loggedInUser,
             String name, String version,
             String release) {
@@ -6012,6 +6072,7 @@ public class SystemHandler extends BaseHandler {
      *                  $SystemOverviewSerializer
      *              #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> listSystemsWithEntitlement(User loggedInUser, String entitlementName) {
         Entitlement entitlement = EntitlementManager.getByName(entitlementName);
         if (entitlement == null) {
@@ -6035,6 +6096,7 @@ public class SystemHandler extends BaseHandler {
      *          $SystemOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listPhysicalSystems(User loggedInUser) throws FaultException {
         DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser, null);
         dr.elaborate();
@@ -6053,6 +6115,7 @@ public class SystemHandler extends BaseHandler {
      *       $SystemOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SystemOverview> listVirtualHosts(User loggedInUser) {
         return SystemManager.listVirtualHosts(loggedInUser);
     }
@@ -6071,6 +6134,7 @@ public class SystemHandler extends BaseHandler {
      *          $VirtualSystemOverviewSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<VirtualSystemOverview> listVirtualGuests(User loggedInUser,
             Integer sid) {
         DataResult<VirtualSystemOverview> result = SystemManager
@@ -6258,6 +6322,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #array_single ("string", "key")
      */
+    @ReadOnly
     public List<String> listActivationKeys(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
 
@@ -6289,6 +6354,7 @@ public class SystemHandler extends BaseHandler {
      *          $ServerPathSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Object[] getConnectionPath(User loggedInUser, Integer sid)
             throws FaultException {
 
@@ -6477,7 +6543,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int createSystemRecord(User loggedInUser, String sysName, String ksLabel,
-            String kOptions, String comment, List<HashMap<String, String>> netDevices) {
+            String kOptions, String comment, List<Map<String, String>> netDevices) {
         // Determine the user and lookup the kickstart profile
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
@@ -6492,8 +6558,7 @@ public class SystemHandler extends BaseHandler {
                 ksData.getCobblerObject(loggedInUser).getName());
 
         // Set network device information to the server
-        Set<NetworkInterface> set = new HashSet<>();
-        for (HashMap<String, String> map : netDevices) {
+        for (Map<String, String> map : netDevices) {
             // FIXME: why do we need this?
             CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
             device.setName(map.get("name"));
@@ -6589,6 +6654,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop_array_end()
      *      #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getVariables(User loggedInUser, Integer serverId) {
 
         Server server = null;
@@ -6709,6 +6775,7 @@ public class SystemHandler extends BaseHandler {
      *           #struct_end()
      *      #array_end()
      **/
+    @ReadOnly
     public List<Map<String, Object>> listDuplicatesByIp(User loggedInUser) {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByIP(loggedInUser, 0L);
@@ -6733,6 +6800,7 @@ public class SystemHandler extends BaseHandler {
      *           #struct_end()
      *      #array_end()
      **/
+    @ReadOnly
     public List listDuplicatesByMac(User loggedInUser) {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByMac(loggedInUser, 0L);
@@ -6757,6 +6825,7 @@ public class SystemHandler extends BaseHandler {
      *           #struct_end()
      *      #array_end()
      **/
+    @ReadOnly
     public List<Map<String, Object>> listDuplicatesByHostname(User loggedInUser) {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByHostname(loggedInUser, 0L);
@@ -6772,6 +6841,7 @@ public class SystemHandler extends BaseHandler {
      *  @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("map", "multipliers", "Map of score multipliers")
      */
+    @ReadOnly
     public Map<String, Integer> getSystemCurrencyMultipliers(User loggedInUser) {
         Map<String, Integer> multipliers = new HashMap<>();
         multipliers.put("scCrit", ConfigDefaults.get().getSCCrit());
@@ -6806,6 +6876,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Long>> getSystemCurrencyScores(User loggedInUser) {
         DataResult<SystemCurrency> dr = SystemManager.systemCurrencyList(loggedInUser,
                 null);
@@ -6838,6 +6909,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #param("string", "uuid")
      */
+    @ReadOnly
     public String getUuid(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
 
@@ -6917,6 +6989,7 @@ public class SystemHandler extends BaseHandler {
      *         #struct_end()
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listSystemsWithExtraPackages(User loggedInUser) {
         return SystemManager.getExtraPackagesSystems(loggedInUser, null).toArray();
     }
@@ -6942,6 +7015,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listExtraPackages(User loggedInUser,
             Integer serverId) {
         DataResult<PackageListItem> dr =
@@ -7115,6 +7189,7 @@ public class SystemHandler extends BaseHandler {
      *          (1970/01/01 00:00:00 if no ping is pending")
      *      #struct_end()
      */
+    @ReadOnly
     public Map<String, Object> getOsaPing(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
         Map<String, Object> map = new HashMap<>();
@@ -7163,6 +7238,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
             Integer serverId) {
         List<Map<String, Object>> returnList = new ArrayList<>();
@@ -7560,17 +7636,17 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug(ps.toString() + " is completely synced.");
+                                    log.debug("{} is completely synced.", ps.toString());
                                 }
                                 else {
-                                    log.debug("Discarding " + ps.toString() + ". Is not completely synced.");
+                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
                                 }
                             }
                             return ps.getIsEveryChannelSynced();
                         })
                         .collect(toList());
                 targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
-                log.info("Using migration target: " + targetProducts);
+                log.info("Using migration target: {}", targetProducts);
             }
             else {
                 for (SUSEProductSet target : targets) {
@@ -7587,7 +7663,7 @@ public class SystemHandler extends BaseHandler {
                         targets.stream().map(t -> t + " : " +
                                 t.getMissingChannelsMessage())
                                 .collect(Collectors.joining(System.getProperty("line.separator")));
-                log.error("No target products found for migration: " + targetsInfo);
+                log.error("No target products found for migration: {}", targetsInfo);
                 throw new FaultException(-1, "productMigrationNoTarget",
                         "No target found for Product migration. " + targetsInfo);
             }
@@ -7736,6 +7812,7 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public Object[] listSuggestedReboot(User loggedInUser) {
             return SystemManager.requiringRebootList(loggedInUser).toArray();
     }
@@ -7756,6 +7833,7 @@ public class SystemHandler extends BaseHandler {
      *          $SUSEInstalledProductSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<SUSEInstalledProduct> getInstalledProducts(User loggedInUser,
             Integer serverId) throws FaultException {
         Server server = lookupServer(loggedInUser, serverId);
@@ -7784,6 +7862,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype string
      */
+    @ReadOnly
     public String getKernelLivePatch(User loggedInUser, Integer sid) {
         try {
             Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
@@ -7825,7 +7904,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, empty());
-        log.debug("bootstrap called: " + params);
+        log.debug("bootstrap called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7863,7 +7942,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called: " + params);
+        log.debug("bootstrapWithPrivateSshKey called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7899,7 +7978,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with proxyId: " + params);
+        log.debug("bootstrap called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7939,7 +8018,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7975,7 +8054,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, empty());
-        log.debug("bootstrap called with re-activation key: " + params);
+        log.debug("bootstrap called with re-activation key: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8016,7 +8095,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8055,7 +8134,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        log.debug("bootstrap called with re-activation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8099,7 +8178,7 @@ public class SystemHandler extends BaseHandler {
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
                 of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8283,6 +8362,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #param_desc("map", "id_map", "minion IDs to system IDs")
      */
+    @ReadOnly
     public Map<String, Long> getMinionIdMap(User loggedInUser) {
         return ServerFactory.getMinionIdMap(loggedInUser.getId());
     }
@@ -8301,6 +8381,7 @@ public class SystemHandler extends BaseHandler {
      *           $PackageStateSerializer
      *      #array_end()
      */
+    @ReadOnly
     public Set<PackageState> listPackageState(User loggedInUser, Integer serverId) {
         MinionServer minion = SystemManager.lookupByIdAndUser(serverId.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + serverId));
@@ -8327,6 +8408,7 @@ public class SystemHandler extends BaseHandler {
      *     $SystemGroupsDTOSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
         return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
     }
@@ -8380,13 +8462,13 @@ public class SystemHandler extends BaseHandler {
                         }
                     },
                     () -> {
-                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        log.warn("system {} is not a salt minion, hence pillar will not be updated", sysId);
                         skipped.add(sysId);
                     }
                 );
             }
             else {
-                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                log.warn("system {} is not available to user, hence pillar will not be refreshed", sysId);
                 skipped.add(sysId);
             }
         }
@@ -8429,6 +8511,7 @@ public class SystemHandler extends BaseHandler {
      * @return the {@link TaskomaticApi} instance used by this class
      * @xmlrpc.ignore
      */
+    @ApiIgnore
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
     }

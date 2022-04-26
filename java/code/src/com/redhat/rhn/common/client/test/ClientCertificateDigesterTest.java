@@ -14,37 +14,46 @@
  */
 package com.redhat.rhn.common.client.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.StringReader;
 
 public class ClientCertificateDigesterTest extends RhnBaseTestCase {
 
+    @Test
     public void testBuildSystemIdStream() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                     TestUtils.findTestData("systemid.xml").openStream());
 
-        assertNotNull("SystemId is null", cert);
+        assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
     }
 
+    @Test
     public void testBuildSystemIdReader() throws Exception {
         String data = TestUtils.readAll(TestUtils.findTestData("systemid.xml"));
         StringReader rdr = new StringReader(data);
         ClientCertificate cert =
                ClientCertificateDigester.buildCertificate(rdr);
 
-        assertNotNull("SystemId is null", cert);
+        assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
     }
 
+    @Test
     public void testGetValueByName() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                 TestUtils.findTestData("systemid.xml").openStream());
@@ -69,6 +78,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         assertNull(cert.getValueByName("invalid name"));
     }
 
+    @Test
     public void testGetValuesByName() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                 TestUtils.findTestData("systemid.xml").openStream());

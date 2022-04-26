@@ -31,7 +31,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +46,7 @@ import spark.Response;
 public class MonitoringApiController {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(MonitoringApiController.class);
+    private static final Logger LOG = LogManager.getLogger(MonitoringApiController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()

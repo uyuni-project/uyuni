@@ -15,43 +15,31 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * CryptoKeyTypeSerializer: Converts a CryptoKeyType object for representation
  * as an XMLRPC struct.
  *
  */
-public class CryptoKeyTypeSerializer extends RhnXmlRpcCustomSerializer {
+public class CryptoKeyTypeSerializer extends ApiResponseSerializer<CryptoKeyType> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<CryptoKeyType> getSupportedClass() {
         return CryptoKeyType.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        CryptoKeyType ckt = (CryptoKeyType)value;
-
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", ckt.getId());
-        helper.add("label", ckt.getLabel());
-        helper.add("description", ckt.getDescription());
-        helper.add("created", ckt.getCreated());
-        helper.add("modified", ckt.getModified());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(CryptoKeyType src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("description", src.getDescription())
+                .add("created", src.getCreated())
+                .add("modified", src.getModified())
+                .build();
     }
 }

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.MonitoringException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -127,6 +128,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public Map<String, String> getStatus(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
         MonitoringService.MonitoringStatus status = MonitoringService.getStatus()

@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CobblerSnippetDeleteAction
- * @version $Rev: 1 $
  */
 public class CobblerSnippetDeleteAction extends RhnAction {
     /** {@inheritDoc} */

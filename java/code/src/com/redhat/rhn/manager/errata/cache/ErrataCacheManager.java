@@ -29,7 +29,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -45,7 +46,7 @@ import java.util.Set;
 public class ErrataCacheManager extends HibernateFactory {
 
     private static ErrataCacheManager singleton = new ErrataCacheManager();
-    private static Logger log = Logger.getLogger(ErrataCacheManager.class);
+    private static Logger log = LogManager.getLogger(ErrataCacheManager.class);
 
     private ErrataCacheManager() {
         super();
@@ -318,7 +319,7 @@ public class ErrataCacheManager extends HibernateFactory {
         if (eid != null) {
             Errata errata = ErrataFactory.lookupById(eid);
             if (errata.getAdvisoryStatus().equals(AdvisoryStatus.RETRACTED)) {
-                log.debug("updateCacheForChannelErrata skip adding retracted errata: " + eid);
+                log.debug("updateCacheForChannelErrata skip adding retracted errata: {}", eid);
                 return;
             }
             params.put("errata_id", eid);
@@ -332,8 +333,7 @@ public class ErrataCacheManager extends HibernateFactory {
             count = m.executeUpdate(params, pids);
         }
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries inserted: " +
-                    count);
+            log.debug("updateCacheForChannelErrata : cache entries inserted: {}", count);
         }
 
     }
@@ -357,7 +357,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("channel_id", cid);
         count = m.executeUpdate(params, eids);
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries deleted: " + count);
+            log.debug("updateCacheForChannelErrata : cache entries deleted: {}", count);
         }
     }
 
@@ -378,7 +378,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("errata_id", eid);
         count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries deleted: " + count);
+            log.debug("updateCacheForChannelErrata : cache entries deleted: {}", count);
         }
     }
 
@@ -414,8 +414,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("channel_id", cid);
         int count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
-            log.debug("delete_needed_cache_for_channel_packages : " +
-                "package_cache deleted: " + count);
+            log.debug("delete_needed_cache_for_channel_packages : package_cache deleted: {}", count);
         }
 
     }

@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
-    private static Logger log = Logger.getLogger(SystemEntitlementsSetupAction.class);
+    private static Logger log = LogManager.getLogger(SystemEntitlementsSetupAction.class);
 
     public static final String SHOW_COMMANDS = "showCommands";
 
@@ -88,7 +89,7 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
 
-        log.debug("show: " + (request.getAttribute(SHOW_NO_SYSTEMS) == null));
+        log.debug("show: {}", request.getAttribute(SHOW_NO_SYSTEMS) == null);
         if (request.getAttribute(SHOW_NO_SYSTEMS) == null) {
             log.debug("adding show commands ..");
             request.setAttribute(SHOW_COMMANDS, Boolean.TRUE);
@@ -97,11 +98,11 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
         List<LabelValueBean> addOnEntitlements = new ArrayList<>();
 
         for (Entitlement e : user.getOrg().getValidAddOnEntitlementsForOrg()) {
-            log.debug("Adding " + e.getLabel() + " droplist entry");
+            log.debug("Adding {} droplist entry", e.getLabel());
             addOnEntitlements.add(lvl10n(e.getLabel(), e.getLabel()));
         }
 
-        log.debug("addonents.size(): " + addOnEntitlements.size());
+        log.debug("addonents.size(): {}", addOnEntitlements.size());
         if (addOnEntitlements.size() > 0) {
             log.debug("sorting list");
             Collections.sort(addOnEntitlements);

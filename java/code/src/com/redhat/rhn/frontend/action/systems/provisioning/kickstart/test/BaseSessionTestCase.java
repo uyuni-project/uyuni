@@ -29,6 +29,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+
 /**
  * BaseSessionTestCase
  */
@@ -40,6 +42,7 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());

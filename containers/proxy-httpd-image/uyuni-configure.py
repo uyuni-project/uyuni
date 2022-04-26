@@ -8,9 +8,11 @@ import yaml
 import socket
 import sys
 
+from typing import Tuple
+
 config_path = "/etc/uyuni/"
 
-def getIPs(fqdn: str) -> [str, str]:
+def getIPs(fqdn: str) -> Tuple[str, str]:
     addrinfo = socket.getaddrinfo(fqdn, None)
     ipv4s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET, addrinfo)))
     ipv6s = set(map(lambda r: r[4][0], filter(lambda f: f[0] == socket.AF_INET6, addrinfo)))
@@ -122,16 +124,57 @@ with open(config_path + "config.yaml") as source:
         if len(proxyIPv6) > 0:
            requireIPv6 = "Require ip {}".format(proxyIPv6)
         file.write(f'''<Directory "/srv/www/tftpsync">
-    <IfVersion >= 2.4>
-        <RequireAny>
-            {requireIPv4}
-            {requireIPv6}
-        </RequireAny>
-    </IfVersion>
+    <RequireAny>
+        {requireIPv4}
+        {requireIPv6}
+    </RequireAny>
 </Directory>
 
 WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
 WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete''')
+
+    with open("/etc/apache2/conf.d/saltboot.conf", "w") as file:
+        # Saltboot uses the same URL regardles containerized or normal proxy
+        # here we rewrite URL so upstream server understands it
+
+        # First condition/rule removes double arch rule for backward compatility
+        # second changes /saltboot/image/..?orgid=<org> to /os-images/<org>/
+        file.write('''
+RewriteEngine on
+RewriteCond %{REQUEST_URI} ^/saltboot/(image|boot).*x86_64.*x86_64
+RewriteRule ^(.*)\.x86_64(.*\.x86_64-.*) $1$2 [N]
+
+RewriteCond %{QUERY_STRING} orgid=(\d+)
+RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
+''')
+
+    with open("/etc/apache2/vhosts.d/ssl.conf", "w") as file:
+        file.write(f'''
+<IfDefine SSL>
+<IfDefine !NOSSL>
+<VirtualHost _default_:443>
+
+	DocumentRoot "/srv/www/htdocs"
+	ServerName {config['proxy_fqdn']}
+
+	ErrorLog /proc/self/fd/2
+	TransferLog /proc/self/fd/1
+	CustomLog /proc/self/fd/1   ssl_combined
+
+	SSLEngine on
+	SSLUseStapling  on
+
+    SSLCertificateFile /etc/apache2/ssl.crt/server.crt
+    SSLCertificateKeyFile /etc/apache2/ssl.key/server.key
+
+    SSLProtocol all -SSLv2 -SSLv3
+    RewriteEngine on
+    RewriteOptions inherit
+    SSLProxyEngine on
+</VirtualHost>
+</IfDefine>
+</IfDefine>
+''')
 
     os.system('chown root:www /etc/rhn/rhn.conf')
     os.system('chmod 640 /etc/rhn/rhn.conf')

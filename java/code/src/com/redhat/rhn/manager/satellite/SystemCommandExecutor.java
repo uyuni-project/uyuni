@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * Logger for this class
      */
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     /**
      * Constructor
@@ -60,7 +61,7 @@ public class SystemCommandExecutor implements Executor {
      */
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(String[] args=" + Arrays.asList(args) + ") - start");
+            logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
         }
 
         Runtime r = Runtime.getRuntime();
@@ -72,7 +73,7 @@ public class SystemCommandExecutor implements Executor {
 
             lastCommandOutput = inputStreamToString(p.getInputStream());
             if (logger.isDebugEnabled()) {
-                logger.debug("Output from process execution: " + lastCommandOutput);
+                logger.debug("Output from process execution: {}", lastCommandOutput);
             }
 
             lastCommandError = inputStreamToString(p.getErrorStream());
@@ -108,7 +109,7 @@ public class SystemCommandExecutor implements Executor {
             for (String argIn : args) {
                 message = message + argIn + " ";
             }
-            logger.error("IOException while trying to exec: " + message, ioe);
+            logger.error("IOException while trying to exec: {}", message, ioe);
             throw new RuntimeException(
                     "IOException while trying to exec: " + message, ioe);
         }

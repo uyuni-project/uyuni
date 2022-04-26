@@ -32,6 +32,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_single("string", "imageProfileTypes")
      */
+    @ReadOnly
     public List<String> listImageProfileTypes(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         List<String> imageTypes = new ArrayList<>();
@@ -78,6 +81,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $ImageProfileSerializer #array_end()
      */
+    @ReadOnly
     public List<ImageProfile> listImageProfiles(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageProfileFactory.listImageProfiles(loggedInUser.getOrg());
@@ -94,6 +98,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype $ImageProfileSerializer
      */
+    @ReadOnly
     public ImageProfile getDetails(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
         return getValidImageProfile(loggedInUser, label);
@@ -354,6 +359,7 @@ public class ImageProfileHandler extends BaseHandler {
      *      #prop("string", "value")
      *    #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
         return getValidImageProfile(loggedInUser, label).getCustomDataValues().stream()

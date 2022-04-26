@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartKeysEditAction - Action to handle associating GPG/SSL keys with a Kickstart
- * @version $Rev: 1 $
  */
 public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitAction {
 

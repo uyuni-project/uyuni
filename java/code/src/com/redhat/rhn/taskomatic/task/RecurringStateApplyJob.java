@@ -72,7 +72,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
                     Optional.of(action.isTestMode()), context.getFireTime(), null);
         }
         catch (TaskomaticApiException e) {
-            log.error("Error scheduling states application for recurring action " + action, e);
+            log.error("Error scheduling states application for recurring action {}", action, e);
         }
     }
 

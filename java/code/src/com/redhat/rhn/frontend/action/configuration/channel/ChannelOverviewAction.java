@@ -35,7 +35,8 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -48,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DetailsAction backs the page for managing config-channel details
- * @version $Rev: 1 $
  */
 public class ChannelOverviewAction extends RhnAction {
 
@@ -62,7 +62,7 @@ public class ChannelOverviewAction extends RhnAction {
     private static final String CHANNEL_TYPE_LABEL = "type";
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(ChannelOverviewAction.class);
+    private static final Logger LOG = LogManager.getLogger(ChannelOverviewAction.class);
 
 
     /** {@inheritDoc} */

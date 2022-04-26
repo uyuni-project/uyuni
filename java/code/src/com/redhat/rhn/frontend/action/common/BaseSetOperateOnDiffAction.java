@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -47,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
 
-    private static Logger log = Logger.getLogger(BaseSetOperateOnDiffAction.class);
+    private static Logger log = LogManager.getLogger(BaseSetOperateOnDiffAction.class);
 
     /**
      * Execute some operation on the items that have removed or added
@@ -92,14 +93,14 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
                 request));
 
         if (log.isDebugEnabled()) {
-            log.debug("current set  : " + currentset.getElements());
+            log.debug("current set  : {}", currentset.getElements());
         }
 
         while (originalItems.hasNext()) {
             Identifiable ido = originalItems.next();
 
             if (log.isDebugEnabled()) {
-                log.debug("original item  : " + ido.getId());
+                log.debug("original item  : {}", ido.getId());
             }
             diffmap.put(new RhnSetElement(user.getId(),
                     getSetDecl().getLabel(), ido.getId(), null),
@@ -128,8 +129,8 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("removed : " + removed);
-            log.debug("added : " + added);
+            log.debug("removed : {}", removed);
+            log.debug("added : {}", added);
         }
 
         operateOnRemovedElements(removed, request);

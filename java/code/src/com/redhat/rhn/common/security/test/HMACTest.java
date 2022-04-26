@@ -15,8 +15,12 @@
 
 package com.redhat.rhn.common.security.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.security.HMAC;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /*
  * Test for HMAC
@@ -38,20 +42,24 @@ public class HMACTest extends RhnBaseTestCase {
         assertEquals(expect, value);
     }
 
+    @Test
     public void testDataKeySHA1() throws Exception {
         doTestSHA1("data", "key", "104152c5bfdca07bc633eebd46199f0255c9f49d");
     }
 
+    @Test
     public void testDataKeyMD5() throws Exception {
         doTestMD5("data", "key", "9d5c73ef85594d34ec4438b7c97e51d8");
     }
 
+    @Test
     public void testLongKeySHA1() throws Exception {
         doTestSHA1("data",
       "this is a very long key to see if that breaks the implementation, xxxx",
                    "fba60ff23634892fa139a3a24de8514562fc9c8c");
     }
 
+    @Test
     public void testlongkeymd5() throws Exception {
         doTestMD5("data",
       "this is a very long key to see if that breaks the implementation, xxxx",

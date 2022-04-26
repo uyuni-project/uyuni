@@ -18,7 +18,8 @@ import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TinyUrlAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(TinyUrlAction.class);
+    private static Logger log = LogManager.getLogger(TinyUrlAction.class);
 
     public static final String TY_TOKEN = "tytoken";
 
@@ -45,24 +46,22 @@ public class TinyUrlAction extends RhnAction {
         throws Exception {
         String token = request.getParameter(TY_TOKEN);
         if (log.isDebugEnabled()) {
-            log.debug("token: " + token);
+            log.debug("token: {}", token);
             Enumeration e = request.getParameterNames();
             while (e.hasMoreElements()) {
                 String name = (String) e.nextElement();
-                log.debug("param.name: " + name + " val: " +
-                        request.getParameter(name));
+                log.debug("param.name: {} val: {}", name, request.getParameter(name));
             }
         }
 
         TinyUrl turl = CommonFactory.lookupTinyUrl(token);
         if (turl != null) {
             if (log.isDebugEnabled()) {
-                log.debug("turl: " + turl.getUrl());
+                log.debug("turl: {}", turl.getUrl());
             }
             request.setAttribute("ksurl", turl.getUrl());
             if (log.isDebugEnabled()) {
-                log.debug("ksurl in request attribute before we call include: " +
-                        request.getAttribute("ksurl"));
+                log.debug("ksurl in request attribute before we call include: {}", request.getAttribute("ksurl"));
             }
             request.getRequestDispatcher("/kickstart/DownloadFile.do").
                 forward(request, response);

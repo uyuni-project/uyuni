@@ -17,6 +17,7 @@ package com.redhat.rhn.testing;
 import org.apache.struts.Globals;
 import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +39,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
      * override the setupUp method
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         request.setMethod(HttpServletRequestSimulator.POST);

@@ -254,7 +254,8 @@ setup_db_postgres() {
         systemctl restart postgresql
         su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
-        echo "local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
+        echo "local $MANAGER_DB_NAME postgres peer
+local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
 " > /tmp/pg_hba.conf
@@ -392,7 +393,7 @@ report-db-host=$REPORT_DB_HOST
 report-db-port=$REPORT_DB_PORT
 report-db-user=$REPORT_DB_USER
 report-db-password=$REPORT_DB_PASS
-report-db-ca-cert=$CA_PATH/RHN-ORG-TRUSTED-SSL-CERT
+report-db-ca-cert=$CA_PATH/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 enable-tftp=$MANAGER_ENABLE_TFTP
 " > /root/spacewalk-answers
 
@@ -411,6 +412,11 @@ ssl-server-cert = $SERVER_CERT
 ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     else
         echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
+
+	# check if CA Cert and Key exists and try to use it to generate the server certs
+	if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
+            PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
+        fi
     fi
 
     PARAM_DB="--external-postgresql"

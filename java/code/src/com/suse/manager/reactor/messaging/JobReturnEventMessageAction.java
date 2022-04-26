@@ -43,7 +43,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -90,7 +91,7 @@ public class JobReturnEventMessageAction implements MessageAction {
     }
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(JobReturnEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {
@@ -101,13 +102,12 @@ public class JobReturnEventMessageAction implements MessageAction {
         String function = jobReturnEvent.getData().getFun();
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {
-            LOG.debug("Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));
+            LOG.debug("Function is null in JobReturnEvent -> \n{}", Json.GSON.toJson(jobReturnEvent));
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Job return event for minion: " +
-                    jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId() +
-                    " (" + function + ")");
+            LOG.debug("Job return event for minion: {}/{} ({})", jobReturnEvent.getMinionId(),
+                    jobReturnEvent.getJobId(), function);
         }
 
         // Prepare the job result as a json element
@@ -171,7 +171,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                         }.getType());
             }
             catch (JsonSyntaxException e) {
-                LOG.error("Error mapping action chain result: " + jsonResult, e);
+                LOG.error("Error mapping action chain result: {}", jsonResult, e);
                 throw e;
             }
 
@@ -249,8 +249,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (minion.isPresent()) {
             MinionServer m = minion.get();
             if (jobResult.isEmpty()) {
-                LOG.warn("Do not update server info since job=" +  jobReturnEvent.getJobId() + " in minion=" +
-                        jobReturnEvent.getMinionId() + " is empty");
+                LOG.warn("Do not update server info since job={} in minion={} is empty", jobReturnEvent.getJobId(),
+                        jobReturnEvent.getMinionId());
                 return;
             }
             m.updateServerInfo();
@@ -290,9 +290,8 @@ public class JobReturnEventMessageAction implements MessageAction {
                         }
                     }
                      catch (JsonParseException e) {
-                        LOG.warn("Could not determine if packages changed " +
-                                "in call to " + function +
-                                " because of a parse error");
+                        LOG.warn("Could not determine if packages changed in call to {} because of a parse error",
+                                 function);
                         LOG.warn(e);
                     }
                     return fullPackageRefreshNeeded;

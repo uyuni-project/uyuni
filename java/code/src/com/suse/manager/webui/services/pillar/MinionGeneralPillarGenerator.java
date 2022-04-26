@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.server.Pillar;
 
 import com.suse.manager.utils.MachinePasswordUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ import java.util.Optional;
 public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(MinionGeneralPillarGenerator.class);
+    private static final Logger LOG = LogManager.getLogger(MinionGeneralPillarGenerator.class);
 
     public static final MinionGeneralPillarGenerator INSTANCE = new MinionGeneralPillarGenerator();
     public static final String CATEGORY = "general";
@@ -126,7 +127,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
             chanProps.put("type", "deb");
         }
         else {
-            LOG.warn("Unknown repo type for channel " + chan.getLabel());
+            LOG.warn("Unknown repo type for channel {}", chan.getLabel());
         }
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {

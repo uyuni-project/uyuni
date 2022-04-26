@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -27,6 +29,10 @@ import com.redhat.rhn.taskomatic.task.repomd.DebReleaseWriter;
 import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.time.ZonedDateTime;
@@ -36,16 +42,19 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     private String prefix;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath().toString() + File.separator;
     }
 
+    @Test
     public void testDateFormat() {
         ZonedDateTime time = ZonedDateTime.parse("2018-11-22T12:35:40+01:00[Europe/Madrid]");
         assertEquals("Thu, 22 Nov 2018 11:35:40 UTC", DebReleaseWriter.RFC822_DATE_FORMAT.format(time));
     }
 
+    @Test
     public void testGenerateRelease() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setChannelArch(ChannelFactory.findArchByLabel("channel-ia64-deb"));
@@ -91,6 +100,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(new File(prefix));

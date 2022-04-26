@@ -25,7 +25,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 
 import java.util.Date;
@@ -43,7 +44,7 @@ import java.util.Set;
 public class ActionChainFactory extends HibernateFactory {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ActionChainFactory.class);
+    private static Logger log = LogManager.getLogger(ActionChainFactory.class);
 
     /** Singleton instance */
     private static ActionChainFactory singleton = new ActionChainFactory();
@@ -65,7 +66,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain or null if not found
      */
     public static ActionChain getActionChain(User requestor, String label) {
-        log.debug("Looking up Action Chain with label " + label);
+        log.debug("Looking up Action Chain with label {}", label);
         return (ActionChain) singleton.lookupObjectByNamedQuery(
                 "ActionChain.getActionChainByLabel",
                 new HashMap<String, Object>() { {
@@ -84,7 +85,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, Long id)
     throws ObjectNotFoundException {
-        log.debug("Looking up Action Chain with id " + id);
+        log.debug("Looking up Action Chain with id {}", id);
         if (id == null) {
             return null;
         }
@@ -142,7 +143,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the action chain
      */
     public static ActionChain createActionChain(String label, User user) {
-        log.debug("Creating Action Chain with label " + label);
+        log.debug("Creating Action Chain with label {}", label);
         ActionChain result = new ActionChain();
         result.setLabel(label);
         result.setUser(user);
@@ -191,8 +192,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Server server, int sortOrder) {
-        log.debug("Queuing action " + action + " to Action Chain " + actionChain +
-            " with sort order " + sortOrder);
+        log.debug("Queuing action {} to Action Chain {} with sort order {}", action, actionChain, sortOrder);
         ActionChainEntry result = new ActionChainEntry();
 
         result.setAction(action);
@@ -332,7 +332,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain the action chain to delete
      */
     public static void delete(ActionChain actionChain) {
-        log.debug("Deleting Action Chain " + actionChain);
+        log.debug("Deleting Action Chain {}", actionChain);
         singleton.removeObject(actionChain);
     }
 
@@ -345,7 +345,7 @@ public class ActionChainFactory extends HibernateFactory {
     public static void schedule(ActionChain actionChain, Date date)
         throws TaskomaticApiException {
 
-        log.debug("Scheduling Action Chain " +  actionChain + " to date " + date);
+        log.debug("Scheduling Action Chain {} to date {}", actionChain, date);
         Map<Server, Action> latest = new HashMap<>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
@@ -356,7 +356,7 @@ public class ActionChainFactory extends HibernateFactory {
                 Server server = entry.getServer();
                 Action action = entry.getAction();
 
-                log.debug("Scheduling Action " + action + " to server " + server);
+                log.debug("Scheduling Action {} to server {}", action, server);
                 action.setPrerequisite(latest.get(server));
                 action.setEarliestAction(dateInOrder);
                 ActionFactory.addServerToAction(server.getId(), action);
@@ -370,7 +370,7 @@ public class ActionChainFactory extends HibernateFactory {
 
         // Trigger Action Chain execution for Minions via Taskomatic
         taskomaticApi.scheduleActionChainExecution(actionChain);
-        log.debug("Action Chain " + actionChain + " scheduled to date " + date);
+        log.debug("Action Chain {} scheduled to date {}", actionChain, date);
     }
 
     /**

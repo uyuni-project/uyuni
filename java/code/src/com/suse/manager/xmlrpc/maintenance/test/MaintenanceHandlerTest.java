@@ -15,6 +15,8 @@
 package com.suse.manager.xmlrpc.maintenance.test;
 
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -30,6 +32,9 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -50,10 +55,12 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Test
     public void testMultiScheduleUpdate() throws Exception {
         File icalExM1 = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());
@@ -129,7 +136,7 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
                 assertContains(actual, "<string>Patch Update</string>");
             }
             else {
-                assertTrue("Not expected result set", false);
+                assertTrue(false, "Not expected result set");
             }
         }
     }

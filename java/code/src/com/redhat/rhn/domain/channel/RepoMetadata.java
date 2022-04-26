@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.channel;
 import com.redhat.rhn.domain.BaseDomainHelper;
 /**
  *
- * @version $Rev $
  *
  */
 public class RepoMetadata extends BaseDomainHelper {

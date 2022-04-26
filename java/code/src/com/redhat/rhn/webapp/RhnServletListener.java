@@ -22,8 +22,8 @@ import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -46,7 +46,7 @@ import javax.servlet.ServletContextListener;
  */
 public class RhnServletListener implements ServletContextListener {
 
-    private static Logger log = Logger.getLogger(RhnServletListener.class);
+    private static Logger log = LogManager.getLogger(RhnServletListener.class);
 
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
@@ -78,14 +78,14 @@ public class RhnServletListener implements ServletContextListener {
 
     private void logStart(String system) {
         if (log.isDebugEnabled()) {
-            log.debug(system + " started");
+            log.debug("{} started", system);
         }
         loggingStarted = true;
     }
 
     private void logStop(String system) {
         if (log.isDebugEnabled()) {
-            log.debug(system + "Starting ");
+            log.debug("{}Starting ", system);
         }
         loggingStarted = false;
     }
@@ -177,16 +177,11 @@ public class RhnServletListener implements ServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                log.info("deregistering jdbc driver: " + driver);
+                log.info("deregistering jdbc driver: {}", driver);
             }
             catch (SQLException e) {
-                log.warn("Error deregistering driver " + driver);
+                log.warn("Error deregistering driver {}", driver);
             }
         }
-
-
-        // shutdown the logger to avoid ThreadDeath exception during
-        // webapp reload.
-        LogManager.shutdown();
     }
 }

@@ -521,7 +521,7 @@ public class Token implements Identifiable {
     public void setBaseChannel(Channel channel) {
         if (channel != null && !channel.isBaseChannel()) {
             String msg = "The channel [%s] is NOT a base channel";
-            throw new IllegalArgumentException(String.format(msg, channel.toString()));
+            throw new IllegalArgumentException(String.format(msg, channel));
         }
         Channel existing = getBaseChannel();
         if (existing != channel) {

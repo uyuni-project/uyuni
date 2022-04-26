@@ -17,7 +17,8 @@ package com.redhat.rhn.manager.kickstart.cobbler.test;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.test.MockConnection;
 
 import java.util.List;
@@ -31,10 +32,10 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class MockXMLRPCInvoker implements XMLRPCInvoker {
 
-    private static Logger log = Logger.getLogger(MockXMLRPCInvoker.class);
+    private static Logger log = LogManager.getLogger(MockXMLRPCInvoker.class);
 
     public MockXMLRPCInvoker() {
-        log.debug("Constructor: " + TestUtils.randomString());
+        log.debug("Constructor: {}", TestUtils.randomString());
     }
 
     public Object invokeMethod(String procedureName, List args)

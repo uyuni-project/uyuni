@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchKickstartException;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,11 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Render a kickstart file to Anaconda
  *
- * @version $Rev $
  */
 public class RenderKickstartFileAction extends Action {
 
-    private static Logger log = Logger.getLogger(RenderKickstartFileAction.class);
+    private static Logger log = LogManager.getLogger(RenderKickstartFileAction.class);
 
     /**
      * {@inheritDoc}
@@ -52,7 +52,7 @@ public class RenderKickstartFileAction extends Action {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("ksurl = " + url + " param: " + request.getAttribute("ksurl"));
+            log.debug("ksurl = {} param: {}", url, request.getAttribute("ksurl"));
         }
         String fileContents = null;
         if (url != null) {
@@ -62,8 +62,8 @@ public class RenderKickstartFileAction extends Action {
                 String host = (String) params.get("host");
                 KickstartData ksdata = (KickstartData) params.get("ksdata");
                 if (log.isDebugEnabled()) {
-                    log.debug("execute.host: " + host);
-                    log.debug("execute.ksdata: " + ksdata);
+                    log.debug("execute.host: {}", host);
+                    log.debug("execute.ksdata: {}", ksdata);
                 }
                 if (host != null && ksdata != null) {
                     try {
@@ -81,14 +81,13 @@ public class RenderKickstartFileAction extends Action {
                     }
                 }
                 else {
-                    log.error("No kickstart filecontents found for: " + url +
-                            " params: " + params + " ksdata: " + ksdata);
+                    log.error("No kickstart filecontents found for: {} params: {} ksdata: {}", url, params, ksdata);
                     // send 404 to the user since we don't have a kickstart profile match
                     //response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     throw new NoSuchKickstartException();
                 }
                 if (log.isDebugEnabled()) {
-                    log.debug("fileContents: " + fileContents);
+                    log.debug("fileContents: {}", fileContents);
                 }
 
             }

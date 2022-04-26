@@ -26,6 +26,8 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,12 +41,14 @@ import java.util.Optional;
 public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         bootstrapper = new SSHMinionBootstrapper(saltServiceMock, saltServiceMock);
     }
 
     @Override
+    @Test
     public void testBootstrapSuccess() throws Exception {
         // override the bootstrapper
         bootstrapper = mockRegistrationBootstrapper(Optional.empty());
@@ -66,12 +70,14 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
         };
     }
 
+    @Test
     public void testIncompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testCompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
@@ -79,6 +85,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
         super.testCompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testCompatibleActivationKeysTunnel() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -34,6 +36,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +67,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         return snap;
     }
 
+    @Test
     public void testListSnapshots() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -79,6 +84,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public  void testListSnapshotPackages() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -95,6 +101,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
          assertContains(list, packN);
     }
 
+    @Test
     public void testDeleteSnapshot() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -108,6 +115,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testDeleteSnapshots() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);

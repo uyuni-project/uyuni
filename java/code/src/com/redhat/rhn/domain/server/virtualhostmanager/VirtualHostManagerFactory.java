@@ -27,7 +27,8 @@ import com.suse.manager.model.gatherer.GathererModule;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -96,7 +97,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(VirtualHostManagerFactory.class);
+            log = LogManager.getLogger(VirtualHostManagerFactory.class);
         }
         return log;
     }
@@ -202,7 +203,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param virtualHostManager to be deleted
      */
     public void delete(VirtualHostManager virtualHostManager) {
-        getLogger().debug("Deleting VirtualHostManager " + virtualHostManager);
+        getLogger().debug("Deleting VirtualHostManager {}", virtualHostManager);
         if (KUBERNETES.equalsIgnoreCase(virtualHostManager.getGathererModule())) {
             cleanupOnDeleteKuberentes(virtualHostManager);
         }
@@ -217,7 +218,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Files.delete(Paths.get(kubeconfig));
         }
         catch (IOException e) {
-            log.error("Could not remove Kubernetes config file: " + kubeconfig);
+            log.error("Could not remove Kubernetes config file: {}", kubeconfig);
         }
     }
 
@@ -234,7 +235,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Org org,
             String moduleName,
             Map<String, String> parameters) {
-        getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
+        getLogger().debug("Creating VirtualHostManager with label '{}'.", label);
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);
@@ -257,8 +258,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             VirtualHostManager virtualHostManager,
             String label,
             Map<String, String> parameters) {
-        getLogger().debug("Update VirtualHostManager with id '" +
-                virtualHostManager.getId() + "'.");
+        getLogger().debug("Update VirtualHostManager with id '{}'.", virtualHostManager.getId());
 
         virtualHostManager.setLabel(label);
         if (StringUtils.isNotBlank(parameters.get(CONFIG_PASS))) {

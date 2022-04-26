@@ -26,7 +26,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class Notification {
     public static final String SSM_COUNT = "ssm-count";
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(Notification.class);
+    private static final Logger LOG = LogManager.getLogger(Notification.class);
 
     private static final Object LOCK = new Object();
     private static final Gson GSON = new GsonBuilder().create();

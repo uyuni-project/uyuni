@@ -16,7 +16,8 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,7 +32,7 @@ import java.util.Date;
  */
 public class TaskoRun {
 
-    private static Logger log = Logger.getLogger(TaskoTask.class);
+    private static Logger log = LogManager.getLogger(TaskoTask.class);
 
     public static final String STATUS_READY_TO_RUN = "READY";
     public static final String STATUS_RUNNING = "RUNNING";
@@ -202,7 +203,7 @@ public class TaskoRun {
                 return tail;
             }
             catch (IOException e) {
-                log.error("Can't tail " + fileName + ": " + e.toString());
+                log.error("Can't tail {}: {}", fileName, e.toString());
                 // return "";
             }
         }
@@ -262,7 +263,7 @@ public class TaskoRun {
             out.close();
         }
         catch (IOException e) {
-            log.error("Unable to store log file to " + fileName);
+            log.error("Unable to store log file to {}", fileName);
         }
     }
 

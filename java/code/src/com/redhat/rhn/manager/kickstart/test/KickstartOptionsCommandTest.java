@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
@@ -23,6 +26,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
  */
@@ -31,6 +36,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
     private RhnHttpServletRequest request;
     private RhnMockHttpServletRequest mockRequest;
 
+    @Test
     public void testKickstartOptionsCommand() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 

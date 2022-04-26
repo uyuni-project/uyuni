@@ -20,6 +20,8 @@ import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ public class ChannelHandler extends BaseHandler {
      *      #struct_end()
      *  #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listSoftwareChannels(User loggedInUser) {
 
         List<Map<String, Object>> items = ChannelManager.allChannelsTree(loggedInUser);
@@ -102,6 +105,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listAllChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(loggedInUser, null);
         dr.elaborate();
@@ -123,6 +127,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listVendorChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager
                 .vendorChannelTree(loggedInUser, null);
@@ -149,6 +154,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listPopularChannels(User loggedInUser, Integer popularityCount) {
         DataResult<ChannelTreeNode> dr = ChannelManager.popularChannelTree(loggedInUser,
                 Long.valueOf(popularityCount), null);
@@ -169,6 +175,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listMyChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager.myChannelTree(loggedInUser, null);
         dr.elaborate();
@@ -189,6 +196,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listSharedChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager
                 .sharedChannelTree(loggedInUser, null);
@@ -213,6 +221,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listRetiredChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager
                 .retiredChannelTree(loggedInUser, null);
@@ -233,6 +242,7 @@ public class ChannelHandler extends BaseHandler {
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
+    @ReadOnly
     public Object[] listManageableChannels(User loggedInUser) {
         DataResult<ChannelTreeNode> dr = ChannelManager.ownedChannelsTree(loggedInUser);
         dr.elaborate();

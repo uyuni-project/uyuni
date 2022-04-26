@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -54,7 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PowerManagementAction extends RhnAction {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(PowerManagementAction.class);
+    private static Logger log = LogManager.getLogger(PowerManagementAction.class);
     public static final String TYPES = "types";
     public static final String POWER_TYPE = "powerType";
     public static final String POWER_ADDRESS = "powerAddress";
@@ -96,14 +97,14 @@ public class PowerManagementAction extends RhnAction {
                     "kickstart.powermanagement.jsp.remove.cobblerprofile")) {
                 error = command.removeSystemProfile();
                 if (error == null) {
-                    log.debug("Cobbler system profile removed for system " + sid);
+                    log.debug("Cobbler system profile removed for system {}", sid);
                     addMessage(request, "kickstart.powermanagement.removed.cobblerprofile");
                 }
             }
             else {
                 error = command.store();
                 if (error == null) {
-                    log.debug("Power management settings saved for system " + sid);
+                    log.debug("Power management settings saved for system {}", sid);
                     if (context.wasDispatched("kickstart.powermanagement.jsp.save_only")) {
                         addMessage(request, "kickstart.powermanagement.saved");
                     }
@@ -111,7 +112,7 @@ public class PowerManagementAction extends RhnAction {
                         error = new CobblerPowerCommand(user, server, Operation.PowerOn)
                             .store();
                         if (error == null) {
-                            log.debug("Power on succeded for system " + sid);
+                            log.debug("Power on succeded for system {}", sid);
                             addMessage(request, "kickstart.powermanagement.powered_on");
                         }
                     }
@@ -119,7 +120,7 @@ public class PowerManagementAction extends RhnAction {
                         error = new CobblerPowerCommand(user, server, Operation.PowerOff)
                             .store();
                         if (error == null) {
-                            log.debug("Power off succeded for system " + sid);
+                            log.debug("Power off succeded for system {}", sid);
                             addMessage(request, "kickstart.powermanagement.powered_off");
                         }
                     }
@@ -127,7 +128,7 @@ public class PowerManagementAction extends RhnAction {
                         error = new CobblerPowerCommand(user, server, Operation.Reboot).
                                 store();
                         if (error == null) {
-                            log.debug("Reboot succeded for system " + sid);
+                            log.debug("Reboot succeded for system {}", sid);
                             addMessage(request, "kickstart.powermanagement.rebooted");
                         }
                     }
@@ -139,8 +140,7 @@ public class PowerManagementAction extends RhnAction {
                             addMessage(request, "kickstart.powermanagement.saved");
                         }
                         catch (XmlRpcException e) {
-                            log.warn("Could not get power status from Cobbler for system " +
-                                server.getId());
+                            log.warn("Could not get power status from Cobbler for system {}", server.getId());
                             createErrorMessage(request,
                                     "kickstart.powermanagement.jsp.power_status_failed",
                                     null);

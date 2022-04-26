@@ -40,7 +40,8 @@ import org.apache.http.impl.client.ProxyAuthenticationStrategy;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -79,7 +80,7 @@ public class HttpClientAdapter {
     private static final int TO_MILLISECONDS = 1000;
 
     /** The log. */
-    private static Logger log = Logger.getLogger(HttpClientAdapter.class);
+    private static Logger log = LogManager.getLogger(HttpClientAdapter.class);
 
     /** The proxy host. */
     private HttpHost proxyHost;
@@ -197,7 +198,7 @@ public class HttpClientAdapter {
             if (proxyHost != null &&
                     (Boolean.TRUE.equals(ignoreNoProxy) || useProxyFor(requestUri))) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Using proxy: " + proxyHost);
+                    log.debug("Using proxy: {}", proxyHost);
                 }
                 return super.determineRoute(host, request, context);
             }
@@ -231,7 +232,7 @@ public class HttpClientAdapter {
     public HttpResponse executeRequest(HttpRequestBase request, boolean ignoreNoProxy)
             throws IOException {
         if (log.isDebugEnabled()) {
-            log.debug(request.getMethod() + " " + request.getURI());
+            log.debug("{} {}", request.getMethod(), request.getURI());
         }
         // Decide if a proxy should be used for this request
 
@@ -245,7 +246,7 @@ public class HttpClientAdapter {
         HttpResponse httpResponse = httpClient.execute(request, httpContxt);
 
         if (log.isDebugEnabled()) {
-            log.debug("Response code: " + httpResponse.getStatusLine().getStatusCode());
+            log.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
         }
         return httpResponse;
     }

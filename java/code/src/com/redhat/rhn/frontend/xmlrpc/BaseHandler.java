@@ -35,7 +35,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
+import com.suse.manager.api.ReadOnly;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.xml.sax.SAXException;
 
@@ -47,7 +52,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,9 +69,8 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
 public class BaseHandler implements XmlRpcInvocationHandler {
     public static final int VALID = 1;
 
-    private static Logger log = Logger.getLogger(BaseHandler.class);
+    private static Logger log = LogManager.getLogger(BaseHandler.class);
 
-    private static final String RO_REGEX = "^(list|get|is|find).*$";
     private static final String KEY_REGEX = "^[1-9][0-9]*x[a-f0-9]{64}$";
 
     protected boolean providesAuthentication() {
@@ -89,25 +92,21 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         Class<? extends BaseHandler> myClass = this.getClass();
         Method[] methods = Arrays.stream(myClass.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()))
+                .filter(BaseHandler::isMethodAvailable)
                 .toArray(Method[]::new);
 
         String[] byNamespace = methodCalled.split("\\.");
         String beanifiedMethod = StringUtil.beanify(byNamespace[byNamespace.length - 1]);
         WebSession session = null;
+        User user = null;
 
         if (params.size() > 0 && params.get(0) instanceof String &&
                 isSessionKey((String)params.get(0))) {
             if (!myClass.getName().endsWith("AuthHandler") &&
                 !myClass.getName().endsWith("SearchHandler")) {
                 session = SessionManager.loadSession((String)params.get(0));
-                params.set(0, getLoggedInUser((String)params.get(0)));
-                if (((User)params.get(0)).isReadOnly()) {
-                    if (!beanifiedMethod.matches(RO_REGEX) && !getReadonlyMethodNames()
-                            .stream().anyMatch(m -> m.equals(beanifiedMethod))) {
-                        throw new SecurityException("The " + beanifiedMethod +
-                                " API is not available to read-only API users");
-                    }
-                }
+                user = getLoggedInUser((String) params.get(0));
+                params.set(0, user);
             }
         }
 
@@ -137,6 +136,12 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             }
         }
 
+        if (user != null && user.isReadOnly()) {
+            if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {
+                throw new SecurityException("The " + beanifiedMethod + " API is not available to read-only API users");
+            }
+        }
+
         try {
             return foundMethod.invoke(this, converted);
         }
@@ -150,7 +155,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 // FaultExceptions are "bad request" type of exceptions
                 // Normally they should be thrown as response to the client but there's no need to log them as errors.
                 FaultException fault = (FaultException) cause;
-                log.debug("'" + methodCalled + "' returned: [" + fault.getErrorCode() + "] " + fault.getMessage());
+                log.debug("'{}' returned: [{}] {}", methodCalled, fault.getErrorCode(), fault.getMessage());
             }
             else {
                 log.error("Error calling method: ", e);
@@ -191,12 +196,12 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private Method findPerfectMethod(List params, List<Method> matchedMethods) {
         //now lets try to find one that matches parameters exactly
         for (Method currMethod : matchedMethods) {
-            log.debug("findPerfectMethod test:" + currMethod.toGenericString());
+            log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
                 if (log.isDebugEnabled()) {
-                    log.debug("  findPerfectMethod: compare: " + types[i].getCanonicalName() +
-                            " isAssignableFrom " + params.get(i).getClass().getCanonicalName());
+                    log.debug("  findPerfectMethod: compare: {} isAssignableFrom {}", types[i].getCanonicalName(),
+                            params.get(i).getClass().getCanonicalName());
                 }
                 //if we find a param that doesn't match, go to the next method
                 if (!types[i].isAssignableFrom(params.get(i).getClass())) {
@@ -474,19 +479,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         return server;
     }
 
-    /**
-     * Get the list of API method names available for read-only users.
-     * The method names which start with 'get', 'list', 'is', 'find' are available by
-     * default, even if they are not included in the returning list.
-     *
-     * @return A list of API method names available for read-only users.
-     */
-    protected List<String> getReadonlyMethodNames() {
-        return Collections.emptyList();
-    }
-
     private boolean isSessionKey(String string) {
         return string.matches(KEY_REGEX);
     }
 
+    /**
+     * Returns true if the method is available to be exposed in the XMLRPC interface
+     * @param method the method
+     * @return true if the method is available
+     */
+    private static boolean isMethodAvailable(Method method) {
+        return !(method.isAnnotationPresent(ApiIgnore.class) &&
+                Arrays.asList(method.getAnnotation(ApiIgnore.class).value()).contains(ApiType.XMLRPC));
+    }
 }

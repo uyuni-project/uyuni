@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.SetTag;
@@ -21,15 +25,17 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.mockobjects.helpers.TagTestHelper;
 
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * SetTagTest
- * @version $Rev: 1743 $
  */
 public class SetTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testCopyConstructor() {
         SetTag ct = new SetTag();
         ct.setHeader("header");
@@ -43,6 +49,7 @@ public class SetTagTest extends RhnBaseTestCase {
         assertEquals(ct, copy);
     }
 
+    @Test
     public void testEquals() {
         SetTag ct = new SetTag();
         ct.setHeader("header");
@@ -68,6 +75,7 @@ public class SetTagTest extends RhnBaseTestCase {
         assertTrue(ct1.equals(ct));
     }
 
+    @Test
     public void testSettersGetters() {
         SetTag ct = new SetTag();
         ct.setValue("42");
@@ -76,6 +84,7 @@ public class SetTagTest extends RhnBaseTestCase {
         assertNull(ct.getParent());
     }
 
+    @Test
     public void testTagContents() throws JspException {
         ListDisplayTag ldt = new ListDisplayTag();
         ldt.setSet(new RhnSetImpl());

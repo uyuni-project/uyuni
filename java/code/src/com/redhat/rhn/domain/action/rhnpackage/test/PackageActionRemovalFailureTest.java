@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -34,12 +37,14 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageActionRemovalFailureTest
  */
 public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
 
+    @Test
     public void testPackageActionRemovalFailure() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));

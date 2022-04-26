@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -31,10 +34,10 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * EditAddressSubmitActionSubmitTest
- * @version $Rev: 694 $
  */
 public class EditAddressActionTest extends RhnBaseTestCase {
 
@@ -110,6 +113,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         assertEquals(user.getAddress1(), newAddr1);
     }
 
+    @Test
     public void testPerformExecuteNewAddressFailure() throws Exception {
         setUpFailure();
         // Creating a user automatically creates a MARKETING address, so as long
@@ -124,6 +128,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testPerformExecuteNewAddressSuccess() throws Exception {
         setUpSuccess();
         // Creating a user automatically creates a MARKETING address, so as long

@@ -14,20 +14,24 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
  * SimpleSerializerTest
  */
-public class SerializerHelperTest extends TestCase {
+public class SerializerHelperTest  {
 
+    @Test
     public void testSerialize() throws Exception {
         SerializerHelper sl = new SerializerHelper(new XmlRpcSerializer());
         sl.add("foo", 12L);

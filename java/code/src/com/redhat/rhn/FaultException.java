@@ -22,7 +22,6 @@ import java.util.Optional;
 
 /**
  * Generic XML RPC fault
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
  */
 public class FaultException extends RuntimeException  {
 

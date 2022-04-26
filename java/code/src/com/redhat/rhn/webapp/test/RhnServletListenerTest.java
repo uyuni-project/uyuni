@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.webapp.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.webapp.RhnServletListener;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 /**
  * RhnServletListenerTest
  */
-public class RhnServletListenerTest extends TestCase {
+public class RhnServletListenerTest  {
 
+    @Test
     public void testListenerStartup() {
         RhnServletListener rl = new RhnServletListener();
         // Test startup

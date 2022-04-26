@@ -24,7 +24,6 @@ import java.util.Date;
 
 /**
  * PrivateChannelFamily - Class representation of the table rhnPrivateChannelFamily.
- * @version $Rev: 1 $
  */
 public class PrivateChannelFamily implements Serializable {
 

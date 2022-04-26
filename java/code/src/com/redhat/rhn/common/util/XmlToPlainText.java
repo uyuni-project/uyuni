@@ -15,7 +15,8 @@
 package com.redhat.rhn.common.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -30,7 +31,7 @@ import java.io.StringReader;
  * XmlToPlainText - Helper class that uses StringResources XML
  */
 class XmlToPlainText {
-    private static Logger log = Logger.getLogger(XmlToPlainText.class);
+    private static Logger log = LogManager.getLogger(XmlToPlainText.class);
 
     private static final String IGNORABLES = ".,;'\"?";
     private StringBuilder plainText;
@@ -52,7 +53,7 @@ class XmlToPlainText {
             return plainText.toString();
         }
         catch (JDOMException | IOException e) {
-            log.warn("Couldn't parse the snippet -> [" + snippet + "]", e);
+            log.warn("Couldn't parse the snippet -> [{}]", snippet, e);
         }
         return snippet;
     }

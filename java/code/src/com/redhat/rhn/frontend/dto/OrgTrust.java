@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @version $Rev: 101893 $
  */
 public class OrgTrust extends BaseDto {
 

@@ -44,8 +44,8 @@ import com.suse.utils.Exceptions;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
 public class ProductSyncManager {
 
     /** The logger. */
-    private static final Logger LOGGER = Logger.getLogger(ProductSyncManager.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProductSyncManager.class);
     private static final LocalizationService L10NSERVICE = LocalizationService.getInstance();
 
     /**
@@ -200,13 +200,13 @@ public class ProductSyncManager {
             // Add the channels first
             ContentSyncManager csm = new ContentSyncManager();
             for (Channel channel : product.getMandatoryChannels()) {
-                LogMF.debug(LOGGER, "Add channel: {}", channel.getLabel());
+                LOGGER.debug("Add channel: {}", channel.getLabel());
                 csm.addChannel(channel.getLabel(), null);
                 channelsToSync.add(channel.getLabel());
             }
 
             for (Channel iuc : product.getInstallerUpdateChannels()) {
-                LogMF.debug(LOGGER, "Add installer update channel: {}", iuc.getLabel());
+                LOGGER.debug("Add installer update channel: {}", iuc.getLabel());
                 csm.addChannel(iuc.getLabel(), null);
                 channelsToSync.add(iuc.getLabel());
             }
@@ -244,19 +244,19 @@ public class ProductSyncManager {
             }
 
             if (channelStatus.isNotMirrored()) {
-                LOGGER.debug("Channel not mirrored: " + c.getLabel());
+                LOGGER.debug("Channel not mirrored: {}", c.getLabel());
                 notMirroredCounter++;
             }
             else if (channelStatus.isFinished()) {
-                LOGGER.debug("Channel finished: " + c.getLabel());
+                LOGGER.debug("Channel finished: {}", c.getLabel());
                 finishedCounter++;
             }
             else if (channelStatus.isFailed()) {
-                LOGGER.debug("Channel failed: " + c.getLabel());
+                LOGGER.debug("Channel failed: {}", c.getLabel());
                 failedCounter++;
             }
             else {
-                LOGGER.debug("Channel in progress: " + c.getLabel());
+                LOGGER.debug("Channel in progress: {}", c.getLabel());
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
@@ -338,8 +338,7 @@ public class ProductSyncManager {
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Repo sync run found for channel " + c.getLabel() +
-                            " (" + runStatus + ")");
+                    LOGGER.debug("Repo sync run found for channel {} ({})", c.getLabel(), runStatus);
                 }
 
                 String prefix = "setupwizard.syncstatus.";

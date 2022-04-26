@@ -15,6 +15,8 @@
 
 package com.suse.manager.utils;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
@@ -88,6 +90,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -103,6 +106,7 @@ import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.DirectoryResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.FileResult;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult.SymLinkResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
@@ -135,13 +139,15 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -181,7 +187,7 @@ public class SaltUtils {
         "pkg.group_install", "pkg.install", "pkg.purge", "pkg.remove", "pkg.upgrade"
     );
 
-    private static final Logger LOG = Logger.getLogger(SaltUtils.class);
+    private static final Logger LOG = LogManager.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
@@ -264,7 +270,7 @@ public class SaltUtils {
         final PackageChangeOutcome outcome;
 
         if (function == null) {
-            LOG.error("NULL function for: " + server.getName() + callResult.toString());
+            LOG.error("NULL function for: {}{}", server.getName(), callResult.toString());
             throw new BadParameterException("function must not be NULL");
         }
         if (PKG_STATE_MODULES.contains(function)) {
@@ -302,7 +308,7 @@ public class SaltUtils {
             return Optional.of(module + "." + function);
         }
         else {
-            LOG.error("Could not parse Salt function call: " + value);
+            LOG.error("Could not parse Salt function call: {}", value);
             return Optional.empty();
         }
     }
@@ -930,9 +936,7 @@ public class SaltUtils {
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {
-                                        LOG.error(
-                                                "Error processing SCAP results file " +
-                                                        resultsFile.toString(), e);
+                                        LOG.error("Error processing SCAP results file {}", resultsFile.toString(), e);
                                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
@@ -961,6 +965,31 @@ public class SaltUtils {
         }
     }
 
+    private void handleImageBuildLog(ImageInfo info, Action action) {
+        MinionServer buildHost = info.getBuildServer();
+        if (buildHost == null) {
+            return;
+        }
+
+        Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
+                            "/files/var/lib/Kiwi/build" + action.getId() + "/build.log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/build-" + action.getId() + ".log");
+
+        try {
+            // copy the log to a directory readable by tomcat
+            saltApi.copyFile(srcPath, tmpPath)
+                        .orElseThrow(() -> new RuntimeException("Can't copy the build log file"));
+
+            String log = Files.readString(tmpPath);
+            info.setBuildLog(log);
+            saltApi.removeFile(srcPath);
+            saltApi.removeFile(tmpPath);
+        }
+        catch (Exception e) {
+            LOG.info("No build log for action {} {}", action.getId(), e);
+        }
+    }
+
     private void handleImageBuildData(ServerAction serverAction, JsonElement jsonResult) {
         Action action = serverAction.getParentAction();
         ImageBuildAction ba = (ImageBuildAction) action;
@@ -970,66 +999,101 @@ public class SaltUtils {
 
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
         if (infoOpt.isEmpty()) {
-            LOG.error("ImageInfo not found while performing: "  +
-                    action.getName() + " in handleImageBuildData");
+            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
             return;
         }
         ImageInfo info = infoOpt.get();
 
+        handleImageBuildLog(info, action);
+
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {
-                LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageBuildData");
+                LOG.error("Details not found while performing: {} in handleImageBuildData", action.getName());
                 return;
             }
             Long imageProfileId = details.getImageProfileId();
             if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.warn("Image Profile ID not found while performing: "  +
-                        action.getName() + " in handleImageBuildData");
+                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", action.getName());
                 return;
             }
 
+            boolean isKiwiProfile = false;
             Optional<ImageProfile> profileOpt = ImageProfileFactory.lookupById(imageProfileId);
-            profileOpt.ifPresentOrElse(p -> {
-                p.asKiwiProfile().ifPresent(kiwiProfile -> {
-                    serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                        // Update the image info and download the built Kiwi image to SUSE Manager server
-                        OSImageBuildImageInfoResult buildInfo =
+            if (profileOpt.isPresent()) {
+                isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
+            }
+            else {
+                LOG.warn("Could not find any profile for profile ID {}", imageProfileId);
+            }
+
+            if (isKiwiProfile) {
+                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                    // Update the image info and download the built Kiwi image to SUSE Manager server
+                    OSImageBuildImageInfoResult buildInfo =
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
-                        info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getBundles().get(0).getChecksum()));
-                        info.setName(buildInfo.getImage().getName());
-                        info.setVersion(buildInfo.getImage().getVersion());
 
-                        buildInfo.getBundles().stream().forEach(bundle -> {
-                            String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
-                            MgrUtilRunner.ExecResult collectResult = systemQuery
-                                .collectKiwiImage(minionServer, bundle.getFilepath(), targetPath)
+                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    info.setName(buildInfo.getImage().getName());
+                    info.setVersion(buildInfo.getImage().getVersion());
+
+                    ImageInfoFactory.updateRevision(info);
+
+                    List<List<Object>> files = new ArrayList<>();
+                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+                    if (!buildInfo.getBundles().isEmpty()) {
+                        buildInfo.getBundles().forEach(bundle -> {
+                            files.add(List.of(bundle.getFilepath(),
+                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum()));
+                        });
+                    }
+                    else {
+                        files.add(List.of(buildInfo.getImage().getFilepath(),
+                                imageDir + buildInfo.getImage().getFilename(), "image",
+                                buildInfo.getImage().getChecksum()));
+                        buildInfo.getBootImage().ifPresent(f -> {
+                            files.add(List.of(f.getKernel().getFilepath(),
+                                    imageDir + f.getKernel().getFilename(), "kernel",
+                                    f.getKernel().getChecksum()));
+                            files.add(List.of(f.getInitrd().getFilepath(),
+                                    imageDir + f.getInitrd().getFilename(), "initrd",
+                                    f.getInitrd().getChecksum()));
+                        });
+                    }
+                    files.stream().forEach(file -> {
+                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
+                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+                        MgrUtilRunner.ExecResult collectResult = systemQuery
+                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
                                 .orElseThrow(() -> new RuntimeException("Failed to download image."));
 
-                            if (collectResult.getReturnCode() != 0) {
-                                 serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                 serverAction.setResultMsg(StringUtils
+                        if (collectResult.getReturnCode() != 0) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(StringUtils
                                     .left(printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
-                                        1024));
-                            }
-                            else {
-                                ImageFile bundleFile = new ImageFile();
-                                bundleFile.setFile(bundle.getFilename());
-                                bundleFile.setType("bundle");
-                                bundleFile.setImageInfo(info);
-                                info.getImageFiles().add(bundleFile);
-                            }
-                        });
+                                            1024));
+                        }
+                        else {
+                            ImageFile imagefile = new ImageFile();
+                            imagefile.setFile((String)file.get(1));
+                            imagefile.setType((String)file.get(2));
+                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
+                                    (ImageChecksum.Checksum)file.get(3)));
+                            imagefile.setImageInfo(info);
+                            info.getImageFiles().add(imagefile);
+                        }
                     });
                 });
-            }, () -> LOG.warn("Could not find any profile for profile ID " + imageProfileId));
+            }
+            else {
+                ImageInfoFactory.updateRevision(info);
+                if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
+                    ImageInfoFactory.obsoletePreviousRevisions(info);
+                }
+            }
         }
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             // both building and uploading results succeeded
-            ImageInfoFactory.updateRevision(info);
-            if (info.getImageType().equals(ImageProfile.TYPE_DOCKERFILE)) {
-                ImageInfoFactory.obsoletePreviousRevisions(info);
-            }
             info.setBuilt(true);
 
             try {
@@ -1048,12 +1112,12 @@ public class SaltUtils {
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
         if (details == null) {
-            LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageInspectData");
+            LOG.warn("Details not found while performing: {} in handleImageInspectData", action.getName());
             return;
         }
         Long imageStoreId = details.getImageStoreId();
         if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
+            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", action.getName());
             return;
         }
         ImageInfoFactory
@@ -1216,10 +1280,10 @@ public class SaltUtils {
                 packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
                         Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                         Optional.of(pkg.getArch()), imageInfo));
-                if ("pxe".equals(ret.getImage().getType())) {
-                    // assuming there is only one file in the bundle
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundles().get(0),
-                            ret.getBootImage(), imageInfo);
+                SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
+                        ret.getBootImage(), imageInfo);
+                if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
+                    SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
                 }
             }
             else {
@@ -1353,13 +1417,13 @@ public class SaltUtils {
             if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
                 server.setRelease(grains.getValueAsString("osrelease"));
             }
+            SystemManager.updateMgrServerInfo(server, grains);
         }
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Package profile updated for minion: " + server.getMinionId() +
-                    " (" + duration + " seconds)");
+            LOG.debug("Package profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
 
         // Trigger update of errata cache for this server
@@ -1596,8 +1660,7 @@ public class SaltUtils {
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Hardware profile updated for minion: " + server.getMinionId() +
-                    " (" + duration + " seconds)");
+            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
     }
 
@@ -1692,8 +1755,7 @@ public class SaltUtils {
                         rockyReleaseFile);
 
         if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not determine RHEL product type for minion: " +
-                    server.getMinionId());
+            LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
             return Collections.emptySet();
         }
 
@@ -1735,8 +1797,7 @@ public class SaltUtils {
                          rockyReleaseFile);
 
          if (!rhelProductInfo.isPresent()) {
-             LOG.warn("Could not determine RHEL product type for image: " +
-                     image.getName() + " " + image.getVersion());
+             LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
              return Collections.emptySet();
          }
 
@@ -1799,8 +1860,8 @@ public class SaltUtils {
             }
             catch (TaskomaticApiException e) {
                 LOG.error("Could not schedule channels state application");
-                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
-                          minion.getMinionId());
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion {}",
+                        minion.getMinionId());
             }
 
         }
@@ -1837,7 +1898,7 @@ public class SaltUtils {
     public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
-        LOG.debug("Set last boot for " + minion.getMinionId() + " to " + bootTime);
+        LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
@@ -1856,7 +1917,7 @@ public class SaltUtils {
             }
         }
         if (actionsChanged > 0) {
-            LOG.debug(actionsChanged + " reboot actions set to completed");
+            LOG.debug("{} reboot actions set to completed", actionsChanged);
         }
     }
 
@@ -1881,13 +1942,9 @@ public class SaltUtils {
                 }
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("shouldCleanupAction" +
-                        " Server:" + sa.getServer().getId() +
-                        " Action: " + sa.getParentAction().getId() +
-                        " BootTime: " + bootTime +
-                        " PickupTime: " + sa.getPickupTime() +
-                        " EarliestAction " + action.getEarliestAction() +
-                        " Result: " + result);
+                LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {}" +
+                        " Result: {}", sa.getServer().getId(), sa.getParentAction().getId(), bootTime,
+                        sa.getPickupTime(), action.getEarliestAction(), result);
             }
         }
         return result;

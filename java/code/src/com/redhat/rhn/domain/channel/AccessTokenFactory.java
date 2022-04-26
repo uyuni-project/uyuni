@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.jose4j.lang.JoseException;
 
@@ -45,7 +46,7 @@ import java.util.stream.Stream;
 public class AccessTokenFactory extends HibernateFactory {
 
     private static AccessTokenFactory singleton = new AccessTokenFactory();
-    private static Logger log = Logger.getLogger(AccessToken.class);
+    private static Logger log = LogManager.getLogger(AccessToken.class);
 
     /**
      * Queries an AccessToken by id.
@@ -189,7 +190,7 @@ public class AccessTokenFactory extends HibernateFactory {
                 return regenerate(token);
             }
             catch (JoseException e) {
-                log.error("Could not regenerate token with id: " + token.getId(), e);
+                log.error("Could not regenerate token with id: {}", token.getId(), e);
                 e.printStackTrace();
                 return token;
             }
@@ -258,7 +259,7 @@ public class AccessTokenFactory extends HibernateFactory {
             return Optional.of(newToken);
         }
         catch (JoseException e) {
-            log.error("Could not generate token for minion: " + minion.getId(), e);
+            log.error("Could not generate token for minion: {}", minion.getId(), e);
             e.printStackTrace();
             return Optional.empty();
         }

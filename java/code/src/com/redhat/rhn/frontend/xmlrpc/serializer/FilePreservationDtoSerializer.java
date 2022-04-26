@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.FilePreservationDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * FilePreservationDtoSerializer
@@ -34,26 +31,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *      #prop("dateTime.iso8601", "last_modified")
  *   #struct_end()
  */
-public class FilePreservationDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class FilePreservationDtoSerializer extends ApiResponseSerializer<FilePreservationDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<FilePreservationDto> getSupportedClass() {
         return FilePreservationDto.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        FilePreservationDto fs = (FilePreservationDto)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("name", fs.getLabel());
-        helper.add("id", fs.getId());
-        helper.add("created", fs.getCreated());
-        helper.add("last_modified", fs.getModified());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(FilePreservationDto src) {
+        return new SerializationBuilder()
+                .add("name", src.getLabel())
+                .add("id", src.getId())
+                .add("created", src.getCreated())
+                .add("last_modified", src.getModified())
+                .build();
     }
 }

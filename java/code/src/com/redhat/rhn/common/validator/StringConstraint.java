@@ -16,7 +16,8 @@ package com.redhat.rhn.common.validator;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
@@ -27,11 +28,10 @@ import java.util.regex.Pattern;
  *  The <code>Constraint</code> class represents a single data constraint,
  *    including the data type, allowed values, and required ranges.
  * </p>
- * @version $Rev: 94458 $
  */
 public class StringConstraint extends RequiredIfConstraint {
 
-    protected static final Logger LOG = Logger.getLogger(StringConstraint.class);
+    protected static final Logger LOG = LogManager.getLogger(StringConstraint.class);
 
     /** Min length of the string */
     protected Double minLength;
@@ -59,7 +59,7 @@ public class StringConstraint extends RequiredIfConstraint {
             return str.getBytes("UTF8").length <= length.intValue();
         }
         catch (UnsupportedEncodingException use) {
-            LOG.warn("Couldn;t convert to UTF8-> [" + str + "]");
+            LOG.warn("Couldn;t convert to UTF8-> [{}]", str);
             return str.length() < length.intValue();
         }
     }
@@ -69,7 +69,7 @@ public class StringConstraint extends RequiredIfConstraint {
             return str.getBytes("UTF8").length >= length.intValue();
         }
         catch (UnsupportedEncodingException use) {
-            LOG.warn("Couldn;t convert to UTF8-> [" + str + "]");
+            LOG.warn("Couldn;t convert to UTF8-> [{}]", str);
             return str.length() >= length.intValue();
         }
     }
@@ -89,8 +89,7 @@ public class StringConstraint extends RequiredIfConstraint {
         if (hasMaxLength()) {
             LOG.debug("HasMaxlength ..");
             if (!(lengthLessThan(strValue, getMaxLength()))) {
-                LOG.debug("Above max length: " + strValue.length() + " data: " + strValue +
-                        "max length: " + getMaxLength());
+                LOG.debug("Above max length: {} data: {}max length: {}", strValue.length(), strValue, getMaxLength());
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
                 args[1] = getMaxLength();
@@ -106,7 +105,7 @@ public class StringConstraint extends RequiredIfConstraint {
                 return new ValidatorError("errors.required", args);
             }
             if (!(lengthGreaterThan(strValue, getMinLength()))) {
-                LOG.debug("Below min length: " + strValue.length() + " data: " + strValue);
+                LOG.debug("Below min length: {} data: {}", strValue.length(), strValue);
                 Object[] args = new Object[2];
                 args[0] = localizedIdentifier;
                 args[1] = getMinLength();
@@ -119,7 +118,7 @@ public class StringConstraint extends RequiredIfConstraint {
             Matcher matcher = pattern.matcher(strValue);
 
             if (!matcher.matches()) {
-                LOG.debug("Does not match pattern " + regEx + " data: " + strValue);
+                LOG.debug("Does not match pattern {} data: {}", regEx, strValue);
 
                 return new ValidatorError("errors.invalid", localizedIdentifier);
             }

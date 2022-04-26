@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -31,6 +36,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +48,7 @@ import java.util.Set;
  */
 public class ServerGroupTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquals() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testorg");
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
@@ -90,6 +97,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
         return sg;
     }
 
+    @Test
     public void testGetServerGroupTypeFeatures() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertTrue(org1.getEntitledServerGroups().size() > 0);
@@ -103,6 +111,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
         assertTrue(serverGroup.getGroupType().getFeatures().size() > 0);
     }
 
+    @Test
     public void testServerGroupPillar() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         ServerGroup group = createTestServerGroup(org1, ServerConstants.getServerGroupTypeSaltEntitled());

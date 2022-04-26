@@ -14,9 +14,13 @@
  */
 package com.redhat.rhn.domain.rpm.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SourceRpmTest
@@ -28,6 +32,7 @@ public class SourceRpmTest extends RhnBaseTestCase {
      * commit them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testSourceRpm() {
         SourceRpm srpm = createTestSourceRpm();
         assertNotNull(srpm);

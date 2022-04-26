@@ -18,7 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ProfileFactory extends HibernateFactory {
 
     private static ProfileFactory singleton = new ProfileFactory();
 
-    private static Logger log = Logger.getLogger(ProfileFactory.class);
+    private static Logger log = LogManager.getLogger(ProfileFactory.class);
     /** The constant representing normal profile type. */
     public static final ProfileType TYPE_NORMAL = lookupByLabel("normal");
     /** The constant representing sync profile type. */

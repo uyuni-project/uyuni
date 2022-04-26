@@ -14,7 +14,7 @@
     1. [Registration and channels](#b9)
     1. [Events](#b10)
     1. [Salt](#b11)
-    1. [XML-RPC](#b12)
+    1. [XML-RPC or HTTP API](#b12)
     1. [Virtualization](b#13)
 1. [Writing new tests](#c)
     1. [Running remote commands](#c1)
@@ -531,7 +531,7 @@ Note that the text area variant handles the new lines characters while the other
   When I register "ceos_minion" as traditional client
 ```
 
-* Test registration (with XML-RPC)
+* Test registration (with API)
 
 ```cucumber
   Then "ssh_minion" should not be registered
@@ -640,23 +640,16 @@ Note that the text area variant handles the new lines characters while the other
 
 <a name="b12" />
 
-#### XML-RPC
+#### XML-RPC or HTTP API
 
-* Log in and out some XML-RPC namespace on the server
+* Log into and out from the API on the server
 
 ```cucumber
-  Given I am logged in via XML-RPC system as user "admin" and password "admin"
-  When I logout from XML-RPC system namespace
-  Given I am logged in via XML-RPC cve audit as user "admin" and password "admin"
-  When I logout from XML-RPC cve audit namespace
-  Given I am logged in via XML-RPC activationkey as user "admin" and password "admin"
-  Given I am logged in via XML-RPC channel as user "admin" and password "admin"
-  Given I am logged in via XML-RPC user as user "admin" and password "admin"
-  When I logout from XML-RPC user namespace
-  Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+  Given I am logged in API as user "admin" and password "admin"
+  When I logout from API
 ```
 
-* Calling various XML-RPC methods
+* Calling various API methods
 
 For example:
 
@@ -814,4 +807,6 @@ Following code is expected to be a part of function used as step definition for 
 ```
 
 NOTE: This solution was tested and worked properly, but there was no time gain in comparison with old solution using capybara steps.
+
+TIP: We still can play with timeout value in our test environment, if necessary. See default value [here](https://github.com/uyuni-project/uyuni/blob/master/web/conf/rhn_web.conf#L29-L31)
 

@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -33,6 +38,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +62,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -77,6 +85,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         } });
     }
 
+    @Test
     public void testCreateAndLookupOrgAction() {
         var actionId = handler.create(user, testActionProps);
 
@@ -87,6 +96,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         assertEquals(RecurringAction.Type.ORG, createdAction.getType());
     }
 
+    @Test
     public void testCreateAndLookupMinionAction() throws Exception {
         var minionId = MinionServerFactoryTest.createTestMinionServer(user).getId().intValue();
         var props = new HashMap<>(testActionProps);
@@ -101,6 +111,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         assertEquals(RecurringAction.Type.MINION, createdAction.getType());
     }
 
+    @Test
     public void testCreateActionInvalidData() {
         try {
             handler.create(user, Map.of());
@@ -111,6 +122,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateExistingAction() {
         handler.create(user, testActionProps);
         try {
@@ -122,6 +134,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateActionWithNonExistingEntity() {
         var props = new HashMap<>(testActionProps);
         props.put("entity_id", -12345);
@@ -134,6 +147,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateNonAccessibleEntity() {
         var org = OrgFactory.createOrg();
         org.setName("test org: " + TestUtils.randomString());
@@ -155,6 +169,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateAction() {
         int actionId = handler.create(user, testActionProps);
 
@@ -170,6 +185,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         assertFalse(updatedAction.isActive());
     }
 
+    @Test
     public void testUpdateActionSetExistingName() {
         handler.create(user, testActionProps);
         var otherActionProps = new HashMap<>(testActionProps);
@@ -189,6 +205,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateActionSetInvalidCronExpr() {
         var actionId = handler.create(user, testActionProps);
 
@@ -206,6 +223,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateNonexistingAction() {
         var updateProps = Map.<String, Object>of(
                 "id", -123456,
@@ -220,6 +238,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateActionTaskomaticDown() throws Exception {
         // mock taskomatic down
         TaskomaticApi taskomaticMock2 = context().mock(TaskomaticApi.class, "taskomaticApi2");
@@ -247,6 +266,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDeleteAction() {
         int actionId = handler.create(user, testActionProps);
 
@@ -255,6 +275,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         assertTrue(RecurringActionFactory.lookupById(actionId).isEmpty());
     }
 
+    @Test
     public void testDeleteNonexistingAction() {
         try {
             handler.delete(user, -12345);

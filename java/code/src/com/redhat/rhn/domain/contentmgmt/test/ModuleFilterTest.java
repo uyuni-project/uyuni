@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
@@ -26,17 +28,22 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class ModuleFilterTest extends BaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }
 
+    @Test
     public void testGetModule() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule");
         ModuleFilter filter =

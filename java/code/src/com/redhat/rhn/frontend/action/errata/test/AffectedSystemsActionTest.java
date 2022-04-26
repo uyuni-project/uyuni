@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -26,6 +29,7 @@ import com.redhat.rhn.frontend.action.errata.AffectedSystemsAction;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -35,19 +39,20 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * AffectedSystemsActionTest
  */
 public class AffectedSystemsActionTest extends MockObjectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testApply() throws Exception {
         AffectedSystemsAction action = new AffectedSystemsAction();
         final ActionForward forward = new ActionForward("test", "path", true);
@@ -72,8 +77,6 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         assertTrue(sameForward.getPath().startsWith("path?"));
         assertTrue(sameForward.getPath().contains("eid=12345"));
         assertTrue(sameForward.getPath().contains("lower=10"));
-
-        verify();
 
         // With systems selected
         context().checking(new Expectations() { {
@@ -101,6 +104,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         r.setupAddParameter("lower", "10");
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         AffectedSystemsAction action = new AffectedSystemsAction();
         ActionHelper ah = new ActionHelper();

@@ -20,7 +20,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.Map;
  * FailRescheduleStrategy - fallback which always fail to reschedule the action.
  */
 public class FailRescheduleStrategy implements RescheduleStrategy {
-    private static final Logger LOG = Logger.getLogger(CancelRescheduleStrategy.class);
+    private static final Logger LOG = LogManager.getLogger(CancelRescheduleStrategy.class);
 
     @Override
     public RescheduleResult reschedule(User user, Map<Action, List<Server>> actionsServers,

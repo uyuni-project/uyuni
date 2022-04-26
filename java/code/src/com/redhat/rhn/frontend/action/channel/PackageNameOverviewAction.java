@@ -22,7 +22,8 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * PackageNameOverviewAction
  */
 public class PackageNameOverviewAction extends RhnAction {
-    private static Logger log = Logger.getLogger(PackageNameOverviewAction.class);
+    private static Logger log = LogManager.getLogger(PackageNameOverviewAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -67,7 +68,7 @@ public class PackageNameOverviewAction extends RhnAction {
                         pkgName, filterChannelId);
             }
             catch (NumberFormatException e) {
-                log.warn("Exception caught, unable to parse channel ID: " + channelFilter);
+                log.warn("Exception caught, unable to parse channel ID: {}", channelFilter);
                 dr = Collections.EMPTY_LIST;
             }
         }

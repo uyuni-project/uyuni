@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ import java.util.function.Supplier;
 public class FileLocks {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(FileLocks.class);
+    private static Logger log = LogManager.getLogger(FileLocks.class);
 
     /**
      * Lock for the scc refresh process
@@ -95,7 +96,7 @@ public class FileLocks {
         ) {
             if (fileLock != null) {
                 try {
-                    log.info("File lock " + filePath + " acquired.");
+                    log.info("File lock {} acquired.", filePath);
                     try {
                         // Set the user to tomcat so both taskomatic (root) and tomcat (tomcat) can use it.
                         FileSystem fileSystem = FileSystems.getDefault();
@@ -116,12 +117,12 @@ public class FileLocks {
                 }
             }
             else {
-                log.warn("File lock " + filePath + " already in use.");
+                log.warn("File lock {} already in use.", filePath);
                 throw new OverlappingFileLockException();
             }
         }
         catch (IOException e) {
-            log.error("File lock " + filePath + " error", e);
+            log.error("File lock {} error", filePath, e);
             throw new RuntimeException(e);
         }
     }

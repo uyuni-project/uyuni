@@ -38,7 +38,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -65,7 +66,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TargetSystemsConfirmAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 
-    private static final Logger LOG = Logger.getLogger(TargetSystemsConfirmAction.class);
+    private static final Logger LOG = LogManager.getLogger(TargetSystemsConfirmAction.class);
 
     /**
      *
@@ -108,7 +109,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
                 scheduleSubscribeChannels(form, user, servers, chan, request);
             }
             catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule subscribe to channel " + chan.getName(), e);
+                LOG.error("Could not schedule subscribe to channel {}", chan.getName(), e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError("taskscheduler.down", errors);
                 getStrutsDelegate().saveMessages(request, errors);

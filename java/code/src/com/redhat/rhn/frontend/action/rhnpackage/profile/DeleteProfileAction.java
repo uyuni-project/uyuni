@@ -22,7 +22,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.profile.ProfileManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -44,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteProfileAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(DeleteProfileAction.class);
+    private static Logger log = LogManager.getLogger(DeleteProfileAction.class);
 
     /**
      * {@inheritDoc}
@@ -82,7 +83,7 @@ public class DeleteProfileAction extends RhnAction {
             forward = strutsDelegate.forwardParams(mapping.findForward("deleted"),
                     params);
             if (log.isDebugEnabled() && (forward != null)) {
-                log.debug("Where are we going [" + forward.toString() + "]");
+                log.debug("Where are we going [{}]", forward.toString());
             }
         }
         return forward;

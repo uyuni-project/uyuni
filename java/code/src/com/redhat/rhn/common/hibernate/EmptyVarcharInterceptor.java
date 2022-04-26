@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
@@ -32,7 +32,7 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
 
     private static final long serialVersionUID = 5351605245345217308L;
 
-    private static final Logger LOG = Logger.getLogger(EmptyVarcharInterceptor.class);
+    private static final Logger LOG = LogManager.getLogger(EmptyVarcharInterceptor.class);
 
     private boolean autoConvert;
 
@@ -61,9 +61,9 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
         for (int i = 0; i < types.length; i++) {
             // type is string (VARCHAR) and state is empty string
             if ((types[i] instanceof StringType) && "".equals(state[i])) {
-                if (LOG.isEnabledFor(Level.DEBUG)) {
-                    LOG.debug("Object " + entity.getClass().getCanonicalName() +
-                            " is setting empty string " + propertyNames[i]);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Object {} is setting empty string {}", entity.getClass().getCanonicalName(),
+                            propertyNames[i]);
                 }
                 if (autoConvert) {
                     state[i] = null;

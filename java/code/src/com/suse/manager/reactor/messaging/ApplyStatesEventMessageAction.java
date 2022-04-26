@@ -26,10 +26,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Applies states to a server
@@ -37,7 +39,7 @@ import java.util.Date;
 public class ApplyStatesEventMessageAction implements MessageAction {
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
-    private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(ApplyStatesEventMessageAction.class);
 
     /**
      * Default constructor.
@@ -52,8 +54,7 @@ public class ApplyStatesEventMessageAction implements MessageAction {
 
         // Apply states only for salt systems
         if (server != null && server.hasEntitlement(EntitlementManager.SALT)) {
-            LOG.debug("Schedule state.apply for " + server.getName() + ": " +
-                    applyStatesEvent.getStateNames());
+            LOG.debug("Schedule state.apply for {}: {}", server.getName(), applyStatesEvent.getStateNames());
 
             // The scheduling user can be null
             User scheduler = event.getUserId() != null ?
@@ -65,13 +66,13 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         scheduler,
                         Arrays.asList(server.getId()),
                         applyStatesEvent.getStateNames(),
-                        new Date());
+                        applyStatesEvent.getPillar(),
+                        new Date(), Optional.of(false));
                 TASKOMATIC_API.scheduleActionExecution(action,
                         applyStatesEvent.isForcePackageListRefresh());
             }
             catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule state application for system: " +
-                        server.getId());
+                LOG.error("Could not schedule state application for system: {}", server.getId());
                 throw new RuntimeException(e);
             }
         }

@@ -19,7 +19,6 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 /**
  * Kickstartable Tree DTO
  *
- * @version $Rev $
  */
 public class KickstartableTreeDto extends BaseDto {
 

@@ -14,16 +14,18 @@
  */
 package com.redhat.rhn.domain.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.Label;
 import com.redhat.rhn.testing.TestUtils;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * LabelTest
  */
-public class LabelTest extends TestCase {
+public class LabelTest  {
 
     class BeerLabel extends Label {
         private String beerLabel;
@@ -44,15 +46,9 @@ public class LabelTest extends TestCase {
     }
 
     /**
-     * @param name the name
-     */
-    public LabelTest(String name) {
-        super(name);
-    }
-
-    /**
      * Test method for {@link com.redhat.rhn.domain.Label#equals(java.lang.Object)}.
      */
+    @Test
     public void testEqualsObject() {
         BeerLabel negroModelo = new BeerLabel("Negro Model",
                 "Negro Modelo....what beer was meant to be");

@@ -27,7 +27,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * SSM Errata Action
@@ -35,7 +36,7 @@ import org.apache.log4j.Logger;
  * @author Bo Maryniuk
  */
 public class SsmErrataAction implements MessageAction {
-    private static Logger log = Logger.getLogger(SsmErrataAction.class);
+    private static Logger log = LogManager.getLogger(SsmErrataAction.class);
 
     /** {@inheritDoc} */
     @Override
@@ -52,7 +53,7 @@ public class SsmErrataAction implements MessageAction {
                     actionChain, event.getServerIds());
         }
         catch (Exception e) {
-            log.error("Error scheduling SSM errata for event: " + event, e);
+            log.error("Error scheduling SSM errata for event: {}", event, e);
         }
         finally {
             SsmOperationManager.completeOperation(user, SsmOperationManager

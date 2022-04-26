@@ -18,14 +18,14 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -37,29 +37,31 @@ import java.util.Arrays;
  */
 public abstract class RhnJavaJob implements RhnJob {
 
-    protected Logger log = Logger.getLogger(getClass());
+    protected Logger log = LogManager.getLogger(getClass());
 
     protected Logger getLogger() {
         return log;
     }
 
     void enableLogging(TaskoRun run) {
-        PatternLayout pattern = new PatternLayout(DEFAULT_LOGGING_LAYOUT);
-        try {
-            getLogger().removeAllAppenders();
-            FileAppender outLogAppender = new FileAppender(pattern,
-                    run.buildStdOutputLogPath());
-            outLogAppender.setThreshold(Level.INFO);
-            getLogger().addAppender(outLogAppender);
-            FileAppender errLogAppender = new FileAppender(pattern,
-                    run.buildStdErrorLogPath());
-            errLogAppender.setThreshold(Level.ERROR);
-            getLogger().addAppender(errLogAppender);
-        }
-        catch (IOException e) {
-            getLogger().warn("Logging to file disabled");
-            e.printStackTrace();
-        }
+
+        var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+
+        var layoutBuilder = builder
+                .newLayout("PatternLayout")
+                .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
+        var appenderName = this.getClass().getName() + "fileAppender";
+        var appenderBuilder = builder
+                .newAppender(appenderName, "File")
+                .addAttribute("fileName", run.buildStdOutputLogPath())
+                .add(layoutBuilder);
+        builder.add(appenderBuilder);
+
+        var out = builder.newLogger(this.getClass().getName(), Level.INFO);
+        var err = builder.newLogger(this.getClass().getName(), Level.ERROR);
+        builder.add(out.add(builder.newAppenderRef(appenderName)));
+        builder.add(err.add(builder.newAppenderRef(appenderName)));
+        Configurator.initialize(builder.build());
     }
 
     /**
@@ -67,13 +69,13 @@ public abstract class RhnJavaJob implements RhnJob {
      */
     @Override
     public void appendExceptionToLogError(Exception e) {
-        log.error("Executing a task threw an exception: " + e.getClass().getName());
-        log.error("Message: " + e.getMessage());
-        log.error("Cause: " + e.getCause());
+        log.error("Executing a task threw an exception: {}", e.getClass().getName());
+        log.error("Message: {}", e.getMessage());
+        log.error("Cause: {}", e.getCause());
 
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
-        log.error("Stack trace:" + errors.toString());
+        log.error("Stack trace:{}", errors.toString());
     }
 
     /**

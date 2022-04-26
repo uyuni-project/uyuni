@@ -14,9 +14,13 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -30,6 +34,7 @@ public class PackageCapabilityTest extends RhnBaseTestCase {
      * PackageCapabilities and write them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackageCapability() throws Exception {
 
         PackageCapability p = createTestCapability();

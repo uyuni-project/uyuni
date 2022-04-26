@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ import java.util.Optional;
  */
 public class ImageSyncedEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(ImageSyncedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(ImageSyncedEventMessageAction.class);
 
 
     @Override
@@ -49,7 +50,7 @@ public class ImageSyncedEventMessageAction implements MessageAction {
                 minion.getOrg());
 
             if (!minion.getGroups().contains(branchGroup)) {
-                LOG.error("Branch server " + minionId + " is not in group " + imageSyncedEvent.getBranch());
+                LOG.error("Branch server {} is not in group {}", minionId, imageSyncedEvent.getBranch());
                 return;
             }
 
@@ -63,7 +64,7 @@ public class ImageSyncedEventMessageAction implements MessageAction {
                     imageSyncedEvent.getImageName(), imageSyncedEvent.getImageVersion());
             }
             else {
-                LOG.warn("Unknown image_synced action: " + action);
+                LOG.warn("Unknown image_synced action: {}", action);
             }
         });
     }

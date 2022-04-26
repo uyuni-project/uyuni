@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
@@ -56,7 +57,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class KickstartHelper {
 
-    private static Logger log = Logger.getLogger(KickstartHelper.class);
+    private static Logger log = LogManager.getLogger(KickstartHelper.class);
 
     private HttpServletRequest request;
     private static final String VIEW_LABEL = "view_label";
@@ -99,7 +100,7 @@ public class KickstartHelper {
         Map<String, Object> retval = new HashMap<>();
         KickstartData ksdata = null;
         Map<String, String> options = new HashMap<>();
-        log.debug("url: " + url);
+        log.debug("url: {}", url);
         List<String> rawopts = Arrays.asList(
                 StringUtils.split(url, '/'));
 
@@ -111,7 +112,7 @@ public class KickstartHelper {
             }
         }
 
-        log.debug("Options: " + options);
+        log.debug("Options: {}", options);
 
         String remoteAddr = getClientIp();
 
@@ -132,17 +133,17 @@ public class KickstartHelper {
             String[] ids = SessionSwap.extractData(hashed);
             retval.put(SESSION_ID, ids[0]);
             Long kssid = Long.valueOf(ids[0]);
-            log.debug("sessionid: " + kssid);
+            log.debug("sessionid: {}", kssid);
             KickstartSessionUpdateCommand cmd = new KickstartSessionUpdateCommand(kssid);
             ksdata = cmd.getKsdata();
             retval.put(SESSION, cmd.getKickstartSession());
-            log.debug("session: " + retval.get(SESSION));
+            log.debug("session: {}", retval.get(SESSION));
             cmd.setSessionState(KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);
             cmd.store();
             mode = SESSION;
         }
 
-        log.debug("org_id: " + retval.get(ORG_ID));
+        log.debug("org_id: {}", retval.get(ORG_ID));
 
         //TODO: reconsider/cleanup this logic flow
         if (retval.get(ORG_ID) != null) {
@@ -182,12 +183,9 @@ public class KickstartHelper {
 
 
             if (log.isDebugEnabled()) {
-                log.debug("session                        : " +
-                        retval.get(SESSION));
-                log.debug("options.containsKey(VIEW_LABEL): " +
-                        options.containsKey(VIEW_LABEL));
-                log.debug("ksdata                         : " +
-                        ksdata);
+                log.debug("session                        : {}", retval.get(SESSION));
+                log.debug("options.containsKey(VIEW_LABEL): {}", options.containsKey(VIEW_LABEL));
+                log.debug("ksdata                         : {}", ksdata);
             }
         }
         // Add the host.
@@ -216,13 +214,13 @@ public class KickstartHelper {
 
         // check if we are going through a proxy, grab real IP if so
         if (proxyHeader != null) {
-            log.debug("proxy header in: " + proxyHeader);
+            log.debug("proxy header in: {}", proxyHeader);
             Matcher matcher =
                 Pattern.compile(XFORWARD_REGEX)
                 .matcher(proxyHeader);
             if (matcher.lookingAt()) {
                 remoteAddr = matcher.group(1);
-                log.debug("origination ip from pchain: " + remoteAddr);
+                log.debug("origination ip from pchain: {}", remoteAddr);
             }
         }
 
@@ -270,18 +268,18 @@ public class KickstartHelper {
         // gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com
 
         String proxyHeader = request.getHeader(XRHNPROXYAUTH);
-        log.debug("X-RHN-Proxy-Auth : " + proxyHeader);
+        log.debug("X-RHN-Proxy-Auth : {}", proxyHeader);
 
         if (!StringUtils.isEmpty(proxyHeader)) {
             String[] proxies = StringUtils.split(proxyHeader, ",");
             String firstProxy = proxies[0];
             // Now we have: 1006681409::1151513167.96:21600.0:VV/xF
             // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com
-            log.debug("first1: " + firstProxy);
+            log.debug("first1: {}", firstProxy);
             String[] chunks = StringUtils.split(firstProxy, ":");
             firstProxy = chunks[chunks.length - 1];
-            log.debug("first2: " + firstProxy);
-            log.debug("Kickstart host from proxy header: " + firstProxy);
+            log.debug("first2: {}", firstProxy);
+            log.debug("Kickstart host from proxy header: {}", firstProxy);
             return firstProxy;
         }
         return ConfigDefaults.get().getCobblerHost();
@@ -399,10 +397,10 @@ public class KickstartHelper {
     }
 
     private boolean hasPackages(Channel c, String[] packageNames) {
-        log.debug("HasPackages: " + c.getId());
+        log.debug("HasPackages: {}", c.getId());
         //Go through every package name.
         for (String packageNameIn : packageNames) {
-            log.debug("hasPackages : Checking for package: " + packageNameIn);
+            log.debug("hasPackages : Checking for package: {}", packageNameIn);
             Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNameIn);
             //No package by this name exists in this package.
             if (pid == null) {
@@ -455,14 +453,14 @@ public class KickstartHelper {
         //We expect this to be in the RHN Tools channel.
         //Check in the channel and all of its children channels
         Channel channel = ksdata.getChannel();
-        log.debug("Checking on auto-ks in channel : " + channel.getId());
+        log.debug("Checking on auto-ks in channel : {}", channel.getId());
         List<Channel> channelsToCheck =
                 ChannelManager.userAccessibleChildChannels(
                 user.getOrg().getId(), channel.getId());
         channelsToCheck.add(channel);
 
         for (Channel current : channelsToCheck) {
-            log.debug("Current.channel : " + current.getId());
+            log.debug("Current.channel : {}", current.getId());
             //Look for the auto-kickstart package.
             List<Map<String, Object>> kspackages =
                     ChannelManager.listLatestPackagesLike(

@@ -70,6 +70,8 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'amzn' %}
   {%- elif 'alibaba' in grains['osfullname']|lower %}
     {%- set os_base = 'alibaba' %}
+  {%- elif 'oracle' in grains['osfullname']|lower %}
+    {%- set os_base = 'oracle' %}
   {%- endif %}
   #end of expections
 {%- endif %}

@@ -50,11 +50,13 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
 import org.jose4j.lang.JoseException;
 
@@ -79,7 +81,7 @@ import java.util.stream.Collectors;
  */
 public class ActivationKeyHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(ActivationKeyHandler.class);
+    private static Logger log = LogManager.getLogger(ActivationKeyHandler.class);
 
     private static final String VALIDATION_XSD =
         "/com/redhat/rhn/frontend/action/token/validation/activationKeyForm.xsd";
@@ -176,7 +178,7 @@ public class ActivationKeyHandler extends BaseHandler {
         if (!result.isEmpty()) {
             log.error("Validation errors:");
             for (ValidatorError error : result.getErrors()) {
-                log.error("   " + error.getMessage());
+                log.error("   {}", error.getMessage());
             }
             // Multiple errors could return here, but we'll have to just throw an
             // exception for the first one and return that to the user.
@@ -243,6 +245,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @throws NoSuchSystemException if the given minion does not exist
      * @throws TokenCreationException if the token could not be created
      */
+    @ReadOnly
     public List<ChannelInfo> listChannels(String minionId,
         String machinePassword,
         String activationKey)
@@ -509,6 +512,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.returntype $ActivationKeySerializer
      */
+    @ReadOnly
     public ActivationKey getDetails(User loggedInUser, String key) {
         return lookupKey(key, loggedInUser);
     }
@@ -856,6 +860,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     $ActivationKeySerializer
      *   #array_end()
      */
+    @ReadOnly
     public List<ActivationKey> listActivationKeys(User loggedInUser) {
         List<ActivationKey> result = new ArrayList<>();
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
@@ -891,6 +896,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *       #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listActivatedSystems(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
 
@@ -937,6 +943,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     $ConfigChannelSerializer
      *   #array_end()
      */
+    @ReadOnly
     public List listConfigChannels(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
         return activationKey.getConfigChannelsFor(loggedInUser);

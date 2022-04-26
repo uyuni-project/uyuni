@@ -32,7 +32,8 @@ import com.suse.manager.admin.validator.PaygAdminValidator;
 import com.suse.manager.webui.controllers.admin.beans.PaygProperties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,7 @@ import java.util.Optional;
 
 public class PaygAdminManager {
 
-    private static final Logger LOG = Logger.getLogger(PaygAdminManager.class);
+    private static final Logger LOG = LogManager.getLogger(PaygAdminManager.class);
     private TaskomaticApi taskomaticApi;
 
     /**
@@ -117,7 +118,7 @@ public class PaygAdminManager {
 
         Optional<PaygSshData> paygSshDataOpt = PaygSshDataFactory.lookupByHostname(host);
         if (paygSshDataOpt.isPresent()) {
-            LOG.debug("duplicated payg host: " + host);
+            LOG.debug("duplicated payg host: {}", host);
             throw new EntityExistsException("Duplicated host: " + host);
         }
 
@@ -134,7 +135,7 @@ public class PaygAdminManager {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             LOG.warn("unable to start task to update authentication data", e);
         }
-        LOG.debug("payg ssh data added for hostname: " + host);
+        LOG.debug("payg ssh data added for hostname: {}", host);
 
         return paygSshData;
     }
@@ -342,7 +343,7 @@ public class PaygAdminManager {
     }
 
     private boolean delete(PaygSshData paygSshData) {
-        LOG.debug("deleting " + paygSshData.getId() + " -> " + paygSshData.getHost());
+        LOG.debug("deleting {} -> {}", paygSshData.getId(), paygSshData.getHost());
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.
                 lookupRepositoryAuthByCredential(paygSshData.getCredentials());
         existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);

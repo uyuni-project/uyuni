@@ -105,7 +105,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ import java.util.Set;
  * Objects.
  */
 public class ActionManager extends BaseManager {
-    private static Logger log = Logger.getLogger(ActionManager.class);
+    private static Logger log = LogManager.getLogger(ActionManager.class);
 
     // List of package names that we want to make sure we dont
     // remove when doing a package sync.  Never remove running kernel
@@ -347,7 +348,7 @@ public class ActionManager extends BaseManager {
                     .map(Action::getId)
                     .collect(toList())
                     .toString();
-            log.debug("Cancelling actions: " + actionIds + " for user: " + user.getLogin());
+            log.debug("Cancelling actions: {} for user: {}", actionIds, user.getLogin());
         }
 
         // Can only cancel top level actions:
@@ -621,8 +622,7 @@ public class ActionManager extends BaseManager {
                 ActionFactory.addConfigRevisionToAction(rev, server, configAction);
             }
             catch (LookupException e) {
-                log.error("Failed lookup for revision " + revId + "by user " +
-                    user.getId());
+                log.error("Failed lookup for revision {}by user {}", revId, user.getId());
             }
         }
     }
@@ -1286,9 +1286,8 @@ public class ActionManager extends BaseManager {
             else if (pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_ONLY) {
 
                 if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_OTHER_ONLY]; " +
-                            "installing package to system: " +
-                            pm.getName() + "-" + pm.getOtherEvr());
+                    log.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}",
+                            pm.getName(), pm.getOtherEvr());
                 }
 
                 params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
@@ -1306,11 +1305,9 @@ public class ActionManager extends BaseManager {
                     pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_NEWER) {
 
                 if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; " +
-                            "deleting package [" + pm.getName() + "-" +
-                            pm.getSystemEvr() + "] from system " +
-                            "installing package [" + pm.getName() + "-" +
-                            pm.getOther().getEvr() + "] to system");
+                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] " +
+                            "from system installing package [{}-{}] to system",
+                            pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
                 }
 
                 String epoch;
@@ -1351,7 +1348,7 @@ public class ActionManager extends BaseManager {
     // new rev of one.
     private static boolean isPackageRemovable(String name) {
         for (String sIn : PACKAGES_NOT_REMOVABLE) {
-            log.debug("Checking: " + name + " for: " + sIn);
+            log.debug("Checking: {} for: {}", name, sIn);
             if (name.equals(sIn)) {
                 return false;
             }
@@ -1614,11 +1611,9 @@ public class ActionManager extends BaseManager {
             KickstartData ksdata, User scheduler, Server srvr,
             Date earliestAction, String appendString, String kickstartHost) {
         if (log.isDebugEnabled()) {
-            log.debug("scheduleKickstartAction(KickstartData ksdata=" + ksdata +
-                    ", User scheduler=" + scheduler + ", Server srvr=" + srvr +
-                    ", Date earliestAction=" + earliestAction +
-                    ", String appendString=" + appendString +
-                    ", String kickstartHost=" + kickstartHost + ") - start");
+            log.debug("scheduleKickstartAction(KickstartData ksdata={}, User scheduler={}, Server srvr={}, " +
+                    "Date earliestAction={}, String appendString={}, String kickstartHost={}) - start",
+                    ksdata, scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
         return scheduleKickstartAction(ksdata.getPreserveFileLists(), scheduler, srvr,
@@ -1640,11 +1635,9 @@ public class ActionManager extends BaseManager {
             Set<FileList> fileList, User scheduler, Server srvr,
             Date earliestAction, String appendString, String kickstartHost) {
         if (log.isDebugEnabled()) {
-            log.debug("scheduleKickstartAction(" +
-                    ", User scheduler=" + scheduler + ", Server srvr=" + srvr +
-                    ", Date earliestAction=" + earliestAction +
-                    ", String appendString=" + appendString +
-                    ", String kickstartHost=" + kickstartHost + ") - start");
+            log.debug("scheduleKickstartAction(, User scheduler={}, Server srvr={}, Date earliestAction={}, " +
+                    "String appendString={}, String kickstartHost={}) - start",
+                    scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
         KickstartAction ksaction = (KickstartAction) scheduleAction(scheduler, srvr,
@@ -1804,8 +1797,7 @@ public class ActionManager extends BaseManager {
     private static void checkSaltOrManagementEntitlement(Long sid) {
         if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
                 !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
-            log.error("Unable to run action on a system without either Salt or " +
-                    "Management entitlement, id " + sid);
+            log.error("Unable to run action on a system without either Salt or Management entitlement, id {}", sid);
             throw new MissingEntitlementException(
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
                     EntitlementManager.SALT.getHumanReadableLabel()

@@ -34,7 +34,8 @@ import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +49,7 @@ import java.util.stream.Stream;
  */
 public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static final Logger LOG = Logger.getLogger(SSHMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(SSHMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
@@ -96,14 +97,13 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
             return new BootstrapResult(false, Optional.empty(), "Could not generate salt-ssh public key.");
         }
         if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
-            LOG.error("Generating salt-ssh public key failed: " + res.get().getStderr());
+            LOG.error("Generating salt-ssh public key failed: {}", res.get().getStderr());
             return new BootstrapResult(false, Optional.empty(),
                     "Generating salt-ssh public key failed: " + res.get().getStderr());
         }
 
         BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);
-        LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
-                ", proceeding with registration.");
+        LOG.info("salt-ssh system bootstrap success: {}, proceeding with registration.", result.isSuccess());
         String minionId = params.getHost();
         try {
             if (result.isSuccess()) {

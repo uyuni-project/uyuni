@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.Date;
@@ -40,7 +41,7 @@ import java.util.Date;
  */
 public class KickstartUrlHelper {
 
-    private static Logger log = Logger.getLogger(KickstartUrlHelper.class);
+    private static Logger log = LogManager.getLogger(KickstartUrlHelper.class);
     public static final String COBBLER_URL_BASE_PATH = "/cblr/svc/op/autoinstall/profile/";
     public static final String KS_DIST = "/ks/dist";
     public static final String KS_CFG = "/ks/cfg";
@@ -199,7 +200,7 @@ public class KickstartUrlHelper {
         log.debug("Formatting for view use.");
         StringBuilder url = new StringBuilder();
         url.append(protocol + host + getKickstartMediaPath());
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -250,7 +251,7 @@ public class KickstartUrlHelper {
     public String getCobblerMediaUrl() {
         StringBuilder url = new StringBuilder();
         url.append(getCobblerMediaUrlBase()).append("$").append(COBBLER_MEDIA_VARIABLE);
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -264,7 +265,7 @@ public class KickstartUrlHelper {
     public String getCobblerMediaUrlBase() {
         StringBuilder url = new StringBuilder();
         url.append(protocol).append(host);
-        log.debug("returning: " + url);
+        log.debug("returning: {}", url);
         return url.toString();
     }
 
@@ -302,7 +303,7 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 date);
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: " + turl.computeTinyPath());
+        log.debug("returning: {}", turl.computeTinyPath());
         return turl.computeTinyPath();
     }
 
@@ -329,7 +330,7 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 new Date());
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: " + turl.computeTinyUrl(this.host));
+        log.debug("returning: {}", turl.computeTinyUrl(this.host));
         return turl.computeTinyUrl(this.host);
     }
 

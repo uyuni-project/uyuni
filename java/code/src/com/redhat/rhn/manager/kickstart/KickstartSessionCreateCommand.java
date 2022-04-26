@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.profile.ProfileManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 public class KickstartSessionCreateCommand {
 
-    private static Logger log = Logger.getLogger(KickstartSessionCreateCommand.class);
+    private static Logger log = LogManager.getLogger(KickstartSessionCreateCommand.class);
 
     private KickstartSession ksession;
 
@@ -69,31 +70,31 @@ public class KickstartSessionCreateCommand {
         this.ksession.setLastAction(new Date());
         this.ksession.setState(KickstartFactory.SESSION_STATE_CREATED);
         this.ksession.setClientIp(clientIp);
-        log.debug("serverProfile on ksdata: " + ksdata.getKickstartDefaults().getProfile());
+        log.debug("serverProfile on ksdata: {}", ksdata.getKickstartDefaults().getProfile());
         if (ksdata.getKickstartDefaults().getProfile() != null) {
             Profile p = ProfileManager.
                 lookupByIdAndOrg(ksdata.getKickstartDefaults().getProfile().getId(),
                     owner);
-            log.debug("setting serverProfile on session: " + p.getId());
+            log.debug("setting serverProfile on session: {}", p.getId());
             this.ksession.setServerProfile(p);
         }
 
-        log.debug("Saving new KickstartSession: " + this.ksession.getId());
+        log.debug("Saving new KickstartSession: {}", this.ksession.getId());
         KickstartFactory.saveKickstartSession(this.ksession);
-        log.debug("Saved new KickstartSession: " + this.ksession.getId());
+        log.debug("Saved new KickstartSession: {}", this.ksession.getId());
 
         // Now create one time ActivationKey
         User user = UserFactory.findRandomOrgAdmin(owner);
-        log.debug("Got random orgadmin: " + user.getLogin());
+        log.debug("Got random orgadmin: {}", user.getLogin());
         String note = LocalizationService.getInstance().
             getMessage("kickstart.profile.default_session", ksdata.getLabel());
 
-        log.debug("creating one-time-activation key: " + user.getLogin());
+        log.debug("creating one-time-activation key: {}", user.getLogin());
         ActivationKey key = KickstartScheduleCommand.createKickstartActivationKey(user,
                 ksdata, null,
                 this.ksession,
                 null, note);
-        log.debug("added key: " + key.getKey());
+        log.debug("added key: {}", key.getKey());
 
         // Need to add child channels to the key so when kickstarting the
         // system from bare metal we will have the proper child channel subscriptions.
@@ -111,7 +112,7 @@ public class KickstartSessionCreateCommand {
         List<Channel> channels = ProfileManager.getChildChannelsNeededForProfile(orgAdmin,
                 baseChannel, profile);
         for (Channel child : channels) {
-            log.debug("** adding child channel for profile: " + child.getLabel());
+            log.debug("** adding child channel for profile: {}", child.getLabel());
             key.addChannel(child);
         }
 

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -32,6 +36,9 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,6 +64,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -99,7 +107,8 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      * Tears down the fixture, and closes the HibernateSession.
      */
     @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
     }
@@ -154,10 +163,10 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      */
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
-        assertNotNull("Your list: " + attribName + " is null", dr);
-        assertTrue("Your list: " + attribName + " is empty", dr.size() > 0);
-        assertEquals("Your list: " + attribName + " is the wrong class",
-                classIn, dr.iterator().next().getClass());
+        Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
+        Assertions.assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
+        Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
+                "Your list: " + attribName + " is the wrong class");
     }
 
     /**

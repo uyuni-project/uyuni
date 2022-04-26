@@ -27,7 +27,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -105,7 +106,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
     public static final List<String> VALID_WHERE_STRINGS =
                     Arrays.asList(new String[] {WHERE_ALL, WHERE_SSM});
 
-    private final Logger log = Logger.getLogger(SystemSearchAction.class);
+    private final Logger log = LogManager.getLogger(SystemSearchAction.class);
 
     @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
@@ -211,8 +212,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         helper.execute();
 
         List results = (List) request.getAttribute(getDataSetName());
-        log.debug("SystemSearch results.size() = " +
-                        (results != null ? results.size() : "null results"));
+       log.debug("SystemSearch results.size() = {}", results != null ? results.size() : "null results");
         if ((results != null) && (results.size() == 1)) {
             SystemSearchResult s = (SystemSearchResult) results.get(0);
             return StrutsDelegate.getInstance().forwardParam(mapping.findForward("single"),
@@ -240,12 +240,12 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     whereToSearch, isFineGrained);
         }
         catch (MalformedURLException | XmlRpcException e) {
-            log.error("Caught Exception :" + e, e);
+            log.error("Caught Exception :{}", e, e);
             errs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.connection_error"));
         }
         catch (XmlRpcFault e) {
-            log.info("Caught Exception :" + e + ", code [" + e.getErrorCode() + "]", e);
+            log.info("Caught Exception :{}, code [{}]", e, e.getErrorCode(), e);
             if (e.getErrorCode() == 100) {
                 log.error("Invalid search query", e);
                 errs.add(ActionMessages.GLOBAL_MESSAGE,

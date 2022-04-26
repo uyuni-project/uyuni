@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Action setup to handle 2 date picker forms for a start and end date.
  *
- * @version $Rev: 56295 $
  */
 public class DateRangePicker {
 

@@ -1,3 +1,19 @@
+-------------------------------------------------------------------
+Tue Apr 12 13:21:13 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Add saltboot URI mangling to shift logic from saltboot
+- Move SSL conf from static file to uyuni-configure
+
+-------------------------------------------------------------------
+Mon Apr 11 10:46:36 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Add headers and http_proxy modules to be in sync with regular
+  proxy
+
+-------------------------------------------------------------------
+Mon Apr 11 08:49:52 UTC 2022 - Dario Leidi <dleidi@suse.com>
+
+- Align the image version to the product one
 - Drop stale TODOs
 
 -------------------------------------------------------------------

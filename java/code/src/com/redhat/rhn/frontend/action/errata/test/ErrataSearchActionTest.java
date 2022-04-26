@@ -26,6 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,7 @@ import java.util.Map;
  */
 public class ErrataSearchActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         ErrataSearchAction action = new ErrataSearchAction();

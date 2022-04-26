@@ -19,7 +19,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +40,7 @@ import java.util.List;
 
 public class SessionSwap {
 
-    private static Logger log = Logger.getLogger(SessionSwap.class);
+    private static Logger log = LogManager.getLogger(SessionSwap.class);
 
     public static final char[] HEX_CHARS = {'0', '1', '2', '3',
                                              '4', '5', '6', '7',
@@ -159,7 +160,7 @@ public class SessionSwap {
         StringBuilder swapKey = new StringBuilder(20);
         if (log.isDebugEnabled()) {
             for (String tmp : text) {
-                log.debug("val : " + tmp);
+                log.debug("val : {}", tmp);
             }
         }
         swapKey.append(c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4));
@@ -171,12 +172,12 @@ public class SessionSwap {
 
 
         if (log.isDebugEnabled()) {
-            log.debug("Data     : [" + joinedText + "]");
-            log.debug("Key      : [" + swapKey + "]");
+            log.debug("Data     : [{}]", joinedText);
+            log.debug("Key      : [{}]", swapKey);
         }
         String retval = HMAC.sha1(joinedText, swapKey.toString());
         if (log.isDebugEnabled()) {
-            log.debug("retval: " + retval);
+            log.debug("retval: {}", retval);
         }
         return retval;
     }

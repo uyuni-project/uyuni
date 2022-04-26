@@ -29,7 +29,8 @@ import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.sql.Types;
@@ -51,7 +52,7 @@ import javax.persistence.criteria.CriteriaQuery;
 public class PackageFactory extends HibernateFactory {
 
     private static PackageFactory singleton = new PackageFactory();
-    private static Logger log = Logger.getLogger(PackageFactory.class);
+    private static Logger log = LogManager.getLogger(PackageFactory.class);
 
     public static final PackageKeyType PACKAGE_KEY_TYPE_GPG = lookupKeyTypeByLabel("gpg");
 

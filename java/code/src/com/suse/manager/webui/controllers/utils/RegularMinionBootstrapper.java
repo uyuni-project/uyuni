@@ -28,7 +28,8 @@ import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.wheel.Key;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.Optional;
  */
 public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static final Logger LOG = Logger.getLogger(RegularMinionBootstrapper.class);
+    private static final Logger LOG = LogManager.getLogger(RegularMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
@@ -97,7 +98,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
         if (saltApi.keyExists(minionId, KeyStatus.UNACCEPTED)) {
-            LOG.info("Pending key exists for " + minionId + ", rejecting...");
+            LOG.info("Pending key exists for {}, rejecting...", minionId);
             saltApi.rejectKey(minionId);
             weRejectedIt = true;
         }
@@ -108,10 +109,10 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
             MinionPendingRegistrationService.removeMinion(minionId);
         }
         else if (weRejectedIt) {
-            LOG.info("Removing key that was temporarily rejected for " + minionId);
+            LOG.info("Removing key that was temporarily rejected for {}", minionId);
             saltApi.deleteRejectedKey(minionId);
         }
-        LOG.info("Minion bootstrap success: " + result.isSuccess());
+        LOG.info("Minion bootstrap success: {}", result.isSuccess());
         return result;
     }
 

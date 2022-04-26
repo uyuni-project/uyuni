@@ -14,19 +14,26 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * ArchivedActionsSetupTest
  */
 public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/schedule/ArchivedActions");
     }
 
 
+    @Test
     public void testPerformExecute() throws Exception {
 
 

@@ -24,7 +24,8 @@ import com.redhat.rhn.frontend.struts.Expandable;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,11 +43,10 @@ import javax.servlet.jsp.PageContext;
  * Provides a bunch of helper methods to make working with lists easier from a
  * custom tag POV.
  *
- * @version $Rev $
  */
 public class DataSetManipulator {
 
-    private static Logger log = Logger.getLogger(DataSetManipulator.class);
+    private static Logger log = LogManager.getLogger(DataSetManipulator.class);
     private static final String[] LINK_PREFIXES = {"_first", "_prev", "_next", "_last"};
 
     private final int pageSize;
@@ -131,7 +131,7 @@ public class DataSetManipulator {
             dataset.sort(new DynamicComparator(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
-            log.warn("Unable to sort dataset according to: " + sortAttr);
+            log.warn("Unable to sort dataset according to: {}", sortAttr);
             dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
         }
     }

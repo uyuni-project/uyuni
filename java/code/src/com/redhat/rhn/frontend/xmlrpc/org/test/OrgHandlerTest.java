@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -41,6 +48,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +68,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     private ChannelFamily channelFamily = null;
 
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -69,6 +80,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }
 
+    @Test
     public void testCreateFirst() throws Exception {
         /*
          * "dockerrun_pg" already creates a new Org during Init right now.
@@ -88,6 +100,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateFirstTwice() throws Exception {
         try {
             handler.createFirst(orgName[1], "fakeadmin", "password", "First",
@@ -101,6 +114,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreate() throws Exception {
         handler.create(admin, orgName[0], "fakeadmin", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin@example.com", Boolean.FALSE);
@@ -108,6 +122,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertNotNull(testOrg);
     }
 
+    @Test
     public void testCreateShortOrgName() throws Exception {
         String shortName = "aa"; // Must be at least 3 characters in UI
         try {
@@ -120,6 +135,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateDuplicateOrgName() throws Exception {
         String dupOrgName = "Test Org " + TestUtils.randomString();
         handler.create(admin, dupOrgName, "fakeadmin1", "password", "Mr.", "Bill",
@@ -134,6 +150,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListOrgs() throws Exception {
         Org testOrg = createOrg();
         OrgDto dto = OrgManager.toDetailsDto(testOrg);
@@ -141,6 +158,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertTrue(orgs.contains(dto));
     }
 
+    @Test
     public void testDeleteNoSuchOrg() throws Exception {
         try {
             handler.delete(admin, -1);
@@ -151,6 +169,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testContentStagingSettings() {
         Org testOrg = createOrg();
         int testId = testOrg.getId().intValue();
@@ -161,6 +180,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertFalse(handler.isContentStagingEnabled(admin, testId));
     }
 
+    @Test
     public void testDelete() throws Exception {
         Org testOrg = createOrg();
         handler.delete(admin, testOrg.getId().intValue());
@@ -168,6 +188,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertNull(testOrg);
     }
 
+    @Test
     public void testListActiveUsers() throws Exception {
         Org testOrg = createOrg();
         List<MultiOrgUserOverview> users = handler.listUsers(admin,
@@ -178,6 +199,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         assertEquals(users.get(0).getId(), user.getId());
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         Org testOrg = createOrg();
         OrgDto actual = handler.getDetails(admin, testOrg.getId().intValue());
@@ -190,6 +212,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         compareDtos(expected, actual);
     }
 
+    @Test
     public void testUpdateName() throws Exception {
         Org testOrg = createOrg();
         String newName = "Foo" + TestUtils.randomString();
@@ -228,6 +251,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         return org;
     }
 
+    @Test
     public void testMigrateSystem() throws Exception {
         User newOrgAdmin = UserTestUtils.findNewUser("newAdmin", "newOrg", true);
         newOrgAdmin.getOrg().getTrustedOrgs().add(admin.getOrg());
@@ -242,6 +266,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         handler.migrateSystems(admin, newOrgAdmin.getOrg().getId().intValue(), servers);
     }
 
+    @Test
     public void testMigrateInvalid() throws Exception {
 
         User orgAdmin1 = UserTestUtils.findNewUser("orgAdmin1", "org1", true);

@@ -17,7 +17,8 @@ package com.redhat.rhn.common.conf;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +45,7 @@ import java.util.TreeSet;
 public class Config {
 
 
-    private static Logger logger = Logger.getLogger(Config.class);
+    private static Logger logger = LogManager.getLogger(Config.class);
 
 
 
@@ -203,7 +204,7 @@ public class Config {
      */
     public String getString(String value) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() called with: " + value);
+            logger.debug("getString() -     getString() called with: {}", value);
         }
         if (value == null) {
             return null;
@@ -217,12 +218,11 @@ public class Config {
             ns = value.substring(0, lastDot);
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> Getting property: " +
-                    property);
+            logger.debug("getString() -     getString() -> Getting property: {}", property);
         }
         String result = configValues.getProperty(property);
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> result: " + result);
+            logger.debug("getString() -     getString() -> result: {}", result);
         }
         if (result == null) {
             if (!"".equals(ns)) {
@@ -238,7 +238,7 @@ public class Config {
             }
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> returning: " + result);
+            logger.debug("getString() -     getString() -> returning: {}", result);
         }
 
         if (result == null || result.equals("")) {
@@ -379,7 +379,7 @@ public class Config {
     public boolean getBoolean(String s) {
         String value = getString(s);
         if (logger.isDebugEnabled()) {
-            logger.debug("getBoolean() - " + s + " is : " + value);
+            logger.debug("getBoolean() - {} is : {}", s, value);
         }
         if (value == null) {
             return false;
@@ -393,7 +393,7 @@ public class Config {
         for (String trueValue : TRUE_VALUES) {
             if (trueValue.equalsIgnoreCase(value)) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("getBoolean() - Returning true: " + value);
+                    logger.debug("getBoolean() - Returning true: {}", value);
                 }
                 return true;
             }
@@ -429,7 +429,7 @@ public class Config {
             // bugzilla: 154517; only add items that end in .conf
             File[] files = f.listFiles();
             if (files == null) {
-                logger.error("Unable to list files in path : " + path);
+                logger.error("Unable to list files in path : {}", path);
                 return;
             }
             for (File file : files) {
@@ -474,11 +474,10 @@ public class Config {
                 props.load(new StringReader(configString.replace("\\", "\\\\")));
             }
             catch (IOException e) {
-                logger.error("Could not parse file " + curr, e);
+                logger.error("Could not parse file {}", curr, e);
             }
             String ns = makeNamespace(curr);
-            logger.debug("Adding namespace: " + ns + " for file: " +
-                    curr.getAbsolutePath());
+            logger.debug("Adding namespace: {} for file: {}", ns, curr.getAbsolutePath());
 
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
@@ -489,7 +488,7 @@ public class Config {
                 if (!key.startsWith(ns)) {
                     newKey = ns + "." + key;
                 }
-                logger.debug("Adding: " + newKey + ": " + props.getProperty(key));
+                logger.debug("Adding: {}: {}", newKey, props.getProperty(key));
                 newProps.put(newKey, props.getProperty(key));
             }
             configValues.putAll(newProps);
@@ -525,7 +524,7 @@ public class Config {
             String key = (String) entry.getKey();
             if (key.startsWith(namespace)) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Looking for key: [" + key + "]");
+                    logger.debug("Looking for key: [{}]", key);
                 }
 
                 if (!namespace.equals(newNamespace)) {

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.kickstart.crypto.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -25,6 +29,7 @@ import com.redhat.rhn.manager.kickstart.crypto.EditCryptoKeyCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * CryptoKeyCommandTest - test for CryptoKeyCommand
@@ -45,6 +50,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateCommand() throws Exception {
         setupKey(new CreateCryptoKeyCommand(user.getOrg()));
         CryptoKey key = cmd.getCryptoKey();
@@ -53,6 +59,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         assertNotNull(key.getKey());
     }
 
+    @Test
     public void testDuplicate() throws Exception {
         setupKey(new CreateCryptoKeyCommand(user.getOrg()));
         String usedDesc = cmd.getCryptoKey().getDescription();
@@ -64,6 +71,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testEdit() throws Exception {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
@@ -74,6 +82,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testDelete() throws Exception {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
@@ -93,6 +102,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         assertNull(KickstartFactory.lookupCryptoKeyById(key2.getId(), key2.getOrg()));
     }
 
+    @Test
     public void testDuplicateDelete() throws Exception {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);

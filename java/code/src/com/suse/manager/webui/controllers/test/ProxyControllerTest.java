@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
@@ -24,6 +26,8 @@ import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collections;
@@ -41,6 +45,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
     private ProxyController proxyController;
     private SystemManager systemManager;
 
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -48,6 +53,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         proxyController = new ProxyController(systemManager);
     }
 
+    @Test
     public void testGenerateContainerConfigExternal() throws Exception {
         byte[] data = "config data".getBytes();
 
@@ -69,6 +75,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         assertEquals(data, request.session().attribute("pxy-config.zip"));
     }
 
+    @Test
     public void testGenerateContainerConfigGenerate() throws Exception {
         byte[] data = "config data".getBytes();
 

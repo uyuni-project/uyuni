@@ -14,14 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * EditChannelActionTest
- * @version $Rev: 1 $
  */
 public class EditChannelActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
     /*
         setRequestPathInfo("/channel/manage/EditChannel");

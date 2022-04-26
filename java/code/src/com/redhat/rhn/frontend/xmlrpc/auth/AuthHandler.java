@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.xmlrpc.UserLoginException;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ import javax.security.auth.login.LoginException;
  */
 public class AuthHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(AuthHandler.class);
+    private static Logger log = LogManager.getLogger(AuthHandler.class);
 
     protected boolean providesAuthentication() {
         return true;
@@ -155,7 +156,7 @@ public class AuthHandler extends BaseHandler {
         else {
             retval = 0;
         }
-        log.debug("checkAuthToken :: Returning: " + retval);
+        log.debug("checkAuthToken :: Returning: {}", retval);
         return retval;
     }
 

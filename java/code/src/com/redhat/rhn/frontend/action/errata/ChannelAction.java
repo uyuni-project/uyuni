@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -55,7 +56,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelAction extends RhnSetAction {
 
 
-    private static Logger log = Logger.getLogger(ChannelAction.class);
+    private static Logger log = LogManager.getLogger(ChannelAction.class);
 
 
     /**
@@ -142,7 +143,7 @@ public class ChannelAction extends RhnSetAction {
         for (Channel c : originalChannels) {
             if (!newChannels.contains(c.getId())) {
                 //We are removing the errata from the channel
-                log.debug("updateChannels.Adding1: " + c.getId());
+                log.debug("updateChannels.Adding1: {}", c.getId());
                 channelsToRemove.add(c);
             }
         }
@@ -153,7 +154,7 @@ public class ChannelAction extends RhnSetAction {
                 channelsToAdd.add(newChan.getId());
             }
         }
-        log.debug("updateChannels() - channels to remove errata: " + channelsToRemove);
+        log.debug("updateChannels() - channels to remove errata: {}", channelsToRemove);
 
         //If the errata was removed from any channels lets remove it.
         List<Long> eList = new ArrayList<>();
@@ -183,7 +184,7 @@ public class ChannelAction extends RhnSetAction {
             retval.add(element.getElement());
         }
         if (log.isDebugEnabled()) {
-            log.debug("channel ids from rhnSet: " + retval);
+            log.debug("channel ids from rhnSet: {}", retval);
         }
         return retval;
     }

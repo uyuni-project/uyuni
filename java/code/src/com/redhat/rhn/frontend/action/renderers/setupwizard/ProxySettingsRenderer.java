@@ -21,7 +21,8 @@ import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ProxySettingsRenderer {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ProxySettingsRenderer.class);
+    private static Logger log = LogManager.getLogger(ProxySettingsRenderer.class);
 
     /**
      * Save the given proxy settings to the configuration.
@@ -53,7 +54,7 @@ public class ProxySettingsRenderer {
         User webUser = rhnContext.getCurrentUser();
 
         if (log.isDebugEnabled()) {
-            log.debug("Saving proxy settings: " + settings.toString());
+            log.debug("Saving proxy settings: {}", settings.toString());
         }
 
         // TODO: Handle errors
@@ -61,7 +62,7 @@ public class ProxySettingsRenderer {
                 ProxySettingsManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {
             for (ValidatorError error : errors) {
-                log.error("error: " + error.toString());
+                log.error("error: {}", error.toString());
             }
         }
         return settings;

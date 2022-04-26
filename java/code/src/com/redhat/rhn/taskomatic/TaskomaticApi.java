@@ -41,7 +41,8 @@ import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.suse.manager.utils.MinionServerUtils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.time.ZonedDateTime;
@@ -70,7 +71,7 @@ public class TaskomaticApi {
             MINION_ACTION_JOB_PREFIX + "download-";
     public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-action-chain-executor-bunch";
     public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-action-chain-executor-";
-    private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
+    private static final Logger LOG = LogManager.getLogger(TaskomaticApi.class);
 
 
     private XmlRpcClient getClient() throws TaskomaticApiException {
@@ -745,7 +746,7 @@ public class TaskomaticApi {
                 .collect(Collectors.toList());
 
         if (!jobLabels.isEmpty()) {
-            LOG.debug("Unscheduling jobs: " + jobLabels);
+            LOG.debug("Unscheduling jobs: {}", jobLabels);
             invoke("tasko.unscheduleSatBunches", jobLabels);
         }
     }

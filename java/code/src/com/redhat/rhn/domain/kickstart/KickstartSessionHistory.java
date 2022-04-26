@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * KickstartSessionHistory - Class representation of the table rhnkickstartsessionhistory.
- * @version $Rev: 1 $
  */
 public class KickstartSessionHistory {
 

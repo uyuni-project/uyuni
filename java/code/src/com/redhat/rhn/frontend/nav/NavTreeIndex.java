@@ -16,7 +16,8 @@
 package com.redhat.rhn.frontend.nav;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public class NavTreeIndex {
-    private static Logger log = Logger.getLogger(NavTreeIndex.class);
+    private static Logger log = LogManager.getLogger(NavTreeIndex.class);
 
     private Map<String, NavNode> nodesByLabel;
     private Map<NavNode, NavNode> childToParentMap;
@@ -95,7 +96,7 @@ public class NavTreeIndex {
     private void indexNode(NavNode parent, int depth) {
         depthMap.put(parent, depth);
         if (log.isDebugEnabled()) {
-            log.debug("adding primaryurl to map [" + parent.getPrimaryURL() + "]");
+            log.debug("adding primaryurl to map [{}]", parent.getPrimaryURL());
         }
         primaryURLMap.put(parent.getPrimaryURL(), parent);
 
@@ -122,7 +123,7 @@ public class NavTreeIndex {
             if (currentNodes == null) {
                 currentNodes = new ArrayList<>();
                 if (log.isDebugEnabled()) {
-                    log.debug("adding url map [" + url + "]");
+                    log.debug("adding url map [{}]", url);
                 }
                 nodeURLMap.put(url, currentNodes);
             }
@@ -137,7 +138,7 @@ public class NavTreeIndex {
             if (currentNodes == null) {
                 currentNodes = new ArrayList<>();
                 if (log.isDebugEnabled()) {
-                    log.debug("adding dir map [" + dir + "]");
+                    log.debug("adding dir map [{}]", dir);
                 }
                 nodeDirMap.put(dir, currentNodes);
             }
@@ -229,8 +230,7 @@ public class NavTreeIndex {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("returning [" + bestNode.getPrimaryURL() +
-                      "] as the url of the active node");
+            log.debug("returning [{}] as the url of the active node", bestNode.getPrimaryURL());
         }
         return bestNode.getPrimaryURL();
     }
@@ -240,7 +240,7 @@ public class NavTreeIndex {
         for (String urlIn : urls) {
 
             if (log.isDebugEnabled()) {
-                log.debug("Url being searched [" + urlIn + "]");
+                log.debug("Url being searched [{}]", urlIn);
             }
             // first match by the primary url which is the
             // first rhn-tab-url definition in the sitenav.xml.
@@ -252,8 +252,7 @@ public class NavTreeIndex {
                     }).map(entry -> entry.getValue()).findFirst();
             if (result.isPresent()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Primary node for [" + url + "] is [" +
-                            result.get() + "]");
+                    log.debug("Primary node for [{}] is [{}]", url, result.get());
                 }
 
                 // we found a match, now let's make sure it is accessible
@@ -277,8 +276,7 @@ public class NavTreeIndex {
                     NavNode next = nodeItr.next();
                     if (canViewUrl(next, 1)) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Best node for [" + urlIn + "] is [" +
-                                    primaryURLMap.get(urlIn) + "]");
+                            log.debug("Best node for [{}] is [{}]", urlIn, primaryURLMap.get(urlIn));
                         }
                         return next;
                     }
@@ -296,8 +294,7 @@ public class NavTreeIndex {
                 // what do we do with a list that contains
                 // more than one.
                 if (log.isDebugEnabled()) {
-                    log.debug("Best node for [" + urlIn + "] is [" +
-                            nodes.get(0) + "]");
+                    log.debug("Best node for [{}] is [{}]", urlIn, nodes.get(0));
                 }
                 return nodes.get(0);
             }

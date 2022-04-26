@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Basic images do not contain zypper nor the name of the server,
@@ -14,6 +14,7 @@ Feature: Build container images
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a simple image profile without activation key
     When I follow the left menu "Images > Profiles"
@@ -51,28 +52,38 @@ Feature: Build container images
 
   Scenario: Build the images with and without activation key
     Given I am on the Systems overview page of this "build_host"
-    When I schedule the build of image "suse_key" via XML-RPC calls
+    When I schedule the build of image "suse_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_key scheduled by admin" is completed
-    And I schedule the build of image "suse_simple" via XML-RPC calls
+    And I schedule the build of image "suse_simple" via API calls
     And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
-    And I schedule the build of image "suse_real_key" via XML-RPC calls
+    And I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
+    And I wait at most 60 seconds until all "3" container images are built correctly in the GUI
+    Then the list of packages of image "suse_key" with version "latest" is not empty
+    And the list of packages of image "suse_simple" with version "latest" is not empty
+    And the list of packages of image "suse_real_key" with version "latest" is not empty
 
   Scenario: Build same images with different versions
-    When I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-    And I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
-    And I wait at most 1000 seconds until all "5" container images are built correctly in the GUI
+    When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
+    And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
+    And I wait at most 660 seconds until container "suse_simple" with version "Latest_simple" is built successfully
+    And I wait at most 660 seconds until container "suse_key" with version "Latest_key-activation1" is built successfully
+    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
-  Scenario: Delete image via XML-RPC calls
-    When I delete the image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-    And I delete the image "suse_simple" with version "Latest_simple" via XML-RPC calls
-    Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via XML-RPC calls
-    And the image "suse_simple" with version "Latest_simple" doesn't exist via XML-RPC calls
+  Scenario: Delete image via API calls
+    When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via API calls
+    And the image "suse_simple" with version "Latest_simple" doesn't exist via API calls
 
   Scenario: Rebuild the images
-    When I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
-    And I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-    And I wait at most 1000 seconds until all "5" container images are built correctly in the GUI
+    When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
+    And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
+    And I wait at most 660 seconds until container "suse_key" with version "Latest_key-activation1" is built successfully
+    And I wait at most 660 seconds until container "suse_simple" with version "Latest_simple" is built successfully
+    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
@@ -81,6 +92,7 @@ Feature: Build container images
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_BUILT_IMAGE" text
+    And I wait at most 660 seconds until container "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully
 
   Scenario: Login as Docker image administrator and build an image
     Given I am authorized as "docker" with password "docker"
@@ -90,14 +102,15 @@ Feature: Build container images
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_DOCKERADMIN" text
+    And I wait at most 660 seconds until container "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully
 
   Scenario: Cleanup: delete all images
     Given I am authorized as "admin" with password "admin"
-    When I delete the image "suse_key" with version "Latest" via XML-RPC calls
-    And I delete the image "suse_simple" with version "Latest_simple" via XML-RPC calls
-    And I delete the image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via XML-RPC calls
-    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via XML-RPC calls
+    When I delete the image "suse_key" with version "Latest" via API calls
+    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+    And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
+    And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
 
   Scenario: Cleanup: delete all profiles
     When I follow the left menu "Images > Profiles"
@@ -109,3 +122,4 @@ Feature: Build container images
     And I should see a "Are you sure you want to delete selected profiles?" text
     And I click on the red confirmation button
     And I wait until I see "Image profiles have been deleted" text
+    And I logout from API

@@ -25,7 +25,8 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -46,7 +47,7 @@ import java.util.UUID;
 public class ResetPasswordFactory extends HibernateFactory {
     public static final String EXPIRE_TIME = "password_token_expiration_hours";
     private static ResetPasswordFactory singleton = new ResetPasswordFactory();
-    private static Logger log = Logger.getLogger(ResetPasswordFactory.class);
+    private static Logger log = LogManager.getLogger(ResetPasswordFactory.class);
 
     private ResetPasswordFactory() {
         super();
@@ -180,7 +181,7 @@ public class ResetPasswordFactory extends HibernateFactory {
      * @return ActionErrors list - isEmpty() means "no errors found"
      */
     public static ActionErrors findErrors(ResetPassword rp) {
-        log.debug("findErrors : [" + (rp == null ? "null" : rp.toString()) + "]");
+        log.debug("findErrors : [{}]", rp == null ? "null" : rp.toString());
         ActionErrors errors = new ActionErrors();
         if (rp == null) {
             log.debug("findErrors: no RP found");

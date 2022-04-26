@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
  */
 public class MinionActionManager {
 
-    private static Logger log = Logger.getLogger(MinionActionManager.class);
+    private static Logger log = LogManager.getLogger(MinionActionManager.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private MinionActionManager() {
@@ -121,7 +122,7 @@ public class MinionActionManager {
                 ZonedDateTime stagingWindowStartTime;
                 if (now.isAfter(potentialStagingWindowStartTime) &&
                         potentialStagingWindowEndTime.isAfter(now)) {
-                    log.warn("Scheduled staging window began before now: adjusting start to now (" + now + ")");
+                    log.warn("Scheduled staging window began before now: adjusting start to now ({})", now);
                     stagingWindowStartTime = now;
                 }
                 else {
@@ -132,8 +133,8 @@ public class MinionActionManager {
                 if (potentialStagingWindowEndTime.isAfter(earliestAction)) {
                     log.warn("Ignoring salt_content_staging_window parameter: expected staging window end time is " +
                             "after action execution!");
-                    log.warn("Expected staging window end time: " + potentialStagingWindowEndTime);
-                    log.warn("Adjusting  window end time to earliest action execution: " + earliestAction);
+                    log.warn("Expected staging window end time: {}", potentialStagingWindowEndTime);
+                    log.warn("Adjusting  window end time to earliest action execution: {}", earliestAction);
                     stagingWindowEndTime = earliestAction;
                 }
                 else {
@@ -154,9 +155,9 @@ public class MinionActionManager {
                                 return stagingTime;
                             }));
                         if (log.isDebugEnabled()) {
-                            scheduleActionData.forEach((id, stagingTime)-> log.info("Detected install/update action " +
-                                    "(id=" + action.getId() + "): scheduling staging job for minion server id: " + id +
-                                    " at " + stagingTime));
+                            scheduleActionData.forEach((id, stagingTime) -> log.info(
+                                    "Detected install/update action (id={}): scheduling staging job for minion " +
+                                            "server id: {} at {}", action.getId(), id, stagingTime));
                         }
                     return scheduleActionData;
                 }

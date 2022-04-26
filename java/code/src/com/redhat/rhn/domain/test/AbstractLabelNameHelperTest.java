@@ -14,14 +14,20 @@
  */
 package com.redhat.rhn.domain.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * AbstractLabelNameHelperTest
  */
 public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquals() {
         AbstractLabelNameHelper h1 = new AbstractLabelNameHelper();
         AbstractLabelNameHelper h2 = null;

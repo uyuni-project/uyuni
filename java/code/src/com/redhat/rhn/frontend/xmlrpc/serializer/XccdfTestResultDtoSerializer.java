@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -36,33 +33,27 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc($date, "completed", "Scan completion time")
  * #struct_end()
  */
-public class XccdfTestResultDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class XccdfTestResultDtoSerializer extends ApiResponseSerializer<XccdfTestResultDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<XccdfTestResultDto> getSupportedClass() {
         return XccdfTestResultDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException, IOException {
-        XccdfTestResultDto dto = (XccdfTestResultDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        addToHelper(helper, "xid", dto.getXid());
-        addToHelper(helper, "profile", dto.getProfile());
-        addToHelper(helper, "path", dto.getPath());
-        addToHelper(helper, "ovalfiles", dto.getOvalfiles());
-        addToHelper(helper, "completed", dto.getCompleted());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(XccdfTestResultDto src) {
+        SerializationBuilder builder = new SerializationBuilder();
+        add(builder, "xid", src.getXid());
+        add(builder, "profile", src.getProfile());
+        add(builder, "path", src.getPath());
+        add(builder, "ovalfiles", src.getOvalfiles());
+        add(builder, "completed", src.getCompleted());
+        return builder.build();
     }
 
-    private static void addToHelper(SerializerHelper helper, String label, Object value) {
+    private static void add(SerializationBuilder builder, String label, Object value) {
         if (value != null) {
-            helper.add(label, value);
+            builder.add(label, value);
         }
     }
 }

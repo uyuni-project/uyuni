@@ -27,7 +27,8 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -56,7 +57,7 @@ import javax.persistence.criteria.Root;
  */
 public class SCCCachingFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(SCCCachingFactory.class);
+    private static Logger log = LogManager.getLogger(SCCCachingFactory.class);
     private static SCCCachingFactory singleton = new SCCCachingFactory();
 
     private SCCCachingFactory() {
@@ -344,8 +345,8 @@ public class SCCCachingFactory extends HibernateFactory {
                     return true;
                 },
                 modifiedCache -> {
-                    log.debug("COMPARE: " + modifiedCache.toString() + " and " + modifiedCreds.toString() +
-                            " : " + modifiedCache.compareTo(modifiedCreds));
+                    log.debug("COMPARE: {} and {} : {}", modifiedCache.toString(), modifiedCreds.toString(),
+                            modifiedCache.compareTo(modifiedCreds));
                     return modifiedCache.compareTo(modifiedCreds) < 0;
                 }
         );
@@ -515,7 +516,7 @@ public class SCCCachingFactory extends HibernateFactory {
         newServer.stream().forEach(s -> {
             SCCRegCacheItem rci = new SCCRegCacheItem(s);
             saveRegCacheItem(rci);
-            log.debug("New RegCacheItem saved: " + rci);
+            log.debug("New RegCacheItem saved: {}", rci);
         });
     }
 

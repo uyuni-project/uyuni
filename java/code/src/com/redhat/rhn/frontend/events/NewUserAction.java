@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MailHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(NewUserAction.class);
+    private static Logger logger = LogManager.getLogger(NewUserAction.class);
 
     /**
      * Execute the Event.  This Action actually sends 2 mail messages
@@ -47,7 +48,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
      */
     public void execute(EventMessage msg) {
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(EventMessage msg=" + msg + ") - start");
+            logger.debug("execute(EventMessage msg={}) - start", msg);
         }
 
         super.execute(msg);
@@ -102,28 +103,27 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
 
     protected String getSubject(BaseEvent evtIn) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getSubject(User userIn=" + evtIn.getUser() + ") - start");
+            logger.debug("getSubject(User userIn={}) - start", evtIn.getUser());
         }
 
         String returnString = LocalizationService.getInstance().getMessage(
                 "email.newaccount.subject", evtIn.getUserLocale());
         if (logger.isDebugEnabled()) {
-            logger.debug("getSubject(User) - end - return value=" +
-                    returnString);
+            logger.debug("getSubject(User) - end - return value={}", returnString);
         }
         return returnString;
     }
 
     protected String[] getRecipients(User userIn) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getRecipients(User userIn=" + userIn + ") - start");
+            logger.debug("getRecipients(User userIn={}) - start", userIn);
         }
 
         String[] retval = new String[1];
         retval[0] = userIn.getEmail();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("getRecipients(User) - end - return value=" + retval);
+            logger.debug("getRecipients(User) - end - return value={}", (Object)retval);
         }
         return retval;
     }

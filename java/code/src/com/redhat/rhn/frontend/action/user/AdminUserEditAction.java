@@ -28,7 +28,8 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -49,11 +50,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserEditSubmitAction, edit action submit handler for user detail page
- * @version $Rev: 1196 $
  */
 public class AdminUserEditAction extends UserEditActionHelper {
 
-    private static Logger log = Logger.getLogger(AdminUserEditAction.class);
+    private static Logger log = LogManager.getLogger(AdminUserEditAction.class);
     private static final String ROLE_SETTING_PREFIX = "role_";
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
@@ -138,7 +138,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
     private ActionErrors updateRoles(HttpServletRequest request,
                                         User targetUser,
                                         User loggedInUser) {
-        log.debug(this.getClass().getName() + ".updateRoles()");
+        log.debug("{}.updateRoles()", this.getClass().getName());
 
         Set<String> disabledRoles = extractDisabledRoles(request);
 
@@ -165,7 +165,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
             String roleSetting = request.getParameter(ROLE_SETTING_PREFIX +
                     role.getLabel());
-            log.debug("   " + role.getName() + " / " + roleSetting);
+            log.debug("   {} / {}", role.getName(), roleSetting);
 
             if (roleSetting != null && !existingRoles.contains(role.getLabel())) {
                 // Must have been newly checked:
@@ -211,7 +211,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
         String hiddenInput = request.getParameter("disabledRoles");
         Set<String> returnVal = new HashSet<>(
                 Arrays.asList(hiddenInput.split("\\|")));
-        log.debug("Found disabled inputs: " + returnVal);
+        log.debug("Found disabled inputs: {}", returnVal);
         return returnVal;
     }
 }

@@ -75,7 +75,7 @@ public class DailySummary extends RhnJavaJob {
             try {
                 oiw = (OrgIdWrapper) resultIn;
                 if (log.isDebugEnabled()) {
-                    log.debug("dealing with org: " + oiw.toLong());
+                    log.debug("dealing with org: {}", oiw.toLong());
                 }
                 queueOrgEmails(oiw.toLong());
             }
@@ -86,7 +86,7 @@ public class DailySummary extends RhnJavaJob {
                 try {
                     dequeueOrg(oiw.toLong());
                     if (log.isDebugEnabled()) {
-                        log.debug("org " + oiw.toLong() + " removed from queue");
+                        log.debug("org {} removed from queue", oiw.toLong());
                     }
                 }
                 finally {
@@ -133,8 +133,7 @@ public class DailySummary extends RhnJavaJob {
             List actions = getActionInfo(ru.idAsLong());
             if ((awol == null || awol.size() == 0) && (actions == null ||
                     actions.size() == 0)) {
-                log.debug("Skipping ORG " + orgId + " because daily summary info has " +
-                        "changed");
+                log.debug("Skipping ORG {} because daily summary info has changed", orgId);
                 continue;
             }
 
@@ -151,8 +150,7 @@ public class DailySummary extends RhnJavaJob {
         }
         watch.stop();
         if (log.isDebugEnabled()) {
-            log.debug("queued emails of org of " + users.size() +
-                " users in " + watch.getTime() + "ms");
+            log.debug("queued emails of org of {} users in {}ms", users.size(), watch.getTime());
         }
     }
 

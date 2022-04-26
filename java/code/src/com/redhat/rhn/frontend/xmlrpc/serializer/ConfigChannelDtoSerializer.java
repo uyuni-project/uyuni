@@ -16,13 +16,10 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -40,28 +37,22 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   $ConfigChannelTypeSerializer
  * #struct_end()
  */
-public class ConfigChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class ConfigChannelDtoSerializer extends ApiResponseSerializer<ConfigChannelDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ConfigChannelDto> getSupportedClass() {
         return ConfigChannelDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ConfigChannelDto dto = (ConfigChannelDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("id", dto.getId());
-        helper.add("label", dto.getLabel());
-        helper.add("name", dto.getName());
-        helper.add("description", dto.getDescription());
-        helper.add("orgId", dto.getOrgId());
-        helper.add("configChannelType", ConfigChannelType.lookup(dto.getType()));
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ConfigChannelDto src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("label", src.getLabel())
+                .add("name", src.getName())
+                .add("description", src.getDescription())
+                .add("orgId", src.getOrgId())
+                .add("configChannelType", ConfigChannelType.lookup(src.getType()))
+                .build();
     }
 }

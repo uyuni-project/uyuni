@@ -18,7 +18,8 @@ import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class MessageQueueThreadPool extends ThreadPoolExecutor {
 
     /* Logger for this class */
-    private final Logger log = Logger.getLogger(MessageQueueThreadPool.class);
+    private final Logger log = LogManager.getLogger(MessageQueueThreadPool.class);
 
     /* A warning is logged if the queue is growing bigger than this */
     private static final int QUEUE_SIZE_WARNING_THRESHOLD = 100;
@@ -46,17 +47,17 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
     public MessageQueueThreadPool(int size) {
         super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         setThreadFactory(new BasicThreadFactory.Builder().namingPattern("message-queue-thread-%d").build());
-        log.info("Started message queue thread pool (size: " + size + ")");
+        log.info("Started message queue thread pool (size: {})", size);
     }
 
     @Override
     public void execute(Runnable command) {
         int queueSize = getQueue().size();
         if (queueSize >= QUEUE_SIZE_WARNING_THRESHOLD) {
-            log.warn("Thread pool queue size is: " + queueSize);
+            log.warn("Thread pool queue size is: {}", queueSize);
         }
         else if (log.isDebugEnabled()) {
-            log.debug("Thread pool queue size is: " + queueSize);
+            log.debug("Thread pool queue size is: {}", queueSize);
         }
         super.execute(command);
     }
@@ -80,7 +81,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
             }
         }
         if (thrown != null) {
-            log.error("Error in message queue: " + thrown.getMessage(), thrown);
+            log.error("Error in message queue: {}", thrown.getMessage(), thrown);
 
             try {
                 // Email the admins about what is going on
@@ -97,7 +98,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
             }
         }
         else {
-            log.info("Finished: " + task);
+            log.info("Finished: {}", task);
         }
     }
 }

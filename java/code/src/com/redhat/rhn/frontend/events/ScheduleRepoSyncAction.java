@@ -24,7 +24,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 public class ScheduleRepoSyncAction implements MessageAction {
 
     /** The logger. */
-    protected static Logger logger = Logger.getLogger(ScheduleRepoSyncAction.class);
+    protected static Logger logger = LogManager.getLogger(ScheduleRepoSyncAction.class);
 
     /**
      * {@inheritDoc}
@@ -44,7 +45,7 @@ public class ScheduleRepoSyncAction implements MessageAction {
     public void execute(EventMessage msg) {
         ScheduleRepoSyncEvent event = (ScheduleRepoSyncEvent) msg;
         if (logger.isDebugEnabled()) {
-            logger.debug("Scheduling repo sync for channels: " + event.getChannelLabels());
+            logger.debug("Scheduling repo sync for channels: {}", event.getChannelLabels());
         }
         scheduleRepoSync(event.getChannelLabels(), event.getUserId());
     }
@@ -68,8 +69,7 @@ public class ScheduleRepoSyncAction implements MessageAction {
                 new TaskomaticApi().scheduleSingleRepoSync(channels);
             }
             catch (TaskomaticApiException e) {
-                logger.error("Could not schedule repository synchronization for: " +
-                        channels.toString());
+                logger.error("Could not schedule repository synchronization for: {}", channels.toString());
                 logger.error(e);
             }
         }

@@ -59,7 +59,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -88,7 +89,7 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
  */
 public class MaintenanceManager {
 
-    private static Logger log = Logger.getLogger(MaintenanceManager.class);
+    private static Logger log = LogManager.getLogger(MaintenanceManager.class);
 
     private ScheduleFactory scheduleFactory;
     private CalendarFactory calendarFactory;
@@ -695,7 +696,7 @@ public class MaintenanceManager {
             int statusCode = status.getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
                 http.cleanup(response);
-                log.error("Download failed, HTTP status code: " + statusCode);
+                log.error("Download failed, HTTP status code: {}", statusCode);
                 throw new DownloadException(url, status.getReasonPhrase(), statusCode);
             }
             String ical = http.getBodyAsString(response, "UTF-8");
@@ -762,7 +763,7 @@ public class MaintenanceManager {
             log.info("Rescheduling failed: no strategy succeeded");
         }
         catch (RescheduleException e) {
-            log.info("Rescheduling failed: " + e.getMessage());
+            log.info("Rescheduling failed: {}", e.getMessage());
         }
         HibernateFactory.rollbackTransaction();
         HibernateFactory.closeSession();
@@ -861,12 +862,12 @@ public class MaintenanceManager {
      * @param servers the list of servers to log
      */
     private static void logSkippedMinions(List<MinionServer> servers) {
-        log.warn("Skipping action for " + servers.size() + " minions.");
+        log.warn("Skipping action for {} minions.", servers.size());
         if (log.isDebugEnabled()) {
             String serverNames = servers.stream()
                     .map(m -> m.getId().toString())
                     .collect(Collectors.joining(","));
-            log.debug("Skipped minion ids: " + serverNames);
+            log.debug("Skipped minion ids: {}", serverNames);
         }
     }
 

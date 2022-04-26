@@ -169,6 +169,8 @@ public class ConfigDefaults {
     private static final String REPORT_DB_SSL_ENABLED = "report_db_ssl_enabled";
     private static final String REPORT_DB_SSLROOTCERT = "report_db_sslrootcert";
     private static final String REPORT_DB_PROTO = "reporting.hibernate.connection.driver_proto";
+    public static final String REPORT_DB_BATCH_SIZE = "report_db_batch_size";
+    public static final String REPORT_DB_HUB_WORKERS = "report_db_hub_workers";
 
     private static final String SSL_TRUSTSTORE = "java.ssl_truststore";
 
@@ -785,6 +787,22 @@ public class ConfigDefaults {
         String sslrootcert = Config.get().getString(REPORT_DB_SSLROOTCERT);
 
         return buildConnectionString(dbName, dbBackend, dbHost, dbPort, dbProto, dbSslEnabled, sslrootcert);
+    }
+
+    /**
+     * Creates the db connection url for a reportdb on a given host.
+     * @param host reportdb host
+     * @param port reportdb port
+     * @param dbname reportdb name
+     * @return db url
+     */
+    public String remoteReportDBUrl(String host, int port, String dbname) {
+        String dbBackend = Config.get().getString(REPORT_DB_BACKEND);
+        String dbProto = Optional.ofNullable(Config.get().getString(REPORT_DB_PROTO))
+                .orElse("jdbc:postgresql");
+        boolean dbSslEnabled = Config.get().getBoolean(REPORT_DB_SSL_ENABLED);
+        String sslrootcert = Config.get().getString(REPORT_DB_SSLROOTCERT);
+       return buildConnectionString(dbname, dbBackend, host, String.valueOf(port), dbProto, dbSslEnabled, sslrootcert);
     }
 
     private String buildConnectionString(String name, String backend, String host, String port, String proto,

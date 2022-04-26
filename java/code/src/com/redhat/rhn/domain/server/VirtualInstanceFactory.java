@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -38,8 +39,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger
-            .getLogger(VirtualInstanceFactory.class);
+    private static Logger log = LogManager.getLogger(VirtualInstanceFactory.class);
 
     private interface HibernateCallback {
         Object executeInSession(Session session);
@@ -140,8 +140,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param virtualInstance The virtual instance to delete
      */
     public void deleteVirtualInstanceOnly(VirtualInstance virtualInstance) {
-        log.debug("Deleting virtual instance without removing associated objects " +
-                virtualInstance);
+        log.debug("Deleting virtual instance without removing associated objects {}", virtualInstance);
         Server hostSystem = virtualInstance.getHostSystem();
         if (hostSystem != null) {
             hostSystem.removeGuest(virtualInstance);

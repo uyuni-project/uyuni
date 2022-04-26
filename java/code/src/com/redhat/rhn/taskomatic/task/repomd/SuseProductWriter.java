@@ -26,7 +26,6 @@ import java.util.Iterator;
 /**
  * products.xml writer class
  *
- * @version $Rev $
  */
 public class SuseProductWriter extends RepomdWriter {
 

@@ -18,20 +18,21 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * UpdateErrataCacheAction
  */
 public class UpdateErrataCacheAction implements MessageAction {
 
-    private static Logger log = Logger.getLogger(UpdateErrataCacheAction.class);
+    private static Logger log = LogManager.getLogger(UpdateErrataCacheAction.class);
 
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {
         UpdateErrataCacheEvent evt = (UpdateErrataCacheEvent) msg;
         if (log.isDebugEnabled()) {
-            log.debug("Updating errata cache, with type: " + evt.getUpdateType());
+            log.debug("Updating errata cache, with type: {}", evt.getUpdateType());
         }
 
         UpdateErrataCacheCommand uecc = new UpdateErrataCacheCommand();
@@ -43,18 +44,17 @@ public class UpdateErrataCacheAction implements MessageAction {
                 return;
             }
             if (log.isDebugEnabled()) {
-                log.debug("Updating errata cache for org [" + orgId + "]");
+                log.debug("Updating errata cache for org [{}]", orgId);
             }
             uecc.updateErrataCache(orgId);
             if (log.isDebugEnabled()) {
-                log.debug("Finished updating errata cache for org [" +
-                        orgId + "]");
+                log.debug("Finished updating errata cache for org [{}]", orgId);
             }
         }
         else if (evt.getUpdateType() == UpdateErrataCacheEvent.TYPE_CHANNEL) {
             for (Long cid : evt.getChannelIds()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Updating errata cache for channel: " + cid);
+                    log.debug("Updating errata cache for channel: {}", cid);
                 }
                 uecc.updateErrataCacheForChannel(cid);
             }
@@ -62,8 +62,7 @@ public class UpdateErrataCacheAction implements MessageAction {
         else if (evt.getUpdateType() == UpdateErrataCacheEvent.TYPE_CHANNEL_ERRATA) {
             for (Long cid : evt.getChannelIds()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Updating errata cache for channel: " + cid +
-                            " and errata:" + evt.getErrataId());
+                    log.debug("Updating errata cache for channel: {} and errata:{}", cid, evt.getErrataId());
                 }
                 if (evt.getPackageIds() == null || evt.getPackageIds().size() == 0) {
                     uecc.updateErrataCacheForErrata(cid, evt.getErrataId());

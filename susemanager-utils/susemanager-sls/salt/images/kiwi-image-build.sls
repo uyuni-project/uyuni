@@ -15,6 +15,7 @@
 {%- set cache_dir  = root_dir + '/cache/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
+{%- set use_bundle_build = pillar.get('use_bundle_build', False) %}
 
 # on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
 {%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
@@ -72,12 +73,13 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+{%- if use_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
     - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ bundle_id }} --bundle-dir {{ bundle_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_create
-
+{%- endif %}
 
 {%- else %}
 # KIWI Legacy
@@ -118,6 +120,7 @@ mgr_buildimage_kiwi_create:
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 
+{%- if use_bundle_build %}
 {%- if have_bundle_build %}
 mgr_buildimage_kiwi_bundle:
   cmd.run:
@@ -148,29 +151,42 @@ mgr_buildimage_kiwi_bundle:
       - cmd: mgr_buildimage_kiwi_bundle_tarball
 
 {%- endif %}
-
 {%- endif %}
 
+{%- endif %}
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
   mgrcompat.module_run:
     - name: cp.push_dir
+    {%- if use_bundle_build %}
     - path: {{ bundle_dir }}
     - require:
       - cmd: mgr_buildimage_kiwi_bundle
+    {%- else %}
+    - path: {{ dest_dir }}
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
+    {%- endif %}
 {%- endif %}
 
 mgr_buildimage_info:
   mgrcompat.module_run:
-    - name: kiwi_info.image_details
+    - name: kiwi_info.build_info
     - dest: {{ dest_dir }}
+    - build_id: {{ pillar.get('build_id') }}
+    {%- if use_bundle_build %}
     - bundle_dest: {{ bundle_dir }}
+    {%- endif %}
     - require:
 {%- if pillar.get('use_salt_transport') %}
       - mgr_buildimage_kiwi_collect_image
 {%- else %}
+    {%- if use_bundle_build %}
       - mgr_buildimage_kiwi_bundle
+    {%- else %}
+      - mgr_buildimage_kiwi_create
+    {%- endif %}
 {%- endif %}
 
 mgr_buildimage_kiwi_collect_logs:

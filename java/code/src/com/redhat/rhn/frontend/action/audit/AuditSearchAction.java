@@ -23,7 +23,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.audit.AuditManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,7 +52,7 @@ import javax.servlet.http.HttpSession;
  */
 public class AuditSearchAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(AuditSearchAction.class);
+    private static Logger log = LogManager.getLogger(AuditSearchAction.class);
 
     private Long processStartMilli(DynaActionForm dform,
                                    HttpServletRequest request) {

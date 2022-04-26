@@ -30,7 +30,10 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredPowerSettings
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.log4j.Logger;
+import com.suse.manager.api.ReadOnly;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 import java.util.ArrayList;
@@ -52,7 +55,7 @@ import java.util.Map;
  * call these functions.
  */
 public class PowerManagementHandler extends BaseHandler {
-    private static Logger log = Logger.getLogger(PowerManagementHandler.class);
+    private static Logger log = LogManager.getLogger(PowerManagementHandler.class);
 
     /**
      * Return a list of available power management types
@@ -64,6 +67,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_single("string", "power management types")
      */
+    @ReadOnly
     public List<String> listTypes(User loggedInUser) {
         String typeString = ConfigDefaults.get().getCobblerPowerTypes();
         if (typeString != null) {
@@ -91,6 +95,7 @@ public class PowerManagementHandler extends BaseHandler {
      *    #prop_desc("string", "powerId", "Identifier")
      *  #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getDetails(User loggedInUser, Integer serverId) {
         SystemRecord record = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
@@ -117,6 +122,7 @@ public class PowerManagementHandler extends BaseHandler {
      *    #prop_desc("string", "powerId", "Identifier")
      *  #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getDetails(User loggedInUser, String nameIn) {
         ensureOrgAdmin(loggedInUser);
         SystemRecord record = lookupExistingCobblerRecord(loggedInUser, nameIn);
@@ -369,6 +375,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "action")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
+    @ReadOnly
     public boolean getStatus(User loggedInUser, Integer serverId) {
         SystemRecord record = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
@@ -389,6 +396,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "action")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
+    @ReadOnly
     public boolean getStatus(User loggedInUser, String nameIn) {
         ensureOrgAdmin(loggedInUser);
         SystemRecord record = lookupExistingCobblerRecord(loggedInUser, nameIn);
@@ -405,7 +413,7 @@ public class PowerManagementHandler extends BaseHandler {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(loggedInUser), name);
         if (rec == null) {
-            log.error("System with cobbler name " + name + " not found.");
+            log.error("System with cobbler name {} not found.", name);
         }
         return rec;
     }

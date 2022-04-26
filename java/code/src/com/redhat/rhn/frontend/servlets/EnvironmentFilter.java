@@ -19,7 +19,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EnvironmentFilter implements Filter {
 
-    private static Logger log = Logger.getLogger(EnvironmentFilter.class);
+    private static Logger log = LogManager.getLogger(EnvironmentFilter.class);
 
     private static String[] nosslurls = {"/rhn/kickstart/DownloadFile",
                                          "/rhn/common/DownloadFile",
@@ -78,7 +79,7 @@ public class EnvironmentFilter implements Filter {
         if (RhnHelper.pathNeedsSecurity(nosslurls, path) &&
                 !hreq.isSecure()) {
             if (log.isDebugEnabled()) {
-                log.debug("redirecting to secure: " + path);
+                log.debug("redirecting to secure: {}", path);
             }
             redirectToSecure(hreq, hres);
             return;
@@ -89,7 +90,7 @@ public class EnvironmentFilter implements Filter {
         request.setAttribute(RequestContext.REQUESTED_URI, req.getRequestURI());
 
         if (log.isDebugEnabled()) {
-            log.debug("set REQUESTED_URI: " + req.getRequestURI());
+            log.debug("set REQUESTED_URI: {}", req.getRequestURI());
         }
 
         // add messages that were put on the request path.

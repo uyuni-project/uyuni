@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.virtualization;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
@@ -97,7 +98,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         post("/manager/api/systems/details/virtualization/nets/:sid/edit",
                 withUserAndServer(this::edit));
         get("/manager/api/systems/details/virtualization/nets/:sid/net/:name",
-                withUserAndServer(this::getNetwork));
+                asJson(withUserAndServer(this::getNetwork)));
     }
 
     /**
@@ -318,7 +319,6 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         NetworkDefinition definition = virtManager.getNetworkDefinition(minionId, netName)
                 .orElseThrow(NotFoundException::new);
 
-        response.type("application/json");
         return GSON.toJson(definition);
     }
 

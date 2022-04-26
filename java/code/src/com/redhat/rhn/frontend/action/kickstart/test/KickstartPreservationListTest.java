@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.frontend.action.kickstart.KickstartPreservationListSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartKeysEditActionTest
@@ -33,6 +38,7 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         list1 = KickstartDataTest.createFileList1(user.getOrg());
@@ -47,12 +53,14 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
         TestUtils.flushAndEvict(list3);
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartFilePreservationLists");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
         addSelectedItem(list1.getId());
         addSelectedItem(list2.getId());

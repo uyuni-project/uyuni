@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * Cleans up stale Kickstarts
  *
- * @version $Rev $
  */
 
 public class KickstartCleanup extends RhnJavaJob {
@@ -55,7 +54,7 @@ public class KickstartCleanup extends RhnJavaJob {
                     TaskConstants.TASK_QUERY_KSCLEANUP_FIND_CANDIDATES);
             DataResult dr = select.execute(Collections.EMPTY_MAP);
             if (log.isDebugEnabled()) {
-                log.debug("Found " + dr.size() + " entries to process");
+                log.debug("Found {} entries to process", dr.size());
             }
             // Bail early if no candidates
             if (dr.size() == 0) {
@@ -92,7 +91,7 @@ public class KickstartCleanup extends RhnJavaJob {
     private void processRow(Long failedStateId, Map row) {
         Long sessionId = (Long) row.get("id");
         if (log.isInfoEnabled()) {
-            log.info("Processing stalled kickstart session " + sessionId);
+            log.info("Processing stalled kickstart session {}", sessionId);
         }
         Long actionId = (Long) row.get("action_id");
         Long oldServerId = (Long) row.get("old_server_id");
@@ -124,14 +123,14 @@ public class KickstartCleanup extends RhnJavaJob {
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", startingAction);
         if (log.isDebugEnabled()) {
-            log.debug("StartingAction: " + startingAction);
+            log.debug("StartingAction: {}", startingAction);
         }
 
         Long retval = startingAction;
         Long preqid = startingAction;
         DataResult dr = select.execute(params);
         if (log.isDebugEnabled()) {
-            log.debug("dr: " + dr);
+            log.debug("dr: {}", dr);
         }
 
         while (dr.size() > 0 && preqid != null) {
@@ -144,8 +143,8 @@ public class KickstartCleanup extends RhnJavaJob {
             }
         }
         if (log.isDebugEnabled()) {
-            log.debug("preqid: " + preqid);
-            log.debug("Returning: " + retval);
+            log.debug("preqid: {}", preqid);
+            log.debug("Returning: {}", retval);
         }
 
         return retval;

@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.ScheduledAction;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ScheduleActionSerializer
@@ -41,32 +38,25 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("int", "inProgressSystems", "Number of systems that are in progress.")
  * #struct_end()
  */
-public class ScheduleActionSerializer extends RhnXmlRpcCustomSerializer {
+public class ScheduleActionSerializer extends ApiResponseSerializer<ScheduledAction> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<ScheduledAction> getSupportedClass() {
         return ScheduledAction.class;
     }
 
-    /** {@inheritDoc} */
-    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        ScheduledAction action = (ScheduledAction)value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-
-        helper.add("id", action.getId());
-        helper.add("name", action.getActionName());
-        helper.add("type", action.getTypeName());
-        helper.add("scheduler", action.getSchedulerName());
-        helper.add("earliest", action.getEarliestDate());
-        helper.add("prerequisite", action.getPrerequisite());
-        helper.add("completedSystems", action.getCompletedSystems());
-        helper.add("failedSystems", action.getFailedSystems());
-        helper.add("inProgressSystems", action.getInProgressSystems());
-
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(ScheduledAction src) {
+        return new SerializationBuilder()
+                .add("id", src.getId())
+                .add("name", src.getActionName())
+                .add("type", src.getTypeName())
+                .add("scheduler", src.getSchedulerName())
+                .add("earliest", src.getEarliestDate())
+                .add("prerequisite", src.getPrerequisite())
+                .add("completedSystems", src.getCompletedSystems())
+                .add("failedSystems", src.getFailedSystems())
+                .add("inProgressSystems", src.getInProgressSystems())
+                .build();
     }
-
 }

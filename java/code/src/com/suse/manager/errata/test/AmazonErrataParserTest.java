@@ -14,11 +14,16 @@
  */
 package com.suse.manager.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 
 import com.suse.manager.errata.AmazonErrataParser;
 import com.suse.manager.errata.ErrataParsingException;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -32,6 +37,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     /**
      * Test to ensure correct parsing of the url and the id for Amazon Linux 2.
      */
+    @Test
     public void testCanBuildValidLinkAndIdForAL2() throws ErrataParsingException {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
@@ -48,6 +54,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     /**
      * Test to ensure correct parsing of the url and the id for Amazon Linux 1.
      */
+    @Test
     public void testCanBuildValidLinkAndIdForAL1() throws ErrataParsingException {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
@@ -64,6 +71,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory code is null.
      */
+    @Test
     public void testThrowsExceptionWhenAdvisoryIsNull() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
@@ -82,6 +90,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory code contains an invalid prefix
      */
+    @Test
     public void testThrowsExceptionWhenPrefixIsUnknown() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
@@ -100,6 +109,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory code format is wrong
      */
+    @Test
     public void testThrowsExceptionWhenFormatIsUnknown() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();

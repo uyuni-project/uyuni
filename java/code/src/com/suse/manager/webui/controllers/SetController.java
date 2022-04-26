@@ -29,7 +29,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,7 +46,7 @@ import spark.Response;
  */
 public class SetController {
 
-    private static final Logger LOG = Logger.getLogger(SetController.class);
+    private static final Logger LOG = LogManager.getLogger(SetController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -84,7 +85,7 @@ public class SetController {
                         changes.toArray(new String[0]), add, user);
             }
             catch (Exception e) {
-                LOG.error("Failed to change set " + setLabel);
+                LOG.error("Failed to change set {}", setLabel);
                 return null;
             }
         }).collect(Collectors.toList());

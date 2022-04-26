@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 /**
  * ActionTypeTest
@@ -29,6 +34,7 @@ public class ActionTypeTest extends RhnBaseTestCase {
      * Test Equals
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         ActionType r1 = new ActionType();
         ActionType r2 = null;
@@ -49,6 +55,7 @@ public class ActionTypeTest extends RhnBaseTestCase {
      * we're not going to the db twice
      * @throws Exception something bad happened
      */
+    @Test
     public void testFindByLabel() throws Exception {
         ActionType r1 = lookupByLabel("errata.update");
         ActionType r2 = lookupByLabel("errata.update");

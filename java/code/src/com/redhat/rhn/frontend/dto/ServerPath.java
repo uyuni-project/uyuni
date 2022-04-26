@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ServerPath
- * @version $Rev: 76626 $
  */
 public class ServerPath extends SystemOverview {
 

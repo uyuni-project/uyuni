@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.frontend.integration.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -27,6 +32,7 @@ import java.util.Map;
  */
 public class IntegrationServiceTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testAuth() throws Exception {
         String login = "test-login-iservice";
         Map tokens = (Map) TestUtils.getPrivateField(IntegrationService.get(),

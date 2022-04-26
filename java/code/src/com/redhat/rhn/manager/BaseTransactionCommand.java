@@ -16,7 +16,7 @@ package com.redhat.rhn.manager;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 /**

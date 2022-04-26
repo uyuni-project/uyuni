@@ -27,7 +27,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpHead;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
  */
 public class MgrSyncUtils {
     // Logger instance
-    private static Logger log = Logger.getLogger(MgrSyncUtils.class);
+    private static Logger log = LogManager.getLogger(MgrSyncUtils.class);
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
@@ -237,7 +238,7 @@ public class MgrSyncUtils {
             }
         }
         catch (URISyntaxException e) {
-            log.warn("Unable to parse URL: " + urlString);
+            log.warn("Unable to parse URL: {}", urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
@@ -261,7 +262,7 @@ public class MgrSyncUtils {
         }
         Path cleanPath = mirrorPath.toPath().normalize();
         if (!cleanPath.startsWith(sccDataPath)) {
-            log.error("Resulting path outside of configured directory " + dataPath + ": " + urlString);
+            log.error("Resulting path outside of configured directory {}: {}", dataPath, urlString);
             cleanPath = dataPath.toPath();
         }
         return cleanPath.toUri().normalize();

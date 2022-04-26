@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * KickstartSession
- * @version $Rev: 75755 $
  */
 public class KickstartSessionDto extends BaseDto {
 

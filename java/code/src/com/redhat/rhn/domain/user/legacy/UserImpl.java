@@ -42,7 +42,8 @@ import com.suse.pam.PamReturnValue;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
@@ -55,12 +56,11 @@ import java.util.TreeSet;
  * Class UserImpl that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
- * @version $Rev: 75755 $
  */
 public class UserImpl extends BaseDomainHelper implements User {
 
 
-    private static final Logger LOG = Logger.getLogger(UserImpl.class);
+    private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
     //private Address address;
     private EnterpriseUserImpl euser;
@@ -374,7 +374,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {
-                LOG.warn("PAM login for user " + this + " failed with error " + ret);
+                LOG.warn("PAM login for user {} failed with error {}", this, ret);
             }
         }
         else {
@@ -407,12 +407,11 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
             if (LOG.isDebugEnabled() && !useEncrPasswds) {
                 String encr = useEncrPasswds ? "with" : "without";
-                LOG.debug("DB login for user " + this + " " +
-                        encr + " encrypted passwords failed");
+                LOG.debug("DB login for user {} {} encrypted passwords failed", this, encr);
             }
         }
         if (LOG.isDebugEnabled() && result) {
-            LOG.debug("PAM login for user " + this + " succeeded. ");
+            LOG.debug("PAM login for user {} succeeded. ", this);
         }
         return result;
     }

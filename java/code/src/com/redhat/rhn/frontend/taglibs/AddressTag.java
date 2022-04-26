@@ -44,7 +44,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *                 Edit This Address (this is a link)
  * </pre>
  *
- * @version $Rev: 694 $
  */
 public class AddressTag extends TagSupport {
 

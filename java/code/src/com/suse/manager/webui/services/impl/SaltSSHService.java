@@ -69,7 +69,8 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -117,7 +118,7 @@ public class SaltSSHService {
     public static final int SSH_DEFAULT_PORT = 22;
     public static final int SSH_PUSH_PORT = SSH_DEFAULT_PORT;
 
-    private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
+    private static final Logger LOG = LogManager.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
     public static final List<String> ACTION_STATES_LIST = Arrays.asList(
@@ -281,7 +282,7 @@ public class SaltSSHService {
                             sshTimeout,
                             minionOpts(mid, contactMethodLabel)
                     );
-                }, () -> LOG.error("Minion id='" + mid + "' not found in the database"));
+                }, () -> LOG.error("Minion id='{}' not found in the database", mid));
             }
         }
         return roster;
@@ -483,7 +484,7 @@ public class SaltSSHService {
     public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
             Map<String, Object> pillarData) throws SaltException {
-        LOG.info("Bootstrapping host: " + parameters.getHost());
+        LOG.info("Bootstrapping host: {}", parameters.getHost());
         LocalCall<Map<String, ApplyResult>> call = State.apply(bootstrapMods, Optional.of(pillarData));
 
         List<String> bootstrapProxyPath;
@@ -678,7 +679,7 @@ public class SaltSSHService {
             extraFilerefs.ifPresent(sshConfigBuilder::extraFilerefs);
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
-            LOG.debug("Local callSyncSSH: " + SaltService.localCallToString(call));
+            LOG.debug("Local callSyncSSH: {}", SaltService.localCallToString(call));
             return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
                     .whenComplete((r, e) -> {
                         if (roster.isPresent()) {
@@ -686,13 +687,13 @@ public class SaltSSHService {
                                 Files.deleteIfExists(rosterPath);
                             }
                             catch (IOException ex) {
-                                LOG.error("Can't delete roster file: " + ex.getMessage());
+                                LOG.error("Can't delete roster file: {}", ex.getMessage());
                             }
                         }
                     }));
         }
         catch (IOException e) {
-            LOG.error("Error operating on roster file: " + e.getMessage());
+            LOG.error("Error operating on roster file: {}", e.getMessage());
             throw new SaltException(e);
         }
     }
@@ -980,7 +981,7 @@ public class SaltSSHService {
      * @param minion the minion
      */
     public void cleanPendingActionChainAsync(MinionServer minion) {
-        LOG.warn("Cleaning up pending action chain execution on ssh minion " + minion.getMinionId());
+        LOG.warn("Cleaning up pending action chain execution on ssh minion {}", minion.getMinionId());
         CompletableFuture<GenericError> cancel =
                 FutureUtils.failAfter(ConfigDefaults.get().getSaltSSHConnectTimeout());
         Map<String, CompletionStage<Result<Map<String, Boolean>>>> completionStages =
@@ -989,17 +990,17 @@ public class SaltSSHService {
                 future.whenComplete((res, err) -> {
                     if (res != null) {
                         res.fold(e -> {
-                            LOG.warn("Pending action chain execution cleanup failed for minion " + minionId);
+                                    LOG.warn("Pending action chain execution cleanup failed for minion {}", minionId);
                             return null;
                             },
                                 r -> {
-                            LOG.debug("Pending action chain execution cleaned up for minion " + minionId);
+                                    LOG.debug("Pending action chain execution cleaned up for minion {}", minionId);
                             return null;
                         });
                     }
                     else if (err != null) {
-                        LOG.error("Error cleaning up pending action chain execution on minion " + minion.getMinionId() +
-                                ". Remove directory /var/tmp/.root_XXXX_salt/minion.d manually. ", err);
+                        LOG.error("Error cleaning up pending action chain execution on minion {}. Remove directory " +
+                                "/var/tmp/.root_XXXX_salt/minion.d manually. ", minion.getMinionId(), err);
                     }
                 }));
     }

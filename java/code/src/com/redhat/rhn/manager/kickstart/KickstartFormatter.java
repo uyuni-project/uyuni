@@ -40,7 +40,8 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,11 +53,10 @@ import java.util.List;
 /**
  * Simple class to reduce dependencies between Struts and database layers
  *
- * @version $Rev $
  */
 public class KickstartFormatter {
 
-    private static Logger log = Logger.getLogger(KickstartFormatter.class);
+    private static Logger log = LogManager.getLogger(KickstartFormatter.class);
 
 
     private static final String REDHAT_REGISTER_SNIPPET = "spacewalk/redhat_register";
@@ -372,7 +372,7 @@ public class KickstartFormatter {
         for (Object oIn : l) {
             KickstartCommand command = (KickstartCommand) oIn;
             String cname = command.getCommandName().getName();
-            log.debug("getCommands name: " + cname);
+            log.debug("getCommands name: {}", cname);
 
             if (cname.matches("rootpw")) {
                 commands.append(cname + SPACE + ISCRYPTED +
@@ -518,9 +518,9 @@ public class KickstartFormatter {
 
         KickstartUrlHelper urlHelper = new KickstartUrlHelper(this.ksdata);
 
-        log.debug("Got URL : " + command.getArguments());
-        log.debug("isRhnTree: " + this.ksdata.getTree().isRhnTree());
-        log.debug("Actual URL: " + urlLocation);
+        log.debug("Got URL : {}", command.getArguments());
+        log.debug("isRhnTree: {}", this.ksdata.getTree().isRhnTree());
+        log.debug("Actual URL: {}", urlLocation);
 
         StringBuilder url = new StringBuilder();
         url.append("--url ");
@@ -530,7 +530,7 @@ public class KickstartFormatter {
             log.debug("Formatting for view use.");
             // /kickstart/dist/ks-rhel-i386-as-4-u2
             url.append(urlHelper.getCobblerMediaUrl());
-            log.debug("constructed: " + url);
+            log.debug("constructed: {}", url);
             argVal = url.toString();
         }
         else if (urlLocation.startsWith("/")) {
@@ -538,14 +538,14 @@ public class KickstartFormatter {
             log.debug("Appending provided subpath to cobbler host.");
             url.append(urlHelper.getCobblerMediaUrlBase());
             url.append(urlLocation);
-            log.debug("constructed: " + url);
+            log.debug("constructed: {}", url);
             argVal = url.toString();
         }
         else {
             log.debug("Just return the arg value.");
         }
 
-        log.debug("returning url: " + argVal);
+        log.debug("returning url: {}", argVal);
         return argVal;
     }
 
@@ -741,8 +741,7 @@ public class KickstartFormatter {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("kickstart_host: [" + XMLRPC_HOST + "] kshost: [" +
-                    this.ksHost + "] indexof: " +
+            log.debug("kickstart_host: [{}] kshost: [{}] indexof: {}", XMLRPC_HOST, this.ksHost,
                     this.ksHost.indexOf(XMLRPC_HOST));
         }
 
@@ -835,13 +834,13 @@ public class KickstartFormatter {
         List<ActivationKey> tokens = generateActKeyTokens(ksdata, ksession);
         for (Iterator itr = tokens.iterator(); itr.hasNext();) {
             ActivationKey act = (ActivationKey) itr.next();
-            log.debug("rhnreg: key name: " + act.getKey());
+            log.debug("rhnreg: key name: {}", act.getKey());
             retval.append(act.getKey());
             if (itr.hasNext()) {
                 retval.append(",");
             }
         }
-        log.debug("generateActivationKeyString: " + retval);
+        log.debug("generateActivationKeyString: {}", retval);
         return retval.toString();
     }
 
@@ -857,13 +856,13 @@ public class KickstartFormatter {
         // associated with this KickstartProfile then we want to create a
         // one time key.
         if (log.isDebugEnabled()) {
-            log.debug("def reg tokens: " + ksdata.getDefaultRegTokens());
+            log.debug("def reg tokens: {}", ksdata.getDefaultRegTokens());
         }
 
         ActivationKey defaultKey = ksession == null ? null :
             ActivationKeyFactory.lookupByKickstartSession(ksession);
 
-        log.debug("generateActKeyTokens :: defaultKey: " + defaultKey);
+        log.debug("generateActKeyTokens :: defaultKey: {}", defaultKey);
 
         //if we need a reactivation key, add one
         if (defaultKey != null) {
@@ -872,10 +871,10 @@ public class KickstartFormatter {
             //    lookupByKickstartSession(this.session);
                 tokens.add(defaultKey);
                 if (log.isDebugEnabled()) {
-                    log.debug("Found one time activation key: " + defaultKey.getKey());
+                    log.debug("Found one time activation key: {}", defaultKey.getKey());
                 }
         }
-        log.debug("tokens size: " + tokens.size());
+        log.debug("tokens size: {}", tokens.size());
         //add the activation keys associated with the kickstart profile
         if (ksdata.getDefaultRegTokens() != null) {
             if (ksdata.getDefaultRegTokens().size() > 0) {
@@ -940,12 +939,12 @@ public class KickstartFormatter {
                 Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(),
                         updatePkgNameIn);
                 if (packageId == null) {
-                    log.debug("package:" + packageId + "not found in kickstart's channel");
+                    log.debug("package:{}not found in kickstart's channel", packageId);
                     continue;
                 }
 
-                log.debug("package  : " + updatePkgNameIn);
-                log.debug("packageId: " + packageId);
+                log.debug("package  : {}", updatePkgNameIn);
+                log.debug("packageId: {}", packageId);
                 Package p =
                         PackageFactory.lookupByIdAndUser(packageId, user);
                 if (p != null) {

@@ -26,7 +26,8 @@ import com.suse.manager.model.gatherer.GathererModule;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class GathererRunner {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(GathererRunner.class);
+    private static Logger logger = LogManager.getLogger(GathererRunner.class);
 
     /**
      * Call gatherer --list-modules and return the result
@@ -104,10 +105,10 @@ public class GathererRunner {
                 String uri = builder.build().toString();
                 env.put("http_proxy", uri);
                 env.put("https_proxy", uri);
-                logger.debug("Set http(s)_proxy to " + uri);
+                logger.debug("Set http(s)_proxy to {}", uri);
             }
             catch (URISyntaxException e) {
-                logger.error("URI syntax exception when setting Proxy: " + e.getMessage());
+                logger.error("URI syntax exception when setting Proxy: {}", e.getMessage());
             }
         }
         int debuglevel = Config.get().getInt("debug", 0);
@@ -120,7 +121,7 @@ public class GathererRunner {
         String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
         if (!StringUtils.isEmpty(noProxy)) {
             env.put("no_proxy", noProxy);
-            logger.debug("Set no_proxy to " + noProxy);
+            logger.debug("Set no_proxy to {}", noProxy);
         }
 
         String[] envp = new String[env.size()];
@@ -166,8 +167,7 @@ public class GathererRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the virtual-host-gatherer, exit code " +
-                        exitCode);
+                logger.error("Error while calling the virtual-host-gatherer, exit code {}", exitCode);
                 logger.error("Please check the virtual-host-gatherer logfile.");
                 return null;
             }

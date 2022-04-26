@@ -21,7 +21,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,8 +55,7 @@ class ErrataQueueWorker implements QueueWorker {
             parentQueue.workerStarting();
             markInProgress();
             if (logger.isDebugEnabled()) {
-                logger.debug("Processing errata queue for " +
-                        errataId);
+                logger.debug("Processing errata queue for {}", errataId);
             }
 
             WriteMode marker = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
@@ -67,8 +66,7 @@ class ErrataQueueWorker implements QueueWorker {
             params.put("channel_id", channelId);
             int rowsUpdated = marker.executeUpdate(params);
             if (logger.isDebugEnabled()) {
-                logger.debug("inserted " + rowsUpdated +
-                    " rows into the rhnErrataNotificationQueue table");
+                logger.debug("inserted {} rows into the rhnErrataNotificationQueue table", rowsUpdated);
             }
             dequeueErrata();
             HibernateFactory.commitTransaction();
@@ -91,8 +89,7 @@ class ErrataQueueWorker implements QueueWorker {
         params.put("channel_id", channelId);
         int numRows = m.executeUpdate(params);
         if (logger.isDebugEnabled()) {
-            logger.debug("marked " + numRows +
-                    " rows as in progress in rhnErrataQueue table");
+            logger.debug("marked {} rows as in progress in rhnErrataQueue table", numRows);
         }
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
@@ -106,8 +103,7 @@ class ErrataQueueWorker implements QueueWorker {
         dqeParams.put("channel_id", channelId);
         int eqDeleted = deqErrata.executeUpdate(dqeParams);
         if (logger.isDebugEnabled()) {
-            logger.debug("deleted " + eqDeleted +
-                    " rows from the rhnErrataQueue table");
+            logger.debug("deleted {} rows from the rhnErrataQueue table", eqDeleted);
         }
     }
 

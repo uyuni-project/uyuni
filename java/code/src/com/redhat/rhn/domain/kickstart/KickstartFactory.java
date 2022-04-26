@@ -30,7 +30,8 @@ import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -55,7 +56,7 @@ public class KickstartFactory extends HibernateFactory {
 
     private static final int IN_CLAUSE_MAX_SIZE = 1000;
     private static KickstartFactory singleton = new KickstartFactory();
-    private static Logger log = Logger.getLogger(KickstartFactory.class);
+    private static Logger log = LogManager.getLogger(KickstartFactory.class);
 
 
     public static final CryptoKeyType KEY_TYPE_GPG = lookupKeyType("GPG");
@@ -431,7 +432,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void saveKickstartData(KickstartData ksdataIn,
             KickstartSession ksession) {
-        log.debug("saveKickstartData: " + ksdataIn.getLabel());
+        log.debug("saveKickstartData: {}", ksdataIn.getLabel());
         singleton.saveObject(ksdataIn);
         String fileData = null;
         if (ksdataIn.isRawData()) {
@@ -451,7 +452,7 @@ public class KickstartFactory extends HibernateFactory {
             Map ksmeta = p.getKsMeta();
             for (Object oIn : ksmeta.keySet()) {
                 String name = (String) oIn;
-                log.debug("fixing ksmeta: " + name);
+                log.debug("fixing ksmeta: {}", name);
                 fileData = StringUtils.replace(fileData, "\\$" + name, "$" + name);
             }
         }
@@ -459,7 +460,7 @@ public class KickstartFactory extends HibernateFactory {
             log.debug("No ks meta for this profile.");
         }
         String path = ksdataIn.buildCobblerFileName();
-        log.debug("writing ks file to : " + path);
+        log.debug("writing ks file to : {}", path);
         FileUtils.writeStringToFile(fileData, path);
     }
 
@@ -499,7 +500,7 @@ public class KickstartFactory extends HibernateFactory {
         if (path != null) {
             File file = new File(path);
             if (file.exists()) {
-                log.debug("deleting : " + path);
+                log.debug("deleting : {}", path);
                 file.delete();
             }
         }
@@ -1072,7 +1073,7 @@ public class KickstartFactory extends HibernateFactory {
             List ksSessions = kickstartSessionQuery.list();
             for (Object next : ksSessions) {
                 KickstartSession ks = (KickstartSession)next;
-                log.debug("Failing kickstart associated with action: " + ks.getId());
+                log.debug("Failing kickstart associated with action: {}", ks.getId());
                 ks.setState(failed);
                 ks.setAction(null);
 

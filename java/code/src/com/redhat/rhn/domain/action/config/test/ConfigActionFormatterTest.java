@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigActionFormatter;
@@ -22,6 +24,7 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ConfigActionFormatter.
@@ -33,6 +36,7 @@ public class ConfigActionFormatterTest extends BaseTestCaseWithUser {
      * Tests getRelatedObjectDescription().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetRelatedObjectDescription() throws Exception {
         ConfigAction action = (ConfigAction) ActionFactoryTest.createAction(user,
             ActionFactory.TYPE_CONFIGFILES_DEPLOY);

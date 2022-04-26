@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -29,6 +32,8 @@ import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +41,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
     private ScheduleHandler handler = new ScheduleHandler();
 
+    @Test
     public void testCancelActions() throws Exception {
 
         // setup
@@ -83,6 +89,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertEquals(numActions + 2, apiActions.length);
     }
 
+    @Test
     public void testListAllActions() throws Exception {
 
         // setup
@@ -120,6 +127,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertEquals(numActions + 3, apiActions.length);
     }
 
+    @Test
     public void testListCompletedActions() throws Exception {
 
         //obtain number of actions from action manager
@@ -144,6 +152,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > numActions);
     }
 
+    @Test
     public void testListInProgressActions() throws Exception {
         //obtain number of actions from action manager
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(admin, null);
@@ -167,6 +176,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > numActions);
     }
 
+    @Test
     public void testListFailedActions() throws Exception {
         //obtain number of actions from action manager
         DataResult actions = ActionManager.failedActions(admin, null);
@@ -190,6 +200,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > numActions);
     }
 
+    @Test
     public void testListArchivedActions() throws Exception {
         //obtain number of actions from action manager
         DataResult actions = ActionManager.archivedActions(admin, null);
@@ -214,6 +225,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > numActions);
     }
 
+    @Test
     public void testListAllArchivedActions() throws Exception {
         //obtain number of actions from action manager
         DataResult actions = ActionManager.allArchivedActions(admin, null);
@@ -250,6 +262,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > apiActionsLimitted.length);
     }
 
+    @Test
     public void testListAllCompletedActions() throws Exception {
         //obtain number of actions from action manager
         DataResult actions = ActionManager.allCompletedActions(admin, null);
@@ -284,6 +297,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiActions.length > apiActionsLimitted.length);
     }
 
+    @Test
     public void testListCompletedSystems() throws Exception {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -304,6 +318,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertEquals(numSystems, apiSystems.length);
     }
 
+    @Test
     public void testListInProgressSystems() throws Exception {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -324,6 +339,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertEquals(numSystems, apiSystems.length);
     }
 
+    @Test
     public void testListFailedSystems() throws Exception {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);

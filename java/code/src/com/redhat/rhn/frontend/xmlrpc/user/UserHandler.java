@@ -45,6 +45,8 @@ import com.redhat.rhn.manager.user.DeleteSatAdminException;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -110,6 +112,7 @@ public class UserHandler extends BaseHandler {
      *     $UserSerializer
      * #array_end()
      */
+    @ReadOnly
     public List listUsers(User loggedInUser) throws FaultException {
         // Get the logged in user
         try {
@@ -133,6 +136,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype #array_single("string", "(role label)")
      */
+    @ReadOnly
     public Object[] listRoles(User loggedInUser, String login) throws FaultException {
         // Get the logged in user
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
@@ -158,6 +162,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_single("string", "(role label)")
      */
+    @ReadOnly
     public Set<String> listAssignableRoles(User loggedInUser) {
         return getAssignableRoles(loggedInUser);
     }
@@ -194,6 +199,7 @@ public class UserHandler extends BaseHandler {
      *     is enabled for the user")
      *   #struct_end()
      */
+    @ReadOnly
     public Map getDetails(User loggedInUser, String login) throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
         LocalizationService ls = LocalizationService.getInstance();
@@ -336,8 +342,7 @@ public class UserHandler extends BaseHandler {
                           "assigned/revoked from the user." +
                          " Possible Roles assignable/revokable by this user %s";
 
-            throw new NoSuchRoleException(String.format(msg, role,
-                                                    assignableRoles.toString()));
+            throw new NoSuchRoleException(String.format(msg, role, assignableRoles));
         }
     }
 
@@ -858,6 +863,7 @@ public class UserHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listDefaultSystemGroups(User loggedInUser, String login) {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
@@ -895,6 +901,7 @@ public class UserHandler extends BaseHandler {
      *     #struct_end()
      *   #array_end()
      */
+    @ReadOnly
     public Object[] listAssignedSystemGroups(User loggedInUser, String login)
         throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
@@ -1075,6 +1082,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #return_int_success()
      */
+    @ReadOnly
     public boolean getCreateDefaultSystemGroup(User loggedInUser) {
         //Logged in user must be an org admin.
         ensureOrgAdmin(loggedInUser);

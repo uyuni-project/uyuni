@@ -19,7 +19,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Image;
 import org.cobbler.SystemRecord;
@@ -39,7 +40,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
     public static final String POWER_MANAGEMENT_DUMMY_NAME = "dummy_for_power_management";
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerPowerSettingsUpdateCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerPowerSettingsUpdateCommand.class);
 
     /** The server to update. */
     private Server server;
@@ -93,7 +94,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         SystemRecord systemRecord = getSystemRecordForSystem();
         if (systemRecord != null) {
             systemRecord.remove();
-            log.debug("Cobbler system profile removed for system " + getIdent());
+            log.debug("Cobbler system profile removed for system {}", getIdent());
         }
 
         return null;
@@ -121,7 +122,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         SystemRecord systemRecord = getSystemRecordForSystem();
 
         if (systemRecord == null && server != null) {
-            log.debug("No Cobbler system record found for system " + getIdent());
+            log.debug("No Cobbler system record found for system {}", getIdent());
             try {
                 CobblerConnection connection = getCobblerConnection();
                 Image image = createDummyImage(connection);
@@ -141,7 +142,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         }
 
         try {
-            log.debug("Setting Cobbler parameters for system " + getIdent());
+            log.debug("Setting Cobbler parameters for system {}", getIdent());
             if (powerType != null && !powerType.equals("") &&
                     !powerType.equals(systemRecord.getPowerType())) {
                 systemRecord.setPowerType(powerType);
@@ -162,14 +163,14 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
                 systemRecord.setPowerId(powerId);
             }
             systemRecord.save();
-            log.debug("Settings saved for system " + getIdent());
+            log.debug("Settings saved for system {}", getIdent());
         }
         catch (XmlRpcException e) {
             Throwable cause = e.getCause();
             if (cause != null) {
                 String message = cause.getMessage();
                 if (message != null && message.contains("power type must be one of")) {
-                    log.error("Unsupported Cobbler power type " + powerType);
+                    log.error("Unsupported Cobbler power type {}", powerType);
                     return new ValidatorError(
                         "kickstart.powermanagement.unsupported_power_type");
                 }

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -24,7 +27,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
@@ -50,8 +55,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     private static final String EXPECTED_PRODUCTS_CSV = JARPATH + "expected_products.csv";
 
     /** Logger instance. */
-    private static Logger logger = Logger
-            .getLogger(ContentSyncManagerNonRegressionTest.class);
+    private static Logger logger = LogManager.getLogger(ContentSyncManagerNonRegressionTest.class);
 
     private static List<String> archs = Arrays.asList(
             "i586", "ia64", "ppc64le", "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64");
@@ -63,6 +67,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * Just here to prevent error about no test specified
      * @throws Exception
      */
+    @Test
     public void testNothing() throws Exception {
         assertTrue(true);
     }

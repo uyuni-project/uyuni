@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.events.TraceBackEvent;
 
 import com.suse.manager.metrics.PrometheusExporter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -30,11 +31,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Polls the EventQueue for events and executes them
  *
- * @version $Rev $
  */
 public class MessageDispatcher implements Runnable {
 
-    private static Logger log = Logger.getLogger(MessageDispatcher.class);
+    private static Logger log = LogManager.getLogger(MessageDispatcher.class);
     private boolean isStopped = false;
 
     /* Thread pool for concurrent execution of message actions */
@@ -50,7 +50,7 @@ public class MessageDispatcher implements Runnable {
         log.info("Awaiting termination of threads (for 1 minute)");
         try {
             final boolean done = threadPool.awaitTermination(1, TimeUnit.MINUTES);
-            log.info("Thread pool shut down: " + done);
+            log.info("Thread pool shut down: {}", done);
         }
         catch (InterruptedException e) {
             log.error("Interrupted while awaiting termination", e);
@@ -84,7 +84,7 @@ public class MessageDispatcher implements Runnable {
                     continue;
                 }
                 else if (actionHandler.canRunConcurrently()) {
-                    log.info("Executing in thread pool: " + actionHandler);
+                    log.info("Executing in thread pool: {}", actionHandler);
                     threadPool.execute(actionHandler);
                 }
                 else {

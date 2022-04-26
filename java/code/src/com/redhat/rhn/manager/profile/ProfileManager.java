@@ -49,7 +49,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +68,7 @@ import java.util.Set;
  */
 public class ProfileManager extends BaseManager {
 
-    private static Logger log = Logger.getLogger(ProfileManager.class);
+    private static Logger log = LogManager.getLogger(ProfileManager.class);
     public static final String OPTION_REMOVE = "remove";
     public static final String OPTION_SUBSCRIBE = "subscribe";
 
@@ -205,8 +206,8 @@ public class ProfileManager extends BaseManager {
         Map<String, List<PackageListItem>> systemsNameIdMap = buildPackagesMap(systems);
 
         if (log.isDebugEnabled()) {
-            log.debug("profilesIdComboMap: " + profilesNameIdMap);
-            log.debug("systemsIdComboMap: " + systemsNameIdMap);
+            log.debug("profilesIdComboMap: {}", profilesNameIdMap);
+            log.debug("systemsIdComboMap: {}", systemsNameIdMap);
         }
 
         // Here is the real work.  Iterate over the list of packages in the
@@ -226,8 +227,7 @@ public class ProfileManager extends BaseManager {
                     PackageListItem syspkgitem = (PackageListItem) packageListItemIn;
                     PackageMetadata pm = createPackageMetadata(syspkgitem,
                             null, PackageMetadata.KEY_THIS_ONLY, param);
-                    log.debug("plist is null - adding KEY_THIS_ONLY: " +
-                            pm.getSystem().getVersion());
+                    log.debug("plist is null - adding KEY_THIS_ONLY: {}", pm.getSystem().getVersion());
                     skipPkg.add(syspkgitem.getNevra());
                     result.add(pm);
                 }
@@ -236,8 +236,7 @@ public class ProfileManager extends BaseManager {
                 // We have packages on the system that are also in the Profile.  If either
                 // the system or the profile list has more than one version of a package
                 // installed we need to run a different algorithm.
-                log.debug("syslist.size: " + syslist.size() +
-                        " plist.size: " + plist.size());
+                log.debug("syslist.size: {} plist.size: {}", syslist.size(), plist.size());
                 if (syslist.size() > 1 || plist.size() > 1) {
                     Map<String, PackageMetadata> compareMap = new HashMap<>();
                     for (PackageListItem packageListItemIn : syslist) {
@@ -252,7 +251,7 @@ public class ProfileManager extends BaseManager {
                                 // therefore, it may be skipped
                                 continue;
                             }
-                            log.debug("Checking on : " + profpkgitem.getEvr());
+                            log.debug("Checking on : {}", profpkgitem.getEvr());
 
                             if (compareArch(syspkgitem.getArch(),
                                     profpkgitem.getArch()) != 0) {
@@ -285,8 +284,7 @@ public class ProfileManager extends BaseManager {
                                     if ((j + 1) == plist.size()) {
                                         // this is the last entry in plist; therefore,
                                         // this must be a difference between pkgs
-                                        log.debug("Adding to cm: " + evrKey +
-                                                " comp: " + pm.getComparison());
+                                        log.debug("Adding to cm: {} comp: {}", evrKey, pm.getComparison());
                                         pm.setComparison(
                                                 PackageMetadata.KEY_OTHER_ONLY);
                                         compareMap.put(evrKey, pm);
@@ -295,7 +293,7 @@ public class ProfileManager extends BaseManager {
                                     }
                                 }
                                 else {
-                                    log.debug("Removing from cm: " + evrKey);
+                                    log.debug("Removing from cm: {}", evrKey);
                                     compareMap.remove(evrKey);
                                     skipPkg.add(profpkgitem.getNevra());
                                     // pkg found in both plist & syslist, skip to next
@@ -308,19 +306,19 @@ public class ProfileManager extends BaseManager {
 
                             // reached end of plist w/o finding match in syslist
                             // or recording a difference; therefore, add one now
-                            log.debug("Checking on : " + syspkgitem.getEvr());
+                            log.debug("Checking on : {}", syspkgitem.getEvr());
 
                             PackageMetadata pm = createPackageMetadata(syspkgitem,
                                     null, PackageMetadata.KEY_THIS_ONLY, param);
 
-                            log.debug("*** adding a PM(1): " + pm.hashCode());
+                            log.debug("*** adding a PM(1): {}", pm.hashCode());
                             skipPkg.add(syspkgitem.getNevra());
                             result.add(pm);
                         }
                     }
                     // Copy into the result map
                     for (PackageMetadata pm : compareMap.values()) {
-                        log.debug("*** adding a PM(2): " + pm.hashCode());
+                        log.debug("*** adding a PM(2): {}", pm.hashCode());
                         result.add(pm);
                     }
                 }
@@ -348,7 +346,7 @@ public class ProfileManager extends BaseManager {
                                 profpkgitem, param);
                         if (pm != null && pm.getComparisonAsInt() !=
                                 PackageMetadata.KEY_NO_DIFF) {
-                            log.debug("*** adding a PM(3): " + pm.hashCode());
+                            log.debug("*** adding a PM(3): {}", pm.hashCode());
                             result.add(pm);
                         }
                     }
@@ -381,7 +379,7 @@ public class ProfileManager extends BaseManager {
 
                         PackageMetadata pm = createPackageMetadata(
                                 null, profpkgitem, PackageMetadata.KEY_OTHER_ONLY, param);
-                        log.debug("*** adding a PM(4): " + pm.hashCode());
+                        log.debug("*** adding a PM(4): {}", pm.hashCode());
                         result.add(pm);
                     }
                 }
@@ -439,10 +437,8 @@ public class ProfileManager extends BaseManager {
     private static PackageMetadata compareAndCreatePackageMetaData(
             PackageListItem syspkgitem, PackageListItem profpkgitem, String param) {
 
-        log.debug("    Sys: " + syspkgitem.getName() + " get: " +
-                syspkgitem.getVersion());
-        log.debug("    Pro: " + profpkgitem.getName() + " get: " +
-                profpkgitem.getVersion());
+        log.debug("    Sys: {} get: {}", syspkgitem.getName(), syspkgitem.getVersion());
+        log.debug("    Pro: {} get: {}", profpkgitem.getName(), profpkgitem.getVersion());
 
         PackageMetadata retval = null;
         PackageEvr evr1 = new PackageEvr(
@@ -459,7 +455,7 @@ public class ProfileManager extends BaseManager {
                 syspkgitem.getPackageType()
         );
         int rc = evr1.compareTo(evr2);
-        log.debug("    rc: " + rc);
+        log.debug("    rc: {}", rc);
 
         // do nothing if they are equal
         if (rc < 0) {
@@ -606,7 +602,7 @@ public class ProfileManager extends BaseManager {
         // seems like a waste, but that's how it works
         DataResult<PackageMetadata> profiles = compareServerToServer(sid, sid1, orgid, null);
         if (log.isDebugEnabled()) {
-            log.debug("  profiles .. " + profiles);
+            log.debug("  profiles .. {}", profiles);
         }
 
         // in order to search the list by combo id (name_id|evr_id|arch_id),
@@ -615,7 +611,7 @@ public class ProfileManager extends BaseManager {
         for (PackageMetadata pm : profiles) {
 
             if (log.isDebugEnabled()) {
-                log.debug("  pm, putting: " + pm.getIdCombo());
+                log.debug("  pm, putting: {}", pm.getIdCombo());
             }
 
             profilesMap.put(pm.getIdCombo(), pm);
@@ -624,7 +620,7 @@ public class ProfileManager extends BaseManager {
         // find all of the items in profiles which are in RhnSet
         for (String pkgIdCombo : pkgIdCombos) {
             if (log.isDebugEnabled()) {
-                log.debug("  rse, fetching: " + pkgIdCombo);
+                log.debug("  rse, fetching: {}", pkgIdCombo);
             }
             PackageMetadata pm = (PackageMetadata) profilesMap.get(pkgIdCombo);
             if (pm != null) {
@@ -655,7 +651,7 @@ public class ProfileManager extends BaseManager {
         throws TaskomaticApiException {
 
         if (log.isDebugEnabled()) {
-            log.debug("in syncToSystem: " + missingoption);
+            log.debug("in syncToSystem: {}", missingoption);
         }
 
         if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) ||
@@ -668,7 +664,7 @@ public class ProfileManager extends BaseManager {
                 null, pkgIdCombos);
 
         if (log.isDebugEnabled()) {
-            log.debug("prepareTosyncServer results: " + dr);
+            log.debug("prepareTosyncServer results: {}", dr);
         }
 
         // dr should be the list of packages and actions that need to be taken.
@@ -678,7 +674,7 @@ public class ProfileManager extends BaseManager {
         List<PackageMetadata> missingPackages = findMissingPackages(dr, channels);
         PackageAction action = null;
 
-        log.debug("is missingpackages empty: " + missingPackages.isEmpty());
+        log.debug("is missingpackages empty: {}", missingPackages.isEmpty());
         if (missingPackages.isEmpty()) {
             if (log.isDebugEnabled()) {
                 log.debug("Schedule sync, no missing packages, so we're good");
@@ -686,7 +682,7 @@ public class ProfileManager extends BaseManager {
             action = ActionManager.schedulePackageRunTransaction(user, server, dr,
                     earliest);
             if (log.isDebugEnabled()) {
-                log.debug("created an action: " + action);
+                log.debug("created an action: {}", action);
             }
         }
         else if (OPTION_REMOVE.equals(missingoption)) {
@@ -697,8 +693,7 @@ public class ProfileManager extends BaseManager {
             // the server has a version of the package and we don't want to
             // touch it.
             if (log.isDebugEnabled()) {
-                log.debug("Missingoption set to remove.  DataResult size [" +
-                        dr.size() + "]");
+                log.debug("Missingoption set to remove.  DataResult size [{}]", dr.size());
             }
 
             for (PackageMetadata pm : missingPackages) {
@@ -710,13 +705,13 @@ public class ProfileManager extends BaseManager {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("DataResult size after removals [" + dr.size() + "]");
+                log.debug("DataResult size after removals [{}]", dr.size());
             }
 
             action = ActionManager.schedulePackageRunTransaction(user, server, dr,
                     earliest);
             if (log.isDebugEnabled()) {
-                log.debug("Action: " + action);
+                log.debug("Action: {}", action);
             }
         }
         else if (OPTION_SUBSCRIBE.equals(missingoption)) {
@@ -743,9 +738,7 @@ public class ProfileManager extends BaseManager {
                             pm.getEvrId())) {
 
                         if (log.isDebugEnabled()) {
-                            log.debug("Package [" + pm.getName() +
-                                    "] is in Channel [" + validChannel.getId() +
-                                    "]");
+                            log.debug("Package [{}] is in Channel [{}]", pm.getName(), validChannel.getId());
                         }
 
                         neededChannels.add(validChannel);
@@ -763,7 +756,7 @@ public class ProfileManager extends BaseManager {
 
             for (Channel needed : neededChannels) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Subscribing to [" + needed.getName() + "]");
+                    log.debug("Subscribing to [{}]", needed.getName());
                 }
                 SystemManager.subscribeServerToChannel(user, server, needed);
             }
@@ -775,7 +768,7 @@ public class ProfileManager extends BaseManager {
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Removing pm [" + pm.getName() + "]");
+                            log.debug("Removing pm [{}]", pm.getName());
                         }
                         dr.remove(pm);
                     }
@@ -783,7 +776,7 @@ public class ProfileManager extends BaseManager {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("DataResult size after removals [" + dr.size() + "]");
+                log.debug("DataResult size after removals [{}]", dr.size());
             }
 
             action = ActionManager.schedulePackageRunTransaction(user, server, dr,
@@ -791,7 +784,7 @@ public class ProfileManager extends BaseManager {
         }
         else {
             if (log.isDebugEnabled()) {
-                log.debug("We have [" + missingPackages.size() + "] missing packages");
+                log.debug("We have [{}] missing packages", missingPackages.size());
             }
             throw new MissingPackagesException("There are [" +
                     missingPackages.size() + "] missing packages");
@@ -807,8 +800,7 @@ public class ProfileManager extends BaseManager {
                 user.getOrg().getId(), baseChannel.getId());
 
         if (log.isDebugEnabled()) {
-            log.debug("updatePackageListWithChannels: validchannels [" +
-                    validChannels.size() + "]");
+            log.debug("updatePackageListWithChannels: validchannels [{}]", validChannels.size());
         }
 
         for (Channel validChannel : validChannels) {
@@ -818,9 +810,7 @@ public class ProfileManager extends BaseManager {
                         pm.getEvrId())) {
 
                     if (log.isDebugEnabled()) {
-                        log.debug("Package [" + pm.getName() +
-                                "] is in Channel [" + validChannel.getId() +
-                                "]");
+                        log.debug("Package [{}] is in Channel [{}]", pm.getName(), validChannel.getId());
                     }
 
                     pm.addChannel(validChannel);
@@ -871,8 +861,7 @@ public class ProfileManager extends BaseManager {
             // the server has a version of the package and we don't want to
             // touch it.
             if (log.isDebugEnabled()) {
-                log.debug("Missingoption set to remove.  DataResult size [" +
-                        dr.size() + "]");
+                log.debug("Missingoption set to remove.  DataResult size [{}]", dr.size());
             }
 
             for (PackageMetadata pm : missingPackages) {
@@ -884,7 +873,7 @@ public class ProfileManager extends BaseManager {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("DataResult size after removals [" + dr.size() + "]");
+                log.debug("DataResult size after removals [{}]", dr.size());
             }
 
             action = ActionManager.schedulePackageRunTransaction(user, server, dr,
@@ -914,9 +903,7 @@ public class ProfileManager extends BaseManager {
                             pm.getEvrId())) {
 
                         if (log.isDebugEnabled()) {
-                            log.debug("Package [" + pm.getName() +
-                                    "] is in Channel [" + validChannel.getId() +
-                                    "]");
+                            log.debug("Package [{}] is in Channel [{}]", pm.getName(), validChannel.getId());
                         }
 
                         neededChannels.add(validChannel);
@@ -943,7 +930,7 @@ public class ProfileManager extends BaseManager {
                     if (compare == PackageMetadata.KEY_OTHER_ONLY ||
                             compare == PackageMetadata.KEY_OTHER_NEWER) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Removing pm [" + pm.getName() + "]");
+                            log.debug("Removing pm [{}]", pm.getName());
                         }
                         dr.remove(pm);
                     }
@@ -951,7 +938,7 @@ public class ProfileManager extends BaseManager {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("DataResult size after removals [" + dr.size() + "]");
+                log.debug("DataResult size after removals [{}]", dr.size());
             }
 
             action = ActionManager.schedulePackageRunTransaction(user, server, dr,
@@ -959,7 +946,7 @@ public class ProfileManager extends BaseManager {
         }
         else {
             if (log.isDebugEnabled()) {
-                log.debug("We have [" + missingPackages.size() + "] missing packages");
+                log.debug("We have [{}] missing packages", missingPackages.size());
             }
 
             throw new MissingPackagesException("There are [" +
@@ -1048,23 +1035,22 @@ public class ProfileManager extends BaseManager {
         List<PackageListItem> profilePackages = canonicalProfilePackages(profileIn.getId(),
                 user.getOrg().getId(), null);
 
-        log.debug("getChildChannelsNeededForProfile profile has: " +
-                profilePackages.size() + " packages in it.");
+        log.debug("getChildChannelsNeededForProfile profile has: {} packages in it.", profilePackages.size());
 
         Set<String> evrNameIds = new HashSet<>();
         // Create the Set of evr_id's
         for (PackageListItem pli : profilePackages) {
             evrNameIds.add(pli.getNevr());
-            log.debug("Added nevr: " + pli.getNevr());
+            log.debug("Added nevr: {}", pli.getNevr());
         }
 
         for (Channel child : ChannelManager.userAccessibleChildChannels(
                 user.getOrg().getId(), baseChannel.getId())) {
-            log.debug("working with child channel: " + child.getLabel());
+            log.debug("working with child channel: {}", child.getLabel());
             List<PackageListItem> packages = getPackagesInChannelByIdCombo(child.getId());
             for (PackageListItem row : packages) {
 
-                log.debug("Checking:  " + row.getNevr());
+                log.debug("Checking:  {}", row.getNevr());
                 if (evrNameIds.contains(row.getNevr())) {
                     retval.add(child);
                     log.debug("found package, breaking out of loop");

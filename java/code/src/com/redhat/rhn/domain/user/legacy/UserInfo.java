@@ -23,7 +23,6 @@ import java.util.Date;
 /**
  * UserInfo represents the bean version of the DB table
  * RHNUSERINFO
- * @version $Rev: 61184 $
  */
 public class UserInfo extends AbstractUserChild {
     private int pageSize;

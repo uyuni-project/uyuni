@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.common.finder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -33,7 +34,7 @@ import java.util.zip.ZipEntry;
  */
 class JarFinder implements Finder {
 
-    private static Logger log = Logger.getLogger(JarFinder.class);
+    private static Logger log = LogManager.getLogger(JarFinder.class);
     private final URL url;
 
     JarFinder(URL packageUrl) {
@@ -60,7 +61,7 @@ class JarFinder implements Finder {
                 String entryName = entry.getName();
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Current entry: " + entryName);
+                    log.debug("Current entry: {}", entryName);
                 }
 
                 if (entryName.startsWith(starts) &&

@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * invalid package profile label
  *
- * @version $Revision$
  */
 public class InvalidProfileLabelException extends FaultException  {
 

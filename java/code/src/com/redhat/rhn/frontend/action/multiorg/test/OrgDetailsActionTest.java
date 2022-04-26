@@ -14,17 +14,20 @@
  */
 package com.redhat.rhn.frontend.action.multiorg.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
 
 /**
  * OrgDetailsActionTest
- * @version $Rev: 1 $
  */
 public class OrgDetailsActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);

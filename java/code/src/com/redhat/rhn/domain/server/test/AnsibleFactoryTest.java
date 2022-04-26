@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -22,6 +26,8 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
@@ -34,6 +40,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
      * Test basic save - read cycle of AnsiblePath implementations
      * @throws Exception
      */
+    @Test
     public void testSaveAndFindAnsiblePath() throws Exception {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -64,6 +71,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test removing AnsiblePath
      */
+    @Test
     public void testRemoveAnsiblePath() throws Exception {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         AnsiblePath inventoryPath = new InventoryPath(minionServer1);

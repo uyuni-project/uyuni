@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright (c) 2022 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<datasource_modes>
+
+<mode name="XccdScan">
+    <query params="offset, limit">
+          SELECT rhnxccdftestresult.id AS scan_id
+                    , rhnxccdftestresult.server_id AS system_id
+                    , rhnactionscap.action_id AS action_id
+                    , rhnxccdftestresult.identifier AS name
+                    , rhnxccdfbenchmark.identifier AS benchmark
+                    , rhnxccdfbenchmark.version AS benchmark_version
+                    , rhnxccdfprofile.identifier AS profile
+                    , rhnxccdfprofile.title AS profile_title
+                    , rhnxccdftestresult.end_time AS end_time
+                    , COUNT(CASE label WHEN 'pass' THEN 1 ELSE NULL END) AS pass
+                    , COUNT(CASE label WHEN 'fail' THEN 1 ELSE NULL END) AS fail
+                    , COUNT(CASE label WHEN 'error' THEN 1 ELSE NULL END) AS error
+                    , COUNT(CASE label WHEN 'notselected' THEN 1 ELSE NULL END) AS not_selected
+                    , COUNT(CASE label WHEN 'informational' THEN 1 ELSE NULL END) AS informational
+                    , COUNT(CASE WHEN label NOT IN ('pass', 'fail', 'error', 'notselected', 'informational') THEN 1 ELSE NULL END) AS other
+            FROM rhnxccdftestresult
+                    INNER JOIN rhnactionscap ON rhnxccdftestresult.action_scap_id = rhnactionscap.id
+                    INNER JOIN rhnxccdfbenchmark ON rhnxccdftestresult.benchmark_id = rhnxccdfbenchmark.id
+                    INNER JOIN rhnxccdfprofile ON rhnxccdftestresult.profile_id = rhnxccdfprofile.id
+                    INNER JOIN rhnxccdfruleresult ON rhnxccdftestresult.id = rhnxccdfruleresult.testresult_id
+                    INNER JOIN rhnxccdfruleresulttype ON rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
+        GROUP BY rhnxccdftestresult.id
+                    , rhnxccdftestresult.server_id
+                    , rhnactionscap.action_id
+                    , rhnxccdftestresult.identifier
+                    , rhnxccdfbenchmark.identifier
+                    , rhnxccdfbenchmark.version
+                    , rhnxccdfprofile.identifier
+                    , rhnxccdfprofile.title
+                    , rhnxccdftestresult.end_time
+        ORDER BY rhnxccdftestresult.id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+<mode name="XccdScanResult">
+    <query params="offset, limit">
+        WITH ruleresult_idrefs AS (
+            SELECT rim.rresult_id
+                       , rim.ident_id
+                       , xi.identifier
+              FROM rhnxccdfruleidentmap rim
+                       INNER JOIN rhnxccdfident xi ON rim.ident_id = xi.id
+                       INNER JOIN rhnxccdfidentsystem xis ON xi.identsystem_id = xis.id
+             WHERE xis.system = '#IDREF#'
+        )
+        SELECT rhnxccdfruleresult.testresult_id AS scan_id
+                   , rhnxccdfruleresult.id AS rule_id
+                   , ruleresult_idrefs.identifier AS idref
+                   , rhnxccdfidentsystem.system as rulesystem
+                   , rhnxccdftestresult.server_id as system_id
+                   , rhnxccdfident.identifier as ident
+                   , rhnxccdfruleresulttype.label as result
+          FROM rhnxccdfruleresult
+                   INNER JOIN rhnxccdfruleresulttype ON rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
+                   INNER JOIN rhnxccdftestresult on rhnxccdfruleresult.testresult_id = rhnxccdftestresult.id
+                   INNER JOIN ruleresult_idrefs ON ruleresult_idrefs.rresult_id = rhnxccdfruleresult.id
+                   LEFT JOIN rhnxccdfruleidentmap ON rhnxccdfruleidentmap.rresult_id = ruleresult_idrefs.rresult_id AND rhnxccdfruleidentmap.ident_id != ruleresult_idrefs.ident_id
+                   LEFT JOIN rhnxccdfident on rhnxccdfruleidentmap.ident_id = rhnxccdfident.id
+                   LEFT JOIN rhnxccdfidentsystem on rhnxccdfident.identsystem_id = rhnxccdfidentsystem.id
+        ORDER BY rhnxccdfruleresult.testresult_id OFFSET :offset LIMIT :limit
+    </query>
+</mode>
+
+</datasource_modes>

@@ -8711,14 +8711,14 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Nepodarilo sa automaticky prihlásiť systém na kanál nástrojov @@PRODUCT_NAME@@. Tento kanál obsahuje balíky potrebné pre virtualizáciu.  Je to pravdepodobne spôsobené nedostatkom oprávnení na kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
-        <target/>
+        <target>Nájdených viac kanálov potomkov s balíkom: {0}. Prosím, prihláste tento systém do príslušného kanála potomka ručne.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11143,10 +11143,17 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state. Check the server logs.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="container.based.proxy.config" xml:space="preserve">
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Peripheral Server" xml:space="preserve">
+        <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

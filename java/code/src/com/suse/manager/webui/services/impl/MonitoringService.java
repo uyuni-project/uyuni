@@ -31,7 +31,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +50,7 @@ import java.util.function.Supplier;
  */
 public class MonitoringService {
 
-    private static final Logger LOG = Logger.getLogger(MonitoringService.class);
+    private static final Logger LOG = LogManager.getLogger(MonitoringService.class);
 
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()
@@ -119,10 +120,10 @@ public class MonitoringService {
                 return Optional.empty();
             }
             if (process.exitValue() != 0) {
-                LOG.error(process.info().commandLine() + " returned non zero exit code: " + process.exitValue());
+                LOG.error("{} returned non zero exit code: {}", process.info().commandLine(), process.exitValue());
                 try (InputStream stderrIn = process.getErrorStream(); InputStream stdoutIn = process.getInputStream()) {
-                    LOG.error("stderr:\n " + IOUtils.toString(stderrIn));
-                    LOG.error("stdout:\n" + IOUtils.toString(stdoutIn));
+                    LOG.error("stderr:\n {}", IOUtils.toString(stderrIn));
+                    LOG.error("stdout:\n{}", IOUtils.toString(stdoutIn));
                 }
                 return Optional.empty();
             }
@@ -362,7 +363,7 @@ public class MonitoringService {
             if (ctlOutput.isPresent()) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(ctlOutput.get()))) {
                     String cmdOutput = IOUtils.toString(reader);
-                    LOG.debug(MGR_MONITORING_CTL + " output: " + cmdOutput);
+                    LOG.debug(MGR_MONITORING_CTL + " output: {}", cmdOutput);
 
                     LocalResponse<Map<String, ModuleRun<JsonElement>>> jsonOut = GSON.fromJson(cmdOutput,
                             new TypeToken<LocalResponse<Map<String, ModuleRun<JsonElement>>>>() {
@@ -376,7 +377,7 @@ public class MonitoringService {
                     return Optional.of(exporters);
                 }
                 catch (JsonParseException e) {
-                    LOG.error("Error parsing JSON: " + e.getMessage());
+                    LOG.error("Error parsing JSON: {}", e.getMessage());
                     return Optional.empty();
                 }
             }

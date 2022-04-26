@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -37,12 +37,10 @@ import java.util.Map;
  */
 public class ModeFactory implements ManifestFactoryBuilder {
 
-    private static Logger logger = Logger.getLogger(ModeFactory.class);
+    private static Logger logger = LogManager.getLogger(ModeFactory.class);
 
     private static final String DEFAULT_PARSER_NAME =
                                        "org.apache.xerces.parsers.SAXParser";
-
-    private static final String POSTGRES_QUERY_SUFFIX = "_pg";
 
     private static ManifestFactory factory = new ManifestFactory(new ModeFactory());
 
@@ -67,7 +65,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
                 throw new NullPointerException("filename is null");
             }
 
-            logger.debug("Parsing mode file '" + filename + "'");
+            logger.debug("Parsing mode file '{}'", filename);
             URL u = this.getClass().getResource(filename);
             DataSourceParserHelper handler =
                           (DataSourceParserHelper)parser.getContentHandler();
@@ -77,19 +75,6 @@ public class ModeFactory implements ManifestFactoryBuilder {
         catch (Exception e) {
             throw new DataSourceParsingException("Unable to parse file", e);
         }
-    }
-
-    /**
-     * Adapts the modeName parameter to specific DB system used.
-     * Returns the modeName with no changes as default behavior.
-     * @param modeName the mode name
-     * @return The new modename
-     */
-    private static String adaptModeNameToDBSystem(String modeName) {
-        if (ConfigDefaults.get().isPostgresql()) {
-            return modeName + POSTGRES_QUERY_SUFFIX;
-        }
-        return modeName;
     }
 
     private static Mode getModeInternal(String name, String mode) {
@@ -156,36 +141,6 @@ public class ModeFactory implements ManifestFactoryBuilder {
         return getSelectMode(session, name, mode);
     }
 
-    /**
-     * Retrieve a specific mode from the map of modes already parsed
-     * @param name The name of the file to search, this is the name as it is
-     *             passed to parseURL.
-     * @param mode the mode to retrieve
-     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
-     * @return The requested mode
-     */
-    public static SelectMode getSelectMode(String name, String mode, boolean rdbmsSpecific) {
-        if (rdbmsSpecific) {
-            return getSelectMode(name, adaptModeNameToDBSystem(mode));
-        }
-        return getSelectMode(name, mode);
-    }
-
-    /**
-     * Retrieve a specific mode from the map of modes already parsed
-     * @param session hibernate session
-     * @param name The name of the file to search, this is the name as it is
-     *             passed to parseURL.
-     * @param mode the mode to retrieve
-     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
-     * @return The requested mode
-     */
-    public static SelectMode getSelectMode(Session session, String name, String mode, boolean rdbmsSpecific) {
-        if (rdbmsSpecific) {
-            return getSelectMode(session, name, adaptModeNameToDBSystem(mode));
-        }
-        return getSelectMode(session, name, mode);
-    }
 
     /**
      * Retrieve a specific mode from the map of modes already parsed.
@@ -236,37 +191,6 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * @return The requested mode
      */
     public static WriteMode getWriteMode(Session session, String name, String mode) {
-        return (WriteMode)getModeInternal(session, name, mode);
-    }
-
-    /**
-     * Retrieve a specific mode from the map of modes already parsed
-     * @param name The name of the file to search, this is the name as it is
-     *             passed to parseURL.
-     * @param mode the mode to retrieve
-     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
-     * @return The requested mode
-     */
-    public static WriteMode getWriteMode(String name, String mode, boolean rdbmsSpecific) {
-        if (rdbmsSpecific) {
-            return (WriteMode)getModeInternal(name, adaptModeNameToDBSystem(mode));
-        }
-        return (WriteMode)getModeInternal(name, mode);
-    }
-
-    /**
-     * Retrieve a specific mode from the map of modes already parsed
-     * @param session hibernate database session to be used
-     * @param name The name of the file to search, this is the name as it is
-     *             passed to parseURL.
-     * @param mode the mode to retrieve
-     * @param rdbmsSpecific Whether to retrieve the WriteMode for a specific rdbms.
-     * @return The requested mode
-     */
-    public static WriteMode getWriteMode(Session session, String name, String mode, boolean rdbmsSpecific) {
-        if (rdbmsSpecific) {
-            return (WriteMode)getModeInternal(session, name, adaptModeNameToDBSystem(mode));
-        }
         return (WriteMode)getModeInternal(session, name, mode);
     }
 

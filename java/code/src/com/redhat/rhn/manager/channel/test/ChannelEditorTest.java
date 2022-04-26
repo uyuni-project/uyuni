@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -26,6 +31,8 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +41,7 @@ import java.util.List;
  */
 public class ChannelEditorTest extends RhnBaseTestCase {
 
+    @Test
     public void testAddRemovePackages() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());

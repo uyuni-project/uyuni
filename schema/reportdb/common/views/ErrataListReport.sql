@@ -16,17 +16,20 @@ CREATE OR REPLACE VIEW ErrataListReport AS
             , Errata.advisory_type
             , Errata.cve
             , Errata.synopsis
-            , count(*) AS affected_systems
+            , Errata.issue_date
+            , Errata.update_date
+            , COUNT(SystemErrata.system_id) AS affected_systems
             , Errata.synced_date
-
-    FROM SystemErrata
-            INNER JOIN Errata ON SystemErrata.mgm_id = Errata.mgm_id AND SystemErrata.errata_id = Errata.errata_id
-
+    FROM Errata
+            LEFT JOIN SystemErrata ON ( Errata.mgm_id = SystemErrata.mgm_id AND Errata.errata_id = SystemErrata.errata_id )
 GROUP BY Errata.mgm_id
             , Errata.errata_id
             , Errata.advisory_name
             , Errata.advisory_type
             , Errata.cve
             , Errata.synopsis
+            , Errata.issue_date
+            , Errata.update_date
             , Errata.synced_date
+ORDER BY Errata.mgm_id, Errata.advisory_name
 ;

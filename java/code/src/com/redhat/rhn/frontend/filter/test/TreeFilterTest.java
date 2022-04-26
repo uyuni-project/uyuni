@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.frontend.filter.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.filter.TreeFilter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +37,8 @@ public class TreeFilterTest extends RhnBaseTestCase {
     private TreeFilter filter;
 
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         main = populate();
         filter = new TreeFilter();
     }
@@ -60,6 +66,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
         return makeDataResult(tree);
     }
 
+    @Test
     public void testEmptySearch() {
         //we search on "" as the search filter value
         // and expect everything to show up.
@@ -76,6 +83,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
         assertTrue(dr.isEmpty());
    }
 
+    @Test
     public void testRootElementSearch() {
         assertFilter("Aa1", "(Aa1, 0)");
         assertFilter("Ba1", "(Ba1, 0)");
@@ -84,6 +92,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
         assertFilter("Da1", "(Da1, 0)");
     }
 
+    @Test
     public void testSinglePathSearch() {
         assertFilter("Aa2", "(Aa1, 0) (Aa2,1)");
         assertFilter("Ac6", "(Aa1, 0) (Ab4,1) (Ac6,2)");
@@ -97,6 +106,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
         assertFilter("Bb7", "(Ca1, 0) (Bb7,1)");
     }
 
+    @Test
     public void testMultiPathSearch() {
         assertFilter("Aa",
                 "(Aa1, 0) (Aa2,1) (Aa3,2)" +

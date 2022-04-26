@@ -19,7 +19,8 @@ import com.redhat.rhn.common.IllegalRegexException;
 import com.redhat.rhn.common.MethodInvocationException;
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -185,7 +186,7 @@ public class Acl {
     private static final String ACL_PREFIX = "acl";
 
     /** The log instance for this class */
-    private static Logger log = Logger.getLogger(Acl.class);
+    private static Logger log = LogManager.getLogger(Acl.class);
 
     /** Store acl handlers against keys referenced in acl statements */
     private Map handlers = new HashMap();
@@ -378,7 +379,7 @@ public class Acl {
     public boolean evalAcl(Object context, String acl) {
 
         if (log.isDebugEnabled()) {
-            log.debug("acl: " + acl);
+            log.debug("acl: {}", acl);
         }
 
         // protect against nulls.
@@ -400,7 +401,7 @@ public class Acl {
             String expression = expressions[exprIdx];
 
             if (log.isDebugEnabled()) {
-                log.debug("expression[" + exprIdx + "]: " + expression);
+                log.debug("expression[{}]: {}", exprIdx, expression);
             }
 
             String[] statements = expression.split(EXPR_SPLIT_REGEX);
@@ -411,7 +412,7 @@ public class Acl {
                 String statement = statements[stmtIdx];
 
                 if (log.isDebugEnabled()) {
-                    log.debug("statement[" + stmtIdx + "]: " + statement);
+                    log.debug("statement[{}]: {}", stmtIdx, statement);
                 }
 
                 boolean itMatches = matcher.matches(statement, parsePattern);
@@ -424,11 +425,10 @@ public class Acl {
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("num groups: " + matchResult.groups());
-                    log.debug("not: " + matchResult.group(NEGATION_GROUP));
-                    log.debug("handler: " +
-                            matchResult.group(HANDLERNAME_GROUP));
-                    log.debug("params: " + matchResult.group(PARAM_GROUP));
+                    log.debug("num groups: {}", matchResult.groups());
+                    log.debug("not: {}", matchResult.group(NEGATION_GROUP));
+                    log.debug("handler: {}", matchResult.group(HANDLERNAME_GROUP));
+                    log.debug("params: {}", matchResult.group(PARAM_GROUP));
                 }
 
                 boolean negated = matchResult.group(NEGATION_GROUP) != null;
@@ -506,7 +506,7 @@ public class Acl {
 
         // if we got this far, all acl's passed
         if (log.isDebugEnabled()) {
-            log.debug("acl: " + acl + " returning true");
+            log.debug("acl: {} returning true", acl);
         }
         return true;
 

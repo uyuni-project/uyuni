@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * Makes it easier to work with the list view code
  *
- * @version $Rev $
  */
 public class ListViewHelper {
 

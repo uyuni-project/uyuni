@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -107,7 +107,7 @@ public class SystemCommandThreadedExecutor implements Executor {
     @Override
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(String[] args=" + Arrays.asList(args) + ") - start");
+            logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
         }
 
         int retval;
@@ -146,7 +146,7 @@ public class SystemCommandThreadedExecutor implements Executor {
             for (String argIn : args) {
                 message = message + argIn + " ";
             }
-            logger.error("IOException while trying to exec: " + message, ioe);
+            logger.error("IOException while trying to exec: {}", message, ioe);
             throw new RuntimeException(
                     "IOException while trying to exec: " + message, ioe);
         }

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -31,6 +35,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * DeleteUserActionTest
@@ -39,6 +44,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testExecute() throws Exception {
         DeleteUserAction action = new DeleteUserAction();
         ActionForward forward;

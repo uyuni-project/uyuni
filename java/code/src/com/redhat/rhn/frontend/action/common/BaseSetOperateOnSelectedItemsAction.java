@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
  * that provides a framework for performing a specified business
  * operation on the currently selected items in the list.
  *
- * @version $Rev: 51639 $
  */
 public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
 

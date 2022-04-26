@@ -16,7 +16,8 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  * Represents the virtual network create action request body structure.
  */
 public class NetworkDefinition {
-    private static final Logger LOG = Logger.getLogger(NetworkDefinition.class);
+    private static final Logger LOG = LogManager.getLogger(NetworkDefinition.class);
 
     private String type;
 
@@ -384,7 +385,8 @@ public class NetworkDefinition {
                         case "pf": def.setPhysicalFunction(Optional.of(node.getAttributeValue("dev"))); break;
                         case "interface": def.interfaces.add(node.getAttributeValue("dev")); break;
                         case "address": def.virtualFunctions.add(NetworkDefinition.getPCIAddress(node)); break;
-                        default: LOG.error("Unexpected forward mode: " + node.getName());
+                        default:
+                            LOG.error("Unexpected forward mode: {}", node.getName());
                     }
                 }
             }
@@ -424,7 +426,7 @@ public class NetworkDefinition {
             }
         }
         catch (Exception e) {
-            LOG.error("failed to parse libvirt network XML definition: " + e.getMessage());
+            LOG.error("failed to parse libvirt network XML definition: {}", e.getMessage());
             def = null;
         }
 

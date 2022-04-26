@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 
 /**
@@ -33,6 +37,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         tt.setAclMixins(BooleanAclHandler.class.getName());
     }
 
+    @Test
     public void testCreationNoAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -45,6 +50,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreationWithMissingType() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -55,6 +61,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\">" +
@@ -71,6 +78,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\">" +
@@ -85,6 +93,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclValidAclInvalidMixin() {
         boolean flag = false;
         try {
@@ -106,6 +115,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreationAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -118,6 +128,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreationWithMissingUrl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +

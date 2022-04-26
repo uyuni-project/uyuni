@@ -23,7 +23,8 @@ import static org.quartz.TriggerKey.triggerKey;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
@@ -41,7 +42,7 @@ import java.util.Date;
  */
 public class TaskoQuartzHelper {
 
-    private static Logger log = Logger.getLogger(TaskoQuartzHelper.class);
+    private static Logger log = LogManager.getLogger(TaskoQuartzHelper.class);
 
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
             .withZone(ZoneId.systemDefault());
@@ -58,8 +59,7 @@ public class TaskoQuartzHelper {
      */
     public static void unscheduleTrigger(Trigger trigger) {
         try {
-            log.warn("Removing trigger " + trigger.getKey().getGroup() + "." +
-                    trigger.getKey().getName());
+            log.warn("Removing trigger {}.{}", trigger.getKey().getGroup(), trigger.getKey().getName());
             SchedulerKernel.getScheduler().unscheduleJob(
                     triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
         }
@@ -116,11 +116,11 @@ public class TaskoQuartzHelper {
         try {
             Date date =
                     SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
-            log.info("Job " + schedule.getJobLabel() + " scheduled successfully.");
+            log.info("Job {} scheduled successfully.", schedule.getJobLabel());
             return date;
         }
         catch (SchedulerException e) {
-            log.warn("Job " + schedule.getJobLabel() + " failed to schedule.");
+            log.warn("Job {} failed to schedule.", schedule.getJobLabel());
             return null;
         }
     }
@@ -140,12 +140,12 @@ public class TaskoQuartzHelper {
         try {
             Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
             if (retryTrigger != null) {
-                log.warn("Retry trigger " + retryTriggerKey + " already exists");
+                log.warn("Retry trigger {} already exists", retryTriggerKey);
                 return retryTrigger.getStartTime();
             }
         }
         catch (SchedulerException e) {
-            log.warn("no trigger found " + retryTriggerKey);
+            log.warn("no trigger found {}", retryTriggerKey);
         }
         Trigger trigger = newTrigger()
                     .withIdentity(schedule.getJobLabel() +  "-retry" + timestamp, getGroupName(schedule.getOrgId()))
@@ -169,11 +169,11 @@ public class TaskoQuartzHelper {
         try {
             Date date =
                     SchedulerKernel.getScheduler().scheduleJob(trigger);
-            log.info("Job " + schedule.getJobLabel() + " rescheduled with trigger " + trigger.getKey());
+            log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
             return date;
         }
         catch (SchedulerException e) {
-            log.info("Job " + schedule.getJobLabel() + " failed to be reschedule with trigger " + trigger.getKey(), e);
+            log.info("Job {} failed to be reschedule with trigger {}", schedule.getJobLabel(), trigger.getKey(), e);
             return null;
         }
     }
@@ -188,7 +188,7 @@ public class TaskoQuartzHelper {
         try {
             SchedulerKernel.getScheduler()
                     .unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
-            log.info("Job " + jobLabel + " unscheduled successfully.");
+            log.info("Job {} unscheduled successfully.", jobLabel);
             return 1;
         }
         catch (SchedulerException e) {

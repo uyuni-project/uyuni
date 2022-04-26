@@ -31,6 +31,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
+import com.suse.manager.saltboot.SaltbootException;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
@@ -39,7 +41,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -73,8 +76,11 @@ public class FormulaFactory {
     public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
     public static final String PREFIX = "formula-";
 
+    /** Saltboot group deployment formula */
+    public static final String SALTBOOT_GROUP = "saltboot-group";
+
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
+    private static final Logger LOG = LogManager.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
     private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";
@@ -208,8 +214,8 @@ public class FormulaFactory {
         return Optional.ofNullable(formulasFolder.listFiles())
                 .map(Arrays::asList)
                 .orElseGet(() -> {
-                    LOG.error("Unable to read formulas from folder '" + formulasFolder.getAbsolutePath() + "'" +
-                            ". Check if it exists and have the correct permissions (755).");
+                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
+                            "correct permissions (755).", formulasFolder.getAbsolutePath());
                     return Collections.EMPTY_LIST;
                 });
     }
@@ -257,6 +263,39 @@ public class FormulaFactory {
                     systemEntitlementManager.grantMonitoringEntitlement(minion);
                 }
             });
+        }
+
+        // Handle Saltboot group - create Cobbler profile
+        if (SALTBOOT_GROUP.equals(formulaName)) {
+            Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
+            String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
+            kernelOptions += " MASTER=" + saltboot.get("download_server");
+            if ((Boolean)saltboot.get("disable_id_prefix")) {
+                kernelOptions += " DISABLE_ID_PREFIX=1";
+            }
+            if ((Boolean)saltboot.get("disable_unique_suffix")) {
+                kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
+            }
+            if (saltboot.get("minion_id_naming") == "FQDN") {
+                kernelOptions += " USE_FQDN_MINION_ID=1";
+            }
+            else if (saltboot.get("minion_id_naming") == "HWType") {
+                kernelOptions += " DISABLE_HOSTNAME_ID=1";
+            }
+            if (!((String)saltboot.get("default_kernel_parameters")).isEmpty()) {
+                kernelOptions += " " + saltboot.get("default_kernel_parameters");
+            }
+            String bootImage = (String)saltboot.get("default_boot_image");
+            String bootImageVersion = (String)saltboot.get("default_boot_image_version");
+
+            try {
+                SaltbootUtils.createSaltbootProfile(group.getName(), kernelOptions, group.getOrg(),
+                        bootImage, bootImageVersion);
+            }
+            catch (SaltbootException e) {
+                throw new ValidatorException(e.getMessage());
+            }
+
         }
     }
 
@@ -423,7 +462,7 @@ public class FormulaFactory {
             }
         }
         catch (FileNotFoundException | YAMLException e) {
-            LOG.error("Error loading layout for formula '" + name + "'", e);
+            LOG.error("Error loading layout for formula '{}'", name, e);
             return Optional.empty();
         }
     }
@@ -529,6 +568,16 @@ public class FormulaFactory {
         // Remove formula data for unselected formulas
         List<String> deletedFormulas = getFormulasByGroup(group);
         deletedFormulas.removeAll(selectedFormulas);
+
+        // Try to remove SaltbootProfile first. It this fails, stop removing formulas
+        if (deletedFormulas.contains(SALTBOOT_GROUP)) {
+            try {
+                SaltbootUtils.deleteSaltbootProfile(group.getName(), group.getOrg());
+            }
+            catch (SaltbootException e) {
+                throw new ValidatorException(e.getMessage());
+            }
+        }
 
         for (String f : deletedFormulas) {
             group.getPillarByCategory(PREFIX + f).ifPresent(pillar -> group.getPillars().remove(pillar));

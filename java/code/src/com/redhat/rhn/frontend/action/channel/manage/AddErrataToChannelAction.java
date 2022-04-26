@@ -28,7 +28,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -75,9 +76,9 @@ public class AddErrataToChannelAction extends RhnListAction {
         RhnSet  packageSet = RhnSetDecl.setForChannelPackages(currentChan).get(user);
         Set<Long> packageIds = packageSet.getElementValues();
 
-        Logger log = Logger.getLogger(this.getClass());
+        Logger log = LogManager.getLogger(this.getClass());
         if (log.isDebugEnabled()) {
-            log.debug("Set in Publish: "  +  packageSet.size());
+            log.debug("Set in Publish: {}", packageSet.size());
         }
 
         List<Long> channelPacks = ChannelFactory.getPackageIds(currentChan.getId());

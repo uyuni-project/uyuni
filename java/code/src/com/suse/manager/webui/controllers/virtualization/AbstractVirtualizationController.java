@@ -35,7 +35,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -56,7 +57,7 @@ import spark.Spark;
  * Base controller class offering convenience functions for other virtualization-related controllers
  */
 public abstract class AbstractVirtualizationController {
-    private static final Logger LOG = Logger.getLogger(AbstractVirtualizationController.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractVirtualizationController.class);
 
     protected static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -90,7 +91,7 @@ public abstract class AbstractVirtualizationController {
             return Long.parseLong(request.params("sid"));
         }
         catch (NumberFormatException e) {
-            LOG.error("Invalid server id: " + request.params("sid"), e);
+            LOG.error("Invalid server id: {}", request.params("sid"), e);
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Invalid server id: " + request.params("sid"));
         }
     }

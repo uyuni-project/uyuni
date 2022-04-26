@@ -40,7 +40,8 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -63,7 +64,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemDetailsEditAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(SystemDetailsEditAction.class);
+    private static Logger log = LogManager.getLogger(SystemDetailsEditAction.class);
 
     public static final String NAME = "system_name";
     public static final String BASE_ENTITLEMENT_OPTIONS = "base_entitlement_options";
@@ -151,7 +152,7 @@ public class SystemDetailsEditAction extends RhnAction {
         // base entitlement chosen
         String selectedEnt = daForm.getString(BASE_ENTITLEMENT);
         Entitlement base = EntitlementManager.getByName(selectedEnt);
-        log.debug("base: " + base);
+        log.debug("base: {}", base);
         if (base != null) {
             systemEntitlementManager.setBaseEntitlement(s, base);
         }
@@ -265,11 +266,11 @@ public class SystemDetailsEditAction extends RhnAction {
         boolean needsSnapshot = false;
 
         for (Entitlement e : user.getOrg().getValidAddOnEntitlementsForOrg()) {
-            log.debug("Entitlement: " + e.getLabel());
-            log.debug("form.get: " + daForm.get(e.getLabel()));
+            log.debug("Entitlement: {}", e.getLabel());
+            log.debug("form.get: {}", daForm.get(e.getLabel()));
             if (Boolean.TRUE.equals(daForm.get(e.getLabel())) &&
                     systemEntitlementManager.canEntitleServer(s, e)) {
-                log.debug("Entitling server with: " + e);
+                log.debug("Entitling server with: {}", e);
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
 
                 if (vr.getWarnings().size() > 0) {
@@ -281,7 +282,7 @@ public class SystemDetailsEditAction extends RhnAction {
 
                 if (vr.getErrors().size() > 0) {
                     ValidatorError ve = vr.getErrors().get(0);
-                    log.debug("Got error: " + ve);
+                    log.debug("Got error: {}", ve);
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorErrorToActionErrors(ve));
                     success = false;
@@ -290,7 +291,7 @@ public class SystemDetailsEditAction extends RhnAction {
                     needsSnapshot = true;
 
                     if (log.isDebugEnabled()) {
-                        log.debug("entitling worked?: " + s.hasEntitlement(e));
+                        log.debug("entitling worked?: {}", s.hasEntitlement(e));
                     }
 
                     log.debug("adding entitlement success msg");
@@ -309,7 +310,7 @@ public class SystemDetailsEditAction extends RhnAction {
             else if ((daForm.get(e.getLabel()) == null ||
                      daForm.get(e.getLabel()).equals(Boolean.FALSE)) &&
                      s.hasEntitlement(e)) {
-                log.debug("removing entitlement: " + e);
+                log.debug("removing entitlement: {}", e);
                 systemEntitlementManager.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
@@ -356,8 +357,7 @@ public class SystemDetailsEditAction extends RhnAction {
 
         for (Entitlement e : s.getAddOnEntitlements()) {
             if (log.isDebugEnabled()) {
-                log.debug("Adding Entitlement to form: " + e.getLabel() +
-                        " hrl: " + e.getHumanReadableLabel());
+                log.debug("Adding Entitlement to form: {} hrl: {}", e.getLabel(), e.getHumanReadableLabel());
             }
             daForm.set(e.getLabel(), Boolean.TRUE);
         }
@@ -412,8 +412,7 @@ public class SystemDetailsEditAction extends RhnAction {
 
             for (Entitlement e : user.getOrg().getValidBaseEntitlementsForOrg()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Adding Entitlement to list of valid ents: " +
-                            e.getLabel());
+                    log.debug("Adding Entitlement to list of valid ents: {}", e.getLabel());
                 }
 
                 entitlements.add(new LabelValueBean(

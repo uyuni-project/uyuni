@@ -47,6 +47,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.iface.SaltApi;
 
 import org.apache.commons.lang3.StringUtils;
@@ -88,6 +89,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #array_begin() $ImageInfoSerializer #array_end()
      */
+    @ReadOnly
     public List<ImageInfo> listImages(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
         return ImageInfoFactory.listImageInfos(loggedInUser.getOrg());
@@ -104,6 +106,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype $ImageOverviewSerializer
      */
+    @ReadOnly
     public ImageOverview getDetails(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -125,6 +128,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype struct
      */
+    @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
@@ -442,6 +446,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -478,6 +483,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
+    @ReadOnly
     public List<Map<String, Object>> listPackages(User loggedInUser, Integer imageId)
             throws FaultException {
         ensureImageAdmin(loggedInUser);
@@ -515,6 +521,7 @@ public class ImageInfoHandler extends BaseHandler {
      *      #prop("string", "value")
      *    #struct_end()
      */
+    @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,

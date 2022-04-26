@@ -20,7 +20,8 @@ import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class IntegrationService {
 
-    private static Logger log = Logger.getLogger(IntegrationService.class);
+    private static Logger log = LogManager.getLogger(IntegrationService.class);
     // private instance of the service.
     private static IntegrationService instance = new IntegrationService();
     private final ConcurrentMap<String, String> cobblerAuthTokenStore;
@@ -107,11 +108,11 @@ public class IntegrationService {
             passwd  = SessionSwap.encodeData(md5random);
         }
 
-        log.debug("Authorize called with username: " + login);
+        log.debug("Authorize called with username: {}", login);
         // Get the cobbler ticket
         CobblerLoginCommand lcmd = new CobblerLoginCommand();
         String token =  lcmd.login(login, passwd);
-        log.debug("Cobbler returned non-null token? :: " + (token == null));
+        log.debug("Cobbler returned non-null token? :: {}", token == null);
         if (token != null) {
             this.setAuthorizationToken(login, token);
         }
@@ -144,7 +145,7 @@ public class IntegrationService {
                     Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1));
         }
 
-        log.debug("checkRandomToken called with username: " + login);
+        log.debug("checkRandomToken called with username: {}", login);
         if (!randomTokenStore.containsKey(login)) {
             log.debug("login not stored.  invalid check!");
             return false;

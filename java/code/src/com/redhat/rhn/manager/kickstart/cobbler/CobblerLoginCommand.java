@@ -17,7 +17,8 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class CobblerLoginCommand {
 
-    private static Logger log = Logger.getLogger(CobblerLoginCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerLoginCommand.class);
 
     /**
      * Call the login method and return the token if valid
@@ -56,7 +57,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We had an error trying to login.", e);
         }
-        log.debug("token received from cobbler: " + retval);
+        log.debug("token received from cobbler: {}", retval);
         return retval;
     }
 
@@ -90,7 +91,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We errored out trying to check the token.", e);
         }
-        log.debug("token received from cobbler: " + retval);
+        log.debug("token received from cobbler: {}", retval);
 
         return retval;
     }

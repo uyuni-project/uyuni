@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.security;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -32,7 +33,7 @@ public class AuthenticationServiceFactory {
 
     private static AuthenticationServiceFactory instance;
 
-    private static final Logger LOG = Logger.getLogger(AuthenticationServiceFactory.class);
+    private static final Logger LOG = LogManager.getLogger(AuthenticationServiceFactory.class);
 
     private PxtAuthenticationService pxtAuthService;
 
@@ -68,15 +69,13 @@ public class AuthenticationServiceFactory {
 
     protected AuthenticationService getPxtService() {
         if (pxtAuthService == null) {
-            LOG.debug("Creating a new " + PxtAuthenticationService.class.getName() +
-                    " instance.");
+            LOG.debug("Creating a new {} instance.", PxtAuthenticationService.class.getName());
 
             pxtAuthService = new PxtAuthenticationService();
             pxtAuthService.setPxtSessionDelegate(getPxtSessionDelegate());
         }
 
-        LOG.debug("Returning a " + PxtAuthenticationService.class.getName() +
-                " to provide authentication services.");
+        LOG.debug("Returning a {} to provide authentication services.", PxtAuthenticationService.class.getName());
 
         return pxtAuthService;
     }

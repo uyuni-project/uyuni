@@ -16,7 +16,8 @@ package com.redhat.rhn.common.util;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.io.LineIterator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jfree.io.IOUtils;
 
 import java.io.BufferedReader;
@@ -48,7 +49,7 @@ import java.util.Set;
  */
 public class FileUtils {
 
-    private static Logger log = Logger.getLogger(FileUtils.class);
+    private static Logger log = LogManager.getLogger(FileUtils.class);
 
     private FileUtils() {
     }
@@ -78,7 +79,7 @@ public class FileUtils {
             }
         }
         catch (Exception e) {
-            log.error("Error trying to write file to disk: [" + path + "]", e);
+            log.error("Error trying to write file to disk: [{}]", path, e);
             throw new RuntimeException(e);
         }
     }
@@ -113,7 +114,7 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
-        log.debug("readStringFromFile: " + path);
+        log.debug("readStringFromFile: {}", path);
 
         File f = new File(path);
         BufferedReader input;
@@ -123,7 +124,7 @@ public class FileUtils {
             IOUtils.getInstance().copyWriter(input, writer);
             String contents = writer.toString();
             if (log.isDebugEnabled()) {
-                log.debug("contents: " + contents);
+                log.debug("contents: {}", contents);
             }
             return contents;
         }
@@ -146,11 +147,10 @@ public class FileUtils {
      * @return byte[] array from file.
      */
     public static byte[] readByteArrayFromFile(File fileToRead, long start, long end) {
-        log.debug("readByteArrayFromFile: " + fileToRead.getAbsolutePath() +
-                " start: " + start + " end: " + end);
+        log.debug("readByteArrayFromFile: {} start: {} end: {}", fileToRead.getAbsolutePath(), start, end);
 
         int size = (int) (end - start);
-        log.debug("size of array: " + size);
+        log.debug("size of array: {}", size);
         // Create the byte array to hold the data
         byte[] bytes = new byte[size];
         InputStream is = null;
@@ -170,7 +170,7 @@ public class FileUtils {
             }
         }
         catch (IOException fnf) {
-            log.error("Could not read from: " + fileToRead.getAbsolutePath());
+            log.error("Could not read from: {}", fileToRead.getAbsolutePath());
             throw new RuntimeException(fnf);
         }
         finally {
@@ -204,11 +204,11 @@ public class FileUtils {
             }
         }
         catch (FileNotFoundException e) {
-            log.error("File not found: " + pathToFile);
+            log.error("File not found: {}", pathToFile);
             throw new RuntimeException(e);
         }
         catch (IOException e) {
-            log.error("Could not read from: " + pathToFile);
+            log.error("Could not read from: {}", pathToFile);
             throw new RuntimeException(e);
         }
         finally {
@@ -232,7 +232,7 @@ public class FileUtils {
             Files.deleteIfExists(path);
         }
         catch (IOException e) {
-            log.warn("Could not delete file: " + path, e);
+            log.warn("Could not delete file: {}", path, e);
         }
     }
 }

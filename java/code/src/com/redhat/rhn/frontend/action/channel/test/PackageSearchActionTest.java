@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 public class PackageSearchActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testFilter() throws Exception {
         setRequestPathInfo("/channels/software/Search");
         addRequestParameter(RequestContext.FILTER_STRING, "zzzzz");

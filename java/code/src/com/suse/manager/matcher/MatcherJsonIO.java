@@ -51,7 +51,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -105,7 +106,7 @@ public class MatcherJsonIO {
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(MatcherJsonIO.class);
+    private static Logger logger = LogManager.getLogger(MatcherJsonIO.class);
 
     /** SUSE Manager server products (by arch) installed on self **/
     private Map<String, Long> selfProductsByArch;

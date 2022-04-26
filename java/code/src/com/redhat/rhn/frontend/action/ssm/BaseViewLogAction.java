@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
  * to indicate what subset of operations to show.
  *
  * @author Jason Dobies
- * @version $Revision$
  */
 public abstract class BaseViewLogAction extends RhnListAction implements Listable {
 

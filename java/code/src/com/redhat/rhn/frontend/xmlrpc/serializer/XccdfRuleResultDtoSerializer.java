@@ -16,13 +16,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -34,25 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("string", "idents", "Comma separated list of XCCDF idents.")
  * #struct_end()
  */
-public class XccdfRuleResultDtoSerializer extends RhnXmlRpcCustomSerializer {
+public class XccdfRuleResultDtoSerializer extends ApiResponseSerializer<XccdfRuleResultDto> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<XccdfRuleResultDto> getSupportedClass() {
         return XccdfRuleResultDto.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer) throws XmlRpcException, IOException {
-        XccdfRuleResultDto dto = (XccdfRuleResultDto) value;
-        SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("idref", dto.getDocumentIdref());
-        helper.add("result", dto.getLabel());
-        helper.add("idents", dto.getIdentsString());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(XccdfRuleResultDto src) {
+        return new SerializationBuilder()
+                .add("idref", src.getDocumentIdref())
+                .add("result", src.getLabel())
+                .add("idents", src.getIdentsString())
+                .build();
     }
 }

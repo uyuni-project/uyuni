@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -32,6 +35,8 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +63,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -76,6 +82,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         Map<String, Object> grains = new HashMap<>();

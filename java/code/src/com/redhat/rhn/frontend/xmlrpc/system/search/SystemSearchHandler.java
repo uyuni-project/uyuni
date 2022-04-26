@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerCommException;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerQueryException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
@@ -33,13 +34,12 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * SystemSearchHandler
  * Provides access to the internal XMLRPC search-server for system searches
- * @version $Rev: 1 $
  * @xmlrpc.namespace system.search
  * @xmlrpc.doc Provides methods to perform system search requests using the search server.
  *
  */
 public class SystemSearchHandler extends BaseHandler {
-    private static Logger log = Logger.getLogger(SystemSearchHandler.class);
+    private static Logger log = LogManager.getLogger(SystemSearchHandler.class);
 
     private List performSearch(String sessionKey, String searchString,
             String viewMode) throws FaultException {
@@ -55,14 +55,14 @@ public class SystemSearchHandler extends BaseHandler {
                     whereToSearch, true);
         }
         catch (MalformedURLException | XmlRpcException e) {
-            log.info("Caught Exception :" + e);
+            log.info("Caught Exception :{}", e);
             e.printStackTrace();
             throw new SearchServerCommException();
             // Connection error to XMLRPC search server
         }
         catch (XmlRpcFault e) {
-            log.info("Caught Exception :" + e);
-            log.info("ErrorCode = " + e.getErrorCode());
+            log.info("Caught Exception :{}", e);
+            log.info("ErrorCode = {}", e.getErrorCode());
             e.printStackTrace();
             if (e.getErrorCode() == 100) {
                 log.error("Invalid search query", e);

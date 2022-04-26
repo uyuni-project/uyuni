@@ -18,7 +18,8 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class GuestDefinition {
 
-    private static final Logger LOG = Logger.getLogger(GuestDefinition.class);
+    private static final Logger LOG = LogManager.getLogger(GuestDefinition.class);
 
     private String type;
     private String name;
@@ -291,7 +292,7 @@ public class GuestDefinition {
                     .map(node -> GuestDiskDef.parse(node, vmInfo)).collect(Collectors.toList());
         }
         catch (Exception e) {
-            LOG.error("failed to parse libvirt XML definition: " + e.getMessage());
+            LOG.error("failed to parse libvirt XML definition: {}", e.getMessage());
         }
 
         return def;

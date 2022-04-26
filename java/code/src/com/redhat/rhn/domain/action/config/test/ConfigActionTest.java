@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -22,11 +26,14 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ConfigActionTest
  */
 public class ConfigActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testCreate() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

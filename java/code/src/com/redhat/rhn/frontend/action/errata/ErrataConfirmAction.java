@@ -36,7 +36,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -56,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrataConfirmAction extends RhnListDispatchAction {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ErrataConfirmAction.class);
+    private static Logger log = LogManager.getLogger(ErrataConfirmAction.class);
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 

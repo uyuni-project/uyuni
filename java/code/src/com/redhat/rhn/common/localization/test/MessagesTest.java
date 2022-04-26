@@ -15,8 +15,16 @@
 
 package com.redhat.rhn.common.localization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.localization.XmlMessages;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -34,18 +42,11 @@ public class MessagesTest extends RhnBaseTestCase {
     private Class clazz;
     private Locale locale;
 
-    /** Constructor
-     * @param name test name
-     */
-    public MessagesTest(final String name) {
-        super(name);
-    }
-
     /**
      * sets up the test
      */
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         getMessage = "Get this";
         germanMessage = "Ich bin ein Berliner";
         oneArg = "one arg: fooboo";
@@ -60,9 +61,11 @@ public class MessagesTest extends RhnBaseTestCase {
     }
 
     /*
-     * @see junit.framework.TestCase#tearDown()
+     * Setup before each test.
      */
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         getMessage = null;
         oneArg = null;
         twoArg = null;
@@ -75,6 +78,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * test that it gets the right unformatted string
      */
+    @Test
     public void testXmlGetString() {
         assertEquals(getMessage, XmlMessages.getInstance().getMessage(clazz, locale,
             "getMessage"));
@@ -83,6 +87,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * test that it gets the right unformatted string
      */
+    @Test
     public void testXmlGetStringNoLocale() {
         assertEquals("some value", XmlMessages.getInstance().
             getMessage(clazz, null, "noLocale"));
@@ -92,6 +97,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test getting all the keys for the bundle
      */
+    @Test
     public void testXmlGetKeys() {
         assertNotNull(XmlMessages.getInstance().getKeys(clazz, locale));
     }
@@ -99,6 +105,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * test that it gets the right unformatted string
      */
+    @Test
     public void testXmlGetGermanString() {
 
         String gmessage = XmlMessages.getInstance().getMessage(
@@ -109,6 +116,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test that it formats a one-arg string correctly
      */
+    @Test
     public void testXmlFormatOneArg() {
         assertEquals(oneArg, XmlMessages.getInstance().format(
             clazz, locale, "oneArg", "fooboo"));
@@ -116,6 +124,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test that it formats a two-arg string correctly
      */
+    @Test
     public void testXmlFormatTwoArg() {
         assertEquals(twoArg, XmlMessages.getInstance().format(
             clazz, locale, "twoArg", "fooboo", "bubba"));
@@ -123,6 +132,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test that it formats a three-arg string correctly
      */
+    @Test
     public void testXmlFormatThreeArg() {
         assertEquals(threeArg, XmlMessages.getInstance().format(
             clazz, locale, "threeArg", "fooboo", "bubba", "booboo"));
@@ -131,6 +141,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test that it escapes single quotes correctly.
      */
+    @Test
     public void testXmlEscapeQuote() {
         String recieved = XmlMessages.getInstance().format(clazz, locale,
                 "quotewitharg", "mail");
@@ -140,6 +151,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test unescaping the HTML
      */
+    @Test
     public void testUnescapeHtml4() {
         // htmltest
         String recieved = XmlMessages.getInstance().getMessage(clazz, locale,
@@ -151,6 +163,7 @@ public class MessagesTest extends RhnBaseTestCase {
      * Make sure we fail if there's no resource bundle
      *
      */
+    @Test
     public void testXmlNoResourceBundle() {
         try {
             XmlMessages.getInstance().format(

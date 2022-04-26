@@ -17,18 +17,18 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.manager.satellite.Executor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 /**
  *
- * @version $Rev $
  *
  */
 public abstract class RepositoryWriter {
 
-    protected Logger log = Logger.getLogger(RepositoryWriter.class);
+    protected Logger log = LogManager.getLogger(RepositoryWriter.class);
     protected final String pathPrefix;
     protected final String mountPoint;
     protected final Executor cmdExecutor;
@@ -64,7 +64,7 @@ public abstract class RepositoryWriter {
     * @param deleteDir directory to delete
     */
    public void deleteRepomdFiles(String channelLabelToProcess, boolean deleteDir) {
-       log.info("Removing " + channelLabelToProcess);
+       log.info("Removing {}", channelLabelToProcess);
        String prefix = mountPoint + File.separator + pathPrefix + File.separator +
                channelLabelToProcess;
        File theDirectory = new File(prefix);
@@ -74,13 +74,13 @@ public abstract class RepositoryWriter {
            for (String childIn : children) {
                File file = new File(prefix + File.separator + childIn);
                if (!file.delete()) {
-                   log.info("Couldn't remove " + file.getAbsolutePath());
+                   log.info("Couldn't remove {}", file.getAbsolutePath());
                }
            }
        }
        if (deleteDir) {
            if (!theDirectory.delete()) {
-               log.info("Couldn't remove " + prefix);
+               log.info("Couldn't remove {}", prefix);
            }
        }
    }

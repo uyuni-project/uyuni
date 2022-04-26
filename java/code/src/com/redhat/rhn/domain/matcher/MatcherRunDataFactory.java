@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.matcher;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * MatcherRunData hibernate factory.
@@ -54,7 +55,7 @@ public class MatcherRunDataFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(MatcherRunDataFactory.class);
+            log = LogManager.getLogger(MatcherRunDataFactory.class);
         }
         return log;
     }

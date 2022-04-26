@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * DeleteChannelAction extends RhnAction
  * Re
- * @version $Rev: 1 $
  */
 public class DeleteChannelAction extends RhnAction {
 

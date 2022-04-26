@@ -26,7 +26,8 @@ import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.websocket.VirtNotifications;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import java.util.Optional;
  */
 public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
 
     private final VirtManager virtManager;
     private final List<String> toRestart = new ArrayList<>();
@@ -62,7 +63,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
             String event = message.getEvent();
 
             MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
-                LOG.debug("Processing " + message.getEvent() + "/" + message.getDetail() + " on minion " + minionId);
+                LOG.debug("Processing {}/{} on minion {}", message.getEvent(), message.getDetail(), minionId);
                 VirtualInstanceManager.updateHostVirtualInstance(minion,
                         VirtualInstanceFactory.getInstance().getFullyVirtType());
 
@@ -84,7 +85,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                             state = VirtualInstanceFactory.getInstance().getRunningState();
                         }
 
-                        LOG.debug("Adding VM " + def.getName() + " with state to " + state.getLabel());
+                        LOG.debug("Adding VM {} with state to {}", def.getName(), state.getLabel());
                         VirtualInstanceManager.addGuestVirtualInstance(def.getUuid().replaceAll("-", ""),
                                 def.getName(), def.getVirtualInstanceType(), state, minion, null,
                                 def.getVcpu().getMax(), def.getMaxMemory() / 1024);
@@ -114,7 +115,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                             .map(Map.Entry::getValue)
                             .findFirst().orElse(vms.get(0).getState());
 
-                    LOG.debug("Changing VM " + vm + " state to " + state.getLabel());
+                    LOG.debug("Changing VM {} state to {}", vm, state.getLabel());
 
                     // At the end of a migration we get a stopped/migrated event from the source host
                     // and a resumed/migrated event from the target host.

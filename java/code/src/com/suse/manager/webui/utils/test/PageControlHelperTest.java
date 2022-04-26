@@ -14,11 +14,18 @@
  */
 package com.suse.manager.webui.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.listview.PageControl;
 
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.SparkTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,12 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
-public class PageControlHelperTest extends TestCase {
+public class PageControlHelperTest  {
 
     private static final String REQUEST_URL = "https://pagecontrol.test";
 
+    @Test
     public void testRequestWithNoParams() {
         PageControlHelper helper = new PageControlHelper(SparkTestUtils.createMockRequest(REQUEST_URL));
 
@@ -44,6 +50,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(helper.getFunction());
     }
 
+    @Test
     public void testRequestWithPageParams() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -62,6 +69,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(helper.getFunction());
     }
 
+    @Test
     public void testRequestWithFilterParams() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -83,6 +91,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(helper.getFunction());
     }
 
+    @Test
     public void testRequestWithSortParams() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -104,6 +113,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(helper.getFunction());
     }
 
+    @Test
     public void testRequestWithFunctionParam() {
         Map<String, String> queryParams = new HashMap<>();
         // Function
@@ -121,6 +131,7 @@ public class PageControlHelperTest extends TestCase {
         assertEquals("myfunction", helper.getFunction());
     }
 
+    @Test
     public void testRequestWithDefaultFilterColumn() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -138,6 +149,7 @@ public class PageControlHelperTest extends TestCase {
         assertEquals("mydefaultproperty", helper.getQueryColumn());
     }
 
+    @Test
     public void testPageControlWithNoParams() {
         PageControlHelper helper = new PageControlHelper(SparkTestUtils.createMockRequest(REQUEST_URL));
         PageControl pc = helper.getPageControl();
@@ -149,6 +161,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(pc.getFilterColumn());
     }
 
+    @Test
     public void testPageControlWithPageParams() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -166,6 +179,7 @@ public class PageControlHelperTest extends TestCase {
         assertNull(pc.getFilterColumn());
     }
 
+    @Test
     public void testPageControlWithFilterParams() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -204,6 +218,7 @@ public class PageControlHelperTest extends TestCase {
         }
     }
 
+    @Test
     public void testApplySort() {
         Map<String, String> queryParams = new HashMap<>();
         // Start index and page size
@@ -248,6 +263,7 @@ public class PageControlHelperTest extends TestCase {
         assertEquals("one", listToSort.get(2).secondProperty);
     }
 
+    @Test
     public void testProcessPageControl() {
         DataResult<PagedDataItem> testData = new DataResult<>(Arrays.asList(
                 new PagedDataItem(1, "angel"),
@@ -274,6 +290,7 @@ public class PageControlHelperTest extends TestCase {
         assertEquals("orange", result.get(1).secondProperty);
     }
 
+    @Test
     public void testProcessPageControlFiltered() {
         DataResult<PagedDataItem> testData = new DataResult<>(Arrays.asList(
                 new PagedDataItem(1, "angel"),

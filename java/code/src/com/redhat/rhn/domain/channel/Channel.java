@@ -29,7 +29,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(Channel.class);
+    private static Logger log = LogManager.getLogger(Channel.class);
     public static final String PUBLIC = "public";
     public static final String PROTECTED = "protected";
     public static final String PRIVATE = "private";
@@ -113,10 +114,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * Returns true if this Channel is a satellite channel.
-     * @return true if this Channel is a satellite channel.
+     * Returns true if this Channel is a mgr server channel.
+     * @return true if this Channel is a mgr server channel.
      */
-    public boolean isSatellite() {
+    public boolean isMgrServer() {
         return getChannelFamily().getLabel().startsWith(
                 ChannelFamilyFactory.SATELLITE_CHANNEL_FAMILY_LABEL);
     }
@@ -643,6 +644,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other instanceof SelectableChannel) {
             return this.equals(((SelectableChannel)other).getChannel());
@@ -658,6 +660,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getId()).toHashCode();
     }
@@ -703,9 +706,8 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     public boolean isSubscribable(Org orgIn, Server server) {
 
         if (log.isDebugEnabled()) {
-            log.debug("isSubscribable.archComp: " +
-                    SystemManager.verifyArchCompatibility(server, this));
-            log.debug("isSatellite: " + this.isSatellite());
+            log.debug("isSubscribable.archComp: {}", SystemManager.verifyArchCompatibility(server, this));
+            log.debug("isSatellite: {}", this.isMgrServer());
         }
 
         return SystemManager.verifyArchCompatibility(server, this);
@@ -714,6 +716,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("label", label).toString();
     }
@@ -778,6 +781,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Channel o) {
         return this.getName().compareTo(o.getName());
     }

@@ -40,7 +40,6 @@ import java.util.regex.Pattern;
 
 /**
  * BaseRepoCommand - Command to create or edit a repo
- * @version $Rev: 119601 $
  */
 public abstract class BaseRepoCommand {
 

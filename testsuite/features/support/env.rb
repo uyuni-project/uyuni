@@ -26,7 +26,6 @@ STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
-$is_cloud_provider = ENV["PROVIDER"].include? 'aws'
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
@@ -86,7 +85,7 @@ enable_assertions
 # embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
-  STDOUT.puts "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+  log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
       Dir.mkdir("screenshots") unless File.directory?("screenshots")
@@ -106,17 +105,29 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
+# get the Cobbler log output when it fails
+After('@scope_cobbler') do |scenario|
+  if scenario.failed?
+    STDOUT.puts '=> /var/log/cobbler/cobbler.log'
+    out, _code = $server.run("tail -n20 /var/log/cobbler/cobbler.log")
+    out.each_line do |line|
+      STDOUT.puts line.to_s
+    end
+    STDOUT.puts
+  end
+end
+
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
-    STDOUT.puts 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    STDOUT.puts 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
+    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
   end
 end
 
 Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
-  STDOUT.puts "This scenario ran at: #{current_time}\n"
+  log "This scenario ran at: #{current_time}\n"
 end
 
 # do some tests only if the corresponding node exists
@@ -393,11 +404,6 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
-end
-
-# skip tests if executed in cloud environment
-Before('@skip_if_cloud') do
-  skip_this_scenario if $is_cloud_provider
 end
 
 # have more infos about the errors

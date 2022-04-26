@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -34,7 +35,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger logger = Logger.getLogger(DataSourceParserHelper.class);
+    private static Logger logger = LogManager.getLogger(DataSourceParserHelper.class);
 
     private HashMap<String, ParsedQueryImpl> internalQueries;
     private HashMap<String, ParsedMode> modes;
@@ -69,7 +70,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     public void startElement(String namespaceURI, String localName, String qualifiedName,
             Attributes atts) {
 
-        logger.debug("startElement(" + localName + ")");
+        logger.debug("startElement({})", localName);
 
         //sqlStatement = new StringBuffer();
         if (localName.equals("datasource_modes")) {
@@ -121,7 +122,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     /** {@inheritDoc} */
     public void endElement(String namespaceURI, String localName, String qualifiedName) {
 
-        logger.debug("endElement(" + localName + ")");
+        logger.debug("endElement({})", localName);
 
         switch (localName) {
             case "mode":
@@ -195,7 +196,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         ArrayList<String> errors = new ArrayList<>();
         String errmsg;
         for (String modeKey : modes.keySet()) {
-            logger.debug("Sanity check for mode " + modeKey);
+            logger.debug("Sanity check for mode {}", modeKey);
             ParsedMode pm = modes.get(modeKey);
             if (pm == null) {
                 errors.add("ParsedMode is null for key '" + modeKey + "'");

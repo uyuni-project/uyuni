@@ -22,7 +22,8 @@ import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerIndexException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import redstone.xmlrpc.XmlRpcFault;
  * PackageSearchHelper
  */
 public class PackageSearchHelper {
-    private static Logger log = Logger.getLogger(PackageSearchHelper.class);
+    private static Logger log = LogManager.getLogger(PackageSearchHelper.class);
 
     private PackageSearchHelper() {
     }
@@ -69,7 +70,7 @@ public class PackageSearchHelper {
             Long filterChannelId, String searchType) throws XmlRpcFault,
             MalformedURLException, SearchServerIndexException {
 
-        log.info("Performing pkg search: " + searchString + ", " + mode);
+        log.info("Performing pkg search: {}, {}", searchString, mode);
 
         List<String> pkgArchLabels = null;
         if (selectedArches != null) {
@@ -87,7 +88,7 @@ public class PackageSearchHelper {
         List results = (List)client.invoke("index.search", args);
 
         if (log.isDebugEnabled()) {
-            log.debug("results = [" + results + "]");
+            log.debug("results = [{}]", results);
         }
 
         if (results.isEmpty()) {

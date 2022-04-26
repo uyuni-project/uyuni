@@ -29,8 +29,8 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public class SsmVerifyPackagesAction implements MessageAction {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Logger LOG = LogManager.getLogger(SsmVerifyPackagesAction.class);
 
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {
@@ -59,7 +59,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
             scheduleVerifications(event, user);
         }
         catch (Exception e) {
-            log.error("Error scheduling package installations for event " + event, e);
+            LOG.error("Error scheduling package installations for event {}", event, e);
         }
         finally {
             // This should stay in the finally block so the operation is

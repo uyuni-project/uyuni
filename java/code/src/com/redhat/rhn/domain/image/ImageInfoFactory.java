@@ -28,15 +28,18 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum.MD5Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA256Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA384Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum.SHA512Checksum;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -57,7 +60,7 @@ import javax.persistence.criteria.Root;
 public class ImageInfoFactory extends HibernateFactory {
 
     private static ImageInfoFactory instance = new ImageInfoFactory();
-    private static Logger log = Logger.getLogger(ImageInfoFactory.class);
+    private static Logger log = LogManager.getLogger(ImageInfoFactory.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
@@ -82,7 +85,7 @@ public class ImageInfoFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(ImageInfoFactory.class);
+            log = LogManager.getLogger(ImageInfoFactory.class);
         }
         return log;
     }
@@ -163,7 +166,7 @@ public class ImageInfoFactory extends HibernateFactory {
 
         // Schedule the build
         ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-                Collections.singletonList(buildHostId), version, profile, earliest);
+                Collections.singletonList(buildHostId), info.getVersion(), profile, earliest);
         taskomaticApi.scheduleActionExecution(action);
 
         info.setBuildAction(action);
@@ -312,6 +315,9 @@ public class ImageInfoFactory extends HibernateFactory {
     public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
         imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
         imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+
+        // delete saltboot image profile and distro
+        SaltbootUtils.deleteSaltbootDistro(imageInfo);
 
         // delete files
         imageInfo.getImageFiles().stream().forEach(f -> {
@@ -512,7 +518,11 @@ public class ImageInfoFactory extends HibernateFactory {
     public static com.redhat.rhn.domain.common.Checksum convertChecksum(
             Checksum dockerChecksum) {
         String checksumType = "sha256";
-        if (dockerChecksum instanceof SHA1Checksum) {
+
+        if (dockerChecksum instanceof MD5Checksum) {
+            checksumType = "md5";
+        }
+        else if (dockerChecksum instanceof SHA1Checksum) {
             checksumType = "sha1";
         }
         else  if (dockerChecksum instanceof SHA256Checksum) {
@@ -535,6 +545,8 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
+        case "md5":
+            return new MD5Checksum(checksum.getChecksum());
         case "sha1":
             return new SHA1Checksum(checksum.getChecksum());
         case "sha256":

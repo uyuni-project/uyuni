@@ -30,14 +30,14 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * CreateOrgCommand - Command to create an org and the first admin in the Org.
- * @version $Rev: 119601 $
  */
 public class CreateOrgCommand {
 
@@ -55,7 +55,7 @@ public class CreateOrgCommand {
     private String lname;
     private boolean usePam;
 
-    private static Logger log = Logger.getLogger(CreateOrgCommand.class);
+    private static Logger log = LogManager.getLogger(CreateOrgCommand.class);
 
     /**
      * Constructor to create an org
@@ -165,8 +165,7 @@ public class CreateOrgCommand {
             defaultOrg);
         if (ssl != null && ssl.isSSL()) {
             // TODO
-            log.debug("Found a SSL key for the default org to copy: " +
-                    ssl.getId());
+            log.debug("Found a SSL key for the default org to copy: {}", ssl.getId());
             CreateCryptoKeyCommand createCryptoKey =
                 new CreateCryptoKeyCommand(createdOrg);
             createCryptoKey.setContents(ssl.getKeyString());
@@ -185,8 +184,7 @@ public class CreateOrgCommand {
                         "mgr-sync-refresh-bunch", params);
             }
             catch (TaskomaticApiException e) {
-                log.error("Problem when running Taskomatic mgr-sync-refresh job: " +
-                        e.getMessage());
+                log.error("Problem when running Taskomatic mgr-sync-refresh job: {}", e.getMessage());
                 // FIXME: return validator error ?
             }
         }

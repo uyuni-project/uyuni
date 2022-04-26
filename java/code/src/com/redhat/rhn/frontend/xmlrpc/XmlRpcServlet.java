@@ -15,9 +15,12 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.redhat.rhn.frontend.xmlrpc.serializer.BigDecimalSerializer;
+import com.redhat.rhn.frontend.xmlrpc.serializer.ObjectSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import redstone.xmlrpc.XmlRpcCustomSerializer;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * A basic servlet class that registers handlers for xmlrpc calls
@@ -39,11 +42,11 @@ public class XmlRpcServlet extends HttpServlet {
     /** Comment for <code>serialVersionUID</code> */
     private static final long serialVersionUID = -9173485623604749521L;
 
-    private static Logger log = Logger.getLogger(XmlRpcServlet.class);
+    private static Logger log = LogManager.getLogger(XmlRpcServlet.class);
 
     private RhnXmlRpcServer server;
-    private HandlerFactory handlers;
-    private SerializerFactory serializers;
+    private final HandlerFactory handlerFactory;
+    private final SerializerFactory serializerFactory;
 
     /**
      * Constructor which takes in HandlerFactory and SerializerFactory. The
@@ -54,8 +57,8 @@ public class XmlRpcServlet extends HttpServlet {
      * @param sf SerializerFactory to use.
      */
     public XmlRpcServlet(HandlerFactory hf, SerializerFactory sf) {
-        handlers = hf;
-        serializers = sf;
+        handlerFactory = hf;
+        serializerFactory = sf;
     }
 
     /**
@@ -87,31 +90,23 @@ public class XmlRpcServlet extends HttpServlet {
     }
 
     private void registerCustomSerializers(RhnXmlRpcServer srvr) {
-        if (serializers == null) {
-            serializers = new SerializerFactory();
-        }
+        XmlRpcSerializer serializer = srvr.getSerializer();
+        serializer.addCustomSerializer(new ObjectSerializer());
+        serializer.addCustomSerializer(new BigDecimalSerializer());
+
         // find the configured serializers...
-        for (Object oIn : serializers.getSerializers()) {
-            srvr.getSerializer().addCustomSerializer(
-                    (XmlRpcCustomSerializer) oIn);
-        }
+        serializerFactory.getSerializers().forEach(serializer::addCustomSerializer);
     }
 
     private void registerInvocationHandlers(RhnXmlRpcServer srvr) {
-        if (handlers == null) {
-            handlers = new HandlerFactory();
-        }
-
         // find the configured handlers...
-        for (String namespace : handlers.getKeys()) {
-            if (log.isDebugEnabled()) {
-                log.debug("registerInvocationHandler: namespace [" + namespace +
-                        "] handler [" + handlers.getHandler(namespace).get() + "]");
-            }
-            srvr.addInvocationHandler(
-                    namespace,
-                    handlers.getHandler(namespace).get()
-            );
+        for (String namespace : handlerFactory.getKeys()) {
+            handlerFactory.getHandler(namespace).ifPresent((handler) -> {
+                if (log.isDebugEnabled()) {
+                    log.debug("registerInvocationHandler: namespace [{}] handler [{}]", namespace, handler);
+                }
+                srvr.addInvocationHandler(namespace, handler);
+            });
         }
     }
 

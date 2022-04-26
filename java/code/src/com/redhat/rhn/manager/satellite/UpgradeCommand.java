@@ -45,7 +45,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -66,7 +67,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(UpgradeCommand.class);
+    private static Logger log = LogManager.getLogger(UpgradeCommand.class);
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
     public static final String UPGRADE_KS_PROFILES =
@@ -134,7 +135,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             Task t = (Task) upgradeTaskIn;
             // Use WARN because we want this logged.
             if (t != null) {
-                log.warn("got upgrade task: " + t.getName());
+                log.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
                     case UPGRADE_KS_PROFILES:
                         processKickstartProfiles();
@@ -168,8 +169,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             KickstartSession ksession =
                     KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
             if (ksession == null) {
-                log.warn("Kickstart does not have a session: id: " + ksdata.getId() +
-                        " label: " + ksdata.getLabel());
+                log.warn("Kickstart does not have a session: id: {} label: {}", ksdata.getId(), ksdata.getLabel());
                 KickstartSessionCreateCommand kcmd = new KickstartSessionCreateCommand(
                         ksdata.getOrg(), ksdata);
                 kcmd.store();
@@ -239,7 +239,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
         List<Object[]> candidates = HibernateFactory.getSession()
                 .getNamedQuery("ConfigRevision.stateContentMigrationCandidates").list();
         // Use WARN here because we want this operation logged.
-        log.warn("Migrating content of " + candidates.size() + " custom states from disk to database.");
+        log.warn("Migrating content of {} custom states from disk to database.", candidates.size());
         candidates.forEach(row -> {
             Long orgId = (Long) row[0];
             String channelLabel = (String) row[1];
@@ -249,7 +249,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     .resolve(ORG_STATES_DIRECTORY_PREFIX + orgId)
                     .resolve(channelLabel + ".sls");
 
-            log.info("Migrating " + channelLabel + " from path " + statePath + ".");
+            log.info("Migrating {} from path {}.", channelLabel, statePath);
 
             try {
                 byte[] bytes = FileUtils.readFileToByteArray(statePath.toFile());
@@ -260,8 +260,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 ConfigurationFactory.getSession().save(revision);
             }
             catch (IOException e) {
-                log.error("Error when importing state '" + channelLabel +
-                        "' from file '" + statePath + "'. Skipping this state.", e);
+                log.error("Error when importing state '{}' from file '{}'. Skipping this state.", channelLabel, statePath, e);
                 // when import failed, we don't want to continue
                 throw new RuntimeException(e);
             }
@@ -333,7 +332,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         });
                 SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
             }
-            log.info("Regenerated custom minion SLS files in " + saltRootPath);
+            log.info("Regenerated custom minion SLS files in {}", saltRootPath);
         }
         catch (Exception e) {
             log.error("Error refreshing custom SLS files. Ignoring.", e);

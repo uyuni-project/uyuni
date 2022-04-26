@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -83,7 +85,7 @@ public class MenuTree {
             nodes.add(getUsersNode(adminRoles));
             nodes.add(getAdminNode(adminRoles));
             nodes.add(getHelpNode(docsLocale));
-            nodes.add(getExternalLinksNode());
+            nodes.add(getExternalLinksNode(docsLocale));
         }
         else {
             // Create First User
@@ -92,7 +94,7 @@ public class MenuTree {
             }
 
             nodes.add(getAboutNode(docsLocale));
-            nodes.add(getExternalLinksNode());
+            nodes.add(getExternalLinksNode(docsLocale));
         }
 
         if (getActiveNode(nodes, url) == null) {
@@ -145,7 +147,7 @@ public class MenuTree {
                     .addChild(new MenuItem("Inactive").withPrimaryUrl("/rhn/systems/Inactive.do"))
                     .addChild(new MenuItem("Recently Registered").withPrimaryUrl("/rhn/systems/Registered.do"))
                     .addChild(new MenuItem("Proxy").withPrimaryUrl("/rhn/systems/ProxyList.do")
-                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_satellite()") &&
+                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
                                     adminRoles.get("org")))
                     .addChild(new MenuItem("Duplicate Systems").withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
                             .withAltUrl("/rhn/systems/DuplicateIPv6List.do")
@@ -274,8 +276,7 @@ public class MenuTree {
         return new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
             .addChild(new MenuItem("Channel List").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
-                    .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do")
-                            .withVisibility(checkAcl(user, "is_satellite()")))
+                    .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do"))
                     .addChild(new MenuItem("channel.nav.popular").withPrimaryUrl("/rhn/software/channels/Popular.do"))
                     .addChild(new MenuItem("channel.nav.custom").withPrimaryUrl("/rhn/software/channels/Custom.do"))
                     .addChild(new MenuItem("channel.nav.shared").withPrimaryUrl("/rhn/software/channels/Shared.do"))
@@ -328,7 +329,6 @@ public class MenuTree {
                                         .withAltUrl("/rhn/audit/scap/DiffSubmit.do"))
                         .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/audit/scap/Search.do"))
                         .addChild(new MenuItem("audit.nav.logreview")
-                                .withVisibility(checkAcl(user, "not is_satellite()"))
                                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/audit/Overview.do"))
                                 .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
                                 .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))));
@@ -511,16 +511,27 @@ public class MenuTree {
             );
     }
 
-    private MenuItem getExternalLinksNode() {
+    private MenuItem getExternalLinksNode(String docsLocale) {
         return new MenuItem("External Links").withIcon("fa-link")
             .addChild(new MenuItem("header.jsp.knowledgebase")
-                    .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
+                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager")
                     .withTarget("_blank"))
             .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
-                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html" :
-                            "https://documentation.suse.com/suma/")
+                            "https://www.uyuni-project.org/uyuni-docs/" + docsLocale + "/uyuni/index.html" :
+                            "https://documentation.suse.com/suma/" + getMajorMinorProductVersion() + "/")
                     .withTarget("_blank"));
+    }
+
+    /**
+     * Get the `MAJOR.MINOR` part of the product version string
+     */
+    private String getMajorMinorProductVersion() {
+        String productVersion = ConfigDefaults.get().getProductVersion();
+        Pattern pattern = Pattern.compile("^[0-9]+\\.[0-9]+");
+        Matcher matcher = pattern.matcher(productVersion);
+        matcher.find();
+        return matcher.group(0);
     }
 
     /**

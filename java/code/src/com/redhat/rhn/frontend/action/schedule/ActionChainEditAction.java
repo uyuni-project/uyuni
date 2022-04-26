@@ -32,7 +32,8 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -72,7 +73,7 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
     private static final String TO_LIST_FORWARD = "to_list";
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ActionChainEditAction.class);
+    private static Logger log = LogManager.getLogger(ActionChainEditAction.class);
 
     /**
      * {@inheritDoc}
@@ -169,7 +170,7 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
         ActionChain actionChain) {
         List<ActionChainEntryGroup> groups = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
-        log.debug("Found " + groups.size() + " Action Chain Entry groups");
+        log.debug("Found {} Action Chain Entry groups", groups.size());
         request.setAttribute(ACTION_CHAIN_ATTRIBUTE, actionChain);
         request.setAttribute(GROUPS_ATTRIBUTE, groups);
         DatePicker datePicker = getStrutsDelegate().prepopulateDatePicker(request, form,

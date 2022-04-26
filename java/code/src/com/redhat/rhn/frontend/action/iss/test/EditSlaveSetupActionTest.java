@@ -14,22 +14,27 @@
  */
 package com.redhat.rhn.frontend.action.iss.test;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * IssEditSlaveActionTest
  *
- * @version $Rev: 1 $
  */
 public class EditSlaveSetupActionTest extends BaseIssTestAction {
 
+    @Test
     public void testExecute() throws Exception {
     }
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("sid", slaveDto.getId().toString());
     }
 
+    @Test
     public void testEditSlave() {
         doPerform(true);
         verifyFormValue("id", slaveDto.getId());

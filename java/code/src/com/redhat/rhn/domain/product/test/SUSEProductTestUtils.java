@@ -56,7 +56,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.File;
@@ -73,7 +74,7 @@ import java.util.stream.Collectors;
  */
 public class SUSEProductTestUtils extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(SUSEProductTestUtils.class);
+    private static Logger log = LogManager.getLogger(SUSEProductTestUtils.class);
 
     /**
      * Not to be instantiated.

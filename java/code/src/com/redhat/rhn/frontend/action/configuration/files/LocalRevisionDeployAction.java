@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * LocalRevisionDeployAction
- * @version $Rev: 1 $
  */
 public class LocalRevisionDeployAction extends RhnAction {
 

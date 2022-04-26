@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
-
 import static com.redhat.rhn.domain.errata.test.ErrataFactoryTest.createTestErrata;
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
@@ -34,6 +33,9 @@ import com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,10 +45,12 @@ import java.text.SimpleDateFormat;
  */
 public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Test
     public void testSUSEPatchNames() throws Exception {
 
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -77,6 +81,7 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         assertContains(buffer.toString(), "<id>CL-SUSE-SLE-SERVER-2016-1234</id>");
     }
 
+    @Test
     public void testErrataFieldsGeneratedCorrectly() throws Exception {
 
         final ChannelFamily channelFamily = createTestChannelFamily();

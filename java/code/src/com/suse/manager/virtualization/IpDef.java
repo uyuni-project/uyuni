@@ -18,7 +18,8 @@ import com.suse.utils.Ip;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import java.net.UnknownHostException;
@@ -30,7 +31,7 @@ import java.util.Optional;
  * Represents the IP configuration of a virtual network
  */
 public class IpDef {
-    private static final Logger LOG = Logger.getLogger(IpDef.class);
+    private static final Logger LOG = LogManager.getLogger(IpDef.class);
 
     private String address;
     private Integer prefix;
@@ -165,7 +166,7 @@ public class IpDef {
                 prefix = Ip.netmaskToPrefix(netmask);
             }
             catch (UnknownHostException e) {
-                LOG.error("Invalid netmask: " + netmask);
+                LOG.error("Invalid netmask: {}", netmask);
                 return Optional.empty();
             }
         }
@@ -176,7 +177,7 @@ public class IpDef {
             def.setAddress(Ip.getNetworkAddress(address, prefix));
         }
         catch (UnknownHostException e) {
-            LOG.error("Invalid IP address: " + address);
+            LOG.error("Invalid IP address: {}", address);
             return Optional.empty();
         }
 

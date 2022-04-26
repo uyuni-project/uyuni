@@ -14,15 +14,22 @@
  */
 package com.redhat.rhn.manager.entitlement.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * EntitlementManagerTest
  */
 public class EntitlementManagerTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetEntitlementByName() {
         assertNull(EntitlementManager.getByName(null));
         assertNull(EntitlementManager.getByName("foo"));

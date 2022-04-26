@@ -29,7 +29,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -54,7 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listable {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(SSMUpdateSoftwareProfileConfirm.class);
+    private static Logger log = LogManager.getLogger(SSMUpdateSoftwareProfileConfirm.class);
 
     /**
      * {@inheritDoc}

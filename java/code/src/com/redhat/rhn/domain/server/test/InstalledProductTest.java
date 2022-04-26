@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -24,12 +28,15 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class InstalledProductTest extends RhnBaseTestCase {
 
+    @Test
     public void testInstalledProduct() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProducts();
 

@@ -31,7 +31,8 @@ import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
@@ -49,7 +50,7 @@ import java.util.Map;
  */
 public class CobblerSystemCreateCommand extends CobblerCommand {
 
-    private static Logger log = Logger.getLogger(CobblerSystemCreateCommand.class);
+    private static Logger log = LogManager.getLogger(CobblerSystemCreateCommand.class);
     private Action scheduledAction;
     private final Server server;
     private String serverName;
@@ -157,7 +158,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                 createNewReActivationKey(UserFactory.findRandomOrgAdmin(
                         server.getOrg()), server, note);
         key.setUsageLimit(1L);
-        log.debug("created reactivation key: " + key.getKey());
+        log.debug("created reactivation key: {}", key.getKey());
         keys = key.getKey();
         if (ksData != null) {
             for (Token token : ksData.getDefaultRegTokens()) {

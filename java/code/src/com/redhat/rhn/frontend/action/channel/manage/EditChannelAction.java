@@ -76,7 +76,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditChannelAction
- * @version $Rev: 1 $
  */
 public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public static final String GPG_FINGERPRINT = "gpg_key_fingerprint";

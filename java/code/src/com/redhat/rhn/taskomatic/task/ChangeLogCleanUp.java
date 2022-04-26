@@ -41,8 +41,7 @@ public class ChangeLogCleanUp extends RhnJavaJob {
         // TODO Auto-generated method stub
         int rowsDeleted = deleteOrphanedChangelogEntries();
         if (rowsDeleted > 0) {
-            log.info("Deleted " + rowsDeleted +
-                    " row(s) of orphaned package changelog data.");
+            log.info("Deleted {} row(s) of orphaned package changelog data.", rowsDeleted);
         }
     }
 

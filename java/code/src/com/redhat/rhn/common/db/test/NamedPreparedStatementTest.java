@@ -14,12 +14,20 @@
  */
 package com.redhat.rhn.common.db.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.BindVariableNotFoundException;
 import com.redhat.rhn.common.db.NamedPreparedStatement;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.PreparedStatement;
 import java.util.HashMap;
@@ -76,16 +84,18 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                      "FROM FOOBAR";
 
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         session = HibernateFactory.getSession();
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         session = null;
         super.tearDown();
     }
 
+    @Test
     public void testColonInQuotes() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -98,6 +108,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         assertTrue(pMap.isEmpty());
     }
 
+    @Test
     public void testCreateSQL() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -112,6 +123,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         assertEquals(1, ((Integer)lst.get(0)).intValue());
     }
 
+    @Test
     public void testPrepare() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -128,6 +140,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
 
+    @Test
     public void testTwoBindPrepare() throws Exception {
         List lst;
         String jdbcQuery;
@@ -151,6 +164,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
 
+    @Test
     public void testNotFoundBindParam() throws Exception {
         Map<String, List<Integer>> pMap = new HashMap<>();
 

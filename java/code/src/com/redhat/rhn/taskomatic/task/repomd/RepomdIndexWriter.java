@@ -23,7 +23,6 @@ import java.io.Writer;
 
 /**
  *
- * @version $Rev $
  *
  */
 public class RepomdIndexWriter {

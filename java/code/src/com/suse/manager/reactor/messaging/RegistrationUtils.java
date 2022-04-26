@@ -56,7 +56,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +80,7 @@ public class RegistrationUtils {
     private static final String OS = "os";
     private static final String OS_ARCH = "osarch";
 
-    private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
+    private static final Logger LOG = LogManager.getLogger(RegistrationUtils.class);
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -113,10 +114,10 @@ public class RegistrationUtils {
                     creator.orElse(null));
         }
         catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for minion '" + minionId + "':" + e.getMessage());
+            LOG.error("Error generating Salt files for minion '{}':{}", minionId, e.getMessage());
         }
 
-        LOG.info("Finished minion registration: " + minionId);
+        LOG.info("Finished minion registration: {}", minionId);
 
         StatesAPI.generateServerPackageState(minion);
 
@@ -148,6 +149,7 @@ public class RegistrationUtils {
         if (applyHighstate) {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
+        SystemManager.setReportDbUser(minion, false);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
@@ -155,7 +157,7 @@ public class RegistrationUtils {
             ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
         }
         catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule hardware refresh for system: " + server.getId());
+            LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
             throw new RuntimeException(e);
         }
     }
@@ -223,8 +225,8 @@ public class RegistrationUtils {
         String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
-            LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key " +
-                    activationKeyLabel.get() + " is not valid for minionId " + minionId);
+            LOG.warn("Default channel(s) will NOT be subscribed to: specified Activation Key {} is not valid " +
+                    "for minionId {}", activationKeyLabel.get(), minionId);
             SystemManager.addHistoryEvent(server, "Invalid Activation Key",
                     "Specified Activation Key " + activationKeyLabel.get() +
                             " is not valid. Default channel(s) NOT subscribed to.");
@@ -323,8 +325,8 @@ public class RegistrationUtils {
         return Opt.fold(
                 baseProductOpt,
                 () -> {
-                    LOG.warn("Server " + minionId + " has no identifiable base product" +
-                            " and will register without base channel assignment");
+                    LOG.warn("Server {} has no identifiable base product and will register without base channel " +
+                            "assignment", minionId);
                     return emptySet();
                 },
                 baseProduct -> Stream.concat(
@@ -349,8 +351,7 @@ public class RegistrationUtils {
                                 ofNullable(SUSEProductFactory.findSUSEProduct(osName,
                                         osVersion, osRelease, osArch, true));
                         if (!suseProduct.isPresent()) {
-                            LOG.warn("No product match found for: " + osName + " " +
-                                    osVersion + " " + osRelease + " " + osArch);
+                            LOG.warn("No product match found for: {} {} {} {}", osName, osVersion, osRelease, osArch);
                         }
                         return Opt.stream(suseProduct);
                     })).collect(toSet());
@@ -375,9 +376,8 @@ public class RegistrationUtils {
                     return Opt.stream(rhel.getSuseProduct());
                 }
                 else {
-                    LOG.warn("No product match found for: " + rhel.getName() + " " +
-                            rhel.getVersion() + " " + rhel.getRelease() + " " +
-                            server.getServerArch().getCompatibleChannelArch());
+                    LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
+                            rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
             }).collect(toSet());
@@ -396,8 +396,8 @@ public class RegistrationUtils {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is " + grains.getValueAsString(OS) +
-                ", arch is " + grains.getValueAsString(OS_ARCH));
+        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS),
+                grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 

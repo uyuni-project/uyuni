@@ -15,12 +15,20 @@
 
 package com.redhat.rhn.common.security.acl.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.mockobjects.ExpectationValue;
 import com.mockobjects.Verifiable;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,16 +46,9 @@ public class AclTest extends RhnBaseTestCase {
     private Map context = null;
     private MockAclHandler handler = null;
 
-    /** Constructor
-     * @param name test name
-     */
-    public AclTest(final String name) {
-        super(name);
-    }
-
     /** Sets up the acl, handler, and context objects. */
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         acl = new Acl();
         context = new HashMap();
         handler = new MockAclHandler();
@@ -56,7 +57,9 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     /** Tears down the acl, handler, and context objects. */
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
         acl = null;
         context = null;
         handler = null;
@@ -74,6 +77,7 @@ public class AclTest extends RhnBaseTestCase {
      *   <li>"not handler_zero(true)"
      * </ul>
      */
+    @Test
     public void testSimpleAcl() {
 
         // test parsing with no params. should be false
@@ -117,6 +121,7 @@ public class AclTest extends RhnBaseTestCase {
      *   <li>"handler_zero(true) or handler_one(false)"
      * </ul>
      */
+    @Test
     public void testMultipleOrStatementsAcl() {
         handler.setExpected("handler_zero", new String[]{"false"});
         handler.setExpected("handler_one", new String[]{"true"});
@@ -141,6 +146,7 @@ public class AclTest extends RhnBaseTestCase {
      *   <li>"handler_zero(true,false) ; handler_one(true)"
      * </ul>
      */
+    @Test
     public void testMultipleAndStatementsAcl() {
         handler.setExpected("handler_zero", new String[]{"false"});
         // handler_one, even though we give it false in evalAcl, is not expected
@@ -165,6 +171,7 @@ public class AclTest extends RhnBaseTestCase {
      *   <li>"handler_zero(true) or handler_one(false) ; handler_two(true)"
      * </ul>
      */
+    @Test
     public void testCompoundAcl() {
 
         handler.setExpected("handler_zero", new String[]{"true"});
@@ -183,6 +190,7 @@ public class AclTest extends RhnBaseTestCase {
 
     /* Test bad handler.
      */
+    @Test
     public void testBadHandler() {
         try {
             acl.evalAcl(null, "handler_does_not_exist(true)");
@@ -195,6 +203,7 @@ public class AclTest extends RhnBaseTestCase {
 
     /* Test bad syntax.
      */
+    @Test
     public void testBadSyntax() {
         try {
             acl.evalAcl(null, "handler_zero(true) and handler_zero(true)");
@@ -207,6 +216,7 @@ public class AclTest extends RhnBaseTestCase {
 
     /* Test bad syntax.
      */
+    @Test
     public void test() {
         try {
             acl.evalAcl(null, null);
@@ -240,6 +250,7 @@ public class AclTest extends RhnBaseTestCase {
      *  </tr>
      *  </table>
      */
+    @Test
     public void testMethodNameToAclName() {
         acl.registerHandler(new MockAclHandlerWithFunkyNames());
 
@@ -253,11 +264,13 @@ public class AclTest extends RhnBaseTestCase {
         assertTrue(acl.evalAcl(context, "xml_test()"));
     }
 
+    @Test
     public void testRegisterByClass() {
         acl.registerHandler(MockAclHandlerWithFunkyNames.class);
         assertTrue(acl.evalAcl(context, "xml_test()"));
     }
 
+    @Test
     public void testBadRegisterByClass() {
         try {
             acl.registerHandler(Object.class);
@@ -268,11 +281,13 @@ public class AclTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testRegisterByString() {
         acl.registerHandler(MockAclHandlerWithFunkyNames.class.getName());
         assertTrue(acl.evalAcl(context, "xml_test()"));
     }
 
+    @Test
     public void testBadRegisterByString() {
         try {
             acl.registerHandler("Bubba");
@@ -283,6 +298,7 @@ public class AclTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testStringArrayConstructor() {
         Acl localAcl = new Acl(new String[]{MockAclHandler.class.getName(),
             MockAclHandlerWithFunkyNames.class.getName()});
@@ -292,6 +308,7 @@ public class AclTest extends RhnBaseTestCase {
         assertTrue(localAcl.evalAcl(context, "xml_test()"));
     }
 
+    @Test
     public void testGetAclHandlerNames() {
         Acl localAcl = new Acl();
         localAcl.registerHandler(MockAclHandler.class.getName());

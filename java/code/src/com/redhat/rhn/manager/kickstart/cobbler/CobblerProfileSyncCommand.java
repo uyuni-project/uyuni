@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      */
     public CobblerProfileSyncCommand() {
         super();
-        log = Logger.getLogger(this.getClass());
+        log = LogManager.getLogger(this.getClass());
     }
 
 
@@ -85,10 +86,8 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
 
             if (!profileNames.containsKey(profile.getCobblerId())) {
                   if (profile.getKickstartDefaults().getKstree().getCobblerId() == null) {
-                     log.warn("Kickstart profile " + profile.getLabel() +
-                             " could not be synced to cobbler, due to it's " +
-                             "tree being unsynced.  Please edit the tree url " +
-                             "to correct this.");
+                      log.warn("Kickstart profile {} could not be synced to cobbler, due to it's tree " +
+                              "being unsynced. Please edit the tree url to correct this.", profile.getLabel());
                   }
                   else {
                       createProfile(profile);
@@ -104,8 +103,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         for (KickstartData profile : profiles) {
             if (profileNames.containsKey(profile.getCobblerId())) {
                 Map cobProfile = profileNames.get(profile.getCobblerId());
-                log.debug(profile.getLabel() + ": " + cobProfile.get("mtime") +
-                    " - " + profile.getModified().getTime());
+                log.debug("{}: {} - {}", profile.getLabel(), cobProfile.get("mtime"), profile.getModified().getTime());
                 if (((Double)cobProfile.get("mtime")).longValue() >
                       profile.getModified().getTime() / 1000) {
                     syncProfileToSpacewalk(cobProfile, profile);
@@ -134,8 +132,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      * @param profile
      */
     private void syncProfileToSpacewalk(Map cobblerProfile, KickstartData profile) {
-        log.debug("Syncing profile: " + profile.getLabel() + " known in cobbler as: " +
-                cobblerProfile.get("name"));
+        log.debug("Syncing profile: {} known in cobbler as: {}", profile.getLabel(), cobblerProfile.get("name"));
         //Do we need to sync the distro?
         Map distro = (Map) invokeXMLRPC("get_distro", cobblerProfile.get("distro"));
         if (!distro.get("uid").equals(profile.getTree().getCobblerId()) &&
@@ -144,8 +141,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
             KickstartableTree tree = KickstartFactory.
                     lookupKickstartTreeByCobblerIdOrXenId((String)distro.get("uid"));
             if (tree == null) {
-                log.error("Kickstartable tree was not found for Cobbler id:" +
-                        (String)distro.get("uid"));
+                log.error("Kickstartable tree was not found for Cobbler id:{}", (String) distro.get("uid"));
             }
             else {
                 profile.setTree(tree);

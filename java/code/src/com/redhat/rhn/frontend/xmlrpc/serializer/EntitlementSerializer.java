@@ -15,13 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
+import com.suse.manager.api.ApiResponseSerializer;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 
 
 /**
@@ -34,27 +31,19 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "type")
  * #struct_end()
  */
-public class EntitlementSerializer extends RhnXmlRpcCustomSerializer {
+public class EntitlementSerializer extends ApiResponseSerializer<Entitlement> {
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class getSupportedClass() {
+    @Override
+    public Class<Entitlement> getSupportedClass() {
         return Entitlement.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
-        throws XmlRpcException, IOException {
-        SerializerHelper helper = new SerializerHelper(serializer);
-        Entitlement ent = (Entitlement) value;
-        helper.add("label", ent.getLabel());
-        helper.add("name", ent.getHumanReadableLabel());
-        helper.add("type", ent.getHumanReadableTypeLabel());
-        helper.writeTo(output);
+    @Override
+    public SerializedApiResponse serialize(Entitlement src) {
+        return new SerializationBuilder()
+                .add("label", src.getLabel())
+                .add("name", src.getHumanReadableLabel())
+                .add("type", src.getHumanReadableTypeLabel())
+                .build();
     }
-
 }

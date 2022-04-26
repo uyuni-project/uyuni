@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.role.Role;
 /**
  * Class UserGroup that reflects the DB representation of RHNUSERGROUP
  * DB table: RHNUSERGROUP
- * @version $Rev: 789 $
  */
 public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
 

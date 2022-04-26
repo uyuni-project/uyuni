@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -22,6 +25,8 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * OrgManagerTest
@@ -32,6 +37,7 @@ public class OrgManagerTest extends RhnBaseTestCase {
      * TestOrgsInsat
      * @throws Exception if error
      */
+    @Test
     public void testOrgsInSat() throws Exception {
 
         User user = UserTestUtils.findNewUser("test-morg", "testorg-foo", true);

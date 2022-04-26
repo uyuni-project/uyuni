@@ -39,7 +39,8 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,8 +55,7 @@ import java.util.Set;
  */
 public class RefreshGeneratedSaltFilesEventMessageAction implements MessageAction {
 
-    private static Logger log = Logger
-            .getLogger(RefreshGeneratedSaltFilesEventMessageAction.class);
+    private static Logger log = LogManager.getLogger(RefreshGeneratedSaltFilesEventMessageAction.class);
 
     private Path suseManagerStatesFilesRoot;
 
@@ -85,8 +85,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             refreshFiles();
         }
         catch (IOException e) {
-            log.error("Could not regenerate org and group sls files in " +
-                    saltGenerationTempDir, e);
+            log.error("Could not regenerate org and group sls files in {}", saltGenerationTempDir, e);
         }
     }
 
@@ -102,7 +101,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             Files.createDirectories(saltGenerationTempDir);
             tempSaltRootPath = Files
                     .createTempDirectory(saltGenerationTempDir, "salt");
-            log.debug("Created temporary dir " + tempSaltRootPath);
+            log.debug("Created temporary dir {}", tempSaltRootPath);
 
             List<Org> orgs = OrgFactory.lookupAllOrgs();
             for (Org org : orgs) {
@@ -167,17 +166,16 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                 FileUtils.deleteDirectory(oldSaltPath.toFile());
             }
 
-            log.info("Regenerated org and group .sls files in " + saltPath);
+            log.info("Regenerated org and group .sls files in {}", saltPath);
         }
         finally {
             if (tempSaltRootPath != null) {
                 try {
-                    log.debug("Removing temporary dir " + tempSaltRootPath);
+                    log.debug("Removing temporary dir {}", tempSaltRootPath);
                     FileUtils.deleteDirectory(tempSaltRootPath.toFile());
                 }
                 catch (IOException e) {
-                    log.error("Could not remove temporary directory " +
-                            tempSaltRootPath, e);
+                    log.error("Could not remove temporary directory {}", tempSaltRootPath, e);
                 }
             }
         }

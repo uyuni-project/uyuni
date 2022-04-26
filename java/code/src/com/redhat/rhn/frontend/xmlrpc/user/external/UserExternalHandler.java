@@ -33,6 +33,8 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToRoleMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToServerGroupMapException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -99,6 +101,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("boolean", "keep", "True if we should keep roles
      * after users log in through non-IPA method, false otherwise")
      */
+    @ReadOnly
     public boolean getKeepTemporaryRoles(User loggedInUser)
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
@@ -149,6 +152,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("boolean", "use", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise")
      */
+    @ReadOnly
     public boolean getUseOrgUnit(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
@@ -200,6 +204,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("int", "id", "Id of the default organization. 0 if there is no default")
      */
+    @ReadOnly
     public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
@@ -273,6 +278,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
      * @xmlrpc.returntype $UserExtGroupSerializer
      */
+    @ReadOnly
     public UserExtGroup getExternalGroupToRoleMap(User loggedInUser, String name) {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
@@ -368,6 +374,7 @@ public class UserExternalHandler extends BaseHandler {
      *     $UserExtGroupSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<UserExtGroup> listExternalGroupToRoleMaps(User loggedInUser) {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
@@ -451,6 +458,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
      * @xmlrpc.returntype $OrgUserExtGroupSerializer
      */
+    @ReadOnly
     public OrgUserExtGroup getExternalGroupToSystemGroupMap(User loggedInUser,
             String name) {
         ensureOrgAdmin(loggedInUser);
@@ -536,6 +544,7 @@ public class UserExternalHandler extends BaseHandler {
      *     $OrgUserExtGroupSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<OrgUserExtGroup> listExternalGroupToSystemGroupMaps(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
 

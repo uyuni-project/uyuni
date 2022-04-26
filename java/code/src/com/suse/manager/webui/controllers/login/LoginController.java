@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.login;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -23,6 +24,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
@@ -33,7 +35,8 @@ import com.google.gson.Gson;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class LoginController {
 
-    private static Logger log = Logger.getLogger(LoginController.class);
+    private static Logger log = LogManager.getLogger(LoginController.class);
     private static final Gson GSON = Json.GSON;
     private static final String URL_CREATE_FIRST_USER = "/rhn/newlogin/CreateFirstUser.do";
 
@@ -64,6 +67,7 @@ public class LoginController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/login", withCsrfToken(LoginController::loginView), jade);
         post("/manager/api/login", LoginController::login);
+        get("/manager/api/logout", withUser(LoginController::logout));
     }
 
     /**
@@ -102,7 +106,7 @@ public class LoginController {
 
             // In case we are authenticated go directly to redirect target
             if (AclManager.hasAcl("user_authenticated()", request.raw(), null)) {
-                log.debug("Already authenticated, redirecting to: " + urlBounce);
+                log.debug("Already authenticated, redirecting to: {}", urlBounce);
                 response.redirect(urlBounce);
             }
 
@@ -133,7 +137,7 @@ public class LoginController {
      *
      * @param request the request object
      * @param response the response object
-     * @return the model and view
+     * @return the JSON result of the login operation
      */
     public static String login(Request request, Response response) {
         List<String> errors = new ArrayList<>();
@@ -145,26 +149,39 @@ public class LoginController {
             user = LoginHelper.loginUser(creds.getLogin(), creds.getPassword(), errors);
             if (errors.isEmpty()) {
                 // No errors, log success
-                log.info("LOCAL AUTH SUCCESS: [" + user.getLogin() + "]");
+                log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
             }
             else {
                 // Errors, log failure
-                log.error("LOCAL AUTH FAILURE: [" + creds.getLogin() + "]");
+                log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
             }
         }
         // External-auth returned a user and no errors
-        else if (errors.isEmpty()) {
-            log.info("EXTERNAL AUTH SUCCESS: [" + user.getLogin() + "]");
+        else {
+            log.info("EXTERNAL AUTH SUCCESS: [{}]", user.getLogin());
         }
 
         if (errors.isEmpty()) {
             LoginHelper.successfulLogin(request.raw(), response.raw(), user);
-            return json(response, new LoginResult(true, new String[0]));
+            return json(response, new LoginResult(true));
         }
         else {
-            log.error("LOCAL AUTH FAILURE: [" + creds.getLogin() + "]");
-            return json(response, new LoginResult(false, errors.toArray(new String[errors.size()])));
+            log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+            return json(response, new LoginResult(false, errors.toArray(new String[0])));
         }
+    }
+
+    /**
+     * Logs out the current user
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the JSON result of the logout operation
+     */
+    public static String logout(Request request, Response response, User user) {
+        AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
+        log.info("WEB LOGOUT: [{}]", user.getLogin());
+        return json(response, new LoginResult(true));
     }
 
     /**

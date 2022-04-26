@@ -14,6 +14,14 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -33,6 +41,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -99,6 +108,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -139,6 +150,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -174,6 +186,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdate() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -237,6 +250,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    @Test
     public void testApplyPackageDelta() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());
@@ -277,6 +291,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, minion.getPackages().size());
     }
 
+    @Test
     public void testApplyPackageDeltaWithDuplicates() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -295,6 +310,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("7.1", packages.get(0).getEvr().getRelease());
     }
 
+    @Test
     public void testsPackageDeltaFromStateApply() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());
@@ -324,6 +340,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateAllVersions() throws Exception {
         // set up minion, action and response: 6 packages installed
         // aaa_base, java, bash (x86_64 and i686), kernel-default (4.4.73-5.1 and 4.4.126-94.22.1)
@@ -393,6 +410,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateMultiple() throws Exception {
         // set up minion, action and response: 3 packages installed
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -465,6 +483,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(3, minion.getPackages().size());
     }
 
+    @Test
     public void testPackagesProfileUpdateLivePatching() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -512,6 +531,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateRhel7RES() throws Exception {
         RhelUtilsTest.createResChannel(user, "7");
         // Prepare test objects: minion server, products and action
@@ -579,6 +599,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateUbuntu() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -637,6 +658,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateDebian() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -690,6 +712,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    @Test
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {
             assertNotNull(server);
@@ -705,6 +728,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateDockerNoDmiUdev()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.docker.json", (server) -> {
             assertNotNull(server);
@@ -719,6 +743,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateX86() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
@@ -795,6 +820,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateGrainsFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
@@ -802,6 +828,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateCustomFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.custom.fqdns.json", (server) -> {
             assertNotNull(server);
@@ -813,6 +840,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateNetworkModuleFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
@@ -820,6 +848,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateX86LongCPUValues()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.cpulongval.x86.json", (server) -> {
             assertNotNull(server);
@@ -837,6 +866,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePPC64()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
@@ -891,6 +921,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testHardwareProfileUpdateScsiDevices()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.scsi.x86.json", (server) -> {
             assertNotNull(server);
@@ -904,6 +935,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPv4Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -918,6 +950,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPv4OnlyLocalhost()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4onlylocalhost.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -932,6 +965,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatetPrimaryIPv6Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv6only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -945,6 +979,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatetPrimaryIPV4IPv6()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -957,6 +992,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileChangeNetworkIP()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
             (server) -> {
@@ -986,6 +1022,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
     }
 
+    @Test
     public void testHardwareProfileMultiIP()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.multi-ipv4.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -1003,6 +1040,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileNoNetworkIPChange()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
             (server) -> {
@@ -1031,6 +1069,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -1061,6 +1100,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, server.getFqdns().size());
     }
 
+    @Test
     public void testHardwareProfileUpdateS390() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.s390.json", (server) -> {
             assertNotNull(server);
@@ -1157,6 +1197,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return server;
     }
 
+    @Test
     public void testHardwareProfileInfiniband()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.infiniband.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -1167,11 +1208,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileXenHost()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json",
-                (server) -> assertFalse("system should not be a virtual guest", server.isVirtualGuest()));
+                (server) -> assertFalse(server.isVirtualGuest(), "system should not be a virtual guest"));
     }
 
+    @Test
     public void testHardwareProfilePublicCloud()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.public_cloud.json", (server) -> {
             assertNotNull(server);
@@ -1224,6 +1267,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testUpdateServerAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("abcdefg.vagrant.local");
@@ -1267,6 +1311,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().assertIsSatisfied();
     }
 
+    @Test
     public void testOpenscap() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -1332,6 +1377,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * number are filled correctly.
      * @throws Exception
      */
+    @Test
     public void testContainerImageBuild()  throws Exception {
         String digest1 = "1111111111111111111111111111111111111111111111111111111111111111";
         String digest2 = "2222222222222222222222222222222222222222222222222222222222222222";
@@ -1402,6 +1448,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * Build and inspect two versions of the same image.
      * @throws Exception
      */
+    @Test
     public void testContainerImageBuildMultipleVersions()  throws Exception {
         String digest = "1111111111111111111111111111111111111111111111111111111111111111";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
@@ -1466,6 +1513,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     /* Test container image import feature: imports an image and checks if image info has been populated.
      * @throws Exception
      */
+    @Test
     public void testContainerImageImport()  throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1520,6 +1568,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private ImageInfo doTestContainerImageBuild(MinionServer server, String imageName, String imageVersion,
                                                 ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
@@ -1578,6 +1631,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return imgInfo;
     }
 
+    @Test
     public void testKiwiImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1589,37 +1643,74 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
+                            "-default.kernel")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                                             user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
+                            user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
+                                    "-5.3.18-150300.59.54-default.kernel",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-
-        ImageInfo image = doTestKiwiImageBuild(server, "my-kiwi-image", profile, (info) -> {
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
-            assertEquals("POS_Image_JeOS6", info.getName());
-            assertEquals("6.0.0", info.getVersion());
+            assertEquals("POS_Image_JeOS7", info.getName());
+            assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
             assertNotNull(info.getChecksum());
-            assertEquals("a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
+            assertEquals("7057ea9a15784f469e03f2de045d3c73",
                 info.getChecksum().getChecksum());
-            assertEquals("POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                info.getImageFiles().stream().findFirst().get().getFile());
+            String pathPrefix = "POS_Image_JeOS7-7.0.0-1/";
+            // check initrd file
+            ImageFile file = info.getImageFiles().stream().filter(f -> f.getType().equals("initrd")).findFirst().get();
+            assertEquals("47a5391bd6c5f62c328605b0375b1216", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0.initrd", file.getFile());
+            // check kernel
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("kernel")).findFirst().get();
+            assertEquals("62c7d8dbb3ac208fbfa92d6034f361bc", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
+                    file.getFile());
+            // check image
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
+            assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         HibernateFactory.getSession().flush();
     }
 
-    public void testKiwiImageInspect() throws Exception {
+    @Test
+    public void testKiwiImageBuildWithBundle() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1630,15 +1721,64 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz",
-                                             user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
+                                    "-build129.tar.xz",
+                            user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", (info) -> {
+            // name and version is updated from the Kiwi build result
+            assertEquals("POS_Image_JeOS7", info.getName());
+            assertEquals("7.0.0", info.getVersion());
+            assertEquals(1, info.getRevisionNumber());
+            assertNotNull(info.getChecksum());
+            assertEquals("7057ea9a15784f469e03f2de045d3c73",
+                    info.getChecksum().getChecksum());
+            assertEquals("93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+                    info.getImageFiles().stream().findFirst().get().getChecksum().getChecksum());
+            assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
+                    info.getImageFiles().stream().findFirst().get().getFile());
+        });
+        ImageInfoFactory.delete(image, saltServiceMock);
+        HibernateFactory.getSession().flush();
+    }
+
+    @Test
+    public void testKiwiImageInspect() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel", user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd", user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
@@ -1655,12 +1795,23 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertTrue(map.containsKey("boot_images"));
             Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
+            assertTrue(bootImages.containsKey("POS_Image_JeOS6-6.0.0-1"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").containsKey("initrd"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").containsKey("kernel"));
             assertEquals(
-            "http://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
-                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").containsKey("url"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").get("kernel").containsKey("url"));
+            assertEquals("https://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-1/" +
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("kernel").get("url"));
+            assertEquals("https://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-1/" +
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("url"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
@@ -1680,6 +1831,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                    .findAny().isPresent());
     }
 
+    @Test
     public void testKiwiImageInspectCompressedImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1692,13 +1844,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
+                            user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
         }});
-
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
-
-        new File("/srv/susemanager/pillar_data/images").mkdirs();
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
@@ -1718,11 +1870,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             Map<String, Map<String, Map<String, Object>>> bootImages =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
             assertEquals(
-            "http://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-build24/initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
-                    bootImages.get("POS_Image_JeOS6-6.0.0").get("initrd").get("url"));
+            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-build24/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
@@ -1733,8 +1885,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
-    private ImageInfo doTestKiwiImageBuild(MinionServer server, String imageName,
-                                           ImageProfile profile, Consumer<ImageInfo> assertions)
+    private ImageInfo doTestKiwiImageBuild(MinionServer server, ImageProfile profile,
+                                           String returnEventJson,
+                                           Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), user);
@@ -1745,7 +1898,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Process the image build return event
         Optional<JobReturnEvent> event =
-                JobReturnEvent.parse(getJobReturnEvent("image.build.kiwi.json", actionId));
+                JobReturnEvent.parse(getJobReturnEvent(returnEventJson, actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
@@ -1774,7 +1927,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
+        // Basic image info and image list is taken from ImageInfo
+        imgInfoBuild.get().setName("POS_Image_JeOS6");
+        imgInfoBuild.get().setVersion("6.0.0");
         imgInfoBuild.get().setRevisionNumber(1);
+
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "kernel", "kernel");
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "initrd", "initrd");
+        ImageTestUtils.createImageFile(imgInfoBuild.get(), "image", "image");
 
         actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
 
@@ -1811,6 +1971,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return taskomaticApi;
     }
 
+    @Test
     public void testNoRegisterOnInexistentMinionReturnEvent() throws Exception {
         int initialMessageCount = MessageQueue.getMessageCount();
         // Setup an event message from file contents
@@ -1825,6 +1986,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(initialMessageCount, MessageQueue.getMessageCount());
     }
 
+    @Test
     public void testSubscribeChannelsActionSuccess() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -1886,6 +2048,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion, ch2);
     }
 
+    @Test
     public void testSubscribeChannelsActionNullTokens() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -1941,11 +2104,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {
-        assertTrue(channel.getLabel(), minion.getAccessTokens().stream()
+        assertTrue(minion.getAccessTokens().stream()
                 .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel))
-                .findFirst().isPresent());
+                .findFirst().isPresent(), channel.getLabel());
     }
 
+    @Test
     public void testFailDependentServerActions() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Action applyStateAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
@@ -1988,6 +2152,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Prerequisite failed", runScriptSeverAction.getResultMsg());
     }
 
+    @Test
     public void testStateErrorResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("demo-kvm1.tf.local");
@@ -2015,6 +2180,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getResultMsg().contains("default-broken pool is not defined"));
     }
 
+    @Test
     public void testActionChainResponse() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2084,6 +2250,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new String(scriptResult.getOutput()));
     }
 
+    @Test
     public void testActionChainPackageRefreshNeeded() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2117,9 +2284,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
         //2nd was because full package refresh was needed.
-        assertEquals("2 actions have been scheduled for server 1", 2, serversActions.size());
+        assertEquals(2, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
+    @Test
     public void testActionChainPackageRefreshNotNeeded() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2152,9 +2320,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there is only one action scheduled, the apply state one that we scheduled above
-        assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
+        assertEquals(1, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
+    @Test
     public void testMinionStartupResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String runningKernel = minion.getRunningKernel();

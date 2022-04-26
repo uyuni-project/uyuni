@@ -35,7 +35,8 @@ import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class PackagesSearchHandler extends BaseHandler {
 
-    private static Logger log = Logger.getLogger(PackagesSearchHandler.class);
+    private static Logger log = LogManager.getLogger(PackagesSearchHandler.class);
 
     /**
      * Searches the lucene package indexes based on package name
@@ -320,15 +321,15 @@ public class PackagesSearchHandler extends BaseHandler {
                             true, null, PackageSearchAction.WHERE_ALL);
         }
         catch (MalformedURLException | XmlRpcFault e) {
-            log.info("Caught Exception :" + e);
+            log.info("Caught Exception :{}", e);
             e.printStackTrace();
             throw new SearchServerCommException();
         }
         // Connection error
 
         if (log.isDebugEnabled()) {
-            log.debug("Query = : " + query + ", mode = " + mode);
-            log.debug(pkgs.size() + " packages were fetched");
+            log.debug("Query = : {}, mode = {}", query, mode);
+            log.debug("{} packages were fetched", pkgs.size());
         }
         return pkgs;
     }

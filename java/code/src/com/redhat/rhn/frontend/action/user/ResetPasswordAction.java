@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -28,11 +29,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ResetPasswordAction, destination once a reset-link has been accepted
  *
- * @version $Rev: $
  */
 public class ResetPasswordAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(ResetPasswordAction.class);
+    private static Logger log = LogManager.getLogger(ResetPasswordAction.class);
 
     /** {@inheritDoc} */
     @Override

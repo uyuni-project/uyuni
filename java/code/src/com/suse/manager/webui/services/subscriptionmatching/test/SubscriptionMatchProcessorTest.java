@@ -17,6 +17,9 @@ package com.suse.manager.webui.services.subscriptionmatching.test;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
@@ -34,6 +37,9 @@ import com.suse.matcher.json.OutputJson;
 import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,6 +65,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         processor = new SubscriptionMatchProcessor();
@@ -68,17 +75,20 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 new HashMap<>(), new LinkedList<>());
     }
 
+    @Test
     public void testMatcherDataNotAvailable() {
         MatcherUiData data =
                 (MatcherUiData) processor.getData(empty(), empty());
         assertFalse(data.isMatcherDataAvailable());
     }
 
+    @Test
     public void testMatcherDataAvailable() {
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
         assertTrue(data.isMatcherDataAvailable());
     }
 
+    @Test
     public void testArbitraryMessagePassthrough() {
         LinkedList<MessageJson> messages = new LinkedList<>();
         Map<String, String> messageData = new HashMap<>();
@@ -95,6 +105,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(messageData, outputList.get(0).getData());
     }
 
+    @Test
     public void testSystemIdAdjustment() throws Exception {
         input.getSystems().add(new SystemJson(1L, "Sys1", null, true,
                 false, new HashSet<>(), new HashSet<>()));
@@ -114,6 +125,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals("1", outputList.get(0).getData().get("id"));
     }
 
+    @Test
     public void testUnsatisfiedMatchAdjustment() throws Exception {
         input.getSystems().add(new SystemJson(1L, "Sys1", null, true,
                 false, new HashSet<>(), new HashSet<>()));
@@ -136,6 +148,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(0, outputList.size());
     }
 
+    @Test
     public void testSubscriptions() {
         SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
                 new Date(0), new Date(1000), "user", new HashSet<>());
@@ -159,6 +172,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(new Date(1000), actual.getEndDate());
     }
 
+    @Test
     public void testSubscriptionPolicy() {
         SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
                 new Date(0), new Date(1000), "user", new HashSet<>());
@@ -173,6 +187,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals("my policy", subscription.getPolicy());
     }
 
+    @Test
     public void testSubscriptionNullPolicy() {
         SubscriptionJson sub = new SubscriptionJson(1L, "123456", "subs name", 3,
                 new Date(0), new Date(1000), "user", new HashSet<>());
@@ -192,6 +207,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         output.setSubscriptionPolicies(mapping);
     }
 
+    @Test
     public void testUnmatchedProductsSimpleScenario() {
         input.getProducts().add(new ProductJson(100L, "product 100", "", false, false));
         // one system with one product, which is unmatched
@@ -209,6 +225,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 products.get("100").getUnmatchedSystemIds().iterator().next());
     }
 
+    @Test
     public void testUnmatchedProducts() {
         input.getProducts().add(new ProductJson(100L, "product 100", "", false, false));
         input.getProducts().add(new ProductJson(101L, "product 101", "", false, false));
@@ -261,6 +278,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertTrue(data.getUnmatchedProductIds().contains(102L));
     }
 
+    @Test
     public void testPartiallyMatchedSystems() {
         input.getProducts().add(new ProductJson(100L, "prod 1", "", false, false));
         input.getProducts().add(new ProductJson(101L, "prod 2", "", false, false));
@@ -286,6 +304,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertTrue(data.getUnmatchedProductIds().contains(101L));
     }
 
+    @Test
     public void testNewPin() throws Exception {
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
@@ -304,6 +323,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals("pending", pinnedMatch.getStatus());
     }
 
+    @Test
     public void testConfirmedPin() throws Exception {
         // setup a confirmed match of one system and one subscription
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
@@ -334,6 +354,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testUnsatisfiedPin() throws Exception {
         // setup a  of one system and one subscription
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
@@ -365,6 +386,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
      * Smoke test.
      * @throws ParseException
      */
+    @Test
     public void testComplete() throws ParseException {
         List<ProductJson> productsIn = new LinkedList<>();
         productsIn.add(new ProductJson(1000L, "product id 1000", "", false, false));

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Exception thrown if a file list can not be found with the specified label.
  *
- * @version $Revision$
  */
 public class FileListNotFoundException extends FaultException {
 

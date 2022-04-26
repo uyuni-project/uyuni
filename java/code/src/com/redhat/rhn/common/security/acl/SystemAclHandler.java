@@ -26,7 +26,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.SystemRecord;
 
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class SystemAclHandler extends BaseHandler {
     /**
      * Logger for this class
      */
-    private static Logger log = Logger.getLogger(SystemAclHandler.class);
+    private static Logger log = LogManager.getLogger(SystemAclHandler.class);
 
     /**
      *
@@ -108,11 +109,11 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a satellite, false otherwise
      */
-    public boolean aclSystemIsSatellite(Object ctx, String[] params) {
+    public boolean aclSystemIsMgrServer(Object ctx, String[] params) {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
 
-        SelectMode m = ModeFactory.getMode("System_queries", "is_satellite");
+        SelectMode m = ModeFactory.getMode("System_queries", "is_mgr_server");
         Map queryParams = new HashMap();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
@@ -169,8 +170,7 @@ public class SystemAclHandler extends BaseHandler {
             return record != null;
         }
         catch (Exception e) {
-            log.error("Cobbler connection errored out for Id" +
-                                                server.getCobblerId(), e);
+            log.error("Cobbler connection errored out for Id{}", server.getCobblerId(), e);
             return false;
         }
     }

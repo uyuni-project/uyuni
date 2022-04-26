@@ -18,7 +18,8 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Action for executing RunnableEventMessageAction
@@ -26,8 +27,7 @@ import org.apache.log4j.Logger;
 public class RunnableEventMessageAction implements MessageAction {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger
-            .getLogger(RunnableEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(RunnableEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {
@@ -36,8 +36,8 @@ public class RunnableEventMessageAction implements MessageAction {
             event.getAction().run();
        }
        else {
-          LOG.warn("RunnableEventMessageAction got " + msg.getClass().getName() +
-                  " as message but requires " + RunnableEventMessage.class.getName());
+           LOG.warn("RunnableEventMessageAction got {} as message but requires {}", msg.getClass().getName(),
+                   RunnableEventMessage.class.getName());
        }
     }
 

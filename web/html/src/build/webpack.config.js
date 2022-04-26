@@ -11,14 +11,10 @@ module.exports = (env, argv) => {
 
   let pluginsInUse = [
     new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../") }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
-      ],
-    }),
-    new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") }],
-    }),
+    new CopyWebpackPlugin([
+      { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
+      { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
+    ]),
   ];
 
   if (isProductionMode) {
@@ -38,11 +34,9 @@ module.exports = (env, argv) => {
   } else {
     pluginsInUse = [
       ...pluginsInUse,
-      new CopyWebpackPlugin({
-        patterns: [
-          { from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") },
-        ],
-      }),
+      new CopyWebpackPlugin([
+        { from: path.resolve(__dirname, "../../../../branding/css"), to: path.resolve(__dirname, "../dist/css") },
+      ]),
     ];
   }
 

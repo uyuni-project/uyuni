@@ -111,12 +111,14 @@
       <!-- TimeZones -->
       <trans-unit id="Australia/Brisbane" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Standard)</source>
+        <target>(GMT+1000) Austràlia (estàndard oriental)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Sydney" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Daylight)</source>
+        <target>(GMT+1000) Austràlia (llum del dia oriental)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -172,18 +174,21 @@
       </trans-unit>
       <trans-unit id="GMT" xml:space="preserve">
         <source>(GMT+0000) Greenwich Mean Time</source>
+        <target>(GMT+0000) Hora principal de Greenwich</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/St_Johns" xml:space="preserve">
         <source>(GMT-0330) Canada (Newfoundland)</source>
+        <target>(GMT-0330) Canadà (Newfoundland)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Halifax" xml:space="preserve">
         <source>(GMT-0400) Canada (Atlantic)</source>
+        <target>(GMT-0400) Canadà (Atlàntic)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -204,30 +209,35 @@
       </trans-unit>
       <trans-unit id="America/Regina" xml:space="preserve">
         <source>(GMT-0600) Canada (Regina)</source>
+        <target>(GMT-0600) Canadà (Regina)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Denver" xml:space="preserve">
         <source>(GMT-0700) United States (Mountain)</source>
+        <target>(GMT-0700) Estats Units (Muntanya)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Los_Angeles" xml:space="preserve">
         <source>(GMT-0800) United States (Pacific)</source>
+        <target>(GMT-0800) Estats Units (Pacífic)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Anchorage" xml:space="preserve">
         <source>(GMT-0900) United States (Alaska)</source>
+        <target>(GMT-0900) Estats Units (Alaska)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Easter" xml:space="preserve">
         <source>(GMT-0500) Chile (Easter Island)</source>
+        <target>(GMT-0500) Xile (illa de Pasqua)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>

@@ -22,7 +22,8 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 
 import com.suse.manager.webui.services.SaltServerActionService;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
@@ -34,7 +35,7 @@ import java.time.ZonedDateTime;
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
 
-    private static final Logger LOG = Logger.getLogger(MinionActionChainExecutor.class);
+    private static final Logger LOG = LogManager.getLogger(MinionActionChainExecutor.class);
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
@@ -66,7 +67,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                 .orElse(null);
 
         if (actionChain == null) {
-            LOG.error("Action chain not found id=" + actionChainId);
+            LOG.error("Action chain not found id={}", actionChainId);
             return;
         }
 
@@ -91,18 +92,18 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                         ZoneId.systemDefault()), ZonedDateTime.now())
                 .toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
-            log.warn("Scheduled action chain " + actionChain.getId() + " was scheduled to be executed more than " +
-                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.");
+            log.warn("Scheduled action chain {} was scheduled to be executed more than {} hours ago. Skipping it.",
+                    actionChain.getId(), MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
             return;
         }
 
-        log.info("Executing action chain: " + actionChainId);
+        log.info("Executing action chain: {}", actionChainId);
 
         saltServerActionService.executeActionChain(actionChainId);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 

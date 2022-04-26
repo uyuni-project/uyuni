@@ -357,19 +357,26 @@ public class Distro extends CobblerObject {
             distro.modify(NAME, name);
             distro.setKernel(kernel);
             distro.setInitrd(initrd);
-            if (ksmeta.containsKey("autoyast")) {
-                distro.setBreed("suse");
-            }
-            else if (breed != null) {
+            distro.setArch(arch);
+
+            if (breed != null) {
                 distro.setBreed(breed);
+            }
+            if (ksmeta != null) {
+                if (ksmeta.containsKey("autoyast")) {
+                    distro.setBreed("suse");
+                }
+                distro.setKsMeta(ksmeta);
             }
             if (osVersion != null) {
                 distro.setOsVersion(osVersion);
             }
-            distro.setKsMeta(ksmeta);
-            distro.setArch(arch);
-            distro.setKernelOptions(kernelOptions);
-            distro.setKernelOptionsPost(kernelOptionsPost);
+            if (kernelOptions != null) {
+                distro.setKernelOptions(kernelOptions);
+            }
+            if (kernelOptionsPost != null) {
+                distro.setKernelOptionsPost(kernelOptionsPost);
+            }
             distro.save();
             distro = lookupByName(connection, name);
             return distro;

@@ -21,7 +21,8 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.Distro;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
      */
     public CobblerDistroSyncCommand() {
         super();
-        log = Logger.getLogger(this.getClass());
+        log = LogManager.getLogger(this.getClass());
     }
 
     protected Map<String, Distro> getDistros() {
@@ -70,7 +71,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
         for (KickstartableTree tree : unSynced) {
 
             if (!tree.isPathsValid()) {
-                log.warn("Could not sync tree " + tree.getLabel());
+                log.warn("Could not sync tree {}", tree.getLabel());
                 continue;
             }
 
@@ -81,7 +82,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                 tree.setCobblerId(distro.getUid());
             }
             else {
-                log.debug("syncing null distro " + tree.getLabel());
+                log.debug("syncing null distro {}", tree.getLabel());
                 err = createDistro(tree, false);
                 if (err != null) {
                     errors.add(err);
@@ -214,12 +215,11 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
 
     private String createDistro(KickstartableTree tree, boolean xen) {
         String treeLabel = tree.getLabel();
-        log.debug("Trying to create: " + treeLabel + " in cobbler over xmlrpc");
+        log.debug("Trying to create: {} in cobbler over xmlrpc", treeLabel);
 
         if (!xen) {
 
-            log.debug("tree missing in cobbler. " +
-                    "creating non-xenpv distro in cobbler : " + treeLabel);
+            log.debug("tree missing in cobbler. creating non-xenpv distro in cobbler : {}", treeLabel);
 
             try {
                 tree.getKernelPath();
@@ -248,8 +248,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                     tree);
         }
         else if (tree.doesParaVirt() && xen) {
-            log.debug("tree missing in cobbler. " +
-                    "creating xenpv distro in cobbler : " + treeLabel);
+            log.debug("tree missing in cobbler. creating xenpv distro in cobbler : {}", treeLabel);
 
             String error =
                 validateKernelInitrd(treeLabel,
@@ -292,7 +291,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
 
     private void syncSpacewalkToDistro(KickstartableTree tree) {
         if (tree.isRhnTree()) {
-            log.debug("Syncing: " + tree.getLabel() + " to cobbler over xmlrpc");
+            log.debug("Syncing: {} to cobbler over xmlrpc", tree.getLabel());
             CobblerDistroEditCommand command = new CobblerDistroEditCommand(tree);
             command.store();
         }

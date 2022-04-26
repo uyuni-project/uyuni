@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -25,12 +27,14 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.Action;
+import org.junit.jupiter.api.Test;
 
 /**
  * VisibleSystemsListActionTest
  */
 public class VisibleSystemsListActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testSelectAll() throws Exception {
         Action action = new VisibleSystemsListAction();
         ActionHelper ah = new ActionHelper();
