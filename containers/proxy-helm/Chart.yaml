@@ -1,8 +1,9 @@
+#!BuildTag: uyuni/proxy:%PKG_VERSION%
+#!BuildTag: uyuni/proxy:%PKG_VERSION%.%RELEASE%
 apiVersion: v2
 name: proxy
-description: proxy
-
+description: Uyuni proxy containers.
 type: application
-version: 0.1.0
-
-appVersion: "latest"
+home: https://www.uyuni-project.org/
+version: %VERSION%.0
+appVersion: "%PKG_VERSION%"

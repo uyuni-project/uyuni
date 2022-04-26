@@ -87,7 +87,7 @@ docker pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
-    IMAGES=$(cd "$GITROOT"/containers; ls -d *-image)
+    IMAGES=$(cd "$GITROOT"/containers; ls -d *-{image,helm})
 }
 echo "Starting building and submission at $(date)"
 date
