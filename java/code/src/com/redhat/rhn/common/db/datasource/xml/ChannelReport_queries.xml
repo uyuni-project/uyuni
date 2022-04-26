@@ -45,19 +45,9 @@
     <query params="offset, limit">
           SELECT rhnchannel.id AS channel_id
                       , rhnpackage.id AS package_id
-                      , rhnchannel.label AS channel_label
-                      , rhnpackagename.name AS package_name
-                      , rhnpackageevr.epoch AS package_epoch
-                      , rhnpackageevr.version AS package_version
-                      , rhnpackageevr.release AS package_release
-                      , rhnpackageevr.type AS package_type
-                      , rhnpackagearch.label AS package_arch
             FROM rhnchannel
                       INNER JOIN rhnchannelpackage ON rhnchannel.id = rhnchannelpackage.channel_id
                       INNER JOIN rhnpackage ON rhnpackage.id = rhnchannelpackage.package_id
-                      INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
-                      INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
-                      INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
         ORDER BY channel_id, package_id OFFSET :offset LIMIT :limit
     </query>
 </mode>

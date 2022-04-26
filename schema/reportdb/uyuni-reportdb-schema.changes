@@ -1,3 +1,4 @@
+- Remove fields info from channel package table
 - add order index for SystemPackageInstalled
 
 -------------------------------------------------------------------
