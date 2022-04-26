@@ -63,6 +63,14 @@ make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RE
 echo Creating schema documentation
 make -s -f Makefile.schema docs
 
+# Unit test for checking if reportdb schema and doc are aligned
+SCHEMA_DIFF=./check_reportdb_doc 
+if [ ! -z $SCHEMA_DIFF ]; then
+        echo "ReportDB schema and doc are misaligned"
+        echo $SCHEMA_DIFF
+        exit 1
+fi
+
 popd
 
 # Create the schema

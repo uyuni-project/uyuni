@@ -1,0 +1,87 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import time
+import re
+import pprint
+import filecmp
+import tempfile
+import dictdiffer                                          
+
+DB_DIR = 'postgres'
+MAIN_SQL_PATH = DB_DIR + '/main.sql'
+DOCUMENTATION_SQL_PATH = DB_DIR + '/documentation.sql'
+SPLIT_TABLE='[ ,\t]'
+DB_TYPE=['NUMERIC,VARCHAR,TIMESTAMPZ,BOOLEAN']
+table = {}
+
+if not os.path.exists(MAIN_SQL_PATH):
+    sys.stderr.write("main script does not exist\n")
+    sys.exit(1)
+if not os.path.exists(DOCUMENTATION_SQL_PATH):
+    sys.stderr.write("Documentation script doen not exist\n")
+    sys.exit(1)
+
+columns = []
+val = []
+column = ''
+current_key = ''
+table_from_doc = {}
+f = open(MAIN_SQL_PATH)
+for line in f.readlines():
+    line = line.strip()
+    if not line or line.startswith('--'): continue
+    vals = list(filter(None, line.replace("\t", " ").split(' ')))
+    if line.startswith('CREATE TABLE'):
+        current_key = vals[2]
+        table[current_key] = []
+        continue
+    if line == '(' : continue
+    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+        if current_key:
+            table[current_key] = columns
+            current_key = ''
+            columns = []
+            continue
+    if current_key: 
+        column = vals[0]
+        columns.append(column)
+        continue
+
+columns = []
+val = []
+column = ''
+current_key = ''
+table_from_doc = {}
+drop_tables = []
+f = open(DOCUMENTATION_SQL_PATH)
+for line in f.readlines():
+    line = line.strip()
+    vals = list(filter(None, line.replace("\t", " ").split(' ')))
+    if line.startswith('COMMENT ON TABLE '):
+        current_key = vals[3]
+        table_from_doc[current_key] = []
+        continue
+    if line.startswith('COMMENT ON COLUMN '):
+        if current_key:
+            column = vals[3]
+            column = column.replace(current_key + ".","")
+            columns.append(column)
+            continue
+    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+        if current_key:
+            table_from_doc[current_key] = columns
+            current_key = ''
+            columns = []
+            continue
+    if line.startswith('DROP TABLE IF EXIST') :
+        drop_table=vals[4].replace(";","")
+        drop_tables.append(drop_table);
+
+for drop_table in drop_tables:
+    if drop_table in table:
+        table.pop(drop_table)
+
+for diff in list(dictdiffer.diff(table, table_from_doc)):
+    print(diff)
