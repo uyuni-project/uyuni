@@ -257,7 +257,7 @@ public class SessionManager extends BaseManager {
 
     private static boolean isTimestampedParamString(String[] vals) {
         if (logger.isDebugEnabled()) {
-            logger.debug("isTimestampedParamString(String[] vals={}) - start", vals);
+            logger.debug("isTimestampedParamString(String[] vals={}) - start", (Object)vals);
         }
 
         boolean returnboolean = vals.length == 3;
@@ -269,7 +269,7 @@ public class SessionManager extends BaseManager {
 
     private static boolean isNonTimestampedParamString(String[] vals) {
         if (logger.isDebugEnabled()) {
-            logger.debug("isNonTimestampedParamString(String[] vals={}) - start", vals);
+            logger.debug("isNonTimestampedParamString(String[] vals={}) - start", (Object)vals);
         }
 
         boolean returnboolean = vals.length == 2;
@@ -281,7 +281,7 @@ public class SessionManager extends BaseManager {
 
     private static boolean isValidTimestampedParamString(String[] vals) {
         if (logger.isDebugEnabled()) {
-            logger.debug("isValidTimestampedParamString(String[] vals={}) - start", vals);
+            logger.debug("isValidTimestampedParamString(String[] vals={}) - start", (Object)vals);
         }
 
         String newEncoded = generateSessionKey(vals[0] +
@@ -306,7 +306,7 @@ public class SessionManager extends BaseManager {
 
     private static boolean isValidNonTimestampedParamString(String[] vals) {
         if (logger.isDebugEnabled()) {
-            logger.debug("isValidNonTimestampedParamString(String[] vals={}) - start", vals);
+            logger.debug("isValidNonTimestampedParamString(String[] vals={}) - start", (Object)vals);
         }
 
         String newEncoded = generateSessionKey(vals[0]);
