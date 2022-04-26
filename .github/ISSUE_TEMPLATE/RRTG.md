@@ -16,17 +16,19 @@ assignees: ''
 **Version reviewed to be submitted:** 4.x/Uyuni
 
 **Lists of blockers:**
-- 🛑 Short description
-  - Bugzilla link: 
-  - Related card comments (links): 
-- 🛑 Short description
-  - Bugzilla link:
-  - Related card comments (links): 
-- 🛑 Short description
-  - Bugzilla link:
-  - Related card comments (links): 
 
-**Notes:** 
+- 🛑 Short description
+  - Bugzilla link:
+  - Related card comments (links):
+- 🛑 Short description
+  - Bugzilla link:
+  - Related card comments (links):
+- 🛑 Short description
+  - Bugzilla link:
+  - Related card comments (links):
+
+**Notes:**
+
 - *Add aditional blockers to the list following the same format*
 - *Duplicate this section if you review multiple branches whom must be submitted during your card.*
 - *As soon as a blocker is resolved, remove it from the list. This list must be updated ASAP, release engineers are monitoring it.*
@@ -44,10 +46,10 @@ assignees: ''
   - Add below each issue links to the test report, screenshots and other useful info
   - Add who is working/debugging on each issue
   - Add explanation of why it failed
-  - Keep in mind that depending on the week, we need to be more focused on some branches due to MU submissions being prepared. 
+  - Keep in mind that depending on the week, we need to be more focused on some branches due to MU submissions being prepared.
    Check the [calendar](https://confluence.suse.com/display/SUSEMANAGER/Release+calendar).
   - See the [wiki entry](https://github.com/SUSE/spacewalk/wiki/The-Round-Robin-Testsuite-Geeko) for info on the role
-  
+
 - Links to the testsuites:
   - [Head](https://ci.suse.de/view/Manager/view/Manager-Head/job/manager-Head-dev-acceptance-tests-NUE/)
   - [Uyuni](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-NUE/)
