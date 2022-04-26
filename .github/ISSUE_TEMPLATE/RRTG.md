@@ -53,7 +53,4 @@ assignees: ''
   - [Uyuni](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-NUE/)
   - [4.2](https://ci.suse.de/view/Manager/view/Manager-4.2/job/manager-4.2-dev-acceptance-tests-PRV/)
   - [4.1](https://ci.suse.de/view/Manager/view/Manager-4.1/job/manager-4.1-dev-acceptance-tests-PRV/)
-  - [4.3 BV testsuite](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.3-qa-build-validation/)
-  - [4.2 BV testsuite](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.2-qa-build-validation/)
-  - [4.1 BV testsuite](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.1-qa-build-validation/)
   - [openQA installation](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.2-qa-openqa-installation/)
