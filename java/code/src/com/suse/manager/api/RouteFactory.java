@@ -28,7 +28,6 @@ import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializer;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +47,6 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import redstone.xmlrpc.XmlRpcCustomSerializer;
 import spark.Route;
 import spark.Spark;
 
@@ -253,12 +251,29 @@ public class RouteFactory {
                 .registerTypeAdapter(Map.class, new MapDeserializer())
                 .registerTypeAdapter(List.class, new ListDeserializer());
 
-        for (XmlRpcCustomSerializer serializer : serializerFactory.getSerializers()) {
-            if (serializer instanceof JsonSerializer) {
-                // Serialize subclasses as well
-                builder.registerTypeHierarchyAdapter(serializer.getSupportedClass(), serializer);
-            }
-        }
+        // Serializers that serialize classes in the same class hierarchy override each other in the order they are
+        // added. To ensure subclass serializers take precedence, they must be added later than serializers of their
+        // parent classes.
+        // See: RouteFactoryTest.testCustomSerializerWithSerializedSubclass
+        serializerFactory.getSerializers().stream()
+                // Sort the list to ensure serializers of subclasses are added after the serializers of parents
+                .sorted(this::compareSerializerHierarchy)
+                .forEach(s -> builder.registerTypeHierarchyAdapter(s.getSupportedClass(), s));
+
         return builder.create();
+    }
+
+    /**
+     * Compare two {@link ApiResponseSerializer}s according to the class hierarchy of their supported classes
+     *
+     * A serializer of a type that is upper in the hierarchy comes before the other.
+     * @param a the first serializer
+     * @param b the second serializer
+     * @return the comparison value
+     */
+    private int compareSerializerHierarchy(ApiResponseSerializer<?> a, ApiResponseSerializer<?> b) {
+        Class<?> aClass = a.getSupportedClass();
+        Class<?> bClass = b.getSupportedClass();
+        return aClass.isAssignableFrom(bClass) ? -1 : (bClass.isAssignableFrom(aClass) ? 1 : 0);
     }
 }

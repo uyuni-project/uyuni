@@ -31,6 +31,8 @@ import com.suse.manager.api.HttpApiResponse;
 import com.suse.manager.api.ListDeserializer;
 import com.suse.manager.api.MapDeserializer;
 import com.suse.manager.api.RouteFactory;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
@@ -546,6 +548,53 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         assertEquals(1, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(3, result.size());
+    }
+
+    /**
+     * Tests custom serialization of a subclass with its own serializer
+     *
+     * Serializers that serialize classes in the same class hierarchy override each other in the order they are
+     * added. To ensure that subclass serializers take precedence, they must be added later than serializers of their
+     * parent classes. In this test, the serializers are defined in wrong order to test if {@link RouteFactory} handles
+     * the mentioned case properly.
+     */
+    @Test
+    public void testCustomSerializerWithSerializedSubclass() throws Exception {
+        // Create a factory with custom serializers for the case
+        RouteFactory customSerializedRouteFactory = new RouteFactory(new SerializerFactory() {
+            @Override
+            public List<ApiResponseSerializer<?>> getSerializers() {
+                return List.of(
+                        // Additional serializer for the subclass itself (must be registered last)
+                        new ApiResponseSerializer<TestResponseSubclass>() {
+                            @Override
+                            public SerializedApiResponse serialize(TestResponseSubclass src) {
+                                return new SerializationBuilder()
+                                        .add("serializedBySubclass", true)
+                                        .build();
+                            }
+
+                            @Override
+                            public Class<TestResponseSubclass> getSupportedClass() {
+                                return TestResponseSubclass.class;
+                            }
+                        }, new TestSerializer());
+            }
+        });
+
+        Method customResponseSubclass =
+                handler.getClass().getMethod("customResponseSubclass", Integer.class, String.class);
+        Route route = customSerializedRouteFactory.createRoute(customResponseSubclass, handler);
+
+        Request req = createRequest("/manager/api/test/customResponseSubclass",
+                Map.of("myInteger", "1", "myString", "foo"));
+        Response res = createResponse();
+
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
+
+        // Assert that the result is serialized properly by the serializer of the subclass
+        assertEquals(true, result.get("serializedBySubclass"));
+        assertEquals(1, result.size());
     }
 
     /**
