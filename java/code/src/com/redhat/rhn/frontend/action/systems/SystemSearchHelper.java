@@ -163,7 +163,7 @@ public class SystemSearchHelper {
      * @throws XmlRpcFault on xmlrpc error
      * @throws MalformedURLException on bad search server address
      */
-    public static DataResult systemSearch(RequestContext ctx,
+    public static DataResult<SystemSearchResult> systemSearch(RequestContext ctx,
                                           String searchString,
                                           String viewMode,
                                           Boolean invertResults,
@@ -189,7 +189,7 @@ public class SystemSearchHelper {
      * @throws XmlRpcFault on xmlrpc error
      * @throws MalformedURLException on bad search server address
      */
-    public static DataResult systemSearch(String sessionKey,
+    public static DataResult<SystemSearchResult> systemSearch(String sessionKey,
             String searchString,
             String viewMode,
             Boolean invertResults,
@@ -647,7 +647,7 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static DataResult processResultMap(User userIn, Map serverIds,
+    protected static DataResult<SystemSearchResult> processResultMap(User userIn, Map serverIds,
             String viewMode) {
         DataResult<SystemSearchResult> serverList =
             UserManager.visibleSystemsAsDtoFromList(userIn,
