@@ -11,7 +11,7 @@ assignees: ''
 
 ### 💥 Blockers
 
-*Blockes found in a CI of a branch that impedes to submit that branch*
+*Blockers found in a CI of a branch that impedes to submit that branch*
 
 **Version reviewed to be submitted:** 4.x/Uyuni
 
