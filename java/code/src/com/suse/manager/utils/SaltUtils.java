@@ -981,8 +981,8 @@ public class SaltUtils {
         }
 
         Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
-                            "/files/var/lib/Kiwi/build" + action.getId() + "/build.log");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/build-" + action.getId() + ".log");
+                            "/files/image-build" + action.getId() + ".log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + action.getId() + ".log");
 
         try {
             // copy the log to a directory readable by tomcat
