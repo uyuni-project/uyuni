@@ -1,4 +1,22 @@
+DROP VIEW ChannelPackagesReport;
+CREATE OR REPLACE VIEW ChannelPackagesReport AS
+  SELECT Channel.mgm_id
+            , Channel.label AS channel_label
+            , Channel.name AS channel_name
+            , Package.name
+            , Package.version
+            , Package.release
+            , Package.epoch
+            , Package.arch
+            , case when Package.epoch is not null then Package.epoch || ':' else '' end || Package.name || '-' || Package.version || '-' || Package.release || '.' || Package.arch AS full_package_name
+            , Package.synced_date
+    FROM Channel
+            INNER JOIN ChannelPackage ON ( Channel.mgm_id = ChannelPackage.mgm_id AND Channel.channel_id = ChannelPackage.channel_id )
+            INNER JOIN Package ON ( Channel.mgm_id = Package.mgm_id AND ChannelPackage.package_id = Package.package_id )
+ORDER BY Channel.mgm_id, Channel.label, Package.name, Package.version, Package.release, Package.epoch, Package.arch
+;
 
+DROP VIEW SystemExtraPackagesReport;
 CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
   WITH packages_from_channels AS (
     SELECT SystemPackageInstalled.mgm_id
@@ -43,4 +61,14 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
                                                )
    WHERE packages_from_channels.package_id IS NULL
 ORDER BY System.mgm_id, System.organization, System.system_id, SystemPackageInstalled.name
+;
+
+ALTER TABLE channelpackage
+    DROP COLUMN IF EXISTS package_name,
+    DROP COLUMN IF EXISTS package_epoch,
+    DROP COLUMN IF EXISTS package_version,
+    DROP COLUMN IF EXISTS package_release,
+    DROP COLUMN IF EXISTS package_type,
+    DROP COLUMN IF EXISTS package_arch,
+    DROP COLUMN IF EXISTS channel_label
 ;
