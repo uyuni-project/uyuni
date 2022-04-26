@@ -177,7 +177,6 @@ def getDefaultOptions():
             'http-proxy-password': "",
             'allow-config-actions': 0,
             'allow-remote-commands': 0,
-            'no-bundle': 0,
             'force-bundle': 0,
             'no-gpg': 0,
             'no-up2date': 0,
@@ -248,9 +247,6 @@ def getOptionsTable():
         Option('--allow-remote-commands',
                action='store_true',
                help='boolean; allow arbitrary remote commands - requires installing certain rhncfg-* RPMs probably via an activation key. (currently: %s)' % getSetString(defopts['allow-remote-commands'])),
-        Option('--no-bundle',
-               action='store_true',
-               help='boolean; avoid installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)' % getSetString(defopts['no-bundle'])),
         Option('--force-bundle',
                action='store_true',
                help='boolean; Force installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)' % getSetString(defopts['force-bundle'])),
@@ -322,7 +318,6 @@ Note: for mgr-bootstrap to work, certain files are expected to be
             # "not not" forces the integer value
             'allow-config-actions': not not options.allow_config_actions,
             'allow-remote-commands': not not options.allow_remote_commands,
-            'no-bundle': not not options.no_bundle,
             'force-bundle': not not options.force_bundle,
             'no-gpg': not not options.no_gpg,
             'no-up2date': not not options.no_up2date,
@@ -401,7 +396,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     # forcing numeric values
     for opt in ['allow_config_actions', 'allow_remote_commands', 'force_bundle',
-        'no_bundle', 'no_gpg', 'no_up2date', 'traditional', 'up2date', 'verbose']:
+        'no_gpg', 'no_up2date', 'traditional', 'up2date', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
         # will return an int

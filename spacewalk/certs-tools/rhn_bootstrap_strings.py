@@ -254,13 +254,12 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
     venv_section = options.salt and """
 # Avoid installing venv-salt-minion instead salt-minion
 # even if it available in the bootstrap repo
-AVOID_VENV_SALT_MINION={avoid_venv}
+AVOID_VENV_SALT_MINION=1
 
 # Force installing venv-salt-minion instead salt-minion
 # even if it is NOT available in the bootstrap repo
 FORCE_VENV_SALT_MINION={force_venv}
 """.format(
-    avoid_venv=1 if bool(options.no_bundle) else 0,
     force_venv=1 if bool(options.force_bundle) else 0,
 ) or ""
 
