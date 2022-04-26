@@ -29,7 +29,7 @@ assignees: ''
 **Notes:** 
 - *Add aditional blockers to the list following the same format*
 - *Duplicate this section if you review multiple branches whom must be submitted during your card.*
-- *As soon as a blocker is resolved, remove it from the list. This list must be updated asap, Release engineers are monitoring it.*
+- *As soon as a blocker is resolved, remove it from the list. This list must be updated ASAP, release engineers are monitoring it.*
 - *Add additional information to a blocker in a new comment on the card, keep that list clean and simple.*
 
 ---
