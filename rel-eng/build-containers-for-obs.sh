@@ -39,7 +39,7 @@ echo "Going to build new obs container images in $SRPM_DIR ..."
 CONTAINER_PATH="$GIT_DIR/containers/$IMAGE"
 
 test $CONTAINER_PATH != "$GIT_DIR/containers/" || {
-  CONTAINER_PATH=$(ls -d "$GIT_DIR/containers/"*image)
+  CONTAINER_PATH=$(ls -d "$GIT_DIR/containers/"*{image,helm})
 }
 
 SUCCEED_CNT=0
@@ -47,9 +47,23 @@ FAILED_CNT=0
 FAILED_PKG=
 
 for CONTAINER in $CONTAINER_PATH; do
-  echo "=== Building container image [$(basename $CONTAINER)]"
+  CONTAINER_NAME=$(basename $CONTAINER)
+  echo "=== Building container image [${CONTAINER_NAME}]"
   if [ -d "$CONTAINER" ]; then
     cp -r "$CONTAINER" "$SRPM_DIR/"
+    if [ -f "${CONTAINER}/Chart.yaml" ]; then
+      pushd "${SRPM_DIR}/${CONTAINER_NAME}"
+      CHART_FILES="values.yaml values.schema.json charts crds templates LICENSE README.md"
+      TO_INCLUDE=""
+      for F in ${CHART_FILES}; do
+        if [ -e ${F} ]; then
+            TO_INCLUDE="${TO_INCLUDE} ${F}"
+        fi
+      done
+      tar cf "${SRPM_DIR}/${CONTAINER_NAME}/${CONTAINER_NAME}.tar" ${TO_INCLUDE}
+      rm -r ${TO_INCLUDE}
+      popd
+    fi
     SUCCEED_CNT=$(($SUCCEED_CNT+1))
   else
     FAILED_CNT=$(($FAILED_CNT+1))
