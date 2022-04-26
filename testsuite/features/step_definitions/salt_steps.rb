@@ -48,7 +48,7 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   end
 end
 
-When(/^I restart salt-minion on "(.*?)"$/) do |minion|<<<<<<< add_tag_cloud
+When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version, os_family = get_os_version(node)
