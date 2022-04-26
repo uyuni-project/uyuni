@@ -17,13 +17,13 @@ assignees: ''
 
 **Lists of blockers:**
 - 🛑 Short description
-  - Bug number: 
+  - Bugzilla link: 
   - Related card comments (links): 
 - 🛑 Short description
-  - Bug number:
+  - Bugzilla link:
   - Related card comments (links): 
 - 🛑 Short description
-  - Bug number:
+  - Bugzilla link:
   - Related card comments (links): 
 
 **Notes:** 
