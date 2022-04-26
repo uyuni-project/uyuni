@@ -1533,12 +1533,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 with(any(String.class)));
                     }},
                     (contactMethod) -> null, // no AK
-                    (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()), DEFAULT_CONTACT_METHOD);
+                    (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()), DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
-            return;
+            fail("Unexpected Exception thrown");
         }
-        fail("Expected Exception not thrown");
     }
 
 
