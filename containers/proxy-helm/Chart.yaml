@@ -1,8 +1,10 @@
+#!BuildTag: uyuni/proxy:latest
+#!BuildTag: uyuni/proxy:%PKG_VERSION%
+#!BuildTag: uyuni/proxy:%PKG_VERSION%-build%RELEASE%
 apiVersion: v2
 name: proxy
-description: proxy
-
+description: Uyuni proxy containers.
 type: application
-version: 0.1.0
-
-appVersion: "latest"
+home: https://www.uyuni-project.org/
+version: 0.0.0 # Only increase the patch number when changing, the rest is replaced when pushing to OBS
+appVersion: "%PKG_VERSION%"
