@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -135,6 +136,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -1916,6 +1918,26 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Removal", ((ScheduledAction)dr.get(0)).getTypeName());
+    }
+
+    @Test
+    public void testSchedulePackageUpdate() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        assertThrows(MissingEntitlementException.class, () ->
+                handler.schedulePackageUpdate(admin, List.of(server.getId().intValue()), new Date()));
+
+        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        int preScheduleSize = dr.size();
+
+        Server minion = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeSaltEntitled());
+        handler.schedulePackageUpdate(admin, List.of(minion.getId().intValue()), new Date());
+
+        dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, dr.size() - preScheduleSize);
+        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
     @Test
