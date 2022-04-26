@@ -50,6 +50,7 @@ module.exports = (env, argv) => {
         path: path.resolve(__dirname, "../dist/"),
         chunkFilename: "javascript/manager/[name].bundle.js",
         publicPath: "/",
+        hashFunction: "md5",
       },
       devtool: isProductionMode ? "source-map" : "eval-source-map",
       module: {
