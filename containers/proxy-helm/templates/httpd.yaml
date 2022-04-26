@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+        - name: httpd
+          image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"          
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml 
+          - name: config-volume
+            mountPath: /etc/uyuni/ca.crt
+            subPath: ca.crt          
+          - name: config-volume
+            mountPath: /etc/uyuni/system_id.xml
+            subPath: system_id.xml      
+          - name: config-volume
+            mountPath: /etc/uyuni/server.crt
+            subPath: server.crt     
+          - name: config-volume
+            mountPath: /etc/uyuni/server.key
+            subPath: server.key                                                        
+      volumes:
+        - name: config-volume
+          configMap:
+            name: proxy-configmap                  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-srv
+spec:
+  selector:
+    app: httpd
+  ports:
+    - name: httpd
+      protocol: TCP
+      port: 80
+      targetPort: 80
