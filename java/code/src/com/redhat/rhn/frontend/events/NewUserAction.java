@@ -123,7 +123,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         retval[0] = userIn.getEmail();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("getRecipients(User) - end - return value={}", retval);
+            logger.debug("getRecipients(User) - end - return value={}", (Object)retval);
         }
         return retval;
     }

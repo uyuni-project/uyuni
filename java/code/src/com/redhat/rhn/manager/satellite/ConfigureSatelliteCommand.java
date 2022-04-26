@@ -102,7 +102,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         argList.add("/dev/null");
         String[] returnStringArray = argList.toArray(new String[0]);
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommandArguments(String, Iterator) - end - return value={}", returnStringArray);
+            logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object)returnStringArray);
         }
         return (anythingChanged ? returnStringArray : null);
     }
@@ -174,7 +174,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
                         Integer.toString(exitcode));
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("storeConfiguration() - end - return value={}", retval);
+                    logger.debug("storeConfiguration() - end - return value={}", (Object)retval);
                 }
                 return retval;
             }
@@ -182,7 +182,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         this.keysToBeUpdated.clear();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("storeConfiguration() - end - return value="  + null);
+            logger.debug("storeConfiguration() - end - return value=null");
         }
         return null;
 
