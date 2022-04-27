@@ -223,7 +223,7 @@ public class IcalUtils {
             calendar = builder.build(calendarReader);
         }
         catch (IOException | ParserException e) {
-            log.error("Unable to build the calendar from reader: " + calendarReader, e);
+            log.error("Unable to build the calendar from reader: {}", calendarReader, e);
         }
         return ofNullable(calendar);
     }
@@ -241,7 +241,7 @@ public class IcalUtils {
                                                          Long start, Long end) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-           log.error("Could not parse calendar: " + calendarIn.getLabel());
+            log.error("Could not parse calendar: {}", calendarIn.getLabel());
            return new ArrayList<>();
         }
         Period period = new Period(new DateTime(start), new DateTime(end));
@@ -305,7 +305,7 @@ public class IcalUtils {
     public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-            log.error("Could not parse calendar: " + calendarIn.getLabel());
+            log.error("Could not parse calendar: {}", calendarIn.getLabel());
             return new HashSet<>();
         }
         ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);

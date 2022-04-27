@@ -45,7 +45,7 @@ Feature: ReportDB
 
   @sle_minion
   Scenario: System changes should be reflected in systems, on ReportDB
-    Given I have "sle_minion" with "Arrakeen" as "City" property
+    Given I have a property "City" with value "Arrakeen" on "sle_minion"
     And I know the current synced_date for "sle_minion"
     When I schedule a task to update ReportDB
     Then I should find the updated "City" property as "Arrakeen" on the "sle_minion", on ReportDB
@@ -53,4 +53,3 @@ Feature: ReportDB
   Scenario: Cleanup: delete read-only user
     When I delete the read-only user for the ReportDB
     Then I shouldn't see the read-only user listed on the ReportDB user accounts
-

@@ -127,7 +127,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
             chanProps.put("type", "deb");
         }
         else {
-            LOG.warn("Unknown repo type for channel " + chan.getLabel());
+            LOG.warn("Unknown repo type for channel {}", chan.getLabel());
         }
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {

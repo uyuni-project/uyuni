@@ -56,7 +56,7 @@ public class TokenPackageFactory extends HibernateFactory {
                 .setCacheable(true).list();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         return retval;
@@ -87,7 +87,7 @@ public class TokenPackageFactory extends HibernateFactory {
                 .setCacheable(true).list();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         return retval;
@@ -121,7 +121,7 @@ public class TokenPackageFactory extends HibernateFactory {
                 .uniqueResult();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         return retval;

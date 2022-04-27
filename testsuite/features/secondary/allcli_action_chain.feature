@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -48,9 +48,10 @@ Feature: Action chains on several systems at once
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on several systems
-    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
+    And I logout from API
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
     When I follow the left menu "Systems > Overview"

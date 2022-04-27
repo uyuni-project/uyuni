@@ -108,7 +108,7 @@ public class SetupWizardSessionCache {
         }
 
         // Store or update the subscriptions
-        logger.debug("Storing subscriptions for " + creds.getUser());
+        logger.debug("Storing subscriptions for {}", creds.getUser());
         subsMap.put(creds.getUser(), subscriptions);
     }
 
@@ -127,7 +127,7 @@ public class SetupWizardSessionCache {
         if (subsMap != null) {
             subsMap.remove(creds.getUser());
             if (logger.isDebugEnabled()) {
-                logger.debug("Removed subscriptions for: " + creds.getUser());
+                logger.debug("Removed subscriptions for: {}", creds.getUser());
             }
         }
     }
@@ -163,13 +163,13 @@ public class SetupWizardSessionCache {
 
             // Put validation status in cache
             if (logger.isDebugEnabled()) {
-                logger.debug("Proxy verification is " + ret);
+                logger.debug("Proxy verification is {}", ret);
             }
             storeProxyStatus(ret, request);
         }
         else {
             if (logger.isDebugEnabled()) {
-                logger.debug("Retrieved proxy status from cache: " + ret);
+                logger.debug("Retrieved proxy status from cache: {}", ret);
             }
         }
 
@@ -186,7 +186,7 @@ public class SetupWizardSessionCache {
         HttpSession session = request.getSession();
         session.setAttribute(PROXY_STATUS_KEY, proxyStatus);
         if (logger.isDebugEnabled()) {
-            logger.debug("Proxy status stored in session: " + proxyStatus);
+            logger.debug("Proxy status stored in session: {}", proxyStatus);
         }
     }
 }

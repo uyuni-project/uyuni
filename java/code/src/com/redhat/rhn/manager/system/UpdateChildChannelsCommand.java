@@ -150,7 +150,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("checking to see if we can sub: " + channel.getLabel());
+                log.debug("checking to see if we can sub: {}", channel.getLabel());
             }
             // do quick unsubscribe + quick subscribe... I don't know why we do the
             // unsubscribe first... It is what the perl code does though.

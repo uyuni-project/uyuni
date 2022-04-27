@@ -345,8 +345,8 @@ public class SCCCachingFactory extends HibernateFactory {
                     return true;
                 },
                 modifiedCache -> {
-                    log.debug("COMPARE: " + modifiedCache.toString() + " and " + modifiedCreds.toString() +
-                            " : " + modifiedCache.compareTo(modifiedCreds));
+                    log.debug("COMPARE: {} and {} : {}", modifiedCache.toString(), modifiedCreds.toString(),
+                            modifiedCache.compareTo(modifiedCreds));
                     return modifiedCache.compareTo(modifiedCreds) < 0;
                 }
         );
@@ -516,7 +516,7 @@ public class SCCCachingFactory extends HibernateFactory {
         newServer.stream().forEach(s -> {
             SCCRegCacheItem rci = new SCCRegCacheItem(s);
             saveRegCacheItem(rci);
-            log.debug("New RegCacheItem saved: " + rci);
+            log.debug("New RegCacheItem saved: {}", rci);
         });
     }
 

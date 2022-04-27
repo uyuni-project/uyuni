@@ -414,13 +414,13 @@ public class UserManager extends BaseManager {
 
         for (String removeLabel : rolesToRemove) {
             Role removeMe = RoleFactory.lookupByLabel(removeLabel);
-            log.debug("Removing role: " + removeMe.getName());
+            log.debug("Removing role: {}", removeMe.getName());
             usr.removePermanentRole(removeMe);
         }
 
         for (String addLabel : rolesToAdd) {
             Role r = RoleFactory.lookupByLabel(addLabel);
-            log.debug("Adding role: " + r.getName());
+            log.debug("Adding role: {}", r.getName());
             usr.addPermanentRole(r);
         }
     }
@@ -557,7 +557,7 @@ public class UserManager extends BaseManager {
             Thread.sleep(2000);
         }
         catch (InterruptedException ie) {
-            log.warn("Failed to set timeout: " + ie.getMessage());
+            log.warn("Failed to set timeout: {}", ie.getMessage());
         }
         throw new LoginException(exceptionType);
     }

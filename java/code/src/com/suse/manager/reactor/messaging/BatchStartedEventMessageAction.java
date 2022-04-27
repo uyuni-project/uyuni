@@ -61,7 +61,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Matched salt job with action (id=" + actionId + ")");
+                LOG.debug("Matched salt job with action (id={})", actionId);
             }
             Map<String, Long> minionServerIds = ServerFactory.findServerIdsByMinionIds(minionIds);
 
@@ -76,7 +76,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
             });
         }
         else {
-            LOG.warn("Action referenced from Salt job was not found: " + actionId);
+            LOG.warn("Action referenced from Salt job was not found: {}", actionId);
         }
     }
 
@@ -88,7 +88,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
      */
     private static void handleServerAction(ServerAction sa, String minionId) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Marking server action as failed for server: " + minionId);
+            LOG.debug("Marking server action as failed for server: {}", minionId);
         }
         sa.fail("Minion is down or could not be contacted.");
         ActionFactory.save(sa);

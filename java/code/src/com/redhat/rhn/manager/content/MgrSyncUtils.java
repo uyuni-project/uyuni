@@ -238,7 +238,7 @@ public class MgrSyncUtils {
             }
         }
         catch (URISyntaxException e) {
-            log.warn("Unable to parse URL: " + urlString);
+            log.warn("Unable to parse URL: {}", urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
@@ -262,7 +262,7 @@ public class MgrSyncUtils {
         }
         Path cleanPath = mirrorPath.toPath().normalize();
         if (!cleanPath.startsWith(sccDataPath)) {
-            log.error("Resulting path outside of configured directory " + dataPath + ": " + urlString);
+            log.error("Resulting path outside of configured directory {}: {}", dataPath, urlString);
             cleanPath = dataPath.toPath();
         }
         return cleanPath.toUri().normalize();

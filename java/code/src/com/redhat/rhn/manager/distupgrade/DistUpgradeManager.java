@@ -164,8 +164,7 @@ public class DistUpgradeManager extends BaseManager {
             ret = channels.get(0);
         }
         if (channels.size() > 1) {
-            logger.warn("More than one base channel found for product: " + productID +
-                    " (arch: " + arch.getName() + ")");
+            logger.warn("More than one base channel found for product: {} (arch: {})", productID, arch.getName());
         }
         return ret;
     }
@@ -184,12 +183,12 @@ public class DistUpgradeManager extends BaseManager {
         if (channelDto != null) {
             ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
             if (ret == null) {
-                logger.error("Channel lookup failure. No permissions for user " +
-                    user.getLogin() + " on channel " + channelDto.getLabel());
+                logger.error("Channel lookup failure. No permissions for user {} on channel {}",
+                        user.getLogin(), channelDto.getLabel());
             }
         }
         else {
-            logger.error("No Base Channel found for product id: " + productID);
+            logger.error("No Base Channel found for product id: {}", productID);
         }
         return ret;
     }
@@ -239,7 +238,7 @@ public class DistUpgradeManager extends BaseManager {
             if (baseChannel == null) {
                 // No base channel found
                 target.addMissingChannel(target.getBaseProduct().getFriendlyName());
-                logger.debug("Missing Base Channels for " + target.getBaseProduct().getFriendlyName());
+                logger.debug("Missing Base Channels for {}", target.getBaseProduct().getFriendlyName());
             }
             else {
                 // Check for addon product channels only if base channel is synced
@@ -250,7 +249,7 @@ public class DistUpgradeManager extends BaseManager {
                                 SUSEProductFactory.findAllMandatoryChannels(addonProduct, target.getBaseProduct())
                                 .filter(pr -> ChannelFactory.lookupByLabel(pr.getChannelLabel()) == null)
                                 .map(pr -> {
-                                    logger.warn("Mandatory channel not synced: " + pr.getChannelLabel());
+                                    logger.warn("Mandatory channel not synced: {}", pr.getChannelLabel());
                                     return pr.getChannelLabel();
                                 }).collect(toList());
                         target.addMissingChannels(missing);
@@ -294,7 +293,7 @@ public class DistUpgradeManager extends BaseManager {
                 baseSuccessors.add(baseProduct);
                 baseSuccessors.addAll(baseProduct.getUpgrades());
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Found '" + baseSuccessors.size() + "' successors for the base product.");
+                    logger.debug("Found '{}' successors for the base product.", baseSuccessors.size());
                     baseSuccessors.stream().forEach(bp -> logger.debug(bp.getFriendlyName()));
                 }
 
@@ -306,8 +305,8 @@ public class DistUpgradeManager extends BaseManager {
                     s.addAll(e.getUpgrades());
                     extensionSuccessors.add(s);
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Extension: " + e.getFriendlyName());
-                        e.getUpgrades().forEach(ex -> logger.debug("Extension successor: " + ex.getFriendlyName()));
+                        logger.debug("Extension: {}", e.getFriendlyName());
+                        e.getUpgrades().forEach(ex -> logger.debug("Extension successor: {}", ex.getFriendlyName()));
                         logger.debug("-----------------------");
                     }
                 }
@@ -335,12 +334,11 @@ public class DistUpgradeManager extends BaseManager {
 
                     if (logger.isDebugEnabled()) {
                         if (compatibleExtensionSuccessors.isEmpty()) {
-                            logger.debug("No extension successors for base successor " +
-                                    baseSucc.getFriendlyName());
+                            logger.debug("No extension successors for base successor {}", baseSucc.getFriendlyName());
                         }
                         else {
-                            logger.debug("Found extension successors for base successor " +
-                                    baseSucc.getFriendlyName() + ":");
+                            logger.debug("Found extension successors for base successor {}:",
+                                    baseSucc.getFriendlyName());
                             // let's print out list of list with friendly names
                             compatibleExtensionSuccessors.stream()
                                     .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
@@ -361,11 +359,11 @@ public class DistUpgradeManager extends BaseManager {
                     SUSEProduct base = combination.get(0);
                     if (!ContentSyncManager.isProductAvailable(base, base)) {
                         // No Product Channels means, no subscription to access the channels
-                        logger.debug("No SUSE Product Channels for " + base.getFriendlyName() + ". Skipping");
+                        logger.debug("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
                         continue;
                     }
                     if (combination.size() == 1) {
-                        logger.debug("Found Target: " + base.getFriendlyName());
+                        logger.debug("Found Target: {}", base.getFriendlyName());
                         result.add(new SUSEProductSet(base, Collections.emptyList()));
                     }
                     else {
@@ -376,14 +374,13 @@ public class DistUpgradeManager extends BaseManager {
                             if (logger.isDebugEnabled()) {
                                 addonProducts.stream()
                                         .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                        .forEach(ap -> logger.debug("No SUSE Product Channels for " +
-                                                ap.getFriendlyName() + ". Skipping " +
-                                                base.getFriendlyName()));
+                                        .forEach(ap -> logger.debug("No SUSE Product Channels for {}. Skipping {}",
+                                                ap.getFriendlyName(), base.getFriendlyName()));
                             }
                             continue;
                         }
-                        logger.debug("Found Target: " + base.getFriendlyName());
-                        addonProducts.forEach(ext -> logger.debug("   - " + ext.getFriendlyName()));
+                        logger.debug("Found Target: {}", base.getFriendlyName());
+                        addonProducts.forEach(ext -> logger.debug("   - {}", ext.getFriendlyName()));
                         result.add(new SUSEProductSet(base, addonProducts));
                     }
                 }
@@ -477,11 +474,10 @@ public class DistUpgradeManager extends BaseManager {
                     }
                 }
                 if (!foundChild) {
-                    logger.debug("Discarding cloned channel '" + clone + "' of base channel '" +
-                            suseBaseChannel + "' as a migration alternative. " +
-                            "The cloned channel doesn't have required child channels. " +
-                            "Required child channels: '" + requiredChildChannels +
-                            "', accessible child channels of the clone: '" + children + "'.");
+                    logger.debug("Discarding cloned channel '{}' of base channel '{}' as a migration alternative. " +
+                            "The cloned channel doesn't have required child channels. Required child channels: '{}', " +
+                            "accessible child channels of the clone: '{}'.", clone, suseBaseChannel,
+                            requiredChildChannels, children);
                     isValidAlternative = false;
                     break;
                 }
@@ -698,7 +694,7 @@ public class DistUpgradeManager extends BaseManager {
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.get().getAddonProducts().isEmpty()) {
                 migrationTargets.add(t);
-                logger.debug("Found valid migration target: " + t.toString());
+                logger.debug("Found valid migration target: {}", t.toString());
                 continue;
             }
             List<SUSEProduct> missingAddonSuccessors = installedProducts.get().getAddonProducts()
@@ -707,13 +703,13 @@ public class DistUpgradeManager extends BaseManager {
                 .collect(Collectors.toList());
 
             if (missingAddonSuccessors.isEmpty()) {
-                logger.debug("Found valid migration target: " + t.toString());
+                logger.debug("Found valid migration target: {}", t.toString());
                 migrationTargets.add(t);
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
                         .collect(Collectors.toList());
-                logger.warn("No migration target found for '" +  String.join(", ", missing) + "'. Skipping");
+                logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
                 missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
             }
         }

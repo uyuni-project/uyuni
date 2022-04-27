@@ -69,15 +69,13 @@ public class AuthenticationServiceFactory {
 
     protected AuthenticationService getPxtService() {
         if (pxtAuthService == null) {
-            LOG.debug("Creating a new " + PxtAuthenticationService.class.getName() +
-                    " instance.");
+            LOG.debug("Creating a new {} instance.", PxtAuthenticationService.class.getName());
 
             pxtAuthService = new PxtAuthenticationService();
             pxtAuthService.setPxtSessionDelegate(getPxtSessionDelegate());
         }
 
-        LOG.debug("Returning a " + PxtAuthenticationService.class.getName() +
-                " to provide authentication services.");
+        LOG.debug("Returning a {} to provide authentication services.", PxtAuthenticationService.class.getName());
 
         return pxtAuthService;
     }

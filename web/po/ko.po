@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 08:42+0000\n"
-"PO-Revision-Date: 2022-03-23 05:12+0000\n"
+"POT-Creation-Date: 2022-04-24 14:18+0000\n"
+"PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -141,8 +141,8 @@ msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
 #: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:807
-#: ../html/src/manager/images/image-view.tsx:809
+#: ../html/src/manager/images/image-view.tsx:816
+#: ../html/src/manager/images/image-view.tsx:818
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -253,9 +253,9 @@ msgstr "취소"
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
 #: ../html/src/manager/images/image-stores.tsx:204
-#: ../html/src/manager/images/image-view.tsx:347
-#: ../html/src/manager/images/image-view.tsx:357
-#: ../html/src/manager/images/image-view.tsx:694
+#: ../html/src/manager/images/image-view.tsx:349
+#: ../html/src/manager/images/image-view.tsx:359
+#: ../html/src/manager/images/image-view.tsx:696
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -920,7 +920,7 @@ msgstr "용량제 SSH 데이터 추가"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:244
+#: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -1088,7 +1088,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:371
+#: ../html/src/manager/images/image-view.tsx:373
 #: ../html/src/manager/notifications/notification-messages.tsx:444
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
@@ -1109,7 +1109,7 @@ msgstr "작업 실패: 서버에서 빈 회신"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:685
+#: ../html/src/manager/images/image-view.tsx:687
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
@@ -1452,8 +1452,9 @@ msgstr "SUSE 보안 CVE 링크"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:639
+#: ../html/src/manager/images/image-view.tsx:641
 #: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
@@ -1468,7 +1469,7 @@ msgstr "이름"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:679
+#: ../html/src/manager/images/image-view.tsx:681
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:195
@@ -1978,7 +1979,8 @@ msgstr "에포크"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:642
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
 msgstr "버전"
 
@@ -2061,7 +2063,7 @@ msgstr "미사용 항목 선택"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:144
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-stores.tsx:137
-#: ../html/src/manager/images/image-view.tsx:348
+#: ../html/src/manager/images/image-view.tsx:350
 msgid "Delete selected"
 msgstr "선택 항목 삭제"
 
@@ -2303,7 +2305,7 @@ msgstr "빌드({0})"
 #: ../html/src/manager/images/image-profiles.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:626
 #: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:667
+#: ../html/src/manager/images/image-view.tsx:669
 msgid "Build"
 msgstr "빌드"
 
@@ -2392,18 +2394,17 @@ msgid "Cloning channels"
 msgstr "채널 복제"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "저장소 데이터 생성"
+msgstr "리포지토리 데이터 생성을 기다리는 중"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr "빌드됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr "실패"
 
@@ -2527,21 +2528,21 @@ msgstr "버전 기록"
 msgid "New base channel"
 msgstr "새 기본 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
 msgid "New Base Channel"
 msgstr "새 기본 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:175
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "새 기본 채널로 선택할 채널 선택"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:191
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
 msgstr "하위 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:213
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
 msgid "Clear Search"
 msgstr "검색 지우기"
 
@@ -2575,7 +2576,7 @@ msgstr "하위 채널 없음"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:638
+#: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:506
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2687,14 +2688,14 @@ msgid "Systems"
 msgstr "시스템"
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:663
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:665
+#: ../html/src/manager/images/image-view.tsx:790
 msgid "Packages"
 msgstr "패키지"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:650
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:652
+#: ../html/src/manager/images/image-view.tsx:789
 msgid "Patches"
 msgstr "패치"
 
@@ -2824,14 +2825,14 @@ msgid "Image version is required."
 msgstr "이미지 버전은 필수입니다."
 
 #: ../html/src/manager/images/image-import.tsx:305
-#: ../html/src/manager/images/image-view.tsx:366
+#: ../html/src/manager/images/image-view.tsx:368
 msgid "Import"
 msgstr "가져오기"
 
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:368
+#: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
 msgid "Clear fields"
@@ -3009,6 +3010,15 @@ msgstr "선택한 저장소를 삭제하시겠습니까?"
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr "선택한 저장소를 삭제하시겠습니까?({0}개 저장소 선택됨)"
 
+#: ../html/src/manager/images/image-view-buildlog.tsx:5
+#: ../html/src/manager/images/image-view.tsx:791
+msgid "Build Log"
+msgstr "로그 빌드"
+
+#: ../html/src/manager/images/image-view-buildlog.tsx:10
+msgid "Build log is not available."
+msgstr "로그 빌드를 사용할 수 없습니다."
+
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
 #: ../html/src/manager/images/image-view-overview.tsx:93
@@ -3019,13 +3029,13 @@ msgstr "선택한 저장소를 삭제하시겠습니까?({0}개 저장소 선택
 #: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:478
-#: ../html/src/manager/images/image-view.tsx:527
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr "정보 없음"
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr "큐에 추가됨"
 
@@ -3062,7 +3072,7 @@ msgstr " 실패"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:497
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr "외부에서 빌드됨"
 
@@ -3075,37 +3085,37 @@ msgid "Picked Up"
 msgstr "선택됨"
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:553
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr "클러스터"
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:554
-#: ../html/src/manager/images/image-view.tsx:606
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr "인스턴스"
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:515
-#: ../html/src/manager/images/image-view.tsx:564
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr "업데이트를 기다리는 중..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:581
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr "클러스터 요약 보기"
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:523
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr "모든 인스턴스가 SUSE Manager와 일치"
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr "오래된 인스턴스가 발견됨"
 
@@ -3118,31 +3128,31 @@ msgid "Edit store"
 msgstr "저장소 편집"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:747
+#: ../html/src/manager/images/image-view.tsx:749
 msgid "Instance Details for '{0}'"
 msgstr "'{0}'용 인스턴스 세부 사항"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
-#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr "중요 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view-overview.tsx:527
 #: ../html/src/manager/images/image-view-overview.tsx:528
-#: ../html/src/manager/images/image-view.tsx:483
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr "중요하지 않은 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view-overview.tsx:534
 #: ../html/src/manager/images/image-view-overview.tsx:535
-#: ../html/src/manager/images/image-view.tsx:486
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr "패키지 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view-overview.tsx:541
 #: ../html/src/manager/images/image-view-overview.tsx:542
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr "이미지가 최신임"
 
@@ -3180,13 +3190,13 @@ msgid "Custom Image Information"
 msgstr "사용자 정의 이미지 정보"
 
 #: ../html/src/manager/images/image-view-overview.tsx:678
-#: ../html/src/manager/images/image-view.tsx:358
-#: ../html/src/manager/images/image-view.tsx:716
+#: ../html/src/manager/images/image-view.tsx:360
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Delete Image"
 msgstr "이미지 삭제"
 
 #: ../html/src/manager/images/image-view-overview.tsx:681
-#: ../html/src/manager/images/image-view.tsx:719
+#: ../html/src/manager/images/image-view.tsx:721
 msgid "Are you sure you want to delete image"
 msgstr "이미지를 삭제하시겠습니까"
 
@@ -3287,72 +3297,72 @@ msgstr "Pod"
 msgid "Namespace"
 msgstr "네임스페이스"
 
-#: ../html/src/manager/images/image-view.tsx:305
+#: ../html/src/manager/images/image-view.tsx:307
 msgid "Deleted successfully."
 msgstr "삭제되었습니다."
 
-#: ../html/src/manager/images/image-view.tsx:317
+#: ../html/src/manager/images/image-view.tsx:319
 msgid "Image inspect has been scheduled."
 msgstr "이미지 검사가 예약되었습니다."
 
-#: ../html/src/manager/images/image-view.tsx:333
+#: ../html/src/manager/images/image-view.tsx:335
 msgid "Image build has been scheduled."
 msgstr "이미지 빌드가 예약되었습니다."
 
-#: ../html/src/manager/images/image-view.tsx:381
+#: ../html/src/manager/images/image-view.tsx:383
 msgid "Images"
 msgstr "이미지"
 
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr "빌드하는 중"
 
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../html/src/manager/images/image-view.tsx:601
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:792
 msgid "Runtime"
 msgstr "런타임"
 
-#: ../html/src/manager/images/image-view.tsx:621
+#: ../html/src/manager/images/image-view.tsx:623
 msgid "Show obsolete"
-msgstr ""
+msgstr "더 이상 사용되지 않는 항목 표시"
 
-#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
 msgstr "리비전"
 
-#: ../html/src/manager/images/image-view.tsx:645
-msgid "(obsolete)"
-msgstr ""
-
 #: ../html/src/manager/images/image-view.tsx:647
+msgid "(obsolete)"
+msgstr "(사용되지 않음)"
+
+#: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "업데이트"
 
-#: ../html/src/manager/images/image-view.tsx:671
+#: ../html/src/manager/images/image-view.tsx:673
 msgid "Last Modified"
 msgstr "마지막으로 수정된 날짜"
 
-#: ../html/src/manager/images/image-view.tsx:732
+#: ../html/src/manager/images/image-view.tsx:734
 msgid "Delete Selected Image(s)"
 msgstr "선택한 이미지 삭제"
 
-#: ../html/src/manager/images/image-view.tsx:736
+#: ../html/src/manager/images/image-view.tsx:738
 msgid "Are you sure you want to delete the selected image?"
 msgstr "선택한 이미지를 삭제하시겠습니까?"
 
-#: ../html/src/manager/images/image-view.tsx:738
+#: ../html/src/manager/images/image-view.tsx:740
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "선택한 이미지를 삭제하시겠습니까?({0}개 이미지 선택됨)"
 
-#: ../html/src/manager/images/image-view.tsx:785
+#: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "개요"
@@ -3652,11 +3662,11 @@ msgstr "달력"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
+msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 일정 목록입니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
+msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 달력 목록입니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -3933,7 +3943,7 @@ msgid "Package States"
 msgstr "패키지 상태"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:303
+#: ../html/src/manager/proxy/container-config.tsx:310
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4092,24 +4102,21 @@ msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되�
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-"요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다. 다시 시도하"
-"십시오."
+msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "컨테이너 기반 프록시 구성"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4117,101 +4124,128 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생성"
+"할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 .zip 아카이브가 제"
+"공됩니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "프록시"
+msgstr "프록시 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
-msgid "e.g., proxy.domain.com"
-msgstr "예: host.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:199
-msgid "Server FQDN"
+#: ../html/src/manager/proxy/container-config.tsx:192
+msgid "The FQDN of the machine where the containers are hosted"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:194
+msgid "e.g., proxy.domain.com"
+msgstr "예: proxy.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:200
 #, fuzzy
-msgid "e.g., server.domain.com"
-msgstr "예: host.domain.com"
+msgid "Parent FQDN"
+msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
-msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgid "e.g., server.domain.com"
+msgstr "예: server.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:208
+#: ../html/src/manager/proxy/container-config.tsx:203
 #, fuzzy
-msgid "Proxy SSH port"
-msgstr "SSH 포트"
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr "연결한 프록시의 서버 FQDN입니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:209
+msgid "Proxy SSH port"
+msgstr "프록시 SSH 포트"
+
+#: ../html/src/manager/proxy/container-config.tsx:210
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:218
-msgid "Max Squid cache size (MB)"
+#: ../html/src/manager/proxy/container-config.tsx:219
+#, fuzzy
+msgid "Max Squid cache size"
+msgstr "최대 Squid 캐시 크기(MB)"
+
+#: ../html/src/manager/proxy/container-config.tsx:220
+msgid "The maximum value of the Squid cache in Megabytes"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
-msgstr "예: SLE12"
+msgstr "예: 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:228
-msgid "Proxy administrator email"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:229
+#: ../html/src/manager/proxy/container-config.tsx:230
 #, fuzzy
+msgid "Proxy admin email"
+msgstr "프록시 관리자 전자 메일"
+
+#: ../html/src/manager/proxy/container-config.tsx:231
+#, fuzzy
+msgid "The container-based proxy administrator email address"
+msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
+
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "예: host.domain.com"
+msgstr "예: proxy.admin@mycompany.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:236
-#: ../html/src/manager/proxy/container-config.tsx:237
+#: ../html/src/manager/proxy/container-config.tsx:239
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL 인증서"
 
-#: ../html/src/manager/proxy/container-config.tsx:245
+#: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
-msgstr ""
+msgstr "기존 항목 사용"
 
-#: ../html/src/manager/proxy/container-config.tsx:252
-msgid "CA certificate to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:260
-msgid "CA private key to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:268
+#: ../html/src/manager/proxy/container-config.tsx:256
 #, fuzzy
-msgid "The CA private key password"
-msgstr "새 비밀번호 생성"
+msgid "CA certificate"
+msgstr "SSL 인증서"
 
-#: ../html/src/manager/proxy/container-config.tsx:276
-msgid "SSL Certificate data"
-msgstr ""
+#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:266
+#: ../html/src/manager/proxy/container-config.tsx:323
+#, fuzzy
+msgid "To sign the SSL certificate in PEM format"
+msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
+
+#: ../html/src/manager/proxy/container-config.tsx:265
+#, fuzzy
+msgid "CA private key"
+msgstr "SSH 개인 키"
+
+#: ../html/src/manager/proxy/container-config.tsx:274
+#, fuzzy
+msgid "CA password"
+msgstr "비밀번호"
+
+#: ../html/src/manager/proxy/container-config.tsx:275
+msgid "The CA private key password"
+msgstr "CA 개인 키 비밀번호"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
+msgid "SSL Certificate data"
+msgstr "SSL 인증서 데이터"
+
+#: ../html/src/manager/proxy/container-config.tsx:290
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "대체 CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:291
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "CNAME"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:297
-msgid "2-letter country code"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
-msgid "City"
-msgstr ""
+msgid "2-letter country code"
+msgstr "2자 국가 코드"
 
-#: ../html/src/manager/proxy/container-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:311
+msgid "City"
+msgstr "시/도"
+
+#: ../html/src/manager/proxy/container-config.tsx:312
 #: ../html/src/manager/state/highstate-summary.tsx:170
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4219,40 +4253,45 @@ msgstr ""
 msgid "Organization"
 msgstr "조직"
 
-#: ../html/src/manager/proxy/container-config.tsx:306
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:313
 msgid "Organization Unit"
-msgstr "조직"
+msgstr "조직 단위"
 
-#: ../html/src/manager/proxy/container-config.tsx:307
+#: ../html/src/manager/proxy/container-config.tsx:314
 msgid "Email"
+msgstr "전자 메일"
+
+#: ../html/src/manager/proxy/container-config.tsx:322
+msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:315
-msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:324
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
-msgstr "인터페이스"
+msgstr "중간 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:334
+#: ../html/src/manager/proxy/container-config.tsx:342
 msgid "CA file in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:345
-msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "PEM 형식의 CA 파일"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-msgid "Proxy SSL private key in PEM format"
-msgstr ""
+#, fuzzy
+msgid "Proxy certificate"
+msgstr "SSL 인증서"
 
+#: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
 #, fuzzy
+msgid "In PEM format"
+msgstr "PEM 형식의 CA 파일"
+
+#: ../html/src/manager/proxy/container-config.tsx:362
+#, fuzzy
+msgid "Proxy SSL private key"
+msgstr "PEM 형식의 프록시 SSL 개인 키"
+
+#: ../html/src/manager/proxy/container-config.tsx:373
 msgid "Generate"
-msgstr "일반"
+msgstr "생성"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4556,13 +4595,15 @@ msgstr "반복 상태"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "다음 반복 작업이 생성되었습니다."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"새 반복 작업을 생성하려면 작업을 생성할 시스템, 그룹 또는 조직으로 이동하십시"
+"오."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4769,6 +4810,47 @@ msgstr "정리하지 않고 프로파일 삭제"
 #: ../html/src/manager/systems/delete-system.tsx:91
 msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:30
+msgid "Not a system id"
+msgstr "시스템 ID가 아닙니다."
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:31
+msgid "Unknown System"
+msgstr "알 수 없는 시스템"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:32
+msgid "System is not a peripheral server"
+msgstr "시스템이 주변기기 서버가 아닙니다."
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:50
+msgid "New password generated and action for peripheral server scheduled"
+msgstr "새 비밀번호가 생성되고 주변기기 서버에 대한 작업이 예약됨"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr "주변기기 서버"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+msgid "Report Database Name"
+msgstr "데이터베이스 이름 보고"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+msgid "Report Database Host"
+msgstr "데이터베이스 호스트 보고"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+msgid "Report Database User"
+msgstr "데이터베이스 사용자 보고"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+msgid "Report Database Last Synced"
+msgstr "데이터베이스 마지막 동기화 시간 보고"
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:112
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:113
+msgid "Regenerate Reporting Database Password"
+msgstr "데이터베이스 비밀번호 보고 생성"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
@@ -6107,6 +6189,18 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "Server FQDN"
+#~ msgstr "서버 FQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 개인 키"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 형식의 프록시 CRT 컨텐트"
 
 #~ msgid "Delete project"
 #~ msgstr "프로젝트 삭제"

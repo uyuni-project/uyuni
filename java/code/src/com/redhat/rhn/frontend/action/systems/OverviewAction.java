@@ -109,8 +109,7 @@ public class OverviewAction extends RhnListAction {
                 response.sendRedirect(returnUrl);
             }
             catch (IOException exc) {
-                log.error("IOException when trying to redirect to " +
-                        returnUrl, exc);
+                log.error("IOException when trying to redirect to {}", returnUrl, exc);
             }
             return null;
         }

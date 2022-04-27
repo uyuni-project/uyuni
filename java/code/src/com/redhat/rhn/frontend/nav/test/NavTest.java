@@ -80,8 +80,7 @@ public class NavTest extends RhnBaseTestCase {
         assertEquals(bestNode.getName(), "Help Desk");
         assertEquals(bestNode.getPrimaryURL(), testPath);
 
-        log.info("Index Duration: " +
-                       st.getTime() / 1000f + " seconds");
+        log.info("Index Duration: {} seconds", st.getTime() / 1000f);
 
         RenderEngine nr = new RenderEngine(nti);
         st.stop();
@@ -89,11 +88,9 @@ public class NavTest extends RhnBaseTestCase {
         Renderable renderer = new TextRenderer();
         renderer.setRenderGuard(new DepthGuard(1, Integer.MAX_VALUE));
 
-        log.info("Using Renderable " +
-            renderer.getClass() + ":\n" + nr.render(renderer));
+        log.info("Using Renderable {}:\n{}", renderer.getClass(), nr.render(renderer));
 
-        log.info("Parse Duration: " +
-                       st.getTime() / 1000f + " seconds");
+        log.info("Parse Duration: {} seconds", st.getTime() / 1000f);
     }
 
     @Test

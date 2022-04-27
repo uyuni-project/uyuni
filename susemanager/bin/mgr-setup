@@ -254,7 +254,8 @@ setup_db_postgres() {
         systemctl restart postgresql
         su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
-        echo "local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
+        echo "local $MANAGER_DB_NAME postgres peer
+local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
 host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
 " > /tmp/pg_hba.conf

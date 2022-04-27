@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete CentOS minion and register a CentOS traditional client
@@ -84,11 +84,11 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "ensure_redhat_gpgkey_installed" link
 
   Scenario: Schedule some actions on the CentOS 7 traditional client
-    When I authenticate to XML-RPC
-    And I refresh the packages on "ceos_client" through XML-RPC
-    And I run a script on "ceos_client" through XML-RPC
-    And I reboot "ceos_client" through XML-RPC
-    And I unauthenticate from XML-RPC
+    When I am logged in API as user "admin" and password "admin"
+    And I refresh the packages on traditional "ceos_client" through API
+    And I run a script on traditional "ceos_client" through API
+    And I reboot traditional "ceos_client" through API
+    And I logout from API
 
   Scenario: Cleanup: delete the CentOS 7 traditional client
     Given I am on the Systems overview page of this "ceos_client"

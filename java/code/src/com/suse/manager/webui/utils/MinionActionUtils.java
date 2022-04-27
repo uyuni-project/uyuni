@@ -188,7 +188,7 @@ public class MinionActionUtils {
                     long actionId = Long.parseLong(m.group(1));
                     Action action = ActionFactory.lookupById(actionId);
                     if (action == null || action.allServersFinished()) {
-                        LOG.info("Deleting script file: " + file);
+                        LOG.info("Deleting script file: {}", file);
                         FileUtils.deleteFile(file);
                     }
                 }

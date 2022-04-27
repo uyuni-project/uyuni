@@ -198,7 +198,7 @@ public class HttpClientAdapter {
             if (proxyHost != null &&
                     (Boolean.TRUE.equals(ignoreNoProxy) || useProxyFor(requestUri))) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Using proxy: " + proxyHost);
+                    log.debug("Using proxy: {}", proxyHost);
                 }
                 return super.determineRoute(host, request, context);
             }
@@ -232,7 +232,7 @@ public class HttpClientAdapter {
     public HttpResponse executeRequest(HttpRequestBase request, boolean ignoreNoProxy)
             throws IOException {
         if (log.isDebugEnabled()) {
-            log.debug(request.getMethod() + " " + request.getURI());
+            log.debug("{} {}", request.getMethod(), request.getURI());
         }
         // Decide if a proxy should be used for this request
 
@@ -246,7 +246,7 @@ public class HttpClientAdapter {
         HttpResponse httpResponse = httpClient.execute(request, httpContxt);
 
         if (log.isDebugEnabled()) {
-            log.debug("Response code: " + httpResponse.getStatusLine().getStatusCode());
+            log.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
         }
         return httpResponse;
     }

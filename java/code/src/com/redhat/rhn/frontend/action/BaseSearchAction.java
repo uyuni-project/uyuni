@@ -140,7 +140,7 @@ public abstract class BaseSearchAction extends RhnAction {
                     new ActionMessage("packages.search.connection_error"));
         }
         catch (XmlRpcFault e) {
-            LOG.info("Caught Exception :" + e + ", code [" + e.getErrorCode() + "]");
+            LOG.info("Caught Exception :{}, code [{}]", e, e.getErrorCode());
             if (e.getErrorCode() == 100) {
                 LOG.error("Invalid search query", e);
                 errors.add(ActionMessages.GLOBAL_MESSAGE,

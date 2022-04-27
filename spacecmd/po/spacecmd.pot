@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-27 18:14+0000\n"
+"POT-Creation-Date: 2022-04-18 03:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7972,40 +7972,40 @@ msgstr ""
 msgid "Clearing current selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:694
+#: ../src/spacecmd/utils.py:697
 msgid "Could not generate json data object!"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:701
+#: ../src/spacecmd/utils.py:704
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:717
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr ""
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:719
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:744
+#: ../src/spacecmd/utils.py:747
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:760
+#: ../src/spacecmd/utils.py:763
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:846
+#: ../src/spacecmd/utils.py:849
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 

@@ -234,7 +234,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
                 Thread.sleep(1);
             }
             catch (InterruptedException iee) {
-                logger.debug("Caught iee" + iee);
+                logger.debug("Caught iee{}", iee);
             }
             for (int i = 0; i < 10; i++) {
                 MessageQueue.publish(new TestEventMessage());
@@ -262,7 +262,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
                 }
             }
             catch (InterruptedException iee) {
-                logger.debug("Caught iee" + iee);
+                logger.debug("Caught iee{}", iee);
             }
         }
 
@@ -287,7 +287,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
                 }
             }
             catch (InterruptedException iee) {
-                logger.debug("Caught iee" + iee);
+                logger.debug("Caught iee{}", iee);
             }
         }
     }

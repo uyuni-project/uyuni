@@ -413,7 +413,7 @@ public class PowerManagementHandler extends BaseHandler {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(loggedInUser), name);
         if (rec == null) {
-            log.error("System with cobbler name " + name + " not found.");
+            log.error("System with cobbler name {} not found.", name);
         }
         return rec;
     }

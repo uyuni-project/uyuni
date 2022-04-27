@@ -1,26 +1,24 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_onboarding
-Feature: Register a Salt minion via XML-RPC API
+Feature: Register a Salt minion via API
 
-  Scenario: Log in as admin user
+  Scenario: Delete SLES minion system profile before API bootstrap test
     Given I am authorized for the "Admin" section
-
-  Scenario: Delete SLES minion system profile before XML-RPC bootstrap test
-    Given I am on the Systems overview page of this "sle_minion"
+    And I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "sle_minion" should not be registered
 
-  Scenario: Bootstrap a SLES minion via XML-RPC
-    Given I am logged in via XML-RPC system as user "admin" and password "admin"
+  Scenario: Bootstrap a SLES minion via API
+    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "sle_minion" and salt-ssh "disabled"
-    And I logout from XML-RPC system namespace
+    And I logout from API
 
-  Scenario: Check new minion bootstrapped via XML-RPC in System Overview page
+  Scenario: Check new minion bootstrapped via API in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I follow the left menu "Systems > Overview"
@@ -33,17 +31,17 @@ Feature: Register a Salt minion via XML-RPC API
     Then I should see a "Default" text
 
 @proxy
-  Scenario: Check registration on proxy of minion bootstrapped via XML-RPC
+  Scenario: Check registration on proxy of minion bootstrapped via API
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-  Scenario: Check spacecmd system ID of minion bootstrapped via XML-RPC
+  Scenario: Check spacecmd system ID of minion bootstrapped via API
     Given I am on the Systems overview page of this "sle_minion"
     Then I run spacecmd listevents for "sle_minion"
 
-  Scenario: XML-RPC bootstrap: subscribe to base channel
+  Scenario: API bootstrap: subscribe to base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -56,16 +54,14 @@ Feature: Register a Salt minion via XML-RPC API
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-  Scenario: Check events history for failures on SLES minion after XML-RPC bootstrap
+  Scenario: Check events history for failures on SLES minion after API bootstrap
     Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page
 
-  Scenario: Bootstrap via XML-RPC a non-existing system
-    Given I am logged in via XML-RPC system as user "admin" and password "admin"
-    When I call system.bootstrap() on unknown host, I should get an XML-RPC fault with code -1
-    And I logout from XML-RPC system namespace
+  Scenario: Bootstrap via API a non-existing system
+    Given I am logged in API as user "admin" and password "admin"
+    When I call system.bootstrap() on unknown host, I should get an API fault
 
   Scenario: Bootstrap a salt-ssh system with activation key and default contact method
-    Given I am logged in via XML-RPC system as user "admin" and password "admin"
-    When I call system.bootstrap() on a salt minion with saltSSH = true, but with activation key with Default contact method, I should get an XML-RPC fault with code -1
-    And I logout from XML-RPC system namespace
+    When I call system.bootstrap() on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault
+    And I logout from API

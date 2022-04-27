@@ -49,7 +49,7 @@ public class ScapDownloadAction extends DownloadAction {
         String filename = context.getRequiredParamAsString("name");
         ScapResultFile file = new ScapResultFile(testResult, filename);
 
-        log.debug("Serving " + file);
+        log.debug("Serving {}", file);
         if (!file.getHTML()) {
             response.setHeader("Content-Disposition", "attachment; filename=" + filename);
         }

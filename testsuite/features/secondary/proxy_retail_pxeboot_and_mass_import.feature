@@ -312,7 +312,7 @@ Feature: PXE boot a Retail terminal
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    When I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
+    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -325,7 +325,7 @@ Feature: PXE boot a Retail terminal
     When I follow "pxeboot" terminal
     And I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" short hostname
+    Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the bootstrapped terminal
     Given I am on the Systems page

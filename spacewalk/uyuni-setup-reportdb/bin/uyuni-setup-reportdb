@@ -217,9 +217,8 @@ EOF
     if $STANDALONE; then
         sed -i 's/^\([^#].*\)$/### next line has been commented out by uyuni-setup-reportdb: ###\n##\1/ ' $PG_HBA
 	pg_hba_set "local" "all" "all" "" "peer"
-	pg_hba_set "host" "all" "all" "127.0.0.1/32" "ident"
-	pg_hba_set "host" "all" "all" "::1/128" "ident"
     fi
+    pg_hba_set "local" "$PGNAME" "postgres" "peer"
     pg_hba_set "local" "$PGNAME" "all" "scram-sha-256"
     pg_hba_set "host"  "$PGNAME" "all" "127.0.0.1/32" "scram-sha-256"
     pg_hba_set "host"  "$PGNAME" "all" "::1/128" "scram-sha-256"
@@ -227,6 +226,8 @@ EOF
     for ADDR in $(echo $REMOTE|sed 's/,/ /g'); do
         pg_hba_set "host" "$PGNAME" "all" "$ADDR" "scram-sha-256"
     done
+
+    /usr/bin/uyuni-sort-pg_hba
 
     # Create & configure /etc/rhn/rhn.conf
     RHN_CONF_DIR=$(dirname $RHN_CONF)

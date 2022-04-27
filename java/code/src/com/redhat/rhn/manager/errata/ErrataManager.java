@@ -1608,8 +1608,7 @@ public class ErrataManager extends BaseManager {
         }
         catch (XmlRpcFault e) {
             // right now updateIndex doesn't throw any faults.
-            log.error("Errata index not updated. Search server unavailable." +
-                    "ErrorCode = " + e.getErrorCode(), e);
+            log.error("Errata index not updated. Search server unavailable.ErrorCode = {}", e.getErrorCode(), e);
             e.printStackTrace();
         }
         catch (Exception e) {

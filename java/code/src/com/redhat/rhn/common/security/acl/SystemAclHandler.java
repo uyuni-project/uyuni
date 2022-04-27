@@ -170,8 +170,7 @@ public class SystemAclHandler extends BaseHandler {
             return record != null;
         }
         catch (Exception e) {
-            log.error("Cobbler connection errored out for Id" +
-                                                server.getCobblerId(), e);
+            log.error("Cobbler connection errored out for Id{}", server.getCobblerId(), e);
             return false;
         }
     }

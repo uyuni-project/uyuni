@@ -171,7 +171,8 @@ public class VirtualPortDef {
                     case "profileid":       def.setProfileId(Optional.of(attr.getValue())); break;
                     case "typeid":          def.setTypeId(Optional.of(attr.getValue())); break;
                     case "typeidversion":   def.setTypeIdVersion(Optional.of(attr.getValue())); break;
-                    default:                LOG.error("Unexpected virtual port attribute: " + attr.getName());
+                    default:
+                        LOG.error("Unexpected virtual port attribute: {}", attr.getName());
                 }
             }
         }

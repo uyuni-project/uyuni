@@ -79,7 +79,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertEquals(c.getErratas().size(), 1);
         ChannelFactory.save(c);
 
-        log.debug("Looking up id [" + c.getId() + "]");
+        log.debug("Looking up id [{}]", c.getId());
         Channel c2 = ChannelFactory.lookupById(c.getId());
         log.debug("Finished lookup");
         assertEquals(c2.getErratas().size(), 1);

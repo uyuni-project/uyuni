@@ -110,7 +110,7 @@ public class TaskQueue {
         List candidates = queueDriver.getCandidates();
         queueSize += candidates.size();
         if (queueSize > 0) {
-            queueDriver.getLogger().info("In the queue: " + queueSize);
+            queueDriver.getLogger().info("In the queue: {}", queueSize);
         }
         while (candidates.size() > 0 && queueDriver.canContinue()) {
             Object candidate = candidates.remove(0);
@@ -133,7 +133,7 @@ public class TaskQueue {
         setupQueue(workers);
         if (isTaskQueueDone()) {
             // everything done
-            queueDriver.getLogger().debug("Finishing run " + queueRun.getId());
+            queueDriver.getLogger().debug("Finishing run {}", queueRun.getId());
             queueRun.finished();
             queueRun.saveStatus(TaskoRun.STATUS_FINISHED);
             HibernateFactory.commitTransaction();

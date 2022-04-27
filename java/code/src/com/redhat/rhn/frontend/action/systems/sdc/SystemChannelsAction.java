@@ -110,7 +110,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
             form.set(NEW_BASE_CHANNEL_ID, s.getBaseChannel().getId());
 
             if (log.isDebugEnabled()) {
-                log.debug("base_channel: " + form.get(NEW_BASE_CHANNEL_ID));
+                log.debug("base_channel: {}", form.get(NEW_BASE_CHANNEL_ID));
             }
 
         }
@@ -182,13 +182,13 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
 
         if (s.getChildChannels() != null) {
             for (Channel childChan : s.getChildChannels()) {
-                log.debug("   " + childChan.getName());
+                log.debug("   {}", childChan.getName());
                 currentChildChans.add(childChan);
             }
         }
 
         Long newBaseChannelId = (Long) ((DynaActionForm) formIn).get(NEW_BASE_CHANNEL_ID);
-        log.debug("newBaseChannelId = " + newBaseChannelId);
+        log.debug("newBaseChannelId = {}", newBaseChannelId);
 
         Channel newChannel = null;
         List<Channel> preservedChildChannels = new LinkedList<>();
@@ -201,8 +201,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                     s.getBaseChannel(), newChannel, user);
             log.debug("Preservations:");
             for (Entry<Channel, Channel> entry : preservations.entrySet()) {
-                log.debug("   " + entry.getKey().getName() + " -> " +
-                        entry.getValue().getName());
+                log.debug("   {} -> {}", entry.getKey().getName(), entry.getValue().getName());
                 if (currentChildChans.contains(entry.getKey())) {
                     preservedChildChannels.add(entry.getValue());
                 }
@@ -264,7 +263,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                 newBaseChannelId);
         ValidatorError error = cmd.store();
         if (error != null) {
-            log.debug("Got error trying to store child channels: " + error);
+            log.debug("Got error trying to store child channels: {}", error);
             getStrutsDelegate().saveMessages(request,
                     RhnValidationHelper.validatorErrorToActionErrors(error));
         }
@@ -310,14 +309,14 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         if (childChannelIds != null) {
             for (int i = 0; i < childChannelIds.length; i++) {
                 channelIdsList.add(Long.valueOf(childChannelIds[i]));
-                log.debug("Adding child id: " + channelIdsList.get(i));
+                log.debug("Adding child id: {}", channelIdsList.get(i));
             }
         }
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, s,
                 channelIdsList);
         ValidatorError error = cmd.store();
         if (error != null) {
-            log.debug("Got error trying to store child channels: " + error);
+            log.debug("Got error trying to store child channels: {}", error);
             getStrutsDelegate().saveMessages(request,
                     RhnValidationHelper.validatorErrorToActionErrors(error));
         }

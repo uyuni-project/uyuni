@@ -144,14 +144,13 @@ public enum SaltStateGeneratorService {
         Map<String, Object> imagePillarDetails = new TreeMap<>();
         Map<String, Object> imagePillarDetailsSync = new TreeMap<>();
 
-        Boolean isBundle = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("bundle")).findFirst().isPresent();
+        // Saltboot images have only one bundle file, even though technically more are possible
+        Optional<ImageFile> bundle = imageInfo.getImageFiles().stream().filter(
+                f -> f.getType().equals("bundle")).findFirst();
 
-        if (isBundle) {
-            ImageFile bundle = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("bundle")).findFirst().get();
+        if (bundle.isPresent()) {
             imagePillarDetailsSync.put("bundle_hash", image.getChecksum().getChecksum());
-            imagePillarDetailsSync.put("bundle_url", OSImageStoreUtils.getOSImageFileURI(bundle));
+            imagePillarDetailsSync.put("bundle_url", OSImageStoreUtils.getOSImageFileURI(bundle.get()));
         }
         else {
             ImageFile imageFile = imageInfo.getImageFiles().stream().filter(
@@ -176,7 +175,7 @@ public enum SaltStateGeneratorService {
         imagePillarDetails.put("size", image.getSize());
         imagePillarDetails.put("sync", imagePillarDetailsSync);
         imagePillarDetails.put("type", image.getType());
-        imagePillarDetails.put("url", "http://ftp/saltboot/" + localPath + "/" + image.getFilename());
+        imagePillarDetails.put("url", "https://ftp/saltboot/" + localPath + "/" + image.getFilename());
 
         imagePillarBase.put(version + "-" + revision, imagePillarDetails);
         imagePillar.put(imageInfo.getName(), imagePillarBase);
@@ -193,6 +192,7 @@ public enum SaltStateGeneratorService {
         Map<String, Object> bootImagePillarKernel = new TreeMap<>();
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
+        // We are interested only if bundles are present, not actual value
         Boolean isBundle = imageInfo.getImageFiles().stream().filter(
                 f -> f.getType().equals("bundle")).findFirst().isPresent();
 
@@ -204,11 +204,15 @@ public enum SaltStateGeneratorService {
         bootImagePillarInitrd.put("hash", bootImage.getInitrd().getChecksum().getChecksum());
         bootImagePillarInitrd.put("size", bootImage.getInitrd().getSize());
         bootImagePillarInitrd.put("version", bootImage.getInitrd().getVersion());
+        bootImagePillarInitrd.put("url", "https://ftp/saltboot/boot/" + bootLocalPath + "/" +
+                bootImage.getInitrd().getFilename());
 
         bootImagePillarKernel.put("filename", bootImage.getKernel().getFilename());
         bootImagePillarKernel.put("hash", bootImage.getKernel().getChecksum().getChecksum());
         bootImagePillarKernel.put("size", bootImage.getKernel().getSize());
         bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
+        bootImagePillarKernel.put("url", "https://ftp/saltboot/boot/" + bootLocalPath + "/" +
+                bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
         if (isBundle) {
@@ -383,7 +387,7 @@ public enum SaltStateGeneratorService {
      */
     private void generateServerConfigState(ServerStateRevision serverStateRevision, Path statePath) {
         serverStateRevision.getServer().asMinionServer().ifPresent(minion -> {
-            LOG.debug("Generating config channel SLS file for server: " + minion.getId());
+            LOG.debug("Generating config channel SLS file for server: {}", minion.getId());
 
             generateConfigStates(serverStateRevision, getServerStateFileName(minion.getMachineId()), statePath);
         });
@@ -397,7 +401,7 @@ public enum SaltStateGeneratorService {
     private void generateGroupConfigState(ServerGroupStateRevision groupStateRevision,
                                          Path statePath) {
         ServerGroup group = groupStateRevision.getGroup();
-        LOG.debug("Generating config channel SLS file for server group: " + group.getId());
+        LOG.debug("Generating config channel SLS file for server group: {}", group.getId());
 
         generateConfigStates(groupStateRevision, getGroupStateFileName(group.getId()), statePath);
     }
@@ -409,7 +413,7 @@ public enum SaltStateGeneratorService {
      */
     private void generateOrgConfigState(OrgStateRevision orgStateRevision, Path statePath) {
         Org org = orgStateRevision.getOrg();
-        LOG.debug("Generating config channel SLS file for organization: " + org.getId());
+        LOG.debug("Generating config channel SLS file for organization: {}", org.getId());
 
         generateConfigStates(orgStateRevision, getOrgStateFileName(org.getId()), statePath);
     }

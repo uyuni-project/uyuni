@@ -415,11 +415,11 @@ public abstract class HibernateFactory {
             retval = session.get(clazz, id);
         }
         catch (MappingException me) {
-            getLogger().error("Mapping not found for " + clazz.getName(), me);
+            getLogger().error("Mapping not found for {}", clazz.getName(), me);
 
         }
         catch (HibernateException he) {
-            getLogger().error("Hibernate exception: " + he.toString());
+            getLogger().error("Hibernate exception: {}", he.toString());
         }
 
         return retval;
@@ -444,11 +444,11 @@ public abstract class HibernateFactory {
             retval = session.get(clazz, id, LockMode.UPGRADE);
         }
         catch (MappingException me) {
-            getLogger().error("Mapping not found for " + clazz.getName(), me);
+            getLogger().error("Mapping not found for {}", clazz.getName(), me);
 
         }
         catch (HibernateException he) {
-            getLogger().error("Hibernate exception: " + he.toString());
+            getLogger().error("Hibernate exception: {}", he.toString());
         }
 
         return retval;

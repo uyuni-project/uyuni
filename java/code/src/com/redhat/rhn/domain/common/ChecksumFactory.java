@@ -51,7 +51,7 @@ public class ChecksumFactory extends HibernateFactory {
                 .uniqueResult();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         return c;

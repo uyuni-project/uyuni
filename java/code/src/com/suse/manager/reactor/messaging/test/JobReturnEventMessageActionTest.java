@@ -1797,12 +1797,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         (Map<String, Map<String, Map<String, Object>>>) map.get("boot_images");
             assertTrue(bootImages.containsKey("POS_Image_JeOS6-6.0.0-1"));
             assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").containsKey("initrd"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").containsKey("kernel"));
             assertEquals(
             "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
                     bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").containsKey("url"));
+            assertTrue(bootImages.get("POS_Image_JeOS6-6.0.0-1").get("kernel").containsKey("url"));
+            assertEquals("https://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-1/" +
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("kernel").get("url"));
+            assertEquals("https://ftp/saltboot/boot/POS_Image_JeOS6.x86_64-6.0.0-1/" +
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz",
+                    bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("url"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",
@@ -1865,7 +1874,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     bootImages.get("POS_Image_JeOS6-6.0.0-1").get("initrd").get("filename"));
             Map<String, Map<String, Map<String, Object>>> images =
                         (Map<String, Map<String, Map<String, Object>>>) map.get("images");
-            assertEquals("http://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("url"));
             assertEquals(Long.valueOf(1490026496), images.get("POS_Image_JeOS6").get("6.0.0-1").get("size"));
             assertEquals("a64dbc025c748bde968b888db6b7b9e3",

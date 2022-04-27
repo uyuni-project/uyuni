@@ -59,7 +59,7 @@ public class KickstartFileSyncTask extends RhnJavaJob {
                     String ksFilePath = ks.buildCobblerFileName();
                     if (!(new File(ksFilePath)).exists() ||
                             !ksFilePath.equals(p.getKickstart())) {
-                        log.info("Syncing " + ks.getLabel());
+                        log.info("Syncing {}", ks.getLabel());
                         CobblerProfileEditCommand cpec = new CobblerProfileEditCommand(ks);
                         cpec.store();
                     }

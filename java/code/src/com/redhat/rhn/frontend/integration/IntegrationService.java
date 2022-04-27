@@ -108,11 +108,11 @@ public class IntegrationService {
             passwd  = SessionSwap.encodeData(md5random);
         }
 
-        log.debug("Authorize called with username: " + login);
+        log.debug("Authorize called with username: {}", login);
         // Get the cobbler ticket
         CobblerLoginCommand lcmd = new CobblerLoginCommand();
         String token =  lcmd.login(login, passwd);
-        log.debug("Cobbler returned non-null token? :: " + (token == null));
+        log.debug("Cobbler returned non-null token? :: {}", token == null);
         if (token != null) {
             this.setAuthorizationToken(login, token);
         }
@@ -145,7 +145,7 @@ public class IntegrationService {
                     Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1));
         }
 
-        log.debug("checkRandomToken called with username: " + login);
+        log.debug("checkRandomToken called with username: {}", login);
         if (!randomTokenStore.containsKey(login)) {
             log.debug("login not stored.  invalid check!");
             return false;

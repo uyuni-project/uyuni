@@ -76,8 +76,7 @@ public class TaskoJob implements Job {
         }
         catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
             // will be caught later
-            log.error("Error trying to instance a new class of " +
-                    task.getTaskClass() + ": " + e.getMessage());
+            log.error("Error trying to instance a new class of {}: {}", task.getTaskClass(), e.getMessage());
             return false;
         }
     }
@@ -112,14 +111,13 @@ public class TaskoJob implements Job {
         TaskoSchedule schedule = TaskoFactory.lookupScheduleById(scheduleId);
         if (schedule == null) {
             // means, that schedule was deleted (in the DB), but quartz still schedules it
-            log.error("No such schedule with id  " + scheduleId);
+            log.error("No such schedule with id  {}", scheduleId);
             TaskoQuartzHelper.unscheduleTrigger(context.getTrigger());
             return;
         }
 
         Instant start = Instant.now();
-        log.info(schedule.getJobLabel() + ":" + " bunch " + schedule.getBunch().getName() +
-                " STARTED");
+        log.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
 
         for (TaskoTemplate template : schedule.getBunch().getTemplates()) {
             if ((previousRun == null) ||    // first run
@@ -128,8 +126,7 @@ public class TaskoJob implements Job {
                 TaskoTask task = template.getTask();
 
                 if (isTaskSingleThreaded(task) && isTaskRunning(task)) {
-                    log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
-                            " already running ... LEAVING");
+                    log.debug("{}: task {} already running ... LEAVING", schedule.getJobLabel(), task.getName());
                     previousRun = null;
                 }
                 else {
@@ -139,7 +136,7 @@ public class TaskoJob implements Job {
                         RhnJob job = jobClass.getDeclaredConstructor().newInstance();
                         int rescheduleSeconds = job.getRescheduleTime();
                         if (!isTaskThreadAvailable(job, task)) {
-                            log.info(schedule.getJobLabel() + " RESCHEDULED in " + rescheduleSeconds + " seconds");
+                            log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
                             TaskoQuartzHelper.rescheduleJob(schedule,
                                     ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
                         }
@@ -148,8 +145,7 @@ public class TaskoJob implements Job {
                             markTaskRunning(task);
 
                             try {
-                                log.debug(schedule.getJobLabel() + ":" + " task " + task.getName() +
-                                        " started");
+                                log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
                                 TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
                                 TaskoFactory.save(taskRun);
                                 HibernateFactory.commitTransaction();
@@ -175,7 +171,7 @@ public class TaskoJob implements Job {
                                     HibernateFactory.closeSession();
                                 }
 
-                                log.debug(task.getName() + " (" + schedule.getJobLabel() + ") ... " +
+                                log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
                                         taskRun.getStatus().toLowerCase());
                                 if (((taskRun.getStatus() == TaskoRun.STATUS_FINISHED) ||
                                         (taskRun.getStatus() == TaskoRun.STATUS_FAILED)) &&
@@ -190,7 +186,7 @@ public class TaskoJob implements Job {
                                     else {
                                         email += " finished successfully and is back to normal.";
                                     }
-                                    log.info("Sending e-mail ... " + task.getName());
+                                    log.info("Sending e-mail ... {}", task.getName());
                                     TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
                                     lastStatus.put(task.getName(), taskRun.getStatus());
                                 }
@@ -208,16 +204,14 @@ public class TaskoJob implements Job {
 
             }
             else {
-                log.info("Interrupting " + schedule.getBunch().getName() +
-                        " (" + schedule.getJobLabel() + ")");
+                log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
         }
         HibernateFactory.closeSession();
-        log.info(schedule.getJobLabel() + ":" + " bunch " + schedule.getBunch().getName() +
-                " FINISHED");
-        log.debug(schedule.getJobLabel() + ":" + " bunch " + schedule.getBunch().getName() +
-                " START: " + TIMESTAMP_FORMAT.format(start) + " END: " + TIMESTAMP_FORMAT.format(Instant.now()));
+        log.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
+        log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
+                TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
     }
 
     /**

@@ -31,8 +31,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -52,7 +52,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Logger LOG = LogManager.getLogger(ChildChannelConfirmAction.class);
 
     /** Taskomatic API instance */
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -97,7 +97,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
         if (isSubmitted(daForm)) {
             // Is taskomatic running?
             if (!TASKOMATIC_API.isRunning()) {
-                log.error("Cannot schedule action: Taskomatic is not running");
+                LOG.error("Cannot schedule action: Taskomatic is not running");
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError("taskscheduler.down", errors);
                 getStrutsDelegate().saveMessages(request, errors);
@@ -122,7 +122,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
             result = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }
 
-        log.debug("Overall time to run: " + (System.currentTimeMillis() - overallStart));
+        LOG.debug("Overall time to run: {}", System.currentTimeMillis() - overallStart);
 
         return result;
     }

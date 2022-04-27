@@ -140,7 +140,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             String stepName = m.getName().substring(3).toLowerCase();
             WizardStep wizStep = new WizardStep();
             wizStep.setWizardMethod(m);
-            log.debug("Step name: " + stepName);
+            log.debug("Step name: {}", stepName);
             if (stepName.equals("first")) {
                 wizStep.setNext("second");
                 wizardSteps.put(RhnWizardAction.STEP_START, wizStep);
@@ -719,7 +719,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         Long sid = (Long) form.get(RequestContext.SID);
         String cobblerId = form.getString(RequestContext.COBBLER_ID);
 
-        log.debug("runFourth.cobblerId: " + cobblerId);
+        log.debug("runFourth.cobblerId: {}", cobblerId);
 
         User user = ctx.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);

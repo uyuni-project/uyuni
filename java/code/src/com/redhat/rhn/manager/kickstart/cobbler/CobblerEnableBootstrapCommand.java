@@ -89,11 +89,11 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
 
         if (!skipFileCheck) {
             if (kernelPath == null || !new File(kernelPath).exists()) {
-                log.error("Kernel file not found: " + kernelPath);
+                log.error("Kernel file not found: {}", kernelPath);
                 return new ValidatorError("bootstrapsystems.kernel_not_found", kernelPath);
             }
             if (initrdPath == null || !new File(initrdPath).exists()) {
-                log.error("Initrd file not found: " + kernelPath);
+                log.error("Initrd file not found: {}", kernelPath);
                 return new ValidatorError("bootstrapsystems.initrd_not_found", initrdPath);
             }
         }

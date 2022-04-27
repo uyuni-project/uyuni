@@ -96,7 +96,7 @@ public class SSHPushWorker implements QueueWorker {
         // Init logging
         log = logger;
         if (log.isDebugEnabled()) {
-            log.debug("SSHServerPush -> " + system.getName());
+            log.debug("SSHServerPush -> {}", system.getName());
         }
 
         // Get localhost's FQDN
@@ -194,7 +194,7 @@ public class SSHPushWorker implements QueueWorker {
 
             if (log.isDebugEnabled()) {
                 String proxySuffix = proxy == null ? "" : " (proxy: " + proxy + ")";
-                log.debug("Running 'rhn_check': " + client + proxySuffix);
+                log.debug("Running 'rhn_check': {}{}", client, proxySuffix);
             }
 
             // Connect to the client
@@ -248,29 +248,29 @@ public class SSHPushWorker implements QueueWorker {
             int exitStatus = channel.getExitStatus();
 
             if (exitStatus != 0 || log.isTraceEnabled()) {
-                log.error("Exit status: " + exitStatus + " [" + client + "]");
-                log.error("stdout:\n" + IOUtils.toString(stdout));
-                log.error("stderr:\n" + IOUtils.toString(stderr));
+                log.error("Exit status: {} [{}]", exitStatus, client);
+                log.error("stdout:\n{}", IOUtils.toString(stdout));
+                log.error("stderr:\n{}", IOUtils.toString(stderr));
             }
             else {
-                log.debug("Exit status: " + exitStatus + " [" + client + "]");
+                log.debug("Exit status: {} [{}]", exitStatus, client);
             }
         }
         catch (JSchException e) {
             Throwable cause = e.getCause();
             if (cause instanceof NoRouteToHostException ||
                     cause instanceof ConnectException) {
-                log.warn(cause.getMessage() + " [" + client + "]");
+                log.warn("{} [{}]", cause.getMessage(), client);
             }
             // Check if a tunnel is currently open
             else if (e.getMessage().startsWith(PORT_FORWARDING_FAILED)) {
-                log.info("Skipping " + client + ", tunnel seems to be busy");
+                log.info("Skipping {}, tunnel seems to be busy", client);
                 if (log.isDebugEnabled()) {
                     log.debug(e.getMessage());
                 }
             }
             else {
-                log.error(e.getMessage() + " [" + client + "]", e);
+                log.error("{} [{}]", e.getMessage(), client, e);
             }
         }
         catch (IOException ioe) {
@@ -296,23 +296,21 @@ public class SSHPushWorker implements QueueWorker {
         HostKey[] hostKeys = hostKeyRepo.getHostKey();
         if (hostKeys != null) {
             if (log.isDebugEnabled()) {
-                log.debug("Looking up host key in: " +
-                        hostKeyRepo.getKnownHostsRepositoryID());
+                log.debug("Looking up host key in: {}", hostKeyRepo.getKnownHostsRepositoryID());
             }
 
             for (HostKey hostKey : hostKeys) {
                 for (String hostString: hostKey.getHost().split(",")) {
                     if (hostString.matches(host)) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Host key type for " + hostString + ": " +
-                                    hostKey.getType());
+                            log.debug("Host key type for {}: {}", hostString, hostKey.getType());
                         }
                         return Optional.of(hostKey.getType());
                     }
                 }
             }
         }
-        log.warn("Unknown host: " + host);
+        log.warn("Unknown host: {}", host);
         return Optional.empty();
     }
 
@@ -348,7 +346,7 @@ public class SSHPushWorker implements QueueWorker {
             cmd = sb.toString();
         }
         if (log.isDebugEnabled()) {
-            log.debug("Command: " + cmd);
+            log.debug("Command: {}", cmd);
         }
         return cmd;
     }

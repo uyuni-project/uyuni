@@ -170,16 +170,16 @@ public class SCCWebClient implements SCCClient {
             throws SCCClientException {
 
         PaginatedResult<List<T>> firstPage = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
-        log.info("Pages: " + firstPage.numPages);
+        log.info("Pages: {}", firstPage.numPages);
 
         List<CompletableFuture<PaginatedResult<List<T>>>> futures = Stream.iterate(2, i -> i + 1)
                 .limit(Math.max(0, firstPage.numPages - 1)).map(pageNum -> {
             String e = endpoint + "?page=" + pageNum;
             CompletableFuture<PaginatedResult<List<T>>> get = CompletableFuture.supplyAsync(() -> {
                 try {
-                    log.info("Start Page: " + pageNum);
+                    log.info("Start Page: {}", pageNum);
                     PaginatedResult<List<T>> page = request(e, SCCClientUtils.toListType(resultType), "GET");
-                    log.info("End Page: " + pageNum);
+                    log.info("End Page: {}", pageNum);
                     return page;
                 }
                 catch (SCCClientException e1) {

@@ -137,7 +137,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                             .collect(Collectors.toList());
 
                         if (missingJobs.stream().mapToLong(l -> l).sum() > 0) {
-                            LOG.warn("Found " + missingJobs + " events without a job. Scheduling...");
+                            LOG.warn("Found {} events without a job. Scheduling...", missingJobs);
                             notification(missingJobs);
                         }
                     }
@@ -164,7 +164,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
      *      is the one for events that aren't associated to a minion, queue 0.
      */
     public void notification(List<Long> counts) {
-        LOG.trace("Got notification: " + counts);
+        LOG.trace("Got notification: {}", counts);
         // compute the number of jobs we need to do - each job COMMITs individually
         // jobs = events / MAX_EVENTS_PER_COMMIT (rounded up)
         IntStream.range(0, THREAD_POOL_SIZE + 1).forEach(queue -> {
@@ -172,7 +172,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
             // queue one handlingTransaction(processEvents) call per job
             LongStream.range(0L, jobs).forEach(job -> {
-                LOG.trace("Scheduling a job for queue " + queue);
+                LOG.trace("Scheduling a job for queue {}", queue);
                 ThreadPoolExecutor executor = executorServices.get(queue);
                 executor.execute(() -> {
                     List<SaltEvent> uncommittedEvents = new LinkedList<>();
@@ -195,7 +195,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
         events.forEach(event -> {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("Handling event " + event.getId() + " in worker #" + queue);
+                LOG.trace("Handling event {} in worker #{}", event.getId(), queue);
                 LOG.trace(event.getData());
             }
             uncommittedEvents.add(event);
@@ -211,7 +211,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         if (!uncommittedEvents.isEmpty()) {
             List<Long> ids = uncommittedEvents.stream().map(SaltEvent::getId).collect(toList());
             List<Long> deletedIds = SaltEventFactory.deleteSaltEvents(ids);
-            LOG.error("Events " + deletedIds.toString() + " were lost");
+            LOG.error("Events {} were lost", deletedIds.toString());
         }
 
         if (exception instanceof PGEventListenerException) {

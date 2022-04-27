@@ -58,8 +58,8 @@ class FileFinder implements Finder {
         String[] fileList = startDir.list();
 
         if (log.isDebugEnabled()) {
-            log.debug("Starting search " + startDir);
-            log.debug("File Array: " + Arrays.asList(fileList));
+            log.debug("Starting search {}", startDir);
+            log.debug("File Array: {}", Arrays.asList(fileList));
         }
         for (String sIn : fileList) {
             File current = new File(startDir, sIn);
@@ -69,7 +69,7 @@ class FileFinder implements Finder {
                         path + File.separator +
                                 sIn).findExcluding(excludes, endStr);
                 if (log.isDebugEnabled()) {
-                    log.debug("adding: " + subdirList);
+                    log.debug("adding: {}", subdirList);
                 }
                 results.addAll(subdirList);
                 continue;

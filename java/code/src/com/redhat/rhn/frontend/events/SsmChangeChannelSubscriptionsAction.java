@@ -21,8 +21,8 @@ import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 
@@ -33,7 +33,7 @@ import java.util.Collection;
  */
 public class SsmChangeChannelSubscriptionsAction implements MessageAction {
     /** Logger instance. */
-    private static Log log = LogFactory.getLog(SsmChangeChannelSubscriptionsAction.class);
+    private static final Logger LOG = LogManager.getLogger(SsmChangeChannelSubscriptionsAction.class);
 
     /** {@inheritDoc} */
     public void execute(EventMessage msg) {
@@ -51,7 +51,7 @@ public class SsmChangeChannelSubscriptionsAction implements MessageAction {
             SsmManager.performChannelActions(user, changes);
         }
         catch (Exception e) {
-            log.error("Error changing channel subscriptions " + event, e);
+            LOG.error("Error changing channel subscriptions {}", event, e);
         }
         finally {
             // Complete the action

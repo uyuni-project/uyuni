@@ -137,7 +137,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                 ServerFactory.save(mgrServer);
                 HibernateFactory.commitTransaction();
                 localRcm.commitTransaction();
-                log.info("Reporting db updated for server " + mgrServerInfo.getServer().getId() + " successfully.");
+                log.info("Reporting db updated for server {} successfully.", mgrServerInfo.getServer().getId());
             }
             catch (RuntimeException ex) {
                 log.warn("Unable to update reporting db", ex);

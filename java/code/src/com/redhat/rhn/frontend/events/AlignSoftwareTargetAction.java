@@ -62,11 +62,11 @@ public class AlignSoftwareTargetAction implements MessageAction {
                         targetChannel.getLabel());
             }
 
-            LOG.info("Asynchronously aligning: " + msg);
+            LOG.info("Asynchronously aligning: {}", msg);
             Instant start = Instant.now();
             contentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
-            LOG.info("Finished aligning " + msg + " in " + Duration.between(start, Instant.now()));
+            LOG.info("Finished aligning {} in {}", msg, Duration.between(start, Instant.now()));
         }
         catch (Throwable t) {
             throw new AlignSoftwareTargetException(target, t);
@@ -82,7 +82,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException) {
-                LOG.error("Error aligning target " + ((AlignSoftwareTargetException) e).getTarget().getId(), e);
+                LOG.error("Error aligning target {}", ((AlignSoftwareTargetException) e).getTarget().getId(), e);
                 AlignSoftwareTargetException exc = ((AlignSoftwareTargetException) e);
                 exc.getTarget().setStatus(Status.FAILED);
                 ContentProjectFactory.save(exc.getTarget());

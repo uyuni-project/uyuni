@@ -58,7 +58,6 @@
         <dependency org="suse" name="jose4j" rev="0.5.1" />
         <dependency org="suse" name="log4j-api" rev="2.13.0" />
         <dependency org="suse" name="log4j-core" rev="2.13.0" />
-        <dependency org="suse" name="log4j-jcl" rev="2.13.0" />
         <dependency org="suse" name="jsch" rev="0.1.55" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="suse" name="netty-buffer" rev="4.1.44.Final" />

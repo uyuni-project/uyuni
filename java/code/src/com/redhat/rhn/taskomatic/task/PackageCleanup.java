@@ -57,7 +57,7 @@ public class PackageCleanup extends RhnJavaJob {
                 }
             }
             else if (log.isDebugEnabled()) {
-                log.debug("Found " + candidates.size() + " orphaned packages");
+                log.debug("Found {} orphaned packages", candidates.size());
             }
 
             // Delete them from the filesystem
@@ -65,7 +65,7 @@ public class PackageCleanup extends RhnJavaJob {
                 Map row = (Map) candidateIn;
                 String path = (String) row.get("path");
                 if (log.isDebugEnabled()) {
-                    log.debug("Deleting package " + path);
+                    log.debug("Deleting package {}", path);
                 }
                 if (path == null) {
                     continue;
@@ -93,7 +93,7 @@ public class PackageCleanup extends RhnJavaJob {
         if (f.exists() && f.canWrite() && !f.isDirectory()) {
             f.delete();
             if (log.isDebugEnabled()) {
-                log.debug("Deleting " + f.getAbsoluteFile());
+                log.debug("Deleting {}", f.getAbsoluteFile());
             }
 
             // Remove parents but only within path, and keep two top directories
@@ -111,7 +111,7 @@ public class PackageCleanup extends RhnJavaJob {
             while (parent.delete());
         }
         else {
-            log.error(f.getAbsoluteFile() + " not found");
+            log.error("{} not found", f.getAbsoluteFile());
         }
     }
 

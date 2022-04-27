@@ -237,7 +237,7 @@ public class SystemSearchHelper {
             serverIds = getResultMapFromServerCustomInfoIndex(results);
         }
         else {
-            log.warn("Unknown index: " + index);
+            log.warn("Unknown index: {}", index);
             log.warn("Defaulting to treating this as a " + SERVER_INDEX + " index");
             serverIds = getResultMapFromServerIndex(results);
         }
@@ -256,8 +256,7 @@ public class SystemSearchHelper {
     protected static List performSearch(Long sessionId, String index, String query,
                 Boolean isFineGrained) throws XmlRpcFault, MalformedURLException {
 
-        log.info("Performing system search: index = " + index + ", query = " +
-                query);
+        log.info("Performing system search: index = {}, query = {}", index, query);
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
         List args = new ArrayList();
@@ -267,7 +266,7 @@ public class SystemSearchHelper {
         args.add(isFineGrained);
         List results = (List)client.invoke("index.search", args);
         if (log.isDebugEnabled()) {
-            log.debug("results = [" + results + "]");
+            log.debug("results = [{}]", results);
         }
         if (results.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -472,8 +471,7 @@ public class SystemSearchHelper {
         // this is our main result Map which we will return, it's keys
         // represent the list of server Ids this search yielded
         Map serverMaps = new HashMap();
-        log.info("Entering getResultMapFromPackagesIndex() searchResults.size() = " +
-                searchResults.size());
+        log.info("Entering getResultMapFromPackagesIndex() searchResults.size() = {}", searchResults.size());
 
         for (Object item : searchResults) {
             Map result = (Map)item;
@@ -494,23 +492,19 @@ public class SystemSearchHelper {
             pkgItem.put("name", result.get("name"));
             pkgItem.put("pkgId", result.get("id"));
             Double currentScore = (Double)result.get("score");
-            log.info("Name = " + result.get("name") +
-                    ", Score = " + currentScore);
+            log.info("Name = {}, Score = {}", result.get("name"), currentScore);
 
             for (Long s : serverIds) {
                 if (!serverMaps.containsKey(s)) {
                     // Create the serverInfo which we will be returning back
                     Package pkg = PackageFactory.lookupByIdAndUser(pkgId, user);
                     if (pkg == null) {
-                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex() " +
-                                " problem when looking up package id <" + pkgId +
-                                " PackageFactory.lookupByIdAndUser returned null.");
+                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex()  problem when looking up package" +
+                                " id <{} PackageFactory.lookupByIdAndUser returned null.", pkgId);
                         continue;
                     }
-                    log.info("Package " + pkg.getNameEvra() + ", id = " + pkgId +
-                            ", score = " +
-                            currentScore + ", serverIds associated with package = " +
-                            serverIds.size());
+                    log.info("Package {}, id = {}, score = {}, serverIds associated with package = {}",
+                            pkg.getNameEvra(), pkgId, currentScore, serverIds.size());
                     Map serverInfo = new HashMap();
                     serverInfo.put("score", result.get("score"));
                     serverInfo.put("matchingField", "packageName");
@@ -518,9 +512,8 @@ public class SystemSearchHelper {
                     serverInfo.put("packageName", pkg.getNameEvra());
                     serverMaps.put(s, serverInfo);
                     if (log.isDebugEnabled()) {
-                        log.debug("created new map for server id: " + s +
-                                ", searched with packageName: " + pkg.getNameEvra() +
-                                " score = " + serverInfo.get("score"));
+                        log.debug("created new map for server id: {}, searched with packageName: {} score = {}",
+                                s, pkg.getNameEvra(), serverInfo.get("score"));
                     }
                 }
             } // end for looping over servers per packageId
@@ -530,7 +523,7 @@ public class SystemSearchHelper {
 
     protected static Map getResultMapFromServerIndex(List searchResults) {
         if (log.isDebugEnabled()) {
-            log.debug("forming results for: " + searchResults);
+            log.debug("forming results for: {}", searchResults);
         }
         Map serverIds = new HashMap();
         for (Object obj : searchResults) {
@@ -551,8 +544,7 @@ public class SystemSearchHelper {
             serverItem.put("matchingField", matchingField);
             serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for system id: " + result.get("id") +
-                        " new map = " + serverItem);
+                log.debug("creating new map for system id: {} new map = {}", result.get("id"), serverItem);
             }
             serverIds.put(Long.valueOf((String)result.get("id")), serverItem);
         }
@@ -561,7 +553,7 @@ public class SystemSearchHelper {
 
     protected static Map getResultMapFromHardwareDeviceIndex(List searchResults) {
         if (log.isDebugEnabled()) {
-            log.debug("forming results for: " + searchResults);
+            log.debug("forming results for: {}", searchResults);
         }
         Map serverIds = new HashMap();
         for (Object obj : searchResults) {
@@ -589,9 +581,8 @@ public class SystemSearchHelper {
             serverItem.put("matchingField", matchingField);
             serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = " + result.get("serverId") +
-                        ", hwdevice id: " + result.get("id") + " new map = " +
-                        serverItem);
+                log.debug("creating new map for serverId = {}, hwdevice id: {} new map = {}",
+                        result.get("serverId"), result.get("id"), serverItem);
             }
             serverIds.put(sysId, serverItem);
         }
@@ -600,7 +591,7 @@ public class SystemSearchHelper {
 
     protected static Map getResultMapFromSnapshotTagIndex(List searchResults) {
         if (log.isDebugEnabled()) {
-            log.debug("forming results for: " + searchResults);
+            log.debug("forming results for: {}", searchResults);
         }
         Map serverIds = new HashMap();
         for (Object obj : searchResults) {
@@ -617,9 +608,8 @@ public class SystemSearchHelper {
             serverItem.put("matchingField", matchingField);
             serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = " + result.get("serverId") +
-                        ", snapshotID: " + result.get("snapshotId") + " new map = " +
-                        serverItem);
+                log.debug("creating new map for serverId = {}, snapshotID: {} new map = {}",
+                        result.get("serverId"), result.get("snapshotId"), serverItem);
             }
             serverIds.put(Long.valueOf((String)result.get("serverId")), serverItem);
         }
@@ -628,7 +618,7 @@ public class SystemSearchHelper {
 
     protected static Map getResultMapFromServerCustomInfoIndex(List searchResults) {
         if (log.isDebugEnabled()) {
-            log.debug("forming results for: " + searchResults);
+            log.debug("forming results for: {}", searchResults);
         }
         Map serverIds = new HashMap();
         for (Object obj : searchResults) {
@@ -649,9 +639,8 @@ public class SystemSearchHelper {
             }
             serverItem.put("matchingFieldValue", matchingFieldValue);
             if (log.isDebugEnabled()) {
-                log.debug("creating new map for serverId = " + result.get("serverId") +
-                        ", customValueID: " + result.get("id") + " new map = " +
-                        serverItem);
+                log.debug("creating new map for serverId = {}, customValueID: {} new map = {}",
+                        result.get("serverId"), result.get("id"), serverItem);
             }
             serverIds.put(Long.valueOf((String)result.get("serverId")), serverItem);
         }
@@ -723,7 +712,7 @@ public class SystemSearchHelper {
             serverList.sort(scoreComparator);
         }
         if (log.isDebugEnabled()) {
-            log.debug("sorted server data = " + serverList);
+            log.debug("sorted server data = {}", serverList);
         }
         return serverList;
     }
@@ -732,8 +721,7 @@ public class SystemSearchHelper {
         List serverIds = new ArrayList<Long>();
         List<SystemOverview> data = SystemManager.listSystemsWithPackage(user, pkgId);
         if (data == null) {
-            log.info("SystemSearchHelper.getSystemsByInstalledPackageId(" + pkgId +
-                    ") got back null.");
+            log.info("SystemSearchHelper.getSystemsByInstalledPackageId({}) got back null.", pkgId);
             return null;
         }
         for (SystemOverview so : data) {
@@ -746,8 +734,7 @@ public class SystemSearchHelper {
         List serverIds = new ArrayList<Long>();
         List<SystemOverview> data = SystemManager.listSystemsWithNeededPackage(user, pkgId);
         if (data == null) {
-            log.info("SystemSearchHelper.getSystemsByNeededPackageId(" + pkgId +
-                    ") got back null.");
+            log.info("SystemSearchHelper.getSystemsByNeededPackageId({}) got back null.", pkgId);
             return null;
         }
         for (SystemOverview so : data) {
@@ -761,8 +748,8 @@ public class SystemSearchHelper {
         Object[] keys = ids.keySet().toArray();
         for (Object key : keys) {
             if (!systems.contains((Long)key)) {
-                log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id " +
-                        key + ", because it is not in the SystemSetManager list of ids");
+                log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id {}, because it is not" +
+                        " in the SystemSetManager list of ids", key);
                 ids.remove(key);
             }
         }
@@ -778,15 +765,13 @@ public class SystemSearchHelper {
             Map firstItem = (Map)ids.get(key);
             matchingField = (String)firstItem.get("matchingField");
         }
-        log.info("Will use <" + matchingField + "> as the value to supply for " +
-                "matchingField in all of these invertMatches");
+        log.info("Will use <{}> as the value to supply for matchingField in all of these invertMatches", matchingField);
         // Get list of all SystemIds and save to new Map
         Map invertedIds = new HashMap();
         DataResult<SystemOverview> dr = SystemManager.systemList(user, null);
-        log.info(dr.size() + " systems came back as the total number of visible systems " +
-                "to this user");
+        log.info("{} systems came back as the total number of visible systems to this user", dr.size());
         for (SystemOverview so : dr) {
-            log.debug("Adding system id: " + so.getId() + " to allIds map");
+            log.debug("Adding system id: {} to allIds map", so.getId());
             Map info = new HashMap();
             info.put("matchingField", matchingField);
             invertedIds.put(so.getId(), info);
@@ -796,10 +781,10 @@ public class SystemSearchHelper {
         for (Object id : currentIds) {
             if (invertedIds.containsKey(id)) {
                 invertedIds.remove(id);
-                log.debug("removed " + id + " from allIds");
+                log.debug("removed {} from allIds", id);
             }
         }
-        log.info("returning " + invertedIds.size() + " system ids as the inverted results");
+        log.info("returning {} system ids as the inverted results", invertedIds.size());
         return invertedIds;
     }
 

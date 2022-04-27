@@ -199,24 +199,6 @@ Can be writen as:
 
 # WAT?
 
-## What is this?
-
-This code tries to load "xmlrpctest.rb" which is in the same directory as the file. First add the directory of the file to the load path:
-
-```ruby
-File.expand_path(__FILE__)           # For Ruby 1.9.2+
-$LOAD_PATH << File.dirname(__FILE__) # For Ruby 1.8
-
-require 'xmlrpctest'
-```
-
-The second line does something (appends), but the first, is an expression, which evaluates to some path, and then the value is lost, so is wrong.
-
-In ruby 1.9+ the best is to use `require_relative`
-
-```ruby
-require_relative 'xmlrpctest'
-```
 ## Just buggy code
 
 ```ruby
@@ -321,4 +303,3 @@ Steps files should be like:
 If you have a step `Click button` in a specific feature steps, then it is wrong. Those should be in "navigation_steps" or something similar.
 
 So in this case, the fact that `And I verify the results` was so abstract, it was already hinting that something was not right.
-
