@@ -64,7 +64,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
     
     # store SSL CA certificate
     with open("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w") as file:
-        file.write(httpdConfig.get("ca_crt"))
+        file.write(config.get("ca_crt"))
     os.symlink("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT")
     os.system("/usr/sbin/update-ca-certificates")
 

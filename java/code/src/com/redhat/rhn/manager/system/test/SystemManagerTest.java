@@ -1978,12 +1978,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(email, configYaml.get("email"));
         assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
         assertEquals(proxyName, configYaml.get("proxy_fqdn"));
+        assertEquals(rootCA, configYaml.get("ca_crt"));
 
         Map<String, Map<String, Object>> httpdRootYaml = new Yaml().load(content.get("httpd.yaml"));
         Map<String, Object> httpdYaml = httpdRootYaml.get("httpd");
         assertEquals(apacheCert, httpdYaml.get("server_crt").toString());
         assertEquals(key, httpdYaml.get("server_key"));
-        assertEquals(rootCA, httpdYaml.get("ca_crt"));
         assertTrue(httpdYaml.containsKey("system_id"));
 
         Map<String, Map<String, Object>> sshRootYaml = new Yaml().load(content.get("ssh.yaml"));

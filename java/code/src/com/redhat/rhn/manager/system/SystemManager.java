@@ -2240,6 +2240,14 @@ public class SystemManager extends BaseManager {
         config.put("server_version", ConfigDefaults.get().getProductVersion());
         config.put("proxy_fqdn", proxyName);
 
+        SSLCertPair proxyPair = proxyCertKey;
+        String rootCaCert = rootCA;
+        if (proxyCertKey == null || !proxyCertKey.isComplete()) {
+            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
+            rootCaCert = caPair.getCertificate();
+        }
+        config.put("ca_crt", rootCaCert);
+
         addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0600);
         /**
          * config.yaml
@@ -2254,14 +2262,6 @@ public class SystemManager extends BaseManager {
         Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
         ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
         httpdConfig.put("system_id", cert.asXml());
-
-        SSLCertPair proxyPair = proxyCertKey;
-        String rootCaCert = rootCA;
-        if (proxyCertKey == null || !proxyCertKey.isComplete()) {
-            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
-            rootCaCert = caPair.getCertificate();
-        }
-        httpdConfig.put("ca_crt", rootCaCert);
 
         // Check the SSL files using mgr-ssl-cert-setup
         try {
