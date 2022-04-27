@@ -23,6 +23,8 @@ import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class PXEEventMessageAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(ImageSyncedEventMessageAction.class);
 
@@ -36,11 +38,14 @@ public class PXEEventMessageAction implements MessageAction {
         }
         String kernelParameters = "root=" + pxeEvent.getRoot();
 
-        if (pxeEvent.getSaltDevice().isPresent()) {
-            kernelParameters += " salt_device=" + pxeEvent.getSaltDevice().get();
+        Optional<String> saltDevice = pxeEvent.getSaltDevice();
+        if (saltDevice.isPresent()) {
+            kernelParameters += " salt_device=" + saltDevice.get();
         }
-        if (pxeEvent.getKernelParameters().isPresent()) {
-            kernelParameters += " " + pxeEvent.getKernelParameters().get();
+
+        Optional<String> kernelParams = pxeEvent.getKernelParameters();
+        if (kernelParams.isPresent()) {
+            kernelParameters += " " + kernelParams.get();
         }
 
         SaltbootUtils.createSaltbootSystem(pxeEvent.getMinionId(), pxeEvent.getBootImage(), pxeEvent.getSaltbootGroup(),

@@ -1,3 +1,4 @@
+- Fix PXEEvent string comparision
 - Make TERMINALS group optional for saltbooted machines
 Fix outdated documentation and release notes links
 
