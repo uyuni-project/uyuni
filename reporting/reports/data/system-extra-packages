@@ -1,0 +1,39 @@
+
+synopsis:
+
+  Packages installed on systems that are not available from subscribed channels
+
+description:
+
+  List all packages installed on a system that are not available from any of the channels the system is subscribed to
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  system_name The unique descriptive name of the system
+  organization The organization that owns this data
+  package_name The name of the package
+  package_epoch The epoch of the package
+  package_version The version number of the package
+  package_release The release number of the package
+  package_arch The architecture where this package is installable
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , system_name
+                , organization
+                , package_name
+                , package_epoch
+                , package_version
+                , package_release
+                , package_arch
+                , synced_date
+        FROM SystemExtraPackagesReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, package_name

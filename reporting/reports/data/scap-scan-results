@@ -1,0 +1,37 @@
+
+synopsis:
+
+  Results of OpenSCAP xccdf eval
+
+description:
+
+  List the identifiers and the results of SCAP rules for each scan performed.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  testresult_id The id of the security scan
+  ruleresult_id The id of the rule
+  idref The reference of the rule
+  system The name of the rule system
+  system_id The id of the system
+  ident The CCE v5 id of this rule
+  result The result of the scan for this rule
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , scan_id AS testresult_id
+                , rule_id AS ruleresult_id
+                , idref
+                , rulesystem AS system
+                , system_id
+                , ident
+                , result
+                , synced_date
+        FROM ScapScanResultReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, testresult_id, ruleresult_id

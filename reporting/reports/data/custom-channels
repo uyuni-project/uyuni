@@ -1,0 +1,43 @@
+
+synopsis:
+
+  Custom-channels report
+
+description:
+
+  Channel metadata for all channels owned by an organization
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  organization The organization that owns this data
+  channel_id The id of the channel
+  channel_label The unique label identifying the channel
+  name The unique name of the channel
+  summary A brief summary of the channel
+  description A detailed description of the channel scope and purpose
+  parent_channel_label The label of the parent of the channel, if exists
+  channel_arch The architecture of the packages hold by the channel
+  checksum_type The type of checksum used by the channel
+  associated_repo_id_label The list of repositories linked to the channel, separated by ;
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , organization
+                , channel_id
+                , label AS channel_label
+                , name
+                , summary
+                , description
+                , parent_channel_label
+                , arch AS channel_arch
+                , checksum_type
+                , channel_repositories AS associated_repo_id_label
+                , synced_date
+        FROM CustomChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_id

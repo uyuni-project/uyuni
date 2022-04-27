@@ -1,0 +1,35 @@
+
+synopsis:
+
+  Channel event history
+
+description:
+
+  Channel event history.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  event_id The id of the history event
+  created_date When this event has happened
+  status The current status of the action. Possible values Queued, Picked Up, Completed, Failed
+  event The type of history event
+  event_data Additional information related to the event triggered by this action
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , history_id AS event_id
+                , event_time AS created_date
+                , status
+                , event
+                , event_data
+                , synced_date
+        FROM SystemHistoryChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, event_id
