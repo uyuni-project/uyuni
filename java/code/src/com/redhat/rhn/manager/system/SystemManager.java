@@ -2223,60 +2223,89 @@ public class SystemManager extends BaseManager {
                                              SSLCertPair proxyCertKey,
                                              SSLCertPair caPair, String caPassword, SSLCertData certData)
             throws IOException, InstantiationException, SSLCertGenerationException {
+        /* Prepare the archive streams where the config files will be stored into */
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        BufferedOutputStream bufOut = new BufferedOutputStream(bytesOut);
+        GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(bufOut);
+        TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
+
+        /**
+         * config.yaml
+         */
+        Map<String, Object> config = new HashMap<>();
+
+        config.put("server", server);
+        config.put("max_cache_size_mb", maxCache);
+        config.put("email", email);
+        config.put("server_version", ConfigDefaults.get().getProductVersion());
+        config.put("proxy_fqdn", proxyName);
+
+        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0600);
+        /**
+         * config.yaml
+         */
+
+        /**
+         * httpd.yaml
+         */
+        Map<String, Object> httpdRootConfig = new HashMap<>();
+        Map<String, Object> httpdConfig = new HashMap<>();
+
+        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
+        ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
+        httpdConfig.put("system_id", cert.asXml());
+
         SSLCertPair proxyPair = proxyCertKey;
         String rootCaCert = rootCA;
         if (proxyCertKey == null || !proxyCertKey.isComplete()) {
             proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
             rootCaCert = caPair.getCertificate();
         }
+        httpdConfig.put("ca_crt", rootCaCert);
 
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        BufferedOutputStream bufOut = new BufferedOutputStream(bytesOut);
-        GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(bufOut);
-        TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
+        // Check the SSL files using mgr-ssl-cert-setup
+        try {
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
+                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
+            httpdConfig.put("server_crt", certificate);
+            httpdConfig.put("server_key", proxyPair.getKey());
+        }
+        catch (IllegalArgumentException err) {
+            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
+        }
 
-        Map<String, Object> config = new HashMap<>();
-        config.put("server", server);
-        config.put("max_cache_size_mb", maxCache);
-        config.put("email", email);
-        config.put("server_version", ConfigDefaults.get().getProductVersion());
-        config.put("proxy_fqdn", proxyName);
-        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
+        httpdRootConfig.put("httpd", httpdConfig);
+        addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dump(httpdRootConfig).getBytes(), 0600);
+        /**
+         * httpd.yaml
+         */
 
-        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0600);
-
-        ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
-        addTarEntry(tarOut, "system_id.xml", cert.asXml().getBytes(), 0600);
+        /**
+         * ssh.yaml
+         */
+        Map<String, Object> sshRootConfig = new HashMap<>();
+        Map<String, Object> sshConfig = new HashMap<>();
 
         MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
                 .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
         }
-
-        addTarEntry(tarOut, "server_ssh_key.pub", result.getPublicKey().getBytes(), 0600);
+        sshConfig.put("server_ssh_key_pub", result.getPublicKey());
 
         // Create the proxy SSH keys
         result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
         }
-        // Add the SSH keys to the zip
-        addTarEntry(tarOut, "server_ssh_push", result.getKey().getBytes(), 0600);
-        addTarEntry(tarOut, "server_ssh_push.pub", result.getPublicKey().getBytes(), 0600);
+        sshConfig.put("server_ssh_push", result.getKey());
+        sshConfig.put("server_ssh_push_pub", result.getPublicKey());
 
-        // Check the SSL files using mgr-ssl-cert-setup
-        try {
-            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
-                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
-            addTarEntry(tarOut, "server.crt", certificate.getBytes(), 0600);
-            addTarEntry(tarOut, "server.key", proxyPair.getKey().getBytes(), 0600);
-        }
-        catch (IllegalArgumentException err) {
-            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
-        }
-
-        addTarEntry(tarOut, "ca.crt", rootCaCert.getBytes(), 0600);
+        sshRootConfig.put("ssh", sshConfig);
+        addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dump(sshRootConfig).getBytes(), 0600);
+        /**
+         * ssh.yaml
+         */
 
         tarOut.finish();
         tarOut.close();
