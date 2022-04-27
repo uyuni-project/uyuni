@@ -82,3 +82,23 @@ java/.vscode
 
 # Python
 venv/
+
+# Schema
+
+schema/spacewalk/common/data/rhnVersionInfo.sql
+schema/spacewalk/postgres/data/common/
+schema/spacewalk/postgres/main.sql
+schema/spacewalk/postgres/tables/common/
+schema/spacewalk/postgres/views/common/
+schema/spacewalk/upgrade/*/*.postgresql
+schema/reportdb/postgres/docs/tables/*.sql
+schema/reportdb/postgres/docs/views/*.sql
+schema/reportdb/upgrade/*/*.postgresql
+schema/reportdb/common/data/VersionInfo.sql
+schema/reportdb/postgres/data/common/
+schema/reportdb/postgres/documentation.sql
+schema/reportdb/postgres/main.sql
+schema/reportdb/postgres/tables/common/
+schema/reportdb/postgres/views/common/
+
+
