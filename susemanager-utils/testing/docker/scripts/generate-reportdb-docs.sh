@@ -25,7 +25,7 @@ fi
 BRAND_NAME="$1"
 
 ONLYTEST="$2:-foo"
-if [ "$ONLYTEST"="onlytest" ];then
+if [ "$ONLYTEST" == "onlytest" ];then
     echo "Running just unit test"
 fi
 
@@ -71,6 +71,8 @@ make -s -f Makefile.schema docs
 
 # Unit test for checking if reportdb schema and doc are aligned
 SCHEMA_DIFF=$(./check_reportdb_doc)
+popd
+
 if [ ! -z $SCHEMA_DIFF ]; then
         echo "ReportDB schema and doc are misaligned"
         echo $SCHEMA_DIFF
@@ -78,12 +80,10 @@ if [ ! -z $SCHEMA_DIFF ]; then
 fi
 echo "ReportDB schema and doc are aligned"
 
-popd
 
-if [ "$ONLYTEST" = "onlytest" ];then
+if [ "$ONLYTEST" == "onlytest" ];then
   exit 0
 fi
-
 
 # Create the schema
 cd /manager/schema
