@@ -205,65 +205,13 @@ function update_rhn_conf {
 
 function re-generate_server_ssl_certificate {
     # default is to generate new SSL certificate
-    GEN_NEW_SSL="y"
 
-    ACTUAL_SSL_KEY_PAIR_PACKAGE=$(rpm -qa 'rhn-org-httpd-ssl-key-pair*')
-    if [ -n "$ACTUAL_SSL_KEY_PAIR_PACKAGE" ]
-    then
-        echo "Actual SSL key pair package: $ACTUAL_SSL_KEY_PAIR_PACKAGE" | tee -a $LOG
-
-        ACTUAL_CERT_FILES=$(rpm -ql $ACTUAL_SSL_KEY_PAIR_PACKAGE)
-        for cert_file in $ACTUAL_CERT_FILES
-        do
-            if [[ "$cert_file" =~ \.crt ]]
-            then
-                CERT_FILE="$cert_file"
-                # SUBJECT=`openssl x509 -in $CERT_FILE -noout -subject`
-                SUBJECT=`grep "Subject:" $CERT_FILE`
-            fi
-            # [[ "$cert_file" =~ \.key ]] && CERT_KEY_FILE="$cert_file"
-            # [[ "$cert_file" =~ \.scr ]] && CERT_REQ_FILE="$cert_file"
-        done
-
-        if [ ! -n "$CML_NEW_SSL_CERT_REQUEST" ]
-        then
-            # Common Name is prefilled by actual HOSTNAME
-            HOSTNAME_CERT=`awk "/Subject:/ && /, CN=$HOSTNAME(\/|$)/" $CERT_FILE`
-            if [ -n "$HOSTNAME_CERT" ]
-            then
-                echo " No need to re-generate SSL certificate." | tee -a $LOG
-                GEN_NEW_SSL="n"
-            fi
-        fi
-    fi
-
-    if [ -n "$CML_NEW_SSL_CERT_REQUEST" -o "$GEN_NEW_SSL" == "y" -o -n "$CML_THIRD_PARTY_CERT" ]
+    if [ -n "$CML_NEW_SSL_CERT_REQUEST" -o -n "$CML_THIRD_PARTY_CERT" ]
     then
 
         # is there a need to re-generate SSL certificate?
-        if [ -n "$CML_THIRD_PARTY_CERT" ]
+        if [ -z "$CML_THIRD_PARTY_CERT" ]
         then
-            echo "Generating SSL packages:"
-            echo "rhn-ssl-tool --gen-ca --rpm-only \
-                --dir="$SSL_BUILD_DIR" \
-                --from-ca-cert="${CML_SSL_CA_CERT}" \
-            " >> $LOG
-            rhn-ssl-tool --gen-ca --rpm-only \
-                --dir="$SSL_BUILD_DIR" \
-                --from-ca-cert="${CML_SSL_CA_CERT}" \
-                2>>$LOG
-            echo "rhn-ssl-tool --gen-server --rpm-only \
-                --dir="$SSL_BUILD_DIR" \
-                --from-server-key="${CML_SSL_SERVER_KEY}" \
-                --from-server-cert="${CML_SSL_SERVER_CERT}" \
-            " >> $LOG
-            SSL_KEY_PAIR_RPM=`rhn-ssl-tool --gen-server --rpm-only \
-                --dir="$SSL_BUILD_DIR" \
-                --from-server-key="${CML_SSL_SERVER_KEY}" \
-                --from-server-cert="${CML_SSL_SERVER_CERT}" \
-                2>>$LOG | grep noarch.rpm`
-            GEN_NEW_CA="y"
-        else
             if [ -n "$SUBJECT" ]
             then
                 SUBJECT_PATTERN='[[:space:]]*Subject: C=\(..*\), ST=\(..*\), O=\(..*\), OU=\(..*\), CN=\(..*\)\/emailAddress=\(..*\)'
@@ -337,14 +285,13 @@ function re-generate_server_ssl_certificate {
             fi
 
             echo " Generating SSL certificates:" | tee -a $LOG
-            CA_RPM=$(grep noarch.rpm $SSL_BUILD_DIR/latest.txt)
             GEN_NEW_CA="n"
-            if [ -z "$CA_RPM" -o ! -f $SSL_BUILD_DIR/$CA_RPM ]; then
+            if [ -f $SSL_BUILD_DIR/RHN-ORG-TRUSTED-SSL-CERT ]; then
                 GEN_NEW_CA="y"
                 # We don't have the CA in SSL build dir: generate a new one
                 echo " Generating SSL CA Certificate:" | tee -a $LOG
                 # just log the SSL info ...
-                echo "rhn-ssl-tool --gen-ca --force \
+                echo "rhn-ssl-tool --gen-ca --no-rpm --force \
                     --dir="$SSL_BUILD_DIR" \
                     --set-country="$SSL_COUNTRY" \
                     --set-state="$SSL_STATE" \
@@ -353,7 +300,7 @@ function re-generate_server_ssl_certificate {
                     --set-org-unit="$SSL_ORGUNIT" \
                     --set-common-name="${HOSTNAME}" \
                 " >> $LOG
-                rhn-ssl-tool --gen-ca --force \
+                rhn-ssl-tool --gen-ca --no-rpm --force \
                     --dir="$SSL_BUILD_DIR" \
                     --set-country="$SSL_COUNTRY" \
                     --set-state="$SSL_STATE" \
@@ -363,10 +310,11 @@ function re-generate_server_ssl_certificate {
                     --set-common-name="${HOSTNAME}" \
                     --password="$SSL_CA_PASSWORD" \
                     2>>$LOG
+		CML_SSL_CA_CERT=$SSL_BUILD_DIR/RHN-ORG-TRUSTED-SSL-CERT
             else
                 echo " No need to generate a new SSL CA Certificate" | tee -a $LOG
             fi
-            echo "rhn-ssl-tool --gen-server \
+            echo "rhn-ssl-tool --gen-server --no-rpm \
                 --dir="$SSL_BUILD_DIR" \
                 --set-country="$SSL_COUNTRY" \
                 --set-state="$SSL_STATE" \
@@ -376,7 +324,7 @@ function re-generate_server_ssl_certificate {
                 --set-email="$SSL_EMAIL" \
                 --set-hostname="${HOSTNAME}" \
             " >> $LOG
-            SSL_KEY_PAIR_RPM=`rhn-ssl-tool --gen-server \
+            rhn-ssl-tool --gen-server --no-rpm \
                 --dir="$SSL_BUILD_DIR" \
                 --set-country="$SSL_COUNTRY" \
                 --set-state="$SSL_STATE" \
@@ -386,43 +334,37 @@ function re-generate_server_ssl_certificate {
                 --set-email="$SSL_EMAIL" \
                 --set-hostname="${HOSTNAME}" \
                 --password="$SSL_CA_PASSWORD" \
-                2>>$LOG | grep noarch.rpm`
+                2>>$LOG
+            SERVER_NAME=$(echo "${HOSTNAME}" | perl -e '
+	    my @hostname_parts = split(/\./, <STDIN>);
+            my $system_name;
+            if (scalar @hostname_parts > 2) {
+              $system_name = join(".", splice(@hostname_parts, 0, -2));
+            }
+            else {
+              $system_name = join(".", @hostname_parts);
+            };
+	    printf($system_name."\n");')
+	    CML_SSL_SERVER_KEY=$SSL_BUILD_DIR/$SERVER_NAME/server.key
+	    CML_SSL_SERVER_CERT=$SSL_BUILD_DIR/$SERVER_NAME/server.crt
         fi
 
-        if [ ! -n "$SSL_KEY_PAIR_RPM" ]
+        if [ ! -f $CML_SSL_SERVER_KEY -o ! -f $CML_SSL_SERVER_CERT ];
         then
             echo_err "Wrong SSL information provided. Check $LOG for more information." | tee -a $LOG
             bye
         fi
-
-        if [ -n "$ACTUAL_SSL_KEY_PAIR_PACKAGE" ]
-        then
-            echo -n "Removing old SSL certificate ($ACTUAL_SSL_KEY_PAIR_PACKAGE) ... " | tee -a $LOG
-            rpm -e $ACTUAL_SSL_KEY_PAIR_PACKAGE
-            print_status $?
+        if [ ! -f $CML_SSL_CA_CERT ];
+	then
+            echo_err "CA Certificate file not found. Check $LOG for more information." | tee -a $LOG
+            bye
         fi
-
-        echo -n "Installing new SSL certificate ($(basename $SSL_KEY_PAIR_RPM)) ... " | tee -a $LOG
-        rpm -Uh $SSL_KEY_PAIR_RPM >>$LOG
+        echo -n "Making new SSL certificate publicly available ... " | tee -a $LOG
+	/usr/bin/mgr-ssl-cert-setup \
+                --root-ca-file=$CML_SSL_CA_CERT \
+                --server-cert-file=$CML_SSL_SERVER_CERT \
+                --server-key-file=$CML_SSL_SERVER_KEY
         print_status $?
-
-        if [ $GEN_NEW_CA == "y" ]; then
-            echo -n "Making new SSL certificate publicly available ... " | tee -a $LOG
-            /usr/bin/rhn-deploy-ca-cert.pl --source-dir=$SSL_BUILD_DIR --target-dir=$HTTP_PUB_DIR --trust-dir=$CA_CERT_TRUST_DIR
-            print_status $?
-        fi
-
-        # copy jabberd certificate, too
-        echo -n "Deploying jabberd certificate ... " | tee -a $LOG
-        NEW_SSL_KEY_PAIR_PACKAGE=$(rpm -qa 'rhn-org-httpd-ssl-key-pair*')
-        JABBERD_CERTIFICATE=$(rpm -ql $NEW_SSL_KEY_PAIR_PACKAGE | grep jabberd)
-        if [ -e "$JABBERD_CERTIFICATE" ]
-        then
-            \cp -f $JABBERD_CERTIFICATE $ETC_JABBERD_DIR/
-            print_status $?
-        else
-            print_status 1
-        fi
     fi
 }
 
