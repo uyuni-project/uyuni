@@ -142,6 +142,9 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -152,8 +155,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -163,7 +168,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -172,8 +176,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -1967,7 +1969,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
                 rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
-        Map<String, String> content = readZipData(actual);
+        Map<String, String> content = readTarData(actual);
         assertEquals(sshPushKey, content.get("server_ssh_push"));
         assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
         assertEquals(apacheCert, content.get("server.crt"));
@@ -2004,22 +2006,23 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
     }
 
-    private Map<String, String> readZipData(byte[] data) throws IOException {
+    private Map<String, String> readTarData(byte[] data) throws IOException {
         File tempFile = File.createTempFile("mgrtest", null);
         tempFile.deleteOnExit();
-        FileUtils.writeByteArrayToFile(tempFile, data);
-        Map<String, String> zipContent = new HashMap<>();
-        try (ZipFile zip = new ZipFile(tempFile)) {
-            Enumeration<? extends ZipEntry> entries = zip.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                zipContent.put(entry.getName(), new String(zip.getInputStream(entry).readAllBytes()));
+        Map<String, String> tarContent = new HashMap<>();
+        try (InputStream is = new ByteArrayInputStream(data);
+             GzipCompressorInputStream gzIn = new GzipCompressorInputStream(is);
+             TarArchiveInputStream tarIn = new TarArchiveInputStream(gzIn)) {
+            ArchiveEntry entry;
+            while ((entry = tarIn.getNextTarEntry()) != null) {
+                tarContent.put(entry.getName(), new String(tarIn.readAllBytes()));
             }
         }
         catch (IOException ignored) {
-
+            ignored.printStackTrace();
         }
-        return zipContent;
+
+        return tarContent;
     }
 
     private Long createHistoryEntry(Server server, String s) {
