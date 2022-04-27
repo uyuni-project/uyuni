@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_power_management
+@scope_cobbler
 Feature: IPMI Power management
 
   Scenario: Fake an IPMI host
