@@ -64,7 +64,7 @@ echo Creating schema documentation
 make -s -f Makefile.schema docs
 
 # Unit test for checking if reportdb schema and doc are aligned
-SCHEMA_DIFF=./check_reportdb_doc 
+SCHEMA_DIFF=$(./check_reportdb_doc)
 if [ ! -z $SCHEMA_DIFF ]; then
         echo "ReportDB schema and doc are misaligned"
         echo $SCHEMA_DIFF
