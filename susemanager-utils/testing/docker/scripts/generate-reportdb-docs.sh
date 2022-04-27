@@ -24,8 +24,7 @@ fi
 
 BRAND_NAME="$1"
 
-ONLYTEST="$2:-foo"
-if [ "$ONLYTEST" == "onlytest" ];then
+if [ "$BRAND_NAME" == "unittest" ];then
     echo "Running just unit test"
 fi
 
@@ -81,7 +80,7 @@ fi
 echo "ReportDB schema and doc are aligned"
 
 
-if [ "$ONLYTEST" == "onlytest" ];then
+if [ "$BRAND_NAME" == "unittest" ];then
   exit 0
 fi
 
