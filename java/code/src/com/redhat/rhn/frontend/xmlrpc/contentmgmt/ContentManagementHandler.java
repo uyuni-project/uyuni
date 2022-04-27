@@ -21,6 +21,7 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -29,6 +30,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
 import com.redhat.rhn.domain.user.User;
@@ -41,7 +43,9 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -643,6 +647,34 @@ public class ContentManagementHandler extends BaseHandler {
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException(e.getMessage());
         }
+    }
+
+    /**
+     *
+     * @param loggedInUser
+     * @param prefix
+     * @param channelLabel
+     * @param projectLabel
+     * @return List of created Filter or null
+     */
+    public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
+            String channelLabel, String projectLabel) throws ModulemdApiException {
+        ensureOrgAdmin(loggedInUser);
+
+        Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
+
+        FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
+
+        List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
+                prefix, channel, loggedInUser);
+
+        List<ContentFilter> attachedFilters = null;
+
+        for (ContentFilter createdFilter : createdFilters) {
+            attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+        }
+
+        return attachedFilters;
     }
 
     /**
