@@ -1,3 +1,5 @@
+- Disable HSTS headers by default
+
 -------------------------------------------------------------------
 Tue Apr 19 12:03:58 CEST 2022 - jgonzalez@suse.com
 
