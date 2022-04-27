@@ -154,6 +154,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -1977,11 +1978,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(rootCA, content.get("ca.crt"));
         assertEquals(sshPubKey, content.get("server_ssh_key.pub"));
         assertTrue(content.containsKey("system_id.xml"));
-        Map<String, String> yaml = content.get("config.yaml").lines()
-                .map(line -> line.split(": "))
-                .collect(Collectors.toMap(line -> line[0], line -> line[1]));
+        Map<String, Object> yaml = new Yaml().load(content.get("config.yaml"));
         assertEquals(serverName, yaml.get("server"));
-        assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
+        assertEquals(maxCache, Long.valueOf((int)yaml.get("max_cache_size_mb")));
         assertEquals(email, yaml.get("email"));
         assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
         assertEquals(proxyName, yaml.get("proxy_fqdn"));
