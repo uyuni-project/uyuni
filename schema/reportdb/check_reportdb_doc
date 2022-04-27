@@ -3,8 +3,44 @@
 #TODO CHECK FOR VIEWS
 import sys
 import os
-import dictdiffer                                          
 import json
+
+def dict_equal(a, b):
+    type_a = type(a)
+    type_b = type(b)
+
+    if type_a != type_b:
+        return False
+
+    if isinstance(a, dict):
+        if len(a) != len(b):
+            return False
+        for key in a:
+            if key not in b:
+                return False
+            if not dict_equal(a[key], b[key]):
+                return False
+        return True
+
+    elif isinstance(a, list):
+        if len(a) != len(b):
+            return False
+        while len(a):
+            x = a.pop()
+            index = dict_indexof(x, b)
+            if index == -1:
+                return False
+            del b[index]
+        return True
+
+    else:
+        return a == b
+
+def dict_indexof(x, a):
+    for i in range(len(a)):
+        if dict_equal(x, a[i]):
+            return i
+    return -1
 
 DB_DIR = 'postgres'
 MAIN_SQL_PATH = DB_DIR + '/main.sql'
@@ -124,6 +160,7 @@ for dropTable in dropTables:
     if dropTable in tables:
         tables.pop(dropTable)
 
-for diff in list(dictdiffer.diff(tables, tablesFromDoc)):
-    print(diff)
+if not dict_equal(tables, tablesFromDoc) :
+    sys.stderr.write("Schema and doc are different. Please check your changes\n")
+    sys.exit(1)
 
