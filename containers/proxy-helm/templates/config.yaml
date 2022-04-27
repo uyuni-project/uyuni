@@ -3,13 +3,15 @@ kind: ConfigMap
 metadata:
   name: proxy-configmap
 data:
-  config.yaml: 
-    {{ $.Files.Get "configurations/config.yaml" | toYaml }}
-  ca.crt: 
-    {{ $.Files.Get "configurations/ca.crt" | toYaml }}
-  server.crt: 
-    {{ $.Files.Get "configurations/server.crt" | toYaml }}
-  server.key: 
-    {{ $.Files.Get "configurations/server.key" | toYaml }}
+  config.yaml: |
+    server: {{ .Values.server }}
+    server_version: {{ .Values.server_version }}
+    proxy_fqdn: {{ .Values.proxy_fqdn }}
+  ca.crt: |
+{{ $.Files.Get "configurations/ca.crt" | indent 4 }}
+  server.crt: |
+{{ $.Files.Get "configurations/server.crt" | indent 4 }}
+  server.key: |
+{{ $.Files.Get "configurations/server.key" | indent 4 }}
   system_id.xml: |-
     {{ $.Files.Get "configurations/system_id.xml" }}

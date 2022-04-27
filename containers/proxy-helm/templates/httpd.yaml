@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: "{{ .Values.repository }}/httpd:{{ .Values.version | default .Chart.AppVersion }}"          
+          image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"          
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
