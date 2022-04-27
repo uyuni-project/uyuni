@@ -1,3 +1,4 @@
+- Change proxy container config default filename to end with tar.gz
 - on full system update call schedulePackageUpdate API (bsc#1197507)
 
 -------------------------------------------------------------------

@@ -1,3 +1,4 @@
+- Change proxy containers config to tarball with yaml files
 - add schedulePackageUpdate() XMLRPC function (bsc#1197507)
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
 - Allow to add failed and completed servers to SSM
