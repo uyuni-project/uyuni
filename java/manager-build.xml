@@ -64,7 +64,21 @@
     </exec>
   </target>
 
+  <target name="ibs-to-maven" description="Updates local maven repository with IBS jars">
+    <exec failonerror="true" executable="obs-to-maven">
+      <arg line="-d ${basedir}/buildconf/ivy/ibs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
+    </exec>
+  </target>
+
   <target name="ivy" depends="obs-to-maven" description="Retrieves dependencies through ivy">
+    <property name="ivy.dep.file" value="${rhn-home}/buildconf/ivy/ivy-suse.xml" />
+    <property name="ivy.settings.file" value="${rhn-home}/buildconf/ivy/ivyconf.xml" />
+    <ivy-retrieve sync="true" type="jar,bundle"/>
+  </target>
+
+  <target name="ivy-head" depends="ibs-to-maven" description="Retrieves dependencies through ivy">
+    <property name="ivy.dep.file" value="${rhn-home}/buildconf/ivy/ivy-manager-head.xml" />
+    <property name="ivy.settings.file" value="${rhn-home}/buildconf/ivy/ivyconf-head.xml" />
     <ivy-retrieve sync="true" type="jar,bundle"/>
   </target>
 

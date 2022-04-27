@@ -1,0 +1,142 @@
+<ivy-module version="1.0">
+    <info organisation="manager-head" module="manager" />
+    <dependencies>
+        <!-- Runtime dependencies -->
+        <dependency org="manager-head" name="antlr" rev="2.7.7" />
+        <dependency org="manager-head" name="asm" rev="3.3.2" />
+        <dependency org="manager-head" name="bcel" rev="5.2" />
+        <dependency org="manager-head" name="byte-buddy" rev="1.8.17" />
+        <dependency org="manager-head" name="c3p0" rev="0.9.5.5" />
+        <dependency org="manager-head" name="cglib" rev="3.2.4" />
+        <dependency org="manager-head" name="classmate" rev="1.3.4" />
+        <dependency org="manager-head" name="classpathx-mail-1.3.1-monolithic" rev="1.1.2" />
+        <dependency org="manager-head" name="client" rev="2.1" />
+        <dependency org="manager-head" name="common" rev="2.1" />
+        <dependency org="manager-head" name="commons-beanutils" rev="1.9.4" />
+        <dependency org="manager-head" name="commons-cli" rev="1.4" />
+        <dependency org="manager-head" name="commons-codec" rev="1.11" />
+        <dependency org="manager-head" name="commons-collections" rev="3.2.2" />
+        <dependency org="manager-head" name="commons-digester" rev="1.7" />
+        <dependency org="manager-head" name="commons-discovery" rev="0.4" />
+        <dependency org="manager-head" name="commons-el" rev="1.0" />
+        <dependency org="manager-head" name="commons-fileupload" rev="1.1.1" />
+        <dependency org="manager-head" name="commons-io" rev="2.6" />
+        <dependency org="manager-head" name="commons-jexl" rev="2.1.1" />
+        <dependency org="manager-head" name="commons-lang3" rev="3.8.1" />
+        <dependency org="manager-head" name="commons-logging" rev="1.2" />
+        <dependency org="manager-head" name="commons-validator" rev="1.1.4" />
+        <dependency org="manager-head" name="concurrent" rev="1.3.4" />
+        <dependency org="manager-head" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
+        <dependency org="manager-head" name="dom4j" rev="1.6.1" />
+        <dependency org="manager-head" name="dwr" rev="3.0.2" />
+        <dependency org="manager-head" name="ehcache-core" rev="2.10.1" />
+        <dependency org="manager-head" name="geronimo-jta-1.1-api" rev="1.2" />
+        <dependency org="manager-head" name="google-gson" rev="2.8.5" />
+        <dependency org="manager-head" name="hibernate-c3p0" rev="5.3.25" />
+        <dependency org="manager-head" name="hibernate-commons-annotations" rev="5.0.4" />
+        <dependency org="manager-head" name="hibernate-core" rev="5.3.25" />
+        <dependency org="manager-head" name="hibernate-ehcache" rev="5.3.25" />
+        <dependency org="manager-head" name="hibernate-types" rev="2.12.1" />
+        <dependency org="manager-head" name="httpasyncclient" rev="4.1.4" />
+        <dependency org="manager-head" name="httpclient" rev="4.5.6" />
+        <dependency org="manager-head" name="httpcore" rev="4.4.10" />
+        <dependency org="manager-head" name="httpcore-nio" rev="4.4.10" />
+        <dependency org="manager-head" name="ical4j" rev="3.0.18" />
+        <dependency org="manager-head" name="jackson-annotations" rev="2.10.2" />
+        <dependency org="manager-head" name="jackson-core" rev="2.10.2" />
+        <dependency org="manager-head" name="jackson-databind" rev="2.10.5.1" />
+        <dependency org="manager-head" name="jade4j" rev="1.2.5" />
+        <dependency org="manager-head" name="jaf" rev="1.1.1" />
+        <dependency org="manager-head" name="jakarta-persistence-api" rev="2.2.2" />
+        <dependency org="manager-head" name="java-saml" rev="2.4.0" />
+        <dependency org="manager-head" name="java-saml-core" rev="2.4.0" />
+        <dependency org="manager-head" name="javassist" rev="3.23.1" />
+        <dependency org="manager-head" name="jboss-logging" rev="3.3.0" />
+        <dependency org="manager-head" name="jcommon" rev="1.0.16" />
+        <dependency org="manager-head" name="jdom" rev="1.1.3" />
+        <dependency org="manager-head" name="joda-time" rev="2.10.1" />
+        <dependency org="manager-head" name="jose4j" rev="0.5.1" />
+        <dependency org="manager-head" name="log4j-api" rev="2.17.1" />
+        <dependency org="manager-head" name="log4j-core" rev="2.17.1" />
+        <dependency org="manager-head" name="jsch" rev="0.1.55" />
+        <dependency org="manager-head" name="mchange-commons-java" rev="0.2.20" />
+        <dependency org="manager-head" name="netty-buffer" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-codec" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-common" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-handler" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-resolver" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-transport" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="netty-transport-native-unix-common" rev="4.1.44.Final" />
+        <dependency org="manager-head" name="oro" rev="2.0.8" />
+        <dependency org="manager-head" name="pgjdbc-ng" rev="0.8.7" />
+        <dependency org="manager-head" name="postgresql-jdbc" rev="42.2.25" />
+        <dependency org="manager-head" name="quartz" rev="2.3.0" />
+        <dependency org="manager-head" name="redstone-xmlrpc" rev="1.1_20071120" />
+        <dependency org="manager-head" name="redstone-xmlrpc-client" rev="1.1_20071120" />
+        <dependency org="manager-head" name="salt-netapi-client" rev="0.20.0" />
+        <dependency org="manager-head" name="simpleclient" rev="0.3.0" />
+        <dependency org="manager-head" name="simpleclient_common" rev="0.3.0" />
+        <dependency org="manager-head" name="simpleclient_httpserver" rev="0.3.0" />
+        <dependency org="manager-head" name="simpleclient_servlet" rev="0.3.0" />
+        <dependency org="manager-head" name="simple-core" rev="3.1.3" />
+        <dependency org="manager-head" name="simple-xml" rev="2.6.2" />
+        <dependency org="manager-head" name="sitemesh" rev="2.1" />
+        <dependency org="manager-head" name="slf4j-api" rev="1.7.30" />
+        <dependency org="manager-head" name="log4j-slf4j-impl" rev="2.17.1" />
+        <dependency org="manager-head" name="snakeyaml" rev="1.28" />
+        <dependency org="manager-head" name="spark-core" rev="2.7.2" />
+        <dependency org="manager-head" name="spark-template-jade" rev="2.3" />
+        <dependency org="manager-head" name="spy" rev="0.8.7" />
+        <dependency org="manager-head" name="statistics" rev="1.0.2" />
+        <dependency org="manager-head" name="stax-api" rev="1.0.1" />
+        <dependency org="manager-head" name="stax2-api" rev="3.1.4" />
+        <dependency org="manager-head" name="stringtree-json" rev="2.0.9" />
+        <dependency org="manager-head" name="struts" rev="1.2.9" />
+        <dependency org="manager-head" name="taglibs-standard-impl" rev="1.2.5" />
+        <dependency org="manager-head" name="taglibs-standard-jstlel" rev="1.2.5" />
+        <dependency org="manager-head" name="taglibs-standard-spec" rev="1.2.5" />
+        <dependency org="manager-head" name="woodstox-core-asl" rev="4.4.2" />
+        <dependency org="manager-head" name="xalan-j2" rev="2.7.2" />
+        <dependency org="manager-head" name="xalan-j2-serializer" rev="2.7.2" />
+        <dependency org="manager-head" name="xerces-j2" rev="2.12.0" />
+        <dependency org="manager-head" name="xmlsec" rev="2.0.7" />
+
+        <!-- Tomcat jars -->
+        <dependency org="manager-head" name="jasper" rev="9.0.36" />
+        <dependency org="manager-head" name="jasper-el" rev="9.0.36" />
+        <dependency org="manager-head" name="tomcat-el-3.0-api" rev="9.0.36" />
+        <dependency org="manager-head" name="tomcat-jsp-2.3-api" rev="9.0.36" />
+        <dependency org="manager-head" name="tomcat-juli" rev="9.0.36" />
+        <dependency org="manager-head" name="tomcat-servlet-4.0-api" rev="9.0.36" />
+
+        <!-- Compilation and testing -->
+        <dependency org="manager-head" name="velocity-engine-core" rev="2.3"/>
+        <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
+          <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
+        </dependency>
+        <dependency org="manager-head" name="hamcrest-core" rev="1.3" transitive="false"/>
+        <dependency org="manager-head" name="hamcrest-library" rev="1.3" transitive="false"/>
+        <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.0" transitive="false"/>
+        <dependency org="com.sun.xml.bind" name="jaxb-core" rev="2.3.0" transitive="false"/>
+        <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.3.0" transitive="false"/>
+        <dependency org="manager-head" name="junit" rev="4.12" transitive="false"/>
+        <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.6.3" transitive="false"/>
+        <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.6.3" transitive="false" />
+        <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" transitive="false"/>
+        <dependency org="org.apiguardian" name="apiguardian-api" rev="1.1.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
+        <dependency org="mockobjects" name="mockobjects-core" rev="0.09" transitive="false"/>
+        <dependency org="mockobjects" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" transitive="false"/>
+        <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
+        <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
+        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
+           <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
+        </dependency>
+        <!-- todo move to our org -->
+        <dependency org="strutstest" name="strutstest" rev="0.0.1" transitive="false">
+            <artifact name="strutstestcase" type="jar" url="https://github.com/hustodemon/strutstestcase-uyuni/releases/download/v.0.0.1-alpha/strutstest-uyuni-0.0.1.jar"/>
+        </dependency>
+    </dependencies>
+</ivy-module>
