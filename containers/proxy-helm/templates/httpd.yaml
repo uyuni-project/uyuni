@@ -1,23 +1,20 @@
-{{- $top := . -}}
-{{- range $proxyservice := .Values.services -}}
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $proxyservice.name }}-depl
+  name: httpd-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ $proxyservice.label }}
+      app: httpd
   template:
     metadata:
       labels:
-        app: {{ $proxyservice.label }}
+        app: httpd
     spec:
       containers:
-        - name: {{ $proxyservice.name }}
-          image: "{{ $proxyservice.image }}:{{ $top.version }}"
+        - name: httpd
+          image: "{{ .Values.repository }}/httpd:{{ .Values.version | default .Chart.AppVersion }}"
           env:
             - name: server.key
               valueFrom:
@@ -34,13 +31,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $proxyservice.name }}-srv
+  name: httpd-srv
 spec:
   selector:
-    app: {{ $proxyservice.label }}
+    app: httpd
   ports:
-    - name: {{ $proxyservice.name }}
+    - name: httpd
       protocol: TCP
       port: 80
       targetPort: 80
-{{ end -}}

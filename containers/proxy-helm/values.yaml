@@ -1,8 +1,5 @@
-services:
-  - name: proxy-httpd
-    label: proxy-httpd
-    image: registry.opensuse.org/opensuse/httpd
 
+repository: registry.opensuse.org/opensuse
 version: latest
 
 configYaml: configYaml
