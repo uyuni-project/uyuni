@@ -1,0 +1,41 @@
+
+synopsis:
+
+  Pending/executed/archived/failed action on the management server
+
+description:
+
+  List of all actions performed on all systems
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  action_id The id of the action
+  earliest The earliest time the action was schedule for execution
+  type_name The type of event triggered by the action
+  action_name The name of the action
+  scheduler_name The user account who scheduled the action
+  in_progress_systems Number of system where the action is still in progress
+  completed_systems Number of system where the action is completed
+  failed_systems Number of system where the action is failed
+  archived True if the action is archived
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , action_id
+                , earliest_action AS earliest
+                , event AS type_name
+                , action_name
+                , scheduled_by AS scheduler_name
+                , in_progress_systems
+                , completed_systems
+                , failed_systems
+                , archived
+                , synced_date
+        FROM ActionsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, action_id

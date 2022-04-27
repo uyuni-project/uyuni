@@ -1,0 +1,33 @@
+
+synopsis:
+
+  Channel report
+
+description:
+
+  List of all channels with number of packages in each channel.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  channel_id The id of the channel
+  channel_label The unique label identifying this channel
+  channel_name The unique name of the channel
+  number_of_packages The number of packages provided by the channel
+  organization The organization that owns this data
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , channel_id
+                , channel_label
+                , channel_name
+                , number_of_packages
+                , organization
+                , synced_date
+        FROM ChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_id

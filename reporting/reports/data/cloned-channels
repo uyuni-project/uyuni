@@ -1,0 +1,31 @@
+
+synopsis:
+
+  Cloned Channel report
+
+description:
+
+  List of cloned channels with their original channel.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  original_channel_label The unique label identifying the source channel
+  original_channel_name The unique name of the source channel
+  new_channel_label The unique label identifying the cloned channel
+  new_channel_name The unique name of the cloned channel
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , original_channel_label
+                , original_channel_name
+                , new_channel_label
+                , new_channel_name
+                , synced_date
+        FROM ClonedChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, original_channel_label, new_channel_label

@@ -1,0 +1,45 @@
+
+synopsis:
+
+  Users in the system
+
+description:
+
+  List of all users for all organizations, with their details and roles.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  organization The organization that owns this data
+  user_id The id of the user account
+  username The username used to login
+  last_name The person last name(s)
+  first_name The person first name(s)
+  position The descriptive role of this user within the organization
+  email The email address associated with this account
+  roles List of roles assigned to the user, separated by ;
+  creation_time When this user account was created
+  last_login_time When this user account logged in for the last time
+  active Current status of the user. Possible values: enabled, disabled
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , organization
+                , account_id AS user_id
+                , username
+                , last_name
+                , first_name
+                , position
+                , email
+                , roles AS role
+                , creation_time
+                , last_login_time
+                , status AS active
+                , synced_date
+        FROM AccountsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, user_id

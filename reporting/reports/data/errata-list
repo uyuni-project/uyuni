@@ -1,0 +1,33 @@
+
+synopsis:
+
+  Errata out of compliance information - errata details
+
+description:
+
+  Patches out of compliance information with their details.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  advisory The unique name of the advisory
+  type The type of patch. Possible values: Product Enhancement Advisory, Security Advisory, Bug Fix Advisory
+  cve A list of CVE ids that this patch addresses, separated by ;
+  synopsis The brief description of this patch
+  systems_affected The number of system affected by this advisory
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , advisory_name AS advisory
+                , advisory_type AS type
+                , cve
+                , synopsis
+                , affected_systems AS systems_affected
+                , synced_date
+        FROM ErrataListReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, advisory
