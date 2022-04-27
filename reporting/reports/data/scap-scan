@@ -1,0 +1,59 @@
+
+synopsis:
+
+  Results of OpenSCAP xccdf eval
+
+description:
+
+  List the SCAP scans performed for each system.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  organization The organization that owns this data
+  system_id The id of the system
+  hostname The hostname that identifies this system
+  ip_address The IPv4 address of the system
+  event_id The id of the action that triggered the scan
+  testresult_id The id of the security scan
+  name The name of the security scan
+  benchmark The name of the performed benchmark
+  benchmark_version The version of the benchmark
+  profile The name of the profile used for the scan
+  profile_title The descriptive title of the profile
+  end_time When the scan has ended
+  pass The number of passed rules
+  fail The number of failed rules
+  error The number of erroneous rules
+  notselected The number of rules not selected for this scan
+  informational The number of informational rules
+  other The number of rules with other outcomes
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , organization
+                , system_id
+                , hostname
+                , ip_address
+                , action_id AS event_id
+                , scan_id AS testresult_id
+                , name
+                , benchmark
+                , benchmark_version
+                , profile
+                , profile_title
+                , end_time
+                , pass
+                , fail
+                , error
+                , not_selected AS notselected
+                , informational
+                , other
+                , synced_date
+        FROM ScapScanReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, testresult_id, system_id

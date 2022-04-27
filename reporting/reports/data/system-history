@@ -1,0 +1,38 @@
+
+synopsis:
+
+  System event history
+
+description:
+
+  Event history for each system
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  hostname The hostname that identifies this system
+  event_id The id of the history event
+  time When this event has happened
+  status The current status of the event. Possible values Queued, Picked Up, Completed, Failed
+  event The type of history event
+  event_data Additional information related to the event
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , hostname
+                , event_id
+                , event_time AS time
+                , status
+                , event
+                , event_data
+                , synced_date
+        FROM HistoryReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, event_id
+

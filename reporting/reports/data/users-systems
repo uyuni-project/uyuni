@@ -1,0 +1,36 @@
+
+synopsis:
+
+  Systems administered by individual users
+
+description:
+
+  List of systems that users can administer.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  organization The organization that owns this data
+  user_id The id of the user account
+  username The username used to login
+  system_id The id of the system
+  group The name of the group the user belongs to that grants access to the system
+  admin_access true, if the user has administrative role
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , organization
+                , account_id AS user_id
+                , username
+                , system_id
+                , group_name AS group
+                , is_admin AS admin_access
+                , synced_date
+        FROM AccountsSystemsReport
+       WHERE md5_encryption
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, user_id, system_id

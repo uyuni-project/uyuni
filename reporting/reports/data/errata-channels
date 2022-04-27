@@ -1,0 +1,27 @@
+
+synopsis:
+
+  List of erratas in channels
+
+description:
+
+  List of all erratas and their relation to channels.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  advisory The unique name of the advisory
+  channel_label The unique label identifying the channel
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , advisory_name AS advisory
+                , channel_label
+                , synced_date
+        FROM ErrataChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_label, advisory

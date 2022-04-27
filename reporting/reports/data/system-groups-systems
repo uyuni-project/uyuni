@@ -1,0 +1,31 @@
+
+synopsis:
+
+  Systems in system groups
+
+description:
+
+  List of all systems which belongs to any system group
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  group_id The id of this system group
+  group_name The unique name of this system group
+  system_id The id of the system
+  system_name The unique descriptive name of the system
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , group_id
+                , group_name
+                , system_id
+                , system_name
+                , synced_date
+        FROM SystemGroupsSystemsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, group_id, system_id

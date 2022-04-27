@@ -1,0 +1,37 @@
+
+synopsis:
+
+  Inactive systems.
+
+description:
+
+  List of the inactive systems.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  system_name 'The unique descriptive name of the system
+  organization The organization that owns this data
+  last_checkin When this system was visible and reachable last time
+  synced_date The timestamp of when this data was last refreshed.
+
+params:
+
+  threshold web.system_checkin_threshold
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , system_name
+                , organization
+                , last_checkin_time AS last_checkin
+                , synced_date
+        FROM SystemInactivityReport
+       WHERE inactivity >= CAST(:threshold || ' days' AS interval)
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id
+

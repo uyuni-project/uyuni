@@ -1,0 +1,31 @@
+
+synopsis:
+
+  Proxies report
+
+description:
+
+  List of proxies and the systems registered through them
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  proxy_id The id of the proxy system
+  proxy_name The unique descriptive name of the proxy
+  system_name The unique descriptive name of the system behind the proxy
+  system_id The id of the system behind the proxy
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , proxy_id
+                , proxy_name
+                , system_name
+                , system_id
+                , synced_date
+        FROM ProxyOverviewReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, proxy_id, system_id
