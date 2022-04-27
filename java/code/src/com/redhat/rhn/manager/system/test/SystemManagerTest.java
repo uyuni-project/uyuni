@@ -1971,19 +1971,26 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
                 rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
         Map<String, String> content = readTarData(actual);
-        assertEquals(sshPushKey, content.get("server_ssh_push"));
-        assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
-        assertEquals(apacheCert, content.get("server.crt"));
-        assertEquals(key, content.get("server.key"));
-        assertEquals(rootCA, content.get("ca.crt"));
-        assertEquals(sshPubKey, content.get("server_ssh_key.pub"));
-        assertTrue(content.containsKey("system_id.xml"));
-        Map<String, Object> yaml = new Yaml().load(content.get("config.yaml"));
-        assertEquals(serverName, yaml.get("server"));
-        assertEquals(maxCache, Long.valueOf((int)yaml.get("max_cache_size_mb")));
-        assertEquals(email, yaml.get("email"));
-        assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
-        assertEquals(proxyName, yaml.get("proxy_fqdn"));
+
+        Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
+        assertEquals(serverName, configYaml.get("server"));
+        assertEquals(maxCache, Long.valueOf((int)configYaml.get("max_cache_size_mb")));
+        assertEquals(email, configYaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
+        assertEquals(proxyName, configYaml.get("proxy_fqdn"));
+
+        Map<String, Map<String, Object>> httpdRootYaml = new Yaml().load(content.get("httpd.yaml"));
+        Map<String, Object> httpdYaml = httpdRootYaml.get("httpd");
+        assertEquals(apacheCert, httpdYaml.get("server_crt").toString());
+        assertEquals(key, httpdYaml.get("server_key"));
+        assertEquals(rootCA, httpdYaml.get("ca_crt"));
+        assertTrue(httpdYaml.containsKey("system_id"));
+
+        Map<String, Map<String, Object>> sshRootYaml = new Yaml().load(content.get("ssh.yaml"));
+        Map<String, Object> sshYaml = sshRootYaml.get("ssh");
+        assertEquals(sshPushKey, sshYaml.get("server_ssh_push"));
+        assertEquals(sshPushPubKey, sshYaml.get("server_ssh_push_pub"));
+        assertEquals(sshPubKey, sshYaml.get("server_ssh_key_pub"));
     }
 
     @Test
