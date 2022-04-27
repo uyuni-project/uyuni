@@ -3,6 +3,12 @@
 Fix outdated documentation and release notes links
 
 -------------------------------------------------------------------
+Wed Apr 27 12:40:30 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.21-1
+  * require uyuni netty build to fix failing tomcat start
+
+-------------------------------------------------------------------
 Mon Apr 25 15:04:59 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.20-1
