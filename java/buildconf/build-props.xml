@@ -112,6 +112,9 @@
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
 
+  <property name="netty-deps" value="netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common"/>
+  <available file="${java.lib.dir}/netty/netty-common.jar" type="file" property="netty-deps" value="netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler"
+
   <condition property="jmock-jars"
                 value="jmock jmock-cglib"
                  else="">
@@ -170,7 +173,7 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars}" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy ${netty-deps} java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars}" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} concurrentlinkedhashmap-lru
