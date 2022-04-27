@@ -1,19 +1,9 @@
-replicaCount: 1
+services:
+  - name: proxy-httpd
+    label: proxy-httpd
+    image: registry.opensuse.org/opensuse/httpd
 
-image:
-  repository: registry.opensuse.org/opensuse/httpd
-  pullPolicy: IfNotPresent
-  tag: ""
+version: latest
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-podAnnotations: {}
-
-service:
-  type: ClusterIP
-  port: 80
-
-resources: {}
-nodeSelector: {}
+configYaml: configYaml
+serverKey: c2VydmVyS2V5

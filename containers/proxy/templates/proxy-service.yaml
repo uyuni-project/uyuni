@@ -1,0 +1,46 @@
+{{- $top := . -}}
+{{- range $proxyservice := .Values.services -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $proxyservice.name }}-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $proxyservice.label }}
+  template:
+    metadata:
+      labels:
+        app: {{ $proxyservice.label }}
+    spec:
+      containers:
+        - name: {{ $proxyservice.name }}
+          image: "{{ $proxyservice.image }}:{{ $top.version }}"
+          env:
+            - name: server.key
+              valueFrom:
+                secretKeyRef:
+                  name: proxy-secrets
+                  key: server.key
+                  optional: true     
+            - name: config.yaml
+              valueFrom:
+                configMapKeyRef:
+                  name: proxy-configmap
+                  key: config.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $proxyservice.name }}-srv
+spec:
+  selector:
+    app: {{ $proxyservice.label }}
+  ports:
+    - name: {{ $proxyservice.name }}
+      protocol: TCP
+      port: 80
+      targetPort: 80
+{{ end -}}
