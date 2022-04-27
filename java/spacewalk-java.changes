@@ -1,3 +1,5 @@
+- require uyuni netty build to fix failing tomcat start
+
 -------------------------------------------------------------------
 Mon Apr 25 15:04:59 CEST 2022 - jgonzalez@suse.com
 
