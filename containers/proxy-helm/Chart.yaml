@@ -1,5 +1,6 @@
+#!BuildTag: uyuni/proxy:latest
 #!BuildTag: uyuni/proxy:%PKG_VERSION%
-#!BuildTag: uyuni/proxy:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/proxy:%PKG_VERSION%-build%RELEASE%
 apiVersion: v2
 name: proxy
 description: Uyuni proxy containers.
