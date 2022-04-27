@@ -43,6 +43,8 @@ Generate reports from Spacewalk server in csv format
         <sbr>
         <arg>--timezone=<replaceable>VALUE</replaceable></arg>
         <sbr>
+        <arg>--legacy-report</arg>
+        <sbr>
         <arg choice='plain'><replaceable>report-name</replaceable></arg>
     </cmdsynopsis>
 </Synopsis>
@@ -170,6 +172,19 @@ Generate reports from Spacewalk server in csv format
       timezones may differ depending on your database backend. Common
       examples: CET, Europe/Prague; +7 for Postgresql database backend,
       +07:00 for Oracle one.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>--legacy-report</term>
+        <listitem>
+            <para>Use the legacy report definition instead of the one for
+            the reporting database.</para>
+
+            <para>Since the introduction of the reporting database, spacewalk-report
+            targets by default the reporting database. This leads to some minor
+            differences in the structure and the format of the report produced.
+            If these differences are problematic, this flag can be used to fall back
+            to the old reports which use only the application database.</para>
         </listitem>
     </varlistentry>
 </variablelist>
