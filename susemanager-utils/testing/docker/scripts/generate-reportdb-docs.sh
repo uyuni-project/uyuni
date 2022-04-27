@@ -23,6 +23,12 @@ if [ -z $1 ];then
 fi
 
 BRAND_NAME="$1"
+
+ONLYTEST="$2:-foo"
+if [ "$ONLYTEST"="onlytest" ];then
+    echo "Running just unit test"
+fi
+
 echo Using branding $BRAND_NAME
 
 cd /manager/susemanager-utils/testing/docker/scripts/
@@ -73,6 +79,11 @@ fi
 echo "ReportDB schema and doc are aligned"
 
 popd
+
+if [ "$ONLYTEST" = "onlytest" ];then
+  exit 0
+fi
+
 
 # Create the schema
 cd /manager/schema
