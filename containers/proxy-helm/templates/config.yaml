@@ -7,6 +7,8 @@ data:
     server: {{ .Values.server }}
     server_version: {{ .Values.server_version }}
     proxy_fqdn: {{ .Values.proxy_fqdn }}
+    email: {{ .Values.email }}
+    max_cache_size_mb: {{ .Values.max_cache_size_mb }}
   ca.crt: |
 {{ $.Files.Get "configurations/ca.crt" | indent 4 }}
   server.crt: |
@@ -15,3 +17,15 @@ data:
 {{ $.Files.Get "configurations/server.key" | indent 4 }}
   system_id.xml: |-
     {{ $.Files.Get "configurations/system_id.xml" }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: proxy-secrets
+data:
+  httpd.yaml: |
+    httpd:
+{{ .Values.httpd | toYaml | indent 6 }}
+  ssh.yaml: |
+    ssh:
+{{ .Values.ssh | toYaml | indent 6 }}
