@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
 import com.redhat.rhn.domain.user.User;
@@ -36,9 +38,13 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
+
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,6 +65,7 @@ import static java.util.Optional.ofNullable;
 public class ContentManagementHandler extends BaseHandler {
 
     private final ContentManager contentManager;
+    private final FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
 
     /**
      * Initialize a handler specifying a content manager instance.
@@ -631,6 +638,39 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException(e.getMessage());
+        }
+    }
+
+    /**
+     * Create new {@link ContentFilter}s for all AppStream modules with default streams
+     *
+     * @param loggedInUser the logged in user
+     * @param prefix the filter name prefix
+     * @param channelLabel label of the modular channel
+     * @param projectLabel label of the Content Lifecycle Project
+     * @throws EntityExistsFaultException when Filter already exist
+     * @return List of created and successfully attached Filter
+     */
+    public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
+            String channelLabel, String projectLabel) throws ModulemdApiException {
+        ensureOrgAdmin(loggedInUser);
+
+        Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
+
+        try {
+            List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
+                    prefix, channel, loggedInUser);
+
+            List<ContentFilter> attachedFilters = new ArrayList<>();
+
+            for (ContentFilter createdFilter : createdFilters) {
+                attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+            }
+
+            return attachedFilters;
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
         }
     }
 
