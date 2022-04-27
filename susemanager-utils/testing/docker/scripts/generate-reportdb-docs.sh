@@ -70,6 +70,7 @@ if [ ! -z $SCHEMA_DIFF ]; then
         echo $SCHEMA_DIFF
         exit 1
 fi
+echo "ReportDB schema and doc are aligned"
 
 popd
 
