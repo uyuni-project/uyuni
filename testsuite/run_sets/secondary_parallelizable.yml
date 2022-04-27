@@ -27,6 +27,8 @@
 - features/secondary/srv_salt.feature
 - features/secondary/srv_check_channels_page.feature
 - features/secondary/srv_manage_channels_page.feature
+- features/secondary/srv_menu_filter.feature
+- features/secondary/srv_xmlrpc_channel.feature
 - features/secondary/srv_channel_api.feature
 - features/secondary/srv_patches_page.feature
 - features/secondary/srv_content_lifecycle.feature
