@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_power_management
+@scope_cobbler
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
