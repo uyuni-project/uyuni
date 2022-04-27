@@ -1,0 +1,39 @@
+
+synopsis:
+
+  Packages in channels
+
+description:
+
+  List of all packages in all channels.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  channel_label The unique label identifying the channel
+  channel_name The unique name of the channel
+  name The name of the package
+  version The version number of the package
+  release The release number of the package
+  epoch The epoch of the package
+  arch The architecture where the package is installable
+  full_package_name The full qualified name of the package
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , channel_label
+                , channel_name
+                , package_name AS name
+                , package_version AS version
+                , package_release AS release
+                , package_epoch AS epoch
+                , package_arch AS arch
+                , full_package_name
+                , synced_date
+        FROM ChannelPackagesReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_label

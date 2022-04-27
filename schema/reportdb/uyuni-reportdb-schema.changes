@@ -1,3 +1,4 @@
+- Added the pickup time field to history reports
 - Remove fields info from channel package table
 - add order index for SystemPackageInstalled
 

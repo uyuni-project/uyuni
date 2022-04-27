@@ -1,0 +1,43 @@
+
+synopsis:
+
+  List of packages which can be updated
+
+description:
+
+  List of packages that can be updated for all systems, showing only the newest package version available.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  organization The organization that owns this data
+  package_name The name of the package
+  package_epoch The epoch of the installed package
+  package_version The version number of the installed package
+  package_release The release number of the installed package
+  package_arch The architecture of the package installed package
+  newest_epoch The epoch of the new package that can be installed
+  newest_version The version number of the new package that can be installed
+  newest_release The release number of the new package that can be installed
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , organization
+                , package_name
+                , package_epoch
+                , package_version
+                , package_release
+                , package_arch
+                , newer_epoch AS newest_epoch
+                , newer_version AS newest_version
+                , newer_release AS newest_release
+                , synced_date
+        FROM PackagesUpdatesNewestReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, package_name

@@ -1,0 +1,40 @@
+
+synopsis:
+
+  Patch event history
+
+description:
+
+  Patch event history.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  action_id The id of the action
+  earliest_action The earliest time this action was schedule for execution
+  pickup_date When this action was picked up for execution
+  completed_date When this action was completed
+  status The current status of the action. Possible values Queued, Picked Up, Completed, Failed
+  event The type of event triggered by this action
+  event_data Additional information related to the event triggered by this action
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , action_id AS event_id
+                , earliest_action
+                , pickup_time AS pickup_date
+                , completion_time AS completed_date
+                , status
+                , event
+                , event_data
+                , synced_date
+        FROM SystemHistoryErrataReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, event_id
+

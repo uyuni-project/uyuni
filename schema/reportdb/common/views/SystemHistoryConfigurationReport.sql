@@ -14,6 +14,7 @@ CREATE OR REPLACE VIEW SystemHistoryConfigurationReport AS
             , system_id
             , action_id
             , earliest_action
+            , pickup_time
             , completion_time
             , status
             , event

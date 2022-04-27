@@ -1,0 +1,26 @@
+synopsis:
+
+    Host-Guest mapping
+
+description:
+
+    List all systems, along with their guests
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the host system
+  guests The id of the guest system
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , host AS system_id
+                , guest AS guests
+                , synced_date
+        FROM HostGuestsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, guests

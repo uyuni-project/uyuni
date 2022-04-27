@@ -1,0 +1,34 @@
+
+synopsis:
+
+  Display system custom info
+
+description:
+
+  Display all custom info for every system with any info associated
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  system_name The unique descriptive name of the system
+  organization The organization that owns this data
+  key The name of the custom information
+  value The value of the custom information
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , organization
+                , system_name
+                , key
+                , value
+                , synced_date
+        FROM CustomInfoReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, key
+
