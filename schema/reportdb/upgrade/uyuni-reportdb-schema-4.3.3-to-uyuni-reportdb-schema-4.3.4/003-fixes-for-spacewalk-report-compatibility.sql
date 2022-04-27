@@ -1,3 +1,33 @@
+DO $$
+BEGIN
+  IF EXISTS(SELECT * FROM information_schema.columns WHERE table_name='actionsreport' and column_name='scheduled_by')
+  THEN
+    DROP VIEW IF EXISTS ActionsReport;
+
+    ALTER TABLE SystemAction ADD COLUMN scheduler_id NUMERIC;
+    ALTER TABLE SystemAction RENAME COLUMN scheduled_by TO scheduler_username;
+
+    CREATE OR REPLACE VIEW ActionsReport AS
+      SELECT DISTINCT SystemAction.mgm_id
+                 , SystemAction.action_id
+                 , SystemAction.earliest_action
+                 , SystemAction.event
+                 , SystemAction.action_name
+                 , SystemAction.scheduler_id
+                 , SystemAction.scheduler_username
+                 , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Picked Up' OR status = 'Queued') OVER(PARTITION BY action_id) AS in_progress_systems
+                 , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Completed') OVER(PARTITION BY action_id) AS completed_systems
+                 , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Failed') OVER(PARTITION BY action_id) AS failed_systems
+                 , SystemAction.archived
+                 , SystemAction.synced_date
+        FROM SystemAction
+    ORDER BY SystemAction.mgm_id, SystemAction.action_id;
+
+  ELSE
+    RAISE NOTICE 'The scheduler_id is already available in ActionsReport';
+  END IF;
+END $$;
+
 DROP VIEW IF EXISTS SystemHistoryConfigurationReport;
 
 CREATE OR REPLACE VIEW SystemHistoryConfigurationReport AS
