@@ -1,3 +1,4 @@
+- Add script examples for HTTP API
 - Refactor API docs for HTTP API
 - Branding updates
 - Collect logs form docker.build
