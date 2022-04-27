@@ -174,7 +174,7 @@ export function ProxyConfig() {
     >
       <p>
         {t(
-          "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .zip archive to download."
+          "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
         )}
       </p>
       {ContainerConfigMessages(success, messages, loading)}
