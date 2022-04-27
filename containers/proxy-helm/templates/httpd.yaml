@@ -14,19 +14,27 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: "{{ .Values.repository }}/httpd:{{ .Values.version | default .Chart.AppVersion }}"
-          env:
-            - name: server.key
-              valueFrom:
-                secretKeyRef:
-                  name: proxy-secrets
-                  key: server.key
-                  optional: true     
-            - name: config.yaml
-              valueFrom:
-                configMapKeyRef:
-                  name: proxy-configmap
-                  key: config.yaml
+          image: "{{ .Values.repository }}/httpd:{{ .Values.version | default .Chart.AppVersion }}"          
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml 
+          - name: config-volume
+            mountPath: /etc/uyuni/ca.crt
+            subPath: ca.crt          
+          - name: config-volume
+            mountPath: /etc/uyuni/system_id.xml
+            subPath: system_id.xml      
+          - name: config-volume
+            mountPath: /etc/uyuni/server.crt
+            subPath: server.crt     
+          - name: config-volume
+            mountPath: /etc/uyuni/server.key
+            subPath: server.key                                                        
+      volumes:
+        - name: config-volume
+          configMap:
+            name: proxy-configmap                  
 ---
 apiVersion: v1
 kind: Service

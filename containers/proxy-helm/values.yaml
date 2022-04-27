@@ -1,6 +1,3 @@
 
 repository: registry.opensuse.org/opensuse
 version: latest
-
-configYaml: configYaml
-serverKey: c2VydmVyS2V5
