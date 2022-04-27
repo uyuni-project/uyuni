@@ -1,3 +1,4 @@
+- Allow alternative location for byte-buddy jar.
 - Allow migration where target products have no successor
 - require new salt-netapi-client version
 - Fix PXEEvent string comparision
