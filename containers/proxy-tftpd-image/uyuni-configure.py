@@ -10,6 +10,10 @@ config_path = "/etc/uyuni/"
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
    
+    # store SSL CA certificate
+    with open("/usr/share/uyuni/ca.crt", "w") as file:
+        file.write(config.get("ca_crt"))
+
     tftp_config = "/etc/sysconfig/tftp"
     tftp_root = "/srv/tftpboot"
     with open(tftp_config, "w") as file:
