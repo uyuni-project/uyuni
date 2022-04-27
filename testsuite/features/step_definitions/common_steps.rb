@@ -1379,3 +1379,9 @@ When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
+  Then(/^I change server short hostname from hosts and hostname files as "([^"]*)"$/) do |text|
+  # Change instances of the old hostname into the desired new hostname
+  old_hostname = $server.hostname
+  $server.run("sed -i 's/#{old_hostname}/#{text}/g' /etc/hosts && sed -i 's/#{old_hostname}/#{text}/g' /etc/hostname && echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts ")
+  #$localhost.run("sed -i 's/#{old_hostname}/#{text}/g' /root/.bashrc")
+end
