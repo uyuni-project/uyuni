@@ -72,6 +72,9 @@ artifacts:
   - artifact: commons-validator
     package: apache-commons-validator
     repository: Leap
+  - artifact: commons-compress
+    package: apache-commons-compress
+    repository: Leap
   - artifact: concurrent
     repository: Uyuni_Other
   - artifact: concurrentlinkedhashmap-lru

@@ -1,3 +1,4 @@
+- Change proxy containers config to tarball with yaml files
 - Fixed date format on scheduler related messages (bsc#1195455)
 - Improved dropdown layout handling
 - Fix download CSV
