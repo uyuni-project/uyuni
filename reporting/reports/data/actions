@@ -14,7 +14,8 @@ columns:
   earliest The earliest time the action was schedule for execution
   type_name The type of event triggered by the action
   action_name The name of the action
-  scheduler_name The user account who scheduled the action
+  scheduler The id of the account who scheduled the action
+  scheduler_name The username of the account who scheduled the action
   in_progress_systems Number of system where the action is still in progress
   completed_systems Number of system where the action is completed
   failed_systems Number of system where the action is failed
@@ -29,7 +30,8 @@ sql:
                 , earliest_action AS earliest
                 , event AS type_name
                 , action_name
-                , scheduled_by AS scheduler_name
+                , scheduler_id AS scheduler
+                , scheduler_username AS scheduler_name
                 , in_progress_systems
                 , completed_systems
                 , failed_systems
