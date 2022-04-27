@@ -1,4 +1,4 @@
-- Added the pickup time field to history reports
+- unit test for reportdb doc
 - Remove fields info from channel package table
 - add order index for SystemPackageInstalled
 
