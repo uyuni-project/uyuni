@@ -43,7 +43,7 @@ else
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-DOCUMENTATION_CMD="/manager/susemanager-utils/testing/docker/scripts/generate-reportdb-docs.sh BRAND onlytest"
+DOCUMENTATION_CMD="/manager/susemanager-utils/testing/docker/scripts/generate-reportdb-docs.sh unittest"
 MIGRATION_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_migration_reportdb_test_pgsql.sh \"${REPORTDB_SCHEMA_PACKAGES}\""
 IDEMPOTENCY_TEST="/manager/susemanager-utils/testing/docker/scripts/reportdb_schema_idempotency_test_pgsql.py ${IDEMPOTENCY_PARAMS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
