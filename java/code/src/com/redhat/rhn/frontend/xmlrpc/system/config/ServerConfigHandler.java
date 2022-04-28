@@ -319,6 +319,7 @@ public class ServerConfigHandler extends BaseHandler {
      *          $ConfigRevisionSerializer
      *      #array_end()
      */
+    @ReadOnly
     public List<ConfigRevision> lookupFileInfo(User loggedInUser,
             Integer sid, List<String> paths, Boolean searchLocal) {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);

@@ -100,6 +100,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "actionId", "Id of the action")
      * @xmlrpc.returntype $RecurringActionSerializer
      */
+    @ReadOnly
     public RecurringAction lookupById(User loggedInUser, Integer actionId) {
         RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow(
                 () -> new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist")

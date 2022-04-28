@@ -110,6 +110,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "Content Project label")
      * @xmlrpc.returntype $ContentProjectSerializer
      */
+    @ReadOnly
     public ContentProject lookupProject(User loggedInUser, String label) {
         return ContentManager.lookupProject(label, loggedInUser)
                 .orElseThrow(() -> new EntityNotExistsFaultException(label));
@@ -246,6 +247,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
+    @ReadOnly
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         try {
             return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
@@ -402,6 +404,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
      * @xmlrpc.returntype $ContentProjectSourceSerializer
      */
+    @ReadOnly
     public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
             String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
@@ -537,6 +540,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "id", "Filter id")
      * @xmlrpc.returntype $ContentFilterSerializer
      */
+    @ReadOnly
     public ContentFilter lookupFilter(User loggedInUser, Integer id) {
         return ContentManager.lookupFilterById(id.longValue(), loggedInUser)
                 .orElseThrow(() -> new EntityNotExistsFaultException(id));

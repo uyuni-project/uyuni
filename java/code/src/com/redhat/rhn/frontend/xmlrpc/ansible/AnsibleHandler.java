@@ -237,6 +237,7 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.returntype
      * $AnsiblePathSerializer
      */
+    @ReadOnly
     public AnsiblePath lookupAnsiblePathById(User loggedInUser, Integer pathId) {
         try {
             return AnsibleManager.lookupAnsiblePathById(pathId, loggedInUser)

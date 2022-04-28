@@ -430,6 +430,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *  $ConfigChannelSerializer
      * #array_end()
      */
+    @ReadOnly
     public List<ConfigChannel> lookupChannelInfo(User loggedInUser,
                                                     List<String> labels) {
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
@@ -671,10 +672,8 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ConfigRevisionSerializer
      * #array_end()
      */
-    public List<ConfigRevision> lookupFileInfo(User loggedInUser,
-                                                String channelLabel,
-                                                List<String> paths
-                                                ) {
+    @ReadOnly
+    public List<ConfigRevision> lookupFileInfo(User loggedInUser, String channelLabel, List<String> paths) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);
@@ -713,11 +712,8 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.returntype
      * $ConfigRevisionSerializer
      */
-    public ConfigRevision lookupFileInfo(User loggedInUser,
-                                                String channelLabel,
-                                                String path,
-                                                Integer revision
-                                                ) {
+    @ReadOnly
+    public ConfigRevision lookupFileInfo(User loggedInUser, String channelLabel, String path, Integer revision) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);
