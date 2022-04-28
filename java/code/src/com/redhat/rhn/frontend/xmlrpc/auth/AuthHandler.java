@@ -23,6 +23,9 @@ import com.redhat.rhn.frontend.xmlrpc.UserLoginException;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,6 +57,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
+    @ApiIgnore(ApiType.HTTP)
     public int logout(String sessionKey) {
         SessionManager.killSession(sessionKey);
         return 1;
@@ -74,6 +78,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     #session_key()
      */
+    @ApiIgnore(ApiType.HTTP)
     public String login(String username, String password)
                       throws LoginException {
         //If we didn't get a duration value, use the one from the configs
@@ -98,6 +103,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.returntype
      *     #session_key()
      */
+    @ApiIgnore(ApiType.HTTP)
     public String login(String username, String password, Integer duration)
                       throws LoginException {
         //Log in the user (handles authentication and active/disabled logic)
@@ -126,6 +132,7 @@ public class AuthHandler extends BaseHandler {
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
+    @ApiIgnore(ApiType.HTTP)
     public boolean isSessionKeyValid(String sessionKey) {
         WebSession session = SessionManager.loadSession(sessionKey);
         return Objects.nonNull(session);
@@ -145,6 +152,7 @@ public class AuthHandler extends BaseHandler {
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
+    @ApiIgnore(ApiType.HTTP)
     public int checkAuthToken(String login, String token) {
         int retval = 0;
 
