@@ -34,6 +34,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,6 +77,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> name(String sessionKey, String name)
         throws FaultException {
         return performSearch(sessionKey, name, BaseSearchAction.OPT_NAME_ONLY);
@@ -98,6 +101,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> nameAndDescription(String sessionKey, String query)
         throws FaultException {
         return performSearch(sessionKey, query, BaseSearchAction.OPT_NAME_AND_DESC);
@@ -121,6 +125,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> nameAndSummary(String sessionKey, String query)
         throws FaultException {
         return performSearch(sessionKey, query, BaseSearchAction.OPT_NAME_AND_SUMMARY);
@@ -155,6 +160,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> advanced(String sessionKey, String luceneQuery)
         throws FaultException {
 
@@ -198,6 +204,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> advancedWithChannel(String sessionKey,
             String luceneQuery, String channelLabel) throws FaultException {
         if (StringUtils.isBlank(channelLabel)) {
@@ -262,6 +269,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
+    @ReadOnly
     public List<PackageOverview> advancedWithActKey(String sessionKey,
             String luceneQuery, String actKey) throws FaultException {
         if (StringUtils.isBlank(actKey)) {
