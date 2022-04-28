@@ -47,6 +47,7 @@
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
+%define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
@@ -92,6 +93,7 @@ BuildRequires:  classmate
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
+BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{ehcache}
 BuildRequires:  apache-commons-el
 BuildRequires:  concurrent
@@ -195,6 +197,7 @@ Recommends:       rng-tools
 %endif
 %endif
 Requires:       %{apache_commons_digester}
+Requires:       %{apache_commons_compress}
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
