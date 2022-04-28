@@ -14,8 +14,12 @@
  */
 package com.suse.manager.api;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
+
+import com.suse.manager.webui.controllers.login.LoginController;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -69,7 +73,13 @@ public class HttpApiRegistry {
      */
     public void initRoutes() {
         final int[] methodCount = {0};
-        handlerFactory.getKeys().forEach(namespace -> {
+        // Exclude namespaces that doesn't apply to HTTP API
+        List<String> namespaces = handlerFactory.getKeys().stream()
+                // HTTP API uses the web UI authentication
+                .filter(namespace -> !"auth".equals(namespace))
+                .collect(Collectors.toList());
+
+        namespaces.forEach(namespace -> {
             BaseHandler handler = handlerFactory.getHandler(namespace).get();
             LOG.debug(MessageFormat.format("Registering API namespace {0}", namespace));
 
@@ -107,8 +117,17 @@ public class HttpApiRegistry {
             });
         });
 
+        registerAuthEndpoints();
         LOG.info(MessageFormat.format("Registered {0} methods in {1} namespaces.",
-                methodCount[0], handlerFactory.getKeys().size()));
+                methodCount[0], namespaces.size()));
+    }
+
+    /**
+     * Register login/logout endpoints from {@link LoginController} to 'auth' namespace
+     */
+    private void registerAuthEndpoints() {
+        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", LoginController::login);
+        registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
     }
 
     /**
