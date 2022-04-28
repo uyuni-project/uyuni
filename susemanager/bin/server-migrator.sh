@@ -46,6 +46,7 @@ if [[ $ret -ne 0 ]];then
     echo "Migration went wrong. Please fix the issues and try again. return code is $ret"
     exit -1
 fi
+zypper in --force --from "Uyuni Server Stable" httpcomponents-asyncclient
 
 CURRENT_VERSION_ID=$(cat /etc/os-release  | grep VERSION_ID | cut -f2 -d=)
 
