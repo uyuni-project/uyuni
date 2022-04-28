@@ -5,24 +5,16 @@ metadata:
 data:
   config.yaml: |
     server: {{ .Values.server }}
-    server_version: {{ .Values.server_version }}
+    server_version: "{{ .Values.server_version }}"
     proxy_fqdn: {{ .Values.proxy_fqdn }}
     email: {{ .Values.email }}
     max_cache_size_mb: {{ .Values.max_cache_size_mb }}
-  ca.crt: |
-{{ $.Files.Get "configurations/ca.crt" | indent 4 }}
-  server.crt: |
-{{ $.Files.Get "configurations/server.crt" | indent 4 }}
-  server.key: |
-{{ $.Files.Get "configurations/server.key" | indent 4 }}
-  system_id.xml: |-
-    {{ $.Files.Get "configurations/system_id.xml" }}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: proxy-secrets
-data:
+stringData:
   httpd.yaml: |
     httpd:
 {{ .Values.httpd | toYaml | indent 6 }}
