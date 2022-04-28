@@ -91,7 +91,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: httpd-srv
+  name: proxy 
 spec:
   selector:
     app: httpd
