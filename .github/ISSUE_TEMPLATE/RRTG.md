@@ -2,10 +2,8 @@
 name:  RRTG
 about: Use this template for the RRTG role
 title: 'RRTG Week '
-labels: qa-squad, testsuite review, testsuite
+labels: qe-squad, testsuite review, testsuite
 assignees: ''
-
----
 
 ---
 
