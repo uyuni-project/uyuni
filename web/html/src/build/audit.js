@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 const ignore = require("../.auditignore.js");
 
 // Yarn 1.x doesn't currently support muting known issues, see https://github.com/yarnpkg/yarn/issues/6669
-exec(`yarn audit --json --groups "dependencies"`, (error, stdout, stderr) => {
+exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
   try {
     const lines = (stdout || "").split(/\r?\n/).filter((line) => line.trim() !== "");
     const results = lines.map((line) => JSON.parse(line));
