@@ -60,7 +60,7 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
@@ -88,7 +88,7 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
@@ -117,7 +117,7 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
@@ -150,7 +150,7 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")

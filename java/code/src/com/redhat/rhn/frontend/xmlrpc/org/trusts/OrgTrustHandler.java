@@ -159,7 +159,7 @@ public class OrgTrustHandler extends BaseHandler {
      *
      * @xmlrpc.doc The trust details about an organization given
      * the organization's ID.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
      * @xmlrpc.returntype
      *     #struct_begin("org trust details")
@@ -234,7 +234,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId the id of an organization.
      * @return Returns a list of organizations along with a trusted indicator.
      * @xmlrpc.doc Returns the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
      * #return_array_begin()
@@ -257,7 +257,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @param trustOrgId The id of the organization to be added.
      * @return 1 on success, else 0.
      * @xmlrpc.doc Add an organization to the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("int", "trustOrgId")
      * @xmlrpc.returntype #return_int_success()
@@ -284,7 +284,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @param trustOrgId The id of the organization to be removed.
      * @return 1 on success, else 0.
      * @xmlrpc.doc Remove an organization to the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("int", "trustOrgId")
      * @xmlrpc.returntype #return_int_success()
@@ -315,7 +315,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.doc  Get a list of systems within the  <i>trusted</i> organization
      *   that would be affected if the <i>trust</i> relationship was removed.
      *   This basically lists systems that are sharing at least (1) package.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("string", "trustOrgId")
      * @xmlrpc.returntype

@@ -1121,7 +1121,7 @@ public class ProfileHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain
      *             activation keys not present on the other profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
@@ -1191,7 +1191,7 @@ public class ProfileHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain
      *             package names not present on the other profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
@@ -1270,7 +1270,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain the
      *             properties that differ between the profiles and their values for that
      *             specific profile .
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
@@ -1358,7 +1358,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of variables
      *                      associated with the specified kickstart profile
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype
      *     #struct_begin("kickstart variable")
@@ -1387,7 +1387,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.doc Associates list of kickstart variables
      *                              with the specified kickstart profile
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param
      *     #struct_begin("variables")
@@ -1414,7 +1414,7 @@ public class ProfileHandler extends BaseHandler {
      * @return Array of available OS repositories for provided kickstart profile
      * @xmlrpc.doc Lists available OS repositories to associate with the provided
      * kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #array_single("string", "repositoryLabel")
      */
@@ -1440,7 +1440,7 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel identifies the kickstart profile
      * @return Array of available OS repositories
      * @xmlrpc.doc Lists all OS repositories associated with provided kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #array_single("string", "repositoryLabel")
      */
@@ -1470,7 +1470,7 @@ public class ProfileHandler extends BaseHandler {
      * @param repoLabels OS repositories to set
      * @return int - 1 on success, exception thrown otherwise
      * @xmlrpc.doc Associates OS repository to a kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param #array_single("string", "repoLabels")
      * @xmlrpc.returntype #return_int_success()
@@ -1510,7 +1510,7 @@ public class ProfileHandler extends BaseHandler {
      * @return Label of virtualization type for given profile
      * @xmlrpc.doc For given kickstart profile label returns label of
      * virtualization type it's using
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #param_desc("string", "virtLabel",
      * "Label of virtualization type.")
@@ -1528,7 +1528,7 @@ public class ProfileHandler extends BaseHandler {
      * @param typeLabel virtualization type label
      * @return int - 1 on success, exception thrown otherwise
      * @xmlrpc.doc For given kickstart profile label sets its virtualization type.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param #param_desc("string", "typeLabel", "One of the following: 'none',
      * 'qemu', 'para_host', 'xenpv', 'xenfv'")

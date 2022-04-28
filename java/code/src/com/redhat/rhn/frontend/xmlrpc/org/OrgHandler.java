@@ -84,7 +84,7 @@ public class OrgHandler extends BaseHandler {
      * @return Newly created organization object.
      *
      * @xmlrpc.doc Create a new organization and associated administrator account.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "orgName", "Organization name. Must meet same
      * criteria as in the web UI.")
      * @xmlrpc.param #param_desc("string", "adminLogin", "New administrator login name.")
@@ -168,7 +168,7 @@ public class OrgHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return list of orgs.
      * @xmlrpc.doc Returns the list of organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *   #return_array_begin()
      *     $OrgDtoSerializer
@@ -188,7 +188,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc Delete an organization. The default organization
      * (i.e. orgId=1) cannot be deleted.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -221,7 +221,7 @@ public class OrgHandler extends BaseHandler {
      * @param orgId the orgId of the organization to lookup on.
      * @return the list of users in a organization.
      * @xmlrpc.doc Returns the list of users in a given organization.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
      *   #return_array_begin()
@@ -243,7 +243,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc The detailed information about an organization given
      * the organization ID.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype $OrgDtoSerializer
      */
@@ -261,7 +261,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc The detailed information about an organization given
      * the organization name.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype $OrgDtoSerializer
      */
@@ -278,7 +278,7 @@ public class OrgHandler extends BaseHandler {
      * @return the updated org.
      *
      * @xmlrpc.doc Updates the name of an organization
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param_desc("string", "name", "Organization name. Must meet same
      * criteria as in the web UI.")
@@ -346,7 +346,7 @@ public class OrgHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * transferSystems instead.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
      * @xmlrpc.param #array_single("int", "sids")
@@ -388,7 +388,7 @@ public class OrgHandler extends BaseHandler {
      * as that administrator and the systems will be transferred to the organization
      * specified by the toOrgId. In any scenario, the origination and destination
      * organizations must be defined in a trust.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
      * @xmlrpc.param #array_single("int", "sids")
@@ -618,7 +618,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Returns whether Organization Administrator is able to manage his
      * organization configuration. This may have a high impact on general #product() performance.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status org admin management setting")
      */
@@ -641,7 +641,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Sets whether Organization Administrator can manage his organization
      * configuration. This may have a high impact on general #product() performance.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
      * @xmlrpc.returntype #return_int_success()
@@ -681,7 +681,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Returns whether errata e-mail notifications are enabled
      * for the organization
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status of the errata e-mail notification
      * setting for the organization")
@@ -703,7 +703,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc Dis/enables errata e-mail notifications for the organization
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
      * @xmlrpc.returntype #return_int_success()
@@ -727,7 +727,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Get the status of content staging settings for the given organization.
      * Returns true if enabled, false otherwise.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of content staging settings")
      */
@@ -747,7 +747,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc Set the status of content staging for the given organization.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
      * @xmlrpc.returntype #return_int_success()
@@ -774,7 +774,7 @@ public class OrgHandler extends BaseHandler {
      * @return the option value
      *
      * @xmlrpc.doc Reads the content lifecycle management patch synchronization config option.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype #param_desc("boolean", "status", "Get the config option value")
      */
@@ -799,7 +799,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.doc Sets the content lifecycle management patch synchronization config option.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param_desc("boolean", "value", "The config option value")
      * @xmlrpc.returntype #return_int_success()

@@ -488,7 +488,7 @@ public class ServerGroupHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to active systems
      * from a group.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.param  #array_single("int", "errataIds")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -510,7 +510,7 @@ public class ServerGroupHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to active systems
      * from a group at a given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -535,7 +535,7 @@ public class ServerGroupHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to active systems
      * from a group at a given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -564,7 +564,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @since 25
      *
      * @xmlrpc.doc List all Configuration Channels assigned to a system group
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
      * #return_array_begin()
@@ -587,7 +587,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Subscribe given config channels to a system group
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.param #array_single("string", "configChannelLabels")
      * @xmlrpc.returntype 1 on success, exception on failure
@@ -617,7 +617,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Unsubscribe given config channels to a system group
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.param #array_single("string", "configChannelLabels")
      * @xmlrpc.returntype 1 on success, exception on failure
@@ -647,7 +647,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @since 25
      *
      * @xmlrpc.doc List all Configuration Channels assigned to a system group
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
      * #return_array_begin()

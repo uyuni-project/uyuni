@@ -189,7 +189,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.doc Set erratum details. All arguments are optional and will only be modified
      * if included in the struct. This method will only allow for modification of custom
      * errata created either through the UI or API.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
      *      #struct_begin("details")

@@ -43,7 +43,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return List of Virtual Host Managers
      *
      * @xmlrpc.doc Lists Virtual Host Managers visible to a user
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *     #return_array_begin()
      *         $VirtualHostManagerSerializer
@@ -66,7 +66,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label" "Virtual Host Manager label")
      * @xmlrpc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
      * @xmlrpc.param #param_desc("parameters", "parameters"
@@ -110,7 +110,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Deletes a Virtual Host Manager with a given label
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Virtual Host Manager label")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -135,7 +135,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return Virtual Host Manager details
      *
      * @xmlrpc.doc Gets details of a Virtual Host Manager with a given label
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Virtual Host Manager label")
      * @xmlrpc.returntype $VirtualHostManagerSerializer
      */
@@ -151,7 +151,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return List of available module names
      *
      * @xmlrpc.doc List all available modules from virtual-host-gatherer
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "moduleName")
      */
     public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
@@ -169,7 +169,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get a list of parameters for a virtual-host-gatherer module.
      * It returns a map of parameters with their typical default values.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "moduleName", "The name of the module")
      * @xmlrpc.returntype #param_desc("map", "module_params", "module parameters")
      */

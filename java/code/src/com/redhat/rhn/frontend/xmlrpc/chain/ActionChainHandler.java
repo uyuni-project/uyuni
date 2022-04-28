@@ -69,7 +69,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return list of action chains.
      *
      * @xmlrpc.doc List currently available action chains.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_array_begin()
      *                      #struct_begin("chain")
      *                        #prop_desc("string", "label", "Label of an Action Chain")
@@ -98,7 +98,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return List of entries in the particular action chain, if any.
      *
      * @xmlrpc.doc List all actions in the particular Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #return_array_begin()
      *                      #struct_begin("entry")
@@ -147,7 +147,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Remove an action from an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("int", "actionId", "Action ID")
      * @xmlrpc.returntype #return_int_success()
@@ -175,7 +175,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Delete action chain by label.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -194,7 +194,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return id of the created action chain
      *
      * @xmlrpc.doc Create an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The ID of the created action chain")
      */
@@ -222,8 +222,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return list of action ids, exception thrown otherwise
      *
      * @xmlrpc.doc Add system reboot to an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -255,8 +254,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return action id if successful, exception otherwise
      *
      * @xmlrpc.doc Adds Errata update to an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_single_desc("int", "errataIds", "Errata ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -300,7 +298,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.doc Adds an action to remove installed packages on the system to an Action
      * Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -338,7 +336,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return True or false in XML-RPC representation: 1 or 0 respectively.
      *
      * @xmlrpc.doc Adds package installation action to an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param("string", "chainLabel")
@@ -377,7 +375,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.doc Adds an action to verify installed packages on the system to an Action
      * Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -417,7 +415,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.doc Adds an action to upgrade installed packages on the system to an Action
      * Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -461,8 +459,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc Add an action with label to run a script to an Action Chain.
      * NOTE: The script body must be Base64 encoded!
      *
-     * @xmlrpc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("string", "scriptLabel", "Label of the script")
@@ -508,8 +505,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc Add an action to run a script to an Action Chain.
      * NOTE: The script body must be Base64 encoded!
      *
-     * @xmlrpc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("string", "uid", "User ID on the particular system")
@@ -534,8 +530,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Schedule the Action Chain so that its actions will actually occur.
-     * @xmlrpc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("$date", "date", "Earliest date")
      * @xmlrpc.returntype #return_int_success()
@@ -562,7 +557,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Adds an action to deploy a configuration file to an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #array_begin("revisionSpecifiers")
@@ -620,7 +615,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Rename an Action Chain.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "previousLabel", "Previous chain label")
      * @xmlrpc.param #param_desc("string", "newLabel", "New chain label")
      * @xmlrpc.returntype #return_int_success()

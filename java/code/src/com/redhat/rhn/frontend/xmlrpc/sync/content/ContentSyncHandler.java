@@ -50,7 +50,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc List all accessible products.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_array_begin()
      *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
@@ -70,7 +70,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc List all accessible channels.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_array_begin()
      *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
@@ -93,7 +93,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc (Deprecated) Synchronize channels between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -113,7 +113,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc Synchronize channel families between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeChannelFamilies(User loggedInUser)
@@ -136,7 +136,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc Synchronize SUSE products between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
@@ -159,7 +159,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc Synchronize subscriptions between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
@@ -183,7 +183,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc Synchronize repositories between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -206,7 +206,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Add a new channel to the #product() database
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
@@ -232,7 +232,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Add a new channel to the #product() database
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #array_single("string", "enabled channel labels")
@@ -274,7 +274,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Add organization credentials (mirror credentials) to #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "username", "Organization credentials
      *                                                  (Mirror credentials) username")
      * @xmlrpc.param #param_desc("string", "password", "Organization credentials
@@ -303,7 +303,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Delete organization credentials (mirror credentials) from #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -328,7 +328,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc List organization credentials (mirror credentials) available in
      *             #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_array_begin()
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()

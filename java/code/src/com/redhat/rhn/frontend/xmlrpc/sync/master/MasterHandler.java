@@ -67,7 +67,7 @@ public class MasterHandler extends BaseHandler {
      * @return Newly created ISSMaster object.
      *
      * @xmlrpc.doc Create a new Master, known to this Slave.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Master's fully-qualified domain name")
      * @xmlrpc.returntype $IssMasterSerializer
      */
@@ -91,7 +91,7 @@ public class MasterHandler extends BaseHandler {
      * @return updated IssMaster
      *
      * @xmlrpc.doc Updates the label of the specified Master
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to update")
      * @xmlrpc.param #param_desc("string", "label", "Desired new label")
      * @xmlrpc.returntype $IssMasterSerializer
@@ -111,7 +111,7 @@ public class MasterHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Remove the specified Master
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to remove")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -128,7 +128,7 @@ public class MasterHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Make the specified Master the default for this Slave's inter-server-sync
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to make the default")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -145,7 +145,7 @@ public class MasterHandler extends BaseHandler {
      * @return current default Master, null if there isn't one
      *
      * @xmlrpc.doc Return the current default-Master for this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype $IssMasterSerializer
      */
     public IssMaster getDefaultMaster(User loggedInUser) {
@@ -172,7 +172,7 @@ public class MasterHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Make this slave have no default Master for inter-server-sync
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public int unsetDefaultMaster(User loggedInUser) {
@@ -189,7 +189,7 @@ public class MasterHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Set the CA-CERT filename for specified Master on this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to affect")
      * @xmlrpc.param #param_desc("string", "caCertFilename",
      *  "path to specified Master's CA cert")
@@ -208,7 +208,7 @@ public class MasterHandler extends BaseHandler {
      * @return the specified Master if found, exception otherwise
      *
      * @xmlrpc.doc Find a Master by specifying its ID
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
      * @xmlrpc.returntype $IssMasterSerializer
      */
@@ -226,7 +226,7 @@ public class MasterHandler extends BaseHandler {
      * @return the specified Master if found, exception otherwise
      *
      * @xmlrpc.doc Find a Master by specifying its label
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Label of the desired Master")
      * @xmlrpc.returntype $IssMasterSerializer
      */
@@ -243,7 +243,7 @@ public class MasterHandler extends BaseHandler {
      * @return list of all the IssMasters we know about
      *
      * @xmlrpc.doc Get all the Masters this Slave knows about
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $IssMasterSerializer
@@ -262,7 +262,7 @@ public class MasterHandler extends BaseHandler {
      * @return List of MasterOrgs we know about
      *
      * @xmlrpc.doc List all organizations the specified Master has exported to this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
      * @xmlrpc.returntype
      *   #return_array_begin()
@@ -285,7 +285,7 @@ public class MasterHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Reset all organizations the specified Master has exported to this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
      * @xmlrpc.param
      *   #array_begin("orgMaps")
@@ -321,7 +321,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
      * @xmlrpc.param
      *      #struct_begin("orgMap")
@@ -352,7 +352,7 @@ public class MasterHandler extends BaseHandler {
      *
      * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
      * @xmlrpc.param #param_desc("int", "masterOrgId", "ID of the desired Master")
      * @xmlrpc.param #param_desc("int", "localOrgId", "ID of the desired Master")
