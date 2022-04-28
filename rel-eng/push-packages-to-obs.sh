@@ -288,7 +288,7 @@ while read PKG_NAME; do
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
           sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
-          sed "s/%VERSION%/${VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+          sed "s/version: 0.0/version: ${VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
       fi
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
   fi
