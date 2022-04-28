@@ -67,6 +67,7 @@ public class LoginController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/login", withCsrfToken(LoginController::loginView), jade);
         post("/manager/api/login", LoginController::login);
+        // TODO: Use this endpoint with the "Logout" button
         get("/manager/api/logout", withUser(LoginController::logout));
     }
 
