@@ -1,4 +1,8 @@
-- Disable HSTS headers by default
+-------------------------------------------------------------------
+Thu Apr 28 10:13:40 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Disable HSTS headers by default
 
 -------------------------------------------------------------------
 Tue Apr 19 12:03:58 CEST 2022 - jgonzalez@suse.com
