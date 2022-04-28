@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS SystemGroupMember
     CONSTRAINT SystemGroupMember_pk PRIMARY KEY (mgm_id, system_group_id, system_id)
 );
 
+DROP VIEW IF EXISTS InventoryReport;
 CREATE OR REPLACE VIEW InventoryReport AS
     -- CTEs to group all one to many relationship joining values with ; as separator
     WITH Entitlements AS (
