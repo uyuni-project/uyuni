@@ -54,7 +54,7 @@ public class ProxySettingsRenderer {
         User webUser = rhnContext.getCurrentUser();
 
         if (log.isDebugEnabled()) {
-            log.debug("Saving proxy settings: " + settings.toString());
+            log.debug("Saving proxy settings: {}", settings.toString());
         }
 
         // TODO: Handle errors
@@ -62,7 +62,7 @@ public class ProxySettingsRenderer {
                 ProxySettingsManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {
             for (ValidatorError error : errors) {
-                log.error("error: " + error.toString());
+                log.error("error: {}", error.toString());
             }
         }
         return settings;

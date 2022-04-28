@@ -1,32 +1,31 @@
 
 synopsis:
 
-	Systems in system groups
+  Systems in system groups
 
 description:
 
-	List of all systems which belongs to any system group
+  List of all systems which belongs to any system group
 
 columns:
 
-	group_id	System group ID
-	group_name	System group name
-	server_id	System ID
-	server_name	Name of the system
+  mgm_id The id of the management server instance that contains this data
+  group_id The id of this system group
+  group_name The unique name of this system group
+  system_id The id of the system
+  system_name The unique descriptive name of the system
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select sysgroup.id as group_id,
-		sysgroup.name as group_name,
-		server.id as server_id,
-		server.name as server_name
-	from rhnservergroup sysgroup, rhnservergroupmembers members,
-		rhnserver server
-	where sysgroup.id=members.server_group_id
-		and members.server_id=server.id
-		and sysgroup.group_type is null
-	) X
-	-- where placeholder
-	order by group_id, server_id
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , group_id
+                , group_name
+                , system_id
+                , system_name
+                , synced_date
+        FROM SystemGroupsSystemsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, group_id, system_id

@@ -28,6 +28,16 @@
             <bean:message key="spmigration.jsp.error.updatestack-update-needed" />
         </div>
     </c:if>
+    <c:if test="${not empty missingSuccessorExtensions}">
+        <div class="alert alert-warning">
+             <bean:message key="spmigration.jsp.error.to-be-removed-extensions" /><br/>
+             <ul>
+                 <c:forEach items="${missingSuccessorExtensions}" var="missing">
+                      <li><c:out value="${missing}" /></li>
+                  </c:forEach>
+             </ul>
+        </div>
+    </c:if>
     <html:form method="post" styleId="migrationForm"
         action="/systems/details/SPMigration.do?sid=${system.id}">
         <div class="form-horizontal">

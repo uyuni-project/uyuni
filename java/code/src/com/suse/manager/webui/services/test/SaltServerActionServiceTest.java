@@ -92,6 +92,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -210,6 +211,53 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(
                 updateAction, minionSummaries);
         assertEquals(1, result.values().size());
+        assertStateApplyWithPillar("packages.pkginstall", null, null, result.keySet().iterator().next());
+        MinionSummary minionSummary = result.values().iterator().next().iterator().next();
+        assertEquals(new MinionSummary(testMinionServer), minionSummary);
+    }
+
+    @Test
+    public void testPackageFullUpdate() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        List<MinionServer> mins = new ArrayList<>();
+        mins.add(testMinionServer);
+
+        List<MinionSummary> minionSummaries = mins.stream().
+                map(MinionSummary::new).collect(Collectors.toList());
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
+        p32.setPackageEvr(p64.getPackageEvr());
+        p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
+        TestUtils.saveAndFlush(p32);
+
+        List<Map<String, Long>> packageMaps = new ArrayList<>();
+        Map<String, Long> pkg32map = new HashMap<>();
+        pkg32map.put("name_id", p32.getPackageName().getId());
+        pkg32map.put("evr_id", p32.getPackageEvr().getId());
+        pkg32map.put("arch_id", p32.getPackageArch().getId());
+        packageMaps.add(pkg32map);
+        Map<String, Long> pkg64map = new HashMap<>();
+        pkg64map.put("name_id", p64.getPackageName().getId());
+        pkg64map.put("evr_id", p64.getPackageEvr().getId());
+        pkg64map.put("arch_id", p64.getPackageArch().getId());
+        packageMaps.add(pkg64map);
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
+                "test action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(testMinionServer, action);
+
+        //ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
+        TestUtils.flushAndEvict(action);
+        Action updateAction = ActionFactory.lookupById(action.getId());
+
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(
+                updateAction, minionSummaries);
+        assertEquals(1, result.values().size());
+        assertStateApplyWithPillar("packages.pkgupdate", null, null, result.keySet().iterator().next());
         MinionSummary minionSummary = result.values().iterator().next().iterator().next();
         assertEquals(new MinionSummary(testMinionServer), minionSummary);
     }
@@ -477,7 +525,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals("state", call.getModuleName());
         assertEquals("apply", call.getFunctionName());
         Map<String, Object> kwargs = ((Map<String, Object>)call.getPayload().get("kwarg"));
-        assertTrue(((List<String>)kwargs.get("mods")).contains(expectedState));
+        assertTrue(((List<String>)kwargs.get("mods")).contains(expectedState),
+                "State does not call: " + expectedState);
         if (pillarEntry != null) {
             assertEquals(pillarValue, ((Map<String, Object>)kwargs.get("pillar")).get(pillarEntry));
         }
@@ -980,15 +1029,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi) {
+
             @Override
-            public boolean shouldRefreshPackageList(String function,
+            public boolean shouldRefreshPackageList(Optional<Xor<String[], String>> function,
                                                     Optional<JsonElement> callResult) {
                 return false;
             }
 
             @Override
-            public void updateServerAction(ServerAction serverAction, long retcode,
-                                           boolean success, String jid, JsonElement jsonResult, String function) {
+            public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
+                                           JsonElement jsonResult, Optional<Xor<String[], String>> function) {
                 serverAction.setStatus(STATUS_COMPLETED);
             }
         };

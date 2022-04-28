@@ -102,7 +102,7 @@ public class MatcherRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the subscription-matcher, exit code " + exitCode);
+                logger.error("Error while calling the subscription-matcher, exit code {}", exitCode);
                 return;
             }
 

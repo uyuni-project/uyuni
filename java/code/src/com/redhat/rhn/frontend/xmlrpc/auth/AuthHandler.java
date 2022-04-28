@@ -156,7 +156,7 @@ public class AuthHandler extends BaseHandler {
         else {
             retval = 0;
         }
-        log.debug("checkAuthToken :: Returning: " + retval);
+        log.debug("checkAuthToken :: Returning: {}", retval);
         return retval;
     }
 

@@ -212,8 +212,7 @@ public class ExceptionsWrapperTest  {
             stmt.execute(query);
         }
         catch (SQLException se) {
-            LOG.warn("Failed to execute query " + query + ": " +
-                           se.toString());
+            LOG.warn("Failed to execute query {}: {}", query, se.toString());
         }
     }
 }

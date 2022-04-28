@@ -76,7 +76,7 @@ public class SetupWizardAction extends RhnAction {
     private void setAttributes(ActionMapping mapping, HttpServletRequest request)
         throws Exception {
         String path = mapping.getPath();
-        logger.debug("Current path: " + path);
+        logger.debug("Current path: {}", path);
         NavTree tree =
                 NavCache.getTree(getServlet().getServletContext().getResource(
                         NAVIGATION_XML_PATH));

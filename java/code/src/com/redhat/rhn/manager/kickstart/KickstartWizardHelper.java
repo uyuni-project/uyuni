@@ -181,7 +181,7 @@ public class KickstartWizardHelper {
 
         KickstartSession ksess =
                 KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
-        log.debug("Did we create the default session OK? : " +  ksess);
+        log.debug("Did we create the default session OK? : {}", ksess);
 
         KickstartFactory.saveKickstartData(ksdata);
         log.debug("KSData stored.  Calling cobbler.");

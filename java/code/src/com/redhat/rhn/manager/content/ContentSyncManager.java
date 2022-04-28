@@ -184,7 +184,7 @@ public class ContentSyncManager {
             log.error(e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Read " + channelFamilies.size() + " channel families from " +
+            log.debug("Read {} channel families from {}", channelFamilies.size(),
                     channelFamiliesJson.getAbsolutePath());
         }
         return channelFamilies;
@@ -208,8 +208,7 @@ public class ContentSyncManager {
             throw new ContentSyncException(e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Read " + upPaths.size() + " upgrade paths from " +
-                    upgradePathsJson.getAbsolutePath());
+            log.debug("Read {} upgrade paths from {}", upPaths.size(), upgradePathsJson.getAbsolutePath());
         }
         return upPaths;
     }
@@ -259,11 +258,9 @@ public class ContentSyncManager {
                     // Check for missing attributes
                     String missing = verifySCCProduct(product);
                     if (!StringUtils.isBlank(missing)) {
-                        log.warn("Broken product: " + product.getName() +
-                                ", Version: " + product.getVersion() +
-                                ", Identifier: " + product.getIdentifier() +
-                                ", Product ID: " + product.getId() +
-                                " ### Missing attributes: " + missing);
+                        log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
+                                "### Missing attributes: {}", product.getName(), product.getVersion(),
+                                product.getIdentifier(), product.getId(), missing);
                     }
 
                     // Add product in any case
@@ -276,7 +273,7 @@ public class ContentSyncManager {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Found " + productList.size() + " available products.");
+            log.debug("Found {} available products.", productList.size());
         }
 
         return new ArrayList<>(productList);
@@ -537,7 +534,7 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             try {
-                log.debug("Getting repos for: " + c);
+                log.debug("Getting repos for: {}", c);
                 SCCClient scc = getSCCClient(c);
                 List<SCCRepositoryJson> repos = scc.listRepositories();
                 repos.addAll(getAdditionalRepositories());
@@ -592,22 +589,22 @@ public class ContentSyncManager {
         // find all CountentSource with org id == NULL which do not have a sccrepositoryauth
         List<ContentSource> orphan = ChannelFactory.lookupOrphanVendorContentSources();
         if (orphan != null) {
-            log.debug("found orphan vendor content sources: " + orphan.size());
+            log.debug("found orphan vendor content sources: {}", orphan.size());
             // find sccrepositoryauth and link
             orphan.forEach(cs ->
                 cs.getChannels().forEach(c ->
                     Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
                     () -> {
-                        log.debug("No repository found for channel: '" + cs.getLabel() + "' - remove content source");
+                        log.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
                         ChannelFactory.remove(cs);
                     },
                     repo ->
                         Opt.consume(repo.getBestAuth(),
                         () -> {
-                            log.debug("No auth anymore - remove content source: " + cs.getLabel());
+                            log.debug("No auth anymore - remove content source: {}", cs.getLabel());
                             ChannelFactory.remove(cs);
                         }, auth -> {
-                            log.debug("Has new auth: " + cs.getLabel());
+                                    log.debug("Has new auth: {}", cs.getLabel());
                             auth.setContentSource(cs);
                             SCCCachingFactory.saveRepositoryAuth(auth);
                         })
@@ -618,15 +615,15 @@ public class ContentSyncManager {
         // find all rhnChannel with org id == null and no content source
         List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
         if (orphanChannels != null) {
-            log.debug("found orphan vendor channels: " + orphanChannels.size());
+            log.debug("found orphan vendor channels: {}", orphanChannels.size());
             // find sccrepository auth and create content source and link
             orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
-                () -> log.error("No repository found for channel: '" + c.getLabel() + "'"),
+                () -> log.error("No repository found for channel: '{}'", c.getLabel()),
                 repo -> {
-                    log.debug("configure orphan repo " + repo.toString());
+                    log.debug("configure orphan repo {}", repo.toString());
                     repo.getBestAuth().ifPresentOrElse(
                             a -> createOrUpdateContentSource(a, c, mirrorUrl),
-                            () -> log.info("No Auth available for " + repo.toString())
+                            () -> log.info("No Auth available for {}", repo.toString())
                             );
                 }
             ));
@@ -639,14 +636,14 @@ public class ContentSyncManager {
             // check if this auth item is the "best" available auth for this repo
             // if not, switch it over to the best
             if (auth.getRepo().getBestAuth().isEmpty()) {
-                log.warn("no best auth available for repo " + auth.getRepo());
+                log.warn("no best auth available for repo {}", auth.getRepo());
                 continue;
             }
             SCCRepositoryAuth bestAuth = auth.getRepo().getBestAuth().get();
             if (!bestAuth.equals(auth)) {
                 // we are not the "best" available repository auth item.
                 // remove the content source link and set it to the "best"
-                log.info("Auth '" + bestAuth.getId() + "' became the best auth. Remove CS link from " + auth.getId());
+                log.info("Auth '{}' became the best auth. Remove CS link from {}", bestAuth.getId(), auth.getId());
                 auth.setContentSource(null);
                 bestAuth.setContentSource(cs);
                 SCCCachingFactory.saveRepositoryAuth(auth);
@@ -658,7 +655,7 @@ public class ContentSyncManager {
             log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: '%s'",
                     cs.getSourceUrl(), overwriteUrl, auth.getUrl(), mirrorUrl));
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                log.debug("Change URL to : " + overwriteUrl);
+                log.debug("Change URL to : {}", overwriteUrl);
                 cs.setSourceUrl(overwriteUrl);
                 save = true;
             }
@@ -685,7 +682,7 @@ public class ContentSyncManager {
             log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
                     cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                log.debug("Source and overwrite urls differ: " + cs.getSourceUrl() + " != " + overwriteUrl);
+                log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
                 return true;
             }
         }
@@ -700,8 +697,7 @@ public class ContentSyncManager {
                     lastRefreshDate,
                     () -> true,
                     modifiedCache -> {
-                        log.debug("Last sync more than 24 hours ago: " + modifiedCache.toString() +
-                                " (" + t.toString() + ")");
+                        log.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache.toString(), t.toString());
                         return t.after(modifiedCache) ? true : false;
                     }
             );
@@ -758,7 +754,7 @@ public class ContentSyncManager {
             }
             SCCRepository repo = availableRepos.get(jrepo.getSCCId());
             if (repo == null) {
-                log.error("No repository with ID '" + jrepo.getSCCId() + "' found");
+                log.error("No repository with ID '{}' found", jrepo.getSCCId());
                 continue;
             }
             Set<SCCRepositoryAuth> allAuths = repo.getRepositoryAuth();
@@ -796,7 +792,7 @@ public class ContentSyncManager {
                 newAuth = new SCCRepositoryTokenAuth(tokenOpt.get());
             }
             else if (repo.getProducts().isEmpty()) {
-                log.debug("Repo '" + repo.getUrl() + "' not in the product tree. Skipping");
+                log.debug("Repo '{}' not in the product tree. Skipping", repo.getUrl());
                 continue;
             }
             else if (c != null &&
@@ -805,7 +801,7 @@ public class ContentSyncManager {
                         .filter(SUSEProduct::getFree)
                         .anyMatch(p -> p.getChannelFamily().getLabel().startsWith("SLE-M-T") ||
                                 p.getChannelFamily().getLabel().startsWith("OPENSUSE"))) {
-                log.debug("Free repo detected. Setting NoAuth for " + repo.getUrl());
+                log.debug("Free repo detected. Setting NoAuth for {}", repo.getUrl());
                 newAuth = new SCCRepositoryNoAuth();
             }
             else {
@@ -1118,11 +1114,10 @@ public class ContentSyncManager {
             cachedSccIDs.remove(s.getId());
         }
         if (log.isDebugEnabled()) {
-            log.debug("Found " + subscriptions.size() +
-                    " subscriptions with credentials: " + c);
+            log.debug("Found {} subscriptions with credentials: {}", subscriptions.size(), c);
         }
         for (Long subId : cachedSccIDs) {
-            log.debug("Delete Subscription with sccId: " + subId);
+            log.debug("Delete Subscription with sccId: {}", subId);
             SCCCachingFactory.deleteSubscriptionBySccId(subId);
         }
     }
@@ -1146,7 +1141,7 @@ public class ContentSyncManager {
             return subscriptions;
         }
         catch (URISyntaxException e) {
-            log.error("Invalid URL:" + e.getMessage());
+            log.error("Invalid URL:{}", e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -1171,7 +1166,7 @@ public class ContentSyncManager {
             }
         }
         if (log.isDebugEnabled()) {
-            log.debug("Found " + subscriptions.size() + " available subscriptions.");
+            log.debug("Found {} available subscriptions.", subscriptions.size());
         }
         log.info("ContentSyncManager.getSubscriptions finished");
         return subscriptions;
@@ -1203,7 +1198,7 @@ public class ContentSyncManager {
                 .forEach(SCCCachingFactory::deleteOrderItem);
         }
         catch (URISyntaxException e) {
-            log.error("Invalid URL:" + e.getMessage());
+            log.error("Invalid URL:{}", e.getMessage());
         }
     }
 
@@ -1220,8 +1215,8 @@ public class ContentSyncManager {
                 .filter(sub -> "oem".equals(sub.getType()))
                 .forEach(sub -> {
                     if (sub.getSkus().size() == 1) {
-                        log.debug("Generating order item for OEM subscription " +
-                                sub.getName() + ", SCC ID: " + sub.getId());
+                        log.debug("Generating order item for OEM subscription {}, SCC ID: {}",
+                                sub.getName(), sub.getId());
                         long subscriptionSccId = sub.getId();
                         SCCOrderItem oemOrder = SCCCachingFactory.lookupOrderItemBySccId(-subscriptionSccId)
                                 .orElse(new SCCOrderItem());
@@ -1237,10 +1232,8 @@ public class ContentSyncManager {
                         existingOI.remove(oemOrder);
                     }
                     else {
-                        log.warn("Subscription " + sub.getName() + ", SCC ID: " +
-                                sub.getId() + " does not have a single SKU. " +
-                                "Not generating Order Item for it."
-                        );
+                        log.warn("Subscription {}, SCC ID: {} does not have a single SKU. " +
+                                "Not generating Order Item for it.", sub.getName(), sub.getId());
                     }
                 });
         existingOI.stream()
@@ -1322,8 +1315,7 @@ public class ContentSyncManager {
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
             // unsupported architecture, skip the product
-            log.error("Unknown architecture '" + p.getArch() +
-                    "'. This may be caused by a missing database migration");
+            log.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
         }
         else {
             product.setArch(pArch);
@@ -1370,8 +1362,7 @@ public class ContentSyncManager {
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
             // unsupported architecture, skip the product
-            log.error("Unknown architecture '" + p.getArch() +
-                    "'. This may be caused by a missing database migration");
+            log.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
         }
         else {
             product.setArch(pArch);
@@ -1666,25 +1657,20 @@ public class ContentSyncManager {
                             else {
                                 if (!entry.getParentChannelLabel()
                                         .equals(Optional.ofNullable(prodRepoLink.getParentChannelLabel()))) {
-                                    log.error("parent_channel_label changed from '" +
-                                            prodRepoLink.getParentChannelLabel() +
-                                            "' to '" + entry.getParentChannelLabel() +
-                                            "' but its not allowed to change.");
+                                    log.error("parent_channel_label changed from '{}' to '{}' but its not allowed " +
+                                            "to change.", prodRepoLink.getParentChannelLabel(),
+                                            entry.getParentChannelLabel());
                                 }
 
                                 if (!entry.getUpdateTag()
                                         .equals(Optional.ofNullable(prodRepoLink.getUpdateTag()))) {
-                                    log.debug("updatetag changed from '" +
-                                            prodRepoLink.getUpdateTag() +
-                                            "' to '" + entry.getUpdateTag() +
-                                            "' but its not allowed to change.");
+                                    log.debug("updatetag changed from '{}' to '{}' but its not allowed to change.",
+                                            prodRepoLink.getUpdateTag(), entry.getUpdateTag());
                                 }
 
                                 if (!entry.getChannelLabel().equals(prodRepoLink.getChannelLabel())) {
-                                    log.error("channel_label changed from '" +
-                                            prodRepoLink.getChannelLabel() +
-                                            "' to '" + entry.getChannelLabel() +
-                                            "' but its not allowed to change.");
+                                    log.error("channel_label changed from '{}' to '{}' but its not allowed to change.",
+                                            prodRepoLink.getChannelLabel(), entry.getChannelLabel());
                                 }
                             }
                             prodRepoLink.setChannelName(entry.getChannelName());
@@ -1828,9 +1814,8 @@ public class ContentSyncManager {
                     if (!isISSSlave) {
                         isMirrorable = entry.getRepository().isAccessible();
                     }
-                    log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
-                            " isPublic: " + isPublic + " isMirrorable: " + isMirrorable +
-                            " isISSSlave: " + isISSSlave);
+                    log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", product.getFriendlyName(),
+                            entry.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
                     return  isPublic && (isMirrorable || isISSSlave);
                 }
              );
@@ -1871,16 +1856,16 @@ public class ContentSyncManager {
                     .allMatch(entry -> {
                         boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
                         boolean hasAuth = repoIdsWithAuth.contains(entry.getRepository().getId());
-                        log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
-                                " isPublic: " + isPublic + " hasAuth: " + hasAuth);
+                        log.debug("{} - {} isPublic: {} hasAuth: {}", product.getFriendlyName(),
+                                entry.getChannelLabel(), isPublic, hasAuth);
                         return  isPublic &&
                                 // isMirrorable
                                 hasAuth;
                     });
 
-            log.debug(product.getFriendlyName() + ": " + isAccessible + " " + entries.stream()
+        log.debug("{}: {} {}", product.getFriendlyName(), isAccessible, entries.stream()
                 .map(SUSEProductSCCRepository::getChannelLabel)
-                    .collect(Collectors.joining(",")));
+                .collect(Collectors.joining(",")));
 
              if (isAccessible) {
                  return Stream.concat(
@@ -1984,8 +1969,8 @@ public class ContentSyncManager {
 
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
                 () -> {
-                    log.warn("Expired Vendor Channel with label '" + label + "' found. To remove it please run: ");
-                    log.warn("spacewalk-remove-channel -c " + label);
+                    log.warn("Expired Vendor Channel with label '{}' found. To remove it please run: ", label);
+                    log.warn("spacewalk-remove-channel -c {}", label);
                 },
                 productrepo -> {
                     SUSEProduct product = productrepo.getProduct();
@@ -2023,7 +2008,7 @@ public class ContentSyncManager {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
-                log.debug("Channel exists (" + label + "), returning...");
+                log.debug("Channel exists ({}), returning...", label);
             }
             return;
         }
@@ -2202,10 +2187,10 @@ public class ContentSyncManager {
                 }
             }
             catch (FileNotFoundException e) {
-                log.info("Server not registered at SCC: " + e.getMessage());
+                log.info("Server not registered at SCC: {}", e.getMessage());
             }
             catch (IOException e) {
-                log.warn("Unable to read SCC credentials file: " + e.getMessage());
+                log.warn("Unable to read SCC credentials file: {}", e.getMessage());
             }
             finally {
                 if (reader != null) {
@@ -2213,7 +2198,7 @@ public class ContentSyncManager {
                         reader.close();
                     }
                     catch (IOException e) {
-                        log.warn("IO exception on SCC credentials file: " + e.getMessage());
+                        log.warn("IO exception on SCC credentials file: {}", e.getMessage());
                     }
                 }
             }
@@ -2279,7 +2264,7 @@ public class ContentSyncManager {
             return accessibleUrl(url, username, password);
         }
         catch (URISyntaxException e) {
-            log.error("accessibleUrl: " + url + " URISyntaxException " + e.getMessage());
+            log.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
         }
         return false;
     }
@@ -2301,7 +2286,7 @@ public class ContentSyncManager {
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
                 boolean res = Files.isReadable(testUrlPath);
-                log.debug("accessibleUrl:" + testUrlPath.toString() + " " + res);
+                log.debug("accessibleUrl:{} {}", testUrlPath.toString(), res);
                 return res;
             }
             else {
@@ -2310,15 +2295,15 @@ public class ContentSyncManager {
                 // Verify the mirrored repo by sending a HEAD request
                 int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         user, password).getStatusLine().getStatusCode();
-                log.debug("accessibleUrl: " + testUri.toString() + " returned status " + status);
+                log.debug("accessibleUrl: {} returned status {}", testUri.toString(), status);
                 return (status == HttpURLConnection.HTTP_OK);
             }
         }
         catch (IOException e) {
-            log.error("accessibleUrl: " + url + " IOException " + e.getMessage());
+            log.error("accessibleUrl: {} IOException {}", url, e.getMessage());
         }
         catch (URISyntaxException e) {
-            log.error("accessibleUrl: " + url + " URISyntaxException " + e.getMessage());
+            log.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
         }
         return false;
     }

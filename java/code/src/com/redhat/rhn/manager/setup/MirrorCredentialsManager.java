@@ -70,7 +70,7 @@ public class MirrorCredentialsManager {
             credsList.add(creds);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Found " + credsList.size() + " mirror credentials");
+            log.debug("Found {} mirror credentials", credsList.size());
         }
         return credsList;
     }
@@ -91,7 +91,7 @@ public class MirrorCredentialsManager {
             creds.setPrimary(true);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Found credentials (" + creds.getId() + "): " + creds.getUser());
+            log.debug("Found credentials ({}): {}", creds.getId(), creds.getUser());
         }
         return creds;
     }
@@ -134,7 +134,7 @@ public class MirrorCredentialsManager {
         c.setPassword(creds.getPassword());
         CredentialsFactory.storeCredentials(c);
         if (log.isDebugEnabled()) {
-            log.debug("Stored credentials (" + c.getId() + "): " + c.getUsername());
+            log.debug("Stored credentials ({}): {}", c.getId(), c.getUsername());
         }
 
         // Make this the primary pair of credentials if it's the only one
@@ -176,7 +176,7 @@ public class MirrorCredentialsManager {
 
         // Check for systems registered under this credentials and start delete requests
         List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
-        log.debug(itemList.size() + " RegCacheItems found to force delete");
+        log.debug("{} RegCacheItems found to force delete", itemList.size());
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();
@@ -244,7 +244,7 @@ public class MirrorCredentialsManager {
         if (forceRefresh ||
                 SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
             if (log.isDebugEnabled()) {
-                log.debug("Downloading subscriptions for " + creds.getUser());
+                log.debug("Downloading subscriptions for {}", creds.getUser());
             }
             try {
                 Credentials credentials =
@@ -255,8 +255,7 @@ public class MirrorCredentialsManager {
                         makeDtos(subscriptions), creds, request);
             }
             catch (SCCClientException e) {
-                log.error("Error getting subscriptions for " +
-                        creds.getUser() + ": " + e.getMessage());
+                log.error("Error getting subscriptions for {}: {}", creds.getUser(), e.getMessage());
             }
         }
 
@@ -288,8 +287,7 @@ public class MirrorCredentialsManager {
             // Determine subscription name from given product class
             List<String> productClasses = s.getProductClasses();
             if (productClasses.isEmpty()) {
-                log.warn("No product class for subscription: " +
-                        s.getName() + ", skipping...");
+                log.warn("No product class for subscription: {}, skipping...", s.getName());
                 continue;
             }
             String subscriptionName = null;

@@ -167,7 +167,7 @@ public class KickstartBuilder {
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
                 // TODO
-                log.warn("Unable to parse kickstart command: " + firstWord);
+                log.warn("Unable to parse kickstart command: {}", firstWord);
                 continue;
             }
 
@@ -178,8 +178,8 @@ public class KickstartBuilder {
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
                 log.warn("Using default kickstartable tree URL:");
-                log.warn("   Replaced: " + currentLine);
-                log.warn("   With: " + firstWord + " " + restOfLine);
+                log.warn("   Replaced: {}", currentLine);
+                log.warn("   With: {} {}", firstWord, restOfLine);
             }
 
             KickstartCommand kc = new KickstartCommand();

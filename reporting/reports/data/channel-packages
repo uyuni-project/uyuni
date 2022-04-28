@@ -1,39 +1,39 @@
 
 synopsis:
 
-	Packages in channels
+  Packages in channels
 
 description:
 
-	List of packages in channels in the server.
+  List of all packages in all channels.
 
 columns:
 
-	channel_label		Channel label
-	channel_name		Channel name
-	name		Name of package
-	version		Version of package
-	release		Release of package
-	epoch		Epoch of package (if available)
-	arch		Architecture of the package
-	full_package_name	Full package name
+  mgm_id The id of the management server instance that contains this data
+  channel_label The unique label identifying the channel
+  channel_name The unique name of the channel
+  name The name of the package
+  version The version number of the package
+  release The release number of the package
+  epoch The epoch of the package
+  arch The architecture where the package is installable
+  full_package_name The full qualified name of the package
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select rhnchannel.label channel_label, rhnchannel.name channel_name,
-		rhnpackagename.name,
-		rhnpackageevr.version, rhnpackageevr.release, rhnpackageevr.epoch,
-		rhnpackagearch.label arch,
-		case when rhnpackageevr.epoch is not null then rhnpackageevr.epoch || ':' else '' end ||
-		rhnpackagename.name || '-' || rhnpackageevr.version || '-' || rhnpackageevr.release || '.' || rhnpackagearch.label full_package_name
-	from rhnchannel, rhnchannelpackage, rhnpackage, rhnpackagename, rhnpackageevr, rhnpackagearch
-	where rhnchannel.id = rhnchannelpackage.channel_id
-		and rhnchannelpackage.package_id = rhnpackage.id
-		and rhnpackage.name_id = rhnpackagename.id
-		and rhnpackage.evr_id = rhnpackageevr.id
-		and rhnpackage.package_arch_id = rhnpackagearch.id
-	) X
-	-- where placeholder
-	order by channel_label, name, version, release, epoch, arch
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , channel_label
+                , channel_name
+                , package_name AS name
+                , package_version AS version
+                , package_release AS release
+                , package_epoch AS epoch
+                , package_arch AS arch
+                , full_package_name
+                , synced_date
+        FROM ChannelPackagesReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_label

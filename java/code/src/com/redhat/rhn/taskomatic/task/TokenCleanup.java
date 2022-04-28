@@ -67,8 +67,7 @@ public class TokenCleanup extends RhnJavaJob {
                     }
                 }
                 catch (Exception e) {
-                    log.error("error refreshing access tokens for minion " +
-                            minionServer.getMinionId(), e);
+                    log.error("error refreshing access tokens for minion {}", minionServer.getMinionId(), e);
                     return Stream.empty();
                 }
             });
@@ -78,9 +77,8 @@ public class TokenCleanup extends RhnJavaJob {
                 saltApi.deployChannels(changedMinionIds);
             }
             else {
-                log.warn("The following minions got channel tokens changed and" +
-                        " need them deployed before the old one expires: " + changedMinionIds.stream()
-                        .collect(Collectors.joining(", ")));
+                log.warn("The following minions got channel tokens changed and need them deployed before the " +
+                        "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
             }
             AccessTokenFactory.cleanupUnusedExpired();
         }

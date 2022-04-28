@@ -96,7 +96,7 @@ public class MirrorCredentialsRenderer {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Saving credentials: " + user + ":" + password);
+            logger.debug("Saving credentials: {}:{}", user, password);
         }
         try {
             credsManager.storeMirrorCredentials(creds, request);
@@ -126,7 +126,7 @@ public class MirrorCredentialsRenderer {
 
         // Delete the credentials
         if (logger.isDebugEnabled()) {
-            logger.debug("Deleting credentials: " + id);
+            logger.debug("Deleting credentials: {}", id);
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         credsManager.deleteMirrorCredentials(id, request);
@@ -145,7 +145,7 @@ public class MirrorCredentialsRenderer {
             ContentSyncException {
         // Make primary credentials
         if (logger.isDebugEnabled()) {
-            logger.debug("Make primary credentials: " + id);
+            logger.debug("Make primary credentials: {}", id);
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         credsManager.makePrimaryCredentials(id);
@@ -166,7 +166,7 @@ public class MirrorCredentialsRenderer {
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
         if (logger.isDebugEnabled()) {
-            logger.debug("Found " + creds.size() + " pairs of credentials");
+            logger.debug("Found {} pairs of credentials", creds.size());
         }
         request.setAttribute(ATTRIB_MIRRCREDS, creds);
         HttpServletResponse response = webContext.getHttpServletResponse();
@@ -190,7 +190,7 @@ public class MirrorCredentialsRenderer {
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
-            logger.debug("Verify credentials: " + creds.getUser());
+            logger.debug("Verify credentials: {}", creds.getUser());
         }
 
         // Download subscriptions or get from session cache
@@ -220,7 +220,7 @@ public class MirrorCredentialsRenderer {
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
-            logger.debug("List subscriptions: " + creds.getUser());
+            logger.debug("List subscriptions: {}", creds.getUser());
         }
         List<SubscriptionDto> subs = credsManager.getSubscriptions(creds, request, false);
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);

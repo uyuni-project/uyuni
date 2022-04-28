@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class SsmDeleteServersAction implements MessageAction {
     public static final String OPERATION_NAME = "ssm.server.delete.operationname";
 
     /** Logger instance. */
-    private static Log log = LogFactory.getLog(SsmDeleteServersAction.class);
+    private static final Logger LOG = LogManager.getLogger(SsmDeleteServersAction.class);
 
     private final SystemManager systemManager;
 
@@ -83,7 +83,7 @@ public class SsmDeleteServersAction implements MessageAction {
             }
         }
         catch (Exception e) {
-            log.error("Error deleting servers " + event, e);
+            LOG.error("Error deleting servers {}", event, e);
         }
         finally {
             // Complete the action

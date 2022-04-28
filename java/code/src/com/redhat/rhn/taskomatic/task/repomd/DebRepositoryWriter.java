@@ -81,9 +81,9 @@ public class DebRepositoryWriter extends RepositoryWriter {
 
         // the file Modified date should be getting set when the file
         // is moved into the correct location.
-        log.info("File Modified Date:" + LocalizationService.getInstance().
+        log.info("File Modified Date:{}", LocalizationService.getInstance().
                 formatCustomDate(fileModifiedDate));
-        log.info("Channel Modified Date:" + LocalizationService.getInstance().
+        log.info("Channel Modified Date:{}", LocalizationService.getInstance().
                 formatCustomDate(channelModifiedDate));
         return !fileModifiedDate.equals(channelModifiedDate);
     }
@@ -106,7 +106,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
                     prefix);
         }
 
-        log.info("Generating new DEB repository for channel " + channel.getLabel());
+        log.info("Generating new DEB repository for channel {}", channel.getLabel());
         Date start = new Date();
 
         // batch the elaboration so we don't have to hold many thousands of
@@ -125,7 +125,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
             packagesFile = writer.getFilenamePackages();
         }
         catch (IOException e) {
-            log.error("Could not write Packages file for channel " + channel.getLabel(), e);
+            log.error("Could not write Packages file for channel {}", channel.getLabel(), e);
             return;
         }
 
@@ -133,7 +133,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
             gzipCompress(packagesFile);
         }
         catch (IOException e) {
-            log.error("Failed to create Packages.gz " + e.toString());
+            log.error("Failed to create Packages.gz {}", e.toString());
             return;
         }
 
@@ -145,20 +145,18 @@ public class DebRepositoryWriter extends RepositoryWriter {
                     new String[] {"/usr/bin/mgr-sign-metadata", prefix + "Release", prefix + "Release.gpg",
                             prefix + "InRelease"});
             if (exitCode != 0) {
-                log.error("Could not sign file " + prefix + "Release. " +
-                        "This will prevent the repository " + channel.getLabel() + " from working correctly. " +
-                        "Make sure a valid key exists in the /root/.gnupg keyring and that its KEYID was " +
-                        "set in /etc/rhn/signing.conf ");
+                log.error("Could not sign file {}Release. This will prevent the repository {} from working " +
+                        "correctly. Make sure a valid key exists in the /root/.gnupg keyring and that its KEYID " +
+                        "was set in /etc/rhn/signing.conf ", prefix, channel.getLabel());
             }
         }
         else {
-            log.warn("Channel metadata signing is disabled. APT repository " + channel.getLabel() + " is not secure." +
-                    "Refer to the Debian apt-secure manpage.");
+            log.warn("Channel metadata signing is disabled. APT repository {} is not secure.Refer to the " +
+                    "Debian apt-secure manpage.", channel.getLabel());
         }
 
-        log.info("Repository metadata generation for '" +
-                 channel.getLabel() + "' finished in " +
-                 (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
+        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(),
+                (int) (new Date().getTime() - start.getTime()) / 1000);
     }
 
     private void loadExtraTags(DataResult<PackageDto> packageBatch) {

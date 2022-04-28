@@ -248,8 +248,8 @@ public class SaltService implements SystemQuery, SaltApi {
             Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
 
             return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
-                        LOG.warn("Got no result for " + call.getPayload().get("fun") +
-                                " on minion " + minionId + " (minion did not respond in time)");
+                LOG.warn("Got no result for {} on minion {} (minion did not respond in time)",
+                        call.getPayload().get("fun"), minionId);
                         return Optional.empty();
                     }, Optional::of);
         }
@@ -301,9 +301,8 @@ public class SaltService implements SystemQuery, SaltApi {
                             return Optional.empty();
                         },
                         e -> {
-                            LOG.error("Error parsing json response from runner call " +
-                                    runnerCallToString(call) +
-                                    ": " + e.getJson());
+                            LOG.error("Error parsing json response from runner call {}: {}",
+                                    runnerCallToString(call), e.getJson());
                             return Optional.empty();
                         },
                         e -> {
@@ -337,7 +336,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(RunnerCall<R> call,
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Runner callSync: " + runnerCallToString(call));
+            LOG.debug("Runner callSync: {}", runnerCallToString(call));
             Result<R> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.fold(errorHandler, Optional::of);
         }
@@ -379,21 +378,16 @@ public class SaltService implements SystemQuery, SaltApi {
                         return Optional.empty();
                     },
                     e -> {
-                        LOG.error("Error parsing json response from wheel call " +
-                                wheelCallToString(call) +
-                                ": " + e.getJson());
+                        LOG.error("Error parsing json response from wheel call {}: {}",
+                                wheelCallToString(call), e.getJson());
                         return Optional.empty();
                     },
                     e -> {
-                        LOG.error("Generic Salt error for wheel call " +
-                                wheelCallToString(call) +
-                                ": " + e.getMessage());
+                        LOG.error("Generic Salt error for wheel call {}: {}", wheelCallToString(call), e.getMessage());
                         return Optional.empty();
                     },
                     e -> {
-                        LOG.error("SaltSSH error for wheel call " +
-                                wheelCallToString(call) +
-                                ": " + e.getMessage());
+                        LOG.error("SaltSSH error for wheel call {}: {}", wheelCallToString(call), e.getMessage());
                         return Optional.empty();
                     }
         ));
@@ -411,7 +405,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(WheelCall<R> call,
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Wheel callSync: " + wheelCallToString(call));
+            LOG.debug("Wheel callSync: {}", wheelCallToString(call));
             WheelResult<Result<R>> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.getData().getResult().fold(errorHandler, Optional::of);
         }
@@ -484,8 +478,7 @@ public class SaltService implements SystemQuery, SaltApi {
               return Optional.of((String) grain);
           }
           else {
-              LOG.warn("Minion " + minionId + " returned non string: " +
-                      grain + " as minion_id");
+              LOG.warn("Minion {} returned non string: {} as minion_id", minionId, grain);
               return Optional.empty();
           }
         });
@@ -554,8 +547,7 @@ public class SaltService implements SystemQuery, SaltApi {
                 }
 
                 if (retries > 1) {
-                    LOG.warn("Successfully connected to the Salt event bus after " +
-                            (retries - 1) + " retries.");
+                    LOG.warn("Successfully connected to the Salt event bus after {} retries.", retries - 1);
                 }
                 else {
                     LOG.info("Successfully connected to the Salt event bus");
@@ -563,8 +555,7 @@ public class SaltService implements SystemQuery, SaltApi {
             }
             catch (SaltException e) {
                 try {
-                    LOG.error("Unable to connect: " + e + ", retrying in " +
-                            DELAY_TIME_SECONDS + " seconds.");
+                    LOG.error("Unable to connect: {}, retrying in " + DELAY_TIME_SECONDS + " seconds.", e);
                     Thread.sleep(1000 * DELAY_TIME_SECONDS);
                     if (retries == 1) {
                         MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
@@ -574,10 +565,10 @@ public class SaltService implements SystemQuery, SaltApi {
                     }
                 }
                 catch (JavaMailException javaMailException) {
-                    LOG.error("Error sending email: " + javaMailException.getMessage());
+                    LOG.error("Error sending email: {}", javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
-                    LOG.error("Interrupted during sleep: " + e1);
+                    LOG.error("Interrupted during sleep: {}", e1);
                 }
             }
         }
@@ -876,7 +867,7 @@ public class SaltService implements SystemQuery, SaltApi {
 
         if (!regularMinionIds.isEmpty()) {
             ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-            LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
+            LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
             List<Map<String, Result<T>>> callResult =
                     adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
@@ -894,7 +885,7 @@ public class SaltService implements SystemQuery, SaltApi {
             throws SaltException {
 
         ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-        LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
+        LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
         List<Map<String, Result<T>>> callResult =
                 adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                         target, PW_AUTH, defaultBatch));
@@ -966,7 +957,7 @@ public class SaltService implements SystemQuery, SaltApi {
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
                 Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
-        LOG.debug("Local callAsync: " + SaltService.localCallToString(callIn));
+        LOG.debug("Local callAsync: {}", SaltService.localCallToString(callIn));
         return adaptException(callIn.withMetadata(metadata).callAsync(saltClient, target, PW_AUTH, defaultBatch));
     }
 
@@ -1033,7 +1024,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     .map(r -> ((Number) r.get("seconds")).longValue());
 
             if (uptime.isEmpty()) {
-                LOG.error("Can't get uptime for " + minion.getMinionId());
+                LOG.error("Can't get uptime for {}", minion.getMinionId());
             }
         }
         catch (RuntimeException e) {
@@ -1053,7 +1044,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     Optional.of(ScheduleMetadata.getDefaultMetadata().withMinionStartup()));
         }
         catch (SaltException ex) {
-            LOG.debug("Error while executing util.systeminfo state: " + ex.getMessage());
+            LOG.debug("Error while executing util.systeminfo state: {}", ex.getMessage());
         }
     }
 
@@ -1156,7 +1147,7 @@ public class SaltService implements SystemQuery, SaltApi {
 
         }
         catch (IOException e) {
-            LOG.error("Error creating dir " + mountPoint.resolve(actionPath), e);
+            LOG.error("Error creating dir {}", mountPoint.resolve(actionPath), e);
         }
 
         RunnerCall<Map<Boolean, String>> call = MgrUtilRunner.moveMinionUploadedFiles(

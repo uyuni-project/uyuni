@@ -1,54 +1,43 @@
 
 synopsis:
 
-	List of packages which can be updated
+  List of packages which can be updated
 
 description:
 
-	Prints list of packages which can be updated for all systems in spacewalk.
-	Shows only the newest package version available for upgrade.
+  List of packages that can be updated for all systems, showing only the newest package version available.
 
 columns:
 
-	system_id System id
-  org_id  Id of organization system belongs to
-  package_name  Name of the package
-  package_epoch Epoch of the package
-  package_version Version of the package
-  package_release Release of the package
-  package_arch  Architecture of the package
-	newest_epoch Version of the newest package available
-  newest_version Release of the newest package available
-  newest_release  Architecture of the newest package available
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  organization The organization that owns this data
+  package_name The name of the package
+  package_epoch The epoch of the installed package
+  package_version The version number of the installed package
+  package_release The release number of the installed package
+  package_arch The architecture of the package installed package
+  newest_epoch The epoch of the new package that can be installed
+  newest_version The version number of the new package that can be installed
+  newest_release The release number of the new package that can be installed
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-  select S.id as system_id,
-    S.org_id as org_id,
-    PN.name as package_name,
-    OPE.epoch as package_epoch,
-    OPE.version as package_version,
-    OPE.release as package_release,
-    PA.label as package_arch,
-    NPE.epoch as newest_epoch,
-    NPE.version as newest_version,
-    NPE.release as newest_release
-  from rhnServer S
-    join rhnServerNeededCache SPC on S.id=SPC.server_id
-    join rhnPackage P on SPC.package_id=P.id
-    join rhnPackageName PN on P.name_id=PN.id
-    join rhnServerPackage SP on SP.server_id=S.id and SP.name_id=P.name_id
-    join rhnPackageArch PA on SP.package_arch_id=PA.id
-    join rhnPackageEvr OPE on OPE.id=SP.evr_id
-    join rhnPackageEvr NPE on NPE.id=P.evr_id
-  where NPE.evr=(
-    select max(PE.evr)
-    from rhnServerNeededCache SPC1
-      join rhnPackage P1 on SPC1.package_id=P1.id
-      join rhnPackageEvr PE on P1.evr_id=PE.id
-    where P1.name_id=P.name_id
-      and SPC1.server_id = s.id)
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , organization
+                , package_name
+                , package_epoch
+                , package_version
+                , package_release
+                , package_arch
+                , newer_epoch AS newest_epoch
+                , newer_version AS newest_version
+                , newer_release AS newest_release
+                , synced_date
+        FROM PackagesUpdatesNewestReport
   ) X
   -- where placeholder
-  order by org_id, system_id
+  ORDER BY mgm_id, system_id, package_name

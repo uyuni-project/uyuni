@@ -46,6 +46,4 @@ RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
-COPY ssl.conf /etc/apache2/vhosts.d/ssl.conf
-
 CMD uyuni-configure.py && /usr/sbin/start_apache2 -DFOREGROUND -k start

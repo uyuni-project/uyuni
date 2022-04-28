@@ -53,7 +53,7 @@ public class SsmErrataAction implements MessageAction {
                     actionChain, event.getServerIds());
         }
         catch (Exception e) {
-            log.error("Error scheduling SSM errata for event: " + event, e);
+            log.error("Error scheduling SSM errata for event: {}", event, e);
         }
         finally {
             SsmOperationManager.completeOperation(user, SsmOperationManager

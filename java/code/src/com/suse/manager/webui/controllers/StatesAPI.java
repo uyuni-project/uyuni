@@ -601,7 +601,7 @@ public class StatesAPI {
      * @param server the server
      */
     public static void generateServerPackageState(MinionServer server) {
-        LOG.debug("Generating package state SLS file for: " + server.getId());
+        LOG.debug("Generating package state SLS file for: {}", server.getId());
         Set<PackageState> packageStates = StateFactory
                 .latestPackageStates(server)
                 .orElseGet(HashSet::new);
@@ -737,7 +737,7 @@ public class StatesAPI {
                     }
                     catch (SaltException e) {
                         response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                        LOG.debug("showHighstate failed with: " + e.getMessage());
+                        LOG.debug("showHighstate failed with: {}", e.getMessage());
                         return e.getMessage();
                     }
                 }).orElse("Server not found.");

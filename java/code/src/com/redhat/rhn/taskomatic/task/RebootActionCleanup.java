@@ -65,12 +65,11 @@ public class RebootActionCleanup extends RhnJavaJob {
             }
         }
         if (failedRebootActions.size() > 0) {
-            log.info("Set " + failedRebootActions.size() +
-                    " reboot action(s) to failed. Running longer than 6 hours.");
+            log.info("Set {} reboot action(s) to failed. Running longer than 6 hours.", failedRebootActions.size());
             if (log.isDebugEnabled()) {
-                log.debug("failed (server,action) ids" + failedRebootActions.stream()
-                    .map(a -> "(" + a.get("server_id") + ", " + a.get("action_id") + ")")
-                    .collect(Collectors.joining(", ")));
+                log.debug("failed (server,action) ids{}", failedRebootActions.stream()
+                        .map(a -> "(" + a.get("server_id") + ", " + a.get("action_id") + ")")
+                        .collect(Collectors.joining(", ")));
             }
         }
     }

@@ -125,8 +125,7 @@ public class LocalizationService {
             }
         }
         catch (ClassNotFoundException ce) {
-            String message = "Class not found when trying to initalize " +
-                    "the LocalizationService: " + ce.toString();
+            String message = "Class not found when trying to initalize the LocalizationService: " + ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
@@ -251,8 +250,7 @@ public class LocalizationService {
      * @return Translated String
      */
     public String getMessage(String messageId, Locale locale, Object... args) {
-        log.debug("getMessage() called with messageId: " + messageId +
-                " and locale: " + locale);
+        log.debug("getMessage() called with messageId: {} and locale: {}", messageId, locale);
         // Short-circuit the rest of the method if the messageId is null
         // See bz 199892
         if (messageId == null) {
@@ -260,8 +258,7 @@ public class LocalizationService {
         }
         String userLocale = locale == null ? "null" : locale.toString();
         if (msgLogger.isDebugEnabled()) {
-            msgLogger.debug("Resolving message \"" + messageId +
-                    "\" for locale " + userLocale);
+            msgLogger.debug("Resolving message \"{}\" for locale {}", messageId, userLocale);
         }
         String mess = null;
         Class z = null;
@@ -282,10 +279,8 @@ public class LocalizationService {
         catch (MissingResourceException e) {
             // Try again with DEFAULT_LOCALE
             if (msgLogger.isDebugEnabled()) {
-                msgLogger.debug("Resolving message \"" + messageId +
-                        "\" for locale " + userLocale +
-                        " failed -  trying again with default " + "locale " +
-                        DEFAULT_LOCALE.toString());
+                msgLogger.debug("Resolving message \"{}\" for locale {} failed -  trying again with default locale {}",
+                        messageId, userLocale, DEFAULT_LOCALE.toString());
             }
             try {
                 mess = XmlMessages.getInstance().format(z, DEFAULT_LOCALE,
@@ -293,16 +288,14 @@ public class LocalizationService {
             }
             catch (MissingResourceException mre) {
                 if (msgLogger.isDebugEnabled()) {
-                    msgLogger.debug("Resolving message \"" + messageId + "\" " +
-                            "for default locale " + DEFAULT_LOCALE.toString() +
-                            " failed");
+                    msgLogger.debug("Resolving message \"{}\" for default locale {} failed", messageId,
+                            DEFAULT_LOCALE.toString());
                 }
                 return getMissingMessageString(messageId);
             }
         }
         catch (ClassNotFoundException ce) {
-            String message = "Class not found when trying to fetch a message: " +
-                    ce.toString();
+            String message = "Class not found when trying to fetch a message: " + ce;
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
@@ -675,7 +668,7 @@ public class LocalizationService {
             retval = TimeZone.getDefault();
         }
         if (log.isDebugEnabled()) {
-            log.debug("Determined timeZone to be: " + retval);
+            log.debug("Determined timeZone to be: {}", retval);
         }
         return retval;
 

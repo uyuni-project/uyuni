@@ -31,6 +31,7 @@ CREATE TABLE rhnActionDup
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_actiondup_avc_ck
                                 CHECK (allow_vendor_change in ('Y','N')),
+    missing_successors  VARCHAR(512),
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ

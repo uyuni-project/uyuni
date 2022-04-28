@@ -1,0 +1,48 @@
+
+synopsis:
+
+	Errata out of compliance information - erratas for systems
+
+description:
+
+	List of applicable erratas and systems that are affected.
+
+columns:
+
+	advisory	Advisory / errata identifier
+	server_id:i	System identifier
+	profile_name	Profile name, as stored on server
+	hostname	Hostname, as reported by the system
+	ip_address	IP address, as reported by the system
+	ipv6_address    IPv6 address, as reported by the system
+
+sql:
+
+	select * from (
+	select rhnErrata.advisory_name as advisory,
+		rhnServerNeededErrataCache.server_id,
+		rhnServer.name as profile_name,
+		rhnServer.hostname, trim(ipaddr) as ip_address,
+		trim(ip6addr) as ipv6_address
+	from rhnErrata, rhnServer,
+		rhnServerNeededErrataCache left outer join
+		(
+		select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
+		from rhnservernetinterface rsni
+		left join rhnServerNetAddress4 rsna4
+		on rsni.id = rsna4.interface_id
+		left join rhnServerNetAddress6 rsna6
+		on rsni.id = rsna6.interface_id
+		where id in (
+			select min(id)
+			from rhnservernetinterface
+			where is_primary = 'Y'
+			group by server_id
+			)
+		) netinfos
+		on rhnServerNeededErrataCache.server_id = netinfos.server_id
+	where rhnErrata.id = rhnServerNeededErrataCache.errata_id
+		and rhnServerNeededErrataCache.server_id = rhnServer.id
+	) X
+	-- where placeholder
+	order by advisory, server_id

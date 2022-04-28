@@ -85,8 +85,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             refreshFiles();
         }
         catch (IOException e) {
-            log.error("Could not regenerate org and group sls files in " +
-                    saltGenerationTempDir, e);
+            log.error("Could not regenerate org and group sls files in {}", saltGenerationTempDir, e);
         }
     }
 
@@ -102,7 +101,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             Files.createDirectories(saltGenerationTempDir);
             tempSaltRootPath = Files
                     .createTempDirectory(saltGenerationTempDir, "salt");
-            log.debug("Created temporary dir " + tempSaltRootPath);
+            log.debug("Created temporary dir {}", tempSaltRootPath);
 
             List<Org> orgs = OrgFactory.lookupAllOrgs();
             for (Org org : orgs) {
@@ -167,17 +166,16 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                 FileUtils.deleteDirectory(oldSaltPath.toFile());
             }
 
-            log.info("Regenerated org and group .sls files in " + saltPath);
+            log.info("Regenerated org and group .sls files in {}", saltPath);
         }
         finally {
             if (tempSaltRootPath != null) {
                 try {
-                    log.debug("Removing temporary dir " + tempSaltRootPath);
+                    log.debug("Removing temporary dir {}", tempSaltRootPath);
                     FileUtils.deleteDirectory(tempSaltRootPath.toFile());
                 }
                 catch (IOException e) {
-                    log.error("Could not remove temporary directory " +
-                            tempSaltRootPath, e);
+                    log.error("Could not remove temporary directory {}", tempSaltRootPath, e);
                 }
             }
         }

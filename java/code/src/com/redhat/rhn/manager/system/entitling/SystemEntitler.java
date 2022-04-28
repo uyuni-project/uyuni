@@ -101,7 +101,7 @@ public class SystemEntitler {
      * @return ValidatorResult of errors and warnings.
      */
     public ValidatorResult addEntitlementToServer(Server server, Entitlement ent) {
-        LOG.debug("Entitling: " + ent.getLabel());
+        LOG.debug("Entitling: {}", ent.getLabel());
         ValidatorResult result = new ValidatorResult();
 
         if (server.hasEntitlement(ent)) {
@@ -122,7 +122,7 @@ public class SystemEntitler {
             ValidatorResult virtSetupResults = setupSystemForVirtualization(server.getOrg(), server.getId());
             result.append(virtSetupResults);
             if (virtSetupResults.getErrors().size() > 0) {
-                LOG.debug("error trying to setup virt ent: " + virtSetupResults.getMessage());
+                LOG.debug("error trying to setup virt ent: {}", virtSetupResults.getMessage());
                 return result;
             }
         }
@@ -147,7 +147,7 @@ public class SystemEntitler {
                     monitoringManager.enableMonitoring(minion);
                 }
                 catch (ValidatorException | IOException e) {
-                    LOG.error("Error enabling monitoring: " + e.getMessage(), e);
+                    LOG.error("Error enabling monitoring: {}", e.getMessage(), e);
                     result.addError(new ValidatorError("system.entitle.formula_error"));
                 }
             }
@@ -165,7 +165,7 @@ public class SystemEntitler {
             ServerFactory.addServerToGroup(server, serverGroup.get());
         }
         else {
-            LOG.error("Cannot add entitlement: " + ent.getLabel() + " to system: " + server.getId());
+            LOG.error("Cannot add entitlement: {} to system: {}", ent.getLabel(), server.getId());
         }
     }
 
@@ -183,8 +183,8 @@ public class SystemEntitler {
             Optional<ServerGroup> serverGroup = ServerGroupFactory
                     .findCompatibleServerGroupForBaseEntitlement(serverId, ent);
             if (!serverGroup.isPresent()) {
-                LOG.warn("Could not find a compatible ServerGroup for base entitlement: " + ent.getLabel() +
-                        ", and server: " + serverId);
+                LOG.warn("Could not find a compatible ServerGroup for base entitlement: {}, and server: {}",
+                        ent.getLabel(), serverId);
             }
             return serverGroup;
         }
@@ -193,24 +193,24 @@ public class SystemEntitler {
 
     private Optional<ServerGroup> findServerGroupToEntitleAnEntitledServer(Server server, Entitlement ent) {
         if (ent.isBase()) {
-            LOG.warn("Cannot set a base entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId());
+            LOG.warn("Cannot set a base entitlement: {} as an addon entitlement for server: {}",
+                    ent.getLabel(), server.getId());
             return Optional.empty();
         }
 
         Optional<Long> baseEntitlementId = server.getBaseEntitlementId();
 
         if (baseEntitlementId.isEmpty()) {
-            LOG.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId() + ". The server has no base entitlement yet.");
+            LOG.warn("Cannot set a entitlement: {} as an addon entitlement for server: {}. The server has no base" +
+                    " entitlement yet.", ent.getLabel(), server.getId());
             return Optional.empty();
         }
 
         Optional<ServerGroup> serverGroup = ServerGroupFactory
                 .findCompatibleServerGroupForAddonEntitlement(server.getId(), ent, baseEntitlementId.get());
         if (!serverGroup.isPresent()) {
-            LOG.warn("Cannot set a entitlement: " + ent.getLabel() + " as an addon entitlement for server: " +
-                    server.getId() + ". The server base entitlement is not compatible.");
+            LOG.warn("Cannot set a entitlement: {} as an addon entitlement for server: {}. The server base" +
+                    " entitlement is not compatible.", ent.getLabel(), server.getId());
         }
         return serverGroup;
     }
@@ -258,8 +258,7 @@ public class SystemEntitler {
                     ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
             if (rhnVirtHost != null) {
                 // System already has the package, we can stop here.
-                LOG.debug("System already has " +
-                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME + " installed.");
+                LOG.debug("System already has {} installed.", ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
                 return result;
             }
             try {
@@ -328,8 +327,7 @@ public class SystemEntitler {
             }
         }
         catch (MultipleChannelsWithPackageException e) {
-            LOG.warn("Found multiple child channels with package: " +
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
+            LOG.warn("Found multiple child channels with package: {}", ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
             result.addWarning(new ValidatorWarning(
                     "system.entitle.multiplechannelswithpackagepleaseinstall",
                     ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));

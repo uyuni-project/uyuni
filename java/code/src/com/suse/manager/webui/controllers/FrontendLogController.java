@@ -55,7 +55,7 @@ public class FrontendLogController {
         if (user != null) {
             userId = user.getId().toString();
         }
-        String message = "[" + userId + " - " + request.userAgent() + "] - " + map.get("message").toString();
+        String message = "[" + userId + " - " + request.userAgent() + "] - " + map.get("message");
 
         switch (type) {
             case "info": log.info(message); break;

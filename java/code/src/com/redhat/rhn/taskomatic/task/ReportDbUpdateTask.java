@@ -39,7 +39,7 @@ import java.util.Map;
 public class ReportDbUpdateTask extends RhnJavaJob {
 
     private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 500);
+            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
 
 
     private void fillReportDbTable(Session session, String xmlName, String tableName, long mgmId) {
@@ -114,6 +114,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
             fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
+
+            ReportDBHelper.analyzeReportDb(rh.getSession());
 
             rh.commitTransaction();
             log.info("Reporting db updated successfully.");

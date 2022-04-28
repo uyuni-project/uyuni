@@ -314,7 +314,7 @@ public class StringUtil {
             return null;
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("htmlifyText() - " + convertIn);
+            logger.debug("htmlifyText() - {}", convertIn);
         }
         String retval = StringEscapeUtils.escapeHtml4(convertIn);
         retval = retval.replaceAll("\\\\r\\\\n", "<br/>");
@@ -377,7 +377,7 @@ public class StringUtil {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("htmlifyText() - returning: " + result);
+            logger.debug("htmlifyText() - returning: {}", result);
         }
 
         return result.toString();

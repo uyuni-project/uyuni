@@ -29,8 +29,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChildChannelAction extends RhnAction {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Logger LOG = LogManager.getLogger(ChildChannelAction.class);
 
     /**
      * {@inheritDoc}
@@ -123,8 +123,8 @@ public class ChildChannelAction extends RhnAction {
         }
 
         if (debugFound != children.size()) {
-            log.error("Did not process an equal number of children originally found. " +
-                "Children: " + children.size() + ", Found: " + debugFound);
+            LOG.error("Did not process an equal number of children originally found. Children: {}, Found: {}",
+                    children.size(), debugFound);
         }
     }
 
@@ -177,7 +177,7 @@ public class ChildChannelAction extends RhnAction {
             }
             catch (NumberFormatException nfe) {
                 // Should never get here
-                log.error("Attempting to parse a channel id from: " + idStr, nfe);
+                LOG.error("Attempting to parse a channel id from: {}", idStr, nfe);
             }
         }
 
@@ -188,7 +188,7 @@ public class ChildChannelAction extends RhnAction {
             }
             catch (NumberFormatException nfe) {
                 // Should never get here
-                log.error("Attempting to parse a channel id from: " + idStr, nfe);
+                LOG.error("Attempting to parse a channel id from: {}", idStr, nfe);
             }
         }
 

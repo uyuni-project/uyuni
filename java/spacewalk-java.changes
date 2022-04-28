@@ -1,4 +1,30 @@
-- Prefer parsing numbers as ints in HTTP API for compatibility
+- add schedulePackageUpdate() XMLRPC function (bsc#1197507)
+- Redesign the auto errata task to schedule combined actions (bsc#1197429)
+- Allow to add failed and completed servers to SSM
+- drop specialized SSL truststore for db connections in favor
+  of the java default
+- add menu item for report database schema documentation
+- Improve TaskQueue for mgr-update-reporting-hub task
+- Handle missing tables gracefully during hub synchronisation
+- improve performance of synchronizing peripheral report databases
+- Allow alternative location for byte-buddy jar.
+- Allow migration where target products have no successor
+- require new salt-netapi-client version
+- Fix PXEEvent string comparision
+- Make TERMINALS group optional for saltbooted machines
+- Fix outdated documentation and release notes links
+
+-------------------------------------------------------------------
+Wed Apr 27 12:40:30 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.21-1
+  * require uyuni netty build to fix failing tomcat start
+
+-------------------------------------------------------------------
+Mon Apr 25 15:04:59 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Prefer parsing numbers as ints in HTTP API for compatibility
 
 -------------------------------------------------------------------
 Tue Apr 19 12:01:05 CEST 2022 - jgonzalez@suse.com

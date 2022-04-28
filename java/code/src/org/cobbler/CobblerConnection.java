@@ -111,7 +111,7 @@ public class CobblerConnection {
      * @return Object returned.
      */
     private Object invokeMethod(String procedureName, List args) {
-        log.debug("procedure: " + procedureName + " args: " + args);
+        log.debug("procedure: {} args: {}", procedureName, args);
         Object retval;
         try {
             retval = client.invoke(procedureName, args);

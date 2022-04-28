@@ -1,29 +1,31 @@
 
 synopsis:
 
-	System groups in spacewalk/SUSE Manager
+  System groups
 
 description:
 
-	List of all system groups across whole spacewalk/SUSE Manager
+  List of all available system groups
 
 columns:
 
-	group_id	System group id
-	name	System group name
-	current_members	Number of current members in system group
-	org_id	ID of organization which owns the system group
+  mgm_id The id of the management server instance that contains this data
+  group_id The id of this system group
+  name The unique name of this system group
+  current_members The current number of members of this system group
+  organization The organization that owns this data
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select id as group_id,
-		name,
-		current_members,
-		org_id
-	from rhnservergroup
-		where group_type is null
-	) X
-	-- where placeholder
-	order by group_id
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_group_id AS group_id
+                , name
+                , current_members
+                , organization
+                , synced_date
+        FROM SystemGroupsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, group_id

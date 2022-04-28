@@ -94,7 +94,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                 continue;
             }
 
-            log.info("  saving comparison for " + server.getId());
+            log.info("  saving comparison for {}", server.getId());
             ActionFactory.save(act);
             actionsToSchedule.add(act);
         }

@@ -107,6 +107,46 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     /**
+     * Create SUSEProductSCCRepository for the product
+     * @param baseProduct Base product
+     * @param baseChannel base channe
+     * @param product product
+     * @param channel channel
+     * @param user user
+     */
+    public static void populateRepository(SUSEProduct baseProduct, Channel baseChannel, SUSEProduct product,
+                                    Channel channel, User user) {
+        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCRepository repository = SUSEProductTestUtils.createSCCRepository();
+        SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
+
+        SUSEProductSCCRepository ltssSP1ProdRepo = new SUSEProductSCCRepository();
+        ltssSP1ProdRepo.setRepository(repository);
+        ltssSP1ProdRepo.setRootProduct(baseProduct);
+        ltssSP1ProdRepo.setProduct(product);
+        ltssSP1ProdRepo.setParentChannelLabel(baseChannel.getLabel());
+        ltssSP1ProdRepo.setChannelName(baseChannel.getLabel());
+        ltssSP1ProdRepo.setChannelLabel(channel.getLabel());
+        ltssSP1ProdRepo.setMandatory(true);
+        TestUtils.saveAndReload(ltssSP1ProdRepo);
+    }
+
+    /**
+     * Return the InstalledProduct instance for a SUSEProduct
+     * @param product SUSEProduct instance
+     * @return InstalledProduct instance
+     */
+    public static InstalledProduct getInstalledProduct(SUSEProduct product) {
+        InstalledProduct prod = new InstalledProduct();
+        prod.setName(product.getName());
+        prod.setVersion(product.getVersion());
+        prod.setRelease(product.getRelease());
+        prod.setArch(product.getArch());
+        prod.setBaseproduct(product.isBase());
+        return prod;
+    }
+
+    /**
      * Create a vendor channel (org is null) for testing.
      * @return vendor channel for testing
      * @throws Exception

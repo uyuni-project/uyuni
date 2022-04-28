@@ -79,7 +79,7 @@ public class MinionPillarFileManager {
             Files.deleteIfExists(filePath);
         }
         catch (IOException e) {
-            LOG.error("Could not remove pillar file " + filePath);
+            LOG.error("Could not remove pillar file {}", filePath);
         }
     }
 

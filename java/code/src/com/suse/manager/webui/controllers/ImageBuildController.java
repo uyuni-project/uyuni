@@ -710,7 +710,7 @@ public class ImageBuildController {
                     .map(overview -> ResultJson.success(
                             getRuntimeOverviewJson(usages, overview)))
                     .orElseGet(() -> {
-                        log.error("ImageOverview id=" + id + " not found");
+                        log.error("ImageOverview id={} not found", id);
                         return ResultJson.error("image_overview_not_found");
                     });
 

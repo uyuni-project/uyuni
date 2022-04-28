@@ -85,8 +85,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult<KickstartDto> kickstartsInOrg(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartsInOrg(Org orgIn=" + orgIn.getId() +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("kickstartsInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn.getId(), pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "kickstarts_for_org");
@@ -96,8 +95,7 @@ public class KickstartLister extends BaseManager {
         DataResult<KickstartDto> returnDataResult = makeDataResult(params,
                                                             elabParams, pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartsInOrg(Org, PageControl) - end - return value=" +
-                    returnDataResult);
+            logger.debug("kickstartsInOrg(Org, PageControl) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -110,16 +108,14 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult kickstartTreesInOrg(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartTreesInOrg(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("kickstartTreesInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
         SelectMode m = ModeFactory.getMode("General_queries", "kickstart_trees_for_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult retval = makeDataResult(params, null, pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartTreesInOrg(Org, PageControl) - end - return value=" +
-                    retval);
+            logger.debug("kickstartTreesInOrg(Org, PageControl) - end - return value={}", retval);
         }
         return retval;
     }
@@ -141,8 +137,7 @@ public class KickstartLister extends BaseManager {
         DataResult<KickstartScript> returnDataResult = makeDataResultNoPagination(params,
                 elabParams, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("scriptsInKickstart(KS) - end - return value=" +
-                    returnDataResult);
+            logger.debug("scriptsInKickstart(KS) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -188,8 +183,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult kickstartIpRangesInOrg(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartIpRangesInOrg(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("kickstartIpRangesInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "org_ks_ip_ranges");
@@ -198,8 +192,7 @@ public class KickstartLister extends BaseManager {
         Map<String, Object> elabParams = new HashMap<>();
         DataResult returnDataResult = makeDataResult(params, elabParams, pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("kickstartIpRangesInOrg(Org, PageControl) - end - return value=" +
-                    returnDataResult);
+            logger.debug("kickstartIpRangesInOrg(Org, PageControl) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -213,8 +206,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult cryptoKeysInOrg(Org orgIn) {
         if (logger.isDebugEnabled()) {
-            logger.debug("gpgKeysInOrg(Org orgIn=" +
-                    orgIn + ") - start");
+            logger.debug("gpgKeysInOrg(Org orgIn={}) - start", orgIn);
         }
         SelectMode m = ModeFactory.getMode("General_queries", "crypto_keys_for_org");
         Map<String, Object> params = new HashMap<>();
@@ -234,8 +226,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult preservationListsInOrg(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("preservationListsInOrg(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("preservationListsInOrg(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "preservations_for_org");
@@ -244,8 +235,7 @@ public class KickstartLister extends BaseManager {
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("preservationListsInOrg(Org, PageControl) - end - return value=" +
-                    returnDataResult);
+            logger.debug("preservationListsInOrg(Org, PageControl) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -259,8 +249,7 @@ public class KickstartLister extends BaseManager {
     public DataResult<ActivationKeyDto> getActivationKeysInOrg(Org orgIn,
                                                               PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("activationKeysForKickstartProfile(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -271,8 +260,8 @@ public class KickstartLister extends BaseManager {
                                                     Collections.EMPTY_MAP, pc, m);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - " +
-                         "end - return value=" + returnDataResult);
+            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }
@@ -285,8 +274,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult getActiveActivationKeysInOrg(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("activationKeysForKickstartProfile(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -296,8 +284,8 @@ public class KickstartLister extends BaseManager {
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - " +
-                         "end - return value=" + returnDataResult);
+            logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }
@@ -310,8 +298,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult getSystemsCurrentlyKickstarting(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getSystemsCurrentlyKickstarting(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("getSystemsCurrentlyKickstarting(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -320,8 +307,7 @@ public class KickstartLister extends BaseManager {
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("getSystemsCurrentlyKickstarting(Org, PageControl)" +
-                         " - end - return value=" + returnDataResult);
+            logger.debug("getSystemsCurrentlyKickstarting(Org, PageControl) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -334,8 +320,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult getSystemsScheduledToBeKickstarted(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getSystemsScheduledToBeKickstarted(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("getSystemsScheduledToBeKickstarted(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -344,8 +329,8 @@ public class KickstartLister extends BaseManager {
         params.put("org_id", orgIn.getId());
         DataResult returnDataResult = makeDataResult(params, new HashMap(), pc, m);
         if (logger.isDebugEnabled()) {
-            logger.debug("getSystemsScheduledToBeKickstarted(Org, PageControl)" +
-                         " - end - return value=" + returnDataResult);
+            logger.debug("getSystemsScheduledToBeKickstarted(Org, PageControl) - end - return value={}",
+                    returnDataResult);
         }
         return returnDataResult;
     }
@@ -359,8 +344,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult getKickstartSummary(Org orgIn, PageControl pc) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getKickstartSummary(Org orgIn=" + orgIn +
-                    ", PageControl pc=" + pc + ") - start");
+            logger.debug("getKickstartSummary(Org orgIn={}, PageControl pc={}) - start", orgIn, pc);
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -370,8 +354,7 @@ public class KickstartLister extends BaseManager {
         DataResult returnDataResult = makeDataResultNoPagination(params,
                                                                  new HashMap(), m);
         if (logger.isDebugEnabled()) {
-            logger.debug("getKickstartSummary(Org, PageControl)" +
-                         " - end - return value=" + returnDataResult);
+            logger.debug("getKickstartSummary(Org, PageControl) - end - return value={}", returnDataResult);
         }
         return returnDataResult;
     }
@@ -383,8 +366,7 @@ public class KickstartLister extends BaseManager {
      */
     public DataResult getValidTimezones(Long ksId) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getValidTimezones(ksId=" + ksId.toString() +
-                         ") - start");
+            logger.debug("getValidTimezones(ksId={}) - start", ksId.toString());
         }
 
         SelectMode m = ModeFactory.getMode("General_queries",
@@ -394,8 +376,7 @@ public class KickstartLister extends BaseManager {
         DataResult returnDataResult = makeDataResultNoPagination(params,
                                                                  new HashMap(), m);
         if (logger.isDebugEnabled()) {
-            logger.debug("getValidTimezones(ksId)" +
-                         " - end - return value=" + returnDataResult);
+            logger.debug("getValidTimezones(ksId) - end - return value={}", returnDataResult);
         }
 
         return returnDataResult;
@@ -444,7 +425,7 @@ public class KickstartLister extends BaseManager {
                 profiles.add(CobblerProfileDto.create(profile));
             }
         }
-        logger.debug("Returning cobbler profiles: " + profiles);
+        logger.debug("Returning cobbler profiles: {}", profiles);
         return profiles;
     }
 

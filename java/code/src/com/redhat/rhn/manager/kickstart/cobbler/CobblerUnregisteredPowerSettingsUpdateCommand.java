@@ -60,7 +60,7 @@ public class CobblerUnregisteredPowerSettingsUpdateCommand extends CobblerPowerS
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(user), getIdent());
         if (rec == null) {
-            log.info("System with cobbler name " + getIdent() + " not found.");
+            log.info("System with cobbler name {} not found.", getIdent());
         }
         return rec;
     }

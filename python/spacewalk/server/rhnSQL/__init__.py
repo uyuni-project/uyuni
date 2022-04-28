@@ -74,7 +74,7 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
 
 
 def initDB(backend=None, host=None, port=None, username=None,
-           password=None, database=None, sslmode=None, sslrootcert=None):
+           password=None, database=None, sslmode=None, sslrootcert=None, reportdb=False):
     """
     Initialize the database.
 
@@ -86,17 +86,33 @@ def initDB(backend=None, host=None, port=None, username=None,
     if backend is None:
         if CFG is None or not CFG.is_initialized():
             initCFG('server')
-        backend = CFG.DB_BACKEND
-        host = CFG.DB_HOST
-        port = CFG.DB_PORT
-        database = CFG.DB_NAME
-        username = CFG.DB_USER
-        password = CFG.DB_PASSWORD
-        sslmode = None
-        sslrootcert = None
-        if CFG.DB_SSL_ENABLED:
-            sslmode = 'verify-full'
-            sslrootcert = CFG.DB_SSLROOTCERT
+
+        if reportdb:
+            backend = CFG.REPORT_DB_BACKEND
+            host = CFG.REPORT_DB_HOST
+            port = CFG.REPORT_DB_PORT
+            database = CFG.REPORT_DB_NAME
+            username = CFG.REPORT_DB_USER
+            password = CFG.REPORT_DB_PASSWORD
+            if CFG.REPORT_DB_SSL_ENABLED:
+                sslmode = 'verify-full'
+                sslrootcert = CFG.REPORT_DB_SSLROOTCERT
+            else:
+                sslmode = None
+                sslrootcert = None
+        else:
+            backend = CFG.DB_BACKEND
+            host = CFG.DB_HOST
+            port = CFG.DB_PORT
+            database = CFG.DB_NAME
+            username = CFG.DB_USER
+            password = CFG.DB_PASSWORD
+            if CFG.DB_SSL_ENABLED:
+                sslmode = 'verify-full'
+                sslrootcert = CFG.DB_SSLROOTCERT
+            else:
+                sslmode = None
+                sslrootcert = None
 
     if backend not in SUPPORTED_BACKENDS:
         raise rhnException("Unsupported database backend", backend)

@@ -82,7 +82,7 @@ public class ResourceReloadServlet extends HttpServlet {
             String results = "Reloaded resource files: [" + reloaded + "]";
             response.setContentLength(results.length());
             if (log.isDebugEnabled()) {
-                log.debug("Reloaded result [" + new String(results) + "]");
+                log.debug("Reloaded result [{}]", new String(results));
             }
             out.write(results.getBytes());
             out.flush();

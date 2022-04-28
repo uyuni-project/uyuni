@@ -52,7 +52,7 @@ public class RepoInfo {
         if (!cmd.getCommandName().isRepoCommand()) {
             String msg = "Only repo commands are handled here .." +
                                 " Given command[%s] is not a repo command ";
-            throw new UnsupportedOperationException(String.format(msg, cmd.toString()));
+            throw new UnsupportedOperationException(String.format(msg, cmd));
 
         }
         RepoInfo info = new RepoInfo();

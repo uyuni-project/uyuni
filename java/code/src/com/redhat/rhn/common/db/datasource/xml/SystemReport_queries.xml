@@ -221,7 +221,8 @@
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
                       , rhnserver.hostname
-                      , web_contact.login AS scheduled_by
+                      , web_contact.id AS scheduler_id
+                      , web_contact.login AS scheduler_username
                       , rhnaction.earliest_action
                       , rhnaction.archived = 1 AS archived
                       , rhnserveraction.pickup_time

@@ -61,7 +61,7 @@ class JarFinder implements Finder {
                 String entryName = entry.getName();
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Current entry: " + entryName);
+                    log.debug("Current entry: {}", entryName);
                 }
 
                 if (entryName.startsWith(starts) &&

@@ -77,8 +77,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
      * @param timezoneIn The timezone
      */
     public void setTimezone(String timezoneIn) {
-        logger.debug("setTimezone(String timezoneIn=" + timezoneIn +
-                     ") - start");
+        logger.debug("setTimezone(String timezoneIn={}) - start", timezoneIn);
 
         KickstartCommand timezoneCommand = getKickstartData().getCommand("timezone");
 
@@ -89,8 +88,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         }
 
         if (!this.getTimezone().equals(timezoneIn)) {
-            logger.debug("Changing timezone from " + this.getTimezone() +
-                         " to " + timezoneIn + ".");
+            logger.debug("Changing timezone from {} to {}.", this.getTimezone(), timezoneIn);
 
             String current = this.getTimezone();
 

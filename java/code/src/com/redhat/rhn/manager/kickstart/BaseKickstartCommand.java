@@ -92,7 +92,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
 
         CobblerProfileEditCommand cmd = new CobblerProfileEditCommand(ksdata, user);
         ValidatorError err = cmd.store();
-        logger.debug("Did we get an error storing to cobbler: " + err);
+        logger.debug("Did we get an error storing to cobbler: {}", err);
         return err;
     }
 

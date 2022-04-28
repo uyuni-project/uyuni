@@ -15,7 +15,16 @@
   <rhn:toolbar base="h2" icon="header-channel">
     <bean:message key="spmigration.jsp.confirm.title" />
   </rhn:toolbar>
-
+  <c:if test="${not empty missingSuccessorExtensions}">
+      <div class="alert alert-warning">
+         <bean:message key="spmigration.jsp.error.to-be-removed-extensions" /><br/>
+          <ul>
+             <c:forEach items="${missingSuccessorExtensions}" var="missing">
+                <li><c:out value="${missing}" /></li>
+             </c:forEach>
+          </ul>
+      </div>
+  </c:if>
   <div class="page-summary">
     <p><bean:message key="spmigration.jsp.confirm.description" /></p>
     <ul class="list-channel">

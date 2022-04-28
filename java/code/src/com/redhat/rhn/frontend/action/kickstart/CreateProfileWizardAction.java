@@ -286,7 +286,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         else {
             downloadUrl = form.getString(USER_DOWNLOAD_PARAM);
         }
-        log.debug("Using download location: " + downloadUrl);
+        log.debug("Using download location: {}", downloadUrl);
         String ksLabel = form.getString(KICKSTART_LABEL_PARAM);
         String rootPass = form.getString(ROOT_PASSWORD_PARAM);
         String virtType = form.getString(VIRTUALIZATION_TYPE_LABEL_PARAM);

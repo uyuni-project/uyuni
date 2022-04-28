@@ -1722,8 +1722,7 @@ public class SystemHandler extends BaseHandler {
                 deletion.add(sysId.longValue());
             }
             else {
-                log.warn("system " + sysId +
-                        " is not available to user, hence will not be deleted");
+                log.warn("system {} is not available to user, hence will not be deleted", sysId);
                 skippedSids.add(sysId);
             }
         }
@@ -4048,6 +4047,42 @@ public class SystemHandler extends BaseHandler {
 
 
     /**
+     * Private helper method is called by other methods to perform package action.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @return package action id
+     */
+    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids,
+            Date earliestOccurrence, ActionType acT) {
+        HashSet<Long> lsids = new HashSet<>();
+        for (Integer sid : sids) {
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
+                    loggedInUser);
+
+            // Would be nice to do this check at the Manager layer but upset many tests,
+            // some of which were not cooperative when being fixed. Placing here for now.
+            if (!SystemManager.hasEntitlement(server.getId(), EntitlementManager.SALT)) {
+                throw new MissingEntitlementException(
+                        EntitlementManager.SALT.getHumanReadableLabel());
+            }
+            lsids.add(server.getId());
+        }
+
+        try {
+            return ActionManager.schedulePackageAction(loggedInUser, null, acT,
+                    earliestOccurrence, lsids).getId();
+        }
+        catch (MissingEntitlementException e) {
+            throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
      * Private helper method to build a list of maps in the format the ActionManager wants.
      *
      * @param user The current user
@@ -4066,7 +4101,7 @@ public class SystemHandler extends BaseHandler {
 
             if (p == null) {
                 throw new InvalidPackageException("cannot find package with name " +
-                        pkgId.toString() + " in Satellite database");
+                        pkgId + " in Satellite database");
             }
 
             pkgMap.put("name_id", p.getPackageName().getId());
@@ -4201,6 +4236,29 @@ public class SystemHandler extends BaseHandler {
         else {
             throw new RetractedPackageFault(retractedPids);
         }
+    }
+
+    /**
+     * Schedule full package update for several systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @return package action id
+     * @since 25
+     *
+     * @xmlrpc.doc Schedule full package update for several systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.returntype #param("int", "actionId")
+     */
+    public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
+                                        Date earliestOccurrence) {
+
+        return schedulePackagesUpdateAction(loggedInUser, sids,
+                earliestOccurrence,
+                ActionFactory.TYPE_PACKAGES_UPDATE);
     }
 
     /**
@@ -5450,8 +5508,7 @@ public class SystemHandler extends BaseHandler {
 
             // Ignore if the system already has this entitlement:
             if (server.hasEntitlement(ent)) {
-                log.debug("System " + server.getName() + " already has entitlement: " +
-                        ent.getLabel());
+                log.debug("System {} already has entitlement: {}", server.getName(), ent.getLabel());
                 continue;
             }
 
@@ -5598,7 +5655,7 @@ public class SystemHandler extends BaseHandler {
                 }
                 catch (NumberFormatException nfe) {
                     // not our file, skip it
-                    log.debug("Skipping " + file.getName());
+                    log.debug("Skipping {}", file.getName());
                     break;
                 }
 
@@ -5619,15 +5676,14 @@ public class SystemHandler extends BaseHandler {
                                 }
                             }
                             if (uuidPos == null || systemIdPos == null) {
-                                log.warn("Unexpected format of mapping file " +
-                                        file.getName());
+                                log.warn("Unexpected format of mapping file {}", file.getName());
                                 break;
                             }
                             continue;
                         }
                         String[] record = line.split(",");
                         if (record.length <= uuidPos || record.length <= systemIdPos) {
-                            log.warn("Unexpected format of mapping file " + file.getName());
+                            log.warn("Unexpected format of mapping file {}", file.getName());
                             break;
                         }
                         if (record[systemIdPos].equals(systemIdStr) &&
@@ -5653,7 +5709,7 @@ public class SystemHandler extends BaseHandler {
                     br.close();
                 }
                 catch (IOException e) {
-                    log.warn("Cannot read " + file.getName());
+                    log.warn("Cannot read {}", file.getName());
                 }
             }
         }
@@ -7242,9 +7298,33 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
+    public List<Map<String, Object>> listMigrationTargets(User loggedInUser, Integer serverId) {
+        return listMigrationTargets(loggedInUser, serverId, true);
+
+    }
+    /**
+     * List possible migration targets for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @param excludeTargetWhereMissingSuccessors exclude target if any extension has missing successor
+     * @return Array of migration targets for given system
+     *
+     * @xmlrpc.doc List possible migration targets for a system, if excludeTargetWhereMissingSuccessors is false then
+     * valid targets without some successors will also be listed.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("boolean", "excludeTargetWhereMissingSuccessors")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("migrationtarget")
+     *                 #prop("string", "ident")
+     *                 #prop("string", "friendly")
+     *          #struct_end()
+     *      #array_end()
+     */
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
-            Integer serverId) {
-        List<Map<String, Object>> returnList = new ArrayList<>();
+            Integer serverId, boolean excludeTargetWhereMissingSuccessors) {
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         if (!installedProducts.isPresent()) {
@@ -7254,10 +7334,10 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
-
-        migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
-                installedProducts, migrationTargets, Optional.empty());
-
+        if (excludeTargetWhereMissingSuccessors) {
+            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
+                    installedProducts, migrationTargets,  Optional.empty());
+        }
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
                 continue;
@@ -7358,7 +7438,7 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange, Date earliest) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
-                optionalChildChannels, dryRun, allowVendorChange, earliest);
+                optionalChildChannels, dryRun, allowVendorChange, false, earliest);
     }
 
     /**
@@ -7391,7 +7471,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param_desc("string", "targetIdent", " identifier for the selected migration target.
+     *  User listMigrationTargets to list the identifiers ")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7402,7 +7483,7 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
                                     String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                     Date earliest) {
-        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
+       return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliest);
     }
 
@@ -7437,7 +7518,8 @@ public class SystemHandler extends BaseHandler {
      * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7554,7 +7636,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7593,7 +7676,8 @@ public class SystemHandler extends BaseHandler {
      * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7604,6 +7688,52 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
                                          String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                          Boolean allowVendorChange, Date earliest) {
+       return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels, dryRun,
+                allowVendorChange, false, earliest);
+
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param removeProductsWithNoSuccessorAfterMigration set to remove products which have no successors
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("string", "targetIdent",
+     * "Identifier for the selected migration target - User listMigrationTargets to list the identifiers ")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param_desc("boolean", "removeProductsWithNoSuccessorAfterMigration","set to remove products which
+     * have no successors. This flag will only have effect if targetIdent will also be specified")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         boolean allowVendorChange,
+                                         boolean removeProductsWithNoSuccessorAfterMigration, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -7629,7 +7759,11 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
                 installedProducts, arch, loggedInUser);
-        targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+        // Consider the targets where some extensions have missing successors but only if user explicitly mention
+        // targetIdent && set the flag removeProductsWithNoSuccessorAfterMigration as true
+        if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
+            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+        }
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
@@ -7639,17 +7773,17 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug(ps.toString() + " is completely synced.");
+                                    log.debug("{} is completely synced.", ps.toString());
                                 }
                                 else {
-                                    log.debug("Discarding " + ps.toString() + ". Is not completely synced.");
+                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
                                 }
                             }
                             return ps.getIsEveryChannelSynced();
                         })
                         .collect(toList());
                 targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
-                log.info("Using migration target: " + targetProducts);
+                log.info("Using migration target: {}", targetProducts);
             }
             else {
                 for (SUSEProductSet target : targets) {
@@ -7666,7 +7800,7 @@ public class SystemHandler extends BaseHandler {
                         targets.stream().map(t -> t + " : " +
                                 t.getMissingChannelsMessage())
                                 .collect(Collectors.joining(System.getProperty("line.separator")));
-                log.error("No target products found for migration: " + targetsInfo);
+                log.error("No target products found for migration: {}", targetsInfo);
                 throw new FaultException(-1, "productMigrationNoTarget",
                         "No target found for Product migration. " + targetsInfo);
             }
@@ -7907,7 +8041,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, empty());
-        log.debug("bootstrap called: " + params);
+        log.debug("bootstrap called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7945,7 +8079,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called: " + params);
+        log.debug("bootstrapWithPrivateSshKey called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7981,7 +8115,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with proxyId: " + params);
+        log.debug("bootstrap called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8021,7 +8155,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8057,7 +8191,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, empty());
-        log.debug("bootstrap called with re-activation key: " + params);
+        log.debug("bootstrap called with re-activation key: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8098,7 +8232,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true, empty());
-        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivationKey: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8137,7 +8271,7 @@ public class SystemHandler extends BaseHandler {
         List<String> activationKeys = maybeActivationKeys(activationKey);
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
                 maybeString(reactivationKey), true, of(proxyId.longValue()));
-        log.debug("bootstrap called with re-activation key and proxyId: " + params);
+        log.debug("bootstrap called with re-activation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8181,7 +8315,7 @@ public class SystemHandler extends BaseHandler {
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
                 of(proxyId.longValue()));
-        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: " + params);
+        log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8465,13 +8599,13 @@ public class SystemHandler extends BaseHandler {
                         }
                     },
                     () -> {
-                        log.warn("system " + sysId + " is not a salt minion, hence pillar will not be updated");
+                        log.warn("system {} is not a salt minion, hence pillar will not be updated", sysId);
                         skipped.add(sysId);
                     }
                 );
             }
             else {
-                log.warn("system " + sysId + " is not available to user, hence pillar will not be refreshed");
+                log.warn("system {} is not available to user, hence pillar will not be refreshed", sysId);
                 skipped.add(sysId);
             }
         }

@@ -182,9 +182,9 @@ public class SystemEntitlementsSubmitAction extends
                 //  if so, neither success nor failure count will be updated.
                 if (!server.hasEntitlement(ent)) {
                     if (systemEntitlementManager.canEntitleServer(server, ent)) {
-                            log.debug("we can entitle.  Lets entitle to : " + ent);
+                        log.debug("we can entitle.  Lets entitle to : {}", ent);
                             ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, ent);
-                            log.debug("entitleServer.VE: " + vr.getMessage());
+                        log.debug("entitleServer.VE: {}", vr.getMessage());
                             if (vr.getErrors().size() > 0) {
                                 failureCount++;
                             }
@@ -223,8 +223,7 @@ public class SystemEntitlementsSubmitAction extends
         }
         else {
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "successCount: " + successCount + " failureCount: " + failureCount);
+                log.debug("successCount: {} failureCount: {}", successCount, failureCount);
             }
             //Create the 'added entitlements' success message
             if (successCount > 0 && failureCount == 0) {

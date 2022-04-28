@@ -1852,39 +1852,18 @@
     <action path="/schedule/CompletedSystems"
             scope="request"
             input="/WEB-INF/pages/schedule/completedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsSetupAction">
+            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsAction">
             <forward name="default"
                      path="/WEB-INF/pages/schedule/completedsystems.jsp" />
-    </action>
-
-    <action path="/schedule/CompletedSystemsSubmit"
-            scope="request"
-            input="/WEB-INF/pages/schedule/completedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.CompletedSystemsAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="postRequired" value="true" />
-            <forward name="default"
-                     path="/schedule/CompletedSystems.do" redirect="true" />
     </action>
 
 
     <action path="/schedule/FailedSystems"
             scope="request"
             input="/WEB-INF/pages/schedule/failedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsSetupAction">
+            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsAction">
             <forward name="default"
                      path="/WEB-INF/pages/schedule/failedsystems.jsp" />
-    </action>
-
-    <action path="/schedule/FailedSystemsSubmit"
-            scope="request"
-            input="/WEB-INF/pages/schedule/failedsystems.jsp"
-            type="com.redhat.rhn.frontend.action.schedule.FailedSystemsAction"
-            parameter="dispatch"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-            <set-property property="postRequired" value="true" />
-            <forward name="default"
-                     path="/schedule/FailedSystems.do" redirect="true" />
             <forward name="scheduled"
                      path="/schedule/ActionDetails.do" redirect="true" />
     </action>

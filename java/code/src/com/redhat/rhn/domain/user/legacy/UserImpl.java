@@ -374,7 +374,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {
-                LOG.warn("PAM login for user " + this + " failed with error " + ret);
+                LOG.warn("PAM login for user {} failed with error {}", this, ret);
             }
         }
         else {
@@ -407,12 +407,11 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
             if (LOG.isDebugEnabled() && !useEncrPasswds) {
                 String encr = useEncrPasswds ? "with" : "without";
-                LOG.debug("DB login for user " + this + " " +
-                        encr + " encrypted passwords failed");
+                LOG.debug("DB login for user {} {} encrypted passwords failed", this, encr);
             }
         }
         if (LOG.isDebugEnabled() && result) {
-            LOG.debug("PAM login for user " + this + " succeeded. ");
+            LOG.debug("PAM login for user {} succeeded. ", this);
         }
         return result;
     }

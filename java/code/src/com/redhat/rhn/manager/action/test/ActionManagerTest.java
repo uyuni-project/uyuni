@@ -1141,10 +1141,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new DataResult<>(b), "foo");
 
         for (PackageMetadata pm : pkgs) {
-            log.warn("pm [" + pm.toString() + "] compare [" +
-                    pm.getComparison() + "] release [" +
-                    (pm.getSystem() != null ? pm.getSystem().getRelease() :
-                            pm.getOther().getRelease()) + "]");
+            log.warn("pm [{}] compare [{}] release [{}]", pm.toString(), pm.getComparison(),
+                    pm.getSystem() != null ? pm.getSystem().getRelease() : pm.getOther().getRelease());
         }
 //        assertEquals(1, diff.size());
 //        PackageMetadata pm = (PackageMetadata) diff.get(0);

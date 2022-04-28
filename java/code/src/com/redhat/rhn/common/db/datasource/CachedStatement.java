@@ -261,7 +261,7 @@ public class CachedStatement implements Serializable {
 
             }
             catch (RhnRuntimeException e) {
-                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                log.error("Error while processing cached statement sql: {}", getQuery(), e);
                 throw e;
             }
         });
@@ -465,7 +465,7 @@ public class CachedStatement implements Serializable {
             }
             catch (RhnRuntimeException e) {
                 // we just add more information for better bug tracking
-                log.error("Error while processing cached statement sql: " + sql, e);
+                log.error("Error while processing cached statement sql: {}", sql, e);
                 throw e;
             }
         });
@@ -489,8 +489,8 @@ public class CachedStatement implements Serializable {
             List<Object> dr)
         throws SQLException {
         if (log.isDebugEnabled()) {
-            log.debug("execute() - Executing: " + sql);
-            log.debug("execute() - With: " + parameters);
+            log.debug("execute() - Executing: {}", sql);
+            log.debug("execute() - With: {}", parameters);
         }
 
         PreparedStatement ps = null;
@@ -499,7 +499,7 @@ public class CachedStatement implements Serializable {
             boolean returnType = NamedPreparedStatement.execute(ps, parameterMap,
                     setupParamMap(parameters));
             if (log.isDebugEnabled()) {
-                log.debug("execute() - Return type: " + returnType);
+                log.debug("execute() - Return type: {}", returnType);
             }
             if (returnType) {
                 return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);
@@ -921,5 +921,52 @@ public class CachedStatement implements Serializable {
         return restartData == null ? null :
                 (DataResult<?>) internalExecute(restartData.getParameters(),
                         restartData.getInClause(), restartData.getMode());
+    }
+
+    /**
+     * Executes multiple updates with one only prepared statement in batch mode.
+     *
+     * @param batch a list of parameter maps
+     * @return an array of update counts containing one element for each command in the batch
+     */
+    public int [] executeBatchUpdates(DataResult<Map<String, Object>> batch) {
+        return doWithStolenConnection(connection -> {
+            try {
+                sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+
+                return executeBatch(connection, sqlStatement, qMap, batch, null, null);
+            }
+            catch (SQLException e) {
+                throw SqlExceptionTranslator.sqlException(e);
+            }
+            catch (HibernateException he) {
+                throw new
+                    HibernateRuntimeException(
+                        "HibernateException executing CachedStatement", he);
+
+            }
+            catch (RhnRuntimeException e) {
+                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                throw e;
+            }
+        });
+    }
+
+    private int [] executeBatch(Connection connection, String sql,
+            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch, Mode mode,
+            List<Object> dr) throws SQLException {
+        if (log.isDebugEnabled()) {
+            log.debug("execute() - Executing: " + sql);
+            log.debug("execute() - With: " + batch);
+        }
+
+        PreparedStatement ps = null;
+        try {
+            ps = prepareStatement(connection, sql, mode);
+            return NamedPreparedStatement.executeBatch(ps, parameterMap, batch);
+        }
+        finally {
+            HibernateHelper.cleanupDB(ps);
+        }
     }
 }

@@ -172,10 +172,6 @@
         "name": "SUSE Linux Enterprise Modules"
     }, 
     {
-        "label": "jeos", 
-        "name": "Just enough OS"
-    }, 
-    {
         "label": "MEEGO-1", 
         "name": "MEEGO"
     }, 

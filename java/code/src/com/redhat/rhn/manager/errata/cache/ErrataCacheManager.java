@@ -319,7 +319,7 @@ public class ErrataCacheManager extends HibernateFactory {
         if (eid != null) {
             Errata errata = ErrataFactory.lookupById(eid);
             if (errata.getAdvisoryStatus().equals(AdvisoryStatus.RETRACTED)) {
-                log.debug("updateCacheForChannelErrata skip adding retracted errata: " + eid);
+                log.debug("updateCacheForChannelErrata skip adding retracted errata: {}", eid);
                 return;
             }
             params.put("errata_id", eid);
@@ -333,8 +333,7 @@ public class ErrataCacheManager extends HibernateFactory {
             count = m.executeUpdate(params, pids);
         }
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries inserted: " +
-                    count);
+            log.debug("updateCacheForChannelErrata : cache entries inserted: {}", count);
         }
 
     }
@@ -358,7 +357,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("channel_id", cid);
         count = m.executeUpdate(params, eids);
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries deleted: " + count);
+            log.debug("updateCacheForChannelErrata : cache entries deleted: {}", count);
         }
     }
 
@@ -379,7 +378,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("errata_id", eid);
         count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
-            log.debug("updateCacheForChannelErrata : " + "cache entries deleted: " + count);
+            log.debug("updateCacheForChannelErrata : cache entries deleted: {}", count);
         }
     }
 
@@ -415,8 +414,7 @@ public class ErrataCacheManager extends HibernateFactory {
         params.put("channel_id", cid);
         int count = m.executeUpdate(params, pids);
         if (log.isDebugEnabled()) {
-            log.debug("delete_needed_cache_for_channel_packages : " +
-                "package_cache deleted: " + count);
+            log.debug("delete_needed_cache_for_channel_packages : package_cache deleted: {}", count);
         }
 
     }

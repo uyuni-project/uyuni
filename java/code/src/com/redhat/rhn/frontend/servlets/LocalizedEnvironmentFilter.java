@@ -97,7 +97,7 @@ public class LocalizedEnvironmentFilter implements Filter {
             // Use the Appserver timezone if the User doesn't have one.
             String olsonName = TimeZone.getDefault().getID();
             if (LOG.isDebugEnabled()) {
-                LOG.debug("olson name [" + olsonName + "]");
+                LOG.debug("olson name [{}]", olsonName);
             }
             tz = UserManager.getTimeZone(olsonName);
             // if we're still null set it to a default

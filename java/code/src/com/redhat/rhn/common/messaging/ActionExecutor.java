@@ -48,15 +48,14 @@ class ActionExecutor implements Runnable {
      */
     public void run() {
         for (MessageAction action : actionHandlers) {
-            LOG.debug("run() - got action: " + action.getClass().getName());
+            LOG.debug("run() - got action: {}", action.getClass().getName());
             try {
                 if (msg instanceof EventDatabaseMessage) {
                     EventDatabaseMessage evtdb = (EventDatabaseMessage) msg;
                     LOG.debug("Got a EventDatabaseMessage");
                     while (evtdb.getTransaction().isActive()) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("DB message, waiting for txn: active: " +
-                                    evtdb.getTransaction().isActive());
+                            LOG.debug("DB message, waiting for txn: active: {}", evtdb.getTransaction().isActive());
                         }
                         Thread.sleep(10);
                     }

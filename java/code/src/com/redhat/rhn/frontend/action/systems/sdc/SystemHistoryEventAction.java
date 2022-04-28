@@ -124,7 +124,7 @@ public class SystemHistoryEventAction extends RhnAction {
                 TASKOMATIC_API.scheduleActionExecution(action);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not reschedule action " + action.getId());
+                log.error("Could not reschedule action {}", action.getId());
                 log.error(e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError(errors, "taskscheduler.down");

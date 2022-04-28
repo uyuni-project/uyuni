@@ -72,7 +72,7 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
         List<Long> ids = getPrimaryElementIds(elements);
 
         if (log.isDebugEnabled()) {
-            log.debug("ids to remove: " + ids);
+            log.debug("ids to remove: {}", ids);
         }
 
         cmd.removeTokensByIds(ids);
@@ -97,7 +97,7 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
         List<Long> ids = getPrimaryElementIds(elements);
 
         if (log.isDebugEnabled()) {
-            log.debug("ids to add: " + ids);
+            log.debug("ids to add: {}", ids);
         }
 
         cmd.addTokensByIds(ids);

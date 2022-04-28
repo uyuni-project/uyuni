@@ -4,9 +4,11 @@ BASE_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-base
 PGSQL_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-pgsql
 NODEJS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-nodejs
 PUSH2OBS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-push-to-obs
+REPORTDB_DOC_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-$VER-reportdb-docs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.2.2'
 IDEMPOTENCY_REPORTDB_SCHEMA_BASE_VERSION='4.3.1'
 SCHEMA_PACKAGES='susemanager-schema-4.2.2-1.1.uyuni.noarch.rpm'
 REPORTDB_SCHEMA_PACKAGES='uyuni-reportdb-schema-4.3.1-1.3.uyuni1.noarch.rpm susemanager-schema-4.3.8-1.3.uyuni1.noarch.rpm susemanager-schema-utility-4.3.8-1.3.uyuni1.noarch.rpm'
+BRAND_NAME='Uyuni'

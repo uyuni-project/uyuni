@@ -112,24 +112,24 @@ public class SCCSystemRegistrationManager {
                 sccId -> {
                     Credentials itemCredentials = cacheItem.getOptCredentials().get();
                     try {
-                        LOG.debug("de-register system " + cacheItem);
+                        LOG.debug("de-register system {}", cacheItem);
                         sccClient.deleteSystem(sccId, itemCredentials.getUsername(), itemCredentials.getPassword());
                         SCCCachingFactory.deleteRegCacheItem(cacheItem);
                     }
                     catch (SCCClientException e) {
-                        LOG.error("SCC error while deregistering system " + cacheItem.getId(), e);
+                        LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
                         if (forceDBDeletion || e.getHttpStatusCode() == 404) {
                             SCCCachingFactory.deleteRegCacheItem(cacheItem);
                         }
                         cacheItem.setRegistrationErrorTime(new Date());
                     }
                     catch (Exception e) {
-                        LOG.error("Error deregistering system " + cacheItem.getId(), e);
+                        LOG.error("Error deregistering system {}", cacheItem.getId(), e);
                         cacheItem.setRegistrationErrorTime(new Date());
                     }
                 },
                 () -> {
-                    LOG.debug("delete not registered cache item " + cacheItem);
+                    LOG.debug("delete not registered cache item {}", cacheItem);
                     SCCCachingFactory.deleteRegCacheItem(cacheItem);
                 }
         ));
@@ -145,7 +145,7 @@ public class SCCSystemRegistrationManager {
         items.forEach(cacheItem -> {
             try {
                 Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                LOG.debug("Forward registration of " + cacheItem);
+                LOG.debug("Forward registration of {}", cacheItem);
                 SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
                         getPayload(cacheItem),
                         itemCredentials.getUsername(),
@@ -158,7 +158,7 @@ public class SCCSystemRegistrationManager {
                 cacheItem.setCredentials(itemCredentials);
             }
             catch (Exception e) {
-                LOG.error("Error registering system " + cacheItem.getId(), e);
+                LOG.error("Error registering system {}", cacheItem.getId(), e);
                 cacheItem.setRegistrationErrorTime(new Date());
             }
             cacheItem.getOptServer().ifPresent(ServerFactory::save);

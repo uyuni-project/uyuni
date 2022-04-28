@@ -24873,7 +24873,10 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+        <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
+      </trans-unit>
+        <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+        <source>Following installed products will be removed from the system during migration:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>

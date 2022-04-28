@@ -149,10 +149,6 @@ public class RhnSetDecl {
     public static final RhnSetDecl SYSTEM_ENTITLEMENTS = make(
             SetLabels.SYSTEM_ENTITLEMENTS, SetCleanup.UNOWNED_SERVERS);
 
-    // set of servers by server_id
-    public static final RhnSetDecl SYSTEMS_FAILED = make("failed_system_list",
-            SetCleanup.UNOWNED_SERVERS);
-
     // set of system groups by group id
     public static final RhnSetDecl SYSTEM_GROUPS = make("system_group_list",
             SetCleanup.UNOWNED_SYSTEM_GROUPS);

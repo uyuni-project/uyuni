@@ -270,8 +270,7 @@ public class VirtualInstanceManager extends BaseManager {
             VirtNotifications.spreadRefresh("guest");
         }
         else {
-            log.warn("Preventing creation of a duplicated VirtualInstance " +
-                     "for 'uuid': " + vmGuid);
+            log.warn("Preventing creation of a duplicated VirtualInstance for 'uuid': {}", vmGuid);
         }
     }
 
@@ -368,8 +367,7 @@ public class VirtualInstanceManager extends BaseManager {
             String virtUuidSwapped = SaltUtils.uuidToLittleEndian(uuid);
             if (!VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuidSwapped).isEmpty()) {
-                log.warn("Detected swapped UUID for a virtual instance: Coercing [" +
-                        uuid + "] -> [" + virtUuidSwapped + "]");
+                log.warn("Detected swapped UUID for a virtual instance: Coercing [{}] -> [{}]", uuid, virtUuidSwapped);
                 return virtUuidSwapped;
             }
         }

@@ -132,8 +132,7 @@ public class ValueMap {
             return Optional.of((String)value);
         }
         else {
-            LOG.warn("Value '" + ObjectUtils.toString(value) +
-                    "' could not be converted to string.");
+            LOG.warn("Value '{}' could not be converted to string.", ObjectUtils.toString(value));
             return Optional.empty();
         }
     }
@@ -159,13 +158,12 @@ public class ValueMap {
                 return Optional.of(Long.parseLong((String) value));
             }
             catch (NumberFormatException e) {
-                LOG.warn("Error converting  '" + value + "' to long", e);
+                LOG.warn("Error converting  '{}' to long", value, e);
                 return Optional.empty();
             }
         }
         else {
-            LOG.warn("Value '" + ObjectUtils.toString(value) +
-                    "' could not be converted to long.");
+            LOG.warn("Value '{}' could not be converted to long.", ObjectUtils.toString(value));
             return Optional.empty();
         }
     }
@@ -182,8 +180,7 @@ public class ValueMap {
             return Optional.of((Boolean) value);
         }
         else {
-            LOG.warn("Value '" + ObjectUtils.toString(value) +
-                    "' could not be converted to Boolean.");
+            LOG.warn("Value '{}' could not be converted to Boolean.", ObjectUtils.toString(value));
             return Optional.empty();
         }
     }

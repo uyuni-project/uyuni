@@ -93,7 +93,7 @@ public class ActivationKeyPackagesCommand {
         Set<TokenPackage> tokenPackages = new HashSet<>();
 
         if (log.isDebugEnabled()) {
-            log.debug("parseAndUpdatePackages() : packagesIn: " + packagesIn);
+            log.debug("parseAndUpdatePackages() : packagesIn: {}", packagesIn);
         }
 
         packagesIn = packagesIn.replaceAll("[\t\\s]+", NEWLINE);
@@ -134,7 +134,7 @@ public class ActivationKeyPackagesCommand {
         activationKey.clearPackages();
 
         if (log.isDebugEnabled()) {
-            log.debug("parseAndUpdatePackages() : adding tokenPackages: " + tokenPackages);
+            log.debug("parseAndUpdatePackages() : adding tokenPackages: {}", tokenPackages);
         }
 
         activationKey.getPackages().addAll(tokenPackages);

@@ -32,7 +32,7 @@ public class UpdateErrataCacheAction implements MessageAction {
     public void execute(EventMessage msg) {
         UpdateErrataCacheEvent evt = (UpdateErrataCacheEvent) msg;
         if (log.isDebugEnabled()) {
-            log.debug("Updating errata cache, with type: " + evt.getUpdateType());
+            log.debug("Updating errata cache, with type: {}", evt.getUpdateType());
         }
 
         UpdateErrataCacheCommand uecc = new UpdateErrataCacheCommand();
@@ -44,18 +44,17 @@ public class UpdateErrataCacheAction implements MessageAction {
                 return;
             }
             if (log.isDebugEnabled()) {
-                log.debug("Updating errata cache for org [" + orgId + "]");
+                log.debug("Updating errata cache for org [{}]", orgId);
             }
             uecc.updateErrataCache(orgId);
             if (log.isDebugEnabled()) {
-                log.debug("Finished updating errata cache for org [" +
-                        orgId + "]");
+                log.debug("Finished updating errata cache for org [{}]", orgId);
             }
         }
         else if (evt.getUpdateType() == UpdateErrataCacheEvent.TYPE_CHANNEL) {
             for (Long cid : evt.getChannelIds()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Updating errata cache for channel: " + cid);
+                    log.debug("Updating errata cache for channel: {}", cid);
                 }
                 uecc.updateErrataCacheForChannel(cid);
             }
@@ -63,8 +62,7 @@ public class UpdateErrataCacheAction implements MessageAction {
         else if (evt.getUpdateType() == UpdateErrataCacheEvent.TYPE_CHANNEL_ERRATA) {
             for (Long cid : evt.getChannelIds()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Updating errata cache for channel: " + cid +
-                            " and errata:" + evt.getErrataId());
+                    log.debug("Updating errata cache for channel: {} and errata:{}", cid, evt.getErrataId());
                 }
                 if (evt.getPackageIds() == null || evt.getPackageIds().size() == 0) {
                     uecc.updateErrataCacheForErrata(cid, evt.getErrataId());

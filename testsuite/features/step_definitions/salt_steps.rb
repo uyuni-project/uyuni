@@ -187,8 +187,9 @@ When(/^I enter command "([^"]*)"$/) do |cmd|
   fill_in('command', with: cmd, fill_options: { clear: :backspace })
 end
 
-When(/^I enter target "([^"]*)"$/) do |minion|
-  fill_in('target', with: minion, fill_options: { clear: :backspace })
+When(/^I enter target "([^"]*)"$/) do |host|
+  value = get_system_name(host)
+  fill_in('target', with: value, fill_options: { clear: :backspace })
 end
 
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
