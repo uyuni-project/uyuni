@@ -1,3 +1,8 @@
 
 repository: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni
 version: latest
+
+# Persistent Volumes
+BASE_DIR: "~"
+RHN_CACHE_DIR: "/proxy-rhn-cache"
+TFTPBOOT_DIR: "/proxy-tftpboot"

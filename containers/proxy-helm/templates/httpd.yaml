@@ -22,6 +22,10 @@ spec:
           - name: secret-volume
             mountPath: /etc/uyuni/httpd.yaml
             subPath: httpd.yaml
+          - name: rhn-cache
+            mountPath: /var/cache/rhn
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
       volumes:
         - name: config-volume
           configMap:
@@ -35,6 +39,12 @@ spec:
             items:
               - key: httpd.yaml
                 path: httpd.yaml
+        - name: rhn-cache
+          persistentVolumeClaim:
+            claimName: rhn-cache-pv-claim
+        - name: tftp-boot
+          persistentVolumeClaim:
+            claimName: tftp-boot-pv-claim
 ---
 apiVersion: v1
 kind: Service

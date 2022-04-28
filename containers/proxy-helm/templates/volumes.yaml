@@ -1,0 +1,55 @@
+# rhn cache
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rhn-cache-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.BASE_DIR}}{{ .Values.RHN_CACHE_DIR}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rhn-cache-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+# tftp boot
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tftp-boot-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.BASE_DIR}}{{ .Values.TFTPBOOT_DIR}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tftp-boot-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
