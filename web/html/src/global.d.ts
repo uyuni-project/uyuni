@@ -41,7 +41,8 @@ declare global {
     }
   }
 
-  function t(msg: string, ...args: Array<any>): string;
+  function t(msg: string, ...args: any[]): string;
+  function t(msg: JSX.Element, ...args: any[]): JSX.Element;
   var onDocumentReadyInitOldJS: Function;
   var ace: any;
   var d3: d3;

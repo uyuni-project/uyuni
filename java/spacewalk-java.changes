@@ -1,3 +1,4 @@
+- Branding updates
 - Collect logs form docker.build
 - add schedulePackageUpdate() XMLRPC function (bsc#1197507)
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
