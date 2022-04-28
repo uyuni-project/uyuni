@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+        - name: httpd
+          image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: httpd-secret-volume
+            mountPath: /etc/uyuni/httpd.yaml
+            subPath: httpd.yaml
+            readOnly: true
+          - name: rhn-cache
+            mountPath: /var/cache/rhn
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
+        - name: salt-broker
+          image: "{{ .Values.repository }}/proxy-salt-broker:{{ .Values.version | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+        - name: squid
+          image: "{{ .Values.repository }}/proxy-squid:{{ .Values.version | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+              # Add /var/cache/squid volume
+        - name: ssh
+          image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: ssh-secret-volume
+            mountPath: /etc/uyuni/ssh.yaml
+            subPath: ssh.yaml
+            readOnly: true
+        - name: tftpd
+          image: "{{ .Values.repository }}/proxy-tftpd:{{ .Values.version | default .Chart.AppVersion }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
+            readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: proxy-configmap
+            items:
+              - key: config.yaml
+                path: config.yaml
+        - name: httpd-secret-volume
+          secret:
+            secretName: proxy-secret
+            items:
+              - key: httpd.yaml
+                path: httpd.yaml
+        - name: ssh-secret-volume
+          secret:
+            secretName: proxy-secret
+            items:
+              - key: ssh.yaml
+                path: ssh.yaml
+        - name: rhn-cache
+          persistentVolumeClaim:
+            claimName: rhn-cache-pv-claim
+        - name: tftp-boot
+          persistentVolumeClaim:
+            claimName: tftp-boot-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy 
+spec:
+  selector:
+    app: httpd
+  ports:
+    - name: http
+      port: 80
+    - name: https
+      port: 443
+    - name: ssh
+      port: 8022
+      targetPort: 22
+    - name: salt-publish
+      port: 4505
+    - name: salt-request
+      port: 4506
+    - name: tftp
+      port: 69
