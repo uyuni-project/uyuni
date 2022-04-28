@@ -1,3 +1,4 @@
+- Modify proxy containers configuration files set output
 - Change proxy containers config to tarball with yaml files
 
 -------------------------------------------------------------------
