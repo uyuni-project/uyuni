@@ -42,7 +42,8 @@ spec:
             mountPath: /etc/uyuni/config.yaml
             subPath: config.yaml
             readOnly: true
-              # Add /var/cache/squid volume
+          - name: squid-cache 
+            mountPath: /var/cache/squid
         - name: ssh
           image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
           volumeMounts:
@@ -89,6 +90,9 @@ spec:
         - name: tftp-boot
           persistentVolumeClaim:
             claimName: tftp-boot-pv-claim
+        - name: squid-cache
+          persistentVolumeClaim:
+            claimName: squid-cache-pv-claim
 ---
 apiVersion: v1
 kind: Service
