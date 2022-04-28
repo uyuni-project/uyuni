@@ -173,7 +173,7 @@ end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(),'#{option}')]"
-  xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]/../*[@name='#{field}']/.."
+  xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
