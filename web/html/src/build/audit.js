@@ -18,7 +18,7 @@ exec(`yarn audit --json --groups "dependencies"`, (error, stdout, stderr) => {
       return;
     }
 
-    const remainingAdvisories = advisories.filter((item) => {
+    const validAdvisories = advisories.filter((item) => {
       const { module_name: moduleName, id } = item.data.advisory;
       if (ignore[moduleName]) {
         console.info(`Ignoring advisory ${id} for module "${moduleName}": ${ignore[moduleName]}`);
@@ -27,14 +27,14 @@ exec(`yarn audit --json --groups "dependencies"`, (error, stdout, stderr) => {
       return true;
     });
 
-    if (remainingAdvisories.length) {
-      remainingAdvisories.forEach((item) => {
+    if (validAdvisories.length) {
+      process.exitCode = 1;
+      validAdvisories.forEach((item) => {
         const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
         console.error(
           `Error: Found advisory ${id} for module "${moduleName}"\nOverview: ${overview}\nRecommendation: ${recommendation}\n`
         );
       });
-      process.exitCode = 1;
       return;
     }
 
