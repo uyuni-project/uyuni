@@ -22,6 +22,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerCommException;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerQueryException;
 
+import com.suse.manager.api.ReadOnly;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -95,6 +97,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> ip(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.IP);
     }
@@ -114,6 +117,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> hostname(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.HOSTNAME);
     }
@@ -133,6 +137,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> deviceVendorId(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_VENDOR_ID);
     }
@@ -152,6 +157,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> deviceId(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DEVICE_ID);
     }
@@ -171,6 +177,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> deviceDriver(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DRIVER);
     }
@@ -190,6 +197,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> deviceDescription(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DESCRIPTION);
     }
@@ -209,6 +217,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> nameAndDescription(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.NAME_AND_DESCRIPTION);
     }
@@ -228,6 +237,7 @@ public class SystemSearchHandler extends BaseHandler {
      *         $SystemSearchResultSerializer
      *     #array_end()
      */
+    @ReadOnly
     public List<SystemSearchResult> uuid(String sessionKey, String searchTerm) throws FaultException {
         return performSearch(sessionKey, searchTerm, SystemSearchHelper.UUID);
     }
