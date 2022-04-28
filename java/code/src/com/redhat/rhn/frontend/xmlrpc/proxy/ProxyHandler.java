@@ -215,7 +215,7 @@ public class ProxyHandler extends BaseHandler {
      * @return  list of Maps containing "id", "name", and "last_checkin"
      *
      * @xmlrpc.doc List the proxies within the user's organization.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      * #return_array_begin()
      *   $SystemOverviewSerializer

@@ -267,7 +267,7 @@ public class SystemHandler extends BaseHandler {
      *   - The server doesn't have the "agent smith" feature
      *
      * @xmlrpc.doc Obtains a reactivation key for this server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param("string", "key")
      */
@@ -334,7 +334,7 @@ public class SystemHandler extends BaseHandler {
      *   - The server cannot be entitled with the given entitlement
      *
      * @xmlrpc.doc Adds an entitlement to a given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "entitlementLevel", "One of:
      *          'enterprise_entitled' or 'virtualization_host'.")
@@ -386,7 +386,7 @@ public class SystemHandler extends BaseHandler {
      * provide either a list of channel ids (int) or a list of channel labels (string) as
      * input. Changes to channel assignments on salt managed systems will take effect
      * at next highstate application.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sidd")
      * @xmlrpc.param #array_single_desc("int (deprecated) or string", "channelIdsOrLabels", "channelId (deprecated)
      * or channelLabel")
@@ -468,7 +468,7 @@ public class SystemHandler extends BaseHandler {
      * int serverId, string channelLabel)
      *
      * @xmlrpc.doc Assigns the server to a new baseChannel.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("int", "cid", "channel ID")
      * @xmlrpc.returntype #return_int_success()
@@ -509,7 +509,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Assigns the server to a new base channel.  If the user provides an empty
      * string for the channelLabel, the current base channel and all child channels will
      * be removed from the system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.returntype #return_int_success()
@@ -569,7 +569,7 @@ public class SystemHandler extends BaseHandler {
      * If the user provides an empty string for the channelLabel, the current base channel and
      * all child channels will be removed from the system.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "childLabels")
@@ -602,7 +602,7 @@ public class SystemHandler extends BaseHandler {
      * If the user provides an empty string for the channelLabel, the current base channel and
      * all child channels will be removed from the system.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "childLabels")
@@ -669,7 +669,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of subscribable base channels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #return_array_begin()
@@ -712,7 +712,7 @@ public class SystemHandler extends BaseHandler {
      * from the passed in session key
      *
      * @xmlrpc.doc Returns a list of all servers visible to the user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $ShortSystemInfoSerializer
@@ -753,7 +753,7 @@ public class SystemHandler extends BaseHandler {
      * from the passed in session key
      *
      * @xmlrpc.doc Returns a list of active servers visible to the user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $ShortSystemInfoSerializer
@@ -793,7 +793,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Given a list of server ids, returns a list of active servers'
      * details visible to the user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param  #array_single("int", "sids")
      * @xmlrpc.returntype
      *   #return_array_begin()
@@ -906,7 +906,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of subscribable child channels.  This only shows channels
      * the system is *not* currently subscribed to.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -974,7 +974,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Given a package name, version, release, and epoch, returns
      * the list of packages installed on the system with the same name that are
      * older.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "name", "Package name.")
      * @xmlrpc.param #param_desc("string", "version", "Package version.")
@@ -1051,7 +1051,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Given a package name, version, release, and epoch, returns the
      * list of packages installed on the system w/ the same name that are newer.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "name", "Package name.")
      * @xmlrpc.param #param_desc("string", "version", "Package version.")
@@ -1168,7 +1168,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Check if the package with the given NVRE is installed on given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "name", "Package name.")
      * @xmlrpc.param #param_desc("string", "version","Package version.")
@@ -1196,7 +1196,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Is the package with the given NVRE installed on given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "name", "Package name.")
      * @xmlrpc.param #param_desc("string", "version", "Package version.")
@@ -1261,7 +1261,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Get the list of latest upgradable packages for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      * #return_array_begin()
@@ -1296,7 +1296,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Get the list of all installable packages for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      * #return_array_begin()
@@ -1326,7 +1326,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Get the list of latest installable packages for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      * #return_array_begin()
@@ -1359,7 +1359,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Get the latest available version of a package for each system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #param("string", "packageName")
      * @xmlrpc.returntype
@@ -1436,7 +1436,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Gets the entitlements for a given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #array_single("string", "entitlement_label")
      */
@@ -1467,7 +1467,7 @@ public class SystemHandler extends BaseHandler {
      * be generated.
      *
      * @xmlrpc.doc Get the system ID file for a given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param("string", "id")
      */
@@ -1500,7 +1500,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the installed packages for a given system. Usage of listInstalledPackages is preferred,
      * as it returns architecture label (not name).
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -1534,7 +1534,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc List the installed packages for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -1628,7 +1628,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 in case of success, traceback otherwise.
      *
      * @xmlrpc.doc Delete the specified list of guest profiles for a given host
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "hostId")
      * @xmlrpc.param #array_single("string", "guestNames")
      * @xmlrpc.returntype #return_int_success()
@@ -1681,7 +1681,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Delete systems given a list of system ids asynchronously.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -1702,7 +1702,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Delete systems given a list of system ids asynchronously.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #param_desc("string", "cleanupType", "Possible values:
      *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
@@ -1778,7 +1778,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - The server corresponding to the sid cannot be found
      * @xmlrpc.doc Delete a system given its server id synchronously without cleanup
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -1796,7 +1796,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - The server corresponding to the sid cannot be found
      * @xmlrpc.doc Delete a system given its server id synchronously
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "cleanupType", "Possible values:
      *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
@@ -1826,7 +1826,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Get the addresses and hostname for a given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *          #struct_begin("network info")
@@ -1863,7 +1863,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the systems cannot be found.
      *
      * @xmlrpc.doc Get the addresses and hostname for a given list of systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype
      *   #return_array_begin()
@@ -1904,7 +1904,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Returns the network devices for the given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -1932,7 +1932,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Set a servers membership in a given group.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("int", "sgid")
      * @xmlrpc.param #param_desc("boolean", "member",  "'1' to assign the given server to
@@ -1978,7 +1978,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc List the available groups for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #return_array_begin()
@@ -2025,7 +2025,7 @@ public class SystemHandler extends BaseHandler {
      * to lookup the user corresponding to login or if the user does not exist.
      *
      * @xmlrpc.doc List systems for a given user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
      *          #return_array_begin()
@@ -2046,7 +2046,7 @@ public class SystemHandler extends BaseHandler {
      * @return Returns an array of maps representing a system
      *
      * @xmlrpc.doc List systems for the logged in user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *          #return_array_begin()
      *              $ShortSystemInfoSerializer
@@ -2068,7 +2068,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Set custom values for the specified server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param
      *    #struct_begin("values")
@@ -2130,7 +2130,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found or if the name is invalid.
      *
      * @xmlrpc.doc Get the custom data values defined for the server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #struct_begin("custom value")
@@ -2176,7 +2176,7 @@ public class SystemHandler extends BaseHandler {
      * provided from the given system.<br/>
      * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
      * delete value of existing key which has assigned no values doesn't throw exception.)
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param  #array_single("string", "keys")
      * @xmlrpc.returntype #return_int_success()
@@ -2233,7 +2233,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found or if the name is invalid.
      *
      * @xmlrpc.doc Set the profile name for the server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "name", "Name of the profile.")
      * @xmlrpc.returntype #return_int_success()
@@ -2274,7 +2274,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Add a new note to the given server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "subject", "What the note is about.")
      * @xmlrpc.param #param_desc("string", "body", "Content of the note.")
@@ -2302,7 +2302,7 @@ public class SystemHandler extends BaseHandler {
      * corresponding to sid cannot be found.
      *
      * @xmlrpc.doc Deletes the given note from the server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("int", "noteId")
      * @xmlrpc.returntype #return_int_success()
@@ -2331,7 +2331,7 @@ public class SystemHandler extends BaseHandler {
      * corresponding to sid cannot be found.
      *
      * @xmlrpc.doc Deletes all notes from the server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -2360,7 +2360,7 @@ public class SystemHandler extends BaseHandler {
      * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of system.")
      * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
      * @xmlrpc.param #param("$date", "earliestDate")
@@ -2643,7 +2643,7 @@ public class SystemHandler extends BaseHandler {
      * to use the overloaded system.listSystemEvents method with actionType as a parameter.
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of system.")
      * @xmlrpc.returntype
      *  #return_array_begin()
@@ -2719,7 +2719,7 @@ public class SystemHandler extends BaseHandler {
      * 'Package Install' or 'Initiate a kickstart for a virtual guest.'
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of system.")
      * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
      * @xmlrpc.returntype
@@ -2795,7 +2795,7 @@ public class SystemHandler extends BaseHandler {
      * to use the overloaded system.listSystemEvents method with actionType as a parameter.
      * Note: see also system.getEventHistory method which returns a history of all events.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of system.")
      * @xmlrpc.param #param("$date", "earliestDate")
      * @xmlrpc.returntype
@@ -2871,7 +2871,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Provision a guest on the host specified.  Defaults to:
      * memory=512MB, vcpu=1, storage=3GB, mac_address=random.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of host to provision guest on.")
      * @xmlrpc.param #param("string", "guestName")
      * @xmlrpc.param #param_desc("string", "profileName", "Kickstart profile to use.")
@@ -2894,7 +2894,7 @@ public class SystemHandler extends BaseHandler {
      * id cannot be found or profile is not found.
      *
      * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
      * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
@@ -2945,7 +2945,7 @@ public class SystemHandler extends BaseHandler {
      * id cannot be found or profile is not found.
      *
      * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
      * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.param #param("$date", "earliestDate")
@@ -3001,7 +3001,7 @@ public class SystemHandler extends BaseHandler {
      * for creation and will begin the provisioning process when the host checks in
      * or if OSAD is enabled will begin immediately. Defaults to mac_address=random.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of host to provision guest on.")
      * @xmlrpc.param #param("string", "guestName")
      * @xmlrpc.param #param_desc("string", "profileName", "Kickstart Profile to use.")
@@ -3034,7 +3034,7 @@ public class SystemHandler extends BaseHandler {
      * for creation and will begin the provisioning process when the host checks in
      * or if OSAD is enabled will begin immediately.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of host to provision guest on.")
      * @xmlrpc.param #param("string", "guestName")
      * @xmlrpc.param #param_desc("string", "profileName", "Kickstart Profile to use.")
@@ -3105,7 +3105,7 @@ public class SystemHandler extends BaseHandler {
      * @return Object[]  Integer Array containing system Ids with the given name
      *
      * @xmlrpc.doc Get system IDs and last check in information for the given system name.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype
      *          #return_array_begin()
@@ -3125,7 +3125,7 @@ public class SystemHandler extends BaseHandler {
      * @return Map containing server id, name and last checkin date
      *
      * @xmlrpc.doc Get system name and last check in information for the given system ID.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "sid")
      * @xmlrpc.returntype
      *  #struct_begin("name info")
@@ -3152,7 +3152,7 @@ public class SystemHandler extends BaseHandler {
      * @return Date the date the system was registered
      *
      * @xmlrpc.doc Returns the date the system was registered.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param_desc("$date", "date", "The date the system was registered,
      * in local time")
@@ -3174,7 +3174,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of subscribed child channels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -3209,7 +3209,7 @@ public class SystemHandler extends BaseHandler {
      *  target="_blank">
      * Java representation of regular expressions</a>)
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "regexp",  "A regular expression")
      *
      * @xmlrpc.returntype
@@ -3244,7 +3244,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of users which can administer the system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -3265,7 +3265,7 @@ public class SystemHandler extends BaseHandler {
      * @return Running kernel string.
      *
      * @xmlrpc.doc Returns the running kernel of the given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param("string", "kernel")
      */
@@ -3302,7 +3302,7 @@ public class SystemHandler extends BaseHandler {
      *             operation.
      *             Note: This version of the method is deprecated and the return value will be changed in a
      *             future API version. Please one of the other overloaded versions of getEventHistory.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -3331,7 +3331,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
      *             The list is paged and ordered from newest to oldest.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("$date", "earliestDate")
      * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
@@ -3361,7 +3361,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of history items associated with the system.
      *             The list is paged and ordered from newest to oldest.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("int", "offset", "Number of results to skip")
      * @xmlrpc.param #param_desc("int", "limit", "Maximum number of results")
@@ -3387,7 +3387,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of history items associated with the system happened after the specified date.
      *             The list is ordered from newest to oldest.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("$date", "earliestDate")
      * @xmlrpc.returntype
@@ -3412,7 +3412,7 @@ public class SystemHandler extends BaseHandler {
 
      * @xmlrpc.doc Returns the details of the event associated with the specified server and event.
      *             The event id must be a value returned by the system.getEventHistory API.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("int", "eid", "ID of the event")
      * @xmlrpc.returntype
@@ -3456,7 +3456,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of all errata that are relevant to the system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -3487,7 +3487,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of all errata of the specified type that are
      * relevant to the system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "advisoryType", "type of advisory (one of
      * of the following: 'Security Advisory', 'Product Enhancement Advisory',
@@ -3519,7 +3519,7 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Provides an array of errata that are applicable to a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -3545,7 +3545,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -3565,7 +3565,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
@@ -3588,7 +3588,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3612,7 +3612,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3640,7 +3640,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3692,7 +3692,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -3715,7 +3715,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
@@ -3741,7 +3741,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3767,7 +3767,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3796,7 +3796,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
      * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -3820,7 +3820,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of PackageMetadata
      *
      * @xmlrpc.doc Compares the packages installed on two systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid1")
      * @xmlrpc.param #param("int", "sid2")
      * @xmlrpc.returntype
@@ -3868,7 +3868,7 @@ public class SystemHandler extends BaseHandler {
      * @return Map contianing the DMI information of the system
      *
      * @xmlrpc.doc Gets the DMI information of a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      $DmiSerializer
@@ -3891,7 +3891,7 @@ public class SystemHandler extends BaseHandler {
      * @return Map contianing the CPU info of the system
      *
      * @xmlrpc.doc Gets the CPU information of a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      $CpuSerializer
@@ -3914,7 +3914,7 @@ public class SystemHandler extends BaseHandler {
      * @return Map containing the memory profile
      *
      * @xmlrpc.doc Gets the memory information for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #struct_begin("memory")
@@ -3939,7 +3939,7 @@ public class SystemHandler extends BaseHandler {
      * @return array continaing device Maps
      *
      * @xmlrpc.doc Gets a list of devices for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *          #return_array_begin()
@@ -4183,7 +4183,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      *
      * @xmlrpc.doc Schedule package installation for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4208,7 +4208,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package installation for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4270,7 +4270,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Schedule package installation for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4294,7 +4294,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package installation for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4318,7 +4318,7 @@ public class SystemHandler extends BaseHandler {
     * @return package action id
     *
     * @xmlrpc.doc Schedule package installation for several systems.
-    * @xmlrpc.param #param("string", "sessionKey")
+    * @xmlrpc.param #session_key()
     * @xmlrpc.param #array_single("int", "sids")
     * @xmlrpc.param #array_begin("packageNevraList")
     *                   #struct_begin("Package Nevra")
@@ -4352,7 +4352,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package installation for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_begin("packageNevraList")
      *                   #struct_begin("Package nevra")
@@ -4387,7 +4387,7 @@ public class SystemHandler extends BaseHandler {
     * @return package action id
     *
     * @xmlrpc.doc Schedule package installation for a system.
-    * @xmlrpc.param #param("string", "sessionKey")
+    * @xmlrpc.param #session_key()
     * @xmlrpc.param #param("int", "sid")
     * @xmlrpc.param #array_begin("packageNevraList")
     *                   #struct_begin("Package nevra")
@@ -4421,7 +4421,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package installation for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_begin("packageNevraList")
      *                   #struct_begin("Package nevra")
@@ -4455,7 +4455,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      *
      * @xmlrpc.doc Schedule package removal for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4481,7 +4481,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package removal for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4507,7 +4507,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 if successful, exception thrown otherwise
      *
      * @xmlrpc.doc Schedule package removal for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4536,7 +4536,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package removal for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
@@ -4565,7 +4565,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      *
      * @xmlrpc.doc Schedule package removal for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_begin("packageNevraList")
      *                   #struct_begin("Package nevra")
@@ -4600,7 +4600,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package removal for several systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_begin("packageNevraList")
      *                   #struct_begin("Package nevra")
@@ -4635,7 +4635,7 @@ public class SystemHandler extends BaseHandler {
     * @return package action id
     *
     * @xmlrpc.doc Schedule package removal for a system.
-    * @xmlrpc.param #param("string", "sessionKey")
+    * @xmlrpc.param #session_key()
     * @xmlrpc.param #param("int", "sid")
     * @xmlrpc.param #array_begin("packageNevraList")
     *                   #struct_begin("Package nevra")
@@ -4673,7 +4673,7 @@ public class SystemHandler extends BaseHandler {
      * @since 21
      *
      * @xmlrpc.doc Schedule package removal for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_begin("packageNevraList")
      *                   #struct_begin("Package nevra")
@@ -4712,7 +4712,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      *
      * @xmlrpc.doc Schedule package lock for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "pkgIdsToLock")
      * @xmlrpc.param #array_single("int", "pkgIdsToUnlock")
@@ -4773,7 +4773,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of Note objects associated with the given system
      *
      * @xmlrpc.doc Provides a list of notes associated with a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #return_array_begin()
@@ -4795,7 +4795,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of FQDNs objects associated with the given system
      *
      * @xmlrpc.doc Provides a list of FQDNs associated with a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #array_single("string", "fqdn")
      */
@@ -4822,7 +4822,7 @@ public class SystemHandler extends BaseHandler {
      *          contained in the given channel.  The installed package list did not
      *          include arch information before RHEL 5, so it is arch unaware.  RHEL 5
      *          systems do upload the arch information, and thus are arch aware.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.returntype
@@ -4851,7 +4851,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Schedule a hardware refresh for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("$date",  "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4885,7 +4885,7 @@ public class SystemHandler extends BaseHandler {
      * @return the id of the action scheduled, exception thrown otherwise
      *
      * @xmlrpc.doc Schedule a package list refresh for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("$date",  "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
@@ -4924,7 +4924,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence     Earliest the script can run.
      * @return ID of the new script action.
      * @xmlrpc.doc Schedule a script to run.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param #array_single_desc("int", "sids", "System IDs of the servers to run the script on.")
      * @xmlrpc.param #param_desc("string", "username", "User to run script as.")
@@ -4989,7 +4989,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence     Earliest the script can run.
      * @return ID of the new script action.
      * @xmlrpc.doc Schedule a script to run.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids", "System IDs of the servers to run the script on.")
      * @xmlrpc.param #param_desc("string", "username", "User to run script as.")
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
@@ -5022,7 +5022,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence     Earliest the script can run.
      * @return ID of the new script action.
      * @xmlrpc.doc Schedule a script to run.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid",
      * "ID of the server to run the script on.")
      * @xmlrpc.param #param_desc("string", "username", "User to run script as.")
@@ -5061,7 +5061,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence     Earliest the script can run.
      * @return ID of the new script action.
      * @xmlrpc.doc Schedule a script to run.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param #param_desc("int", "sid",
      * "ID of the server to run the script on.")
@@ -5097,7 +5097,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Fetch results from a script execution. Returns an empty array if no
      * results are yet available.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "actionId", "ID of the script run action.")
      * @xmlrpc.returntype
      *          #return_array_begin()
@@ -5126,7 +5126,7 @@ public class SystemHandler extends BaseHandler {
      * @return script details
      *
      * @xmlrpc.doc Returns script details for script run actions
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "actionId", "ID of the script run action.")
      * @xmlrpc.returntype
      *      #struct_begin("Script details")
@@ -5186,7 +5186,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Schedule a reboot for a system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -5216,7 +5216,7 @@ public class SystemHandler extends BaseHandler {
      * @return Server object. (converted to XMLRPC struct by serializer)
      *
      * @xmlrpc.doc Get system details.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *          $ServerSerializer
@@ -5245,7 +5245,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Set server details. All arguments are optional and will only be modified
      * if included in the struct.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "ID of server to lookup details for.")
      * @xmlrpc.param
      *      #struct_begin("details")
@@ -5407,7 +5407,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Set server lock status.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("boolean", "lockStatus", "true to lock the system,
      * false to unlock the system.")
@@ -5460,7 +5460,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Add entitlements to a server. Entitlements a server already has
      * are quietly ignored.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("string", "entitlements", "one of following:
      * virtualization_host, enterprise_entitled")
@@ -5540,7 +5540,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove addon entitlements from a server. Entitlements a server does
      * not have are quietly ignored.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("string", "entitlements")
      * @xmlrpc.returntype #return_int_success()
@@ -5725,7 +5725,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List the package profiles in this organization
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *  #return_array_begin()
      *      $ProfileOverviewDtoSerializer
@@ -5747,7 +5747,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Delete a package profile
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "profileId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -5771,7 +5771,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create a new stored Package Profile from a systems
      *      installed package list.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "profileLabel")
      * @xmlrpc.param #param("string", "description")
@@ -5813,7 +5813,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Compare a system's packages against a package profile.  In
      * the result returned, 'this_system' represents the server provided as an input
      * and 'other_system' represents the profile provided as an input.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "profileLabel")
      * @xmlrpc.returntype
@@ -5846,7 +5846,7 @@ public class SystemHandler extends BaseHandler {
      *          serialized using SystemOverviewSerializer)
      *
      * @xmlrpc.doc Returns list of systems needing package updates.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *          #return_array_begin()
      *              $SystemOverviewSerializer
@@ -5873,7 +5873,7 @@ public class SystemHandler extends BaseHandler {
      * @since 13.0
      *
      * @xmlrpc.doc Sync packages from a source system to a target.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "targetServerId", "Target system to apply package
      *                  changes to.")
      * @xmlrpc.param #param_desc("int", "sourceServerId", "Source system to retrieve
@@ -5969,7 +5969,7 @@ public class SystemHandler extends BaseHandler {
      * @return A list of Maps containing ID,name, and last checkin
      *
      * @xmlrpc.doc List systems that are not associated with any system groups.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $SystemOverviewSerializer
@@ -5988,7 +5988,7 @@ public class SystemHandler extends BaseHandler {
      * @return Channel that is the base channel
      *
      * @xmlrpc.doc Provides the base channel of a given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      $ChannelSerializer
@@ -6011,7 +6011,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Lists systems that have been inactive for the default period of
      *          inactivity
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $ShortSystemInfoSerializer
@@ -6031,7 +6031,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Lists systems that have been inactive for the specified
      *      number of days..
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "days")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -6051,7 +6051,7 @@ public class SystemHandler extends BaseHandler {
      * @return the User
      *
      * @xmlrpc.doc Returns information about the user who registered the system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "Id of the system in question")
      * @xmlrpc.returntype
      *          $UserSerializer
@@ -6068,7 +6068,7 @@ public class SystemHandler extends BaseHandler {
      * @return an array of systemOverview objects
      *
      * @xmlrpc.doc Lists the systems that have the given installed package
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "pid", "the package id")
      * @xmlrpc.returntype
      *           #return_array_begin()
@@ -6096,7 +6096,7 @@ public class SystemHandler extends BaseHandler {
      * @return an array of systemOverview objects
      *
      * @xmlrpc.doc Lists the systems that have the given installed package
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "the package name")
      * @xmlrpc.param #param_desc("string", "version", "the package version")
      * @xmlrpc.param #param_desc("string", "release", "the package release")
@@ -6121,7 +6121,7 @@ public class SystemHandler extends BaseHandler {
      * @return an array of systemOverview objects
      *
      * @xmlrpc.doc Lists the systems that have the given entitlement
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "entitlementName", "the entitlement name")
      * @xmlrpc.returntype
      *              #return_array_begin()
@@ -6146,7 +6146,7 @@ public class SystemHandler extends BaseHandler {
      * from the passed in session key
      *
      * @xmlrpc.doc Returns a list of all Physical servers visible to the user.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $SystemOverviewSerializer
@@ -6165,7 +6165,7 @@ public class SystemHandler extends BaseHandler {
      * @return list of SystemOverview objects
      *
      * @xmlrpc.doc Lists the virtual hosts visible to the user
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *       $SystemOverviewSerializer
@@ -6183,7 +6183,7 @@ public class SystemHandler extends BaseHandler {
      * @return list of VirtualSystemOverview objects
      *
      * @xmlrpc.doc Lists the virtual guests for a given virtual host
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "sid", "the virtual host's id")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -6374,7 +6374,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the activation keys the system was registered with.  An empty
      * list will be returned if an activation key was not used during registration.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #array_single ("string", "key")
      */
@@ -6403,7 +6403,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get the list of proxies that the given system connects
      * through in order to reach the server.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -6543,7 +6543,7 @@ public class SystemHandler extends BaseHandler {
      * @return int - 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a cobbler system record with the specified kickstart label
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype #return_int_success()
@@ -6582,7 +6582,7 @@ public class SystemHandler extends BaseHandler {
      * @return int - 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Creates a cobbler system record for a system that is not registered.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemName")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param #param("string", "kOptions")
@@ -6697,7 +6697,7 @@ public class SystemHandler extends BaseHandler {
      *  System -&gt; &lt;Specified System&gt; -&gt; Provisioning -&gt;
      *  Select a Kickstart profile -&gt; Create Cobbler System Record.
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #struct_begin("System kickstart variables")
@@ -6759,7 +6759,7 @@ public class SystemHandler extends BaseHandler {
      *  Select a Kickstart profile -&gt; Create Cobbler System Record.
      *
      *
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("boolean","netboot")
      * @xmlrpc.param
@@ -6818,7 +6818,7 @@ public class SystemHandler extends BaseHandler {
      *
      *
      * @xmlrpc.doc List duplicate systems by IP Address.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *           #struct_begin("Duplicate Group")
@@ -6843,7 +6843,7 @@ public class SystemHandler extends BaseHandler {
      *
      *
      * @xmlrpc.doc List duplicate systems by Mac Address.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *           #struct_begin("Duplicate Group")
@@ -6868,7 +6868,7 @@ public class SystemHandler extends BaseHandler {
      *
      *
      * @xmlrpc.doc List duplicate systems by Hostname.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *           #struct_begin("Duplicate Group")
@@ -6892,7 +6892,7 @@ public class SystemHandler extends BaseHandler {
      * @return the score multipliers used by the System Currency page
      *
      * @xmlrpc.doc Get the System Currency score multipliers
-     *  @xmlrpc.param #param("string", "sessionKey")
+     *  @xmlrpc.param #session_key()
      * @xmlrpc.returntype #param_desc("map", "multipliers", "Map of score multipliers")
      */
     @ReadOnly
@@ -6915,7 +6915,7 @@ public class SystemHandler extends BaseHandler {
      * system currency multipliers.
      *
      * @xmlrpc.doc Get the System Currency scores for all servers the user has access to
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          #struct_begin("system currency")
@@ -6959,7 +6959,7 @@ public class SystemHandler extends BaseHandler {
      * @return UUID string
      *
      * @xmlrpc.doc Get the UUID from the given system ID.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param("string", "uuid")
      */
@@ -6981,7 +6981,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Tags latest system snapshot
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "tagName")
      * @xmlrpc.returntype #return_int_success()
@@ -7012,7 +7012,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Deletes tag from system snapshot
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "tagName")
      * @xmlrpc.returntype #return_int_success()
@@ -7033,7 +7033,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of systems with extra packages
      *
      * @xmlrpc.doc List systems with extra packages
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *     #return_array_begin()
      *         #struct_begin("system")
@@ -7055,7 +7055,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of extra packages for given system
      *
      * @xmlrpc.doc List extra packages for a system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -7106,7 +7106,7 @@ public class SystemHandler extends BaseHandler {
      * @throws Exception If interface does not exist Exception is thrown
      *
      * @xmlrpc.doc Sets new primary network interface
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "interfaceName")
      * @xmlrpc.returntype #return_int_success()
@@ -7132,7 +7132,7 @@ public class SystemHandler extends BaseHandler {
      * @throws Exception If FQDN does not exist Exception is thrown
      *
      * @xmlrpc.doc Sets new primary FQDN
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "fqdn")
      * @xmlrpc.returntype #return_int_success()
@@ -7151,7 +7151,7 @@ public class SystemHandler extends BaseHandler {
      * @return ID of the action if the action scheduling succeeded, exception otherwise
      *
      * @xmlrpc.doc Schedule update of client certificate
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
@@ -7167,7 +7167,7 @@ public class SystemHandler extends BaseHandler {
      * @return ID of the action if the action scheduling succeeded, exception otherwise
      *
      * @xmlrpc.doc Schedule update of client certificate at given date and time
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -7202,7 +7202,7 @@ public class SystemHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc send a ping to a system using OSA
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -7282,7 +7282,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of migration targets for given system
      *
      * @xmlrpc.doc List possible migration targets for a system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -7306,7 +7306,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc List possible migration targets for a system, if excludeTargetWhereMissingSuccessors is false then
      * valid targets without some successors will also be listed.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("boolean", "excludeTargetWhereMissingSuccessors")
      * @xmlrpc.returntype
@@ -7375,7 +7375,7 @@ public class SystemHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * scheduleProductMigration instead.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
@@ -7420,7 +7420,7 @@ public class SystemHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * scheduleProductMigration instead.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
@@ -7464,7 +7464,7 @@ public class SystemHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * scheduleProductMigration instead.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "targetIdent", " identifier for the selected migration target.
      *  User listMigrationTargets to list the identifiers ")
@@ -7511,7 +7511,7 @@ public class SystemHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * scheduleProductMigration instead.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "targetIdent",
      * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
@@ -7553,7 +7553,7 @@ public class SystemHandler extends BaseHandler {
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
@@ -7591,7 +7591,7 @@ public class SystemHandler extends BaseHandler {
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
@@ -7629,7 +7629,7 @@ public class SystemHandler extends BaseHandler {
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "targetIdent",
      * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
@@ -7669,7 +7669,7 @@ public class SystemHandler extends BaseHandler {
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "targetIdent",
      * "Identifier for the selected migration target. Use listMigrationTargets to list the identifiers")
@@ -7712,7 +7712,7 @@ public class SystemHandler extends BaseHandler {
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param_desc("string", "targetIdent",
      * "Identifier for the selected migration target - User listMigrationTargets to list the identifiers ")
@@ -7862,7 +7862,7 @@ public class SystemHandler extends BaseHandler {
      * Note: You can seriously damage your system with this call, use it only if you really
      * know what you are doing! Make sure that the list of channel labels is complete and in
      * any case do a dry run before scheduling an actual dist upgrade.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("string", "channels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7896,7 +7896,7 @@ public class SystemHandler extends BaseHandler {
      * Note: You can seriously damage your system with this call, use it only if you really
      * know what you are doing! Make sure that the list of channel labels is complete and in
      * any case do a dry run before scheduling an actual dist upgrade.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("string", "channels")
      * @xmlrpc.param #param("boolean", "dryRun")
@@ -7935,7 +7935,7 @@ public class SystemHandler extends BaseHandler {
      * @return List of systems that require reboot
      *
      * @xmlrpc.doc List systems that require reboot.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          #struct_begin("system")
@@ -7990,7 +7990,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns the currently active kernel live patching version relative to
      * the running kernel version of the system, or empty string if live patching feature
      * is not in use for the given system.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype string
      */
@@ -8506,7 +8506,7 @@ public class SystemHandler extends BaseHandler {
      * @return Array of migration targets for given system
      *
      * @xmlrpc.doc List possible migration targets for a system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -8533,7 +8533,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns the groups information a system is member of, for all the systems visible to the passed user
      * and that are entitled with the passed entitlement.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "entitlement")
      * @xmlrpc.returntype
      *   #return_array_begin()
@@ -8553,7 +8553,7 @@ public class SystemHandler extends BaseHandler {
      * @return Returns the list of skipped systems IDs
      *
      * @xmlrpc.doc refresh all the pillar data of a list of systems.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
@@ -8571,7 +8571,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc refresh the pillar data of a list of systems. The subset value represents the pillar to be refreshed
      * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "subset", "subset of the pillar to refresh.")
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
@@ -8616,7 +8616,7 @@ public class SystemHandler extends BaseHandler {
      * @return Returns a list of scheduled action ids
      *
      * @xmlrpc.doc Connect given systems to another proxy.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #param("int", "proxyId")
      * @xmlrpc.returntype #array_single("int", "actionIds", "list of scheduled action ids")

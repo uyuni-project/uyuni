@@ -51,7 +51,7 @@ public class AuthHandler extends BaseHandler {
      * @return Returns 1 on success, exception otherwise.
      *
      * @xmlrpc.doc Logout the user with the given session key.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public int logout(String sessionKey) {
@@ -72,7 +72,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "username")
      * @xmlrpc.param #param("string", "password")
      * @xmlrpc.returntype
-     *     #param("string", "sessionKey")
+     *     #session_key()
      */
     public String login(String username, String password)
                       throws LoginException {
@@ -96,7 +96,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "password")
      * @xmlrpc.param #param_desc("int", "duration", "Length of session.")
      * @xmlrpc.returntype
-     *     #param("string", "sessionKey")
+     *     #session_key()
      */
     public String login(String username, String password, Integer duration)
                       throws LoginException {

@@ -245,7 +245,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *   - The profile associated with ksLabel cannot be found
      *
      * @xmlrpc.doc Retrieves the locale for a kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
      *          #struct_begin("locale info")
@@ -284,7 +284,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *   - The locale provided is invalid
      *
      * @xmlrpc.doc Sets the locale for a kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #param_desc("string", "locale", "the locale")
      * @xmlrpc.param #param("boolean", "useUtc")
@@ -401,7 +401,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns the set of all keys associated with the given kickstart
      *             profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
      *      #return_array_begin()
@@ -440,7 +440,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @return 1 if the associations were performed correctly
      *
      * @xmlrpc.doc Adds the given list of keys to the specified kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #array_single_desc("string", "descriptions", "the list identifying the keys to add")
      * @xmlrpc.returntype #return_int_success()
@@ -485,7 +485,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @return 1 if the associations were performed correctly
      *
      * @xmlrpc.doc Removes the given list of keys from the specified kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #array_single_desc("string", "descriptions", "the list identifying the keys to remove")
      * @xmlrpc.returntype #return_int_success()
@@ -529,7 +529,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns the set of all file preservations associated with the given
      * kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
      *     #return_array_begin()
@@ -566,7 +566,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @return 1 if the associations were performed correctly
      *
      * @xmlrpc.doc Adds the given list of file preservations to the specified kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param
      *     #array_single_desc("string", "filePreservations", "the list identifying the file preservations to add")
@@ -627,7 +627,7 @@ public class SystemDetailsHandler extends BaseHandler {
      *
      * @xmlrpc.doc Removes the given list of file preservations from the specified
      * kickstart profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param
      *     #array_single_desc("string", "filePreservations", "the list identifying the file preservations to add")
@@ -691,7 +691,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * Registration Type can be one of reactivation/deletion/none
      * These types determine the behaviour of the re registration when using
      * this profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #param("string", "registrationType")
      *      #options()
@@ -728,7 +728,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * Registration Type can be one of reactivation/deletion/none
      * These types determine the behaviour of the registration when using
      * this profile for reprovisioning.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
      * #param("string", "the registration type")

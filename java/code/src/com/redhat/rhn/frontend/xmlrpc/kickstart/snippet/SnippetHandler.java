@@ -47,7 +47,7 @@ public class SnippetHandler extends BaseHandler {
      * @return List of cobbler snippet objects
      *
      * @xmlrpc.doc List all cobbler snippets for the logged in user
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
@@ -66,7 +66,7 @@ public class SnippetHandler extends BaseHandler {
      *
      * @xmlrpc.doc List only custom snippets for the logged in user.
      *    These snipppets are editable.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
@@ -85,7 +85,7 @@ public class SnippetHandler extends BaseHandler {
      *
      * @xmlrpc.doc List only pre-made default snippets for the logged in user.
      *    These snipppets are not editable.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
@@ -107,7 +107,7 @@ public class SnippetHandler extends BaseHandler {
      *
      * @xmlrpc.doc Will create a snippet with the given name and contents if it
      *      doesn't exist. If it does exist, the existing snippet will be updated.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.param #param("string", "contents")
      * @xmlrpc.returntype
@@ -129,7 +129,7 @@ public class SnippetHandler extends BaseHandler {
      *
      * @xmlrpc.doc Delete the specified snippet.
      *      If the snippet is not found, 0 is returned.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype
      *            #return_int_success()

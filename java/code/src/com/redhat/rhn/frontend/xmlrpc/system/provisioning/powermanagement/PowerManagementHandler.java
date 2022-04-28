@@ -64,7 +64,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return a list of available power management types
      *
      * @xmlrpc.doc Return a list of available power management types
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "power management types")
      */
     @ReadOnly
@@ -84,7 +84,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #struct_begin("powerManagementParameters")
@@ -111,7 +111,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype
      *  #struct_begin("powerManagementParameters")
@@ -154,7 +154,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param
      *  #struct_begin("data")
@@ -191,7 +191,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.param
      *  #struct_begin("data")
@@ -229,7 +229,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -252,7 +252,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -276,7 +276,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -299,7 +299,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -323,7 +323,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -346,7 +346,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -370,7 +370,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
@@ -390,7 +390,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */

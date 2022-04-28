@@ -46,7 +46,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List accepted salt keys
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "Accepted salt key list")
      */
     public List<String> acceptedList(User loggedInUser) {
@@ -60,7 +60,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List pending salt keys
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "Pending salt key list")
      */
     public List<String> pendingList(User loggedInUser) {
@@ -74,7 +74,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List of rejected salt keys
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "Rejected salt key list")
      */
     public List<String> rejectedList(User loggedInUser) {
@@ -88,7 +88,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc List of denied salt keys
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "Denied salt key list")
      */
     public List<String> deniedList(User loggedInUser) {
@@ -103,7 +103,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Accept a minion key
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "minionId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -128,7 +128,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Reject a minion key
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "minionId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -153,7 +153,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Delete a minion key
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "minionId")
      * @xmlrpc.returntype #return_int_success()
      */

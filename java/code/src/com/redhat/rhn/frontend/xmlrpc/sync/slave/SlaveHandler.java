@@ -50,7 +50,7 @@ public class SlaveHandler extends BaseHandler {
      * @return Newly created ISSSlave object.
      *
      * @xmlrpc.doc Create a new Slave, known to this Master.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
      * @xmlrpc.param #param_desc("boolean",
      *    "isEnabled", "Let this slave talk to us?")
@@ -86,7 +86,7 @@ public class SlaveHandler extends BaseHandler {
      * @return updated IssSlave
      *
      * @xmlrpc.doc Updates attributes of the specified Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to update")
      * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
      * @xmlrpc.param #param_desc("boolean",
@@ -117,7 +117,7 @@ public class SlaveHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      *
      * @xmlrpc.doc Remove the specified Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to remove")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -134,7 +134,7 @@ public class SlaveHandler extends BaseHandler {
      * @return the specified Slave if found, exception otherwise
      *
      * @xmlrpc.doc Find a Slave by specifying its ID
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
@@ -153,7 +153,7 @@ public class SlaveHandler extends BaseHandler {
      * @return the specified Slave if found, exception otherwise
      *
      * @xmlrpc.doc Find a Slave by specifying its Fully-Qualified Domain Name
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "slaveFqdn", "Domain-name of the desired Slave")
      * @xmlrpc.returntype $IssSlaveSerializer
      */
@@ -171,7 +171,7 @@ public class SlaveHandler extends BaseHandler {
      * @return list of all the IssSlaves we know about
      *
      * @xmlrpc.doc Get all the Slaves this Master knows about
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #return_array_begin()
      *          $IssSlaveSerializer
@@ -190,7 +190,7 @@ public class SlaveHandler extends BaseHandler {
      * @return list of all the IssSlaves we know about
      *
      * @xmlrpc.doc Get all orgs this Master is willing to export to the specified Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "slaveId", "Id of the desired Slave")
      * @xmlrpc.returntype #array_single("int", "ids of allowed organizations")
      */
@@ -212,7 +212,7 @@ public class SlaveHandler extends BaseHandler {
      * @return 1 for success, exception otherwise
      *
      * @xmlrpc.doc Set the orgs this Master is willing to export to the specified Slave
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
      * @xmlrpc.param #array_single_desc("int", "orgIds", "List of org-ids we're willing to export")
      * @xmlrpc.returntype #return_int_success()
