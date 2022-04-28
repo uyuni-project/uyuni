@@ -61,7 +61,9 @@ spec:
             mountPath: /etc/uyuni/config.yaml
             subPath: config.yaml
             readOnly: true
-              # Add /srv/tftpboot volume (ro)
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
+            readOnly: true
       volumes:
         - name: config-volume
           configMap:
