@@ -279,7 +279,7 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
   WITH packages_from_channels AS (
     SELECT SystemPackageInstalled.mgm_id
               , SystemPackageInstalled.system_id
-              , ChannelPackage.package_id
+              , Package.package_id
               , SystemPackageInstalled.name
               , SystemPackageInstalled.epoch
               , SystemPackageInstalled.version
@@ -288,12 +288,14 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
               , SystemPackageInstalled.type
     FROM SystemPackageInstalled
               INNER JOIN SystemChannel ON ( SystemPackageInstalled.mgm_id = SystemChannel.mgm_id AND SystemPackageInstalled.system_id = SystemChannel.system_id )
-              INNER JOIN ChannelPackage ON ( SystemChannel.mgm_id = ChannelPackage.mgm_id AND ChannelPackage.channel_id = SystemChannel.channel_id
-                                                AND ChannelPackage.package_name = SystemPackageInstalled.name
-                                                AND COALESCE(ChannelPackage.package_epoch, '') = COALESCE(SystemPackageInstalled.epoch, '')
-                                                AND ChannelPackage.package_version = SystemPackageInstalled.version
-                                                AND ChannelPackage.package_release = SystemPackageInstalled.release
-                                                AND ChannelPackage.package_arch = SystemPackageInstalled.arch
+              INNER JOIN ChannelPackage ON ( SystemChannel.mgm_id = ChannelPackage.mgm_id AND ChannelPackage.channel_id = SystemChannel.channel_id)
+              INNER JOIN Package ON (  SystemPackageInstalled.mgm_id = Package.mgm_id
+                                                AND ChannelPackage.package_id  = Package.package_id 
+                                                AND Package.name = SystemPackageInstalled.name
+                                                AND COALESCE(Package.epoch, '') = COALESCE(SystemPackageInstalled.epoch, '')
+                                                AND Package.version = SystemPackageInstalled.version
+                                                AND Package.release = SystemPackageInstalled.release
+                                                AND Package.arch = SystemPackageInstalled.arch
                                            )
   )
   SELECT System.mgm_id
@@ -376,32 +378,17 @@ CREATE OR REPLACE VIEW ChannelPackagesReport AS
   SELECT Channel.mgm_id
             , Channel.label AS channel_label
             , Channel.name AS channel_name
-            , ChannelPackage.package_name
-            , ChannelPackage.package_version
-            , ChannelPackage.package_release
-            , ChannelPackage.package_epoch
-            , ChannelPackage.package_arch
-            , case when ChannelPackage.package_epoch is not null then ChannelPackage.package_epoch || ':' else '' end || ChannelPackage.package_name || '-' || ChannelPackage.package_version || '-' || ChannelPackage.package_release || '.' || ChannelPackage.package_arch AS full_package_name
-            , ChannelPackage.synced_date
+            , Package.name
+            , Package.version
+            , Package.release
+            , Package.epoch
+            , Package.arch
+            , case when Package.epoch is not null then Package.epoch || ':' else '' end || Package.name || '-' || Package.version || '-' || Package.release || '.' || Package.arch AS full_package_name
+            , Package.synced_date
     FROM Channel
             INNER JOIN ChannelPackage ON ( Channel.mgm_id = ChannelPackage.mgm_id AND Channel.channel_id = ChannelPackage.channel_id )
-ORDER BY Channel.mgm_id, Channel.label, ChannelPackage.package_name, ChannelPackage.package_version, ChannelPackage.package_release, ChannelPackage.package_epoch, ChannelPackage.package_arch
-;
-
-CREATE OR REPLACE VIEW ChannelPackagesReport AS
-  SELECT Channel.mgm_id
-            , Channel.label AS channel_label
-            , Channel.name AS channel_name
-            , ChannelPackage.package_name
-            , ChannelPackage.package_version
-            , ChannelPackage.package_release
-            , ChannelPackage.package_epoch
-            , ChannelPackage.package_arch
-            , case when ChannelPackage.package_epoch is not null then ChannelPackage.package_epoch || ':' else '' end || ChannelPackage.package_name || '-' || ChannelPackage.package_version || '-' || ChannelPackage.package_release || '.' || ChannelPackage.package_arch AS full_package_name
-            , ChannelPackage.synced_date
-    FROM Channel
-            INNER JOIN ChannelPackage ON ( Channel.mgm_id = ChannelPackage.mgm_id AND Channel.channel_id = ChannelPackage.channel_id )
-ORDER BY Channel.mgm_id, Channel.label, ChannelPackage.package_name, ChannelPackage.package_version, ChannelPackage.package_release, ChannelPackage.package_epoch, ChannelPackage.package_arch
+            INNER JOIN Package ON ( Channel.mgm_id = Package.mgm_id AND ChannelPackage.package_id = Package.package_id )
+ORDER BY Channel.mgm_id, Channel.label, Package.name, Package.version, Package.release, Package.epoch, Package.arch
 ;
 
 CREATE OR REPLACE VIEW ErrataChannelsReport AS

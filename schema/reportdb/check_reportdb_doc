@@ -1,0 +1,166 @@
+#!/usr/bin/python3
+
+#TODO CHECK FOR VIEWS
+import sys
+import os
+import json
+
+def dict_equal(a, b):
+    type_a = type(a)
+    type_b = type(b)
+
+    if type_a != type_b:
+        return False
+
+    if isinstance(a, dict):
+        if len(a) != len(b):
+            return False
+        for key in a:
+            if key not in b:
+                return False
+            if not dict_equal(a[key], b[key]):
+                return False
+        return True
+
+    elif isinstance(a, list):
+        if len(a) != len(b):
+            return False
+        while len(a):
+            x = a.pop()
+            index = dict_indexof(x, b)
+            if index == -1:
+                return False
+            del b[index]
+        return True
+
+    else:
+        return a == b
+
+def dict_indexof(x, a):
+    for i in range(len(a)):
+        if dict_equal(x, a[i]):
+            return i
+    return -1
+
+DB_DIR = 'postgres'
+MAIN_SQL_PATH = DB_DIR + '/main.sql'
+DOCUMENTATION_SQL_PATH = DB_DIR + '/documentation.sql'
+tables = {}
+
+if not os.path.exists(MAIN_SQL_PATH):
+    sys.stderr.write("main script does not exist\n")
+    sys.exit(1)
+if not os.path.exists(DOCUMENTATION_SQL_PATH):
+    sys.stderr.write("Documentation script doen not exist\n")
+    sys.exit(1)
+
+columns = []
+val = []
+column = ''
+currentTableKey = ''
+tablesFromDoc = {}
+
+#read main.sql and create a dict with table name has key and columns has value
+f = open(MAIN_SQL_PATH)
+for line in f.readlines():
+    line = line.strip()
+    if not line or line.startswith('--'): continue
+    vals = list(filter(None, line.replace("\t", " ").split(' ')))
+    if line.startswith('CREATE TABLE'):
+        currentTableKey = vals[2]
+        tables[currentTableKey] = []
+        continue
+    if line == '(' : continue
+    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+        if currentTableKey:
+            tables[currentTableKey] = columns
+            currentTableKey = ''
+            columns = []
+            continue
+    if currentTableKey: 
+        column = vals[0]
+        columns.append(column)
+        continue
+
+columns = []
+val = []
+column = ''
+currentTableKey = ''
+currentViewKey = ''
+tablesFromDoc = {}
+viewFromDoc = {} #TODO NOT EVALUATED BUT FILLED PROPERLY
+dropTables = []
+commentColumn = False
+commentTable = False
+commentIs = False
+
+#read documentation.sql and create a dict with table name has key and columns has value
+#we also check if documentation.sql is formatted properly
+f = open(DOCUMENTATION_SQL_PATH)
+for line in f.readlines():
+    line = line.strip()
+    vals = list(filter(None, line.replace("\t", " ").split(' ')))
+    if not line:
+        continue
+    if line.startswith('COMMENT ON TABLE '):
+        if commentTable or commentColumn:
+            sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
+            sys.exit(1)
+        currentTableKey = vals[3]
+        tablesFromDoc[currentTableKey] = []
+        commentTable = True
+        commentColumn = False  
+        commentIs = False
+    if line.startswith('COMMENT ON VIEW '):
+        if not commentIs:
+            sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
+            sys.exit(1)
+        currentViewKey = vals[3]
+        viewFromDoc[currentViewKey] = []
+        commentColumn = True
+        commentTable = False 
+        commentIs = False
+    if line.startswith('COMMENT ON COLUMN '):
+        if not commentIs:
+            sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
+            sys.exit(1)
+        currentKey = ''
+        if currentTableKey:
+            currentKey = currentTableKey
+        if currentViewKey:
+            currentKey = currentViewKey
+        column = vals[3]
+        column = column.replace(currentKey + ".","")
+        columns.append(column)
+        commentColumn = True
+        commentTable = False
+        commentIs = False
+    if line.startswith('IS '):
+        if not commentColumn and not commentTable:
+            sys.stderr.write(("Line: " + line + ", should be preceded by a COMMENT line\n"))
+            sys.exit(1)
+        commentColumn = False
+        commentTable = False
+        commentIs = True
+    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+        if currentTableKey:
+            tablesFromDoc[currentTableKey] = columns
+            currentTableKey = ''
+            columns = []
+        if currentViewKey:
+            viewFromDoc[currentViewKey] = columns
+            currentViewKey = ''
+            columns = []
+
+    if line.startswith('DROP TABLE IF EXIST') :
+        dropTable=vals[4].replace(";","")
+        dropTables.append(dropTable);
+
+for dropTable in dropTables:
+    if dropTable in tables:
+        tables.pop(dropTable)
+
+if not dict_equal(tables, tablesFromDoc) :
+    sys.stderr.write("Schema and doc are different. Please check your changes\n")
+    sys.exit(1)
+

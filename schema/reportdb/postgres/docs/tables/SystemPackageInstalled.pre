@@ -10,7 +10,7 @@
 --
 
 COMMENT ON TABLE SystemPackageInstalled
-  is 'The list of the packages installed on a system';
+  IS 'The list of the packages installed on a system';
 
 COMMENT ON COLUMN SystemPackageInstalled.mgm_id
   IS 'The id of the BRAND_NAME instance that contains this data';

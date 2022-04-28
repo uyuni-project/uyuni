@@ -23,6 +23,11 @@ if [ -z $1 ];then
 fi
 
 BRAND_NAME="$1"
+
+if [ "$BRAND_NAME" == "unittest" ];then
+    echo "Running just unit test"
+fi
+
 echo Using branding $BRAND_NAME
 
 cd /manager/susemanager-utils/testing/docker/scripts/
@@ -63,7 +68,21 @@ make -s -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION="$DB_VERSION" RE
 echo Creating schema documentation
 make -s -f Makefile.schema docs
 
+# Unit test for checking if reportdb schema and doc are aligned
+SCHEMA_DIFF=$(./check_reportdb_doc)
 popd
+
+if [ ! -z $SCHEMA_DIFF ]; then
+        echo "ReportDB schema and doc are misaligned"
+        echo $SCHEMA_DIFF
+        exit 1
+fi
+echo "ReportDB schema and doc are aligned"
+
+
+if [ "$BRAND_NAME" == "unittest" ];then
+  exit 0
+fi
 
 # Create the schema
 cd /manager/schema
