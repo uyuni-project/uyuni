@@ -97,6 +97,7 @@
     "@spice-project/spice-html5": "^0.2.1",
     "bootstrap": "3.1.1",
     "d3": "4.5.0",
+    "eos-ds": "^5.0.0",
     "gettext-parser": "^4.0.4",
     "html-react-parser": "^0.10.0",
     "immer": "9.0.6",
