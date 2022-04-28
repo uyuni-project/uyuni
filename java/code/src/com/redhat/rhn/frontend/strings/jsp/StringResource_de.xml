@@ -9224,7 +9224,7 @@ und Organisationsmanagement-Tools haben, sollten Sie diese Rolle aus Ihrem Login
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.doT</context>
         </context-group>
-        <target>Bereits geklont? </target>
+        <target>Bereits geklont?</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.no" xml:space="preserve">
         <source>No</source>
