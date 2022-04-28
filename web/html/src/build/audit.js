@@ -8,6 +8,10 @@ exec(`yarn audit --json --groups "dependencies"`, (error, stdout, stderr) => {
     const lines = (stdout || "").split(/\r?\n/).filter((line) => line.trim() !== "");
     const results = lines.map((line) => JSON.parse(line));
 
+    if (!results.some((item) => item.type === "auditSummary")) {
+      throw new TypeError("No audit result found");
+    }
+
     const advisories = results.filter((item) => item.type === "auditAdvisory");
     if (!advisories.length) {
       process.exitCode = 0;
@@ -38,6 +42,7 @@ exec(`yarn audit --json --groups "dependencies"`, (error, stdout, stderr) => {
     return;
   } catch (error) {
     process.exitCode = error.code || 1;
+    console.error(error);
     return;
   }
 });
