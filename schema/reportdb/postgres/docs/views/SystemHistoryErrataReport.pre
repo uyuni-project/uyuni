@@ -19,7 +19,9 @@ COMMENT ON COLUMN SystemHistoryErrataReport.system_id
 COMMENT ON COLUMN SystemHistoryErrataReport.action_id
   IS 'The id of the action';
 COMMENT ON COLUMN SystemHistoryErrataReport.earliest_action
-  IS 'The earliest time this action was schedule for execution';
+  IS 'The earliest time this action was scheduled for execution';
+COMMENT ON COLUMN SystemHistoryErrataReport.pickup_time
+  IS 'When this action was selected for execution';
 COMMENT ON COLUMN SystemHistoryErrataReport.completion_time
   IS 'When this action was completed';
 COMMENT ON COLUMN SystemHistoryErrataReport.status

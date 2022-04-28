@@ -19,7 +19,9 @@ COMMENT ON COLUMN SystemHistoryScapReport.system_id
 COMMENT ON COLUMN SystemHistoryScapReport.action_id
   IS 'The id of the action';
 COMMENT ON COLUMN SystemHistoryScapReport.earliest_action
-  IS 'The earliest time this action was schedule for execution';
+  IS 'The earliest time this action was scheduled for execution';
+COMMENT ON COLUMN SystemHistoryScapReport.pickup_time
+  IS 'When this action was selected for execution';
 COMMENT ON COLUMN SystemHistoryScapReport.completion_time
   IS 'When this action was completed';
 COMMENT ON COLUMN SystemHistoryScapReport.status

@@ -19,7 +19,9 @@ COMMENT ON COLUMN SystemHistoryConfigurationReport.system_id
 COMMENT ON COLUMN SystemHistoryConfigurationReport.action_id
   IS 'The id of the action';
 COMMENT ON COLUMN SystemHistoryConfigurationReport.earliest_action
-  IS 'The earliest time this action was schedule for execution';
+  IS 'The earliest time this action was scheduled for execution';
+COMMENT ON COLUMN SystemHistoryConfigurationReport.pickup_time
+  IS 'When this action was selected for execution';
 COMMENT ON COLUMN SystemHistoryConfigurationReport.completion_time
   IS 'When this action was completed';
 COMMENT ON COLUMN SystemHistoryConfigurationReport.status

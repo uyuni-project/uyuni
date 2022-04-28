@@ -20,8 +20,10 @@ COMMENT ON COLUMN SystemAction.action_id
   IS 'The id of the action';
 COMMENT ON COLUMN SystemAction.hostname
   IS 'The hostname of the system';
-COMMENT ON COLUMN SystemAction.scheduled_by
-  IS 'The user account who scheduled the action';
+COMMENT ON COLUMN SystemAction.scheduler_id
+  IS 'The id of the account who scheduled the action';
+COMMENT ON COLUMN SystemAction.scheduler_username
+  IS 'The username of the account who scheduled the action';
 COMMENT ON COLUMN SystemAction.earliest_action
   IS 'The earliest time this action was schedule for execution';
 COMMENT ON COLUMN SystemAction.archived

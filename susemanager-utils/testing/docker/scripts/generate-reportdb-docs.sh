@@ -109,7 +109,15 @@ if [ -d $OUTPUT_DIR ]; then
     rm -rf $OUTPUT_DIR
 fi
 
-java -cp $(build-classpath ongres-scram) -jar /root/schemaspy.jar -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc) -label "$BRAND_NAME Reporting"
+SCHEMASPY_REPO=mackdk/schemaspy
+SCHEMASPY_VERSION=6.1.1
+SCHEMASPY_JAR=/root/schemaspy.jar
+if [ ! -f $SCHEMASPY_JAR ]; then
+    echo Retrieving SchemaSpy version $SCHEMASPY_VERSION
+    wget -q --show-progress "https://github.com/$SCHEMASPY_REPO/releases/download/v$SCHEMASPY_VERSION/schemaspy-$SCHEMASPY_VERSION.jar" -O $SCHEMASPY_JAR
+fi
+
+java -cp $(build-classpath ongres-scram) -jar $SCHEMASPY_JAR -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc) -label "$BRAND_NAME Reporting"
 
 CSS_FILE=$(cat $CONFIG_FILE | grep schemaspy.css | cut -c 15-)
 if [ -n $CSS_FILE ] && [ -f $CSS_FILE ]; then
