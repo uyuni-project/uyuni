@@ -38,4 +38,11 @@ COPY squid.conf /etc/squid/squid.conf
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
+# Ensure every run / exec uses the squid user to avoid errors like
+#    FATAL: Cannot open '/proc/self/fd/1' for writing.
+# For this we need to give the squid user access to squid.conf and squid.pid
+RUN chown squid:squid /etc/squid/squid.conf
+RUN touch /run/squid.pid && chown squid:squid /run/squid.pid
+USER squid
+
 CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground
