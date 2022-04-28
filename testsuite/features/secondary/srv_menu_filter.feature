@@ -22,14 +22,14 @@ Feature: Left Menu Filter
     When I enter "saLT" as the left menu search field
     Then I should see a "Salt" link in the left menu  
 
-@susemanager
+  @susemanager
   Scenario: Search a word and expect several results
     When I enter "SUSE" as the left menu search field
     Then I should see a "SUSE" text
     And I should see a "SUSE Manager Server" text
     And I should see a "SUSE Manager Proxy" text
 
-@uyuni
+  @uyuni
   Scenario: Search a word and expect several results
     When I enter "Uyuni" as the left menu search field
     Then I should see a "Uyuni Server" text
