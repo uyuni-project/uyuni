@@ -69,6 +69,9 @@ CREATE OR REPLACE VIEW SystemHistoryErrataReport AS
 ORDER BY mgm_id, system_id, action_id
 ;
 
+-- SystemHistoryKickstartReport might have been created by mistake due to a wrong update file
+DROP VIEW IF EXISTS SystemHistoryKickstartReport;
+
 DROP VIEW IF EXISTS SystemHistoryAutoinstallationReport;
 
 CREATE OR REPLACE VIEW SystemHistoryAutoinstallationReport AS
