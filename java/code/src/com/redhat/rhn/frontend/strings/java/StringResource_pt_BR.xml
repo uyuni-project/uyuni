@@ -11194,6 +11194,13 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="Report Database Schema" xml:space="preserve">
+        <source>Report Database Schema</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
