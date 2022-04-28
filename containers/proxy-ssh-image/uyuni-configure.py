@@ -12,7 +12,7 @@ with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
 
 with open(config_path + "ssh.yaml") as sshSource:
-    sshConfig = yaml.safe_load(sshSource)
+    sshConfig = yaml.safe_load(sshSource).get("ssh")
 
     SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
     SSH_PUSH_USER="mgrsshtunnel"
