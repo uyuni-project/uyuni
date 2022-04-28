@@ -5,6 +5,7 @@ ALTER TABLE SystemAction
     ADD COLUMN IF NOT EXISTS action_name VARCHAR(128)
 ;
 
+DROP VIEW IF EXISTS ActionsReport;
 CREATE OR REPLACE VIEW ActionsReport AS
   SELECT DISTINCT SystemAction.mgm_id
              , SystemAction.action_id
@@ -49,6 +50,7 @@ CREATE TABLE IF NOT EXISTS Repository
     CONSTRAINT Repository_pk PRIMARY KEY (mgm_id, repository_id)
 );
 
+DROP VIEW IF EXISTS CustomChannelsReport;
 CREATE OR REPLACE VIEW CustomChannelsReport AS
   WITH repositories AS (
       SELECT mgm_id, channel_id, string_agg(repository_id || ' - ' || repository_label, ';')  AS channel_repositories
@@ -74,7 +76,6 @@ ORDER BY Channel.mgm_id, Channel.organization, Channel.channel_id
 ;
 
 DROP VIEW IF EXISTS ErrataListReport;
-
 CREATE OR REPLACE VIEW ErrataListReport AS
   SELECT Errata.mgm_id
             , Errata.errata_id
@@ -100,6 +101,7 @@ GROUP BY Errata.mgm_id
 ORDER BY Errata.mgm_id, Errata.advisory_name
 ;
 
+DROP VIEW IF EXISTS ErrataSystemsReport;
 CREATE OR REPLACE VIEW ErrataSystemsReport AS
   WITH V6Addresses AS (
           SELECT mgm_id, system_id, interface_id, string_agg(address || ' (' || scope || ')', ';') AS ip6_addresses
@@ -123,6 +125,7 @@ CREATE OR REPLACE VIEW ErrataSystemsReport AS
 ORDER BY SystemErrata.mgm_id, SystemErrata.errata_id, SystemErrata.system_id
 ;
 
+DROP VIEW IF EXISTS HostGuestsReport;
 CREATE OR REPLACE VIEW HostGuestsReport AS
   SELECT mgm_id
             , host_system_id AS host
@@ -134,6 +137,7 @@ CREATE OR REPLACE VIEW HostGuestsReport AS
 ORDER BY mgm_id, host_system_id, virtual_system_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryChannelsReport;
 CREATE OR REPLACE VIEW SystemHistoryChannelsReport AS
   SELECT mgm_id
               , system_id
@@ -148,6 +152,7 @@ CREATE OR REPLACE VIEW SystemHistoryChannelsReport AS
 ORDER BY mgm_id, system_id, history_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryConfigurationReport;
 CREATE OR REPLACE VIEW SystemHistoryConfigurationReport AS
   SELECT mgm_id
             , system_id
@@ -168,6 +173,7 @@ CREATE OR REPLACE VIEW SystemHistoryConfigurationReport AS
 ORDER BY mgm_id, system_id, action_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryEntitlementsReport;
 CREATE OR REPLACE VIEW SystemHistoryEntitlementsReport AS
   SELECT mgm_id
               , system_id
@@ -182,6 +188,7 @@ CREATE OR REPLACE VIEW SystemHistoryEntitlementsReport AS
 ORDER BY mgm_id, system_id, history_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryErrataReport;
 CREATE OR REPLACE VIEW SystemHistoryErrataReport AS
   SELECT mgm_id
             , system_id
@@ -197,6 +204,7 @@ CREATE OR REPLACE VIEW SystemHistoryErrataReport AS
 ORDER BY mgm_id, system_id, action_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryKickstartReport;
 CREATE OR REPLACE VIEW SystemHistoryKickstartReport AS
   SELECT mgm_id
             , system_id
@@ -212,6 +220,7 @@ CREATE OR REPLACE VIEW SystemHistoryKickstartReport AS
 ORDER BY mgm_id, system_id, action_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryPackagesReport;
 CREATE OR REPLACE VIEW SystemHistoryPackagesReport AS
   SELECT mgm_id
             , system_id
@@ -227,6 +236,7 @@ CREATE OR REPLACE VIEW SystemHistoryPackagesReport AS
 ORDER BY mgm_id, system_id, action_id
 ;
 
+DROP VIEW IF EXISTS SystemHistoryScapReport;
 CREATE OR REPLACE VIEW SystemHistoryScapReport AS
   SELECT mgm_id
             , system_id

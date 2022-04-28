@@ -1,4 +1,5 @@
 -- ChannelsReport view was missing in previous update files
+DROP VIEW IF EXISTS ChannelsReport;
 CREATE OR REPLACE VIEW ChannelsReport AS
   SELECT Channel.mgm_id
             , Channel.channel_id
