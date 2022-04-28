@@ -52,7 +52,7 @@ spec:
             subPath: config.yaml
             readOnly: true
           - name: ssh-secret-volume
-            mountPath: /etc/uyuni/httpd.yaml
+            mountPath: /etc/uyuni/ssh.yaml
             subPath: ssh.yaml
             readOnly: true
         - name: tftpd
