@@ -1,3 +1,7 @@
+- Add Salt Bundle support on bootstrapping
+- Add Salt SSH with Salt Bundle support
+- Add util.mgr_switch_to_venv_minion state to switch salt minions
+  to use the Salt Bundle
 - Fix bootstrap repository path resolution for Oracle Linux
 - Handle salt bundle in set_proxy.sls
 

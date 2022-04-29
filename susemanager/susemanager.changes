@@ -1,3 +1,4 @@
+- Add Salt Bundle support to mgr-create-bootstrap-repo
 - Enable bootstrapping for Debian 11
 - fix SLE15 bootstrap repo definition (bsc#1197438)
 - Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap

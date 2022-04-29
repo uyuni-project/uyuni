@@ -68,6 +68,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_states
+mkdir -p %{buildroot}/usr/share/susemanager/salt-ssh
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
@@ -79,6 +80,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/reactor
 mkdir -p %{buildroot}/usr/share/susemanager/scap
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
+cp -R salt-ssh/* %{buildroot}/usr/share/susemanager/salt-ssh
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
@@ -131,6 +133,7 @@ fi
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/salt-ssh
 /usr/share/susemanager/pillar_data
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar

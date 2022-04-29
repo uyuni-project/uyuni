@@ -1,10 +1,17 @@
 {% include 'bootstrap/remove_traditional_stack.sls' %}
+{%- set salt_minion_name = 'salt-minion' %}
+{%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
+{# Prefer venv-salt-minion if installed #}
+{%- if salt['pkg.version']('venv-salt-minion') %}
+{%- set salt_minion_name = 'venv-salt-minion' %}
+{%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
+{%- endif -%}
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 
 mgr_salt_minion_inst:
   pkg.installed:
-    - name: salt-minion
+    - name: {{ salt_minion_name }}
     - order: last
 
 /etc/salt/minion.d/susemanager.conf:
@@ -19,7 +26,7 @@ mgr_salt_minion_inst:
 
 mgr_salt_minion_run:
   service.running:
-    - name: salt-minion
+    - name: {{ salt_minion_name }}
     - enable: True
     - order: last
 
