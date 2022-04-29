@@ -1456,6 +1456,7 @@ public class SaltServerActionService {
             Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
             pillar.put("docker-registries", dockerRegistries);
             pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
+            pillar.put("build_id", "build" + details.getBuildActionId());
             LocalCall<Map<String, ApplyResult>> apply = State.apply(
                     Collections.singletonList("images.profileupdate"),
                     Optional.of(pillar));
@@ -1514,6 +1515,7 @@ public class SaltServerActionService {
                         pillar.put("imagetag", tag);
                         pillar.put("imagename", repoPath + ":" + tag);
                         pillar.put("builddir", dockerfileProfile.getPath());
+                        pillar.put("build_id", "build" + actionId);
                         try {
                             //TODO: maybe from the database
                             certificate = Files.readAllLines(

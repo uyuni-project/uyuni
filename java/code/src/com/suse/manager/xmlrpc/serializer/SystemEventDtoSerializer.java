@@ -27,12 +27,12 @@ import java.util.Optional;
  * Serializer for {@link SystemEventDto}
  *
  * @xmlrpc.doc
- *  #struct_begin("System Event")
- *      #prop_desc("int", "id", "Identifier of the event")
- *      #prop_desc("string", "history_type", "Type of history event")
- *      #prop_desc("string", "status", "Status of the event")
- *      #prop_desc("string", "summary", "Summary of the event")
- *      #prop_desc("dateTime.iso8601", "completed", "Date that the event occurred")
+ *  #struct_begin("system event")
+ *      #prop_desc("int", "id", "ID of the event")
+ *      #prop_desc("string", "history_type", "type of history event")
+ *      #prop_desc("string", "status", "status of the event")
+ *      #prop_desc("string", "summary", "summary of the event")
+ *      #prop_desc("$date", "completed", "date that the event occurred")
  *  #struct_end()
  *
  */

@@ -9,6 +9,11 @@
 #foreach ($call in $handler.calls)
 <sect1>
   <title><function>$call.name</function></title>
+  #if ($call.readOnly)
+  <subtitle>HTTP <function>GET</function></subtitle>
+  #else
+  <subtitle>HTTP <function>POST</function></subtitle>
+  #end
   <para/>
 
   <variablelist>

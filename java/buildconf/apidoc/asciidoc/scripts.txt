@@ -1,6 +1,8 @@
 = Sample Scripts
 
-== Perl Example
+== XMLRPC Scripts
+
+=== Perl Example
 
 This Perl example shows the `system.listUserSystems` call being used to get a
 list of systems a user has access to. In the example below, the name of each system will be printed.
@@ -19,13 +21,13 @@ my $session = $client->call('auth.login',$user, $pass);
 
 my $systems = $client->call('system.listUserSystems', $session);
 foreach my $system (@$systems) {
-   print $system->{'name'}."\n";
+  print $system->{'name'}."\n";
 }
 $client->call('auth.logout', $session);
 ----
 
 
-== Python 2 Example
+=== Python 2 Example
 
 Below is an example of the `user.listUsers` call being used. Only the login of each
 user is printed.
@@ -73,7 +75,8 @@ client.system.schedulePackageInstall(key, 1000000001, package_list[0]['id'], ear
 client.auth.logout(key)
 ----
 
-== Python 3 with SSL Example
+
+=== Python 3 with SSL Example
 
 Below is an example of the `user.listUsers` call being called.
 
@@ -99,7 +102,7 @@ client.auth.logout(key)
 ----
 
 
-== Python 3 Example
+=== Python 3 Example
 
 Below is an example of the `user.listUsers` call being called.
 
@@ -120,7 +123,8 @@ print(client.user.list_users(key))
 client.auth.logout(key)
 ----
 
-== Ruby Example
+
+=== Ruby Example
 
 Below is an example of the `channel.listAllChannels` API call. List of channel labels is printed.
 
@@ -138,9 +142,107 @@ require "xmlrpc/client"
 @key = @client.call('auth.login', @MANAGER_LOGIN, @MANAGER_PASSWORD)
 channels = @client.call('channel.listAllChannels', @key)
 for channel in channels do
-   p channel["label"]
+  p channel["label"]
 end
 
 @client.call('auth.logout', @key)
 ----
 
+
+== HTTP over JSON API scripts
+
+=== HTTP login with Curl
+
+Below is an example of the login process using an authentication token with the HTTP over JSON API.
+
+The HTTP over JSON API uses authentication tokens for access. The token is sent in a
+cookie called `pxt-session-cookie` in a response to a call to the `auth.login` endpoint.
+The `auth.login` endpoint accepts a POST request with a JSON body that has `login` and
+`password` properties in a top-level object.
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" -d '{"login": "myusername", "password": "mypass"}' -i $API/auth/login
+
+HTTP/1.1 200 200
+...
+Set-Cookie: pxt-session-cookie=&lt;tokenhash&gt;; ...
+...
+{"success":true,"messages":[]}
+----
+
+Once the login is successful, the retrieved cookie must be added to each subsequent request for authenticated access.
+
+
+=== HTTP GET example
+
+Below is an example of an HTTP GET call to the `contentmanagement.lookupProject` API.
+In a GET request, method parameters must be sent as query string key-value pairs.
+
+_The JSON output is pretty-printed for clarity._
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+> $API/contentmanagement/lookupProject?projectLabel=myproject
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "description": "My CLM project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----
+
+
+=== HTTP POST example
+
+Below is an example of an HTTP POST call to the `contentmanagement.createProject` API.
+In a POST request, method parameters can be sent as query string key-value pairs, as a JSON object in the request body, or a mix of both. `object` type parameters cannot be represented as a query string element and therefore must be sent in the request body.
+The following examples show both approaches.
+
+_The JSON output is pretty-printed for clarity._
+
+==== Using the query string
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" -X POST \
+> "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----
+
+==== Using the request body
+
+The request body must be a top-level JSON object that contains all the parameters as its properties.
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+> -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
+> $API/contentmanagement/createProject
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----

@@ -70,7 +70,7 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc Retrieve details for the package with the ID.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
      *   #struct_begin("package")
      *       #prop("int", "id")
@@ -116,9 +116,9 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the channels that provide the a package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   #struct_begin("channel")
      *     #prop("string", "label")
      *     #prop("string", "parent_label")
@@ -147,9 +147,9 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the errata providing the a package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   #struct_begin("errata")
      *     #prop("string", "advisory")
      *     #prop("string", "issue_date")
@@ -182,9 +182,9 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the files associated with a package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     #struct_begin("file info")
      *       #prop("string", "path")
      *       #prop("string", "type")
@@ -248,7 +248,7 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the change log for a package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
      *   string
      */
@@ -270,9 +270,9 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the dependencies for a package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     #struct_begin("dependency")
      *       #prop("string", "dependency")
      *       #prop_desc("string", "dependency_type", "One of the following:")
@@ -351,7 +351,7 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove a package from #product().
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageId")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removePackage(User loggedInUser, Integer pid) throws FaultException {
@@ -386,7 +386,7 @@ public class PackagesHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove a source package.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "packageSourceId")
+     * @xmlrpc.param #param_desc("int", "psid", "package source ID")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeSourcePackage(User loggedInUser, Integer psid) throws FaultException {
@@ -422,7 +422,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.doc List all source packages in user's organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   #struct_begin("source_package")
      *     #prop("int", "id")
      *     #prop("string", "name")
@@ -527,7 +527,7 @@ public class PackagesHandler extends BaseHandler {
      *          NVRA combination, it will be returned.  (Empty string is recommended.)")
      * @xmlrpc.param #param("string", "archLabel")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $PackageSerializer
      *   #array_end()
      */
@@ -554,7 +554,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.doc Retrieve the url that can be used to download a package.
      *      This will expire after a certain time period.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "package_id")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype
      *  string - the download url
      *
@@ -579,7 +579,7 @@ public class PackagesHandler extends BaseHandler {
      * (Consider using <a href ="#getPackageUrl">packages.getPackageUrl</a>
      * for larger files.)
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "package_id")
+     * @xmlrpc.param #param("int", "pid")
      * @xmlrpc.returntype #array_single("byte", "binary object - package file")
      */
     @ReadOnly

@@ -31,7 +31,7 @@ import java.util.List;
  * @xmlrpc.doc
  *   #struct_begin("file list")
  *     #prop("string", "name")
- *     #prop_array("file_names", "string", "name")
+ *     #prop_array("file_names", "string", "the list of file names")
  *   #struct_end()
  */
 public class FileListSerializer extends ApiResponseSerializer<FileList> {

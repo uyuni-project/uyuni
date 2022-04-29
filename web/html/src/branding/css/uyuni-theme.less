@@ -74,8 +74,8 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/logo-footer.png') no-repeat right center;
-    background-size: auto 20px;
+    background: url('/img/susemanager/suse-logo-footer-white.svg') no-repeat right center;
+    background-size: 32px 16px;
     min-height: 28px;
     padding-right: 55px!important;
     > div {
@@ -113,29 +113,6 @@ h6 { font-size: 1em; }
   line-height: 1.5em;
   margin-bottom: 10px;
   margin-top: 10px;
-}
-
-/* basic layout */
-.row-0 {
-  .make-row();
-  &:first-child {
-    padding-left:0;
-  }
-  &:last-child {
-    padding-right: 0
-  }
-}
-.header-container {
-  .make-row(0);
-  .spacewalk-logo {
-    .make-xs-column(5);
-    padding-left: 0;
-  }
-  .header-links {
-    .make-xs-column(7);
-    .text-right;
-    padding-right: 0;
-  }
 }
 
 /* override spacewalk rules */
@@ -1359,4 +1336,21 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
+}
+
+// Button fixes
+.btn-default {
+  .default-button-colour;
+  color: @gray-dark;
+}
+.btn-primary,
+.btn-success {
+  .call-to-action-button-colour;
+  color: #fff;
+  border-color: @green;
+}
+
+/* wrap on normal line break in modal dialog bodies */
+.modal-body {
+  white-space: pre-line;
 }

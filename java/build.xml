@@ -26,7 +26,7 @@
 
   <target name= "build-all" depends="clean, create-webapp-dir, all"/>
 
-  <target name="prepare" depends="init-taskdefs">
+  <target name="prepare">
         <mkdir dir="${build.dir}/src"/>
   </target>
 
@@ -119,7 +119,7 @@
   </target>
 
   <target name="init"
-          depends="resolve,link-jars,init-taskdefs, set-default-config-dir">
+          depends="resolve,link-jars,set-default-config-dir">
     <tstamp />
   </target>
 
@@ -352,7 +352,7 @@
        line.  These are the tasks that actually implement the public tasks -->
 
   <!-- ============== Compile tasks ================== -->
-  <target name="compile" depends="init, compile-main, compile-all"
+  <target name="compile" depends="init, compile-main, compile-all, init-taskdefs"
           description="Compile source" />
 
   <target name="compile-internal" depends="link-jars"

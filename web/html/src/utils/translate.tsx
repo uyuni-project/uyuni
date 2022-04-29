@@ -1,4 +1,7 @@
+import * as React from "react";
+
 import Gettext from "node-gettext";
+import ReactDOMServer from "react-dom/server";
 
 const domain = "messages";
 const gt = new Gettext();
@@ -33,8 +36,19 @@ function getPoAsJson(locale?: string) {
  * with placeholder replacement like Java's MessageFormat class.
  * Accepts any number of arguments after key.
  */
-function translate(key: string) {
-  var result = key;
+function translate(msg: string): string;
+function translate(msg: JSX.Element): JSX.Element;
+function translate(msg: string | JSX.Element) {
+  let result: string;
+  let isResultJsx = false;
+
+  if (typeof msg !== "string") {
+    // If we're dealing with JSX, compile it and then replace
+    isResultJsx = true;
+    result = ReactDOMServer.renderToStaticMarkup(msg);
+  } else {
+    result = msg;
+  }
 
   window.translationData && (result = window.translationData.gettext(result));
 
@@ -43,7 +57,11 @@ function translate(key: string) {
     result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), arguments[i]);
   }
 
-  return result;
+  if (isResultJsx) {
+    return <span dangerouslySetInnerHTML={{ __html: result }} />;
+  } else {
+    return result;
+  }
 }
 
 export { getTranslationData };

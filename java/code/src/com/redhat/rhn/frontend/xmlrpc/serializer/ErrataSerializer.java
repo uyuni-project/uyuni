@@ -27,12 +27,12 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * @xmlrpc.doc
  *      #struct_begin("errata")
- *          #prop_desc("int", "id", "Errata Id")
- *          #prop_desc("string", "date", "Date erratum was created.")
- *          #prop_desc("string", "advisory_type", "Type of the advisory.")
- *          #prop_desc("string", "advisory_status", "Status of the advisory.")
- *          #prop_desc("string", "advisory_name", "Name of the advisory.")
- *          #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
+ *          #prop_desc("int", "id", "errata ID")
+ *          #prop_desc("string", "date", "the date erratum was created")
+ *          #prop_desc("string", "advisory_type", "type of the advisory")
+ *          #prop_desc("string", "advisory_status", "status of the advisory")
+ *          #prop_desc("string", "advisory_name", "name of the advisory")
+ *          #prop_desc("string", "advisory_synopsis", "summary of the erratum")
  *     #struct_end()
  */
 public class ErrataSerializer extends ApiResponseSerializer<Errata> {

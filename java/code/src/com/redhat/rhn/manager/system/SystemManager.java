@@ -3880,6 +3880,7 @@ public class SystemManager extends BaseManager {
                         Credentials.TYPE_REPORT_CREDS, null));
         if (forcePwChange) {
             credentials.setPassword(RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()));
+            CredentialsFactory.storeCredentials(credentials);
         }
         mgrServerInfo.setReportDbCredentials(credentials);
         Map<String, Object> pillar = new HashMap<>();

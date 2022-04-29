@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * ImageStoreSerializer
  *
  * @xmlrpc.doc
- * #struct_begin("Image Store information")
+ * #struct_begin("image store information")
  *   #prop("string", "label")
  *   #prop("string", "uri")
  *   #prop("string", "storetype")

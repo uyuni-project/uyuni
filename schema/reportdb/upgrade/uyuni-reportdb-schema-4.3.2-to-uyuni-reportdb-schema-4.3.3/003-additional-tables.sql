@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS SystemCustomInfo
 );
 
 -- Views
+DROP VIEW IF EXISTS ProxyOverviewReport;
 CREATE OR REPLACE VIEW ProxyOverviewReport AS
     SELECT prx.mgm_id
               , prx.system_id AS proxy_id
@@ -189,6 +190,7 @@ CREATE OR REPLACE VIEW ProxyOverviewReport AS
  ORDER BY prx.mgm_id, prx.system_id, sys.system_id
 ;
 
+DROP VIEW IF EXISTS ScapScanReport;
 CREATE OR REPLACE VIEW ScapScanReport AS
   SELECT XccdScan.mgm_id
             , XccdScan.scan_id
@@ -220,6 +222,7 @@ ORDER BY XccdScan.mgm_id
             , XccdScan.end_time
 ;
 
+DROP VIEW IF EXISTS ScapScanResultReport;
 CREATE OR REPLACE VIEW ScapScanResultReport AS
   SELECT XccdScanResult.mgm_id
             , XccdScanResult.scan_id
@@ -237,6 +240,7 @@ CREATE OR REPLACE VIEW ScapScanResultReport AS
 ORDER BY mgm_id, scan_id, rule_id
 ;
 
+DROP VIEW IF EXISTS SystemGroupsReport;
 CREATE OR REPLACE VIEW SystemGroupsReport AS
   SELECT mgm_id
             , system_group_id
@@ -248,6 +252,7 @@ CREATE OR REPLACE VIEW SystemGroupsReport AS
 ORDER BY mgm_id, system_group_id
 ;
 
+DROP VIEW IF EXISTS SystemGroupsSystemsReport;
 CREATE OR REPLACE VIEW SystemGroupsSystemsReport AS
    SELECT SystemGroupMember.mgm_id
               , SystemGroupMember.system_group_id AS group_id
@@ -260,6 +265,7 @@ CREATE OR REPLACE VIEW SystemGroupsSystemsReport AS
  ORDER BY SystemGroupMember.mgm_id, SystemGroupMember.system_group_id, SystemGroupMember.system_id
 ;
 
+DROP VIEW IF EXISTS SystemPackagesInstalledReport;
 CREATE OR REPLACE VIEW SystemPackagesInstalledReport AS
   SELECT SystemPackageInstalled.mgm_id
             , SystemPackageInstalled.system_id
@@ -275,6 +281,7 @@ CREATE OR REPLACE VIEW SystemPackagesInstalledReport AS
 ORDER BY SystemPackageInstalled.mgm_id, SystemPackageInstalled.system_id, SystemPackageInstalled.name
 ;
 
+DROP VIEW IF EXISTS SystemExtraPackagesReport;
 CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
   WITH packages_from_channels AS (
     SELECT SystemPackageInstalled.mgm_id
@@ -321,6 +328,7 @@ CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
 ORDER BY System.mgm_id, System.organization, System.system_id, SystemPackageInstalled.name
 ;
 
+DROP VIEW IF EXISTS PackagesUpdatesAllReport;
 CREATE OR REPLACE VIEW PackagesUpdatesAllReport AS
   SELECT System.mgm_id
             , System.system_id
@@ -340,6 +348,7 @@ CREATE OR REPLACE VIEW PackagesUpdatesAllReport AS
 ORDER BY System.mgm_id, System.organization, System.system_id, SystemPackageUpdate.name
 ;
 
+DROP VIEW IF EXISTS PackagesUpdatesNewestReport;
 CREATE OR REPLACE VIEW PackagesUpdatesNewestReport AS
   SELECT System.mgm_id
             , System.system_id
@@ -360,6 +369,7 @@ CREATE OR REPLACE VIEW PackagesUpdatesNewestReport AS
 ORDER BY System.mgm_id, System.organization, System.system_id, SystemPackageUpdate.name
 ;
 
+DROP VIEW IF EXISTS ClonedChannelsReport;
 CREATE OR REPLACE VIEW ClonedChannelsReport AS
   SELECT original.mgm_id
             , original.channel_id AS original_channel_id
@@ -374,6 +384,7 @@ CREATE OR REPLACE VIEW ClonedChannelsReport AS
 ORDER BY original.mgm_id, original.channel_id
 ;
 
+DROP VIEW IF EXISTS ChannelPackagesReport;
 CREATE OR REPLACE VIEW ChannelPackagesReport AS
   SELECT Channel.mgm_id
             , Channel.label AS channel_label
@@ -391,6 +402,7 @@ CREATE OR REPLACE VIEW ChannelPackagesReport AS
 ORDER BY Channel.mgm_id, Channel.label, Package.name, Package.version, Package.release, Package.epoch, Package.arch
 ;
 
+DROP VIEW IF EXISTS ErrataChannelsReport;
 CREATE OR REPLACE VIEW ErrataChannelsReport AS
   SELECT mgm_id
             , advisory_name
@@ -402,6 +414,7 @@ CREATE OR REPLACE VIEW ErrataChannelsReport AS
 ORDER BY mgm_id, advisory_name, errata_id, channel_label, channel_id
 ;
 
+DROP VIEW IF EXISTS AccountsReport;
 CREATE OR REPLACE VIEW AccountsReport AS
   SELECT Account.mgm_id
             , Account.organization
@@ -435,6 +448,7 @@ GROUP BY Account.mgm_id
 ORDER BY Account.mgm_id, Account.organization, Account.account_id
 ;
 
+DROP VIEW IF EXISTS AccountsSystemsReport;
 CREATE OR REPLACE VIEW AccountsSystemsReport AS
   WITH org_admins AS (
       SELECT mgm_id, account_id
@@ -480,6 +494,7 @@ CREATE OR REPLACE VIEW AccountsSystemsReport AS
 ORDER BY users_details.mgm_id, users_details.account_id, system_users.system_id
 ;
 
+DROP VIEW IF EXISTS CustomInfoReport;
 CREATE OR REPLACE VIEW CustomInfoReport AS
   SELECT SystemCustomInfo.mgm_id
             , SystemCustomInfo.system_id

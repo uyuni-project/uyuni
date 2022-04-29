@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * ManagedServerGroupSerializer is a custom serializer for the XMLRPC library.
  * It converts an ServerGroup to an XMLRPC &lt;struct&gt;.
  * @xmlrpc.doc
- *      #struct_begin("Server Group")
+ *      #struct_begin("server group")
  *          #prop("int", "id")
  *          #prop("string", "name")
  *          #prop("string", "description")

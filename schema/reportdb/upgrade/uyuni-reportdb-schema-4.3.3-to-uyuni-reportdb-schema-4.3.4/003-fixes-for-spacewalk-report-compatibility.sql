@@ -1,11 +1,18 @@
 DO $$
 BEGIN
-  IF EXISTS(SELECT * FROM information_schema.columns WHERE table_name='actionsreport' and column_name='scheduled_by')
+  IF EXISTS(SELECT * FROM information_schema.columns WHERE table_name='systemaction' and column_name='scheduled_by')
   THEN
     DROP VIEW IF EXISTS ActionsReport;
 
-    ALTER TABLE SystemAction ADD COLUMN scheduler_id NUMERIC;
-    ALTER TABLE SystemAction RENAME COLUMN scheduled_by TO scheduler_username;
+    ALTER TABLE SystemAction ADD COLUMN IF NOT EXISTS scheduler_id NUMERIC;
+
+    IF EXISTS(SELECT * FROM information_schema.columns WHERE table_name='systemaction' and column_name='scheduler_username')
+    THEN
+      RAISE NOTICE 'The scheduler_username is already present. Dropping scheduled_by';
+      ALTER TABLE SystemAction DROP COLUMN scheduled_by;
+    ELSE
+      ALTER TABLE SystemAction RENAME COLUMN scheduled_by TO scheduler_username;
+    END IF;
 
     CREATE OR REPLACE VIEW ActionsReport AS
       SELECT DISTINCT SystemAction.mgm_id
@@ -24,7 +31,7 @@ BEGIN
     ORDER BY SystemAction.mgm_id, SystemAction.action_id;
 
   ELSE
-    RAISE NOTICE 'The scheduler_id is already available in ActionsReport';
+    RAISE NOTICE 'The scheduled_by has already been removed from ActionsReport';
   END IF;
 END $$;
 
@@ -68,6 +75,9 @@ CREATE OR REPLACE VIEW SystemHistoryErrataReport AS
    WHERE event = 'Patch Update'
 ORDER BY mgm_id, system_id, action_id
 ;
+
+-- SystemHistoryKickstartReport might have been created by mistake due to a wrong update file
+DROP VIEW IF EXISTS SystemHistoryKickstartReport;
 
 DROP VIEW IF EXISTS SystemHistoryAutoinstallationReport;
 

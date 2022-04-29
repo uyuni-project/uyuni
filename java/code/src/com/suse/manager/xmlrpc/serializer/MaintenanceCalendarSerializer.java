@@ -23,7 +23,7 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
  * Serializer for {@link com.suse.manager.model.maintenance.MaintenanceCalendar}
  *
  * @xmlrpc.doc
- * #struct_begin("Maintenance Calendar information")
+ * #struct_begin("maintenance calendar information")
  *   #prop("int", "id")
  *   #prop("int", "orgId")
  *   #prop("string", "label")

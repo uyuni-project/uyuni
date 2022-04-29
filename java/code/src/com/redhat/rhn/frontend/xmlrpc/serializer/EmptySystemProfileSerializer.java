@@ -31,9 +31,8 @@ import java.util.Date;
  * #struct_begin("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("dateTime.iso8601",  "created", "Server creation time")
- *     #prop_desc("array", "hw_addresses", "HW addresses")
- *         #array_single("string", "HW address")
+ *     #prop_desc("$date",  "created", "Server creation time")
+ *     #prop_array("hw_address", "string", "HW address")
  * #struct_end()
  */
 public class EmptySystemProfileSerializer extends ApiResponseSerializer<EmptySystemProfileOverview> {

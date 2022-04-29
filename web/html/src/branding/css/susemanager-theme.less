@@ -19,7 +19,7 @@ html, body {
 }
 
 a {
-  color: @susemanager-link;
+  color: @link-color;
 }
 
 header {
@@ -79,69 +79,13 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/suse-logo-02.png') no-repeat right center;
-    background-size: auto 20px;
+    background: url('/img/susemanager/suse-logo-footer.svg') no-repeat right 18px;
+    background-size: 32px 16px;
     min-height: 28px;
     padding-right: 55px!important;
     > div {
       padding: 3px 0 2px 0;
     }
-  }
-}
-
-/* titles */
-h1, h2, h3, h4, h5, h6, .subheadline { .WorkSans; }
-
-h1, h2 {
- font-weight: 400;
- margin-bottom: 10px;
- margin-top: 20px;
-}
-h3 {
- margin-bottom: 10px;
- margin-top: 20px;
-}
-h3, h4, h5, h6 {
-  .WorkSans-strong;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-h1 { font-size: 2em }
-h2 { font-size: 1.75em; }
-h3 { font-size: 1.5em; }
-h4 { font-size: 1.3em; }
-h5 { font-size: 1.15em; }
-h6 { font-size: 1em; }
-.subheadline {
-  font-size: 1.3em;
-  font-weight: 300;
-  line-height: 1.5em;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
-p { margin-bottom: 1em; }
-
-/* basic layout */
-.row-0 {
-  .make-row();
-  &:first-child {
-    padding-left:0;
-  }
-  &:last-child {
-    padding-right: 0
-  }
-}
-.header-container {
-  .make-row(0);
-  .spacewalk-logo {
-    .make-xs-column(5);
-    padding-left: 0;
-  }
-  .header-links {
-    .make-xs-column(7);
-    .text-right;
-    padding-right: 0;
   }
 }
 
@@ -259,7 +203,7 @@ header, nav.navbar-pf {
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @eos-pine;
+    background-color: @eos-bc-pine-500;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
     box-shadow: 0px 4px 4px 0px @gray;
@@ -408,7 +352,8 @@ header, nav.navbar-pf {
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      color: @eos-gray-dark-2;
+      // TODO: Update this to dark
+      color: @eos-bc-gray-900;
       padding-right: 3em;
       height: 3em;
     }
@@ -457,7 +402,7 @@ header, nav.navbar-pf {
       }
       li.active > .leafLink {
         background-color: @aside-menu-active;
-        border-radius: 0 2px 2px 0;
+        border-radius: 0 @border-radius-small @border-radius-small 0;
         margin-right: 10px;
         color: @aside-menu-active-text;
       }
@@ -582,7 +527,7 @@ header, nav.navbar-pf {
       a {
         display: block;
         border: 0px;
-        color: @susemanager-link;
+        color: @link-color;
         padding: 2px 20px;
       }
     }
@@ -639,7 +584,7 @@ header, nav.navbar-pf {
   display: inline-block;
   width: 5em;
   border: 1px solid #dddddd;
-  background-color: @eos-gray-light-2;
+  background-color: @eos-bc-gray-100;
 }
 .view-systems-registered{
   .input-sm;
@@ -695,6 +640,8 @@ h1 .fa-stack {
     border-top: 0;
   }
 }
+// TODO: Move to a separate file
+
 
 /* systems selected tool*/
 .spacewalk-toolbar>a, #spacewalk-bar-off i {
@@ -916,7 +863,6 @@ i.spacewalk-help-link {
 /* after pattern fly - fixes (more like workarounds) */
 .navbar-pf {
   ul.navbar-utility, ul.navbar-primary {
-    font-size: 13px;
     > li {
       display: inline-block;
       float: none;
@@ -967,7 +913,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @blue;
+      color: @link-color;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -977,7 +923,7 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @eos-gray;
+      border-color: @eos-bc-gray-500;
       padding-bottom: 3px;
     }
   }
@@ -1087,7 +1033,7 @@ a time:hover {
   padding: 0 5px;
   margin-top: 15px;
   margin-bottom: 5px;
-  background: @eos-gray-light-3;
+  background: @eos-bc-gray-50;
   .action-button-wrapper {
     float: right;
     overflow: auto;

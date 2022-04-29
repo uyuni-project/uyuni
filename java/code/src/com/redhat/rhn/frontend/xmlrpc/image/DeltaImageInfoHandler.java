@@ -41,8 +41,8 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @return Array of DeltaImageInfo Objects
      *
      * @xmlrpc.doc List available DeltaImages
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $DeltaImageSerializer #array_end()
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype #return_array_begin() $DeltaImageSerializer #array_end()
      */
     @ReadOnly
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
@@ -58,7 +58,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @return ImageOverview Object
      *
      * @xmlrpc.doc Get details of an Image
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sourceImageId")
      * @xmlrpc.param #param("int", "targetImageId")
      * @xmlrpc.returntype $DeltaImageSerializer
@@ -83,7 +83,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @return 1 on success
      *
      * @xmlrpc.doc Import an image and schedule an inspect afterwards
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sourceImageId")
      * @xmlrpc.param #param("int", "targetImageId")
      * @xmlrpc.param #param("string", "file")
